@@ -1,0 +1,275 @@
+/*
+	Akeeba Release System User Interface CSS
+	Copyright (c)2010 Nicholas K. Dionysopoulos <nicholas@dionysopoulos.me>
+	Released under the GNU General Public License, version 3 or later
+	$Id$
+*/
+
+/*
+ * UI Icons - 32x32
+ */
+.ak-icon { display: block; width: 32px; height: 32px; text-indent: -99999px; overflow: hidden; background: transparent url(../icons/akeeba-ui-32.png) top left no-repeat; background-position: 0 0; margin: 4px auto 6px; }
+.ak-icon-categories { background-image: url(../icons/view-categories-32.png); }
+.ak-icon-items { background-image: url(../icons/view-items-32.png); }
+.ak-icon-logs { background-image: url(../icons/view-logs-32.png); }
+.ak-icon-releases { background-image: url(../icons/view-releases-32.png); }
+.ak-icon-activity { background-image: url(../icons/view-activity-32.png); }
+
+/*
+ * Akeeba Buttons
+ */
+.akbutton {
+	display: block;
+	width: 250px;
+	height: 32px;
+	text-decoration: none;
+	padding: 3px;
+	margin: 0.5em;
+}
+
+.akbutton:hover {
+	background-color: #ffffee;
+	text-decoration: none;
+	border: thin solid #3333ff;
+}
+
+div.ak_cpanel_icons div.akbutton div.icon {
+	float: left !important;
+	top: 0px !important;
+	margin: 0 !important;
+	font-size: 9pt !important;
+}
+
+.akbutton div.text {
+	display: block;
+	width: 210px;
+	height: 20px;
+	font-size: 14px;
+	text-align: center;
+	margin: 0px;
+	float: right;
+	position: relative;
+	top: -24px;
+}
+
+/*
+ * Control Panel
+ */
+#nojquerywarning {
+	display: block;
+	border: thick solid red;
+	background: #ffffdd;
+	color: #330000;
+	margin: 1em;
+	padding: 1em;
+	text-align: justify;
+	font-size: large;
+}
+
+p.akwarningtitle {
+	font-weight: bold;
+	font-size: xx-large;
+	text-align: center;
+	margin: 0.5em;
+	color: #cc3333;
+}
+
+div.toprowcontainer {
+	width: 100%;
+	height: 65px;
+}
+
+div.activeprofile {
+	float: left;
+	width: 55%;
+	margin-left: 4%;
+	margin-bottom: 1em;
+	text-align: center;
+}
+
+div.feedrotator {
+	float: left;
+	left: 5%;
+	width: 235px;
+	height: 60px;
+}
+
+div.updateservice {
+	display:block;
+	float: right;
+	right: 5px;
+	width: 100px;
+	height: 60px;
+	font-size: 7pt !important;
+	border: thin solid silver;
+	text-align: center;
+}
+
+div.updateservice:hover {
+	background-color: #ffffff;
+}
+
+div.updateservice .ak-icon {
+	margin: 2px auto 0px;
+}
+
+div.updateservice a, div.updateservice a:hover {
+	text-decoration: none;
+}
+
+div.ak_clr_left {
+	clear: left;
+}
+
+div.ak_clr {
+	clear: both;
+}
+
+div.ak_cpanel_main_container {
+	width: 59%;
+	padding: 3px;
+}
+
+div.ak_cpanel_header {
+	font-size: larger;
+	padding: 2px 5px 5px;
+}
+
+div.ak_cpanel_icons {
+	padding: 4px;
+	margin-bottom: 4px;
+}
+
+div.ak_cpanel_modules {
+	float: right;
+	width: 39%;
+}
+
+#ak_cpanel_modules h3 {
+	font-size: larger;
+	padding: 2px 5px 2px 28px;
+}
+
+div.ak_cpanel_icons div.icon {
+	text-align: center;
+	float: left !important;
+	font-size: 8pt !important;
+	font-weight: normal !important;
+	color: #000000 !important;
+	background-color: #f0f0f0 !important;
+	border: 1px solid #E5E5E5 !important;
+	width: 108px;
+	height: 97px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+}
+
+div.ak_cpanel_icons div.icon span {
+	font-family: "Segoe UI", "Arial", Helvetica, sans;
+	font-weight: bold !important;
+	font-size: 8pt !important;
+}
+
+div.ak_cpanel_status_cell p {
+	text-align: center;
+	font-size: larger;
+	font-weight: bold;
+	padding: 10px 10px 10px 25px;
+}
+
+div.ak_cpanel_status_cell p.ak_version {
+	font-weight: normal;
+	font-size: 9pt;
+	color: #333333;
+	font-family: Consolas, "Courier New", Courier, monospace;
+	padding: 0px;
+}
+
+p.ok {
+	border: thin solid #008000;
+	background: #aaeeaa;
+	background-image: url(../icons/ok_small.png) !important;
+	background-position: 5px 10px !important;
+	background-repeat: no-repeat !important;
+	padding: 10px 10px 10px 25px;
+}
+
+p.statuswarning {
+	background-image: url(../icons/ok_small.png) !important;
+	background-position: 5px 10px !important;
+	background-repeat: no-repeat !important;
+	padding: 10px 10px 10px 25px;
+}
+
+p.notok {
+	background-image: url(../icons/error_small.png) !important;
+	background-position: 5px 12px !important;
+	background-repeat: no-repeat !important;
+	padding: 10px 10px 10px 25px;
+}
+
+h4.ui-widget-header {
+	padding: 2px;
+	margin: 0px;
+}
+
+div.ak_cpanel_status_cell ul {
+	padding: 0px;
+	margin: 2px;
+	list-style: none;
+}
+
+div.ak_cpanel_status_cell ul li {
+	margin: 0px;
+	padding: 0px;
+}
+
+div.ak_cpanel_status_cell ul li a {
+	display: block;
+	width: 95%;
+	padding: 4px;
+	margin: 4px 2px;
+	border: thin solid #cccccc;
+	background: #faf9f9;
+}
+
+div.ak_cpanel_status_cell ul a:hover {
+	background: #fffff9;
+}
+
+a.severity-low {
+	color: #333333;
+	font-style: italic;
+}
+
+a.severity-medium {
+	color: #cc8833 !important;
+}
+
+a.severity-high {
+	color: red;
+	font-weight: bold;
+}
+
+/*
+ * Joomla! 1.6 compatibility
+ */
+#akeebagui button, #akeebagui input, #akeebagui select { float: none; }
+#akeebagui button { margin: 0 0 0 5px; }
+
+/*
+ * Editor forms
+ */
+div.editform-row { display:block; margin: 1px 0; padding: 1px; height: 1.6em; clear: left; }
+div.editform-row-noheight { height: auto; }
+div.editform-row > label { display: block; float: left; width: 35%; height: 1.4em; background-color: #ddd; margin: 0 2px 0 0; padding: 2px 0 0px 2px; border-bottom: 1px solid #999; border-top: 1px solid #ddd; }
+div.editform-row > input, div.editform-row .float { display: block; float: left; min-width: 30%; height: 1.6em; }
+div.editform-row > input.checkbox { display: inline; float: none; min-width: auto; height: auto; }
+div.editform-row > option { display: block; float: left; min-width: 90px; height: 1.6em; }
+
+/**
+ * Categories
+ */
+.category-type-normal { color: #cc8833; font-weight: bold; }
+.category-type-bleedingedge { color: #008000; font-style: italic; }
+.ars-access { display:inline-block; margin-top: 1px; }

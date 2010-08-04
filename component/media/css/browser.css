@@ -1,0 +1,86 @@
+body {
+	background: white;
+	color: black;
+	font-family: Verdana, Helvetica, sans;
+	font-size: 11pt;
+}
+
+div {
+	display: block;
+	width: 600px;
+}
+
+#controls {
+	background-color: #efefef;
+	border: thin solid silver;
+}
+
+#breadcrumbs {
+	background-color: #efefef;
+	border: thin solid silver;
+	padding: 2px;
+	width: 596px;
+}
+
+#breadcrumbs a {
+	text-decoration: none;
+	color: #009900;
+	font-weight: bold;
+	font-size: 10pt;
+	padding: 0px 3px;
+}
+
+#breadcrumbs a:hover {
+	color: #990000;
+	background: #ffff99;
+}
+
+#browser {
+	background-color: #f9f9f9;
+	border: thin solid silver;
+	padding: 3px;
+	width: 594px;
+}
+
+#browser a {
+	display: block;
+	width: 585px;
+	height: 13pt;
+	text-decoration: none;
+	color: #000066;
+	font-size: 10pt;
+	padding: 1px 2px 0px;
+	margin: 0px 4px;
+	border-bottom: 1px solid #f0f0ff;
+}
+
+#browser a:hover {
+	background-color: #f0f0ff;
+	font-weight: bold;
+	color: #006600;
+}
+
+input {
+	width: 300px;
+	height: 20px;
+	border: thin solid silver;
+	margin: 2px;
+	background-color: #ffffef;
+}
+
+input.button {
+	width: 100px;
+	height: 23px;
+	border: thin solid #009900;
+	font-weight: bold;
+	background-color: #dddddd;
+	margin: 2px;
+}
+
+input:hover {
+	background-color: #ffffcc;
+}
+
+input.button:hover {
+	background-color: #ccffcc;
+}
