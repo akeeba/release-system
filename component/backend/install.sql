@@ -82,5 +82,17 @@ SELECT
 	`c`.`directory` as `cat_directory`, `c`.`access` as `cat_access`,
 	`c`.`published` as `cat_published`
 FROM
-	#__ars_releases AS `r`
+	`#__ars_releases` AS `r`
 	INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`);
+
+CREATE OR REPLACE VIEW `#__ars_view_items` AS
+SELECT
+	`i`.*,
+	`r`.`category_id`, `r`.`version`, `r`.`alias` as `rel_alias`,
+	`maturity`, `r`.`groups` as `rel_groups`, `r`.`access` as `rel_access`,
+	`r`.`published` as `rel_published`,
+	`cat_title`, `cat_alias`, `cat_type`, `cat_groups`,
+	`cat_directory`, `cat_access`, `cat_published`
+FROM
+	`#__ars_items` as `i`
+	INNER JOIN `#__ars_view_releases` AS `r` ON(`r`.`id` = `i`.`release_id`);

@@ -111,4 +111,138 @@ class ArsHelperSelect
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
+	public static function releases($selected = null, $id = 'release', $attribs = array(), $category_id = null)
+	{
+		if(!class_exists('ArsModelReleases')) {
+			require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'releases.php';
+		}
+		$model = new ArsModelReleases(); // Do not use Singleton here!
+		$model->reset();
+		if(!empty($category_id)) $model->setState('category', $category_id);
+		$items = $model->getItemList(true);
+
+		$options = array();
+
+		if(count($items) && empty($category_id))
+		{
+			$cache = array();
+			foreach($items as $item)
+			{
+				if(!array_key_exists($item->cat_title, $cache)) $cache[$item->cat_title] = array();
+				$cache[$item->cat_title][] = (object)array('id' => $item->id, 'version' => $item->version);
+			}
+
+			foreach($cache as $category => $releases)
+			{
+				if(!empty($options)) $options[] = JHTML::_('select.option','</OPTGROUP>');
+				$options[] = JHTML::_('select.option','<OPTGROUP>',$category);
+				foreach($releases as $release)
+				{
+					$options[] = JHTML::_('select.option',$release->id,$release->version);
+				}
+			}
+		}
+		elseif(count($items)) foreach($items as $item)
+		{
+			$options[] = JHTML::_('select.option',$item->id,$item->version);
+		}
+
+	   array_unshift($options, JHTML::_('select.option',0,'- '.JText::_('LBL_RELEASES_SELECT').' -'));
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function itemtypes($selected = null, $id = 'type', $attribs = array())
+	{
+		$options = array();
+		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_ITEMS_TYPE_SELECT').' -');
+
+		$types = array('file','link');
+		foreach($types as $type) $options[] = JHTML::_('select.option',$type,JText::_('LBL_ITEMS_TYPE_'.strtoupper($type)));
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function getFiles($selected = null, $release_id = 0, $item_id = 0, $id = 'type', $attribs = array())
+	{
+		$options = array();
+		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_ITEMS_FILENAME_SELECT').' -');
+
+		// Try to figure out a directory
+		$directory = null;
+		if(!empty($release_id))
+		{
+			// Get the release
+			if(!class_exists('ArsModelReleases')) {
+				require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'releases.php';
+			}
+			$relModel = new ArsModelReleases(); // Do not use Singleton here!
+			$relModel->reset();
+			$relModel->setId((int)$release_id);
+			$release = $relModel->getItem();
+			
+			// Get the category
+			if(!class_exists('ArsModelCategories')) {
+				require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'categories.php';
+			}
+			$catModel = new ArsModelCategories(); // Do not use Singleton here!
+			$catModel->reset();
+			$catModel->setId((int)$release->category_id);
+			$category = $catModel->getItem();
+
+			// Get which directory to use
+			jimport('joomla.filesystem.folder');
+			$directory = $category->directory;
+			if(!JFolder::exists($directory))
+			{
+				$directory = JPATH_ROOT.DS.$directory;
+				if(!JFolder::exists($directory)) {
+					$directory = null;
+				}
+			}
+		}
+
+		// Get a list of files already used in this category (so as not to show them again, he he!)
+		$files = array();
+		if(!empty($directory))
+		{
+			if(!class_exists('ArsModelItems')) {
+				require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'items.php';
+			}
+			$model = new ArsModelItems();
+			$model->reset();
+			$model->setState('category',$release->category_id);
+			$model->setState('limitstart', 0);
+			$model->setState('limit', 0);
+			$items = $model->getItemList();
+
+			if(!empty($items)) foreach($items as $item) {
+				if(($item->id != $item_id) && !empty($item->filename)) {
+					$files[] = $item->filename;
+				}
+				$files = array_unique($files);
+			}
+		}
+
+		// Produce a list of files and remove the items in the $files array
+		$useFiles = array();
+		if(!empty($directory))
+		{
+			$allFiles = JFolder::files($directory, '.', 2);
+			if(!empty($allFiles)) foreach($allFiles as $aFile)
+			{
+				if(in_array($aFile, $files)) continue;
+				$useFiles[] = $aFile;
+			}
+		}
+
+		$options = array();
+		if(!empty($useFiles)) foreach($useFiles as $file)
+		{
+			$options[] = JHTML::_('select.option', $file, $file);
+		}
+			
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
 }

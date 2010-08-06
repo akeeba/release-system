@@ -340,7 +340,7 @@ abstract class ArsModelBase extends JModel
 	public function reorder()
 	{
 		$table = $this->getTable($this->table);
-		$status = $table->reorder();
+		$status = $table->reorder( $this->getReorderWhere() );
 		if(!$status) $this->setError($table->getError());
 		return $status;
 	}
@@ -404,8 +404,10 @@ abstract class ArsModelBase extends JModel
 		$value = parent::getState($key);
 		if(is_null($value))
 		{
-			// Try to fetch it from the request
-			$value = JRequest::getVar($key, null);
+			// Try to fetch it from the request or session
+			$app = JFactory::getApplication();
+			$value = $app->getUserStateFromRequest($this->getHash().$key,$key,null);
+			//$value = JRequest::getVar($key, null);
 
 			if(is_null($value))	return $default;
 		}
@@ -425,6 +427,11 @@ abstract class ArsModelBase extends JModel
 	public final function getHash()
 	{
 		return JRequest::getCmd('option').'.'.str_replace('Model', '', $this->getName()).'.';
+	}
+
+	public function getReorderWhere()
+	{
+		return '';
 	}
 
 	/**

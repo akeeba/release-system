@@ -25,6 +25,7 @@ class ArsHelperIncludes
 	{
 		$media_folder = JURI::base().'../media/com_ars/';
 		$scriptDefs = array(
+			$media_folder.'js/gui-helpers.js'
 		);
 		return $scriptDefs;
 	}

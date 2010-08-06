@@ -18,23 +18,27 @@ if(!JFile::exists(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'base.php')) {
 
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'base.php';
 
-class ArsModelReleases extends ArsModelBase
+class ArsModelItems extends ArsModelBase
 {
 	function  buildQuery($overrideLimits = false) {
 		$where = array();
 
 		$fltCategory	= $this->getState('category', null, 'int');
+		$fltRelease		= $this->getState('release', null, 'int');
 		$fltPublished	= $this->getState('published', null, 'cmd');
 
 		$db = $this->getDBO();
 		if($fltCategory) {
 			$where[] = '`category_id` ='.$db->getEscaped($fltCategory);
 		}
+		if($fltRelease) {
+			$where[] = '`release_id` ='.$db->getEscaped($fltRelease);
+		}
 		if($fltPublished != '') {
 			$where[] = '`published` = '.$db->Quote((int)$fltPublished);
 		}
 
-		$query = 'SELECT * FROM `#__ars_view_releases`';
+		$query = 'SELECT * FROM `#__ars_view_items`';
 
 		if(count($where) && !$overrideLimits)
 		{
@@ -53,18 +57,26 @@ class ArsModelReleases extends ArsModelBase
 		return $query;
 	}
 
+
 	function getReorderWhere()
 	{
 		$where = array();
+
 		$fltCategory	= $this->getState('category', null, 'int');
+		$fltRelease		= $this->getState('release', null, 'int');
 		$fltPublished	= $this->getState('published', null, 'cmd');
+
 		$db = $this->getDBO();
 		if($fltCategory) {
 			$where[] = '`category_id` ='.$db->getEscaped($fltCategory);
 		}
+		if($fltRelease) {
+			$where[] = '`release_id` ='.$db->getEscaped($fltRelease);
+		}
 		if($fltPublished != '') {
 			$where[] = '`published` = '.$db->Quote((int)$fltPublished);
 		}
+
 		if(count($where)) {
 			return '(' . implode(') AND (',$where) . ')';
 		} else {
