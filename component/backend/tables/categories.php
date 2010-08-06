@@ -8,9 +8,9 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-jimport('joomla.database.table');
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'base.php';
 
-class TableCategories extends JTable
+class TableCategories extends ArsTable
 {
 	var $id = 0;
 	var $title = '';
@@ -49,11 +49,25 @@ class TableCategories extends JTable
 			$this->alias = (string) preg_replace( '/[^A-Z0-9_-]/i', '', $alias );
 		}
 
+		// If no alias could be auto-generated, fail
 		if(!$this->alias) {
 			$this->setError(JText::_('ERR_CATEGORY_NEEDS_SLUG'));
 			return false;
 		}
 
+		// Check alias for uniqueness
+		$db = $this->getDBO();
+		$sql = 'SELECT `alias` FROM `#__ars_categories`';
+		if($this->id) $sql .= ' WHERE NOT(`id`='.(int)$this->id.')';
+		$db->setQuery($sql);
+		$aliases = $db->loadResultArray();
+		if(in_array($this->alias, $aliases))
+		{
+			$this->setError(JText::_('ERR_CATEGORY_NEEDS_UNIQUE_SLUG'));
+			return false;
+		}
+
+		// Check directory
 		jimport('joomla.filesystem.folder');
 		if(!JFolder::exists($this->directory)) {
 			$directory = JPATH_SITE.DS.$this->directory;
@@ -73,12 +87,10 @@ class TableCategories extends JTable
 		if(is_array($this->groups)) $this->groups = implode(',', $this->groups);
 
 		// Set the access to registered if there are Ambra groups defined
-		/*
 		if(!empty($this->groups) && ($this->access == 0))
 		{
 			$this->access = 1;
 		}
-		*/
 
 		jimport('joomla.utilities.date');
 		$user = JFactory::getUser();
@@ -107,4 +119,26 @@ class TableCategories extends JTable
 
 		return true;
 	}
+
+	function delete( $oid=null )
+	{
+		$joins = array(
+			array(
+				'label'		=> 'version',
+				'name'		=> '#__ars_releases',
+				'idfield'	=> 'id',
+				'idalias'	=> 'rel_id',
+				'joinfield'	=> 'category_id'
+			)
+		);
+		if($this->canDelete($oid, $joins))
+		{
+			return parent::delete($oid);
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 }

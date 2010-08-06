@@ -188,7 +188,7 @@ abstract class ArsModelBase extends JModel
 			$limitstart = $this->getState('limitstart');
 			$limit = $this->getState('limit');
 
-			$query = $this->buildQuery();
+			$query = $this->buildQuery($overrideLimits);
 			if(!$overrideLimits)
 				$this->list = $this->_getList($query, $limitstart, $limit);
 			else
@@ -322,6 +322,7 @@ abstract class ArsModelBase extends JModel
 	public function move( $dirn ) {
 		$table = $this->getTable($this->table);
 
+		$id = $this->getId();
 		$status = $table->load($id);
 		if(!$status) $this->setError($table->getError());
 		if(!$status) return false;
@@ -429,6 +430,6 @@ abstract class ArsModelBase extends JModel
 	/**
 	 * Builds the SELECT query
 	 */
-	abstract public function buildQuery();
+	abstract public function buildQuery($overrideLimits = false);
 
 }

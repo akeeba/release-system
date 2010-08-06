@@ -43,7 +43,10 @@ else
 {
 	$c = 'Default';
 	$path = JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.'default.php';
-	JFile::exists($path) or	JError::raiseError('500',JText::_('Unknown controller').' '.$c);
+	if(!JFile::exists($path)) {
+		JError::raiseError('500',JText::_('Unknown controller').' '.$c);
+	}
+	require_once $path;
 }
 
 // Instanciate and execute the controller

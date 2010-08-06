@@ -18,39 +18,23 @@ if(!JFile::exists(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'base.php')) {
 
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'base.php';
 
-class ArsModelCategories extends ArsModelBase
+class ArsModelReleases extends ArsModelBase
 {
 	function  buildQuery($overrideLimits = false) {
 		$where = array();
 
-		$fltTitle		= $this->getState('title', null, 'string');
-		$fltAlias		= $this->getState('alias', null, 'string');
-		$fltDescription	= $this->getState('description', null, 'string');
-		$fltType		= $this->getState('type', null, 'cmd');
-		$fltAccess		= $this->getState('access', null, 'int');
+		$fltCategory	= $this->getState('category', null, 'int');
 		$fltPublished	= $this->getState('published', null, 'cmd');
 
 		$db = $this->getDBO();
-		if($fltTitle) {
-			$where[] = '`title` LIKE "%'.$db->getEscaped($fltTitle).'%"';
-		}
-		if($fltAlias) {
-			$where[] = '`alias` LIKE "%'.$db->getEscaped($fltAlias).'%"';
-		}
-		if($fltDescription) {
-			$where[] = '`description` LIKE "%'.$db->getEscaped($fltDescription).'%"';
-		}
-		if($fltType) {
-			$where[] = '`type` = '.$db->Quote($fltType);
-		}
-		if(!is_null($fltAccess)) {
-			$where[] = '`access` = '.$db->Quote($fltAccess);
+		if($fltCategory) {
+			$where[] = '`category_id` ='.$db->getEscaped($fltCategory);
 		}
 		if($fltPublished != '') {
 			$where[] = '`published` = '.$db->Quote((int)$fltPublished);
 		}
 
-		$query = 'SELECT * FROM `#__ars_categories`';
+		$query = 'SELECT * FROM `#__ars_view_releases`';
 
 		if(count($where) && !$overrideLimits)
 		{
@@ -63,7 +47,6 @@ class ArsModelCategories extends ArsModelBase
 			$order = $app->getUserStateFromRequest($hash.'filter_order', 'filter_order', 'id');
 			$dir = $app->getUserStateFromRequest($hash.'filter_order_Dir', 'filter_order_Dir', 'DESC');
 			$dir = in_array(strtoupper($dir),array('DESC','ASC')) ? strtoupper($dir) : "ASC";
-
 			$query .= ' ORDER BY '.$db->nameQuote($order).' '.$dir;
 		}
 

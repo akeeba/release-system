@@ -264,7 +264,7 @@ div.editform-row { display:block; margin: 1px 0; padding: 1px; height: 1.6em; cl
 div.editform-row-noheight { height: auto; }
 div.editform-row > label { display: block; float: left; width: 35%; height: 1.4em; background-color: #ddd; margin: 0 2px 0 0; padding: 2px 0 0px 2px; border-bottom: 1px solid #999; border-top: 1px solid #ddd; }
 div.editform-row > input, div.editform-row .float { display: block; float: left; min-width: 30%; height: 1.6em; }
-div.editform-row > input.checkbox { display: inline; float: none; min-width: auto; height: auto; }
+div.editform-row > input.checkbox { display: inline; float: none; min-width: 0; height: auto; }
 div.editform-row > option { display: block; float: left; min-width: 90px; height: 1.6em; }
 
 /**
@@ -273,3 +273,11 @@ div.editform-row > option { display: block; float: left; min-width: 90px; height
 .category-type-normal { color: #cc8833; font-weight: bold; }
 .category-type-bleedingedge { color: #008000; font-style: italic; }
 .ars-access { display:inline-block; margin-top: 1px; }
+
+/**
+ * Releases
+ */
+.status-alpha { color: #cc3333; font-style: italic; }
+.status-beta { color: #cc8833 }
+.status-rc { color: #333333; font-style: italic; }
+.status-stable { color: #008000; font-weight: bold; }

@@ -190,6 +190,48 @@ class ArsControllerDefault extends JController
 		return;
 	}
 
+	public function orderdown()
+	{
+		$model = $this->getThisModel();
+		$model->setIDsFromRequest();
+
+		$status = $model->move(1);
+		// redirect
+		$option = JRequest::getCmd('option');
+		$view = JRequest::getCmd('view');
+		$url = 'index.php?option='.$option.'&view='.$view;
+		if(!$status)
+		{
+			$this->setRedirect($url, $model->getError(), 'error');
+		}
+		else
+		{
+			$this->setRedirect($url);
+		}
+		$this->redirect();
+	}
+
+	public function orderup()
+	{
+		$model = $this->getThisModel();
+		$model->setIDsFromRequest();
+
+		$status = $model->move(-1);
+		// redirect
+		$option = JRequest::getCmd('option');
+		$view = JRequest::getCmd('view');
+		$url = 'index.php?option='.$option.'&view='.$view;
+		if(!$status)
+		{
+			$this->setRedirect($url, $model->getError(), 'error');
+		}
+		else
+		{
+			$this->setRedirect($url);
+		}
+		$this->redirect();
+	}
+
 	public function remove()
 	{
 		$model = $this->getThisModel();

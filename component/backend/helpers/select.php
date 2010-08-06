@@ -34,7 +34,7 @@ class ArsHelperSelect
 		$options = array();
 		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_CATEGORIES_TYPE_SELECT').' -');
 		$options[] = JHTML::_('select.option','normal',JText::_('LBL_CATEGORIES_TYPE_NORMAL'));
-		$options[] = JHTML::_('select.option','cleedingedge',JText::_('LBL_CATEGORIES_TYPE_BLEEDINGEDGE'));
+		$options[] = JHTML::_('select.option','bleedingedge',JText::_('LBL_CATEGORIES_TYPE_BLEEDINGEDGE'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
@@ -43,7 +43,7 @@ class ArsHelperSelect
 	{
 		$options = array();
 		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_SELECT_STATE').' -');
-		$options[] = JHTML::_('select.option',1,JText::_('UNPUBLISHED'));
+		$options[] = JHTML::_('select.option',0,JText::_('UNPUBLISHED'));
 		$options[] = JHTML::_('select.option',1,JText::_('PUBLISHED'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
@@ -81,4 +81,34 @@ class ArsHelperSelect
 
 		return $html;
 	}
+
+	public static function categories($selected = null, $id = 'category', $attribs = array())
+	{
+		if(!class_exists('ArsModelCategories')) {
+			require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'categories.php';
+		}
+		$model = new ArsModelCategories(); // Do not use Singleton here!
+		$model->reset();
+		$items = $model->getItemList(true);
+
+		$options = array();
+		$options[] = JHTML::_('select.option',0,'- '.JText::_('LBL_CATEGORY_SELECT').' -');
+		if(count($items)) foreach($items as $item)
+		{
+			$options[] = JHTML::_('select.option',$item->id,$item->title);
+		}
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function maturities($selected = null, $id = 'maturity', $attribs = array())
+	{
+		$options = array();
+		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_RELEASES_MATURITY_SELECT').' -');
+		
+		$maturities = array('alpha','beta','rc','stable');
+		foreach($maturities as $maturity) $options[] = JHTML::_('select.option',$maturity,JText::_('LBL_RELEASES_MATURITY_'.strtoupper($maturity)));
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
 }

@@ -26,7 +26,7 @@ class ArsViewCpanel extends JView
 
 		// Add submenus (those nifty text links below the toolbar!)
 		// -- Categories
-		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=caregories';
+		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=categories';
 		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_CATEGORIES'), $link);
 		// -- Releases
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=releases';

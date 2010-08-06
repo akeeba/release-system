@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted Access');
 
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'base.view.html.php';
 
-class ArsViewCategories extends ArsViewBase
+class ArsViewReleases extends ArsViewBase
 {
 	protected function onDisplay()
 	{
@@ -18,10 +18,8 @@ class ArsViewCategories extends ArsViewBase
 		$hash = $this->getHash();
 		
 		// ...filter states
-		$this->lists->set('fltTitle',	$app->getUserStateFromRequest($hash.'filter_title',
-			'title', null));
-		$this->lists->set('fltType',	$app->getUserStateFromRequest($hash.'filter_type',
-			'type', null));
+		$this->lists->set('fltCategory',$app->getUserStateFromRequest($hash.'filter_category',
+			'category', null));
 		$this->lists->set('fltPublished',$app->getUserStateFromRequest($hash.'filter_published',
 			'published', null));
 
