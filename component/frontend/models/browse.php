@@ -40,6 +40,7 @@ class ArsModelBrowse extends ArsModelBaseFE
 		$catModel->setState('limitstart',$start);
 		$catModel->setState('limit',$limit);
 		$catModel->setState('published',1);
+		$catModel->setState('type','');
 
 		// Apply ordering
 		switch($orderby)
@@ -91,5 +92,32 @@ class ArsModelBrowse extends ArsModelBaseFE
 		}
 
 		return $list;
+	}
+
+	public function processFeedData()
+	{
+		if(empty($this->itemList)) return;
+
+		$model = JModel::getInstance('Releases','ArsModel');
+
+		if(empty($this->itemList)) return;
+
+		foreach($this->itemList as $sectionname => $section)
+		{
+			if(!empty($section)) foreach($section as $cat)
+			{
+				$model->reset();
+				$model->setState('category',		$cat->id);
+				$model->setState('limitstart',		0);
+				$model->setState('limit',			1);
+				$releases = $model->getItemList();
+
+				if(empty($releases)) {
+					$cat->release = null;
+				} else {
+					$cat->release = array_shift($releases);
+				}
+			}
+		}
 	}
 }

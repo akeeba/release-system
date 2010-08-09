@@ -15,7 +15,7 @@ class ArsHelperBreadcrumbs
 		$menus =& JMenu::getInstance('site');
 		$menuitem =& $menus->getActive();
 
-		if ($menuitem->query['view'] != 'browse')
+		if (!is_object($menuitem) || $menuitem->query['view'] != 'browse')
 		{
 			$app = JFactory::getApplication();
 			$pathway =& $app->getPathway();
@@ -52,7 +52,7 @@ class ArsHelperBreadcrumbs
 		$menus =& JMenu::getInstance('site');
 		$menuitem =& $menus->getActive();
 
-		if ($menuitem->query['view'] != 'category')
+		if (!is_object($menuitem) ||$menuitem->query['view'] != 'category')
 		{
 			$app = JFactory::getApplication();
 			$pathway = $app->getPathway();
@@ -93,7 +93,7 @@ class ArsHelperBreadcrumbs
 		$menus =& JMenu::getInstance('site');
 		$menuitem =& $menus->getActive();
 
-		if ($menuitem->query['view'] != 'release')
+		if (!is_object($menuitem) || $menuitem->query['view'] != 'release')
 		{
 			$app = JFactory::getApplication();
 			$pathway = $app->getPathway();

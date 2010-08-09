@@ -34,6 +34,14 @@ class ArsControllerBrowse extends JController
 		// Display the view
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
+
+		if($viewType == 'feed')
+		{
+			// Extra data required for feeds
+			$model->processFeedData();
+			$view->setLayout('feed');
+		}
+
 		if ($cachable && $viewType != 'feed') {
 			global $option;
 			$cache =& JFactory::getCache($option, 'view');
