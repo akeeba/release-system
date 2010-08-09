@@ -258,22 +258,8 @@ class ArsControllerDefault extends JController
 	{
 		$model = $this->getThisModel();
 		$model->setIDsFromRequest();
-		$id = $model->getId();
 
-		$item = $model->getItem();
-		$key = $item->getKeyName();
-		$loadedid = $item->$key;
-
-		if($id == $loadedid)
-		{
-			$item->published = $state;
-			$status = $model->save($item);
-		}
-		else
-		{
-			$status = false;
-		}
-
+		$status = $model->publish($state);
 
 		// redirect
 		$option = JRequest::getCmd('option');

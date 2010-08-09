@@ -259,11 +259,9 @@ abstract class ArsModelBase extends JModel
 				$user = $oUser->id;
 			}
 			$table = $this->getTable($this->table);
-			foreach($this->id_list as $id) {
-				if(!$table->publish($id, $publish, $user) ) {
-					$this->setError($table->getError());
-					return false;
-				}
+			if(!$table->publish($this->id_list, $publish, $user) ) {
+				$this->setError($table->getError());
+				return false;
 			}
 		}
 		return true;

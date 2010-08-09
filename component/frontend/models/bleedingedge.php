@@ -65,10 +65,12 @@ class ArsModelBleedingedge extends JModel
 
 		$model = JModel::getInstance('Releases','ArsModel');
 		$model->reset();
-		$model->setState('category', $this->category_id);
+		$model->setState('category', $this->category->id);
 		$model->setState('order','created');
 		$model->setState('dir','desc');
-		$allReleases = $model->getItemList(true);
+		$model->setState('limitstart',0);
+		$model->setState('limit',0);
+		$allReleases = $model->getItemList();
 
 		jimport('joomla.filesystem.folder');
 
@@ -166,13 +168,16 @@ class ArsModelBleedingedge extends JModel
 		{
 			$this->setCategory($release->category_id);
 		}
+		if($this->category->type != 'bleedingedge') return;
 
 		$folder = $this->folder;
 
 		$model = JModel::getInstance('Items','ArsModel');
 		$model->reset();
 		$model->setState('release', $release->id);
-		$allItems = $model->getItemList(true);
+		$model->setState('limitstart',0);
+		$model->setState('limit',0);
+		$allItems = $model->getItemList();
 
 		$known_items = array();
 		if(!empty($allItems)) foreach($allItems as $item)
@@ -205,8 +210,9 @@ class ArsModelBleedingedge extends JModel
 			);
 			$table = JTable::getInstance('Items','Table');
 			$table->save($data);
-			$table->reorder('`release_id` = '.$release->id);
 		}
+
+		if(isset($table)) $table->reorder('`release_id` = '.$release->id);
 	}
 
 	private function colorise($line)
