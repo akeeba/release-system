@@ -12,6 +12,7 @@ defined('_JEXEC') or die('Restricted Access');
 $lang =& JFactory::getLanguage();
 $icons_root = JURI::base().'components/com_ars/assets/images/';
 
+$groups = array('basic','insight','tools');
 ?>
 <div id="cpanel">
 	<div class="ak_cpanel_modules" id="ak_cpanel_modules">
@@ -22,11 +23,14 @@ $icons_root = JURI::base().'components/com_ars/assets/images/';
 	</div>
 
 	<div class="ak_cpanel_main_container">
+	<?php foreach($groups as $group): ?>
+		<?php if(array_key_exists($group, $this->icondefs)): ?>
+		<?php if(!count($this->icondefs[$group])) continue; ?>
 		<div class="ak_cpanel_header ui-widget-header ui-corner-tl ui-corner-tr">
-			<?php echo JText::_('LBL_ARS_CPANEL_BASIC'); ?>
+			<?php echo JText::_('LBL_ARS_CPANEL_'.  strtoupper($group)); ?>
 		</div>
 		<div class="ak_cpanel_icons ui-widget-content ui-corner-br ui-corner-bl">
-			<?php foreach($this->icondefs['basic'] as $icon): ?>
+			<?php foreach($this->icondefs[$group] as $icon): ?>
 			<div class="icon">
 				<a href="<?php echo 'index.php?option=com_ars'.
 					(is_null($icon['view']) ? '' : '&amp;view='.$icon['view']).
@@ -38,25 +42,8 @@ $icons_root = JURI::base().'components/com_ars/assets/images/';
 			<?php endforeach; ?>
 			<div class="ak_clr_left"></div>
 		</div>
-
-		<div class="ak_cpanel_header ui-widget-header ui-corner-tl ui-corner-tr">
-			<?php echo JText::_('LBL_ARS_CPANEL_INSIGHT'); ?>
-		</div>
-		<div class="ak_cpanel_icons ui-widget-content ui-corner-br ui-corner-bl">
-			<?php foreach($this->icondefs['insight'] as $icon): ?>
-			<div class="icon">
-				<a href="<?php echo 'index.php?option=com_ars'.
-					(is_null($icon['view']) ? '' : '&amp;view='.$icon['view']).
-					(is_null($icon['task']) ? '' : '&amp;task='.$icon['task']); ?>">
-				<div class="ak-icon ak-icon-<?php echo $icon['icon'] ?>">&nbsp;</div>
-				<span><?php echo $icon['label']; ?></span>
-				</a>
-			</div>
-			<?php endforeach; ?>
-			<div class="ak_clr_left"></div>
-		</div>
-
-
+		<?php endif; ?>
+	<?php endforeach; ?>
 	</div>
 </div>
 

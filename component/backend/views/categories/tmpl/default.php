@@ -101,6 +101,8 @@ $model = $this->getModel();
 				<a href="index.php?option=com_ars&view=categories&task=edit&id=<?php echo (int)$item->id ?>">
 					<?php echo htmlentities($item->title) ?>
 				</a>
+				<br/>
+				<span class="cat-directory-name"><?php echo htmlentities($item->directory) ?></span>
 			</td>
 			<td>
 				<span class="category-type-<?php echo $item->type ?>">

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="ARS_VIEW_CATEGORY_TITLE">
+		<message>
+				<![CDATA[ARS_VIEW_CATEGORY_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>ARS_VIEW_CATEGORY_TITLE</name>
+		<description>ARS_VIEW_CATEGORY_DESC</description>
+		<params>
+			<param name="catid" type="sql" default="0" label="LBL_CATEGORY_SELECT" description="" query="SELECT `id`, `title` FROM `#__ars_categories`" key_field="id" value_field="title" />
+			<param name="rel_orderby" type="list" default="order" label="ARS_RELEASES_ORDERBY_LBL" description="ARS_RELEASES_ORDERBY_DESC">
+				<option value="none">ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
+				<option value="alpha">ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
+				<option value="ralpha">ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
+				<option value="created">ARS_BROWSE_REPOSITORY_ORDERBY_CREATED</option>
+				<option value="rcreated">ARS_BROWSE_REPOSITORY_ORDERBY_RCREATED</option>
+				<option value="order">ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
+			</param>
+		</params>
+		<advanced>
+			<param name="show_pagination" type="list" default="2" label="ARS_BROWSE_REPOSITORY_PAGINATION_LBL" description="ARS_BROWSE_REPOSITORY_PAGINATION_DESC">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+				<option value="2">Auto</option>
+			</param>
+			<param name="show_pagination_results" type="radio" default="1" label="ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_LBL" description="ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_DESC">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="show_feed_link" type="radio" default="1" label="ARS_BROWSE_REPOSITORY_RSS_LBL" description="ARS_BROWSE_REPOSITORY_RSS_DESC">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+		</advanced>
+	</state>
+</metadata>

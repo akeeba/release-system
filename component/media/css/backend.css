@@ -273,6 +273,7 @@ div.editform-row > option { display: block; float: left; min-width: 90px; height
 .category-type-normal { color: #cc8833; font-weight: bold; }
 .category-type-bleedingedge { color: #008000; font-style: italic; }
 .ars-access { display:inline-block; margin-top: 1px; }
+.cat-directory-name { font-family: Consolas, "Courier New", Courier, monospace; color: gray; }
 
 /**
  * Releases

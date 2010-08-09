@@ -58,11 +58,18 @@ class ArsModelCategories extends ArsModelBase
 		}
 
 		if(!$overrideLimits) {
+			$order = $this->getState('order',null,'cmd');
+			$dir = $this->getState('dir',null,'cmd');
+
 			$app = JFactory::getApplication();
 			$hash = $this->getHash();
-			$order = $app->getUserStateFromRequest($hash.'filter_order', 'filter_order', 'id');
-			$dir = $app->getUserStateFromRequest($hash.'filter_order_Dir', 'filter_order_Dir', 'DESC');
-			$dir = in_array(strtoupper($dir),array('DESC','ASC')) ? strtoupper($dir) : "ASC";
+			if(empty($order)) {
+				$order = $app->getUserStateFromRequest($hash.'filter_order', 'filter_order', 'id');
+			}
+			if(empty($dir)) {
+				$dir = $app->getUserStateFromRequest($hash.'filter_order_Dir', 'filter_order_Dir', 'DESC');
+				$dir = in_array(strtoupper($dir),array('DESC','ASC')) ? strtoupper($dir) : "ASC";
+			}
 
 			$query .= ' ORDER BY '.$db->nameQuote($order).' '.$dir;
 		}

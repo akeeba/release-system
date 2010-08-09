@@ -49,6 +49,9 @@ class ArsModelCpanel extends JModel
 		{
 			foreach($ini_data as $view => $def)
 			{
+				if(array_key_exists('hidden', $def))
+					if(in_array(strtolower($def['hidden']),array('true','yes','on','1')))
+						continue;
 				$task = array_key_exists('task',$def) ? $def['task'] : null;
 				$ret[$def['group']][] = $this->_makeIconDefinition($def['icon'], JText::_($def['label']), $view, $task);
 			}
