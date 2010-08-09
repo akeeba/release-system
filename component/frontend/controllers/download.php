@@ -10,12 +10,12 @@ defined('_JEXEC') or die('Restricted Access');
 
 jimport('joomla.application.component.controller');
 
-class ArsControllerCategory extends JController
+class ArsControllerDownload extends JController
 {
 	function  __construct($config = array()) {
 		parent::__construct($config);
-		$this->registerDefaultTask('category');
-		$this->registerTask( 'display', 'category' );
+		$this->registerDefaultTask('download');
+		$this->registerTask( 'display', 'download' );
 
 		JRequest::setVar('layout',null);
 	}
@@ -45,7 +45,7 @@ class ArsControllerCategory extends JController
 		}
 	}
 
-	function category($cachable=false)
+	function download($cachable=false)
 	{
 		$id = JRequest::getInt('id',null);
 
@@ -55,38 +55,24 @@ class ArsControllerCategory extends JController
 
 		// Push the page params to the model
 		$model = $this->getThisModel();
-		$model->setState( 'task',		$this->getTask() );
-		$model->setState( 'grouping',	$params->get('grouping',	'normal') );
-		$model->setState( 'orderby',	$params->get('orderby',		'order') );
-		$model->setState( 'rel_orderby',$params->get('rel_orderby',	'order') );
-
-		// Push URL parameters to the model
-		$model->setState( 'start',		JRequest::getInt('start', 0) );
 
 		// Get the item lists
-		if(empty($id))
-		{
-			$id = $params->get('catid');
-		}
 		if($id > 0)
 		{
-			$category = $model->getCategory($id);
+			$item = $model->getItem($id);
 		}
 		else
 		{
-			$category = null;
+			$item = null;
 		}
 
-		if(!is_null($category))
-		{
-			$releases = $model->getReleases($id);
-		}
-		else
+		if(is_null($item))
 		{
 			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
 		}
 
-		$this->display($cachable);
+		$model->doDownload();
+		die();
 	}
 
 	private function getThisModel()

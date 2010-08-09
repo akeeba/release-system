@@ -10,12 +10,12 @@ defined('_JEXEC') or die('Restricted Access');
 
 jimport('joomla.application.component.controller');
 
-class ArsControllerCategory extends JController
+class ArsControllerRelease extends JController
 {
 	function  __construct($config = array()) {
 		parent::__construct($config);
-		$this->registerDefaultTask('category');
-		$this->registerTask( 'display', 'category' );
+		$this->registerDefaultTask('release');
+		$this->registerTask( 'display', 'release' );
 
 		JRequest::setVar('layout',null);
 	}
@@ -45,7 +45,7 @@ class ArsControllerCategory extends JController
 		}
 	}
 
-	function category($cachable=false)
+	function release($cachable=false)
 	{
 		$id = JRequest::getInt('id',null);
 
@@ -56,9 +56,10 @@ class ArsControllerCategory extends JController
 		// Push the page params to the model
 		$model = $this->getThisModel();
 		$model->setState( 'task',		$this->getTask() );
-		$model->setState( 'grouping',	$params->get('grouping',	'normal') );
-		$model->setState( 'orderby',	$params->get('orderby',		'order') );
-		$model->setState( 'rel_orderby',$params->get('rel_orderby',	'order') );
+		$model->setState( 'grouping',	$params->get('grouping',		'normal') );
+		$model->setState( 'orderby',	$params->get('orderby',			'order') );
+		$model->setState( 'rel_orderby',$params->get('rel_orderby',		'order') );
+		$model->setState( 'items_orderby',$params->get('items_orderby',	'order') );
 
 		// Push URL parameters to the model
 		$model->setState( 'start',		JRequest::getInt('start', 0) );
@@ -66,20 +67,20 @@ class ArsControllerCategory extends JController
 		// Get the item lists
 		if(empty($id))
 		{
-			$id = $params->get('catid');
+			$id = $params->get('relid');
 		}
 		if($id > 0)
 		{
-			$category = $model->getCategory($id);
+			$release = $model->getRelease($id);
 		}
 		else
 		{
-			$category = null;
+			$release = null;
 		}
 
-		if(!is_null($category))
+		if(!is_null($release))
 		{
-			$releases = $model->getReleases($id);
+			$items = $model->getItems($id);
 		}
 		else
 		{

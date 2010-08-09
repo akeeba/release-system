@@ -10,42 +10,42 @@ defined('_JEXEC') or die('Restricted Access');
 
 require_once dirname(__FILE__).DS.'base.php';
 
-class ArsModelCategory extends ArsModelBaseFE
+class ArsModelRelease extends ArsModelBaseFE
 {
 	/**
-	 * Loads and returns a category definition
-	 * @param int $id The Category ID to load
-	 * @return TableCategories|null An instance of TableCategories, or null if the user shouldn't view the category
+	 * Loads and returns a release definition
+	 * @param int $id The Release ID to load
+	 * @return TableReleases|null An instance of TableReleases, or null if the user shouldn't view the release
 	 */
-	public function getCategory($id = 0)
+	public function getRelease($id = 0)
 	{
 		$this->item = null;
 
-		$catModel = JModel::getInstance('Categories','ArsModel');
-		$catModel->reset();
-		$catModel->setId($id);
-		$cat = $catModel->getItem();
+		$model = JModel::getInstance('Releases','ArsModel');
+		$model->reset();
+		$model->setId($id);
+		$item = $model->getItem();
 
 		// Is it published?
-		if(!$cat->published) return null;
+		if(!$item->published) return null;
 
 		// Does it pass the access level / AMBRA.subs filter?
-		$dummy = $this->filterList( array($cat) );
+		$dummy = $this->filterList( array($item) );
 		if(!count($dummy)) return null;
 
-		$this->item = $cat;
-		return $cat;
+		$this->item = $item;
+		return $item;
 	}
 
 	/**
-	 * Get a list of all releases in a given category
-	 * @param int $cat_id The category ID
+	 * Get a list of all items in a given release
+	 * @param int $rel_id The release ID
 	 * @return array
 	 */
-	public function getReleases($cat_id = 0)
+	public function getItems($rel_id = 0)
 	{
 		// Get state variables
-		$orderby = $this->getState('rel_orderby', 'order');
+		$orderby = $this->getState('items_orderby', 'order');
 
 		// Get limits
 		$start = $this->getState('start', 0);
@@ -56,22 +56,22 @@ class ArsModelCategory extends ArsModelBaseFE
 		}
 
 		// Get all published releases
-		$model = JModel::getInstance('Releases','ArsModel');
+		$model = JModel::getInstance('Items','ArsModel');
 		$model->reset();
 		$model->setState('limitstart',$start);
 		$model->setState('limit',$limit);
 		$model->setState('published',1);
-		$model->setState('category',$cat_id);
+		$model->setState('release',$rel_id);
 
 		// Apply ordering
 		switch($orderby)
 		{
 			case 'alpha':
-				$model->setState('order','version');
+				$model->setState('order','title');
 				$model->setState('dir','ASC');
 				break;
 			case 'ralpha':
-				$model->setState('order','version');
+				$model->setState('order','title');
 				$model->setState('dir','DESC');
 				break;
 			case 'created':
