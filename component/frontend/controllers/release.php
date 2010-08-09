@@ -80,6 +80,9 @@ class ArsControllerRelease extends JController
 
 		if(!is_null($release))
 		{
+			$bemodel = JModel::getInstance('Bleedingedge','ArsModel');
+			$bemodel->checkFiles($release);
+
 			$items = $model->getItems($id);
 		}
 		else

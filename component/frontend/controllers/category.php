@@ -79,6 +79,8 @@ class ArsControllerCategory extends JController
 
 		if(!is_null($category))
 		{
+			$bemodel = JModel::getInstance('Bleedingedge','ArsModel');
+			$bemodel->scanCategory($category);
 			$releases = $model->getReleases($id);
 		}
 		else

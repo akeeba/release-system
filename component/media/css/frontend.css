@@ -4,3 +4,120 @@
 	Released under the GNU General Public License, version 3 or later
 	$Id$
 */
+
+#ars-categories-all,
+#ars-categories-normal,
+#ars-categories-bleedingedge,
+.ars-list-category
+{
+	margin-bottom: 1em;
+	padding: 0;
+}
+
+#ars-categories-all h2,
+#ars-categories-normal h2,
+#ars-categories-bleedingedge h2,
+.ars-list-category h2
+{
+	font-weight: bold;
+	font-size: x-large;
+	color: #3baae3;
+	margin: 0;
+	padding: 0.4em 0;
+	border-bottom: 2px solid navy;
+}
+
+div.ars-browse-category,
+div.ars-category-description{
+	margin: 0.5em 0 0;
+	padding: 0.7em 0.5em;
+	border: thin solid #999;
+	-moz-border-radius-bottomright: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	background-color: #eef0ff;
+}
+
+#ars-categories-bleedingedge div.ars-browse-category {
+	background-color: #fff9d9;
+}
+
+div.ars-browse-category h3 a {
+	font-size: large;
+	color: #000033;
+}
+
+.ars-releases
+{
+	margin: 1em 0 0;
+	padding: 0;
+}
+
+.ars-browse-releases, .ars-list-release
+{
+	margin: 0.5em 0.2em;
+	padding: 0.2em;
+	border: thin solid #666;
+	background-color: #fefefe;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.ars-release-title
+{
+	font-size: medium;
+	font-weight: bold;
+	width: auto;
+	margin: 0;
+	padding: 0.6em;
+	background-color: #e0e0e0;
+	color: #333;
+}
+
+h3.ars-release-title a
+{
+	color: #333;
+}
+
+.ars-release-properties {
+	background-color: #f0f0f0;
+	font-size: x-small;
+	margin: 0 0 0.3em;
+}
+
+.ars-release-property {
+	display: block;
+}
+
+.ars-label {
+	display: inline-block;
+	width: 100px;
+	font-weight: bold;
+}
+
+#ars-pagination {
+	margin: 1.2em 0;
+	padding: 0.4em;
+	text-align: center;
+	border-top: 2px solid #ccc;
+	border-bottom: 2px solid #ccc;
+	background-color: #f3f3ff;
+}
+
+.ars-browse-items {
+	margin: 0.5em 1em;
+	padding: 0.6em;
+	border: thin solid #66f;
+	background-color: #e0e0ff;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.ars-items-title {
+	margin: 0.2em 0;
+	padding: 0;
+	font-weight: bold;
+	font-size: large;
+	color: #cc8833;
+}
+
+h3.ars-items-title a { color: #aa7733; text-shadow: 2px 2px 3px #ff9; }

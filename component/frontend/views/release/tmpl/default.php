@@ -22,6 +22,8 @@ $tabs = array();
 
 <div class="ars-list-release">
 	<h2 class="ars-release-title">
+		<img src="<?php echo JURI::base(); ?>/media/com_ars/icons/status_<?php echo $this->item->maturity ?>.png" width="16" height="16" align="left" />
+		&nbsp;
 		<?php echo $this->escape($this->category->title) ?>
 		<?php echo $this->item->version ?>
 	</h2>

@@ -53,8 +53,11 @@ class ArsControllerDownload extends JController
 		$app = JFactory::getApplication();
 		$params =& $app->getPageParameters('com_ars');
 
-		// Push the page params to the model
+		// Get the model
 		$model = $this->getThisModel();
+
+		// Get the log table
+		$log = JTable::getInstance('Logs','Table');
 
 		// Get the item lists
 		if($id > 0)
@@ -68,8 +71,12 @@ class ArsControllerDownload extends JController
 
 		if(is_null($item))
 		{
+			$log->save(array('authorized' => 0));
 			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
 		}
+
+		$item->hit();
+		$log->save(array('authorized' => 1));
 
 		$model->doDownload();
 		die();

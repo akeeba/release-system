@@ -18,7 +18,7 @@ $release_url = JRoute::_('index.php?option=com_ars&view=release&id='.$item->id.'
 ?>
 <div class="ars-browse-releases">
 	<h3 class="ars-release-title">
-		<img src="../media/com_ars/icons/status_<?php echo $item->maturity ?>.png" width="16" height="16" align="left" />
+		<img src="<?php echo JURI::base(); ?>/media/com_ars/icons/status_<?php echo $item->maturity ?>.png" width="16" height="16" align="left" />
 		&nbsp;
 		<a href="<?php echo $release_url ?>">
 			<span class="ars-release-title-version"><?php echo $this->escape($item->version) ?></span>

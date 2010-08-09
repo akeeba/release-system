@@ -18,4 +18,10 @@ defined('_JEXEC') or die('Restricted Access');
 	<div class="ars-category-description">
 		<?php echo ArsHelperHtml::preProcessMessage($item->description) ?>
 	</div>
+	<div>
+		<a class="readon" href="<?php echo JRoute::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid) ?>">
+			<?php echo JText::_('LBL_CATEGORY_VIEW') ?>
+		</a>
+	</div>
+	<div class="clr"></div>
 </div>

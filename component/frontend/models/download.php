@@ -93,6 +93,7 @@ class ArsModelDownload extends ArsModelBaseFE
 			header('Expires: Mon, 20 Dec 1998 01:00:00 GMT');
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Pragma: no-cache');
+
 			if($filesize > 0)
 			{
 				// If the filesize is reported, use 2M chunks for echoing the data to the browser
