@@ -96,3 +96,6 @@ SELECT
 FROM
 	`#__ars_items` as `i`
 	INNER JOIN `#__ars_view_releases` AS `r` ON(`r`.`id` = `i`.`release_id`);
+
+CREATE OR REPLACE VIEW `#__ars_view_dlid` AS
+SELECT `id`, md5(concat(`id`,`username`,`password`)) AS `dlid` FROM `#__users`;

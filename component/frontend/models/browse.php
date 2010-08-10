@@ -120,4 +120,29 @@ class ArsModelBrowse extends ArsModelBaseFE
 			}
 		}
 	}
+
+	public function processLatest()
+	{
+		$this->processFeedData();
+
+		if(empty($this->itemList)) return;
+
+		foreach($this->itemList as $sectionname => $section)
+		{
+			if(!empty($section)) foreach($section as $cat)
+			{
+				if(empty($cat->release)) {
+					$cat->release = (object)array('id'=>null, 'files' => null);
+					continue;
+				}
+
+				$model = JModel::getInstance('Items','ArsModel');
+				$model->reset();
+				$model->setState('release',			$cat->release->id);
+				$model->setState('limitstart',		0);
+				$model->setState('limit',			0);
+				$cat->release->files = $model->getItemList();
+			}
+		}
+	}
 }

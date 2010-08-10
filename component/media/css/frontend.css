@@ -121,3 +121,34 @@ h3.ars-release-title a
 }
 
 h3.ars-items-title a { color: #aa7733; text-shadow: 2px 2px 3px #ff9; }
+
+.ars-releases-latest ul
+{
+	list-style: none;
+	padding: 0.2em 0.5em;
+	line-height: 140%;
+}
+
+.ars-releases-latest ul li
+{
+	clear: left;
+}
+
+.ars-releases-latest ul span {
+	display: block;
+	width: 25%;
+	float: left;
+}
+
+.ars-latest-items-title {
+	font-weight: bold;
+	width: 35%;
+}
+
+.ars-latest-items-downloaded {
+	color: gray;
+	font-style: italic;
+}
+
+li.ars-row0 { background-color: #f0f0f0; height: 1.5em; }
+li.ars-row1 { background-color: #e0e0e0; height: 1.5em; }

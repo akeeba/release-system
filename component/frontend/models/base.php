@@ -41,8 +41,25 @@ class ArsModelBaseFE extends JModel
 		// Cache user access and groups
 		if(is_null($user_access) || is_null($myGroups))
 		{
+			// Do we have a dlid in the query?
+			$dlid = JRequest::getCmd('dlid',null);
+			if(!empty($dlid)) {
+				$db = $this->getDBO();
+				$query = 'SELECT `id` FROM `#__ars_view_dlid` WHERE `dlid` = '.
+					$db->Quote($dlid);
+				$db->setQuery();
+				$user_id = $db->loadResult();
+
+				if(empty($user_id) || ((int)$user_id <= 0) ) {
+					$user = JFactory::getUser();
+				} else {
+					$user = JFactory::getUser($user_id);
+				}
+			} else {
+				$user = JFactory::getUser();
+			}
+
 			// Get user info
-			$user = JFactory::getUser();
 			$user_access = $user->aid;
 
 			// Get AMBRA groups of current user
