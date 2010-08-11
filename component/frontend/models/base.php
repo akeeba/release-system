@@ -63,7 +63,7 @@ class ArsModelBaseFE extends JModel
 			$user_access = $user->aid;
 
 			// Get AMBRA groups of current user
-			$mygroups = $groupModel->getUserGroups();
+			$mygroups = $groupModel->getUserGroups($user->id);
 		}
 
 		// Do the real filtering

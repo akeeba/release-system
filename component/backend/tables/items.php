@@ -31,6 +31,10 @@ class TableItems extends ArsTable
 	var $ordering = 0;
 	var $access = 0;
 	var $published = 0;
+	var $updatestream = 0;
+	var $md5 = '';
+	var $sha1 = '';
+	var $filesize = 0;
 
 	function __construct( &$db )
 	{
@@ -143,6 +147,106 @@ class TableItems extends ArsTable
 		if(empty($this->published) && ($this->published !== 0) )
 		{
 			$this->published = 0;
+		}
+
+		// Check for MD5 and SHA1 existence
+		if( empty($this->md5) || empty($this->sha1) || empty($this->filesize) )
+		{
+			if($this->type == 'file') {
+				$folder = null;
+				$filename = $this->filename;
+
+				$relModel = JModel::getInstance('Releases','ArsModel');
+				$relModel->reset();
+				$relModel->setId($this->release_id);
+				$release = $relModel->getItem();
+
+				if(is_object($release))
+				{
+					$catModel = JModel::getInstance('Categories','ArsModel');
+					$catModel->reset();
+					$catModel->setId($release->category_id);
+					$category = $catModel->getItem();
+
+					if(is_object($category)) {
+						$folder = $category->directory;
+					}
+				}
+
+				if(!empty($folder))
+				{
+					jimport('joomla.filesystem.folder');
+					if(!JFolder::exists($folder)) {
+						$folder = JPATH_ROOT.DS.$folder;
+						if(!JFolder::exists($folder)) $folder = null;
+					}
+				}
+
+				if(!empty($folder)) {
+					$filename = $folder.DS.$filename;
+				}
+			}
+			elseif($this->type == 'link')
+			{
+				$url = $this->url;
+				$config =& JFactory::getConfig();
+				$target = $config->getValue('config.tmp_path').DS.'temp.dat';
+
+				if(function_exists('curl_exec'))
+				{
+					// By default, try using cURL
+					$process = curl_init($url);
+					curl_setopt($process, CURLOPT_HEADER, 0);
+					// Pretend we are IE7, so that webservers play nice with us
+					curl_setopt($process, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 1.0.3705; .NET CLR 1.1.4322; Media Center PC 4.0)');
+					curl_setopt($process, CURLOPT_TIMEOUT, 5);
+					curl_setopt($process, CURLOPT_RETURNTRANSFER, 1);
+					curl_setopt($process, CURLOPT_SSL_VERIFYPEER, false);
+					// The @ sign allows the next line to fail if open_basedir is set or if safe mode is enabled
+					@curl_setopt($process, CURLOPT_FOLLOWLOCATION, 1);
+					@curl_setopt($process, CURLOPT_MAXREDIRS, 20);
+					$data = curl_exec($process);
+
+					if($data !== false)
+					{
+						jimport('joomla.filesystem.file');
+						$result = JFile::write($target, $data);
+					}
+					curl_close($process);
+				}
+				else
+				{
+					// Use Joomla!'s download helper
+					jimport('joomla.installer.helper');
+					JInstallerHelper::downloadPackage($url, $target);
+				}
+				
+				$filename = $target;
+			}
+
+			if(!empty($filename)) {
+				jimport('joomla.filesystem.file');
+				if(!JFile::exists($filename)) {
+					$filename = null;
+				}
+			}
+
+			if(!empty($filename)) {
+				if(function_exists('hash_file')) {
+					$this->md5 = hash_file('md5', $filename);
+					$this->sha1 = hash_file('sha1', $filename);
+				} else {
+					if(function_exists('md5_file')) {
+						$this->md5 = md5_file($filename);
+					}
+					if(function_exists('sha1_file')) {
+						$this->sha1 = sha1_file($filename);
+					}
+				}
+
+				$filesize = @filesize($filename);
+				if($filesize !== false) $this->filesize = $filesize;
+			}
 		}
 
 		return true;

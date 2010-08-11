@@ -245,4 +245,31 @@ class ArsHelperSelect
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
+	public static function updatetypes($selected = null, $id = 'type', $attribs = array() )
+	{
+		$types = array('components','libraries','modules','packages','plugins','files','templates');
+		$options = array();
+		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_UPDATETYPES_SELECT').' -');
+		foreach($types as $type)
+		{
+			$options[] = JHTML::_('select.option',$type,JText::_('LBL_UPDATETYPES_'.strtoupper($type)));
+		}
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function updatestreams($selected = null, $id = 'updatestream', $attribs = array())
+	{
+		$model = JModel::getInstance('Updatestreams','ArsModel');
+		$model->reset();
+		$items = $model->getItemList(true);
+
+		$options = array();
+		$options[] = JHTML::_('select.option',0,'- '.JText::_('LBL_ITEMS_UPDATESTREAM_SELECT').' -');
+		if(count($items)) foreach($items as $item)
+		{
+			$options[] = JHTML::_('select.option',$item->id,$item->name.' ('.$item->element.')');
+		}
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
 }

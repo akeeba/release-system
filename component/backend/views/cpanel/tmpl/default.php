@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted Access');
 $lang =& JFactory::getLanguage();
 $icons_root = JURI::base().'components/com_ars/assets/images/';
 
-$groups = array('basic','insight','tools');
+$groups = array('basic','insight','tools','update');
 ?>
 <div id="cpanel">
 	<div class="ak_cpanel_modules" id="ak_cpanel_modules">

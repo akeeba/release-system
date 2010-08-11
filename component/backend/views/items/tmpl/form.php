@@ -47,6 +47,18 @@ $editor =& JFactory::getEditor();
 			<input type="text" name="url" id="url" value="<?php echo $this->item->url ?>" onblur="onLinkBlur();">
 		</div>
 		<div class="editform-row">
+			<label for="filesize"><?php echo JText::_('LBL_ITEMS_FILESIZE'); ?></label>
+			<input type="text" name="filesize" id="filesize" value="<?php echo $this->item->filesize ?>" >
+		</div>
+		<div class="editform-row">
+			<label for="md5"><?php echo JText::_('LBL_ITEMS_MD5'); ?></label>
+			<input type="text" name="md5" id="md5" value="<?php echo $this->item->md5 ?>" >
+		</div>
+		<div class="editform-row">
+			<label for="sha1"><?php echo JText::_('LBL_ITEMS_SHA1'); ?></label>
+			<input type="text" name="sha1" id="sha1" value="<?php echo $this->item->sha1 ?>" >
+		</div>
+		<div class="editform-row">
 			<label for="hits"><?php echo JText::_('HITS'); ?></label>
 			<input type="text" name="hits" id="hits" value="<?php echo $this->item->hits ?>">
 		</div>
@@ -63,6 +75,10 @@ $editor =& JFactory::getEditor();
 		<div class="editform-row editform-row-noheight">
 			<label for="groups"><?php echo JText::_('LBL_CATEGORIES_GROUPS'); ?></label>
 			<?php echo ArsHelperSelect::ambragroups($this->item->groups, 'groups') ?>
+		</div>
+		<div class="editform-row">
+			<label for="updatestream"><?php echo JText::_('LBL_ITEMS_UPDATESTREAM'); ?></label>
+			<?php echo ArsHelperSelect::updatestreams($this->item->updatestream, 'updatestream') ?>
 		</div>
 		<div style="clear:left"></div>
 

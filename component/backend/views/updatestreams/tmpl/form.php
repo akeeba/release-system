@@ -1,0 +1,45 @@
+<?php
+/**
+ * @package AkeebaReleaseSystem
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @license GNU General Public License version 3, or later
+ * @version $Id$
+ */
+
+defined('_JEXEC') or die('Restricted Access');
+?>
+
+<form name="adminForm" id="adminForm" action="index.php" method="post">
+	<input type="hidden" name="option" value="<?php echo JRequest::getCmd('option') ?>" />
+	<input type="hidden" name="view" value="<?php echo JRequest::getCmd('view') ?>" />
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="id" value="<?php echo $this->item->id ?>" />
+
+	<fieldset>
+		<legend><?php echo JText::_('LBL_ARS_UPDATESTREAMS_BASIC'); ?></legend>
+
+		<div class="editform-row">
+			<label for="name"><?php echo JText::_('LBL_UPDATES_NAME'); ?></label>
+			<input type="text" name="name" id="name" value="<?php echo $this->item->name ?>">
+		</div>
+		<div class="editform-row">
+			<label for="alias"><?php echo JText::_('ALIAS'); ?></label>
+			<input type="text" name="alias" id="alias" value="<?php echo $this->item->alias ?>" >
+		</div>
+		<div class="editform-row">
+			<label for="type"><?php echo JText::_('LBL_UPDATES_TYPE'); ?></label>
+			<?php echo ArsHelperSelect::updatetypes($this->item->type, 'type') ?>
+		</div>
+		<div class="editform-row">
+			<label for="element"><?php echo JText::_('LBL_UPDATES_ELEMENT'); ?></label>
+			<input type="text" name="element" id="element" value="<?php echo $this->item->element ?>" >
+		</div>
+		<div class="editform-row">
+			<label for="published"><?php echo JText::_('PUBLISHED'); ?></label>
+			<div>
+				<?php echo JHTML::_('select.booleanlist', 'published', null, $this->item->published); ?>
+			</div>
+		</div>
+		<div style="clear:left"></div>
+	</fieldset>
+</form>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<!-- Joomla! 1.5 compatible configuration -->
+	<params>
+		<!-- XML Update Streams (compatible with Joomla! 1.6) -->
+		<param name="updates_name" type="text" default="Downloads"
+			label="ARS_CONFIG_UPDATES_NAME_LABEL"
+			description="ARS_CONFIG_UPDATES_NAME_DESC"
+		/>
+		<param name="updates_desc" type="text" default="My Downloads"
+			label="ARS_CONFIG_UPDATES_DESC_LABEL"
+			description="ARS_CONFIG_UPDATES_DESC_DESC"
+		/>
+	</params>
+</config>

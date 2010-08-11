@@ -26,6 +26,34 @@ $download_url = JRoute::_('index.php?option=com_ars&view=download&format=raw&id=
 				<?php echo JText::sprintf( ($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits) ?>
 			</span>
 		</span>
+
+		<?php if(!empty($item->filesize)): ?>
+		<span class="ars-release-property">
+			<span class="ars-label"><?php echo JText::_('LBL_ITEMS_FILESIZE') ?>:</span>
+			<span class="ars-value">
+				<?php echo ArsHelperHtml::sizeFormat($item->filesize) ?>
+			</span>
+		</span>
+		<?php endif; ?>
+
+		<?php if(!empty($item->md5)): ?>
+		<span class="ars-release-property">
+			<span class="ars-label"><?php echo JText::_('LBL_ITEMS_MD5') ?>:</span>
+			<span class="ars-value">
+				<?php echo $item->md5 ?>
+			</span>
+		</span>
+		<?php endif; ?>
+
+		<?php if(!empty($item->sha1)): ?>
+		<span class="ars-release-property">
+			<span class="ars-label"><?php echo JText::_('LBL_ITEMS_SHA1') ?>:</span>
+			<span class="ars-value">
+				<?php echo $item->sha1 ?>
+			</span>
+		</span>
+		<?php endif; ?>
+
 	</div>
 
 	<div class="ars-item-description">

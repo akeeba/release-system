@@ -49,6 +49,10 @@ CREATE TABLE IF NOT EXISTS `#__ars_items` (
 	`type` ENUM('link','file'),
 	`filename` VARCHAR(255) NULL DEFAULT '',
 	`url` VARCHAR(255) NULL DEFAULT '',
+	`updatestream` BIGINT(20) UNSIGNED DEFAULT,
+	`md5` VARCHAR(32) NULL,
+	`sha1` VARCHAR(64) NULL,
+	`filesize` INTEGER UNSIGNED DEFAULT NULL,
 	`groups` varchar(255) DEFAULT NULL,
 	`hits` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
 	`created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -73,6 +77,21 @@ CREATE TABLE IF NOT EXISTS `#__ars_log` (
 	`country` VARCHAR(3) NOT NULL,
 	`authorized` TINYINT(1) NOT NULL DEFAULT '1',
 	PRIMARY KEY (`id`)
+) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__ars_updatestreams` (
+  `id` SERIAL,
+  `name` VARCHAR(255) NOT NULL,
+  `alias` VARCHAR(255) NOT NULL,
+  `type` ENUM('components','libraries','modules','packages','plugins','files','templates') NOT NULL DEFAULT 'components',
+  `element` VARCHAR(255) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT '0',
+  `checked_out` int(11) NOT NULL DEFAULT '0',
+  `checked_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `published` int(11) NOT NULL DEFAULT '1'
 ) DEFAULT CHARSET=utf8;
 
 CREATE OR REPLACE VIEW `#__ars_view_releases` AS

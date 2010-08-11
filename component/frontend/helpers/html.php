@@ -33,4 +33,17 @@ class ArsHelperHtml
 		// Return the value
 		return $message;
 	}
+
+	static public function sizeFormat($filesize)
+	{
+		if($filesize > 1073741824) {
+			return number_format($filesize / 1073741824, 2)." Gb";
+		} elseif($filesize >= 1048576) {
+			return number_format($filesize / 1048576, 2)." Mb";
+		} elseif($filesize >= 1024) {
+			return number_format($filesize / 1024, 2)." Kb";
+		} else {
+			return $filesize." bytes";
+		}
+	}
 }
