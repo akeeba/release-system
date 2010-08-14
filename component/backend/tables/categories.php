@@ -8,7 +8,10 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'base.php';
+if(!class_exists('ArsTable'))
+{
+	require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'base.php';
+}
 
 class TableCategories extends ArsTable
 {

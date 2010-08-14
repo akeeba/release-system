@@ -20,7 +20,7 @@ if( !empty($this->items) ):
 			$downloadURL = $item->url;
 			break;
 	}
-	jimport('joomla.utilties.date');
+	jimport('joomla.utilities.date');
 	$date = new JDate($item->created);
 
 ?>; Live Update provision file

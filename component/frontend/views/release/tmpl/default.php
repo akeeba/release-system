@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-jimport('joomla.utilties.date');
+jimport('joomla.utilities.date');
 
 $this->item->hit();
 

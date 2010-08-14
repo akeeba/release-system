@@ -41,7 +41,7 @@ class TableLogs extends ArsTable
 
 		if($this->accessed_on == '0000-00-00 00:00:00')
 		{
-			jimport('joomla.filesystem.date');
+			jimport('joomla.utilities.date');
 			$date = new JDate();
 			$this->accessed_on = $date->toMySQL();
 		}

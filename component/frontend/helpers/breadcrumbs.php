@@ -60,6 +60,7 @@ class ArsHelperBreadcrumbs
 			// Preferably find a menu item linking to a specific repository type
 			$Itemid = null;
 			$all_items = $menus->getItems('type', 'component', false);
+			if(empty($all_items)) return;
 			foreach($all_items as $item)
 			{
 				if( ($item->published)
@@ -67,6 +68,7 @@ class ArsHelperBreadcrumbs
 					&& ($item->query['view'] == 'category')
 				)
 				{
+					if(!is_object($item->params)) $item->params = new JParameter($item->params);
 					if( $item->params->get('catid',0) == $id ) {
 						$Itemid = $item->id;
 						$rootName = $item->name;

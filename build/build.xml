@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!--
+	Joomla! Admin Tools build file for Phing
+	written by Nicholas K. Dionysopoulos
+	
+	Run "phing" from the build directory to build the component and plugins
+-->
+<project name="AkeebaReleaseSystem" description="Akeeba Release System" default="all" >
+	<property file="./build.properties" />
+	<!-- Default properties, set only if not already assigned in the build.properties file -->
+	<property name="dirs.root" value=".." />
+	<property name="dirs.component" value="../component" />
+	<property name="dirs.languages" value="../component/translation" />
+	<property name="dirs.release" value="../release" />
+	<property name="version" value="svn" />
+
+	<taskdef name="zipme" classname="phingext.ZipmeTask" />
+	<taskdef name="svnversion" classname="phingext.SvnVersionTask" />
+
+	<!--
+	====================================================================================================
+	File sets
+	====================================================================================================
+	-->
+	
+	<fileset dir="${dirs.component}" id="admintools">
+		<include name="backend/**" />
+		<include name="frontend/**" />
+		<include name="media/**" />
+		<include name="translation/**" />
+		<include name="ars.xml" />
+		<include name="LICENSE.txt" />
+		<include name="README.php" />
+	</fileset>
+	
+	<!--
+	====================================================================================================
+	Tasks - General
+	====================================================================================================
+	-->
+	
+	<target name="all" description="Makes everything"
+		depends="new-release,setup-properties,component-package">
+	</target>
+
+	<target name="new-release" description="Empty the release directory">
+		<!-- Recreate the release directory -->
+		<delete quiet="yes" includeemptydirs="true">
+			<fileset dir="${dirs.release}">
+				<include name="**" />
+				<exclude name=".svn/**" />
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="setup-properties" description="Set up version and build properties">
+		<!-- Initialize the build.date timestamp -->
+		<tstamp>
+			<format property="build.date" pattern="%Y-%m-%d" />
+		</tstamp>
+
+		<!-- Initialize the version if it's not set -->
+		<if>
+			<equals arg1="${version}" arg2="svn" />
+			<then>
+				<svnversion workingcopy="${dirs.root}" propertyname="svn.lastrevision" />
+				<property name="version" value="svn${svn.lastrevision}" override="true" />
+			</then>
+		</if>
+	</target>
+
+	<!--
+	====================================================================================================
+	Tasks - Joomla! packages
+	====================================================================================================
+	-->
+	
+	<target name="component-package" description="Component package build"
+		depends="new-release,setup-properties">
+		<!-- Create the package -->
+		<copy file="./templates/ars.xml" tofile="${dirs.component}/ars.xml" overwrite="true">
+			<filterchain id="standard-tokens">
+				<replacetokens begintoken="##" endtoken="##">
+					<token key="DATE" value="${build.date}" />
+					<token key="VERSION" value="${version}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+		
+		<copy file="./templates/version.php" tofile="${dirs.component}/backend/version.php" overwrite="true">
+			<filterchain refid="standard-tokens" />
+		</copy>
+
+		<zipme basedir="${dirs.component}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
+			<fileset refid="ars" />
+		</zipme>
+	</target>	
+</project>
