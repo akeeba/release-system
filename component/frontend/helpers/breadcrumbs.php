@@ -68,8 +68,8 @@ class ArsHelperBreadcrumbs
 					&& ($item->query['view'] == 'category')
 				)
 				{
-					if(!is_object($item->params)) $item->params = new JParameter($item->params);
-					if( $item->params->get('catid',0) == $id ) {
+					$params = is_object($item->params) ? $item->params : new JParameter($item->params);
+					if( $params->get('catid',0) == $id ) {
 						$Itemid = $item->id;
 						$rootName = $item->name;
 						$rootURI = JRoute::_($item->link.'&Itemid='.$Itemid);
@@ -110,7 +110,8 @@ class ArsHelperBreadcrumbs
 					&& ($item->query['view'] == 'release')
 				)
 				{
-					if( $item->params->get('relid',0) == $id ) {
+					$params = is_object($item->params) ? $item->params : new JParameter($item->params);
+					if( $params->get('relid',0) == $id ) {
 						$Itemid = $item->id;
 						$rootName = $item->name;
 						$rootURI = JRoute::_($item->link.'&Itemid='.$Itemid);
