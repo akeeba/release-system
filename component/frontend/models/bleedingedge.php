@@ -125,7 +125,6 @@ class ArsModelBleedingedge extends JModel
 				// Create a new entry
 				$notes = '';
 				
-				$changelog = JFile::read($this->folder.DS.$folder.DS.'CHANGELOG');
 				if(JFile::exists($changelog))
 				{
 					$this_changelog = JFile::read($this->folder.DS.$folder.DS.'CHANGELOG');

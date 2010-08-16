@@ -27,6 +27,7 @@ class ArsModelItems extends ArsModelBase
 		$fltCategory	= $this->getState('category', null, 'int');
 		$fltRelease		= $this->getState('release', null, 'int');
 		$fltPublished	= $this->getState('published', null, 'cmd');
+		$fltFilename	= $this->getState('filename', null, 'string');
 
 		$db = $this->getDBO();
 		if($fltCategory) {
@@ -37,6 +38,9 @@ class ArsModelItems extends ArsModelBase
 		}
 		if($fltPublished != '') {
 			$where[] = '`published` = '.$db->Quote((int)$fltPublished);
+		}
+		if(!empty($fltFilename)) {
+			$where[] = '`filename` = '.$db->Quote($fltFilename);
 		}
 
 		$query = 'SELECT * FROM `#__ars_view_items`';
