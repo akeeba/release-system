@@ -54,9 +54,13 @@ class TableReleases extends ArsTable
 			$sql .= ' AND NOT(`id`='.(int)$this->id.')';
 		}
 		$db->setQuery($sql);
-		$info = $db->loadRowList('version');
-		$versions = array_keys($info);
-		$aliases = array_values($info);
+		$info = $db->loadAssocList();
+		$versions = array(); $aliases = array();
+		foreach($info as $infoitem)
+		{
+			$versions[] = $infoitem['version'];
+			$aliases[] = $infoitem['alias'];
+		}
 
 		if(!$this->version) {
 			$this->setError(JText::_('ERR_RELEASE_NEEDS_VERSION'));

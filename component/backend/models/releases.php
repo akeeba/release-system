@@ -25,6 +25,7 @@ class ArsModelReleases extends ArsModelBase
 		$where = array();
 
 		$fltCategory	= $this->getState('category', null, 'int');
+		$fltVersion		= $this->getState('version', null, 'string');
 		$fltPublished	= $this->getState('published', null, 'cmd');
 
 		$db = $this->getDBO();
@@ -33,6 +34,9 @@ class ArsModelReleases extends ArsModelBase
 		}
 		if($fltPublished != '') {
 			$where[] = '`published` = '.$db->Quote((int)$fltPublished);
+		}
+		if($fltVersion) {
+			$where[] = '`version` ='.$db->getEscaped($fltVersion);
 		}
 
 		$query = 'SELECT * FROM `#__ars_view_releases`';

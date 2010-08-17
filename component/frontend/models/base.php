@@ -43,7 +43,11 @@ class ArsModelBaseFE extends JModel
 		{
 			// Do we have a dlid in the query?
 			$dlid = JRequest::getCmd('dlid',null);
+			$credentials = array();
+			$credentials['username'] = JRequest::getVar('username', '', 'get', 'username');
+			$credentials['password'] = JRequest::getString('password', '', 'get', JREQUEST_ALLOWRAW);
 			if(!empty($dlid)) {
+				// AUTHENTICATE AGAINST DLID
 				$db = $this->getDBO();
 				$query = 'SELECT `id` FROM `#__ars_view_dlid` WHERE `dlid` = '.
 					$db->Quote($dlid);
@@ -55,7 +59,20 @@ class ArsModelBaseFE extends JModel
 				} else {
 					$user = JFactory::getUser($user_id);
 				}
+			} elseif( !empty($credentials['username']) && !empty($credentials['password']) ) {
+				// AUTHENTICATE AGAINST USERNAME/PASSWORD PAIR IN QUERY
+				jimport( 'joomla.user.authentication');
+				$authenticate = & JAuthentication::getInstance();
+				$response	  = $authenticate->authenticate($credentials, $options);
+				if ($response->status === JAUTHENTICATE_STATUS_SUCCESS) {
+					jimport('joomla.user.helper');
+					$userid = (int)JUserHelper::getUserId($credentials['username']);
+					$user = JFactory::getUser($userid);
+				} else {
+					$user = JFactory::getUser();
+				}
 			} else {
+				// USE ALREADY LOGGED IN USER (OR GUEST ACCOUNT)
 				$user = JFactory::getUser();
 			}
 

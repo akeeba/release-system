@@ -16,6 +16,7 @@
 .ak-icon-activity { background-image: url(../icons/view-activity-32.png); }
 .ak-icon-updatestreams { background-image: url(../icons/view-updatestreams-32.png); }
 .ak-icon-upload { background-image: url(../icons/view-upload-32.png); }
+.ak-icon-impjed { background-image: url(../icons/view-impjed-32.png); }
 
 /*
  * Akeeba Buttons
@@ -316,6 +317,22 @@ span.foldername { font-weight: bold; }
 .folderrow0:hover, .folderrow1:hover { background-color: #ccccff }
 
 #newfolderbtn { padding: 2px; }
+
+/*
+ * Import from FRS
+ */
+#setup-ars { margin-bottom: 1em; }
+
+#setup-header, #setup-ars div.ui-widget-header { padding: 4px; font-size: large; }
+#setup-mainbody, #setup-ars-mainbody { padding: 8px; }
+#setup-mainbody label { display:inline-block; width: 20%; min-width: 250px; font-weight: bold; }
+#setup-mainbody>div { margin: 0.5em 0; }
+#setup-mainbody span.ui-state-default { display: inline-block; padding: 3px 5px; cursor: pointer; width: 120px; text-align: center; }
+#setup-mainbody input,
+#setup-mainbody select { width: 15%; min-width: 150px}
+#setup-mainbody #jcfiles { display:inline-block; width: 40%; height: 200px; overflow-y: scroll; overflow-x: hidden; background: #fefefe; border: thin solid #f0f0f0; }
+.filetoimport { padding: 2px; border-bottom: thin solid gray; cursor: pointer; background: #DFDFDF }
+.filedone { padding: 2px; border-bottom: thin solid gray; cursor: default; background: #CDEB8B }
 
 /* 
    Plupload

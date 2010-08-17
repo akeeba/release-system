@@ -46,7 +46,7 @@ class TableItems extends ArsTable
 
 	function check()
 	{
-		// If the category is missing, throw an error
+		// If the release is missing, throw an error
 		if(!$this->release_id) {
 			$this->setError(JText::_('ERR_ITEM_NEEDS_CATEGORY'));
 			return false;
@@ -59,9 +59,15 @@ class TableItems extends ArsTable
 			$sql .= ' AND NOT(`id`='.(int)$this->id.')';
 		}
 		$db->setQuery($sql);
-		$info = $db->loadRowList('version');
-		$titles = array_keys($info);
-		$aliases = array_values($info);
+		$info = $db->loadAssocList('title');
+
+		$info = $db->loadAssocList();
+		$titles = array(); $aliases = array();
+		foreach($info as $infoitem)
+		{
+			$titles[] = $infoitem['title'];
+			$aliases[] = $infoitem['alias'];
+		}
 
 		if(!$this->title) {
 			$this->setError(JText::_('ERR_ITEM_NEEDS_TITLE'));
@@ -102,7 +108,7 @@ class TableItems extends ArsTable
 		}
 
 		// Check for filename or url
-		if( ($this->type == 'link') && !($this->filename) ) {
+		if( ($this->type == 'file') && !($this->filename) ) {
 			$this->setError(JText::_('ERR_ITEM_NEEDS_FILENAME'));
 			return false;
 		} elseif( ($this->type == 'link') && !($this->url) ) {
