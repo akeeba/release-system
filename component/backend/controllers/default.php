@@ -356,7 +356,7 @@ class ArsControllerDefault extends JController
 
 	/**
 	 * Returns the default model associated with the current view
-	 * @return JModel The global instance of the model (singleton)
+	 * @return ArsModelBase The global instance of the model (singleton)
 	 */
 	public final function getThisModel()
 	{

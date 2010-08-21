@@ -31,6 +31,7 @@ class ArsViewAutodesc extends ArsViewBase
 		JToolBarHelper::publishList();
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::divider();
+		JToolBarHelper::custom('copy', 'copy.png', 'copy_f2.png', 'Copy', false);
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();
