@@ -31,6 +31,14 @@ defined('_JEXEC') or die('Restricted Access');
 			<?php echo ArsHelperSelect::updatetypes($this->item->type, 'type') ?>
 		</div>
 		<div class="editform-row">
+			<label for="category"><?php echo JText::_('LBL_RELEASES_CATEGORY'); ?></label>
+			<?php echo ArsHelperSelect::categories($this->item->category, 'category') ?>
+		</div>
+		<div class="editform-row">
+			<label for="packname"><?php echo JText::_('LBL_UPDATES_PACKNAME'); ?></label>
+			<input type="text" name="packname" id="packname" value="<?php echo $this->item->packname ?>" >
+		</div>
+		<div class="editform-row">
 			<label for="element"><?php echo JText::_('LBL_UPDATES_ELEMENT'); ?></label>
 			<input type="text" name="element" id="element" value="<?php echo $this->item->element ?>" >
 		</div>

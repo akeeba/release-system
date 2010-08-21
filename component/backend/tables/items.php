@@ -13,6 +13,15 @@ if(!class_exists('ArsTable'))
 	require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'base.php';
 }
 
+if (!function_exists('fnmatch')) {
+	function fnmatch($pattern, $string) {
+		return @preg_match(
+			'/^' . strtr(addcslashes($pattern, '/\\.+^$(){}=!<>|'),
+			array('*' => '.*', '?' => '.?')) . '$/i', $string
+		);
+	}
+}
+
 class TableItems extends ArsTable
 {
 	var $id = 0;
@@ -158,6 +167,36 @@ class TableItems extends ArsTable
 			$this->published = 0;
 		}
 
+		// Apply an update stream, if possible
+		if(empty($this->updatestream))
+		{
+			$db = $this->getDBO();
+			$sql = 'SELECT * FROM `#__ars_updatestreams` WHERE `category` IN (SELECT `category_id` FROM `#__ars_releases` WHERE `id` = '.$db->Quote($this->release_id).')';
+			$db->setQuery($sql);
+			$streams = $db->loadObjectList();
+			if(!empty($streams))
+			{
+				$fname = basename( (($this->type == 'file') ? $this->filename : $this->url) );
+				foreach($streams as $stream)
+				{
+					$pattern = $stream->packname;
+					$element = $stream->element;
+					if(empty($pattern) && !empty($element))
+					{
+						$pattern = $element.'*';
+					}
+
+					if(empty($pattern)) continue;
+
+					if(fnmatch($pattern, $fname))
+					{
+						$this->updatestream = $stream->id;
+						break;
+					}
+				}
+			}
+		}
+
 		// Check for MD5 and SHA1 existence
 		if( empty($this->md5) || empty($this->sha1) || empty($this->filesize) )
 		{
@@ -230,7 +269,7 @@ class TableItems extends ArsTable
 					jimport('joomla.installer.helper');
 					JInstallerHelper::downloadPackage($url, $target);
 				}
-				
+
 				$filename = $target;
 			}
 

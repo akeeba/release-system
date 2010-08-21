@@ -16,7 +16,9 @@ class TableUpdatestreams extends ArsTable
 	var $name = '';
 	var $alias = '';
 	var $type = 'components';
+	var $category = 0;
 	var $element = '';
+	var $packname = '';
 	var $created = '0000-00-00 00:00:00';
 	var $created_by = 0;
 	var $modified = '0000-00-00 00:00:00';
