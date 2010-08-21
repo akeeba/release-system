@@ -20,15 +20,7 @@ class ArsHelperHtml
 		$message = str_replace('[SITE]', $site_url, $message);
 
 		// Run content plug-ins
-		$app = JFactory::getApplication();
-		$params =& $app->getParams('com_content');
-		$article = new JObject();
-		$article->text = $message;
-		$limitstart = 0;
-		JPluginHelper::importPlugin('content');
-		$dispatcher	=& JDispatcher::getInstance();
-		$results = $dispatcher->trigger('onPrepareContent', array (& $article, & $params, $limitstart));
-		$message = $article->text;
+		$message = JHTML::_('content.prepare', $message);
 
 		// Return the value
 		return $message;

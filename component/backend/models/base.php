@@ -208,6 +208,15 @@ abstract class ArsModelBase extends JModel
 		$this->otable = null;
 
 		$table = $this->getTable($this->table);
+
+		$key = $table->getKeyName();
+		if(array_key_exists($key, (array)$data))
+		{
+			$aData = (array)$data;
+			$oid = $aData[$key];
+			$table->load($oid);
+		}
+
 		if(!$table->save($data))
 		{
 			$this->setError($table->getError());

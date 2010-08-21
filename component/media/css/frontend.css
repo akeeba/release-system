@@ -27,8 +27,13 @@
 	border-bottom: 2px solid navy;
 }
 
-div.ars-browse-category,
-div.ars-category-description{
+.ars-category-title a {
+	font-weight: bold !important;
+	color: #449 !important;
+	text-shadow: 2px 2px 3px #bbc;
+}
+
+div.ars-browse-category {
 	margin: 0.5em 0 0;
 	padding: 0.7em 0.5em;
 	border: thin solid #999;
@@ -36,6 +41,16 @@ div.ars-category-description{
 	-webkit-border-bottom-right-radius: 10px;
 	background-color: #eef0ff;
 }
+
+div.ars-category-description {
+	border: thin solid #999;
+	margin: 0.5em 0 0;
+	padding: 3pt 6pt;
+	background-color: #f9f9ff !important;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
 
 #ars-categories-bleedingedge div.ars-browse-category {
 	background-color: #fff9d9;
@@ -118,6 +133,17 @@ h3.ars-release-title a
 	font-weight: bold;
 	font-size: large;
 	color: #cc8833;
+}
+
+.ars-item-properties {
+	margin-bottom: 6pt;
+}
+
+.ars-item-description {
+	padding: 3pt 6pt;
+	background-color: #eef0ff;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
 }
 
 h3.ars-items-title a { color: #aa7733; text-shadow: 2px 2px 3px #ff9; }

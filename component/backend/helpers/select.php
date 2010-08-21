@@ -228,9 +228,12 @@ class ArsHelperSelect
 		$useFiles = array();
 		if(!empty($directory))
 		{
-			$allFiles = JFolder::files($directory, '.', 2);
+			$allFiles = JFolder::files($directory, '.', 3, true);
+			$root = str_replace('\\', '/', $directory);
 			if(!empty($allFiles)) foreach($allFiles as $aFile)
 			{
+				$aFile = str_replace('\\', '/', $aFile);
+				$aFile = ltrim(substr($aFile, strlen($root)), '/');
 				if(in_array($aFile, $files)) continue;
 				$useFiles[] = $aFile;
 			}

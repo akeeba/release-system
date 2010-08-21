@@ -8,6 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
+JHTML::_('behavior.calendar');
 $editor =& JFactory::getEditor();
 ?>
 
@@ -16,6 +17,7 @@ $editor =& JFactory::getEditor();
 	<input type="hidden" name="view" value="<?php echo JRequest::getCmd('view') ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="id" value="<?php echo $this->item->id ?>" />
+	<input type="hidden" name="created_by" value="<?php echo $this->item->created_by ?>" />
 
 	<fieldset>
 		<legend><?php echo JText::_('LBL_ARS_RELEASE_BASIC'); ?></legend>
@@ -53,6 +55,13 @@ $editor =& JFactory::getEditor();
 		<div class="editform-row editform-row-noheight">
 			<label for="groups"><?php echo JText::_('LBL_CATEGORIES_GROUPS'); ?></label>
 			<?php echo ArsHelperSelect::ambragroups($this->item->groups, 'groups') ?>
+		</div>
+		<div style="clear:left"></div>
+		<div class="editform-row">
+			<label for="created"><?php echo JText::_('Released on'); ?></label>
+			<div>
+				<?php echo JHTML::_('calendar', $this->item->created, 'created', 'created'); ?>
+			</div>
 		</div>
 		<div style="clear:left"></div>
 

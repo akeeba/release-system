@@ -23,7 +23,7 @@
 	====================================================================================================
 	-->
 	
-	<fileset dir="${dirs.component}" id="admintools">
+	<fileset dir="${dirs.component}" id="ars">
 		<include name="backend/**" />
 		<include name="frontend/**" />
 		<include name="media/**" />
@@ -87,10 +87,6 @@
 			</filterchain>
 		</copy>
 		
-		<copy file="./templates/version.php" tofile="${dirs.component}/backend/version.php" overwrite="true">
-			<filterchain refid="standard-tokens" />
-		</copy>
-
 		<zipme basedir="${dirs.component}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
 			<fileset refid="ars" />
 		</zipme>

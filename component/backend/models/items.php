@@ -56,6 +56,7 @@ class ArsModelItems extends ArsModelBase
 
 		if(!$overrideLimits) {
 			$order = $this->getState('order',null,'cmd');
+			if($order === 'Array') $order = null;
 			$dir = $this->getState('dir',null,'cmd');
 
 			$app = JFactory::getApplication();

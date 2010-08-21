@@ -17,26 +17,31 @@ class ArsControllerItems extends ArsControllerDefault
 	{
 		$model = $this->getThisModel();
 		$model->setIDsFromRequest();
-		$id = $model->getId();
+		$ids = $model->getIds();
 
-		$item = $model->getItem();
-		$key = $item->getKeyName();
-		if($item->$key == $id)
+		if(!empty($ids)) foreach($ids as $id)
 		{
-			$item->id = 0;
-			$item->title = 'Copy of '.$item->title;
-			$item->alias = 'copy-of-'.$item->alias;
-			$item->ordering = 0;
-			$item->created_by = 0;
-			$item->created = '0000-00-00 00:00:00';
-			$item->modified = '0000-00-00 00:00:00';
-			$item->modified_by = 0;
-			$item->checked_out_time = '0000-00-00 00:00:00';
-			$item->checked_out = 0;
-			$item->published = 0;
-			$item->hits = 0;
+			$model->setId($id);
+			$item = $model->getItem();
+			$key = $item->getKeyName();
+			if($item->$key == $id)
+			{
+				$item->id = 0;
+				$item->title = 'Copy of '.$item->title;
+				$item->alias = 'copy-of-'.$item->alias;
+				$item->ordering = 0;
+				$item->created_by = 0;
+				$item->created = '0000-00-00 00:00:00';
+				$item->modified = '0000-00-00 00:00:00';
+				$item->modified_by = 0;
+				$item->checked_out_time = '0000-00-00 00:00:00';
+				$item->checked_out = 0;
+				$item->published = 0;
+				$item->hits = 0;
+			}
+			$status = $model->save($item);
+			if(!$status) break;
 		}
-		$status = $model->save($item);
 
 		// redirect
 		$option = JRequest::getCmd('option');

@@ -162,6 +162,7 @@ class TableItems extends ArsTable
 		if( empty($this->md5) || empty($this->sha1) || empty($this->filesize) )
 		{
 			if($this->type == 'file') {
+				$target = null;
 				$folder = null;
 				$filename = $this->filename;
 
@@ -255,6 +256,11 @@ class TableItems extends ArsTable
 
 				$filesize = @filesize($filename);
 				if($filesize !== false) $this->filesize = $filesize;
+			}
+
+			if(!empty($target))
+			{
+				JFile::delete($target);
 			}
 		}
 
