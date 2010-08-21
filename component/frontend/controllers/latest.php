@@ -60,7 +60,7 @@ class ArsControllerLatest extends JController
 		$model = $this->getThisModel();
 		$model->setState( 'task',		$this->getTask() );
 		$model->setState( 'grouping',	$params->get('grouping',	'normal') );
-		$model->setState( 'orderby',	$params->get('orderby',		'order') );
+		$model->setState( 'orderby',	'order' );
 
 		// Push URL parameters to the model
 		$model->setState( 'start',		JRequest::getInt('start', 0) );

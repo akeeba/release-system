@@ -22,15 +22,6 @@ class ArsModelBrowse extends ArsModelBaseFE
 		$grouping = $this->getState('grouping','normal');
 		$orderby = $this->getState('orderby', 'order');
 
-		// Get limits
-		/*
-		$start = $this->getState('start', 0);
-		$app = JFactory::getApplication();
-		$limit = $this->getState('limit',-1);
-		if($limit == -1) {
-			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
-		}
-		*/
 		$start = 0;
 		$limit = 0;
 
@@ -110,6 +101,9 @@ class ArsModelBrowse extends ArsModelBaseFE
 				$model->setState('category',		$cat->id);
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			1);
+				$model->setState('order','ordering');
+				$model->setState('dir','ASC');
+
 				$releases = $model->getItemList();
 
 				if(empty($releases)) {

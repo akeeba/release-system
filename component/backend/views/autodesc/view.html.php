@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted Access');
 
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'base.view.html.php';
 
-class ArsViewReleases extends ArsViewBase
+class ArsViewAutodesc extends ArsViewBase
 {
 	protected function onDisplay()
 	{
@@ -20,6 +20,10 @@ class ArsViewReleases extends ArsViewBase
 		// ...filter states
 		$this->lists->set('fltCategory',$app->getUserStateFromRequest($hash.'filter_category',
 			'category', null));
+		$this->lists->set('fltTitle',	$app->getUserStateFromRequest($hash.'filter_title',
+			'title', null));
+		$this->lists->set('fltDescription',	$app->getUserStateFromRequest($hash.'filter_description',
+			'description', null));
 		$this->lists->set('fltPublished',$app->getUserStateFromRequest($hash.'filter_published',
 			'published', null));
 
@@ -27,7 +31,6 @@ class ArsViewReleases extends ArsViewBase
 		JToolBarHelper::publishList();
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::divider();
-		JToolBarHelper::custom('copy', 'copy.png', 'copy_f2.png', 'Copy', false);
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();
@@ -44,9 +47,6 @@ class ArsViewReleases extends ArsViewBase
 		// -- Items
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=items';
 		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link);
-		// -- Import
-		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=impjed';
-		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_IMPORT_JED'), $link);
 
 		// Load the select box helper
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';

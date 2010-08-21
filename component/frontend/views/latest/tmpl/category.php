@@ -8,6 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
+jimport('joomla.utilities.date');
 $released = new JDate($cat->release->created);
 ?>
 <div class="ars-list-release">

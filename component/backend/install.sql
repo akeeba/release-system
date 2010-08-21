@@ -96,6 +96,16 @@ CREATE TABLE IF NOT EXISTS `#__ars_updatestreams` (
   `published` int(11) NOT NULL DEFAULT '1'
 ) DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc` (
+  `id` SERIAL,
+  `category` bigint(20) unsigned NOT NULL,
+  `packname` varchar(255) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` MEDIUMTEXT NOT NULL,
+  `published` int(11) NOT NULL DEFAULT '1',
+  UNIQUE KEY `id` (`id`)
+) DEFAULT CHARSET=utf8;
+
 CREATE OR REPLACE VIEW `#__ars_view_releases` AS
 SELECT
     `r`.*, `c`.`title` as `cat_title`, `c`.`alias` as `cat_alias`,
@@ -120,3 +130,10 @@ FROM
 
 CREATE OR REPLACE VIEW `#__ars_view_dlid` AS
 SELECT `id`, md5(concat(`id`,`username`,`password`)) AS `dlid` FROM `#__users`;
+
+CREATE OR REPLACE VIEW `#__ars_view_autodesc` AS
+SELECT
+  `a`.*, `c`.`title` AS `cat_name`
+FROM
+  `#__ars_autoitemdesc` AS `a`
+  LEFT OUTER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `a`.`category`);

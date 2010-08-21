@@ -61,6 +61,18 @@ defined('_JEXEC') or die('Restricted Access');
 			}
 		});
 
+		$('#jcproject').blur(function(e){
+			$('#getPackages').trigger('click');
+		});
+
+		$('#jcpackage').change(function(e){
+			$('#getReleases').trigger('click');
+		});
+
+		$('#jcrelease').change(function(e){
+			$('#getFiles').trigger('click');
+		});
+
 		$('#getPackages').click(function(e){
 			// Hide details
 			$('#setup-package').hide();

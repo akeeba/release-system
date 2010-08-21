@@ -78,14 +78,64 @@ class TableItems extends ArsTable
 			$aliases[] = $infoitem['alias'];
 		}
 
+		// Let's get automatic item title/description records
+		$sql = 'SELECT * FROM `#__ars_autoitemdesc` WHERE `category` IN (SELECT `category_id` FROM `#__ars_releases` WHERE `id` = '.$db->Quote($this->release_id).') AND NOT `published` = 0';
+		$db->setQuery($sql);
+		$autoitems = $db->loadObjectList();
+		$auto = (object)array('title'=>'','description'=>'');
+		if(!empty($autoitems))
+		{
+			$fname = basename( (($this->type == 'file') ? $this->filename : $this->url) );
+			foreach($autoitems as $autoitem)
+			{
+				$pattern = $autoitem->packname;
+				if(empty($pattern)) continue;
+
+				if(fnmatch($pattern, $fname))
+				{
+					$auto = $autoitem;
+					break;
+				}
+			}
+		}
+
+		// Check if a title exists
 		if(!$this->title) {
-			$this->setError(JText::_('ERR_ITEM_NEEDS_TITLE'));
-			return false;
+			// No, try the automatic rule-based title
+			$this->title = $auto->title;
+			if(!$this->title)
+			{
+				// No, try to get the filename
+				switch($this->type)
+				{
+					case 'file':
+						if($this->filename) $this->title = basename($this->filename);
+						break;
+
+					case 'link':
+						if($this->url) $this->title = basename($this->url);
+						break;
+				}
+
+				if(!$this->title)
+				{
+					// Aw, no title could be set. Sorry, I've got to throw an error.
+					$this->setError(JText::_('ERR_ITEM_NEEDS_TITLE'));
+					return false;
+				}
+			}
 		}
 
 		if(in_array($this->title, $titles)) {
 			$this->setError(JText::_('ERR_ITEM_NEEDS_TITLE_UNIQUE'));
 			return false;
+		}
+
+		$stripDesc = strip_tags($this->description);
+		$stripDesc = trim($stripDesc);
+		if(empty($this->description) || empty($stripDesc))
+		{
+			$this->description = $auto->description;
 		}
 
 		// If the alias is missing, auto-create a new one

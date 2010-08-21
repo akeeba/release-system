@@ -151,7 +151,6 @@ class ArsModelImpjed extends JModel
 			$model->setId(0);
 			$data = array(
 				'release_id'	=> $releaseId,
-				'title'			=> basename($remoteName),
 				'type'			=> 'link',
 				'url'			=> $remoteName
 			);
