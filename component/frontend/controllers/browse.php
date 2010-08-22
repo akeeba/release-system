@@ -29,6 +29,10 @@ class ArsControllerBrowse extends JController
 		$view->setModel( $model, true );
 
 		$viewLayout	= JRequest::getCmd( 'layout', 'default' );
+		if(!in_array( $viewLayout, array('normal','bleedingedge','repository') ))
+		{
+			$viewLayout = 'repository';
+		}
 		$view->setLayout($viewLayout);
 
 		// Display the view

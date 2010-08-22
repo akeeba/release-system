@@ -36,8 +36,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_releases` (
     `checked_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
     `ordering` bigint(20) unsigned NOT NULL,
     `access` int(11) NOT NULL DEFAULT '0',
-    `published` tinyint(1) NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
+    `published` tinyint(1) NOT NULL DEFAULT '1'
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_items` (
@@ -63,8 +62,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_items` (
     `checked_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
     `ordering` bigint(20) unsigned NOT NULL,
     `access` int(11) NOT NULL DEFAULT '0',
-    `published` tinyint(1) NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
+    `published` tinyint(1) NOT NULL DEFAULT '1'
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_log` (
@@ -75,8 +73,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_log` (
     `referer` VARCHAR(255) NOT NULL,
     `ip` VARCHAR(255) NOT NULL,
     `country` VARCHAR(3) NOT NULL,
-    `authorized` TINYINT(1) NOT NULL DEFAULT '1',
-    PRIMARY KEY (`id`)
+    `authorized` TINYINT(1) NOT NULL DEFAULT '1'
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_updatestreams` (
@@ -102,8 +99,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc` (
   `packname` varchar(255) DEFAULT NULL,
   `title` varchar(255) NOT NULL,
   `description` MEDIUMTEXT NOT NULL,
-  `published` int(11) NOT NULL DEFAULT '1',
-  UNIQUE KEY `id` (`id`)
+  `published` int(11) NOT NULL DEFAULT '1'
 ) DEFAULT CHARSET=utf8;
 
 CREATE OR REPLACE VIEW `#__ars_view_releases` AS

@@ -23,7 +23,7 @@ SELECT
 	u.*, i.id as `item_id`, i.version, i.maturity
 FROM
 	#__ars_view_items AS i
-	LEFT OUTER JOIN jos_ars_updatestreams AS u ON(u.id = i.updatestream)
+	LEFT OUTER JOIN #__ars_updatestreams AS u ON(u.id = i.updatestream)
 WHERE
 	u.type = $esc_category
 	AND u.published = 1
@@ -48,7 +48,7 @@ SELECT
 	i.filename, i.url, i.type, i.created
 FROM
 	#__ars_view_items AS i
-	LEFT OUTER JOIN jos_ars_updatestreams AS u ON(u.id = i.updatestream)
+	LEFT OUTER JOIN #__ars_updatestreams AS u ON(u.id = i.updatestream)
 WHERE
 	u.id = $esc_id
 	AND u.published = 1
