@@ -13,7 +13,7 @@ if( !empty($this->items) ):
 	$item = array_shift($this->items);
 	switch($item->type) {
 		case 'file':
-			$downloadURL = rtrim(JURI::base(),'/').JRoute::_('index.php?option=com_ars&view=download&id='.$item->item_id);
+			$downloadURL = rtrim(JURI::base(),'/').'/'.  str_replace('&amp;', '&', JRoute::_('index.php?option=com_ars&view=download&id='.$item->item_id));
 			break;
 		case 'link':
 		default:

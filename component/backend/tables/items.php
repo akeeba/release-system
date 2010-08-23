@@ -140,12 +140,21 @@ class TableItems extends ArsTable
 
 		// If the alias is missing, auto-create a new one
 		if(!$this->alias) {
-			jimport('joomla.filter.input');
+			$source = $this->title;
+			switch($this->type)
+			{
+				case 'file':
+					if($this->filename) $source = basename($this->filename);
+					break;
+
+				case 'link':
+					if($this->url) $$source = basename($this->url);
+					break;
+			}
 
 			// Create a smart alias
-			$alias = strtolower($this->title);
+			$alias = strtolower($source);
 			$alias = str_replace(' ', '-', $alias);
-			$alias = str_replace('.', '-', $alias);
 			$this->alias = (string) preg_replace( '/[^A-Z0-9_-]/i', '', $alias );
 		}
 

@@ -114,6 +114,19 @@ class ArsControllerDefault extends JController
 		$this->redirect();
 	}
 
+	public function savenew()
+	{
+		$this->applySave();
+
+		// Redirect to the display task
+		$option = JRequest::getCmd('option');
+		$view = JRequest::getCmd('view');
+		$textkey = 'LBL_'.strtoupper($view).'_SAVED';
+		$url = 'index.php?option='.$option.'&view='.$view.'&task=add';
+		$this->setRedirect($url, JText::_($textkey));
+		$this->redirect();
+	}
+
 	public function cancel()
 	{
 		$model = $this->getThisModel();

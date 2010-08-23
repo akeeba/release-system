@@ -24,6 +24,9 @@ if(!class_exists('ArsModelCategories'))
 function arsBuildRoute(&$query)
 {
 	$format = isset($query['format']) ? $query['format'] : 'html';
+	$view = isset($query['view']) ? $query['view'] : 'browse';
+
+	if($view == 'download') $format = 'raw';
 
 	switch($format)
 	{
@@ -266,9 +269,9 @@ function arsBuildRouteFeed(&$query)
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
 
 	$menus = JMenu::getInstance('site');
-	
+
 	$query['format'] = 'feed';
-	
+
 	switch($view)
 	{
 		case 'browse':
@@ -535,7 +538,7 @@ function arsParseRoute(&$segments)
 		case 'feed':
 			return arsParseRouteFeed($segments);
 			break;
-		
+
 		case 'html':
 			$segments = ArsRouterHelper::preconditionSegments($segments);
 			return arsParseRouteHtml($segments);
@@ -998,7 +1001,7 @@ class ArsRouterHelper
 		{
 			$menus =& JMenu::getInstance('site');
 			$check =  $menu->params instanceof JParameter ? $menu->params : $menus->getParams($menu->id);
-			
+
 			foreach($params as $key => $value)
 			{
 				if(is_null($value)) continue;

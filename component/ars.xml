@@ -8,7 +8,7 @@
 	<authorUrl>http://www.akeebabackup.com</authorUrl>
 	<copyright>Copyright (c)2010 Nicholas K. Dionysopoulos</copyright>
 	<license>GNU/GPL v3 or later</license>
-	<version>svn20</version>
+	<version>svn21</version>
 	<description>Akeeba Release System</description>
 
 	<!-- Public front end files -->

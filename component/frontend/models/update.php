@@ -32,7 +32,6 @@ GROUP BY
 	u.id
 ORDER BY
 	u.id ASC, i.`created` DESC
-LIMIT 0,1
 ENDQUERY;
 		$db->setQuery($query);
 		$this->items = $db->loadObjectList();
@@ -45,17 +44,17 @@ ENDQUERY;
 		$query = <<<ENDQUERY
 SELECT
 	u.*, i.id as `item_id`, i.version, i.maturity, i.cat_title, i.release_id,
-	i.filename, i.url, i.type, i.created
+	i.filename, i.url, i.type, r.created
 FROM
 	#__ars_view_items AS i
-	LEFT OUTER JOIN #__ars_updatestreams AS u ON(u.id = i.updatestream)
+  INNER JOIN #__ars_releases AS r ON(r.id = i.release_id)
+	RIGHT JOIN #__ars_updatestreams AS u ON(u.id = i.updatestream)
 WHERE
 	u.id = $esc_id
 	AND u.published = 1
 	AND i.published = 1
 ORDER BY
-	i.`created` DESC
-LIMIT 0,1
+	r.`created` DESC
 ENDQUERY;
 		$db->setQuery($query);
 		$this->items = $db->loadObjectList();
