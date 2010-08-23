@@ -643,9 +643,22 @@ function arsParseRouteHtml(&$segments)
 
 				// Load the release
 				$db = JFactory::getDBO();
-				$sql = 'SELECT * FROM `#__ars_view_releases` WHERE `alias` = '.
-					$db->Quote($relalias).' AND `cat_alias` = '.
-					$db->Quote($catalias).' LIMIT 0,1';
+
+				$sql = <<<ENDSQL
+SELECT
+    `r`.*, `c`.`title` as `cat_title`, `c`.`alias` as `cat_alias`,
+    `c`.`type` as `cat_type`, `c`.`groups` as `cat_groups`,
+    `c`.`directory` as `cat_directory`, `c`.`access` as `cat_access`,
+    `c`.`published` as `cat_published`
+FROM
+    `#__ars_releases` AS `r`
+    INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
+WHERE
+
+ENDSQL;
+				$sql .= '`alias` = '.$db->Quote($relalias).
+					' AND `cat_alias` = '.$db->Quote($catalias).
+					' LIMIT 0,1';
 				$db->setQuery($sql);
 				$rel = $db->loadObject();
 
@@ -709,9 +722,21 @@ function arsParseRouteHtml(&$segments)
 		$db = JFactory::getDBO();
 		if( $relalias && $catalias )
 		{
-			$sql = 'SELECT * FROM `#__ars_view_releases` WHERE `alias` = '.
-				$db->Quote($relalias).' AND `cat_alias` = '.
-				$db->Quote($catalias).' LIMIT 0,1';
+				$sql = <<<ENDSQL
+SELECT
+    `r`.*, `c`.`title` as `cat_title`, `c`.`alias` as `cat_alias`,
+    `c`.`type` as `cat_type`, `c`.`groups` as `cat_groups`,
+    `c`.`directory` as `cat_directory`, `c`.`access` as `cat_access`,
+    `c`.`published` as `cat_published`
+FROM
+    `#__ars_releases` AS `r`
+    INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
+WHERE
+
+ENDSQL;
+			$sql .= '`alias` = '.$db->Quote($relalias).
+				' AND `cat_alias` = '.$db->Quote($catalias).
+				' LIMIT 0,1';
 			$db->setQuery($sql);
 			$rel = $db->loadObject();
 
@@ -747,9 +772,21 @@ function arsParseRouteHtml(&$segments)
 		{
 			$params = is_object($menu->params) ? $menu->params : new JParameter($menu->params);
 			$catid = $params->get('catid',0);
-			$sql = 'SELECT * FROM `#__ars_view_releases` WHERE `alias` = '.
-				$db->Quote($relalias).' AND `category_id` = '.
-				$db->Quote($catid).' LIMIT 0,1';
+				$sql = <<<ENDSQL
+SELECT
+    `r`.*, `c`.`title` as `cat_title`, `c`.`alias` as `cat_alias`,
+    `c`.`type` as `cat_type`, `c`.`groups` as `cat_groups`,
+    `c`.`directory` as `cat_directory`, `c`.`access` as `cat_access`,
+    `c`.`published` as `cat_published`
+FROM
+    `#__ars_releases` AS `r`
+    INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
+WHERE
+
+ENDSQL;
+			$sql .= '`alias` = '.$db->Quote($relalias).
+				' AND `category_id` = '.$db->Quote($catid).
+				' LIMIT 0,1';
 			$db->setQuery($sql);
 			$rel = $db->loadObject();
 
@@ -787,7 +824,23 @@ function arsParseRouteRaw(&$segments)
 
 		// Load the release
 		$db = JFactory::getDBO();
-		$sql = 'SELECT * FROM `#__ars_view_items` WHERE `alias` = '.
+		$sql = <<<ENDSQL
+SELECT
+    `i`.*,
+    `r`.`category_id`, `r`.`version`, `r`.`maturity`, `r`.`alias` as `rel_alias`,
+    `r`.`groups` as `rel_groups`, `r`.`access` as `rel_access`,
+    `r`.`published` as `rel_published`,
+    `c`.`title` as `cat_title`, `c`.`alias` as `cat_alias`,
+    `c`.`type` as `cat_type`, `c`.`groups` as `cat_groups`,
+    `c`.`directory` as `cat_directory`, `c`.`access` as `cat_access`,
+    `c`.`published` as `cat_published`
+
+FROM
+    `#__ars_items` as `i`
+    INNER JOIN `#__ars_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
+    INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
+ENDSQL;
+		$sql .= ' WHERE `alias` = '.
 			$db->Quote($itemalias).' AND `rel_alias` ='.
 			$db->Quote($relalias).' AND `cat_alias` = '.
 			$db->Quote($catalias).' LIMIT 0,1';
@@ -836,8 +889,24 @@ function arsParseRouteRaw(&$segments)
 		}
 
 		$db = JFactory::getDBO();
-		$sql = 'SELECT * FROM `#__ars_view_items` WHERE `alias` = '.
-				$db->Quote($itemalias);
+		$sql = <<<ENDSQL
+SELECT
+    `i`.*,
+    `r`.`category_id`, `r`.`version`, `r`.`maturity`, `r`.`alias` as `rel_alias`,
+    `r`.`groups` as `rel_groups`, `r`.`access` as `rel_access`,
+    `r`.`published` as `rel_published`,
+    `c`.`title` as `cat_title`, `c`.`alias` as `cat_alias`,
+    `c`.`type` as `cat_type`, `c`.`groups` as `cat_groups`,
+    `c`.`directory` as `cat_directory`, `c`.`access` as `cat_access`,
+    `c`.`published` as `cat_published`
+
+FROM
+    `#__ars_items` as `i`
+    INNER JOIN `#__ars_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
+    INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
+ENDSQL;
+
+		$sql .= ' WHERE `alias` = '.$db->Quote($itemalias);
 		if(!empty($relalias)) {
 			$sql .= ' AND `rel_alias` = '.$db->Quote($relalias);
 		}

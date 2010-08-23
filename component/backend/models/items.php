@@ -47,7 +47,18 @@ class ArsModelItems extends ArsModelBase
 			$where[] = '`url` = '.$db->Quote($fltUrl);
 		}
 
-		$query = 'SELECT * FROM `#__ars_view_items`';
+		$query = <<<ENDSQL
+SELECT
+    `i`.*,
+    `r`.`category_id`, `r`.`version`, `r`.`alias` as `rel_alias`,
+    `maturity`, `r`.`groups` as `rel_groups`, `r`.`access` as `rel_access`,
+    `r`.`published` as `rel_published`,
+    `cat_title`, `cat_alias`, `cat_type`, `cat_groups`,
+    `cat_directory`, `cat_access`, `cat_published`
+FROM
+    `#__ars_items` as `i`
+    INNER JOIN `#__ars_view_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
+ENDSQL;
 
 		if(count($where) && !$overrideLimits)
 		{

@@ -20,10 +20,14 @@ class ArsModelUpdate extends JModel
 		$esc_category = $db->Quote($category);
 		$query = <<<ENDQUERY
 SELECT
-	u.*, i.id as `item_id`, i.version, i.maturity
+    u.*, `i`.`id` as `item_id`, `r`.`version`, `r`.`maturity`
 FROM
-	#__ars_view_items AS i
-	LEFT OUTER JOIN #__ars_updatestreams AS u ON(u.id = i.updatestream)
+	(
+		`#__ars_items` as `i`
+		INNER JOIN `akb_ars_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
+		INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
+	)
+	LEFT OUTER JOIN #__ars_updatestreams AS u ON(u.id = `i`.`updatestream`)
 WHERE
 	u.type = $esc_category
 	AND u.published = 1
@@ -43,12 +47,16 @@ ENDQUERY;
 		$esc_id = $db->Quote($id);
 		$query = <<<ENDQUERY
 SELECT
-	u.*, i.id as `item_id`, i.version, i.maturity, i.cat_title, i.release_id,
-	i.filename, i.url, i.type, r.created
+    `u`.*, `i`.`id` as `item_id`, `r`.`version`, `r`.`maturity`,
+    `c`.`title` as `cat_title`, `i`.`release_id`,
+    `i`.`filename`, `i`.`url`, `i`.`type`, `r`.`created`
 FROM
-	#__ars_view_items AS i
-  INNER JOIN #__ars_releases AS r ON(r.id = i.release_id)
-	RIGHT JOIN #__ars_updatestreams AS u ON(u.id = i.updatestream)
+  (
+    `#__ars_items` as `i`
+    INNER JOIN `#__ars_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
+    INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
+  )
+  RIGHT JOIN #__ars_updatestreams AS u ON(u.id = i.updatestream)
 WHERE
 	u.id = $esc_id
 	AND u.published = 1

@@ -49,7 +49,7 @@ class ArsModelBaseFE extends JModel
 			if(!empty($dlid)) {
 				// AUTHENTICATE AGAINST DLID
 				$db = $this->getDBO();
-				$query = 'SELECT `id` FROM `#__ars_view_dlid` WHERE `dlid` = '.
+				$query = 'SELECT `id`, md5(concat(`id`,`username`,`password`)) AS `dlid` FROM `#__users` WHERE md5(concat(`id`,`username`,`password`)) = '.
 					$db->Quote($dlid);
 				$db->setQuery($query);
 				$user_id = $db->loadResult();

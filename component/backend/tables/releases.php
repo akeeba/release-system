@@ -133,10 +133,10 @@ class TableReleases extends ArsTable
 		jimport('joomla.utilities.date');
 		$user = JFactory::getUser();
 		$date = new JDate();
-		if(!$this->created_by)
+		if(!$this->created_by && empty($this->id))
 		{
 			$this->created_by = $user->id;
-			$this->created = $date->toMySQL();
+			if(empty($this->created)) $this->created = $date->toMySQL();
 		}
 		else
 		{

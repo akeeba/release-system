@@ -6,12 +6,12 @@ CREATE TABLE IF NOT EXISTS `#__ars_categories` (
     `type` enum('normal','bleedingedge') NOT NULL DEFAULT 'normal',
     `groups` varchar(255) DEFAULT NULL,
     `directory` varchar(255) NOT NULL DEFAULT 'arsrepo',
-    `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `created` datetime NOT NULL,
     `created_by` int(11) NOT NULL DEFAULT '0',
-    `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `modified_by` int(11) NOT NULL DEFAULT '0',
     `checked_out` int(11) NOT NULL DEFAULT '0',
-    `checked_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `ordering` bigint(20) NOT NULL DEFAULT '0',
     `access` int(11) NOT NULL DEFAULT '0',
     `published` int(11) NOT NULL DEFAULT '1',
@@ -28,12 +28,12 @@ CREATE TABLE IF NOT EXISTS `#__ars_releases` (
     `notes` TEXT NULL,
     `groups` varchar(255) DEFAULT NULL,
     `hits` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-    `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `created` datetime NOT NULL DEFAULT,
     `created_by` int(11) NOT NULL DEFAULT '0',
-    `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `modified_by` int(11) NOT NULL DEFAULT '0',
     `checked_out` int(11) NOT NULL DEFAULT '0',
-    `checked_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `ordering` bigint(20) unsigned NOT NULL,
     `access` int(11) NOT NULL DEFAULT '0',
     `published` tinyint(1) NOT NULL DEFAULT '1'
@@ -54,12 +54,12 @@ CREATE TABLE IF NOT EXISTS `#__ars_items` (
     `filesize` int(10) unsigned DEFAULT NULL,
     `groups` varchar(255) DEFAULT NULL,
     `hits` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-    `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `created` datetime NOT NULL,
     `created_by` int(11) NOT NULL DEFAULT '0',
-    `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `modified_by` int(11) NOT NULL DEFAULT '0',
     `checked_out` int(11) NOT NULL DEFAULT '0',
-    `checked_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `ordering` bigint(20) unsigned NOT NULL,
     `access` int(11) NOT NULL DEFAULT '0',
     `published` tinyint(1) NOT NULL DEFAULT '1'
@@ -84,12 +84,12 @@ CREATE TABLE IF NOT EXISTS `#__ars_updatestreams` (
   `element` VARCHAR(255) NOT NULL,
   `category` BIGINT(20) UNSIGNED NOT NULL,
   `packname` VARCHAR(255),
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created` datetime NOT NULL,
   `created_by` int(11) NOT NULL DEFAULT '0',
-  `modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT '0',
   `checked_out` int(11) NOT NULL DEFAULT '0',
-  `checked_out_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `published` int(11) NOT NULL DEFAULT '1'
 ) DEFAULT CHARSET=utf8;
 
@@ -101,35 +101,3 @@ CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc` (
   `description` MEDIUMTEXT NOT NULL,
   `published` int(11) NOT NULL DEFAULT '1'
 ) DEFAULT CHARSET=utf8;
-
-CREATE OR REPLACE VIEW `#__ars_view_releases` AS
-SELECT
-    `r`.*, `c`.`title` as `cat_title`, `c`.`alias` as `cat_alias`,
-    `c`.`type` as `cat_type`, `c`.`groups` as `cat_groups`,
-    `c`.`directory` as `cat_directory`, `c`.`access` as `cat_access`,
-    `c`.`published` as `cat_published`
-FROM
-    `#__ars_releases` AS `r`
-    INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`);
-
-CREATE OR REPLACE VIEW `#__ars_view_items` AS
-SELECT
-    `i`.*,
-    `r`.`category_id`, `r`.`version`, `r`.`alias` as `rel_alias`,
-    `maturity`, `r`.`groups` as `rel_groups`, `r`.`access` as `rel_access`,
-    `r`.`published` as `rel_published`,
-    `cat_title`, `cat_alias`, `cat_type`, `cat_groups`,
-    `cat_directory`, `cat_access`, `cat_published`
-FROM
-    `#__ars_items` as `i`
-    INNER JOIN `#__ars_view_releases` AS `r` ON(`r`.`id` = `i`.`release_id`);
-
-CREATE OR REPLACE VIEW `#__ars_view_dlid` AS
-SELECT `id`, md5(concat(`id`,`username`,`password`)) AS `dlid` FROM `#__users`;
-
-CREATE OR REPLACE VIEW `#__ars_view_autodesc` AS
-SELECT
-  `a`.*, `c`.`title` AS `cat_name`
-FROM
-  `#__ars_autoitemdesc` AS `a`
-  LEFT OUTER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `a`.`category`);

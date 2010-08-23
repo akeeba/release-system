@@ -43,7 +43,13 @@ class ArsModelAutodesc extends ArsModelBase
 			$where[] = '`published` = '.$db->Quote((int)$fltPublished);
 		}
 
-		$query = 'SELECT * FROM `#__ars_view_autodesc`';
+		$query = <<<ENDSQL
+SELECT
+  `a`.*, `c`.`title` AS `cat_name`
+FROM
+  `#__ars_autoitemdesc` AS `a`
+  LEFT OUTER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `a`.`category`)
+ENDSQL;
 
 		if(count($where) && !$overrideLimits)
 		{
