@@ -51,23 +51,46 @@ class ArsModelBaseFE extends JModel
 				$db = $this->getDBO();
 				$query = 'SELECT `id` FROM `#__ars_view_dlid` WHERE `dlid` = '.
 					$db->Quote($dlid);
-				$db->setQuery();
+				$db->setQuery($query);
 				$user_id = $db->loadResult();
 
 				if(empty($user_id) || ((int)$user_id <= 0) ) {
 					$user = JFactory::getUser();
 				} else {
 					$user = JFactory::getUser($user_id);
+
+					jimport( 'joomla.user.authentication');
+					$app = JFactory::getApplication();
+					$authenticate = JAuthentication::getInstance();
+					$response = new JAuthenticationResponse();
+					$response->status = JAUTHENTICATE_STATUS_SUCCESS;
+					$response->type = 'joomla';
+					$response->username = $user->username;
+					$response->email = $user->email;
+					$response->fullname = $user->fullname;
+
+					JPluginHelper::importPlugin('user');
+					$results = $app->triggerEvent('onLoginUser', array((array)$response, $options));
+					$user = JFactory::getUser();
+					$parameters['username']	= $user->get('username');
+					$parameters['id']		= $user->get('id');
+					$results = $app->triggerEvent('onLogoutUser', array($parameters, $options));
 				}
 			} elseif( !empty($credentials['username']) && !empty($credentials['password']) ) {
 				// AUTHENTICATE AGAINST USERNAME/PASSWORD PAIR IN QUERY
+
 				jimport( 'joomla.user.authentication');
-				$authenticate = & JAuthentication::getInstance();
+				$app = JFactory::getApplication();
+				$options = array('remember' => false);
+				$authenticate = JAuthentication::getInstance();
 				$response	  = $authenticate->authenticate($credentials, $options);
-				if ($response->status === JAUTHENTICATE_STATUS_SUCCESS) {
-					jimport('joomla.user.helper');
-					$userid = (int)JUserHelper::getUserId($credentials['username']);
-					$user = JFactory::getUser($userid);
+				if ($response->status == JAUTHENTICATE_STATUS_SUCCESS) {
+					JPluginHelper::importPlugin('user');
+					$results = $app->triggerEvent('onLoginUser', array((array)$response, $options));
+					$user = JFactory::getUser();
+					$parameters['username']	= $user->get('username');
+					$parameters['id']		= $user->get('id');
+					$results = $app->triggerEvent('onLogoutUser', array($parameters, $options));
 				} else {
 					$user = JFactory::getUser();
 				}
