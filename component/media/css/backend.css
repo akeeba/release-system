@@ -255,6 +255,52 @@ a.severity-high {
 	font-weight: bold;
 }
 
+table.dlstats {
+	border-collapse: collapse;
+}
+
+table.dlstats td {
+	background-color: #f0f0f0;
+	border-bottom: 1px solid #e0e0e0;
+	padding: 0.3em;
+	text-align: right;
+}
+
+table.dlstats td.dlstats-label {
+	font-weight: bold;
+	text-align: left;
+}
+
+div.dlpopular {
+	background: #f0f0ff;
+	border-top: 1px solid navy;
+	border-bottom: 1px solid navy;
+	padding: 0.3em;
+	text-align: left;
+	margin: 0.25em 0;
+}
+
+div.dlpopular span {
+	display: inline !important;
+}
+
+div.dlpopular a.dltitle {
+	font-weight: bold;
+	font-size: medium;
+}
+
+div.dlpopular span.dltimes {
+	color: red;
+	font-weight: bold;
+	display:inline-block;
+	float: right;
+}
+
+div.dladvanced span {
+	color: #333;
+	font-style: italic;
+}
+
 /*
  * Joomla! 1.6 compatibility
  */

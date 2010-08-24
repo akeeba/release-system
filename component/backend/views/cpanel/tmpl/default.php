@@ -16,10 +16,81 @@ $groups = array('basic','insight','tools','update');
 ?>
 <div id="cpanel">
 	<div class="ak_cpanel_modules" id="ak_cpanel_modules">
-		<h3>TODO</h3>
+
+		<h3><?php echo JText::_('LBL_ARS_CPANEL_POPULAR') ?> &ndash; <?php echo JText::_('LBL_ARS_CPANEL_POPULAR_WEEK') ?></h3>
 		<div class="ak_cpanel_status_cell">
-			TODO
+		<?php if(empty($this->popularweek)): ?>
+			<p><?php echo JText::_('LBL_ARS_NOITEMS') ?></p>
+		<?php else: ?>
+			<?php foreach ($this->popularweek as $item): ?>
+			<div class="dlpopular">
+				<div class="dlbasic">
+					<a class="dltitle" href="../index.php?option=com_ars&view=download&id=<?php echo (int)$item->item_id ?>">
+						<?php echo $this->escape($item->title) ?>
+					</a>
+					<span class="dltimes"><?php echo $this->escape($item->dl) ?></span>
+				</div>
+				<div class="dladvanced">
+					<span class="dlcategory"><?php echo $this->escape($item->category) ?></span>
+					<span class="dlversion"><?php echo $this->escape($item->version) ?></span>
+				</div>
+			</div>
+			<?php endforeach; ?>
+		<?php endif; ?>
 		</div>
+
+		<h3><?php echo JText::_('LBL_ARS_CPANEL_POPULAR') ?> &ndash; <?php echo JText::_('LBL_ARS_CPANEL_POPULAR_EVER') ?></h3>
+		<div class="ak_cpanel_status_cell">
+		<?php if(empty($this->popularever)): ?>
+			<p><?php echo JText::_('LBL_ARS_NOITEMS') ?></p>
+		<?php else: ?>
+			<?php foreach ($this->popularever as $item): ?>
+			<div class="dlpopular">
+				<div class="dlbasic">
+					<a class="dltitle" href="../index.php?option=com_ars&view=download&id=<?php echo (int)$item->item_id ?>">
+						<?php echo $this->escape($item->title) ?>
+					</a>
+					<span class="dltimes"><?php echo $this->escape($item->dl) ?></span>
+				</div>
+				<div class="dladvanced">
+					<span class="dlcategory"><?php echo $this->escape($item->category) ?></span>
+					<span class="dlversion"><?php echo $this->escape($item->version) ?></span>
+				</div>
+			</div>
+			<?php endforeach; ?>
+		<?php endif; ?>
+		</div>
+
+		<h3><?php echo JText::_('LBL_ARS_CPANEL_DLSTATS') ?></h3>
+		<div class="ak_cpanel_status_cell">
+			<table border="0" width="100%" class="dlstats">
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_EVER') ?></td>
+					<td><?php echo number_format($this->dlever,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_YEAR') ?></td>
+					<td><?php echo number_format($this->dlyear,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_LMONTH') ?></td>
+					<td><?php echo number_format($this->dllastmonth,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_MONTH') ?></td>
+					<td><?php echo number_format($this->dlmonth,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_WEEK') ?></td>
+					<td><?php echo number_format($this->dlweek,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_TODAY') ?></td>
+					<td><?php echo number_format($this->dltoday,0) ?></td>
+				</tr>
+			</table>
+		</div>
+
 	</div>
 
 	<div class="ak_cpanel_main_container">

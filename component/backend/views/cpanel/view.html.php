@@ -38,7 +38,17 @@ class ArsViewCpanel extends JView
 		// Load the model
 		$model =& $this->getModel();
 
-		$this->assign('icondefs', $model->getIconDefinitions()); // Icon definitions
+		// -- Icon definitions
+		$this->assign('icondefs',			$model->getIconDefinitions() );
+		// -- Popular items (ever & week)
+		$this->assign('popularever',		$model->getAllTimePopular() );
+		$this->assign('popularweek',		$model->getWeekPopular() );
+		// -- # of downloads
+		$this->assign('dllastmonth',		$model->getNumDownloads('lastmonth') );
+		$this->assign('dlmonth',			$model->getNumDownloads('month') );
+		$this->assign('dlweek',				$model->getNumDownloads('week') );
+		$this->assign('dlyear',				$model->getNumDownloads('year') );
+		$this->assign('dlever',				$model->getNumDownloads('alltime') );
 
 		// Add references to CSS and JS files
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'includes.php';
