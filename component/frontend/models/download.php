@@ -84,10 +84,7 @@ ENDSQL;
 				exit(0);
 			}
 
-			$basename = $item->alias;
-			if(empty($basename)) {
-				$basename = @basename($filename);
-			}
+			$basename = @basename($filename);
 			$filesize = @filesize($filename);
 			$mime_type = $this->get_mime_type($filename);
 			if(empty($mime_type)) $mime_type = 'application/octet-stream';
