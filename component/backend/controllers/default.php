@@ -343,6 +343,7 @@ class ArsControllerDefault extends JController
 			$key = $saved->getKeyName();
 			$id = $saved->$key;
 			JRequest::setVar('id', $id);
+			$model->setId($id);
 		} elseif($status) {
 			// Try to check-in the record if it's not a new one
 			$status = $model->checkin();
