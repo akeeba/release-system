@@ -38,7 +38,7 @@ class ArsModelItems extends ArsModelBase
 			$where[] = '`release_id` ='.$db->getEscaped($fltRelease);
 		}
 		if($fltPublished != '') {
-			$where[] = '`published` = '.$db->Quote((int)$fltPublished);
+			$where[] = '`i`.`published` = '.$db->Quote((int)$fltPublished);
 		}
 		if(!empty($fltFilename)) {
 			$where[] = '`filename` = '.$db->Quote($fltFilename);

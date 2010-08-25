@@ -33,7 +33,7 @@ class ArsModelReleases extends ArsModelBase
 			$where[] = '`category_id` ='.$db->getEscaped($fltCategory);
 		}
 		if($fltPublished != '') {
-			$where[] = '`published` = '.$db->Quote((int)$fltPublished);
+			$where[] = '`r`.`published` = '.$db->Quote((int)$fltPublished);
 		}
 		if($fltVersion) {
 			$where[] = '`version` ='.$db->getEscaped($fltVersion);

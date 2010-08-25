@@ -124,13 +124,14 @@ class ArsModelBleedingedge extends JModel
 			{
 				// Create a new entry
 				$notes = '';
-				
+
+				$changelog = $this->folder.DS.$folder.DS.'CHANGELOG';
 				if(JFile::exists($changelog))
 				{
 					$this_changelog = JFile::read($this->folder.DS.$folder.DS.'CHANGELOG');
 					if(!empty($this_changelog)) {
 						$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
-						$notes = '<h1>Changelog</h1><p>';
+						$notes = '<h3>Changelog</h3><p>';
 						foreach($this_changelog as $line)
 						{
 							if(in_array($line, $first_changelog)) continue;
@@ -154,8 +155,7 @@ class ArsModelBleedingedge extends JModel
 					'access'			=> $this->caregory->access,
 					'published'			=> 1
 				);
-				$table->save($data);
-				$table->reorder('`category_id` = '.$this->category_id);
+				$table->save($data,'category_id');
 				$this->checkFiles($table);
 			}
 		}
@@ -169,7 +169,28 @@ class ArsModelBleedingedge extends JModel
 		}
 		if($this->category->type != 'bleedingedge') return;
 
-		$folder = $this->folder;
+		$folder = $this->folder.DS.$release->alias;
+
+		// Do we have a changelog?
+		if(empty($release->notes))
+		{
+			if(JFile::exists($folder.DS.'CHANGELOG'))
+			{
+				$this_changelog = JFile::read($folder.DS.'CHANGELOG');
+				$notes = '';
+				$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
+				$notes = '<h3>Changelog</h3><p>';
+				foreach($this_changelog as $line)
+				{
+					$notes .= $this->colorise($line)."<br/>\n";
+				}
+				$notes .= '</p>';
+				$release->notes = $notes;
+				$table = JTable::getInstance('Releases','Table');
+				$table->reset();
+				$table->save($release,'category_id');
+			}
+		}
 
 		$model = JModel::getInstance('Items','ArsModel');
 		$model->reset();
@@ -179,33 +200,34 @@ class ArsModelBleedingedge extends JModel
 		$allItems = $model->getItemList();
 
 		$known_items = array();
+		$files = JFolder::files($folder);
 		if(!empty($allItems)) foreach($allItems as $item)
 		{
 			$known_items[] = $item->filename;
 			if(!$item->published) continue;
-			if(!JFile::exists($folder.DS.$item->filename) && !JFile::exists(JPATH_ROOT.DS.$item->filename))
+			if(!JFile::exists($this->folder.DS.$item->filename) && !JFile::exists(JPATH_ROOT.DS.$this->folder.DS.$item->filename))
 			{
+				var_dump($item->filename);
 				$table = JTable::getInstance('Items','Table');
 				$item->published = 0;
 				$table->save($item);
 			}
 		}
 
-		$files = JFolder::files($folder);
 		if(!empty($files)) foreach($files as $file)
 		{
+			if( basename($file) == 'CHANGELOG' ) continue;
+
 			if(in_array($file, $known_items)) continue;
 			$data = array(
 				'release_id'		=> $release->id,
-				'title'				=> $file,
-				'alias'				=> $file,
 				'description'		=> '',
 				'type'				=> 'file',
 				'filename'			=> $release->alias.'/'.$file,
 				'url'				=> '',
 				'groups'			=> $release->groups,
-				'hits'				=> 0,
-				'published'			=> 1
+				'hits'				=> '0',
+				'published'			=> '1'
 			);
 			$table = JTable::getInstance('Items','Table');
 			$table->save($data);
@@ -223,22 +245,29 @@ class ArsModelBleedingedge extends JModel
 		{
 			case '+':
 				$style = 'color: #006600; font-weight: bold;';
+				$line = trim(substr($line,1));
 				break;
 			case '-':
 				$style = 'color: #660000';
+				$line = trim(substr($line,1));
 				break;
 			case '#':
-				$style = 'color: #000000';
+				$style = 'color: #000066;';
+				$line = trim(substr($line,1));
 				break;
 			case '~':
 				$style = 'color: #ccc; font-style: italics;';
+				$line = trim(substr($line,1));
 				break;
 			case '!':
 				$style = 'color: red; background: yellow; font-weight: bold;';
+				$line = trim(substr($line,1));
+				break;
+			default:
+				$style = 'color: #666666';
 				break;
 		}
 
-		$line = trim(substr($line,1));
 		return "<span style=\"$style\">$line</span>";
 	}
 }

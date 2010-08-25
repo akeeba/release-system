@@ -221,7 +221,7 @@ class TableItems extends ArsTable
 		}
 		*/
 
-		if(empty($this->published) && ($this->published !== 0) )
+		if( is_null($this->published) || ($this->published == '') )
 		{
 			$this->published = 0;
 		}
