@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_releases` (
     `notes` TEXT NULL,
     `groups` varchar(255) DEFAULT NULL,
     `hits` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-    `created` datetime NOT NULL DEFAULT,
+    `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `created_by` int(11) NOT NULL DEFAULT '0',
     `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `modified_by` int(11) NOT NULL DEFAULT '0',

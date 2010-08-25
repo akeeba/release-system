@@ -61,7 +61,7 @@ SELECT
 FROM
     `#__ars_items` as `i`
     INNER JOIN `#__ars_view_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
-WHERE `id` = $escid
+WHERE `i`.`id` = $escid
 ENDSQL;
 			$db->setQuery($sql);
 			$item = $db->loadObject();
