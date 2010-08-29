@@ -131,13 +131,13 @@ class ArsModelBleedingedge extends JModel
 					$this_changelog = JFile::read($this->folder.DS.$folder.DS.'CHANGELOG');
 					if(!empty($this_changelog)) {
 						$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
-						$notes = '<h3>Changelog</h3><p>';
+						$notes = '<h3>Changelog</h3><ul>';
 						foreach($this_changelog as $line)
 						{
 							if(in_array($line, $first_changelog)) continue;
-							$notes .= $this->colorise($line)."<br/>\n";
+							$notes .= '<li>'.$this->colorise($line)."</li>\n";
 						}
-						$notes .= '</p>';
+						$notes .= '</ul>';
 					}
 				}
 

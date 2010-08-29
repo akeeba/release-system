@@ -95,7 +95,7 @@ ENDSQL;
 			// Send MIME headers
 			header('MIME-Version: 1.0');
 			header('Content-Disposition: attachment; filename='.$basename);
-			header('Content-Transfer-Encoding: binary');
+			//header('Content-Transfer-Encoding: binary');
 			header('Content-Type: '.$mime_type);
 			// Notify of filesize, if this info is available
 			if($filesize > 0) header('Content-Length: '.@filesize($filename));
@@ -112,6 +112,10 @@ ENDSQL;
 				// Now we need to loop through the file and echo out chunks of file data
 				if($handle !== false) while(!@feof($handle)){
 				    echo @fread($handle, $blocksize);
+				}
+				else
+				{
+					@readfile($filename);
 				}
 			} else {
 				// If the filesize is not reported, hope that readfile works
@@ -133,6 +137,6 @@ ENDSQL;
 			if (!preg_match($regex, $line, $matches)) continue; // no match to the extension
 			return ($matches[1]);
 		}
-		return (false); // no match at all
+		return 'application/octet-stream'; // no match at all
 	}
 }
