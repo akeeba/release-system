@@ -90,37 +90,61 @@ ENDSQL;
 			if(empty($mime_type)) $mime_type = 'application/octet-stream';
 
 			JRequest::setVar('format','raw');
-			@ob_end_clean();
+
+			// Clear cache
+			while (@ob_end_clean());
+
+            // Fix IE bugs
+            if (isset($_SERVER['HTTP_USER_AGENT']) && strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
+            	$header_file = preg_replace('/\./', '%2e', $basename, substr_count($basename, '.') - 1);
+
+            	if (ini_get('zlib.output_compression'))  {
+					ini_set('zlib.output_compression', 'Off');
+				}
+            }
+            else {
+            	$header_file = $basename;
+            }
+
 			@clearstatcache();
+			// Disable caching
+			header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: public", false);
+
 			// Send MIME headers
-			header('MIME-Version: 1.0');
-			header('Content-Disposition: attachment; filename='.$basename);
-			//header('Content-Transfer-Encoding: binary');
+            header("Content-Description: File Transfer");
 			header('Content-Type: '.$mime_type);
+            header("Accept-Ranges: bytes");
+			header('Content-Disposition: attachment; filename='.$header_file);
+			header('Content-Transfer-Encoding: binary');
 			// Notify of filesize, if this info is available
 			if($filesize > 0) header('Content-Length: '.@filesize($filename));
-			// Disable caching
-			header('Expires: Mon, 20 Dec 1998 01:00:00 GMT');
-			header('Cache-Control: no-cache, must-revalidate');
-			header('Pragma: no-cache');
 
-			if($filesize > 0)
-			{
-				// If the filesize is reported, use 2M chunks for echoing the data to the browser
-				$blocksize = (2 << 20); //2M chunks
-				$handle    = @fopen($filename, "r");
-				// Now we need to loop through the file and echo out chunks of file data
-				if($handle !== false) while(!@feof($handle)){
-				    echo @fread($handle, $blocksize);
-				}
-				else
-				{
-					@readfile($filename);
-				}
-			} else {
-				// If the filesize is not reported, hope that readfile works
-				@readfile($filename);
-			}
+			error_reporting(0);
+        	if ( ! ini_get('safe_mode') ) {
+		    	set_time_limit(0);
+        	}
+
+			// Use 1M chunks for echoing the data to the browser
+			$chunksize = 1024*1024; //1M chunks
+			$buffer = '';
+	   		$handle = @fopen($filename, 'rb');
+	   		if($handle !== false)
+	   		{
+	   			while (!feof($handle)) {
+	   				$buffer = fread($handle, $chunksize);
+	   				echo $buffer;
+	   				@ob_flush();
+	   				flush();
+	   			}
+	   			@fclose($handle);
+	   		}
+	   		else
+	   		{
+	   			@readfile($filename);
+	   		}
 		}
 		exit(0);
 	}
