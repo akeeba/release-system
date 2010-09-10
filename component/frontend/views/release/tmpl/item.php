@@ -15,7 +15,7 @@ $download_url = JRoute::_('index.php?option=com_ars&view=download&format=raw&id=
 ?>
 <div class="ars-browse-items">
 	<h3 class="ars-items-title">
-		<a href="<?php echo $download_url ?>">
+		<a href="<?php echo $download_url ?>" rel="nofollow">
 			<?php echo $this->escape($item->title) ?>
 		</a>
 	</h3>
@@ -61,7 +61,7 @@ $download_url = JRoute::_('index.php?option=com_ars&view=download&format=raw&id=
 	</div>
 
 	<div>
-		<a class="readon" href="<?php echo $download_url?>">
+		<a class="readon" href="<?php echo $download_url?>" rel="nofollow">
 			<?php echo JText::_('LBL_ITEM_DOWNLOAD') ?>
 		</a>
 	</div>

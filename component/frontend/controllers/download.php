@@ -56,6 +56,15 @@ class ArsControllerDownload extends JController
 		// Get the model
 		$model = $this->getThisModel();
 
+		// Anti-leech protection
+		$component =& JComponentHelper::getComponent( 'com_ars' );
+		$params = new JParameter($component->params);
+		$antileech = $params->get('antileech',1);
+		if($antileech == 1)
+		{
+			$model->antiLeech();
+		}
+
 		// Get the log table
 		$log = JTable::getInstance('Logs','Table');
 

@@ -11,5 +11,10 @@
 			label="ARS_CONFIG_UPDATES_DESC_LABEL"
 			description="ARS_CONFIG_UPDATES_DESC_DESC"
 		/>
+
+		<param name="antileech" type="radio" default="1" label="ARS_CONFIG_ANTILEECH_LABEL" description="ARS_CONFIG_ANTILEECH_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 	</params>
 </config>

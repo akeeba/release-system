@@ -656,8 +656,8 @@ FROM
 WHERE
 
 ENDSQL;
-				$sql .= '`alias` = '.$db->Quote($relalias).
-					' AND `cat_alias` = '.$db->Quote($catalias).
+				$sql .= '`r`.`alias` = '.$db->Quote($relalias).
+					' AND `c`.`alias` = '.$db->Quote($catalias).
 					' LIMIT 0,1';
 				$db->setQuery($sql);
 				$rel = $db->loadObject();
@@ -734,8 +734,8 @@ FROM
 WHERE
 
 ENDSQL;
-			$sql .= '`alias` = '.$db->Quote($relalias).
-				' AND `cat_alias` = '.$db->Quote($catalias).
+			$sql .= '`r`.`alias` = '.$db->Quote($relalias).
+				' AND `c`.`alias` = '.$db->Quote($catalias).
 				' LIMIT 0,1';
 			$db->setQuery($sql);
 			$rel = $db->loadObject();
@@ -784,8 +784,8 @@ FROM
 WHERE
 
 ENDSQL;
-			$sql .= '`alias` = '.$db->Quote($relalias).
-				' AND `category_id` = '.$db->Quote($catid).
+			$sql .= '`r`.`alias` = '.$db->Quote($relalias).
+				' AND `c`.`id` = '.$db->Quote($catid).
 				' LIMIT 0,1';
 			$db->setQuery($sql);
 			$rel = $db->loadObject();
@@ -840,9 +840,9 @@ FROM
     INNER JOIN `#__ars_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
     INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
 ENDSQL;
-		$sql .= ' WHERE `alias` = '.
-			$db->Quote($itemalias).' AND `rel_alias` ='.
-			$db->Quote($relalias).' AND `cat_alias` = '.
+		$sql .= ' WHERE `i`.`alias` = '.
+			$db->Quote($itemalias).' AND `r`.`alias` ='.
+			$db->Quote($relalias).' AND `c`.`alias` = '.
 			$db->Quote($catalias).' LIMIT 0,1';
 		$db->setQuery($sql);
 		$item = $db->loadObject();
@@ -906,18 +906,18 @@ FROM
     INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
 ENDSQL;
 
-		$sql .= ' WHERE `alias` = '.$db->Quote($itemalias);
+		$sql .= ' WHERE `i`.`alias` = '.$db->Quote($itemalias);
 		if(!empty($relalias)) {
-			$sql .= ' AND `rel_alias` = '.$db->Quote($relalias);
+			$sql .= ' AND `r`.`alias` = '.$db->Quote($relalias);
 		}
 		if(!empty($relid)) {
-			$sql .= ' AND `release_id` = '.$db->Quote($relid);
+			$sql .= ' AND `r`.`id` = '.$db->Quote($relid);
 		}
 		if(!empty($catalias)) {
-			$sql .= ' AND `cat_alias` = '.$db->Quote($catalias);
+			$sql .= ' AND `c`.`alias` = '.$db->Quote($catalias);
 		}
 		if(!empty($catid)) {
-			$sql .= ' AND `category_id` = '.$db->Quote($catid);
+			$sql .= ' AND `c`.`id` = '.$db->Quote($catid);
 		}
 		$sql .= ' LIMIT 0,1';
 		$db->setQuery($sql);

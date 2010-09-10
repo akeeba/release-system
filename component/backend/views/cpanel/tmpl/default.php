@@ -17,6 +17,37 @@ $groups = array('basic','insight','tools','update');
 <div id="cpanel">
 	<div class="ak_cpanel_modules" id="ak_cpanel_modules">
 
+		<h3><?php echo JText::_('LBL_ARS_CPANEL_DLSTATS') ?></h3>
+		<div class="ak_cpanel_status_cell">
+			<table border="0" width="100%" class="dlstats">
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_EVER') ?></td>
+					<td><?php echo number_format($this->dlever,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_YEAR') ?></td>
+					<td><?php echo number_format($this->dlyear,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_LMONTH') ?></td>
+					<td><?php echo number_format($this->dllastmonth,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_MONTH') ?></td>
+					<td><?php echo number_format($this->dlmonth,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_WEEK') ?></td>
+					<td><?php echo number_format($this->dlweek,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_TODAY') ?></td>
+					<td><?php echo number_format($this->dltoday,0) ?></td>
+				</tr>
+			</table>
+			<div id="mapChartMini"></div>
+		</div>
+
 		<h3><?php echo JText::_('LBL_ARS_CPANEL_POPULAR') ?> &ndash; <?php echo JText::_('LBL_ARS_CPANEL_POPULAR_WEEK') ?></h3>
 		<div class="ak_cpanel_status_cell">
 		<?php if(empty($this->popularweek)): ?>
@@ -61,36 +92,6 @@ $groups = array('basic','insight','tools','update');
 		<?php endif; ?>
 		</div>
 
-		<h3><?php echo JText::_('LBL_ARS_CPANEL_DLSTATS') ?></h3>
-		<div class="ak_cpanel_status_cell">
-			<table border="0" width="100%" class="dlstats">
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_EVER') ?></td>
-					<td><?php echo number_format($this->dlever,0) ?></td>
-				</tr>
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_YEAR') ?></td>
-					<td><?php echo number_format($this->dlyear,0) ?></td>
-				</tr>
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_LMONTH') ?></td>
-					<td><?php echo number_format($this->dllastmonth,0) ?></td>
-				</tr>
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_MONTH') ?></td>
-					<td><?php echo number_format($this->dlmonth,0) ?></td>
-				</tr>
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_WEEK') ?></td>
-					<td><?php echo number_format($this->dlweek,0) ?></td>
-				</tr>
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_TODAY') ?></td>
-					<td><?php echo number_format($this->dltoday,0) ?></td>
-				</tr>
-			</table>
-		</div>
-
 	</div>
 
 	<div class="ak_cpanel_main_container">
@@ -128,5 +129,10 @@ $groups = array('basic','insight','tools','update');
 <script type="text/javascript">
 akeeba.jQuery(document).ready(function($){
 	$('#ak_cpanel_modules').accordion();
+	
+	var areaData = <?php echo json_encode((object)$this->countrystats) ?>;
+	$('#mapChartMini').gchart('destroy').
+		gchart( $.gchart.map('world', areaData, 'white', 'aaffaa', 'green') )
+
 });
 </script>

@@ -164,4 +164,26 @@ ENDSQL
 );
 		return $db->loadResult();
 	}
+
+	public function getChartData()
+	{
+		$db	= $this->getDBO();
+		$db->setQuery( <<<ENDSQL
+SELECT
+  `country`, COUNT(id) as `dl`
+FROM
+  `#__ars_log`
+WHERE
+  `country` <> ''
+GROUP BY `country`
+ENDSQL
+);
+		$data = $db->loadObjectList();
+		$ret = array();
+		if(!empty($data)) foreach($data as $item)
+		{
+			$ret[$item->country] = $item->dl;
+		}
+		return $ret;
+	}
 }

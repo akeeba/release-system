@@ -37,6 +37,22 @@ class ArsModelDownload extends ArsModelBaseFE
 		return $item;
 	}
 
+	public function antiLeech()
+	{
+		$myURI = JURI::getInstance();
+		$myURI->setPath($path);
+		$myURI->setQuery('');
+		$me = $myURI->toString();
+
+		$referer = JRequest::getVar('HTTP_REFERER','','SERVER');
+
+		$check = substr($referer,0,strlen($me));
+		if($check != $me)
+		{
+			return JError::raiseError(403, 'Anti-leech protection triggered' );
+		}
+	}
+
 	public function doDownload()
 	{
 		if($this->item->type == 'link')

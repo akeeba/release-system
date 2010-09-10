@@ -301,6 +301,12 @@ div.dladvanced span {
 	font-style: italic;
 }
 
+#mapChartMini {
+	width: 300px;
+	height: 150px;
+	margin: 1em auto;
+}
+
 /*
  * Joomla! 1.6 compatibility
  */

@@ -2,13 +2,13 @@
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
 <install type="component" version="1.5.0" method="upgrade">
 	<name>ARS</name>
-	<creationDate>2010-09-03</creationDate>
+	<creationDate>2010-09-10</creationDate>
 	<author>Nicholas K. Dionysopoulos</author>
 	<authorEmail>nicholas@akeebabackup.com</authorEmail>
 	<authorUrl>http://www.akeebabackup.com</authorUrl>
 	<copyright>Copyright (c)2010 Nicholas K. Dionysopoulos</copyright>
 	<license>GNU/GPL v3 or later</license>
-	<version>svn31</version>
+	<version>svn32</version>
 	<description>Akeeba Release System</description>
 
 	<!-- Public front end files -->

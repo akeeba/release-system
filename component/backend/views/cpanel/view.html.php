@@ -50,9 +50,14 @@ class ArsViewCpanel extends JView
 		$this->assign('dlyear',				$model->getNumDownloads('year') );
 		$this->assign('dlever',				$model->getNumDownloads('alltime') );
 
+		$this->assign('countrystats',		$model->getChartData() );
+
 		// Add references to CSS and JS files
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'includes.php';
 		ArsHelperIncludes::includeMedia(false);
+		$document =& JFactory::getDocument();
+		$document->addScript(JURI::base().'../media/com_ars/js/jquery.gchart.pack.js');
+		$document->addScript(JURI::base().'../media/com_ars/js/jquery.gchart.icons.pack.js');
 
 		parent::display();
 	}
