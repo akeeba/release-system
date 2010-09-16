@@ -12,6 +12,8 @@ jimport('joomla.application.component.controller');
 
 class ArsControllerUpdate extends JController
 {
+	var $viewType = null;
+	
 	function  __construct($config = array()) {
 		parent::__construct($config);
 
@@ -29,9 +31,14 @@ class ArsControllerUpdate extends JController
 			} elseif($viewType == 'ini') {
 				$task = 'ini';
 			} else {
-				return JError::raiseError(500, JText::_('ARS_ERR_INVALIDOP'));
+				$task = 'ini';
+				$viewType = 'ini';
+				$document =& JFactory::getDocument();
+				//return JError::raiseError(500, JText::_('ARS_ERR_INVALIDOP'));
 			}
 		}
+		
+		$this->viewType = $viewType;
 
 		switch($viewType)
 		{
@@ -148,8 +155,7 @@ class ArsControllerUpdate extends JController
 			$prefix = $this->getName().'View';
 			$view = JRequest::getCmd('view','cpanel');
 			$viewName = ucfirst($view);
-			$document =& JFactory::getDocument();
-			$viewType	= $document->getType();
+			$viewType	= $this->viewType;
 
 			$view = $this->getView($viewName, $viewType, $prefix, array( 'base_path'=>$this->_basePath));
 		}

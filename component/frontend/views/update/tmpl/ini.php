@@ -23,9 +23,11 @@ if( !empty($this->items) ):
 	jimport('joomla.utilities.date');
 	$date = new JDate($item->created);
 
+@ob_end_clean();
+@header('Content-type: text/plain');
 ?>; Live Update provision file
 software="<?php echo $item->cat_title ?>"
 version="<?php echo $item->version; ?>"
 link="<?php echo $downloadURL; ?>"
 date="<?php echo $date->toFormat('%Y-%m-%d'); ?>"
-<?php endif; ?>
+<?php die(); endif; ?>
