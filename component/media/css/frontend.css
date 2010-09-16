@@ -5,26 +5,6 @@
 	$Id$
 */
 
-a.readon {
-	display: inline-block;
-	width: 250px;
-	text-align: center;
-	color: white !important;
-	font-weight: bold;
-	background: #6699cc;
-	border: 2px solid #99ccff;
-	padding: 0.5em;
-	margin: 0.5em 0;
-	text-decoration: none !important;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-}
-
-a.readon:hover {
-	background: #ccccff;
-	color: navy !important;
-}
-
 #ars-categories-all,
 #ars-categories-normal,
 #ars-categories-bleedingedge,

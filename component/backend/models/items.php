@@ -57,7 +57,16 @@ SELECT
     `cat_directory`, `cat_access`, `cat_published`
 FROM
     `#__ars_items` as `i`
-    INNER JOIN `#__ars_view_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
+    INNER JOIN (
+	SELECT
+	    `r`.*, `c`.`title` as `cat_title`, `c`.`alias` as `cat_alias`,
+	    `c`.`type` as `cat_type`, `c`.`groups` as `cat_groups`,
+	    `c`.`directory` as `cat_directory`, `c`.`access` as `cat_access`,
+	    `c`.`published` as `cat_published`
+	FROM
+	    `#__ars_releases` AS `r`
+	    INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
+    ) AS `r` ON(`r`.`id` = `i`.`release_id`)
 ENDSQL;
 
 		if(count($where) && !$overrideLimits)
