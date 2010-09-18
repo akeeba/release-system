@@ -9,6 +9,9 @@
 defined('_JEXEC') or die('Restricted Access');
 
 $tag = "<"."?xml version=\"1.0\" encoding=\"utf-8\""."?".">";
+
+@ob_end_clean();
+@header('Content-type: application/xml');
 ?><?php echo $tag; ?>
 
 <updates>
@@ -50,4 +53,4 @@ foreach($this->items as $item):
 		<targetplatform name="joomla" version="1.6" />
 	</update>
 <?php endforeach ?>
-</updates>
+</updates><?php die(); ?>

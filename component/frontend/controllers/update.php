@@ -20,8 +20,15 @@ class ArsControllerUpdate extends JController
 		$document =& JFactory::getDocument();
 		$viewType	= $document->getType();
 		$task = JRequest::getCmd('task','');
+		$layout = JRequest::getCmd('layout','');
 		$id = JRequest::getInt('id',null);
 
+		// Check for menu items bearing layout instead of task
+		if(empty($task) && !empty($layout))
+		{
+			$task = $layout;
+		}
+		
 		// Check for default task
 		if(empty($task)) {
 			if($viewType == 'xml') {
@@ -33,9 +40,19 @@ class ArsControllerUpdate extends JController
 			} else {
 				$task = 'ini';
 				$viewType = 'ini';
-				$document =& JFactory::getDocument();
 				//return JError::raiseError(500, JText::_('ARS_ERR_INVALIDOP'));
 			}
+		}
+		
+		switch($task)
+		{
+			case 'ini':
+				$viewType = 'ini';
+				break;
+				
+			default:
+				$viewType = 'xml';
+				break;
 		}
 		
 		$this->viewType = $viewType;
@@ -51,10 +68,6 @@ class ArsControllerUpdate extends JController
 
 					case 'category':
 						$this->_task = 'category';
-						$cat = JRequest::getCmd('id', null);
-						if(empty($cat)) {
-							return JError::raiseError(500, JText::_('ARS_ERR_NOUPDATESOURCE'));
-						}
 						break;
 
 					case 'stream':
@@ -112,6 +125,16 @@ class ArsControllerUpdate extends JController
 	public function category($cacheable=false)
 	{
 		$cat = JRequest::getCmd('id','');
+		if(empty($cat))
+		{
+			// Do we have a menu item parameter?
+			$app = JFactory::getApplication();
+			$params =& $app->getPageParameters('com_ars');
+			$cat = $params->get('category', 'components');
+		}
+		if(empty($cat)) {
+			return JError::raiseError(500, JText::_('ARS_ERR_NOUPDATESOURCE'));
+		}
 		$model = $this->getThisModel();
 		$model->getCategoryItems($cat);
 		$this->display();
@@ -120,6 +143,13 @@ class ArsControllerUpdate extends JController
 	public function stream($cacheable=false)
 	{
 		$id = JRequest::getInt('id',0);
+		if($id == 0)
+		{
+			// Do we have a menu item parameter?
+			$app = JFactory::getApplication();
+			$params =& $app->getPageParameters('com_ars');
+			$id = $params->get('streamid', 0);			
+		}
 		$model = $this->getThisModel();
 		$model->getItems($id);
 		$this->display();
@@ -128,6 +158,13 @@ class ArsControllerUpdate extends JController
 	public function ini($cacheable=false)
 	{
 		$id = JRequest::getInt('id',0);
+		if($id == 0)
+		{
+			// Do we have a menu item parameter?
+			$app = JFactory::getApplication();
+			$params =& $app->getPageParameters('com_ars');
+			$id = $params->get('streamid', 0);			
+		}
 		$model = $this->getThisModel();
 		$model->getItems($id);
 		$this->display();

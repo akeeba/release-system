@@ -413,6 +413,9 @@ function arsBuildRouteRaw(&$query)
 					$Itemid = null;
 				}
 				break;
+				
+			default:
+				$Itemid = null;
 		}
 	}
 
@@ -442,20 +445,20 @@ function arsBuildRouteRaw(&$query)
 		{
 			$options = array('view'=>'browse');
 			$menu = ArsRouterHelper::findMenu($options);
-		}
-		if(!is_object($menu))
-		{
-			$segments[] = 'repository';
-			$segments[] = $catalias;
-			$segments[] = $release->alias;
-			$segments[] = $download->alias;
-		}
-		else
-		{
-			$segments[] = $catalias;
-			$segments[] = $release->alias;
-			$segments[] = $download->alias;
-			$query['Itemid'] = $menu->id;
+			if(!is_object($menu))
+			{
+				$segments[] = 'repository';
+				$segments[] = $catalias;
+				$segments[] = $release->alias;
+				$segments[] = $download->alias;
+			}
+			else
+			{
+				$segments[] = $catalias;
+				$segments[] = $release->alias;
+				$segments[] = $download->alias;
+				$query['Itemid'] = $menu->id;
+			}
 		}
 	}
 
@@ -467,35 +470,176 @@ function arsBuildRouteXml(&$query)
 	$segments = array();
 
 	$view = ArsRouterHelper::getAndPop($query, 'view', 'update');
-	$task = ArsRouterHelper::getAndPop($query, 'task', 'default');
+	$my_task = ArsRouterHelper::getAndPop($query, 'task', 'default');
+	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid', null);
+	$local_id = ArsRouterHelper::getAndPop($query, 'id', 'components');
 
-	switch($task)
+	// Analyze the current Itemid
+	if(!empty($Itemid)) {
+		// Get the specified menu
+		$menus =& JMenu::getInstance('site');
+		$menuitem =& $menus->getItem($Itemid);
+		
+		// Analyze URL
+		$uri = new JURI($menuitem->link);
+		$option = $uri->getVar('option');
+		// Sanity check
+		if($option != 'com_ars')
+		{
+			$Itemid = null;
+		}
+		else
+		{
+			$view = $uri->getVar('view');
+			$task = $uri->getVar('task');
+			$layout = $uri->getVar('layout');
+			$format = $uri->getVar('format','ini');
+			$id = $uri->getVar('id',null);
+			if(empty($task) && !empty($layout)) $task = $layout;
+			if(empty($task)) {
+				if($format == 'ini') {
+					$task = 'ini';
+				} else {
+					$task = 'all';
+				}
+			}
+			
+			// make sure we can grab the ID specified in menu item options
+			if(empty($id)) switch($task)
+			{
+				case 'category':
+					$params = new JParameter($menuitem->params);
+					$id = $params->get('category','components');
+					break;
+				
+				case 'ini':
+				case 'stream':
+					$params = new JParameter($menuitem->params);
+					$id = $params->get('streamid',0);
+					break;
+			}
+		}
+	}
+	
+	switch($my_task)
 	{
 		case 'default':
-			$segments[] = 'updates';
+		case 'all':
+			if(empty($Itemid))
+			{
+				// Try to find an Itemid with the same properties				
+				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'all'));
+				if(!empty($otherMenuItem)) {
+					// Exact match
+					$query['Itemid'] = $otherMenuItem->id;
+				} else {
+					$segments[] = 'updates';
+				}
+			}
+			else
+			{
+				if($task == 'all') {
+					$query['Itemid'] = $Itemid;
+				} else {
+					$segments[] = 'updates';
+				}
+			}
 			break;
 
 		case 'category':
-			$id = ArsRouterHelper::getAndPop($query, 'id', 'components');
-			$segments[] = 'updates';
-			$segments[] = $id;
+			if(empty($Itemid))
+			{
+				// Try to find an Itemid with the same properties				
+				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'category'),array('category'=>$local_id));
+				if(!empty($otherMenuItem)) {
+					// Exact match
+					$query['Itemid'] = $otherMenuItem->id;
+				} else {
+					// Try to find an Itemid for all categories
+					$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'all'));
+					if(!empty($otherMenuItem)) {
+						$query['Itemid'] = $otherMenuItem->id;
+						$segments[] = $local_id;
+					} else {
+						$segments[] = 'updates';
+						$segments[] = $local_id;
+					}
+				}
+			}
+			else
+			{
+				// menu item id exists in the query
+				if( ($task == 'category') && ($id == $local_id) ) {
+					$query['Itemid'] = $Itemid;
+				} elseif( $task == 'all' ) {
+					$query['Itemid'] = $Itemid;
+					$segments[] = $local_id;
+				} else {
+					$segments[] = 'updates';
+					$segments[] = $local_id;
+				}
+			}
 			break;
 
 		case 'stream':
-			$id = ArsRouterHelper::getAndPop($query, 'id', '');
 			$db = JFactory::getDBO();
 			$sql = 'SELECT `type`,`alias` FROM `#__ars_updatestreams` WHERE `id` = '.
-				$db->Quote($id).' LIMIT 0,1';
+				$db->Quote($local_id).' LIMIT 0,1';
 			$db->setQuery($sql);
 			$stream = $db->loadObject();
 
 			if(empty($stream)) die();
-
-			$segments[] = 'updates';
-			$segments[] = $stream->type;
-			$segments[] = $stream->alias;
+			
+			if(empty($Itemid))
+			{
+				// Try to find an Itemid with the same properties				
+				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'stream'),array('streamid'=>$local_id));
+				if(!empty($otherMenuItem)) {
+					// Exact match
+					$query['Itemid'] = $otherMenuItem->id;
+				} else {
+					// Try to find an Itemid for the parent category
+					$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'category'),array('category'=>$stream->type));
+					if(!empty($otherMenuItem))
+					{
+						$query['Itemid'] = $otherMenuItem->id;
+						$segments[] = $stream->alias;
+					}
+					else
+					{
+						// Try to find an Itemid for all categories
+						$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'all'));
+						if(!empty($otherMenuItem)) {
+							$query['Itemid'] = $otherMenuItem->id;
+							$segments[] = $stream->type;
+							$segments[] = $local_id;
+						} else {
+							$segments[] = 'updates';
+							$segments[] = $stream->type;
+							$segments[] = $stream->alias;
+						}
+					}
+				}
+			}
+			else
+			{
+				// menu item id exists in the query
+				if( ($task == 'stream') && ($id == $local_id) ) {
+					$query['Itemid'] = $otherMenuItem->id;
+				} elseif( ($task == 'category') && ($id == $stream->type) ) {
+					$query['Itemid'] = $Itemid;
+					$segments[] = $stream->alias;
+				} elseif( $task == 'all' ) {
+					$query['Itemid'] = $Itemid;
+					$segments[] = $stream->type;
+					$segments[] = $stream->alias;
+				} else {
+					$segments[] = 'updates';
+					$segments[] = $stream->type;
+					$segments[] = $stream->alias;
+				}
+			}
 			break;
-
 	}
 
 	return $segments;
@@ -506,20 +650,89 @@ function arsBuildRouteIni(&$query)
 	$segments = array();
 
 	$view = ArsRouterHelper::getAndPop($query, 'view', 'update');
-	$task = ArsRouterHelper::getAndPop($query, 'task', 'default');
-	$id = ArsRouterHelper::getAndPop($query, 'id', '');
-
+	$my_task = ArsRouterHelper::getAndPop($query, 'task', 'default');
+	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid', null);
+	$local_id = ArsRouterHelper::getAndPop($query, 'id', 'components');
+	
+	// Analyze the current Itemid
+	if(!empty($Itemid)) {
+		// Get the specified menu
+		$menus =& JMenu::getInstance('site');
+		$menuitem =& $menus->getItem($Itemid);
+		
+		// Analyze URL
+		$uri = new JURI($menuitem->link);
+		$option = $uri->getVar('option');
+		// Sanity check
+		if($option != 'com_ars')
+		{
+			$Itemid = null;
+		}
+		else
+		{
+			$view = $uri->getVar('view');
+			$task = $uri->getVar('task');
+			$layout = $uri->getVar('layout');
+			$format = $uri->getVar('format','ini');
+			$id = $uri->getVar('id',null);
+			if(empty($task) && !empty($layout)) $task = $layout;
+			if(empty($task)) {
+				if($format == 'ini') {
+					$task = 'ini';
+				} else {
+					$task = 'all';
+				}
+			}
+			
+			// make sure we can grab the ID specified in menu item options
+			if(empty($id)) switch($task)
+			{
+				case 'category':
+					$params = new JParameter($menuitem->params);
+					$id = $params->get('category','components');
+					break;
+				
+				case 'ini':
+				case 'stream':
+					$params = new JParameter($menuitem->params);
+					$id = $params->get('streamid',0);
+					break;
+			}
+		}
+	}
+	
 	$db = JFactory::getDBO();
 	$sql = 'SELECT `type`,`alias` FROM `#__ars_updatestreams` WHERE `id` = '.
-		$db->Quote($id).' LIMIT 0,1';
+		$db->Quote($local_id).' LIMIT 0,1';
 	$db->setQuery($sql);
 	$stream = $db->loadObject();
 
 	if(empty($stream)) die();
-
-	$segments[] = 'updates';
-	$segments[] = $stream->type;
-	$segments[] = $stream->alias;
+	
+	if(empty($Itemid))
+	{
+		// Try to find an Itemid with the same properties				
+		$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'ini'),array('streamid'=>$local_id));
+		if(!empty($otherMenuItem)) {
+			// Exact match
+			$query['Itemid'] = $otherMenuItem->id;
+		} else {
+			$segments[] = 'updates';
+			$segments[] = $stream->type;
+			$segments[] = $stream->alias;
+		}
+	}
+	else
+	{
+		// menu item id exists in the query
+		if( ($task == 'ini') && ($id == $local_id) ) {
+			$query['Itemid'] = $otherMenuItem->id;
+		} else {
+			$segments[] = 'updates';
+			$segments[] = $stream->type;
+			$segments[] = $stream->alias;
+		}
+	}
 
 	return $segments;
 }
@@ -943,7 +1156,75 @@ function arsParseRouteXml(&$segments)
 	$query = array();
 	$query['view'] = 'update';
 	$query['format'] = 'xml';
+	
+	$menus = JMenu::getInstance('site');
+	$menuitem = $menus->getActive();
 
+	// Analyze the current Itemid
+	if(!empty($menuitem)) {
+		// Analyze URL
+		$uri = new JURI($menuitem->link);
+		$option = $uri->getVar('option');
+		// Sanity check
+		if($option != 'com_ars')
+		{
+			$Itemid = null;
+		}
+		else
+		{
+			$view = $uri->getVar('view');
+			$task = $uri->getVar('task');
+			$layout = $uri->getVar('layout');
+			$format = $uri->getVar('format','ini');
+			$id = $uri->getVar('id',null);
+			if(empty($task) && !empty($layout)) $task = $layout;
+			if(empty($task)) {
+				if($format == 'ini') {
+					$task = 'ini';
+				} else {
+					$task = 'all';
+				}
+			}
+			
+			// make sure we can grab the ID specified in menu item options
+			if(empty($id)) switch($task)
+			{
+				case 'category':
+					$params = new JParameter($menuitem->params);
+					$id = $params->get('category','components');
+					break;
+				
+				case 'ini':
+				case 'stream':
+					$params = new JParameter($menuitem->params);
+					$id = $params->get('streamid',0);
+					break;
+			}
+			
+			if( ($option == 'com_ars') && ($view == 'update'))
+			{
+				switch($task)
+				{
+					case 'stream':
+						$query['task'] = 'stream';
+						$query['id'] = $id;
+						return $query;
+						break;
+						
+					case 'category':
+						array_unshift($segments, $id);
+						array_unshift($segments, 'updates');
+						break;
+						
+					case 'all':
+					case 'ini':
+						array_unshift($segments, 'updates');
+						break;
+				}
+			}
+		}		
+	}
+	
 	$check = array_shift($segments);
 	if($check != 'updates') die();
 

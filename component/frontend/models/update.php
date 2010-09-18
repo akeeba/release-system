@@ -24,7 +24,7 @@ SELECT
 FROM
 	(
 		`#__ars_items` as `i`
-		INNER JOIN `akb_ars_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
+		INNER JOIN `#__ars_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
 		INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
 	)
 	LEFT OUTER JOIN #__ars_updatestreams AS u ON(u.id = `i`.`updatestream`)

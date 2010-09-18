@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="ARS_VIEW_UPDATE_INI_TITLE">
+		<message>
+				<![CDATA[ARS_VIEW_UPDATE_INI_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>ARS_VIEW_UPDATE_INI_TITLE</name>
+		<description><![CDATA[ARS_VIEW_UPDATE_INI_DESC]]></description>
+		<params>
+			<param name="streamid" type="sql" default="0" label="LBL_ITEMS_UPDATESTREAM" description="" query="SELECT `id`, `name` FROM `#__ars_updatestreams`" key_field="id" value_field="name" />
+		</params>
+	</state>
+</metadata>

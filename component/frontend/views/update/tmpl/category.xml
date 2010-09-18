@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="ARS_VIEW_UPDATE_CATEGORY_TITLE">
+		<message>
+				<![CDATA[ARS_VIEW_UPDATE_CATEGORY_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>ARS_VIEW_UPDATE_CATEGORY_TITLE</name>
+		<description><![CDATA[ARS_VIEW_UPDATE_CATEGORY_DESC]]></description>
+		<params>
+			<param name="category" type="list" default="components" label="LBL_UPDATE_CATEGORY_TITLE" description="LBL_UPDATE_CATEGORY_DESC">
+				<option value="components">LBL_UPDATETYPES_COMPONENTS</option>
+				<option value="libraries">LBL_UPDATETYPES_LIBRARIES</option>
+				<option value="modules">LBL_UPDATETYPES_MODULES</option>
+				<option value="packages">LBL_UPDATETYPES_PACKAGES</option>
+				<option value="plugins">LBL_UPDATETYPES_PLUGINS</option>
+				<option value="files">LBL_UPDATETYPES_FILES</option>
+				<option value="templates">LBL_UPDATETYPES_TEMPLATES</option>
+			</param>
+		</params>
+	</state>
+</metadata>
