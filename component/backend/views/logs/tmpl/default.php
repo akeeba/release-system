@@ -52,7 +52,7 @@ $model = $this->getModel();
 			<td>
 				<?php echo ArsHelperSelect::categories($this->lists->fltCategory, 'category', array('onchange'=>'this.form.submit();')) ?>
 				<br/>
-				<?php echo ArsHelperSelect::releases($this->lists->fltRelease, 'release', array('onchange'=>'this.form.submit();'), $this->lists->fltCategory) ?>
+				<?php echo ArsHelperSelect::releases($this->lists->fltVersion, 'version', array('onchange'=>'this.form.submit();'), $this->lists->fltCategory) ?>
 				<br/>
 				<input type="text" name="itemtext" id="itemtext"
 					value="<?php echo $this->lists->fltItemText;?>"
@@ -119,12 +119,10 @@ $model = $this->getModel();
 			$i = 0;
 
 			foreach($this->items as $item):
-
-			$checkedout = $item->checked_out > 0;
 		?>
 		<tr>
 			<td>
-				<?php echo JHTML::_('grid.id', $i, $item->id, $checkedout); ?>
+				<?php echo JHTML::_('grid.id', $i, $item->id, false); ?>
 			</td>
 			<td>
 				<?php echo $this->escape($item->category) ?>

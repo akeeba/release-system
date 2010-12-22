@@ -2,3 +2,4 @@ Version 0.1 (Current trunk)
 ================================================================================
 !! HACK: The frontent/views/update/tmpl/stream.php FORCES the type to be "component". I have to deal with that.
 # Notice thrown in Control Panel due to missing entry (today's downloads)
+~ Improved log view when having hundreds of thousands of records (just don't try using the free text filters!)

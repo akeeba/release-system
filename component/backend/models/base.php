@@ -388,8 +388,16 @@ abstract class ArsModelBase extends JModel
 	{
 		if( empty($this->total) )
 		{
-			$query = $this->buildQuery();
-			$this->total = $this->_getListCount($query);
+			$query = $this->buildCountQuery();
+			if($query === false) {
+				$query = $this->buildQuery(true);
+				$query = "SELECT COUNT(*) FROM ($query) AS a";
+			}
+
+			$this->_db->setQuery( $query );
+			$this->_db->query();
+			
+			$this->total = $this->_db->loadResult();
 		}
 
 		return $this->total;
@@ -446,4 +454,8 @@ abstract class ArsModelBase extends JModel
 	 */
 	abstract public function buildQuery($overrideLimits = false);
 
+	public function buildCountQuery()
+	{
+		return false;
+	}
 }
