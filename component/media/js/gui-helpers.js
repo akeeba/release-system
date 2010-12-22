@@ -10,7 +10,7 @@
  *
  * Copyright (c) 2006 - 2008 Jörn Zaefferer
  *
- * $Id: gui-helpers.js 183 2010-07-13 22:28:10Z nikosdion $
+ * $Id$
  * 
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php

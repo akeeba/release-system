@@ -3,7 +3,7 @@
  * @package Updater
  * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
- * @version $Id: ini.php 4 2010-03-27 18:22:25Z nicholas $
+ * @version $Id$
  */
 
 // Protect from unauthorized access

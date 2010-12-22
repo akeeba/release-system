@@ -10,7 +10,7 @@ require_once 'pclzip.php';
 /**
  * Creates a JPA archive
  * @author Nicholas K. Dionysopoulos
- * @version $Id: ZipmeTask.php 188 2010-07-18 14:15:12Z nikosdion $
+ * @version $Id$
  * @package akeebabuilder
  * @copyright Copyright (c)2009-2010 Nicholas K. Dionysopoulos
  * @license GNU GPL version 3 or, at your option, any later version

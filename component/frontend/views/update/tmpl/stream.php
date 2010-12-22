@@ -44,7 +44,7 @@ foreach($this->items as $item):
 		<name><?php echo $item->alias ?></name>
 		<description><?php echo $item->name ?></description>
 		<element><?php echo $item->element ?></element>
-		<type><?php echo $item->type ?></type>
+		<type>component<?php # <-- OK, I am cheating; the query in the model masks the stream type with the item type # echo $item->type ?></type>
 		<version><?php echo $item->version ?></version>
 		<infourl title="<?php echo $item->cat_title.' '.$item->release_id ?>"><?php echo rtrim(JURI::base(),'/').JRoute::_('index.php?option=com_ars&view=release&id='.$item->release_id) ?></infourl>
 		<downloads>

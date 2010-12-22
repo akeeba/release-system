@@ -40,10 +40,6 @@ $groups = array('basic','insight','tools','update');
 					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_WEEK') ?></td>
 					<td><?php echo number_format($this->dlweek,0) ?></td>
 				</tr>
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_TODAY') ?></td>
-					<td><?php echo number_format($this->dltoday,0) ?></td>
-				</tr>
 			</table>
 			<div id="mapChartMini"></div>
 		</div>
