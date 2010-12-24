@@ -67,9 +67,11 @@ class ArsModelBaseFE extends JModel
 					$response->type = 'joomla';
 					$response->username = $user->username;
 					$response->email = $user->email;
-					$response->fullname = $user->fullname;
+					$response->fullname = $user->name;
 
 					JPluginHelper::importPlugin('user');
+					$options = array();
+					jimport('joomla.user.helper');
 					$results = $app->triggerEvent('onLoginUser', array((array)$response, $options));
 					$user = JFactory::getUser();
 					$parameters['username']	= $user->get('username');
