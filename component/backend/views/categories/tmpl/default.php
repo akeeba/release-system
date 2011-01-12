@@ -84,8 +84,9 @@ $model = $this->getModel();
 	<?php if($count = count($this->items)): ?>
 		<?php
 			$i = 0;
-
+			$m = 1;
 			foreach($this->items as $item):
+			$m = 1 - $m;
 
 			$model->reset();
 			$model->setId($item->id);
@@ -102,7 +103,7 @@ $model = $this->getModel();
 
 			$icon = '../media/com_ars/icons/' . (empty($item->groups) ? 'unlocked_16.png' : 'locked_16.png');
 		?>
-		<tr>
+		<tr class="row<?php echo $m?>">
 			<td>
 				<?php echo JHTML::_('grid.id', $i, $item->id, $checkedout); ?>
 			</td>

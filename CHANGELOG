@@ -18,3 +18,4 @@ Version 0.2 (Current trunk)
 # Access level references in the tables and models where not valid for Joomla! 1.6
 # Front-end was broken in Joomla! 1.6 due to API changes
 # Broken router in Joomla! 1.6 as the new API doesn't return unpublished menu items
+# Administrator lists didn't have zebra backgrounds making them very hard to read

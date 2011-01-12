@@ -118,10 +118,12 @@ $model = $this->getModel();
 	<?php if($count = count($this->items)): ?>
 		<?php
 			$i = 0;
+			$m = 1;
 
 			foreach($this->items as $item):
+			$m = 1 - $m;
 		?>
-		<tr>
+		<tr class="row<?php echo $m?>">
 			<td>
 				<?php echo JHTML::_('grid.id', $i, $item->id, false); ?>
 			</td>

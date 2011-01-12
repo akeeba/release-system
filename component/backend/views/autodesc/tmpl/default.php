@@ -75,10 +75,11 @@ $model = $this->getModel();
 	<?php if($count = count($this->items)): ?>
 		<?php
 			$i = 0;
-
+			$m = 0;
 			foreach($this->items as $item):
+			$m = 1 = $m;
 		?>
-		<tr class="row<?php echo $i ?>">
+		<tr class="row<?php echo $m ?>">
 			<td>
 				<?php echo JHTML::_('grid.id', $i, $item->id); ?>
 			</td>
