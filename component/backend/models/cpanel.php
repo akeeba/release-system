@@ -136,6 +136,10 @@ ENDSQL;
 				$date = "0 AND '2100-01-01'";
 				break;
 
+			case 'year':
+				$date = "makedate(year(current_timestamp), 1) AND makedate(year(current_timestamp), 1) + interval 1 year - interval 1 day";
+				break;
+			
 			case 'lastmonth':
 				$date = "LAST_DAY(CURRENT_TIMESTAMP) - INTERVAL 2 MONTH + INTERVAL 1 DAY AND LAST_DAY(CURRENT_TIMESTAMP) - INTERVAL 1 MONTH";
 				break;
