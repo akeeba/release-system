@@ -41,14 +41,25 @@ class ArsModelLogs extends ArsModelBase
 		}
 
 		$db = $this->getDBO();
-		$full = false;
 		if($fltItemText) {
-			$where[] = "CONCAT(category,' ',version,' ',item) LIKE \"%".$db->getEscaped($fltItemText)."%\"";
-			$full = true;
+			// This extra query approach is required for performance on very large log tables (multiple millions of rows)
+			$itemIDs = $this->getItems($fltItemText);
+			if(empty($itemIDs)) {
+				$where[] = 'FALSE';
+			} else {
+				$ids = implode(',', $itemIDs);
+				$where[] = 'item_id IN ('.$ids.')';
+			}
 		}
 		if($fltUserText) {
-			$where[] = "CONCAT(name,' ',username,' ',email) LIKE \"%".$db->getEscaped($fltUserText)."%\"";
-			$full = true;
+			// This extra query approach is required for performance on very large log tables (multiple millions of rows)
+			$userIDs = $this->getUsers($fltUserText);
+			if(empty($userIDs)) {
+				$where[] = 'FALSE';
+			} else {
+				$ids = implode(',', $userIDs);
+				$where[] = 'user_id IN ('.$ids.')';
+			}
 		}
 		if($fltReferer) {
 			$where[] = '`referer` LIKE "%'.$db->getEscaped($fltReferer).'%"';
@@ -57,7 +68,7 @@ class ArsModelLogs extends ArsModelBase
 			$where[] = '`ip` LIKE "%'.$db->getEscaped($fltIP).'%"';
 		}
 		if($fltCountry) {
-			$where[] = '`country` LIKE "%'.$db->getEscaped($fltCountry).'%"';
+			$where[] = '`country` = '.$db->Quote($fltCountry);
 		}
 		if(is_numeric($fltAuthorized)) {
 			$where[] = '`authorized` = '.$db->Quote($fltAuthorized);
@@ -69,23 +80,6 @@ class ArsModelLogs extends ArsModelBase
 			$where[] = '`release_id` = '.$db->Quote($fltVersion);
 		}
 
-		if($full):
-		$sourcetable = <<<ENDSQL
-SELECT
-  l.*,
-  c.title as category, r.version, r.maturity, i.title as item,
-  IF(i.`type` = 'file', i.filename, i.url) as asset, i.updatestream, i.filesize,
-  i.release_id, r.category_id,
-  u.name, u.username, u.email
-FROM
-  #__ars_log AS l
-  JOIN #__ars_items AS i ON(i.id = l.item_id)
-  JOIN #__ars_releases AS r ON(r.id = i.release_id)
-  JOIN #__ars_categories AS c ON(c.id = r.category_id)
-  LEFT JOIN #__users AS u ON(u.id = user_id)
-ENDSQL;
-		$query = "SELECT * FROM ($sourcetable) AS tbl";
-		else:
 		$query = <<<ENDSQL
 SELECT
   l.*,
@@ -100,7 +94,6 @@ FROM
   JOIN #__ars_categories AS c ON(c.id = r.category_id)
   LEFT JOIN #__users AS u ON(u.id = user_id)
 ENDSQL;
-		endif;
 
 		if(count($where) && !$overrideLimits)
 		{
@@ -146,15 +139,28 @@ ENDSQL;
 		}
 
 		$db = $this->getDBO();
-		$full = false;
+		/**/
 		if($fltItemText) {
-			$where[] = "CONCAT(category,' ',version,' ',item) LIKE \"%".$db->getEscaped($fltItemText)."%\"";
-			$full = true;
+			// This extra query approach is required for performance on very large log tables (multiple millions of rows)
+			$itemIDs = $this->getItems($fltItemText);
+			if(empty($itemIDs)) {
+				$where[] = 'FALSE';
+			} else {
+				$ids = implode(',', $itemIDs);
+				$where[] = 'item_id IN ('.$ids.')';
+			}
 		}
 		if($fltUserText) {
-			$where[] = "CONCAT(name,' ',username,' ',email) LIKE \"%".$db->getEscaped($fltUserText)."%\"";
-			$full = true;
+			// This extra query approach is required for performance on very large log tables (multiple millions of rows)
+			$userIDs = $this->getUsers($fltUserText);
+			if(empty($userIDs)) {
+				$where[] = 'FALSE';
+			} else {
+				$ids = implode(',', $userIDs);
+				$where[] = 'user_id IN ('.$ids.')';
+			}
 		}
+		/**/
 		if($fltReferer) {
 			$where[] = '`referer` LIKE "%'.$db->getEscaped($fltReferer).'%"';
 		}
@@ -174,7 +180,6 @@ ENDSQL;
 			$where[] = '`release_id` = '.$db->Quote($fltVersion);
 		}
 
-		if($full):
 		$query = <<<ENDSQL
 SELECT
   COUNT(*)
@@ -185,14 +190,6 @@ FROM
   JOIN #__ars_categories AS c ON(c.id = r.category_id)
   LEFT JOIN #__users AS u ON(u.id = user_id)
 ENDSQL;
-		else:
-		$query = <<<ENDSQL
-SELECT
-  COUNT(*)
-FROM
-  #__ars_log
-ENDSQL;
-		endif;
 
 		if(count($where))
 		{
@@ -201,5 +198,38 @@ ENDSQL;
 
 		return $query;
 	}
+
+	/**
+	 * Returns the user IDs whose username, email address or real name contains the $frag string
+	 * @param string $frag
+	 * @return array|null
+	 */
+	private function getUsers($frag)
+	{
+		$db = $this->getDBO();
+		$qfrag = "'%" . $db->getEscaped($frag) . "%'";
+		$db->setQuery("SELECT `id` FROM `#__users` WHERE `name` LIKE $qfrag OR `username` LIKE $qfrag OR `email` LIKE $qfrag OR `params` LIKE $qfrag");
+		return $db->loadResultArray();
+	}
 	
+	/**
+	 * Gets a list of download item IDs whose title contains the $frag string
+	 * @param string $frag
+	 * @return array|null
+	 */
+	private function getItems($frag)
+	{
+		$db = $this->getDBO();
+		$qfrag = "'%" . $db->getEscaped($frag) . "%'";
+		$query = <<<ENDQUERY
+select
+	id
+FROM
+	`#__ars_items`
+WHERE
+	title LIKE $qfrag
+ENDQUERY;
+		$db->setQuery($query);
+		return $db->loadResultArray();
+	}
 }
