@@ -390,7 +390,7 @@ abstract class ArsModelBase extends JModel
 		{
 			$query = $this->buildCountQuery();
 			if($query === false) {
-				$query = $this->buildQuery(true);
+				$query = $this->buildQuery(false);
 				$query = "SELECT COUNT(*) FROM ($query) AS a";
 			}
 
