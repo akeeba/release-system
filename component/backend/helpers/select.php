@@ -325,14 +325,29 @@ class ArsHelperSelect
 			$model = new ArsModelItems();
 			$model->reset();
 			$model->setState('category',$release->category_id);
+			$model->setState('release', false);
 			$model->setState('limitstart', 0);
 			$model->setState('limit', 0);
 			$items = $model->getItemList();
 
-			if(!empty($items)) foreach($items as $item) {
-				if(($item->id != $item_id) && !empty($item->filename)) {
-					$files[] = $item->filename;
+			if(!empty($items))
+			{
+				// Walk through the list and find the currently selected filename
+				$currentFilename = '';
+				foreach($items as $item) {
+					if($item->id == $item_id) {
+						$currentFilename = $item->filename;
+						break;
+					}
 				}
+				
+				// Remove already used filenames except the currently selected filename
+				reset($items);
+				foreach($items as $item) {
+					if(($item->filename != $currentFilename) && !empty($item->filename)) {
+						$files[] = $item->filename;
+					}
+				}				
 				$files = array_unique($files);
 			}
 		}
