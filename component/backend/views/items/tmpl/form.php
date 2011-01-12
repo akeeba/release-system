@@ -130,7 +130,15 @@ $editor =& JFactory::getEditor();
 	function onLinkBlur()
 	{
 		(function($){
-			$('#alias').val( basename($('#url').val()) );
+			var oldAlias = $('#alias').val();
+			if(oldAlias == '') {
+				var newAlias = basename($('#url').val());
+				var qmPos = newAlias.indexOf('?');
+				if(qmPos >= 0) {
+					newAlias = newAlias.substr(0, qmPos);
+				}
+				$('#alias').val( newAlias );
+			}
 		})(akeeba.jQuery);
 	}
 
