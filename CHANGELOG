@@ -10,3 +10,4 @@ Version 0.2 (Current trunk)
 # The currently selected file doesn't appear on copied entries with a type of File
 # Files already used in other releases of the same category would appear when editing or creating an item
 # Using the Download Log filters would cause a terrible lag when having several hundred thousands of log items in the database table
+# Published/unpublished icons in Download Log view not showing in Joomla! 1.6
