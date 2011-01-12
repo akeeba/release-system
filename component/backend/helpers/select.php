@@ -171,24 +171,31 @@ class ArsHelperSelect
 				$selected = explode(',',$selected);
 			}
 		}
-
-		$db = JFactory::getDBO();
-		$sql = 'SELECT * FROM `#__ambrasubs_types` WHERE `published` = 1';
-		$db->setQuery($sql);
-		$groups = $db->loadObjectList();
-
-		$html = '';
-
-		if(count($groups))
-		{
-			$options = array();
-			foreach($groups as $group) {
-				$item = '<input type="checkbox" class="checkbox" name="'.$name.'[]" value="'.$group->id.'" ';
-				if(in_array($group->id, $selected)) $item .= ' checked="checked" ';
-				$item .= '/> '.$group->title;
-				$options[] = $item;
-			}
-			$html = implode("\n&nbsp;", $options);
+		
+		$ambraModel = JModel::getInstance('Ambra', 'ArsModel');
+		$hasAmbra = ArsModelAmbra::hasAMBRA();
+		
+		if($hasAmbra) {
+			$db = JFactory::getDBO();
+			$sql = 'SELECT * FROM `#__ambrasubs_types` WHERE `published` = 1';
+			$db->setQuery($sql);
+			$groups = $db->loadObjectList();
+	
+			$html = '';
+	
+			if(count($groups))
+			{
+				$options = array();
+				foreach($groups as $group) {
+					$item = '<input type="checkbox" class="checkbox" name="'.$name.'[]" value="'.$group->id.'" ';
+					if(in_array($group->id, $selected)) $item .= ' checked="checked" ';
+					$item .= '/> '.$group->title;
+					$options[] = $item;
+				}
+				$html = implode("\n&nbsp;", $options);
+			}			
+		} else {
+			$html = '';
 		}
 
 		return $html;
