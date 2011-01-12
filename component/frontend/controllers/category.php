@@ -113,10 +113,10 @@ class ArsControllerCategory extends JController
 			$prefix = $this->getName().'View';
 			$view = JRequest::getCmd('view','cpanel');
 			$viewName = ucfirst($view);
-			$document =& JFactory::getDocument();
-			$viewType	= $document->getType();
+			$viewType	= $this->viewType;
 
-			$view = $this->getView($viewName, $viewType, $prefix, array( 'base_path'=>$this->_basePath));
+			$basePath = version_compare(JVERSION,'1.6.0','ge') ? $this->basePath : $this->_basePath;
+			$view = $this->getView($viewName, $viewType, $prefix, array( 'base_path'=>$basePath));
 		}
 
 		return $view;

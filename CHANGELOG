@@ -1,6 +1,7 @@
 Version 0.2 (Current trunk)
 ================================================================================
 !! HACK: The frontent/views/update/tmpl/stream.php FORCES the type to be "component". I have to deal with that.
++ Added update INI and XML URLs to the update stream page
 # Notice thrown in Control Panel due to missing entry (today's downloads)
 # Authentication against a Download ID wouldn't work
 # No view except the Control Panel would load in Joomla! 1.6 RC1 or later
@@ -15,3 +16,5 @@ Version 0.2 (Current trunk)
 # If AMBRA.subs is not installed, some views crash and burn (e.g. category editor)
 # Changing the access level from the list view should not be possible in Joomla! 1.6 due to the custom access levels
 # Access level references in the tables and models where not valid for Joomla! 1.6
+# Front-end was broken in Joomla! 1.6 due to API changes
+# Broken router in Joomla! 1.6 as the new API doesn't return unpublished menu items

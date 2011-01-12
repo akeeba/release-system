@@ -65,17 +65,28 @@ $model = $this->getModel();
 	<?php if($count = count($this->items)): ?>
 		<?php
 			$i = 0;
-
+			$m = 1;
 			foreach($this->items as $item):
+			$m = 1 - $m;
 		?>
-		<tr>
+		<tr class="row<?php echo $m?>">
 			<td>
 				<?php echo JHTML::_('grid.id', $i, $item->id); ?>
 			</td>
 			<td>
-				<a href="index.php?option=com_ars&view=updatestreams&task=edit&id=<?php echo (int)$item->id ?>">
-					<?php echo htmlentities($item->name) ?>
-				</a>
+				<strong>
+					<a href="index.php?option=com_ars&view=updatestreams&task=edit&id=<?php echo (int)$item->id ?>">
+						<?php echo htmlentities($item->name) ?>
+					</a>
+				</strong>
+				<br/>
+				<span class="small">
+				&emsp;&emsp;&emsp;
+					<?php echo JText::_('LBL_UPDATESTREAMS_LINKS'); ?>
+					<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&format=ini&id=<?php echo (int)$item->id ?>" target="_blank">INI</a>
+					&bull;
+					<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=stream&format=xml&id=<?php echo (int)$item->id ?>" target="_blank">XML</a>
+				</span>
 			</td>
 			<td>
 				<?php echo JText::_('LBL_UPDATETYPES_'.  strtoupper($item->type)); ?>

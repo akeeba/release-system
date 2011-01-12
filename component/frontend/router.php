@@ -1305,6 +1305,12 @@ class ArsRouterHelper
 	 */
 	static public function findMenu($qoptions = array(), $params = null)
 	{
+		static $joomla16 = null;
+		
+		if(is_null($joomla16)) {
+			$joomla16 = version_compare(JVERSION,'1.6.0','ge');
+		}
+		
 		// Convert $qoptions to an object
 		if(empty($qoptions) || !is_array($qoptions)) $qoptions = array();
 
@@ -1320,7 +1326,9 @@ class ArsRouterHelper
 
 		foreach($menus->getMenu() as $item)
 		{
-			if($item->published)
+			if($joomla16) {
+				if(self::checkMenu($item, $qoptions, $params)) return $item;
+			} elseif($item->published)
 			{
 				if(self::checkMenu($item, $qoptions, $params)) return $item;
 			}
