@@ -82,9 +82,10 @@ class TableUpdatestreams extends ArsTable
 		if(is_array($this->groups)) $this->groups = implode(',', $this->groups);
 
 		// Set the access to registered if there are Ambra groups defined
-		if(!empty($this->groups) && ($this->access == 0))
+		$baseAccess = version_compare(JVERSION,'1.6.0','ge') ? 1 : 0;
+		if(!empty($this->groups) && ($this->access == $baseAccess))
 		{
-			$this->access = 1;
+			$this->access = $baseAccess + 1;
 		}
 
 		jimport('joomla.utilities.date');

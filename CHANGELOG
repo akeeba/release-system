@@ -14,3 +14,4 @@ Version 0.2 (Current trunk)
 # Access, Published and Hits headers' JTEXT keys have changed in Joomla! 1.6
 # If AMBRA.subs is not installed, some views crash and burn (e.g. category editor)
 # Changing the access level from the list view should not be possible in Joomla! 1.6 due to the custom access levels
+# Access level references in the tables and models where not valid for Joomla! 1.6
