@@ -139,7 +139,12 @@ $model = $this->getModel();
 			<td>
 				<img src="<?php echo $icon ?>" width="16" height="16" align="left" />
 				<span class="ars-access">
-				&nbsp; <?php echo JHTML::_('grid.access', $item, $i); ?>
+				&nbsp;
+				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
+				<?php echo ArsHelperSelect::renderaccess($item->access); ?>
+				<?php else: ?>
+				<?php echo JHTML::_('grid.access', $item, $i); ?>
+				<?php endif; ?>				
 				</span>
 			</td>
 			<td>

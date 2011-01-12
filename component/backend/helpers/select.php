@@ -410,4 +410,26 @@ class ArsHelperSelect
 		}
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
+	
+	/**
+	 * Renders the name of an access level group in Joomla! 1.6
+	 * @param $access_level_id int The numeric access level
+	 */	
+	public static function renderaccess($access_level_id)
+	{
+		static $levelMap = null;
+
+		if(is_null($levelMap)) {
+			$db = JFactory::getDBO();
+			$query = 'SELECT `id`, `title` FROM `#__viewlevels`';
+			$db->setQuery($query);
+			$levelMap = $db->loadAssocList('id','title');
+		}
+		
+		if(array_key_exists($access_level_id, $levelMap)) {
+			return $levelMap[$access_level_id];
+		} else {
+			return 'UNKNOWN '.$access_level_id;
+		}
+	}
 }
