@@ -1,6 +1,9 @@
-Version 0.1 (Current trunk)
+Version 0.2 (Current trunk)
 ================================================================================
 !! HACK: The frontent/views/update/tmpl/stream.php FORCES the type to be "component". I have to deal with that.
 ~ Improved log view when having hundreds of thousands of records (just don't try using the free text filters!)
 # Notice thrown in Control Panel due to missing entry (today's downloads)
 # Authentication against a Download ID wouldn't work
+# No view except the Control Panel would load in Joomla! 1.6 RC1 or later
+# Tokens were missing throughout the application
+# Text filters were not escaped (potential XSS attack vector)

@@ -19,6 +19,7 @@ $model = $this->getModel();
 	<input type="hidden" name="hidemainmenu" id="hidemainmenu" value="0" />
 	<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->lists->order ?>" />
 	<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->lists->order_Dir ?>" />
+	<input type="hidden" name="<?php echo JUtility::getToken();?>" value="1" />
 <table class="adminlist">
 	<thead>
 		<tr>
@@ -55,7 +56,7 @@ $model = $this->getModel();
 				<?php echo ArsHelperSelect::releases($this->lists->fltVersion, 'version', array('onchange'=>'this.form.submit();'), $this->lists->fltCategory) ?>
 				<br/>
 				<input type="text" name="itemtext" id="itemtext"
-					value="<?php echo $this->lists->fltItemText;?>"
+					value="<?php echo $this->escape($this->lists->fltItemText);?>"
 					class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();">
 					<?php echo JText::_('Go'); ?>
@@ -66,7 +67,7 @@ $model = $this->getModel();
 			</td>
 			<td>
 				<input type="text" name="usertext" id="usertext"
-					value="<?php echo $this->lists->fltUserText;?>"
+					value="<?php echo $this->escape($this->lists->fltUserText);?>"
 					class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();">
 					<?php echo JText::_('Go'); ?>
@@ -78,7 +79,7 @@ $model = $this->getModel();
 			<td>&nbsp;</td>
 			<td>
 				<input type="text" name="referer" id="referer"
-					value="<?php echo $this->lists->fltReferer;?>"
+					value="<?php echo $this->escape($this->lists->fltReferer);?>"
 					class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();">
 					<?php echo JText::_('Go'); ?>
@@ -89,7 +90,7 @@ $model = $this->getModel();
 			</td>
 			<td>
 				<input type="text" name="ip" id="ip"
-					value="<?php echo $this->lists->fltIP;?>"
+					value="<?php echo $this->escape($this->lists->fltIP);?>"
 					class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();">
 					<?php echo JText::_('Go'); ?>

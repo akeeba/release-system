@@ -18,6 +18,7 @@ $model = $this->getModel();
 	<input type="hidden" name="hidemainmenu" id="hidemainmenu" value="0" />
 	<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->lists->order ?>" />
 	<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->lists->order_Dir ?>" />
+	<input type="hidden" name="<?php echo JUtility::getToken();?>" value="1" />
 <table class="adminlist">
 	<thead>
 		<tr>

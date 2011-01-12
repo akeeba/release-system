@@ -16,6 +16,7 @@ $editor =& JFactory::getEditor();
 	<input type="hidden" name="view" value="<?php echo JRequest::getCmd('view') ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="id" value="<?php echo $this->item->id ?>" />
+	<input type="hidden" name="<?php echo JUtility::getToken();?>" value="1" />
 
 	<fieldset>
 		<legend><?php echo JText::_('LBL_ARS_CATEGORY_BASIC'); ?></legend>

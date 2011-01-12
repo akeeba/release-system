@@ -18,6 +18,7 @@ $editor =& JFactory::getEditor();
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="id" value="<?php echo $this->item->id ?>" />
 	<input type="hidden" name="created_by" value="<?php echo $this->item->created_by ?>" />
+	<input type="hidden" name="<?php echo JUtility::getToken();?>" value="1" />
 
 	<fieldset>
 		<legend><?php echo JText::_('LBL_ARS_RELEASE_BASIC'); ?></legend>

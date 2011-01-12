@@ -13,6 +13,16 @@ jimport('joomla.application.component.controller');
 
 class ArsControllerDefault extends JController
 {
+	var $isJoomla16 = false;
+	
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+		if(version_compare(JVERSION,'1.6.0','ge')) {
+			$this->isJoomla16 = true;
+		}
+	} 
+	
 	public function display($cachable = false)
 	{
 		$document =& JFactory::getDocument();
@@ -88,6 +98,11 @@ class ArsControllerDefault extends JController
 
 	public function apply()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$model = $this->getThisModel();
 		$this->applySave();
 
@@ -103,6 +118,11 @@ class ArsControllerDefault extends JController
 
 	public function save()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$this->applySave();
 
 		// Redirect to the display task
@@ -116,6 +136,11 @@ class ArsControllerDefault extends JController
 
 	public function savenew()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$this->applySave();
 
 		// Redirect to the display task
@@ -143,31 +168,61 @@ class ArsControllerDefault extends JController
 
 	public function accesspublic()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$this->setaccess(0);
 	}
 
 	public function accessregistered()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$this->setaccess(1);
 	}
 
 	public function accessspecial()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$this->setaccess(2);
 	}
 
 	public function publish()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$this->setstate(1);
 	}
 
 	public function unpublish()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$this->setstate(0);
 	}
 
 	public function saveorder()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$model = $this->getThisModel();
 		$model->setIDsFromRequest();
 
@@ -205,6 +260,11 @@ class ArsControllerDefault extends JController
 
 	public function orderdown()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$model = $this->getThisModel();
 		$model->setIDsFromRequest();
 
@@ -226,6 +286,11 @@ class ArsControllerDefault extends JController
 
 	public function orderup()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$model = $this->getThisModel();
 		$model->setIDsFromRequest();
 
@@ -247,9 +312,14 @@ class ArsControllerDefault extends JController
 
 	public function remove()
 	{
+		// CSRF prevention
+		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
+			JError::raiseError('403', JText::_('Request Forbidden'));
+		}
+		
 		$model = $this->getThisModel();
 		$model->setIDsFromRequest();
-		$model->delete();
+		$status = $model->delete();
 
 		// redirect
 		$option = JRequest::getCmd('option');
@@ -404,6 +474,7 @@ class ArsControllerDefault extends JController
 			$viewType	= $document->getType();
 		}
 
-		return $this->getView($viewName, $viewType, $prefix, array( 'base_path'=>$this->_basePath));
+		$basePath = (!$this->isJoomla16) ? $this->_basePath : $this->basePath;
+		return $this->getView($viewName, $viewType, $prefix, array( 'base_path'=>$basePath));
 	}
 }
