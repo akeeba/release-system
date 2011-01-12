@@ -36,10 +36,18 @@ $model = $this->getModel();
 				<?php echo JHTML::_('grid.order', $this->items); ?>
 			</th>
 			<th width="150">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
+				<?php echo JHTML::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php else: ?>
 				<?php echo JHTML::_('grid.sort', 'ACCESS', 'access', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php endif; ?>
 			</th>
 			<th width="80">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
+				<?php echo JHTML::_('grid.sort', 'JPUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php else: ?>
 				<?php echo JHTML::_('grid.sort', 'PUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php endif; ?>
 			</th>
 		</tr>
 		<tr>

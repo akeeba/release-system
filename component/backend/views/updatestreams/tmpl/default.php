@@ -35,7 +35,11 @@ $model = $this->getModel();
 				<?php echo JHTML::_('grid.sort', 'LBL_UPDATES_ELEMENT', 'element', $this->lists->order_Dir, $this->lists->order); ?>
 			</th>
 			<th width="80">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
+				<?php echo JHTML::_('grid.sort', 'JPUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php else: ?>
 				<?php echo JHTML::_('grid.sort', 'PUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php endif; ?>
 			</th>
 		</tr>
 		<tr>
