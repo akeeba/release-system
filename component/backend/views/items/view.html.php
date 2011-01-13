@@ -62,5 +62,14 @@ class ArsViewItems extends ArsViewBase
 		// Load the select box helper
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';
 		parent::onAdd();
+		
+		$model = $this->getModel();
+		$fltRelease		= $model->getState('release', null, 'int');
+
+		if($fltRelease) {
+			$item = $model->getItem();
+			$item->release_id = $fltRelease;
+			$this->assignRef( 'item',		$item );
+		}
 	}
 }

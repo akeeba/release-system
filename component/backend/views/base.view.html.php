@@ -73,8 +73,8 @@ class ArsViewBase extends JView
 	protected function onAdd()
 	{
 		$model = $this->getModel();
-
-		$this->assignRef( 'item',		$model->getItem() );
+		
+		$this->assignRef( 'item',		$model->getItem() );	
 		// Set toolbar title
 		$subtitle_key = 'ARS_TITLE_'.strtoupper(JRequest::getCmd('view','cpanel')).'_EDIT';
 		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD').' &ndash; <small>'.JText::_($subtitle_key).'</small>');
