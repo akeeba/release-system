@@ -25,7 +25,7 @@ class ArsControllerReleases extends ArsControllerDefault
 		if($item->$key == $id)
 		{
 			$item->id = 0;
-			$item->title = 'Copy of '.$item->title;
+			$item->version = 'Copy of '.$item->version;
 			$item->alias = 'copy-of-'.$item->alias;
 			$item->ordering = 0;
 			$item->created_by = 0;
@@ -38,15 +38,14 @@ class ArsControllerReleases extends ArsControllerDefault
 			$item->hits = 0;
 		}
 		$status = $model->save($item);
-		$newRelease = $model->getSavedArray();
+		$newRelease = $model->getSavedTable();
 
 		// Get a list of contained items
 		$itemModel = $this->getModel('Items','ArsModel');
 		$itemModel->setState('release', $id);
 		$temp = $itemModel->getItemList();
-		$items = clone $temp;
 
-		foreach($item as $item)
+		foreach($temp as $item)
 		{
 			$item->id = 0;
 			$item->release_id = $newRelease->id;

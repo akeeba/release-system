@@ -28,3 +28,4 @@ Version 0.2 (Current trunk)
 # Alias, hits, published, access translation keys in forms have changed in Joomla! 1.6
 # Published field in forms had a broken layout in Joomla! 1.6
 # AMBRA groups should not appear if AMBRA Subscriptions is not installed
+# Release copy didn't work
