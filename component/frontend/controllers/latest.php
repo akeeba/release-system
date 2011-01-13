@@ -91,8 +91,13 @@ class ArsControllerLatest extends JController
 			$prefix = $this->getName().'View';
 			$view = JRequest::getCmd('view','cpanel');
 			$viewName = ucfirst($view);
-			$viewType	= $this->viewType;
-
+			if(!property_exists($this,'viewType')) {
+				$document =& JFactory::getDocument();
+				$viewType	= $document->getType();
+			} else {
+				$viewType	= $this->viewType;
+			}
+			
 			$basePath = version_compare(JVERSION,'1.6.0','ge') ? $this->basePath : $this->_basePath;
 			$view = $this->getView($viewName, $viewType, $prefix, array( 'base_path'=>$basePath));
 		}
