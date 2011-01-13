@@ -8,12 +8,10 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-jimport('joomla.application.component.controller');
+require_once(dirname(__FILE__).DS.'default.php');
 
-class ArsControllerUpdate extends JController
+class ArsControllerUpdate extends ArsControllerDefault
 {
-	var $viewType = null;
-	
 	function  __construct($config = array()) {
 		parent::__construct($config);
 
@@ -85,38 +83,6 @@ class ArsControllerUpdate extends JController
 		JRequest::setVar('layout', $this->_task);
 	}
 
-	/**
-	 * Required override because Joomla! keeps on fucking me
-	 */
-	function display($cachable=false)
-	{
-		// Set the layout
-		$view = $this->getThisView();
-		$model = $this->getThisModel();
-		$view->setModel( $model, true );
-
-		$view->setLayout( JRequest::getCmd('layout','default') );
-
-		// Display the view
-		$document =& JFactory::getDocument();
-		$viewType	= $document->getType();
-
-		if($viewType == 'feed')
-		{
-			// Extra data required for feeds
-			$model->processFeedData();
-			$view->setLayout('feed');
-		}
-
-		if ($cachable && $viewType != 'feed') {
-			global $option;
-			$cache =& JFactory::getCache($option, 'view');
-			$cache->get($view, 'display');
-		} else {
-			$view->display();
-		}
-	}
-
 	public function all($cacheable=false)
 	{
 		$this->display();
@@ -168,41 +134,5 @@ class ArsControllerUpdate extends JController
 		$model = $this->getThisModel();
 		$model->getItems($id);
 		$this->display();
-	}
-
-	private function getThisModel()
-	{
-		static $model;
-
-		if(!is_object($model)) {
-			$prefix = $this->getName().'Model';
-			$view = JRequest::getCmd('view','browse');
-			$modelName = ucfirst($view);
-			$model = $this->getModel($modelName, $prefix);
-		}
-
-		return $model;
-	}
-
-	public final function getThisView()
-	{
-		static $view;
-
-		if(!is_object($view)) {
-			$prefix = $this->getName().'View';
-			$view = JRequest::getCmd('view','cpanel');
-			$viewName = ucfirst($view);
-			if(!property_exists($this,'viewType')) {
-				$document =& JFactory::getDocument();
-				$viewType	= $document->getType();
-			} else {
-				$viewType	= $this->viewType;
-			}
-			
-			$basePath = version_compare(JVERSION,'1.6.0','ge') ? $this->basePath : $this->_basePath;
-			$view = $this->getView($viewName, $viewType, $prefix, array( 'base_path'=>$basePath));
-		}
-
-		return $view;
 	}
 }

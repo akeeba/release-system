@@ -8,46 +8,14 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-jimport('joomla.application.component.controller');
+require_once(dirname(__FILE__).DS.'default.php');
 
-class ArsControllerLatest extends JController
+class ArsControllerLatest extends ArsControllerDefault
 {
 	function  __construct($config = array()) {
 		parent::__construct($config);
 		$this->registerDefaultTask('repository');
 		$this->registerTask( 'display', 'repository' );
-	}
-
-	/**
-	 * Required override because Joomla! keeps on fucking me
-	 */
-	function display($cachable=false)
-	{
-		// Set the layout
-		$view = $this->getThisView();
-		$model = $this->getThisModel();
-		$view->setModel( $model, true );
-
-		$view->setLayout('latest');
-
-		// Display the view
-		$document =& JFactory::getDocument();
-		$viewType	= $document->getType();
-
-		if($viewType == 'feed')
-		{
-			// Extra data required for feeds
-			$model->processFeedData();
-			$view->setLayout('feed');
-		}
-
-		if ($cachable && $viewType != 'feed') {
-			global $option;
-			$cache =& JFactory::getCache($option, 'view');
-			$cache->get($view, 'display');
-		} else {
-			$view->display();
-		}
 	}
 
 	function repository($cachable=false)
@@ -70,38 +38,5 @@ class ArsControllerLatest extends JController
 		$model->processLatest();
 
 		$this->display($cachable);
-	}
-
-	private function getThisModel()
-	{
-		static $model;
-
-		if(!is_object($model)) {
-			$model = $this->getModel('Browse', 'ArsModel');
-		}
-
-		return $model;
-	}
-
-	public final function getThisView()
-	{
-		static $view;
-
-		if(!is_object($view)) {
-			$prefix = $this->getName().'View';
-			$view = JRequest::getCmd('view','cpanel');
-			$viewName = ucfirst($view);
-			if(!property_exists($this,'viewType')) {
-				$document =& JFactory::getDocument();
-				$viewType	= $document->getType();
-			} else {
-				$viewType	= $this->viewType;
-			}
-			
-			$basePath = version_compare(JVERSION,'1.6.0','ge') ? $this->basePath : $this->_basePath;
-			$view = $this->getView($viewName, $viewType, $prefix, array( 'base_path'=>$basePath));
-		}
-
-		return $view;
 	}
 }
