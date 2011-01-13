@@ -58,11 +58,13 @@ class ArsHelperBreadcrumbs
 			$pathway = $app->getPathway();
 
 			// Preferably find a menu item linking to a specific repository type
+			$isJoomla16 = version_compare(JVERSION,'1.6.0','ge');
 			$Itemid = null;
 			$all_items = $menus->getItems('type', 'component', false);
 			if(empty($all_items)) return;
 			foreach($all_items as $item)
 			{
+				if($isJoomla16) $item->published = 1;
 				if( ($item->published)
 					&& ($item->query['option'] == 'com_ars')
 					&& ($item->query['view'] == 'category')
