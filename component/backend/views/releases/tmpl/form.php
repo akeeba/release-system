@@ -10,6 +10,7 @@ defined('_JEXEC') or die('Restricted Access');
 
 JHTML::_('behavior.calendar');
 $editor =& JFactory::getEditor();
+$asModel = JModel::getInstance('Ambra','ArsModel');
 ?>
 
 <form name="adminForm" id="adminForm" action="index.php" method="post">
@@ -77,10 +78,12 @@ $editor =& JFactory::getEditor();
 			</label>
 			<?php echo JHTML::_('list.accesslevel', $this->item); ?>
 		</div>
+		<?php if(ArsModelAmbra::hasAMBRA()): ?>
 		<div class="editform-row editform-row-noheight">
 			<label for="groups"><?php echo JText::_('LBL_CATEGORIES_GROUPS'); ?></label>
 			<?php echo ArsHelperSelect::ambragroups($this->item->groups, 'groups') ?>
 		</div>
+		<?php endif; ?>
 		<div style="clear:left"></div>
 		<div class="editform-row">
 			<label for="created"><?php echo JText::_('Released on'); ?></label>

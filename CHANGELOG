@@ -27,3 +27,4 @@ Version 0.2 (Current trunk)
 # Item page: The "Linked item URL" field should be stripped of its query part before using it in the alias field
 # Alias, hits, published, access translation keys in forms have changed in Joomla! 1.6
 # Published field in forms had a broken layout in Joomla! 1.6
+# AMBRA groups should not appear if AMBRA Subscriptions is not installed

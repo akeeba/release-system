@@ -9,6 +9,7 @@
 defined('_JEXEC') or die('Restricted Access');
 
 $editor =& JFactory::getEditor();
+$asModel = JModel::getInstance('Ambra','ArsModel');
 ?>
 
 <form name="adminForm" id="adminForm" action="index.php" method="post">
@@ -97,10 +98,12 @@ $editor =& JFactory::getEditor();
 			</label>
 			<?php echo JHTML::_('list.accesslevel', $this->item); ?>
 		</div>
+		<?php if(ArsModelAmbra::hasAMBRA()): ?>
 		<div class="editform-row editform-row-noheight">
 			<label for="groups"><?php echo JText::_('LBL_CATEGORIES_GROUPS'); ?></label>
 			<?php echo ArsHelperSelect::ambragroups($this->item->groups, 'groups') ?>
 		</div>
+		<?php endif; ?>
 		<div class="editform-row">
 			<label for="updatestream"><?php echo JText::_('LBL_ITEMS_UPDATESTREAM'); ?></label>
 			<?php echo ArsHelperSelect::updatestreams($this->item->updatestream, 'updatestream') ?>
