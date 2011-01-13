@@ -46,7 +46,10 @@ class ArsViewCategories extends ArsViewBase
 		// -- Items
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=items';
 		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link);
-
+		// -- Import
+		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=impjed';
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_IMPORT_JED'), $link);
+		
 		// Load the select box helper
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';
 
