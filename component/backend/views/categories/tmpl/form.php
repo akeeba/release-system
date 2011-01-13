@@ -38,13 +38,25 @@ $editor =& JFactory::getEditor();
 			<input type="text" name="directory" id="directory" value="<?php echo $this->item->directory ?>">
 		</div>
 		<div class="editform-row">
-			<label for="published"><?php echo JText::_('PUBLISHED'); ?></label>
+			<label for="published">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
+				<?php echo JText::_('JPUBLISHED'); ?>
+				<?php else: ?>
+				<?php echo JText::_('PUBLISHED'); ?>
+				<?php endif; ?>
+			</label>
 			<div>
 				<?php echo JHTML::_('select.booleanlist', 'published', null, $this->item->published); ?>
 			</div>
 		</div>
 		<div class="editform-row editform-row-noheight">
-			<label for="access"><?php echo JText::_('ACCESS'); ?></label>
+			<label for="access">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
+				<?php echo JText::_('JFIELD_ACCESS_LABEL'); ?>
+				<?php else: ?>
+				<?php echo JText::_('ACCESS'); ?>
+				<?php endif; ?>
+			</label>
 			<?php echo JHTML::_('list.accesslevel', $this->item); ?>
 		</div>
 		<div class="editform-row editform-row-noheight">

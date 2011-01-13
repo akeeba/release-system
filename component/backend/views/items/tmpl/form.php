@@ -30,7 +30,13 @@ $editor =& JFactory::getEditor();
 			<input type="text" name="title" id="title" value="<?php echo $this->item->title ?>">
 		</div>
 		<div class="editform-row">
-			<label for="alias"><?php echo JText::_('ALIAS'); ?></label>
+			<label for="alias">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
+				<?php echo JText::_('JFIELD_ALIAS_LABEL'); ?>
+				<?php else: ?>
+				<?php echo JText::_('ALIAS'); ?>
+				<?php endif; ?>			
+			</label>
 			<input type="text" name="alias" id="alias" value="<?php echo $this->item->alias ?>" >
 		</div>
 		<div class="editform-row">
@@ -60,17 +66,35 @@ $editor =& JFactory::getEditor();
 			<input type="text" name="sha1" id="sha1" value="<?php echo $this->item->sha1 ?>" >
 		</div>
 		<div class="editform-row">
-			<label for="hits"><?php echo JText::_('HITS'); ?></label>
+			<label for="hits">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
+				<?php echo JText::_('JGLOBAL_HITS'); ?>
+				<?php else: ?>
+				<?php echo JText::_('HITS'); ?>
+				<?php endif; ?>
+			</label>
 			<input type="text" name="hits" id="hits" value="<?php echo $this->item->hits ?>">
 		</div>
 		<div class="editform-row">
-			<label for="published"><?php echo JText::_('PUBLISHED'); ?></label>
+			<label for="published">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
+				<?php echo JText::_('JPUBLISHED'); ?>
+				<?php else: ?>
+				<?php echo JText::_('PUBLISHED'); ?>
+				<?php endif; ?>
+			</label>
 			<div>
 				<?php echo JHTML::_('select.booleanlist', 'published', null, $this->item->published); ?>
 			</div>
 		</div>
 		<div class="editform-row editform-row-noheight">
-			<label for="access"><?php echo JText::_('ACCESS'); ?></label>
+			<label for="access">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
+				<?php echo JText::_('JFIELD_ACCESS_LABEL'); ?>
+				<?php else: ?>
+				<?php echo JText::_('ACCESS'); ?>
+				<?php endif; ?>
+			</label>
 			<?php echo JHTML::_('list.accesslevel', $this->item); ?>
 		</div>
 		<div class="editform-row editform-row-noheight">

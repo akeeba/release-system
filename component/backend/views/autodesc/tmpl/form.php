@@ -34,7 +34,13 @@ $editor =& JFactory::getEditor();
 			<input type="text" name="title" id="title" value="<?php echo $this->item->title ?>">
 		</div>
 		<div class="editform-row">
-			<label for="published"><?php echo JText::_('PUBLISHED'); ?></label>
+			<label for="published">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
+				<?php echo JText::_('JPUBLISHED'); ?>
+				<?php else: ?>
+				<?php echo JText::_('PUBLISHED'); ?>
+				<?php endif; ?>
+			</label>
 			<div>
 				<?php echo JHTML::_('select.booleanlist', 'published', null, $this->item->published); ?>
 			</div>

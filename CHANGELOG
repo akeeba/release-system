@@ -25,3 +25,4 @@ Version 0.2 (Current trunk)
 # Pagination is wrong when filters are applied
 # Item page: The alias MUST not be replaced if it's non-empty when the "Linked item URL" field is blurred.
 # Item page: The "Linked item URL" field should be stripped of its query part before using it in the alias field
+# Alias, hits, published, access translation keys in forms have changed in Joomla! 1.6

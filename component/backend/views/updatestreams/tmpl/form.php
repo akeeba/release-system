@@ -24,7 +24,13 @@ defined('_JEXEC') or die('Restricted Access');
 			<input type="text" name="name" id="name" value="<?php echo $this->item->name ?>">
 		</div>
 		<div class="editform-row">
-			<label for="alias"><?php echo JText::_('ALIAS'); ?></label>
+			<label for="alias">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
+				<?php echo JText::_('JFIELD_ALIAS_LABEL'); ?>
+				<?php else: ?>
+				<?php echo JText::_('ALIAS'); ?>
+				<?php endif; ?>			
+			</label>
 			<input type="text" name="alias" id="alias" value="<?php echo $this->item->alias ?>" >
 		</div>
 		<div class="editform-row">
@@ -44,7 +50,13 @@ defined('_JEXEC') or die('Restricted Access');
 			<input type="text" name="element" id="element" value="<?php echo $this->item->element ?>" >
 		</div>
 		<div class="editform-row">
-			<label for="published"><?php echo JText::_('PUBLISHED'); ?></label>
+			<label for="published">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
+				<?php echo JText::_('JPUBLISHED'); ?>
+				<?php else: ?>
+				<?php echo JText::_('PUBLISHED'); ?>
+				<?php endif; ?>
+			</label>
 			<div>
 				<?php echo JHTML::_('select.booleanlist', 'published', null, $this->item->published); ?>
 			</div>
