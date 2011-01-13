@@ -39,7 +39,11 @@ $tabs = array();
 		<span class="ars-release-property">
 			<span class="ars-label"><?php echo JText::_('LBL_RELEASES_RELEASEDON') ?>:</span>
 			<span class="ars-value">
+				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
+				<?php echo JHTML::_('date',$released, JText::_('DATE_FORMAT_LC2')) ?>
+				<?php else: ?>
 				<?php echo $released->toFormat(JText::_('DATE_FORMAT_LC2')) ?>
+				<?php endif; ?>
 			</span>
 		</span>
 
