@@ -27,6 +27,7 @@ class ArsViewUpload extends JView
 			$path = $model->getCategoryFolder();
 			$folder = $model->getState('folder','');
 			$parent = $model->getState('parent',null);
+			$config = JComponentHelper::getParams('com_media');
 
 			$this->assign('files',$files);
 			$this->assign('folders',$folders);
@@ -34,6 +35,7 @@ class ArsViewUpload extends JView
 			$this->assign('path',$path);
 			$this->assign('folder',$folder);
 			$this->assign('parent',$parent);
+			$this->assign('config', $config);
 			$tpl = 'upload';
 
 			$document = JFactory::getDocument();

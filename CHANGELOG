@@ -1,6 +1,7 @@
 Version 0.2 (Current trunk)
 ================================================================================
 !! HACK: The frontent/views/update/tmpl/stream.php FORCES the type to be "component". I have to deal with that.
+~ Swapped uploader with Joomla!'s own uploader
 + Added update INI and XML URLs to the update stream page
 + Added "Import from FRS" toolbar link to Items and Categories page
 + New items remember the Release set in the list pages's filter

@@ -72,98 +72,50 @@ $i = 1;
 </div>
 <div class="clr"></div>
 
-<form name="fileForm" id="fileForm" action="index.php" method="post">
+<!-- File Upload Form -->
+<form name="fileForm" action="<?php echo JURI::base(); ?>index.php" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="option" value="<?php echo JRequest::getCmd('option') ?>" />
 	<input type="hidden" name="view" value="<?php echo JRequest::getCmd('view') ?>" />
-	<input type="hidden" name="task" value="finish" />
+	<input type="hidden" name="task" value="upload" />
 	<input type="hidden" name="id" value="<?php echo $this->category ?>" />
 	<input type="hidden" name="folder" value="<?php echo $this->escape($this->folder) ?>" />
 	<input type="hidden" id="token" name="<?php echo JUtility::getToken();?>" value="1" />
+	<input type="hidden" name="format" value="html" />
 
-	<div id="uploader">
-		<p><?php echo JText::_('ERR_NO_UPLOAD_SUPPORT'); ?></p>
-	</div>
-	<input type="Submit" value="<?php echo JText::_('upload') ?>" />
+	<fieldset id="uploadform">
+		<?php $usize = (version_compare(JVERSION,'1.6.0','ge')) ? $this->config->get('upload_maxsize') : $this->config->get('upload_maxsize') / 1048756 ?>
+		<legend><?php echo $usize == 0 ? JText::_('LBL_UPLOAD_FILES_NOLIMIT') : JText::sprintf('LBL_UPLOAD_FILES', (int)$usize); ?></legend>
+		<fieldset id="upload-noflash" class="actions">
+			<label for="upload-file" class="hidelabeltxt"><?php echo JText::_('LBL_UPLOAD_FILE'); ?></label>
+			<input type="file" id="upload-file" name="Filedata" />
+			<label for="upload-submit" class="hidelabeltxt"><?php echo JText::_('LBL_START_UPLOAD'); ?></label>
+			<input type="submit" id="upload-submit" value="<?php echo JText::_('LBL_START_UPLOAD'); ?>"/>
+		</fieldset>
+		<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
+		<div id="upload-flash" class="hide">
+			<ul>
+				<li><a href="#" id="upload-browse"><?php echo JText::_('LBL_BROWSE_FILES'); ?></a></li>
+				<li><a href="#" id="upload-clear"><?php echo JText::_('LBL_CLEAR_LIST'); ?></a></li>
+				<li><a href="#" id="upload-start"><?php echo JText::_('LBL_START_UPLOAD'); ?></a></li>
+			</ul>
+			<div class="clr"> </div>
+			<p class="overall-title"></p>
+			<?php echo JHTML::_('image','media/bar.gif', JText::_('LBL_OVERALL_PROGRESS'), array('class' => 'progress overall-progress'), true); ?>
+			<div class="clr"> </div>
+			<p class="current-title"></p>
+			<?php echo JHTML::_('image','media/bar.gif', JText::_('LBL_CURRENT_PROGRESS'), array('class' => 'progress current-progress'), true); ?>
+			<p class="current-text"></p>
+		</div>
+		<ul class="upload-queue" id="upload-queue">
+			<li style="display:none;"></li>
+		</ul>
+		<?php endif; ?>
+	</fieldset>
 </form>
 
 <script type="text/javascript">
 // Convert divs to queue widgets when the DOM is ready
 (function($){
-	$("#uploader").pluploadQueue({
-		// General settings
-		runtimes : 'gears,flash,silverlight,browserplus,html5,html4',
-		url : 'index.php?option=com_ars&view=upload&task=save<?php echo $suffix ?>',
-		max_file_size : '10mb',
-		<?php if($this->chunking): ?>
-		chunk_size: '250kb',
-		<?php endif; ?>
-		unique_names : true,
-
-		// Resize images on clientside if we can
-		//resize : {width : 320, height : 240, quality : 90},
-
-		// Specify what files to browse for
-		filters : [
-			{title : "Image files", extensions : "jpg,gif,png"},
-			{title : "Zip files", extensions : "zip"},
-			{title : "Tar files", extensions : "tar,tgz,gz"},
-			{title : "PDF files", extensions : "pdf"},
-			{title : "JPA/JPS files", extensions : "jpa,jps"}
-		],
-
-		// Flash settings
-		flash_swf_url : '<?php echo JURI::base() ?>../media/com_ars/js/plupload.flash.swf',
-
-		// Silverlight settings
-		silverlight_xap_url : '<?php echo JURI::base() ?>../media/com_ars/js/plupload.silverlight.xap'
-	});
-
-	// Client side form validation
-	$('#fileForm').submit(function(e) {
-		var uploader = $('#uploader').pluploadQueue();
-
-		// Validate number of uploaded files
-		if (uploader.total.uploaded == 0) {
-			// Files in queue upload them first
-			if (uploader.files.length > 0) {
-				// When all files are uploaded submit form
-				uploader.bind('UploadProgress', function() {
-					if (uploader.total.uploaded == uploader.files.length)
-						$.get(
-							'index.php?option=com_ars&view=upload&task=token<?php echo $suffix ?>',
-							'',
-							function (data, textStatus, XMLHttpRequest){
-								var junk = null;
-								var message = "";
-								var valid_pos = data.indexOf('###');
-								if( valid_pos == -1 ) {
-									e.preventDefault();
-									return;
-								} else if( valid_pos != 0 ) {
-									junk = data.substr(0, valid_pos);
-									message = data.substr(valid_pos);
-								} else {
-									message = data;
-								}
-								message = message.substr(3); // Remove triple hash in the beginning
-								var valid_pos = message.lastIndexOf('###');
-								message = message.substr(0, valid_pos); // Remove triple hash in the end
-
-								$('#token').attr('name',message);
-								$('#fileForm').submit();
-							},
-							'text/plain'
-						);
-				});
-
-				uploader.start();
-			} else
-				alert('You must at least upload one file.');
-
-			e.preventDefault();
-		}
-	});
-
 	$('#folderslist>div.folderrow').each(function(i,el){
 		$(el).click(function(){
 			var title = $(this).attr('title');
