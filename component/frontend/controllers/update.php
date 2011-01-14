@@ -80,7 +80,7 @@ class ArsControllerUpdate extends ArsControllerDefault
 		}
 
 		JRequest::setVar('task', $this->_task);
-		JRequest::setVar('layout', $this->_task);
+		$this->viewLayout = $this->_task;
 	}
 
 	public function all($cacheable=false)
@@ -133,6 +133,7 @@ class ArsControllerUpdate extends ArsControllerDefault
 		}
 		$model = $this->getThisModel();
 		$model->getItems($id);
+		
 		$this->display();
 	}
 }

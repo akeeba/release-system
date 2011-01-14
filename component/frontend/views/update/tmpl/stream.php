@@ -10,6 +10,16 @@ defined('_JEXEC') or die('Restricted Access');
 
 $tag = "<"."?xml version=\"1.0\" encoding=\"utf-8\""."?".">";
 
+$streamTypeMap = array(
+	'components' => 'component',
+	'libraries' => 'library',
+	'modules' => 'module',
+	'packages' => 'package',
+	'plugins' => 'plugin',
+	'files' => 'file',
+	'templates' => 'template'
+);
+
 @ob_end_clean();
 @header('Content-type: application/xml');
 ?><?php echo $tag; ?>
@@ -17,7 +27,7 @@ $tag = "<"."?xml version=\"1.0\" encoding=\"utf-8\""."?".">";
 <updates>
 <?php
 foreach($this->items as $item):
-	switch($item->type) {
+	switch($item->itemtype) {
 		case 'file':
 			$downloadURL = rtrim(JURI::base(),'/').JRoute::_('index.php?option=com_ars&view=download&id='.$item->item_id);
 			$basename = basename($item->filename);
@@ -44,7 +54,7 @@ foreach($this->items as $item):
 		<name><?php echo $item->alias ?></name>
 		<description><?php echo $item->name ?></description>
 		<element><?php echo $item->element ?></element>
-		<type>component<?php # <-- OK, I am cheating; the query in the model masks the stream type with the item type # echo $item->type ?></type>
+		<type><?php echo $streamTypeMap[$item->type]; ?></type>
 		<version><?php echo $item->version ?></version>
 		<infourl title="<?php echo $item->cat_title.' '.$item->release_id ?>"><?php echo rtrim(JURI::base(),'/').JRoute::_('index.php?option=com_ars&view=release&id='.$item->release_id) ?></infourl>
 		<downloads>

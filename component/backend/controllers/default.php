@@ -458,7 +458,7 @@ class ArsControllerDefault extends JController
 
 	/**
 	 * Returns current view object
-	 * @return JModel The global instance of the view object (singleton)
+	 * @return JView The global instance of the view object (singleton)
 	 */
 	public final function getThisView()
 	{

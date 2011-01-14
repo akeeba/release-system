@@ -49,7 +49,7 @@ ENDQUERY;
 SELECT
     `u`.*, `i`.`id` as `item_id`, `r`.`version`, `r`.`maturity`,
     `c`.`title` as `cat_title`, `i`.`release_id`,
-    `i`.`filename`, `i`.`url`, `i`.`type`, `r`.`created`
+    `i`.`filename`, `i`.`url`, `i`.`type` as `itemtype`, `r`.`created`
 FROM
   (
     `#__ars_items` as `i`
