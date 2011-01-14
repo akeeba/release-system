@@ -24,7 +24,7 @@ class ArsControllerBrowse extends ArsControllerDefault
 		$this->registerTask( 'display', 'repository' );
 	}
 
-	function repository($cachable=false)
+	function repository()
 	{
 		// Get the page parameters
 		$app = JFactory::getApplication();
@@ -42,6 +42,6 @@ class ArsControllerBrowse extends ArsControllerDefault
 		// Get the item lists
 		$model->itemList = $model->getCategories();
 
-		$this->display($cachable);
+		$this->display(true);
 	}
 }

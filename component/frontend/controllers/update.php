@@ -83,12 +83,12 @@ class ArsControllerUpdate extends ArsControllerDefault
 		$this->viewLayout = $this->_task;
 	}
 
-	public function all($cacheable=false)
+	public function all()
 	{
-		$this->display();
+		$this->display(true);
 	}
 
-	public function category($cacheable=false)
+	public function category()
 	{
 		$cat = JRequest::getCmd('id','');
 		if(empty($cat))
@@ -103,10 +103,10 @@ class ArsControllerUpdate extends ArsControllerDefault
 		}
 		$model = $this->getThisModel();
 		$model->getCategoryItems($cat);
-		$this->display();
+		$this->display(true);
 	}
 
-	public function stream($cacheable=false)
+	public function stream()
 	{
 		$id = JRequest::getInt('id',0);
 		if($id == 0)
@@ -118,10 +118,10 @@ class ArsControllerUpdate extends ArsControllerDefault
 		}
 		$model = $this->getThisModel();
 		$model->getItems($id);
-		$this->display();
+		$this->display(true);
 	}
 
-	public function ini($cacheable=false)
+	public function ini()
 	{
 		$id = JRequest::getInt('id',0);
 		if($id == 0)
@@ -134,6 +134,6 @@ class ArsControllerUpdate extends ArsControllerDefault
 		$model = $this->getThisModel();
 		$model->getItems($id);
 		
-		$this->display();
+		$this->display(true);
 	}
 }

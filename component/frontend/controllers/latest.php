@@ -21,7 +21,7 @@ class ArsControllerLatest extends ArsControllerDefault
 		$this->registerTask( 'display', 'repository' );
 	}
 
-	function repository($cachable=false)
+	function repository()
 	{
 		// Get the page parameters
 		$app = JFactory::getApplication();
@@ -40,6 +40,6 @@ class ArsControllerLatest extends ArsControllerDefault
 		$model->itemList = $model->getCategories();
 		$model->processLatest();
 
-		$this->display($cachable);
+		$this->display(true);
 	}
 }

@@ -20,7 +20,7 @@ class ArsControllerDownload extends ArsControllerDefault
 		JRequest::setVar('layout',null);
 	}
 
-	function download($cachable=false)
+	function download()
 	{
 		$id = JRequest::getInt('id',null);
 

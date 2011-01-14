@@ -20,7 +20,7 @@ class ArsControllerRelease extends ArsControllerDefault
 		JRequest::setVar('layout',null);
 	}
 
-	function release($cachable=false)
+	function release()
 	{
 		$id = JRequest::getInt('id',null);
 
@@ -65,6 +65,6 @@ class ArsControllerRelease extends ArsControllerDefault
 			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
 		}
 
-		$this->display($cachable);
+		$this->display(true);
 	}
 }

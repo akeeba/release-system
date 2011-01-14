@@ -20,7 +20,7 @@ class ArsControllerCategory extends ArsControllerDefault
 		JRequest::setVar('layout',null);
 	}
 
-	function category($cachable=false)
+	function category()
 	{
 		$id = JRequest::getInt('id',null);
 
@@ -63,6 +63,6 @@ class ArsControllerCategory extends ArsControllerDefault
 			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
 		}
 
-		$this->display($cachable);
+		$this->display(true);
 	}
 }
