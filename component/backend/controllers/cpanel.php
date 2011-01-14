@@ -18,5 +18,12 @@ jimport('joomla.application.component.controller');
  */
 class ArsControllerCpanel extends JController
 {
-
+	/**
+	 * Cache-enabled backend view to accelerate display of statistics data
+	 * @param unknown_type $cachable
+	 */
+	public function display($cachable = false) {
+		$cachable = version_compare(JVERSION,'1.6.0','ge');
+		parent::display($cachable);
+	}
 }

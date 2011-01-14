@@ -130,8 +130,9 @@ div.ak_clr {
 }
 
 div.ak_cpanel_main_container {
-	width: 59%;
-	padding: 3px;
+	float: right;
+	width: 39%;
+	padding: 0;
 }
 
 div.ak_cpanel_header {
@@ -145,8 +146,9 @@ div.ak_cpanel_icons {
 }
 
 div.ak_cpanel_modules {
-	float: right;
-	width: 39%;
+	float: left;
+	width: 59%;
+	margin-right: 1%;
 }
 
 #ak_cpanel_modules h3 {

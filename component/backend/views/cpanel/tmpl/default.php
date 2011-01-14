@@ -9,43 +9,53 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die('Restricted Access');
 
+jimport('joomla.html.pane');
+$tabs	= JPane::getInstance('tabs');
+
 $lang =& JFactory::getLanguage();
 $icons_root = JURI::base().'components/com_ars/assets/images/';
 
-$groups = array('basic','insight','tools','update');
+$groups = array('basic','tools','update');
 ?>
 <div id="cpanel">
 	<div class="ak_cpanel_modules" id="ak_cpanel_modules">
 
-		<h3><?php echo JText::_('LBL_ARS_CPANEL_DLSTATS') ?></h3>
-		<div class="ak_cpanel_status_cell">
-			<table border="0" width="100%" class="dlstats">
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_EVER') ?></td>
-					<td><?php echo number_format($this->dlever,0) ?></td>
-				</tr>
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_YEAR') ?></td>
-					<td><?php echo number_format($this->dlyear,0) ?></td>
-				</tr>
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_LMONTH') ?></td>
-					<td><?php echo number_format($this->dllastmonth,0) ?></td>
-				</tr>
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_MONTH') ?></td>
-					<td><?php echo number_format($this->dlmonth,0) ?></td>
-				</tr>
-				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_WEEK') ?></td>
-					<td><?php echo number_format($this->dlweek,0) ?></td>
-				</tr>
-			</table>
+		<?php echo $tabs->startPane('com-ars-dlstats'); ?>
+		
+		<?php echo $tabs->startPanel(JText::_('LBL_ARS_CPANEL_DLSTATSDETAILS'), 'com-ars-dlstats-details'); ?>
+		<table border="0" width="100%" class="dlstats">
+			<tr>
+				<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_EVER') ?></td>
+				<td><?php echo number_format($this->dlever,0) ?></td>
+			</tr>
+			<tr>
+				<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_YEAR') ?></td>
+				<td><?php echo number_format($this->dlyear,0) ?></td>
+			</tr>
+			<tr>
+				<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_LMONTH') ?></td>
+				<td><?php echo number_format($this->dllastmonth,0) ?></td>
+			</tr>
+			<tr>
+				<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_MONTH') ?></td>
+				<td><?php echo number_format($this->dlmonth,0) ?></td>
+			</tr>
+			<tr>
+				<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_WEEK') ?></td>
+				<td><?php echo number_format($this->dlweek,0) ?></td>
+			</tr>
+		</table>
+		<?php echo $tabs->endPanel(); ?>
+		
+		<?php echo $tabs->startPanel(JText::_('LBL_ARS_CPANEL_DLSTATSMAP'), 'com-ars-dlstats-map'); ?>
 			<div id="mapChartMini"></div>
-		</div>
-
-		<h3><?php echo JText::_('LBL_ARS_CPANEL_POPULAR') ?> &ndash; <?php echo JText::_('LBL_ARS_CPANEL_POPULAR_WEEK') ?></h3>
-		<div class="ak_cpanel_status_cell">
+		<?php echo $tabs->endPanel(); ?>
+				
+		<?php echo $tabs->endPane(); ?>
+		
+		<?php echo $tabs->startPane('com-ars-popular'); ?>
+		
+		<?php echo $tabs->startPanel(JText::_('LBL_ARS_CPANEL_POPULAR_WEEK'), 'com-ars-popular-week'); ?>
 		<?php if(empty($this->popularweek)): ?>
 			<p><?php echo JText::_('LBL_ARS_NOITEMS') ?></p>
 		<?php else: ?>
@@ -64,10 +74,9 @@ $groups = array('basic','insight','tools','update');
 			</div>
 			<?php endforeach; ?>
 		<?php endif; ?>
-		</div>
-
-		<h3><?php echo JText::_('LBL_ARS_CPANEL_POPULAR') ?> &ndash; <?php echo JText::_('LBL_ARS_CPANEL_POPULAR_EVER') ?></h3>
-		<div class="ak_cpanel_status_cell">
+		<?php echo $tabs->endPanel(); ?>
+		
+		<?php echo $tabs->startPanel(JText::_('LBL_ARS_CPANEL_POPULAR_EVER'), 'com-ars-popular-ever'); ?>
 		<?php if(empty($this->popularever)): ?>
 			<p><?php echo JText::_('LBL_ARS_NOITEMS') ?></p>
 		<?php else: ?>
@@ -86,7 +95,9 @@ $groups = array('basic','insight','tools','update');
 			</div>
 			<?php endforeach; ?>
 		<?php endif; ?>
-		</div>
+		<?php echo $tabs->endPanel(); ?>
+				
+		<?php echo $tabs->endPane(); ?>
 
 	</div>
 
@@ -94,10 +105,9 @@ $groups = array('basic','insight','tools','update');
 	<?php foreach($groups as $group): ?>
 		<?php if(array_key_exists($group, $this->icondefs)): ?>
 		<?php if(!count($this->icondefs[$group])) continue; ?>
-		<div class="ak_cpanel_header ui-widget-header ui-corner-tl ui-corner-tr">
-			<?php echo JText::_('LBL_ARS_CPANEL_'.  strtoupper($group)); ?>
-		</div>
-		<div class="ak_cpanel_icons ui-widget-content ui-corner-br ui-corner-bl">
+		
+		<fieldset class="ak_cpanel_icons">
+			<legend><?php echo JText::_('LBL_ARS_CPANEL_'.  strtoupper($group)); ?></legend>
 			<?php foreach($this->icondefs[$group] as $icon): ?>
 			<div class="icon">
 				<a href="<?php echo 'index.php?option=com_ars'.
@@ -108,10 +118,12 @@ $groups = array('basic','insight','tools','update');
 				</a>
 			</div>
 			<?php endforeach; ?>
-			<div class="ak_clr_left"></div>
-		</div>
+			<!-- <div class="ak_clr_left"></div>  -->
+		</fieldset>
+		
 		<?php endif; ?>
 	<?php endforeach; ?>
+	
 	</div>
 </div>
 
@@ -124,11 +136,8 @@ $groups = array('basic','insight','tools','update');
 
 <script type="text/javascript">
 akeeba.jQuery(document).ready(function($){
-	$('#ak_cpanel_modules').accordion();
-	
 	var areaData = <?php echo json_encode((object)$this->countrystats) ?>;
 	$('#mapChartMini').gchart('destroy').
-		gchart( $.gchart.map('world', areaData, 'white', 'aaffaa', 'green') )
-
+		gchart( $.gchart.map('world', areaData, 'cccccc', 'aaaaff', '3366ff') );
 });
 </script>
