@@ -77,7 +77,7 @@ $model = $this->getModel();
 			$i = 0;
 			$m = 0;
 			foreach($this->items as $item):
-			$m = 1 = $m;
+			$m = 1 - $m;
 		?>
 		<tr class="row<?php echo $m ?>">
 			<td>
