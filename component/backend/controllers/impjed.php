@@ -9,9 +9,9 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die('Restricted Access');
 
-jimport('joomla.application.component.controller');
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.'default.php';
 
-class ArsControllerImpjed extends JController
+class ArsControllerImpjed extends ArsControllerDefault
 {
 	function  display($cachable = false) {
 		parent::display($cachable);
@@ -34,7 +34,8 @@ class ArsControllerImpjed extends JController
 			$data = $model->getPackages($project);
 		}
 
-		$view = $this->getView('Impjed', 'raw', 'ArsView', array( 'base_path'=>$this->_basePath));
+		$basePath = (!$this->isJoomla16) ? $this->_basePath : $this->basePath;
+		$view = $this->getView('Impjed', 'raw', 'ArsView', array( 'base_path'=>$basePath));
 		$view->setLayout('default');
 		$view->assign('data', $data);
 		$view->display();
@@ -58,7 +59,8 @@ class ArsControllerImpjed extends JController
 			$data = $model->getReleases($project, $package);
 		}
 
-		$view = $this->getView('Impjed', 'raw', 'ArsView', array( 'base_path'=>$this->_basePath));
+		$basePath = (!$this->isJoomla16) ? $this->_basePath : $this->basePath;
+		$view = $this->getView('Impjed', 'raw', 'ArsView', array( 'base_path'=>$basePath));
 		$view->setLayout('default');
 		$view->assign('data', $data);
 		$view->display();
@@ -83,7 +85,8 @@ class ArsControllerImpjed extends JController
 			$data = $model->getFiles($project, $package, $release);
 		}
 
-		$view = $this->getView('Impjed', 'raw', 'ArsView', array( 'base_path'=>$this->_basePath));
+		$basePath = (!$this->isJoomla16) ? $this->_basePath : $this->basePath;
+		$view = $this->getView('Impjed', 'raw', 'ArsView', array( 'base_path'=>$basePath));
 		$view->setLayout('default');
 		$view->assign('data', $data);
 		$view->display();
@@ -108,7 +111,8 @@ class ArsControllerImpjed extends JController
 			$data = (is_numeric($item) && ($item > 0));
 		}
 
-		$view = $this->getView('Impjed', 'raw', 'ArsView', array( 'base_path'=>$this->_basePath));
+		$basePath = (!$this->isJoomla16) ? $this->_basePath : $this->basePath;
+		$view = $this->getView('Impjed', 'raw', 'ArsView', array( 'base_path'=>$basePath));
 		$view->setLayout('default');
 		$view->assign('data', $data);
 		$view->display();
