@@ -17,4 +17,38 @@
 			<option value="1">Yes</option>
 		</param>
 	</params>
+
+	<fieldset name="updatestream" label="CONFIG_BACKEND_UPDATESTREAM_LABEL" description="CONFIG_BACKEND_UPDATESTREAM_DESC">
+		<field name="updates_name" type="text" default="Downloads"
+			label="ARS_CONFIG_UPDATES_NAME_LABEL"
+			description="ARS_CONFIG_UPDATES_NAME_DESC"
+		/>
+		<field name="updates_desc" type="text" default="My Downloads"
+			label="ARS_CONFIG_UPDATES_DESC_LABEL"
+			description="ARS_CONFIG_UPDATES_DESC_DESC"
+		/>
+	</fieldset>
+		
+	<fieldset name="frontend" label="CONFIG_FRONTEND_HEADER_LABEL" description="CONFIG_FRONTEND_HEADER_DESC">
+		<field name="antileech" type="radio" default="1" label="ARS_CONFIG_ANTILEECH_LABEL" description="ARS_CONFIG_ANTILEECH_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+	</fieldset>
+	
+	<fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC"
+		>
+
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			filter="rules"
+			component="com_ars"
+			section="component" />
+	</fieldset>	
 </config>
