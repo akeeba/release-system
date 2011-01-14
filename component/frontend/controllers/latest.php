@@ -14,6 +14,9 @@ class ArsControllerLatest extends ArsControllerDefault
 {
 	function  __construct($config = array()) {
 		parent::__construct($config);
+		
+		$this->modelName = 'browse';
+		
 		$this->registerDefaultTask('repository');
 		$this->registerTask( 'display', 'repository' );
 	}

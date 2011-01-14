@@ -135,7 +135,8 @@ class ArsModelBrowse extends ArsModelBaseFE
 				$model->setState('release',			$cat->release->id);
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			0);
-				$cat->release->files = $model->getItemList();
+				$rawlist = $model->getItemList();
+				$cat->release->files = $this->filterList($rawlist);
 			}
 		}
 	}

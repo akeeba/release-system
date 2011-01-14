@@ -14,6 +14,7 @@ class ArsControllerDefault extends JController
 {
 	protected $viewLayout = null;
 	protected $viewType = null;
+	protected $modelName = null;
 
 	public function __construct($config = null)
 	{
@@ -88,7 +89,11 @@ class ArsControllerDefault extends JController
 		if(!is_object($model)) {
 			$prefix = $this->getName().'Model';
 			$view = JRequest::getCmd('view','cpanel');
-			$modelName = ucfirst($view);
+			if(empty($this->modelName)) {
+				$modelName = ucfirst($view);
+			} else {
+				$modelName = ucfirst($this->modelName);
+			}
 			$model = $this->getModel($modelName, $prefix);
 		}
 

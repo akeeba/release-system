@@ -34,9 +34,8 @@ class ArsModelBaseFE extends JModel
 		if(!is_array($source)) return $list;
 		if(empty($source)) return $list;
 
-		// Short-circuit if AMBRA.subs is not present
+		// Load AMBRA integration
 		$groupModel = JModel::getInstance('Ambra','ArsModel');
-		if(!ArsModelAmbra::hasAMBRA()) return $source;
 
 		// Cache user access and groups
 		if(is_null($user_access) || is_null($myGroups))
@@ -102,17 +101,30 @@ class ArsModelBaseFE extends JModel
 			}
 
 			// Get user info
-			$user_access = $user->aid;
+			if(version_compare(JVERSION,'1.6.0','ge')) {
+				$user_access = $user->getAuthorisedViewLevels();
+			} else {
+				$user_access = $user->aid;	
+			}
 
 			// Get AMBRA groups of current user
-			$mygroups = $groupModel->getUserGroups($user->id);
+			if(!ArsModelAmbra::hasAMBRA()) {
+				$mygroups = array();
+			} else {
+				$mygroups = $groupModel->getUserGroups($user->id);
+			}
 		}
 
 		// Do the real filtering
 		foreach($source as $s)
 		{
 			// Filter by access level
-			if($s->access > $user_access) continue;
+			if(!is_array($user_access)) {
+				// Joomla! 1.5
+				if($s->access > $user_access) continue;
+			} else {
+				if( !in_array($s->access, $user_access) ) continue;
+			}
 
 			// Filter by AMBRA.subs group
 			if(!empty($s->groups))
