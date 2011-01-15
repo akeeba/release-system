@@ -40,17 +40,55 @@ class ArsViewCpanel extends JView
 
 		// -- Icon definitions
 		$this->assign('icondefs',			$model->getIconDefinitions() );
+		
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'cache.php');
+		$cache = new ArsHelperCache();
+		
 		// -- Popular items (ever & week)
-		$this->assign('popularever',		$model->getAllTimePopular() );
-		$this->assign('popularweek',		$model->getWeekPopular() );
+		$popularever = $cache->getValue('popularever');
+		if(empty($popularever)) {
+			$popularever = json_encode($model->getAllTimePopular());
+			$cache->setValue('popularever', $popularever);
+		}
+		$this->assign('popularever',		json_decode($popularever) );
+		
+		$popularweek = $cache->getValue('popularweek');
+		if(empty($popularweek)) {
+			$popularweek = json_encode($model->getWeekPopular());
+			$cache->setValue('popularweek', $popularweek);
+		}
+		$this->assign('popularweek',		json_decode($popularweek) );
+		
 		// -- # of downloads
-		$this->assign('dllastmonth',		$model->getNumDownloads('lastmonth') );
-		$this->assign('dlmonth',			$model->getNumDownloads('month') );
-		$this->assign('dlweek',				$model->getNumDownloads('week') );
-		$this->assign('dlyear',				$model->getNumDownloads('year') );
-		$this->assign('dlever',				$model->getNumDownloads('alltime') );
+		$dldetails = $cache->getValue('dldetails');
+		if(empty($dldetails)) {
+			$dldetails = array();
+			$dldetails['dllastmonth']	= $model->getNumDownloads('lastmonth');
+			$dldetails['dlmonth']		= $model->getNumDownloads('month');
+			$dldetails['dlweek']		= $model->getNumDownloads('week');
+			$dldetails['dlyear']		= $model->getNumDownloads('year');
+			$dldetails['dlever']		= $model->getNumDownloads('alltime');
+			
+			$dldetails = json_encode($dldetails);
+			$cache->setValue('dldetails', $dldetails);
+		}
+		$dldetails = json_decode($dldetails, true);
+		
+		$this->assign('dllastmonth',		$dldetails['dllastmonth'] );
+		$this->assign('dlmonth',			$dldetails['dlmonth'] );
+		$this->assign('dlweek',				$dldetails['dlweek'] );
+		$this->assign('dlyear',				$dldetails['dlyear'] );
+		$this->assign('dlever',				$dldetails['dlever'] );
 
-		$this->assign('countrystats',		$model->getChartData() );
+		// -- Country stats
+		$countrystats = $cache->getValue('countrystats');
+		if(empty($countrystats)) {
+			$countrystats = json_encode($model->getChartData());
+			$cache->setValue('countrystats', $countrystats);
+		}
+		$this->assign('countrystats',		$countrystats );
+		
+		$cache->save();
 
 		// Add references to CSS and JS files
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'includes.php';

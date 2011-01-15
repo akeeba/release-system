@@ -77,53 +77,68 @@ class ArsModelCpanel extends JModel
 			'task'	=> $task
 		);
 	}
-
-	public function getAllTimePopular($itemCount = 5)
+	
+	private function getPopular($itemCount = 5, $from = null, $to = null)
 	{
 		$db = $this->getDBO();
 		$itemCountEsc = (int)$itemCount;
+		
+		$noTimeLimits = (is_null($from) || is_null($to));
+		if(!$noTimeLimits) {
+			$from = $db->getEscaped($from);
+			$to = $db->getEscaped($to);
+			$where = "AND (`l`.`accessed_on` BETWEEN $from AND $to)";
+		} else {
+			$where = '';
+		}
 		$sql = <<<ENDSQL
-SELECT
-  `l`.`item_id`, COUNT(`l`.`id`) as `dl`,
-  `i`.`title`,
-  `c`.`title` as `category`, `r`.`version`, `r`.`maturity`,
-  `i`.`updatestream`
-FROM
-  `#__ars_log` AS `l`
-  INNER JOIN `#__ars_items` AS `i` ON(`i`.`id` = `l`.`item_id`)
-  INNER JOIN `#__ars_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
-  INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
-GROUP BY `item_id`
-ORDER BY `dl` DESC
-LIMIT 0,$itemCountEsc
+SELECT `l`.`item_id`, COUNT(*) as `dl`
+  FROM `#__ars_log` AS `l`
+  WHERE
+  	`l`.`authorized` = 1
+  $where 
+  GROUP BY `item_id` 
+  ORDER BY `dl` DESC 
+  LIMIT 0, $itemCountEsc;
 ENDSQL;
 		$db->setQuery($sql);
-		return $db->loadObjectList();
+		$items = $db->loadAssocList('item_id');
+		
+		if(empty($items)) return null;
+		
+		$idLimit = implode(',', array_keys($items));
+		
+$sql = <<<ENDSQL
+SELECT `i`.`id` AS `item_id`, `i`.`title`, `c`.`title` as `category`, `r`.`version`, `r`.`maturity`, `i`.`updatestream` 
+  FROM `#__ars_items` AS `i` 
+  INNER JOIN `#__ars_releases` AS `r` 
+  ON(`r`.`id` = `i`.`release_id`) 
+  INNER JOIN `#__ars_categories` AS `c` 
+  ON(`c`.`id` = `r`.`category_id`)
+  WHERE `i`.`id` IN ($idLimit)
+ENDSQL;
+		$db->setQuery($sql);
+		$infoList = $db->loadAssocList('item_id');
+		
+		$ret = array();
+		foreach($items as $item)
+		{
+			$info = $infoList[$item['item_id']];
+			$ret[] = (object)array_merge($info, $item);
+		}
+		
+		return $ret;
+  
+	}
+
+	public function getAllTimePopular($itemCount = 5)
+	{
+		return $this->getPopular($itemCount);
 	}
 
 	public function getWeekPopular($itemCount = 5)
 	{
-		$db = $this->getDBO();
-		$itemCountEsc = (int)$itemCount;
-		$sql = <<<ENDSQL
-SELECT
-  `l`.`item_id`, COUNT(`l`.`id`) as `dl`,
-  `i`.`title`,
-  `c`.`title` as `category`, `r`.`version`, `r`.`maturity`,
-  `i`.`updatestream`
-FROM
-  `#__ars_log` AS `l`
-  INNER JOIN `#__ars_items` AS `i` ON(`i`.`id` = `l`.`item_id`)
-  INNER JOIN `#__ars_releases` AS `r` ON(`r`.`id` = `i`.`release_id`)
-  INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)
-WHERE
-  `l`.`accessed_on` BETWEEN CURRENT_TIMESTAMP - INTERVAL 1 DAY AND CURRENT_TIMESTAMP
-GROUP BY `item_id`
-ORDER BY `dl` DESC
-LIMIT 0,$itemCountEsc
-ENDSQL;
-		$db->setQuery($sql);
-		return $db->loadObjectList();
+		return $this->getPopular($itemCount,'CURRENT_TIMESTAMP - INTERVAL 1 DAY','CURRENT_TIMESTAMP');
 	}
 
 	public function getNumDownloads($interval)
@@ -159,11 +174,12 @@ ENDSQL;
 		$db = $this->getDBO();
 		$db->setQuery( <<<ENDSQL
 SELECT
-	COUNT(`l`.`id`)
+	COUNT(*)
 FROM
 	`#__ars_log` AS `l`
 WHERE
 	`l`.`accessed_on` BETWEEN $date
+	AND `l`.`authorized` = 1
 ENDSQL
 );
 		return $db->loadResult();
