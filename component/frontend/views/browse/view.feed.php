@@ -31,7 +31,7 @@ class ArsViewBrowse extends JView
 				$item->category = $this->escape($cat->title);
 				$item->date = date('r', strtotime($cat->release->created));
 				$item->description = $cat->release->notes;
-				$item->link = $this->escape(JRoute::_(JURI::base().'index.php?option=com_ars&view=release&id='.$cat->release->id));
+				$item->link = $this->escape(AKRouter::_(JURI::base().'index.php?option=com_ars&view=release&id='.$cat->release->id));
 				$item->pubDate = date('r');
 
 				$document->addItem($item);				

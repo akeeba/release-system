@@ -9,7 +9,7 @@
 defined('_JEXEC') or die('Restricted Access');
 
 $Itemid_query = empty($Itemid) ? "" : "&Itemid=$Itemid";
-$download_url = JRoute::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid_query);
+$download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid_query);
 
 ?>
 <li class="ars-latest-items ars-row<?php echo $i ?>">

@@ -29,7 +29,7 @@ $streamTypeMap = array(
 foreach($this->items as $item):
 	switch($item->itemtype) {
 		case 'file':
-			$downloadURL = rtrim(JURI::base(),'/').JRoute::_('index.php?option=com_ars&view=download&id='.$item->item_id);
+			$downloadURL = rtrim(JURI::base(),'/').AKRouter::_('index.php?option=com_ars&view=download&id='.$item->item_id);
 			$basename = basename($item->filename);
 			break;
 		case 'link':
@@ -56,7 +56,7 @@ foreach($this->items as $item):
 		<element><?php echo $item->element ?></element>
 		<type><?php echo $streamTypeMap[$item->type]; ?></type>
 		<version><?php echo $item->version ?></version>
-		<infourl title="<?php echo $item->cat_title.' '.$item->release_id ?>"><?php echo rtrim(JURI::base(),'/').JRoute::_('index.php?option=com_ars&view=release&id='.$item->release_id) ?></infourl>
+		<infourl title="<?php echo $item->cat_title.' '.$item->release_id ?>"><?php echo rtrim(JURI::base(),'/').AKRouter::_('index.php?option=com_ars&view=release&id='.$item->release_id) ?></infourl>
 		<downloads>
 			<downloadurl type="full" format="<?php echo $format ?>"><?php echo $downloadURL?></downloadurl>
 		</downloads>

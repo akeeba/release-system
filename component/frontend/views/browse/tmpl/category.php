@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted Access');
 ?>
 <div class="ars-browse-category">
 	<h3 class="ars-category-title">
-		<a href="<?php echo JRoute::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid) ?>">
+		<a href="<?php echo AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid) ?>">
 			<?php echo $item->title ?>
 		</a>
 	</h3>
@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Restricted Access');
 		<?php echo ArsHelperHtml::preProcessMessage($item->description) ?>
 	</div>
 	<div>
-		<a class="readon" href="<?php echo JRoute::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid) ?>">
+		<a class="readon" href="<?php echo AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid) ?>">
 			<?php echo JText::_('LBL_CATEGORY_VIEW') ?>
 		</a>
 	</div>

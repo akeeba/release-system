@@ -31,6 +31,9 @@ jimport('joomla.application.component.model');
 JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
 JModel::addTablePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
 
+// Load the routeing helper
+require_once dirname(__FILE__).DS.'helpers'.DS.'router.php';
+
 // Load the appropriate controller
 $c = JRequest::getCmd('c','cpanel');
 $path = JPATH_COMPONENT.DS.'controllers'.DS.$c.'.php';

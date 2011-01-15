@@ -15,7 +15,7 @@ $released = new JDate($cat->release->created);
 	<h3 class="ars-release-title">
 		<img src="<?php echo JURI::base(); ?>/media/com_ars/icons/status_<?php echo $cat->release->maturity ?>.png" width="16" height="16" align="left" />
 		&nbsp;
-		<a href="<?php echo JRoute::_('index.php?option=com_ars&view=release&id='.$cat->release->id.'&Itemid='.$Itemid) ?>">
+		<a href="<?php echo AKRouter::_('index.php?option=com_ars&view=release&id='.$cat->release->id.'&Itemid='.$Itemid) ?>">
 			<?php echo $cat->title ?> <?php echo $cat->release->version?>
 		</a>
 	</h3>
@@ -48,7 +48,7 @@ $released = new JDate($cat->release->created);
 		</ul>
 	</div>
 	<div>
-		<a class="readon" href="<?php echo JRoute::_('index.php?option=com_ars&view=category&id='.$cat->id.'&Itemid='.$Itemid) ?>">
+		<a class="readon" href="<?php echo AKRouter::_('index.php?option=com_ars&view=category&id='.$cat->id.'&Itemid='.$Itemid) ?>">
 			<?php echo JText::_('LBL_CATEGORY_VIEW') ?>
 		</a>
 	</div>

@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted Access');
 
 $Itemid = JRequest::getInt('Itemid',0);
 $Itemid = empty($Itemid) ? "" : "&Itemid=$Itemid";
-$download_url = JRoute::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid);
+$download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid);
 
 ?>
 <div class="ars-browse-items">
