@@ -78,7 +78,7 @@ class ArsHelperCache
 		if(!$this->hasCache) {
 			return;
 		} else {
-			$serialized = $this->registry->toString('INI',array('class' => 'Arscache'.ucfirst($this->domain)));
+			$serialized = $this->registry->toString('INI');
 			$result = JFile::write($this->cachepath, $serialized);
 		}
 	}

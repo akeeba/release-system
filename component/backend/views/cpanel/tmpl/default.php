@@ -47,6 +47,11 @@ $groups = array('basic','tools','update');
 		</table>
 		<?php echo $tabs->endPanel(); ?>
 		
+		<?php echo $tabs->startPanel(JText::_('LBL_ARS_CPANEL_DLSTATSMONTHLY'),'com-ars-dlstats-mdr'); ?>
+			<div id="mdrChart"></div>
+		<?php echo $tabs->endPanel(); ?>
+		
+		
 		<?php echo $tabs->startPanel(JText::_('LBL_ARS_CPANEL_DLSTATSMAP'), 'com-ars-dlstats-map'); ?>
 			<div id="mapChartMini"></div>
 		<?php echo $tabs->endPanel(); ?>
@@ -130,14 +135,27 @@ $groups = array('basic','tools','update');
 <div class="ak_clr"></div>
 
 <p>
-	<?php echo JText::sprintf('ARS_COPYRIGHT', date('y')); ?><br/>
+	<strong><?php echo JText::sprintf('ARS_COPYRIGHT', date('Y')); ?></strong><br/>
 	<?php echo JText::_('ARS_LICENSE'); ?>
 </p>
+
+<?php
+	$mdrLabels = json_encode(array_keys($this->mdreport));
+	$mdrSerie1 = json_encode(array_values($this->mdreport));
+?>
 
 <script type="text/javascript">
 akeeba.jQuery(document).ready(function($){
 	var areaData = <?php echo json_encode((object)$this->countrystats) ?>;
 	$('#mapChartMini').gchart('destroy').
 		gchart( $.gchart.map('world', areaData, 'cccccc', 'aaaaff', '3366ff') );
+
+	$('#mdrChart').gchart('destroy').
+		gchart({
+			type: 'line',
+			legend: null,
+			dataLabels: <?php echo $mdrLabels ?>,
+			series: [$.gchart.series('DL',<?php echo $mdrSerie1 ?>,'blue')]
+		});	
 });
 </script>

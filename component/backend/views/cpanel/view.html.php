@@ -86,7 +86,15 @@ class ArsViewCpanel extends JView
 			$countrystats = json_encode($model->getChartData());
 			$cache->setValue('countrystats', $countrystats);
 		}
-		$this->assign('countrystats',		$countrystats );
+		$this->assign('countrystats',		json_decode($countrystats) );
+		
+		// -- Monthly-Daily downloads report
+		$mdreport = $cache->getValue('mdreport');
+		if(empty($mdreport)) {
+			$mdreport = json_encode($model->getMonthlyStats());
+			$cache->setvalue('mdreport', $mdreport);
+		}
+		$this->assign('mdreport',			json_decode($mdreport, true));
 		
 		$cache->save();
 

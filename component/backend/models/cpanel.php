@@ -36,6 +36,10 @@ class ArsModelCpanel extends JModel
 		return $this->loadIconDefinitions(JPATH_COMPONENT_ADMINISTRATOR.DS.'views');
 	}
 
+	/**
+	 * Loads the icon definitions form the views.ini file
+	 * @param string $path Where the views.ini file can be found
+	 */
 	private function loadIconDefinitions($path)
 	{
 		$ret = array();
@@ -78,6 +82,12 @@ class ArsModelCpanel extends JModel
 		);
 	}
 	
+	/**
+	 * Gets popular items within a time frame
+	 * @param int $itemCount How many records to retrieve ("Top X")
+	 * @param string $from MySQL date expression marking the start of the time frame. Omit to search all.
+	 * @param string $to MySQL date expression marking the end of the time frame. Omit to search all.
+	 */
 	private function getPopular($itemCount = 5, $from = null, $to = null)
 	{
 		$db = $this->getDBO();
@@ -131,16 +141,26 @@ ENDSQL;
   
 	}
 
+	
+	/**
+	 * Returns the most popular items of all times
+	 */
 	public function getAllTimePopular($itemCount = 5)
 	{
 		return $this->getPopular($itemCount);
 	}
 
+	/**
+	 * Returns the most popular items of the current week
+	 */
 	public function getWeekPopular($itemCount = 5)
 	{
-		return $this->getPopular($itemCount,'CURRENT_TIMESTAMP - INTERVAL 1 DAY','CURRENT_TIMESTAMP');
+		return $this->getPopular($itemCount,'CURRENT_TIMESTAMP - INTERVAL 7 DAY','CURRENT_TIMESTAMP');
 	}
 
+	/**
+	 * Returns the total number of (authorized) downloads within a specific time frame.
+	 */
 	public function getNumDownloads($interval)
 	{
 		$interval = strtolower($interval);
@@ -185,6 +205,10 @@ ENDSQL
 		return $db->loadResult();
 	}
 
+	
+	/**
+	 * Returns downloads per country to seed the map
+	 */
 	public function getChartData()
 	{
 		$db	= $this->getDBO();
@@ -202,8 +226,41 @@ ENDSQL
 		$ret = array();
 		if(!empty($data)) foreach($data as $item)
 		{
-			$ret[$item->country] = $item->dl;
+			$ret[$item->country] = $item->dl * 1;
 		}
 		return $ret;
 	}
+	
+	/**
+	 * Returns the data for the monthly-daily report of downloads
+	 */
+	public function getMonthlyStats()
+	{
+		$db = $this->getDBO();
+		$db->setQuery( <<<ENDSQL
+SELECT DATE(`accessed_on`) as `day`, COUNT(*) AS `dl`
+FROM `#__ars_log`
+WHERE `accessed_on` BETWEEN CURRENT_TIMESTAMP - INTERVAL 1 MONTH AND CURRENT_TIMESTAMP
+GROUP BY DAYOFYEAR(`accessed_on`)
+order by accessed_on ASC
+ENDSQL
+);
+		$data = $db->loadAssocList('day');
+		if(is_null($data)) $data = array();
+		
+		$nowParts = getdate();
+		$today = mktime(0,0,0,$nowParts['mon'],$nowParts['mday'],$nowParts['year']);
+		$ret = array();
+		for($i = 30; $i >= 0; $i--) {
+			$thisDay = date('Y-m-d',$today - $i * 86400);
+			if(array_key_exists($thisDay, $data)) {
+				$ret[$thisDay] = $data[$thisDay]['dl'];
+			} else {
+				$ret[$thisDay] = 0;
+			}
+		}
+		
+		return $ret;
+	}
+	
 }
