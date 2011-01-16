@@ -18,3 +18,4 @@ $tag = "<"."?xml version=\"1.0\" encoding=\"utf-8\""."?".">";
 <?php if(!empty($this->items)) foreach($this->items as $item): ?>	<extension name="<?php echo $item->name ?>" element="<?php echo $item->element ?>" type="<?php echo $item->type ?>" version="<?php echo $item->version?>" detailsurl="<?php echo rtrim(JURI::base(),'/').AKRouter::_('index.php?option=com_ars&view=update&format=xml&task=stream&id='.$item->id) ?>" />
 <?php endforeach ?>
 </extensionset>
+<?php die(); ?>

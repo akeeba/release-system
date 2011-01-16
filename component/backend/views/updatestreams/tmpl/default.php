@@ -10,6 +10,14 @@ defined('_JEXEC') or die('Restricted Access');
 
 $model = $this->getModel();
 ?>
+
+<p>
+	<?php echo JText::_('LBL_UPDATESTREAMS_ALLLINKS_INTRO') ?>
+	<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=all&format=xml" target="_blank">
+		<?php echo JText::_('LBL_UPDATESTREAMS_ALLLINKS') ?>
+	</a>
+</p>
+
 <form name="adminForm" action="index.php" method="POST">
 	<input type="hidden" name="option" id="option" value="com_ars" />
 	<input type="hidden" name="view" id="view" value="updatestreams" />
@@ -34,6 +42,9 @@ $model = $this->getModel();
 			<th width="180">
 				<?php echo JHTML::_('grid.sort', 'LBL_UPDATES_ELEMENT', 'element', $this->lists->order_Dir, $this->lists->order); ?>
 			</th>
+			<th>
+				<?php echo JText::_('LBL_UPDATESTREAMS_LINKS'); ?>
+			</th>
 			<th width="80">
 				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
 				<?php echo JHTML::_('grid.sort', 'JPUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order); ?>
@@ -49,6 +60,7 @@ $model = $this->getModel();
 			</td>
 			<td></td>
 			<td></td>
+			<td></td>
 			<td>
 				<?php echo ArsHelperSelect::published($this->lists->fltPublished, 'published', array('onchange'=>'this.form.submit();')) ?>
 			</td>
@@ -56,7 +68,7 @@ $model = $this->getModel();
 	</thead>
 	<tfoot>
 		<tr>
-			<td colspan="5">
+			<td colspan="6">
 				<?php if($this->pagination->total > 0) echo $this->pagination->getListFooter() ?>
 			</td>
 		</tr>
@@ -79,20 +91,17 @@ $model = $this->getModel();
 						<?php echo htmlentities($item->name) ?>
 					</a>
 				</strong>
-				<br/>
-				<span class="small">
-				&emsp;&emsp;&emsp;
-					<?php echo JText::_('LBL_UPDATESTREAMS_LINKS'); ?>
-					<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&format=ini&id=<?php echo (int)$item->id ?>" target="_blank">INI</a>
-					&bull;
-					<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=stream&format=xml&id=<?php echo (int)$item->id ?>" target="_blank">XML</a>
-				</span>
 			</td>
 			<td>
 				<?php echo JText::_('LBL_UPDATETYPES_'.  strtoupper($item->type)); ?>
 			</td>
 			<td>
 				<?php echo htmlentities($item->element) ?>
+			</td>
+			<td align="center">
+				<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&format=ini&id=<?php echo (int)$item->id ?>" target="_blank">INI</a>
+				&bull;
+				<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=stream&format=xml&id=<?php echo (int)$item->id ?>" target="_blank">XML</a>
 			</td>
 			<td>
 				<?php echo JHTML::_('grid.published', $item, $i); ?>
