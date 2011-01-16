@@ -14,14 +14,15 @@ $tabs = array();
 	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></div>
 <?php endif; ?>
 
-<div class="ars-list-category">
-	<h2 class="ars-category-title">
-		<?php echo $this->item->title ?>
-	</h2>
-	<div class="ars-category-description">
-		<?php echo ArsHelperHtml::preProcessMessage($this->item->description) ?>
-	</div>
-</div>
+<?php
+	$item = $this->item; $item->id = 0;
+	$params = ArsHelperChameleon::getParams('category');
+	@ob_start();
+	@include dirname(__FILE__).DS.'../../browse/tmpl/category.php';
+	$contents = ob_get_clean();
+	$module = ArsHelperChameleon::getModule($item->title, $contents, $params);
+	echo JModuleHelper::renderModule($module, $params);
+?>
 
 <div class="ars-releases">
 <?php if(!count($this->items)) : ?>
@@ -32,7 +33,19 @@ $tabs = array();
 	<?php
 		foreach($this->items as $item)
 		{
-			include dirname(__FILE__).DS.'release.php';
+			$params = ArsHelperChameleon::getParams('category');
+			@ob_start();
+			@include dirname(__FILE__).DS.'release.php';
+			$contents = ob_get_clean();
+			$Itemid = JRequest::getInt('Itemid',0);
+			$release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);
+			
+			$title = "<img src=\"".JURI::base()."/media/com_ars/icons/status_".$item->maturity.".png\" width=\"16\" height=\"16\" align=\"left\" />".
+				"&nbsp;	<a href=\"".$release_url."\"><span class=\"ars-release-title-version\">".
+				$this->escape($item->version)."</span><span class=\"ars-release-title-maturity\">(".
+				JText::_('LBL_RELEASES_MATURITY_'.  strtoupper($item->maturity)).")</span></a>";
+			$module = ArsHelperChameleon::getModule($title, $contents, $params);
+			echo JModuleHelper::renderModule($module, $params);
 		}
 	?>
 <?php endif; ?>
@@ -52,14 +65,3 @@ $tabs = array();
 	<br/><?php echo $this->pagination->getPagesCounter(); ?>
 <?php endif; ?>
 </form>
-
-
-<script type="text/javascript">
-(function($){
-	$(document).ready(function(){
-<?php foreach($tabs as $tabid): ?>
-	$("#<?php echo $tabid ?>").tabs();
-<?php endforeach; ?>
-	});
-})(akeeba.jQuery);
-</script>

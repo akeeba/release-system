@@ -20,9 +20,16 @@ $Itemid = JRequest::getInt('Itemid',0);
 	<?php if(!empty($this->items['bleedingedge'])): ?>
 	<?php
 		foreach($this->items['bleedingedge'] as $id => $item):
-			include dirname(__FILE__).'/category.php';
+			$catURL = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
+			$title = "<a href=\"$catURL\">{$item->title}</a>";
+			$params = ArsHelperChameleon::getParams('category', true);
+			@ob_start();
+			@include 'category.php';
+			$contents = ob_get_clean();
+			$module = ArsHelperChameleon::getModule($title, $contents, $params);
+			echo JModuleHelper::renderModule($module, $params);
 		endforeach;
-	?>
+		?>
 	<?php else: ?>
 	<div class="ars-noitems">
 		<?php echo JText::_('ARS_NO_CATEGORIES'); ?>

@@ -14,13 +14,19 @@ $Itemid = JRequest::getInt('Itemid',0);
 	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></div>
 <?php endif; ?>
 
-
 <?php if( array_key_exists('all', $this->items) ): ?>
 <div id="ars-categories-all">
 	<?php if(!empty($this->items)): ?>
 	<?php
 		foreach($this->items['all'] as $id => $item):
-			include dirname(__FILE__).'/category.php';
+			$catURL = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
+			$title = "<a href=\"$catURL\">{$item->title}</a>";
+			$params = ArsHelperChameleon::getParams('category');
+			@ob_start();
+			@include 'category.php';
+			$contents = ob_get_clean();
+			$module = ArsHelperChameleon::getModule($title, $contents, $params);
+			echo JModuleHelper::renderModule($module, $params);
 		endforeach;
 	?>
 	<?php else: ?>
@@ -37,7 +43,14 @@ $Itemid = JRequest::getInt('Itemid',0);
 	<?php if(!empty($this->items['normal'])): ?>
 	<?php
 		foreach($this->items['normal'] as $id => $item):
-			include dirname(__FILE__).'/category.php';
+			$catURL = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
+			$title = "<a href=\"$catURL\">{$item->title}</a>";
+			$params = ArsHelperChameleon::getParams('category');
+			@ob_start();
+			@include 'category.php';
+			$contents = ob_get_clean();
+			$module = ArsHelperChameleon::getModule($title, $contents, $params);
+			echo JModuleHelper::renderModule($module, $params);
 		endforeach;
 	?>
 	<?php else: ?>
@@ -53,7 +66,14 @@ $Itemid = JRequest::getInt('Itemid',0);
 	<?php if(!empty($this->items['bleedingedge'])): ?>
 	<?php
 		foreach($this->items['bleedingedge'] as $id => $item):
+			$catURL = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
+			$title = "<a href=\"$catURL\">{$item->title}</a>";
+			$params = ArsHelperChameleon::getParams('category', true);
+			@ob_start();
 			@include 'category.php';
+			$contents = ob_get_clean();
+			$module = ArsHelperChameleon::getModule($title, $contents, $params);
+			echo JModuleHelper::renderModule($module, $params);
 		endforeach;
 	?>
 	<?php else: ?>

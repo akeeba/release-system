@@ -15,16 +15,11 @@ jimport('joomla.utilities.date');
 $released = new JDate($item->created);
 $release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);
 
+jimport('joomla.html.pane');
+$tabs	=& JPane::getInstance('tabs');
+
 ?>
 <div class="ars-browse-releases">
-	<h3 class="ars-release-title">
-		<img src="<?php echo JURI::base(); ?>/media/com_ars/icons/status_<?php echo $item->maturity ?>.png" width="16" height="16" align="left" />
-		&nbsp;
-		<a href="<?php echo $release_url ?>">
-			<span class="ars-release-title-version"><?php echo $this->escape($item->version) ?></span>
-			<span class="ars-release-title-maturity">(<?php echo JText::_('LBL_RELEASES_MATURITY_'.  strtoupper($item->maturity)) ?>)</span>
-		</a>
-	</h3>
 	<div class="ars-release-properties">
 		<span class="ars-release-property">
 			<span class="ars-label"><?php echo JText::_('LBL_RELEASES_MATURITY') ?>:</span>
@@ -52,32 +47,22 @@ $release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id
 		</span>
 	</div>
 
-	<div id="reltabs-<?php echo $item->id ?>">
-		<ul>
-			<li>
-				<a href="#reltabs-<?php echo $item->id ?>-desc">
-				<?php echo JText::_('LBL_ARS_RELEASE_DESCRIPTION') ?>
-				</a>
-			</li>
-			<li>
-				<a href="#reltabs-<?php echo $item->id ?>-notes">
-				<?php echo JText::_('LBL_ARS_RELEASE_NOTES') ?>
-				</a>
-			</li>
-		</ul>
-		<div id="reltabs-<?php echo $item->id ?>-desc" class="ars-release-description">
+	<?php echo $tabs->startPane('reltabs-'.$item->id); ?>
+		<?php echo $tabs->startPanel(JText::_('LBL_ARS_RELEASE_DESCRIPTION'),'reltabs-'.$item->id.'-desc') ?>
 			<?php echo ArsHelperHtml::preProcessMessage($item->description); ?>
-		</div>
-		<div id="reltabs-<?php echo $item->id ?>-notes" class="ars-release-notes">
+		<?php echo $tabs->endPanel(); ?>
+		<?php echo $tabs->startPanel(JText::_('LBL_ARS_RELEASE_NOTES'),'reltabs-'.$item->id.'-notes') ?>
 			<?php echo ArsHelperHtml::preProcessMessage($item->notes) ?>
-		</div>
-	</div>
-	<?php $tabs[] = "reltabs-{$item->id}"; ?>
+		<?php echo $tabs->endPanel(); ?>
+	<?php echo $tabs->endPane(); ?>
 
-	<div>
-		<a class="readon" href="<?php echo $release_url?>">
-			<?php echo JText::_('LBL_RELEASE_VIEWITEMS') ?>
-		</a>
+	<?php if($item->id): ?>
+	<div class="ars-release-readon">
+		<?php
+			$url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);
+			$title = JText::_('LBL_RELEASE_VIEWITEMS');
+			echo ArsHelperChameleon::getReadOn($title, $url);
+		?>
 	</div>
-	<div class="clr"></div>
+	<?php endif; ?>
 </div>

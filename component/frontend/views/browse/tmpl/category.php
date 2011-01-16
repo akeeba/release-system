@@ -10,18 +10,17 @@ defined('_JEXEC') or die('Restricted Access');
 
 ?>
 <div class="ars-browse-category">
-	<h3 class="ars-category-title">
-		<a href="<?php echo AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid) ?>">
-			<?php echo $item->title ?>
-		</a>
-	</h3>
 	<div class="ars-category-description">
 		<?php echo ArsHelperHtml::preProcessMessage($item->description) ?>
 	</div>
+	<?php if($item->id): ?>
 	<div>
-		<a class="readon" href="<?php echo AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid) ?>">
-			<?php echo JText::_('LBL_CATEGORY_VIEW') ?>
-		</a>
+		<?php
+			$url = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
+			$categoryTitle = JText::_('LBL_CATEGORY_VIEW');
+			echo ArsHelperChameleon::getReadOn($categoryTitle, $url);
+		?>
 	</div>
+	<?php endif; ?>
 	<div class="clr"></div>
 </div>

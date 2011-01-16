@@ -16,6 +16,9 @@ class ArsViewBase extends JView
 	function  display($tpl = null) {
 		$model = $this->getModel();
 		$task = $model->getState('task','cmd');
+		
+		// Include the Chameleon helper
+		require_once dirname(__FILE__).DS.'..'.DS.'helpers'.DS.'chameleon.php';
 
 		// Call the relevant method
 		$method_name = 'on'.ucfirst($task);

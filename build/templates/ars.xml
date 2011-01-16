@@ -72,6 +72,7 @@
 			<filename>uninstall.sql</filename>
 			<folder>assets</folder>
 			<folder>controllers</folder>
+			<folder>elements</folder>
 			<folder>helpers</folder>
 			<folder>language</folder>
 			<folder>models</folder>

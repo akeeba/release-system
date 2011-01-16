@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config>
+<config addfieldpath="/administrator/components/com_ars/elements">
 	<!-- Joomla! 1.5 compatible configuration -->
-	<params>
+	<params addpath="/administrator/components/com_ars/elements">
 		<!-- XML Update Streams (compatible with Joomla! 1.6) -->
 		<param name="updates_name" type="text" default="Downloads"
 			label="ARS_CONFIG_UPDATES_NAME_LABEL"
@@ -11,11 +11,28 @@
 			label="ARS_CONFIG_UPDATES_DESC_LABEL"
 			description="ARS_CONFIG_UPDATES_DESC_DESC"
 		/>
-
+		
+		<!-- Download options -->
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="antileech" type="radio" default="1" label="ARS_CONFIG_ANTILEECH_LABEL" description="ARS_CONFIG_ANTILEECH_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		
+		<!-- Rendering options -->
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="categorystyle" type="styles" default="rounded" label="ARS_CONFIG_CATEGORY_STYLE_LABEL" description="ARS_CONFIG_CATEGORY_STYLE_DESC"/>
+		<param name="categorysuffix" type="text" default="" label="ARS_CONFIG_CATEGORY_SFX_LABEL" description="ARS_CONFIG_CATEGORY_SFX_DESC"/>
+
+		<param name="releasestyle" type="styles" default="rounded" label="ARS_CONFIG_RELEASE_STYLE_LABEL" description="ARS_CONFIG_RELEASE_STYLE_DESC"/>
+		<param name="releasesuffix" type="text" default="" label="ARS_CONFIG_RELEASE_SFX_LABEL" description="ARS_CONFIG_RELEASE_SFX_DESC"/>
+
+		<param name="itemstyle" type="styles" default="rounded" label="ARS_CONFIG_ITEM_STYLE_LABEL" description="ARS_CONFIG_CATEGORY_STYLE_DESC"/>
+		<param name="itemsuffix" type="text" default="" label="ARS_CONFIG_ITEM_SFX_LABEL" description="ARS_CONFIG_ITEM_SFX_DESC"/>
+		
+		<param name="besuffix" type="text" default="" label="ARS_CONFIG_BE_SFX_LABEL" description="ARS_CONFIG_BE_SFX_DESC"/>
+		<param name="readontemplate" type="text" default="&lt;a href=&quot;%s&quot; class=&quot;readon&quot;&gt;%s&lt;/a&gt;" label="ARS_CONFIG_READON_LABEL" description="ARS_CONFIG_READON_DESC" size="50"/>
+		
 	</params>
 
 	<fieldset name="updatestream" label="CONFIG_BACKEND_UPDATESTREAM_LABEL" description="CONFIG_BACKEND_UPDATESTREAM_DESC">
@@ -29,12 +46,30 @@
 		/>
 	</fieldset>
 		
-	<fieldset name="frontend" label="CONFIG_FRONTEND_HEADER_LABEL" description="CONFIG_FRONTEND_HEADER_DESC">
+	<fieldset name="frontend" label="CONFIG_FRONTEND_HEADER_LABEL" description="CONFIG_FRONTEND_HEADER_DESC" addformpath="/administrator/components/com_ars/elements">
 		<field name="antileech" type="radio" default="1" label="ARS_CONFIG_ANTILEECH_LABEL" description="ARS_CONFIG_ANTILEECH_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
-	</fieldset>
+		
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="categorystyle" type="styles" default="rounded" label="ARS_CONFIG_CATEGORY_STYLE_LABEL" description="ARS_CONFIG_CATEGORY_STYLE_DESC"/>
+		<field name="categorysuffix" type="text" default="" label="ARS_CONFIG_CATEGORY_SFX_LABEL" description="ARS_CONFIG_CATEGORY_SFX_DESC"/>
+
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="releasestyle" type="styles" default="rounded" label="ARS_CONFIG_RELEASE_STYLE_LABEL" description="ARS_CONFIG_RELEASE_STYLE_DESC"/>
+		<field name="releasesuffix" type="text" default="" label="ARS_CONFIG_RELEASE_SFX_LABEL" description="ARS_CONFIG_RELEASE_SFX_DESC"/>
+
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="itemstyle" type="styles" default="rounded" label="ARS_CONFIG_ITEM_STYLE_LABEL" description="ARS_CONFIG_CATEGORY_STYLE_DESC"/>
+		<field name="itemsuffix" type="text" default="" label="ARS_CONFIG_ITEM_SFX_LABEL" description="ARS_CONFIG_ITEM_SFX_DESC"/>
+		
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="besuffix" type="text" default="" label="ARS_CONFIG_BE_SFX_LABEL" description="ARS_CONFIG_BE_SFX_DESC"/>
+
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="readontemplate" type="text" default="[a href=&quot;%s&quot; class=&quot;readon&quot;]%s[/a]" label="ARS_CONFIG_READON_LABEL" description="ARS_CONFIG_READON_DESC" size="50"/>		
+	</fieldset>	
 	
 	<fieldset
 		name="permissions"

@@ -21,61 +21,20 @@ $tabs = array();
 <?php endif; ?>
 
 <div class="ars-list-release">
-	<h2 class="ars-release-title">
-		<img src="<?php echo JURI::base(); ?>/media/com_ars/icons/status_<?php echo $this->item->maturity ?>.png" width="16" height="16" align="left" />
-		&nbsp;
-		<?php echo $this->escape($this->category->title) ?>
-		<?php echo $this->item->version ?>
-	</h2>
-
-	<div class="ars-release-properties">
-		<span class="ars-release-property">
-			<span class="ars-label"><?php echo JText::_('LBL_RELEASES_MATURITY') ?>:</span>
-			<span class="ars-value">
-				<?php echo JText::_('LBL_RELEASES_MATURITY_'.  strtoupper($this->item->maturity)) ?>
-			</span>
-		</span>
-
-		<span class="ars-release-property">
-			<span class="ars-label"><?php echo JText::_('LBL_RELEASES_RELEASEDON') ?>:</span>
-			<span class="ars-value">
-				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
-				<?php echo JHTML::_('date',$released, JText::_('DATE_FORMAT_LC2')) ?>
-				<?php else: ?>
-				<?php echo $released->toFormat(JText::_('DATE_FORMAT_LC2')) ?>
-				<?php endif; ?>
-			</span>
-		</span>
-
-		<span class="ars-release-property">
-			<span class="ars-label"><?php echo JText::_('LBL_RELEASES_HITS') ?>:</span>
-			<span class="ars-value">
-				<?php echo JText::sprintf( ($this->item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $this->item->hits) ?>
-			</span>
-		</span>
-	</div>
-
-	<div id="reltabs-<?php echo $this->item->id ?>">
-		<ul>
-			<li>
-				<a href="#reltabs-<?php echo $this->item->id ?>-desc">
-				<?php echo JText::_('LBL_ARS_RELEASE_DESCRIPTION') ?>
-				</a>
-			</li>
-			<li>
-				<a href="#reltabs-<?php echo $this->item->id ?>-notes">
-				<?php echo JText::_('LBL_ARS_RELEASE_NOTES') ?>
-				</a>
-			</li>
-		</ul>
-		<div id="reltabs-<?php echo $this->item->id ?>-desc" class="ars-release-description">
-			<?php echo ArsHelperHtml::preProcessMessage($this->item->description); ?>
-		</div>
-		<div id="reltabs-<?php echo $this->item->id ?>-notes" class="ars-release-notes">
-			<?php echo ArsHelperHtml::preProcessMessage($this->item->notes) ?>
-		</div>
-	</div>
-	<?php $tabs[] = "reltabs-{$this->item->id}"; ?>
+<?php
+$item = $this->item;
+$item->id = 0;
+$params = ArsHelperChameleon::getParams('release');
+@ob_start();
+@include dirname(__FILE__).DS.'../../category/tmpl/release.php';
+$contents = ob_get_clean();
+$title = "<img src=\"".JURI::base()."/media/com_ars/icons/status_".$item->maturity.".png\" width=\"16\" height=\"16\" align=\"left\" />".
+	"&nbsp;<span class=\"ars-release-title-version\">".
+	$this->escape($item->version)."</span><span class=\"ars-release-title-maturity\">(".
+	JText::_('LBL_RELEASES_MATURITY_'.  strtoupper($item->maturity)).")</span>";
+$module = ArsHelperChameleon::getModule($title, $contents, $params);
+echo JModuleHelper::renderModule($module, $params);
+?>
 </div>
 
 <div class="ars-releases">
@@ -87,7 +46,16 @@ $tabs = array();
 	<?php
 		foreach($this->items as $item)
 		{
-			include dirname(__FILE__).DS.'item.php';
+			$Itemid = JRequest::getInt('Itemid',0);
+			$Itemid = empty($Itemid) ? "" : "&Itemid=$Itemid";
+			$download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid);
+			$title = "<a href=\"$download_url\">".$this->escape($item->title)."</a>";			
+			$params = ArsHelperChameleon::getParams('item');
+			@ob_start();
+			@include dirname(__FILE__).DS.'item.php';
+			$contents = ob_get_clean();
+			$module = ArsHelperChameleon::getModule($title, $contents, $params);
+			echo JModuleHelper::renderModule($module, $params);			
 		}
 	?>
 <?php endif; ?>

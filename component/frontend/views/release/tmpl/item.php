@@ -14,11 +14,6 @@ $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&i
 
 ?>
 <div class="ars-browse-items">
-	<h3 class="ars-items-title">
-		<a href="<?php echo $download_url ?>" rel="nofollow">
-			<?php echo $this->escape($item->title) ?>
-		</a>
-	</h3>
 	<div class="ars-item-properties">
 		<span class="ars-release-property">
 			<span class="ars-label"><?php echo JText::_('LBL_ITEMS_HITS') ?>:</span>
@@ -61,9 +56,10 @@ $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&i
 	</div>
 
 	<div>
-		<a class="readon" href="<?php echo $download_url?>" rel="nofollow">
-			<?php echo JText::_('LBL_ITEM_DOWNLOAD') ?>
-		</a>
+		<?php
+			$itemTitle = JText::_('LBL_ITEM_DOWNLOAD');
+			echo ArsHelperChameleon::getReadOn($itemTitle, $download_url);
+		?>
 	</div>
 	<div class="clr"></div>
 </div>
