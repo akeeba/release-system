@@ -58,7 +58,9 @@ $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&i
 	<div>
 		<?php
 			$itemTitle = JText::_('LBL_ITEM_DOWNLOAD');
-			echo ArsHelperChameleon::getReadOn($itemTitle, $download_url);
+			$link = ArsHelperChameleon::getReadOn($itemTitle, $download_url);
+			$link = str_replace('<a ','<a rel="nofollow"', $link);
+			echo $link;
 		?>
 	</div>
 	<div class="clr"></div>

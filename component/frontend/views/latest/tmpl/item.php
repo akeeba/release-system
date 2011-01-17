@@ -17,7 +17,7 @@ $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&i
 		<?php echo $this->escape($item->title) ?>
 	</span>
 	<span class="ars-latest-items-filename">
-		<a href="<?php echo $download_url ?>">
+		<a href="<?php echo $download_url ?>" rel="nofollow">
 		<?php echo $this->escape($item->alias) ?>
 		</a>
 	</span>
