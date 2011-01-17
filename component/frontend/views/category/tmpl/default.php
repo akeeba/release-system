@@ -33,7 +33,7 @@ $tabs = array();
 	<?php
 		foreach($this->items as $item)
 		{
-			$params = ArsHelperChameleon::getParams('category');
+			$params = ArsHelperChameleon::getParams('release');
 			@ob_start();
 			@include dirname(__FILE__).DS.'release.php';
 			$contents = ob_get_clean();

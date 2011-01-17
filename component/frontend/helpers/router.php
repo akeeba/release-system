@@ -27,7 +27,7 @@ class AKRouter
 			$format = $uri->getVar('format','html');
 			$format = strtolower($format);
 			
-			if($format != 'html') {
+			if(!in_array($format,array('html','raw','feed'))) {
 				// Remove the suffix
 				$basename = basename($url);
 				$extension = end(explode(".", $basename));

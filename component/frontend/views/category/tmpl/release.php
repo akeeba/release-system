@@ -20,6 +20,7 @@ $tabs	=& JPane::getInstance('tabs');
 
 ?>
 <div class="ars-browse-releases">
+	<?php if($item->id): ?>
 	<div class="ars-release-properties">
 		<span class="ars-release-property">
 			<span class="ars-label"><?php echo JText::_('LBL_RELEASES_MATURITY') ?>:</span>
@@ -56,7 +57,6 @@ $tabs	=& JPane::getInstance('tabs');
 		<?php echo $tabs->endPanel(); ?>
 	<?php echo $tabs->endPane(); ?>
 
-	<?php if($item->id): ?>
 	<div class="ars-release-readon">
 		<?php
 			$url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);
@@ -64,5 +64,7 @@ $tabs	=& JPane::getInstance('tabs');
 			echo ArsHelperChameleon::getReadOn($title, $url);
 		?>
 	</div>
+	<?php else: ?>
+	<?php echo ArsHelperHtml::preProcessMessage($item->description); ?>
 	<?php endif; ?>
 </div>

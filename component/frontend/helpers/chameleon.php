@@ -107,8 +107,8 @@ class ArsHelperChameleon
 				break;
 				
 			case 'item':
-				$style = $params->getValue('releasestyle','rounded');
-				$sfx = $params->getValue('releasesuffix','');
+				$style = $params->getValue('itemstyle','rounded');
+				$sfx = $params->getValue('itemsuffix','');
 				break;
 		}
 		
