@@ -99,10 +99,11 @@ class ArsModelBrowse extends ArsModelBaseFE
 			{
 				$model->reset();
 				$model->setState('category',		$cat->id);
+				$model->setState('published',		1);
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			1);
-				$model->setState('order','ordering');
-				$model->setState('dir','ASC');
+				$model->setState('order',			'ordering');
+				$model->setState('dir',				'ASC');
 
 				$releases = $model->getItemList();
 
@@ -132,6 +133,7 @@ class ArsModelBrowse extends ArsModelBaseFE
 
 				$model = JModel::getInstance('Items','ArsModel');
 				$model->reset();
+				$model->setState('published',		1);
 				$model->setState('release',			$cat->release->id);
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			0);

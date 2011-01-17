@@ -28,8 +28,19 @@ class ArsViewCategory extends JView
 			$item->title = $this->escape($model->item->title.' '.$rel->version);
 			$item->category = $this->escape($model->item->title);
 			$item->date = date('r', strtotime($rel->created));
-			$item->description = $rel->notes;
-			$item->link = $this->escape(AKRouter::_(JURI::base().'index.php?option=com_ars&view=release&id='.$rel->id));
+			
+			if(!empty($rel->description)) {
+				$item->description = $rel->description;
+				if(!empty($rel->notes)) $item->description .= '<hr/>';
+			} else {
+				$item->description = '';
+			}
+			
+			if(!empty($rel->notes)) {
+				$item->description .= $rel->notes;
+			}
+			
+			$item->link = $this->escape(JURI::base().AKRouter::_('index.php?option=com_ars&view=release&id='.$rel->id));
 			$item->pubDate = date('r');
 
 			$document->addItem($item);

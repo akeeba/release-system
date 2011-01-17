@@ -30,8 +30,18 @@ class ArsViewBrowse extends JView
 				$item->title = $this->escape($cat->title.' '.$cat->release->version);
 				$item->category = $this->escape($cat->title);
 				$item->date = date('r', strtotime($cat->release->created));
-				$item->description = $cat->release->notes;
-				$item->link = $this->escape(AKRouter::_(JURI::base().'index.php?option=com_ars&view=release&id='.$cat->release->id));
+				if(!empty($cat->release->description)) {
+					$item->description = $cat->release->description;
+					if(!empty($cat->release->notes)) $item->description .= '<hr/>';
+				} else {
+					$item->description = '';
+				}
+				
+				if(!empty($cat->release->notes)) {
+					$item->description .= $cat->release->notes;
+				}
+				
+				$item->link = $this->escape(JURI::base().AKRouter::_('index.php?option=com_ars&view=release&id='.$cat->release->id));
 				$item->pubDate = date('r');
 
 				$document->addItem($item);				

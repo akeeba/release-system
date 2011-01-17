@@ -27,12 +27,19 @@ class AKRouter
 			$format = $uri->getVar('format','html');
 			$format = strtolower($format);
 			
-			if(!in_array($format,array('html','raw','feed'))) {
+			if(!in_array($format,array('html','raw'))) {
+				// Save any query parameters
+				if(strstr($url,'?')) {
+					list($url, $qparams) = explode('?', $url, 2);
+					$qparams = '?'.$qparams;
+				} else {
+					$qparams = '';
+				}
 				// Remove the suffix
 				$basename = basename($url);
 				$extension = end(explode(".", $basename));
 				$realbase = basename($url,'.'.$extension);
-				$url = str_replace($basename, $realbase, $url);
+				$url = str_replace($basename, $realbase, $url).$qparams;
 				// Add a format parameter
 				$uri = new JURI($url);
 				$uri->setVar('format',$format);

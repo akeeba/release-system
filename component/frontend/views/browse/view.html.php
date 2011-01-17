@@ -15,6 +15,7 @@ class ArsViewBrowse extends ArsViewBase
 	function onDisplay()
 	{
 		require_once JPATH_COMPONENT.DS.'helpers'.DS.'html.php';
+		require_once JPATH_COMPONENT.DS.'helpers'.DS.'router.php';
 
 		// Add RSS links
 		$app = JFactory::getApplication();
@@ -43,9 +44,9 @@ class ArsViewBrowse extends ArsViewBase
 			);
 			// add the links
 			$document =& JFactory::getDocument();
-			$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate',
+			$document->addHeadLink(AKRouter::_($feed.'&type=rss'), 'alternate',
 				'rel', $rss);
-			$document->addHeadLink(JRoute::_($feed.'&type=atom'), 'alternate',
+			$document->addHeadLink(AKRouter::_($feed.'&type=atom'), 'alternate',
 				'rel', $atom);
 		}
 	}
