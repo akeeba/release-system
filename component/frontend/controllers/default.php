@@ -49,8 +49,12 @@ class ArsControllerDefault extends JController
 			$model->processFeedData();
 			$view->setLayout('feed');
 		}
+		
+		// Turn off caching for registered users
+		$user = JFactory::getUser();
+		$guest = $user->guest;
 
-		if ($cachable && $viewType != 'feed') {
+		if ($guest && $cachable && $viewType != 'feed') {
 			$option	= JRequest::getCmd('option');
 			$cache =& JFactory::getCache($option, 'view');
 			
