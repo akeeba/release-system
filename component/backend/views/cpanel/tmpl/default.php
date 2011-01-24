@@ -103,6 +103,13 @@ $groups = array('basic','tools','update');
 		<?php echo $tabs->endPanel(); ?>
 				
 		<?php echo $tabs->endPane(); ?>
+		
+		<br/>
+		
+		<fieldset>
+			<legend><?php echo JText::_('FIELDSET_LABEL_LIVEUPDATE'); ?></legend>
+			<p><?php echo LiveUpdate::getIcon(); ?></p>
+		</fieldset>
 
 	</div>
 

@@ -9,6 +9,13 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die('Restricted Access');
 
+// Handle Live Update requests
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
+if(JRequest::getCmd('view','') == 'liveupdate') {
+	LiveUpdate::handleRequest();
+	return;
+}
+
 jimport('joomla.filesystem.file');
 
 // Get the view and controller from the request, or set to default if they weren't set

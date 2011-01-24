@@ -573,3 +573,8 @@ li.plupload_droptext {
 	border: 0;
 	line-height: 165px;
 }
+
+/* Live Update status icon */
+.liveupdate-icon-notsupported,.liveupdate-icon-crashed { color: gray; }
+.liveupdate-icon-updates { font-weight: bold; color: red; }
+.liveupdate-icon-noupdates { color: green; }

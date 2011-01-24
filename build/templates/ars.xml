@@ -75,6 +75,7 @@
 			<folder>elements</folder>
 			<folder>helpers</folder>
 			<folder>language</folder>
+			<folder>liveupdate</folder>
 			<folder>models</folder>
 			<folder>tables</folder>
 			<folder>views</folder>
