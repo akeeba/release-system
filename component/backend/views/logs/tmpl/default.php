@@ -157,9 +157,9 @@ $model = $this->getModel();
 			</td>
 			<td>
 				<?php if(version_compare(JVERSION,'1.6.0','gt')): ?>
-				<img src="<?php echo JURI::base() ?>images/<?php echo $item->authorized ? 'tick.png' : 'publish_x.png'; ?>" border="0" alt="" />
-				<?php else: ?>
 				<?php echo $item->authorized ? JHTML::_('image','admin/tick.png', '', array('border' => 0), true) : JHTML::_('image','admin/publish_x.png', '', array('border' => 0), true); ?>
+				<?php else: ?>
+				<img src="<?php echo JURI::base() ?>images/<?php echo $item->authorized ? 'tick.png' : 'publish_x.png'; ?>" border="0" alt="" />
 				<?php endif; ?>
 			</td>
 		</tr>

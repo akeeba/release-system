@@ -7,9 +7,9 @@
 	</layout>
 	<state>
 		<name>ARS_VIEW_RELEASE_TITLE</name>
-		<description>![CDATA[ARS_VIEW_RELEASE_DESC]]</description>
+		<description><![CDATA[ARS_VIEW_RELEASE_DESC]]></description>
 		<params>
-			<param name="relid" type="sql" default="0" label="LBL_RELEASE_SELECT" description="" query="SELECT `id`, CONCAT(`cat_title`,' ',`version`) AS `title` FROM `#__ars_view_releases`" key_field="id" value_field="title" />
+			<param name="relid" type="sql" default="0" label="ARS_VIEW_RELEASE_SELECT" description="" query="select `r`.`id`, concat(`c`.`title`,' ',`r`.`version`) as `title` from `#__ars_releases` as `r` inner join `#__ars_categories` as `c` on(`c`.`id` = `r`.`category_id`) WHERE `c`.`published` = 1 and `r`.`published` = 1 order by `c`.`ordering` ASC, `r`.`ordering` ASC" key_field="id" value_field="title" />
 			<param name="items_orderby" type="list" default="order" label="ARS_ITEMS_ORDERBY_LBL" description="ARS_ITEMS_ORDERBY_DESC">
 				<option value="none">ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
 				<option value="alpha">ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
