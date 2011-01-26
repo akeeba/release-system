@@ -23,7 +23,7 @@ class ArsViewImpjed extends JView
 		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD').' &ndash; <small>'.JText::_('ARS_TITLE_IMPORT_JED').'</small>');
 		
 		// Add toolbar buttons
-		JToolBarHelper::back('Back', 'index.php?option='.JRequest::getCmd('option'));
+		JToolBarHelper::back(version_compare(JVERSION,'1.6.0','ge') ? 'JTOOLBAR_BACK' : 'Back', 'index.php?option='.JRequest::getCmd('option'));
 		
 		// Add submenus (those nifty text links below the toolbar!)
 		// -- Categories

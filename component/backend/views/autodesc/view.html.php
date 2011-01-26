@@ -31,12 +31,12 @@ class ArsViewAutodesc extends ArsViewBase
 		JToolBarHelper::publishList();
 		JToolBarHelper::unpublishList();
 		JToolBarHelper::divider();
-		JToolBarHelper::custom('copy', 'copy.png', 'copy_f2.png', 'Copy', false);
+		JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', (version_compare(JVERSION,'1.6.0','ge') ? 'JGLOBAL_BATCH_COPY' : 'copy'), false);
 		JToolBarHelper::deleteList();
 		JToolBarHelper::editListX();
 		JToolBarHelper::addNewX();
 		JToolBarHelper::divider();
-		JToolBarHelper::back('Back', 'index.php?option='.JRequest::getCmd('option'));
+		JToolBarHelper::back( version_compare(JVERSION,'1.6.0','ge') ? 'JTOOLBAR_BACK' : 'Back', 'index.php?option='.JRequest::getCmd('option'));
 
 		// Add submenus (those nifty text links below the toolbar!)
 		// -- Categories

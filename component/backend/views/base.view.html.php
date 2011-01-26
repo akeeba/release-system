@@ -79,9 +79,14 @@ class ArsViewBase extends JView
 		$subtitle_key = 'ARS_TITLE_'.strtoupper(JRequest::getCmd('view','cpanel')).'_EDIT';
 		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD').' &ndash; <small>'.JText::_($subtitle_key).'</small>');
 
-		JToolBar::getInstance('toolbar')->appendButton( 'Standard', 'save', 'Save & New', 'savenew', false, false );
-		JToolBarHelper::save();
 		JToolBarHelper::apply();
+		JToolBarHelper::save();
+		if(version_compare(JVERSION,'1.6.0','ge')) {
+			JToolBarHelper::custom('savenew', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+		} else {
+			$sanTitle = 'Save & New';
+			JToolBar::getInstance('toolbar')->appendButton( 'Standard', 'save', $sanTitle, 'savenew', false, false );
+		}
 		JToolBarHelper::cancel();
 	}
 
