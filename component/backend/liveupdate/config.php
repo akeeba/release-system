@@ -12,9 +12,9 @@ defined('_JEXEC') or die();
  */
 class LiveUpdateConfig extends LiveUpdateAbstractConfig
 {
-	var $_extensionName			= 'com_akeeba';
-	var $_extensionTitle		= 'Akeeba Backup Core';
-	var $_updateURL				= 'http://www.akeebabackup.com/updates/abcore';
+	var $_extensionName			= 'com_ars';
+	var $_extensionTitle		= 'Akeeba Release System';
+	var $_updateURL				= 'http://www.akeebabackup.com/index.php?option=com_ars&view=update&format=ini&id=9';
 	var $_requiresAuthorization	= false;
 	var $_versionStrategy		= 'different';
 }
