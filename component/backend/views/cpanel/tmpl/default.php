@@ -147,8 +147,18 @@ $groups = array('basic','tools','update');
 </p>
 
 <?php
-	$mdrLabels = json_encode(array_keys($this->mdreport));
-	$mdrSerie1 = json_encode(array_values($this->mdreport));
+	$mdrMin = min(array_values($this->mdreport));
+	$mdrMax = max(array_values($this->mdreport));
+	$mdrSpread = $mdrMax - $mdrMin;
+	if($mdrSpread < 10) {
+		if($mdrMax < 10) $mdrMax = 10;
+		$mdrMin = $mdrMax - 10;
+	} else {
+		if($mdrMin > (int)($mdrSpread/10)) {
+			$mdrMin -= (int)($mdrSpread/10);
+		}
+	}
+	$mdrSerie1 = implode(',',array_values($this->mdreport));
 ?>
 
 <script type="text/javascript">
@@ -159,10 +169,14 @@ akeeba.jQuery(document).ready(function($){
 
 	$('#mdrChart').gchart('destroy').
 		gchart({
+			usePost: false,
 			type: 'line',
 			legend: null,
-			dataLabels: <?php echo $mdrLabels ?>,
-			series: [$.gchart.series('DL',<?php echo $mdrSerie1 ?>,'blue')]
+			dataLabels: {},
+			series: [$.gchart.series('DL',[<?php echo $mdrSerie1 ?>],'blue', <?php echo $mdrMin?>, <?php echo $mdrMax?>)],
+			axes: [
+				$.gchart.axis('left', <?php echo $mdrMin?>, <?php echo $mdrMax?>)
+			] 
 		});	
 });
 </script>
