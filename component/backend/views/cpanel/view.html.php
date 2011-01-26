@@ -21,7 +21,7 @@ class ArsViewCpanel extends JView
 	function display()
 	{
 		// Set the toolbar title
-		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD'));
+		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD'),'ars');
 		JToolBarHelper::preferences('com_ars', '550');
 
 		// Add submenus (those nifty text links below the toolbar!)

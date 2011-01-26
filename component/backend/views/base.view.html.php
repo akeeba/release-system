@@ -67,7 +67,7 @@ class ArsViewBase extends JView
 
 		// Set toolbar title
 		$subtitle_key = 'ARS_TITLE_'.strtoupper(JRequest::getCmd('view','cpanel'));
-		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD').' &ndash; <small>'.JText::_($subtitle_key).'</small>');
+		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD').' &ndash; <small>'.JText::_($subtitle_key).'</small>','ars');
 	}
 
 	protected function onAdd()
@@ -77,7 +77,7 @@ class ArsViewBase extends JView
 		$this->assignRef( 'item',		$model->getItem() );	
 		// Set toolbar title
 		$subtitle_key = 'ARS_TITLE_'.strtoupper(JRequest::getCmd('view','cpanel')).'_EDIT';
-		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD').' &ndash; <small>'.JText::_($subtitle_key).'</small>');
+		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD').' &ndash; <small>'.JText::_($subtitle_key).'</small>','ars');
 
 		JToolBarHelper::apply();
 		JToolBarHelper::save();

@@ -61,7 +61,7 @@
 	<administration>
 		<!-- Administration menu -->
 		<menu view="cpanel"
-			img="components/com_ars/assets/images/ars-16.png">COM_ARS</menu>
+			img="/media/com_ars/icons/images/ars_logo_16.png">COM_ARS</menu>
 
 		<!-- Back-end files -->
 		<files folder="backend">
