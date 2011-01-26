@@ -354,22 +354,22 @@ div.editform-row > option { display: block; float: left; min-width: 90px; height
 #category-selection { margin-bottom: 1em; }
 #category-selection div.ui-widget-content { padding: 0.5em; text-align: center; }
 #category-selection div.ui-widget-content select { min-width: 200px }
-#subfoldername { font-family: Consolas, "Courier New", Courier, monospace }
+#subfoldername { font-family: Consolas, "Courier New", Courier, monospace; font-weight: bold; }
 
 #contentsbrowser { width: 100% }
 
-#fileswidget { width: 49%; float: left; margin-left: 1%  }
+#fileswidget { width: 48%; float: left; margin-left: 1%  }
 #filesheader { font-size: larger; }
 #fileslist { height: 200px; overflow: scroll; }
 #fileslist>div { padding: 2px; border-bottom: 1px solid #ccc; cursor: default; }
-.filerow0 { background: #f0f0f0 }
-.filerow1 { background: #DFDFDF }
+.filerow0 { background: #f0f0f0; height: 20px; }
+.filerow1 { background: #DFDFDF; height: 20px; }
 .filerow0:hover, .filerow1:hover { background-color: #ccccff }
-span.filename { font-weight: bold; }
+span.filename { font-weight: bold; float: left; padding-top: 2px; }
 span.filesize { float: right; margin-right: 2px; color: #666666; font-style: italic; }
-span.deletefile { display: inline-block; cursor: pointer }
+.deletefile { display: inline-block; cursor: pointer; margin: 0 5px 0 0; padding: 0; float: left }
 
-#folderswidget { width: 49%; float: left; margin-left: 0.5%  }
+#folderswidget { width: 48%; float: left; margin-left: 0.5%  }
 #foldersheader { font-size: larger; }
 #folderslist { height: 200px; overflow: scroll; }
 #folderslist>div { padding: 2px; border-bottom: 1px solid #ccc; cursor: pointer }
@@ -378,17 +378,15 @@ span.foldername { font-weight: bold; }
 .folderrow1 { background: #DFDFDF }
 .folderrow0:hover, .folderrow1:hover { background-color: #ccccff }
 
-#newfolderbtn { padding: 2px; }
-
 /*
  * Import from FRS
  */
 #setup-ars { margin-bottom: 1em; }
 
-#setup-header, #setup-ars div.ui-widget-header { padding: 4px; font-size: large; }
+#setup-header, #setup-ars div.ui-widget-header { padding: 4px; }
 #setup-mainbody, #setup-ars-mainbody { padding: 8px; }
 #setup-mainbody label { display:inline-block; width: 20%; min-width: 250px; font-weight: bold; }
-#setup-mainbody>div { margin: 0.5em 0; }
+#setup-mainbody>div { margin: 0.5em 0; clear: both; }
 #setup-mainbody span.ui-state-default { display: inline-block; padding: 3px 5px; cursor: pointer; width: 120px; text-align: center; }
 #setup-mainbody input,
 #setup-mainbody select { width: 15%; min-width: 150px}

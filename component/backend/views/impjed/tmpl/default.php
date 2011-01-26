@@ -10,42 +10,39 @@
 defined('_JEXEC') or die('Restricted Access');
 ?>
 
-<div class="ui-widget ui-corner-all" id="setup-ars">
-	<div class="ui-widget-header ui-corner-top">
-		<span><?php echo JText::_('LBL_RELEASES_SELECT') ?></span>
-	</div>
-	<div id="setup-ars-mainbody" class="ui-widget-content ui-corner-bottom">
+<fieldset id="setup-ars">
+	<legend><?php echo JText::_('LBL_RELEASES_SELECT') ?></legend>
+	<div id="setup-ars-mainbody">
 		<label for="arsrelease"><?php echo JText::_('LBL_IMPJED_SELECTRELEASE') ?></label>
 		<?php echo ArsHelperSelect::releases(null, 'arsrelease') ?>
 	</div>
-</div>
+</fieldset>
 
-<div class="ui-widget ui-corner-all">
-	<div id="setup-header" class="ui-widget-header ui-corner-top">
-		<span><?php echo JText::_('LBL_IMPJED_JCSETUP') ?></span>
-	</div>
-	<div id="setup-mainbody" class="ui-widget-content ui-corner-bottom">
+<fieldset>
+	<legend id="setup-header"><?php echo JText::_('LBL_IMPJED_JCSETUP') ?></legend>
+	
+	<div id="setup-mainbody">
 		<div id="setup-project">
 			<label for="jcproject"><?php echo JText::_('LBL_IMPJED_JCPROJECT_TITLE') ?></label>
 			<input type="text" size="20" id="jcproject" value="" />
-			<span class="ui-state-default" id="getPackages"><?php echo JText::_('LBL_IMPJED_GETPACKAGES_TITLE'); ?></span>
+			<button onclick="" id="getPackages"><?php echo JText::_('LBL_IMPJED_GETPACKAGES_TITLE'); ?></button>
 		</div>
 		<div id="setup-package">
 			<label for="jcpackage"><?php echo JText::_('LBL_IMPJED_JCPACKAGE_TITLE') ?></label>
 			<select id="jcpackage"></select>
-			<span class="ui-state-default" id="getReleases"><?php echo JText::_('LBL_IMPJED_GETRELEASES_TITLE'); ?></span>
+			<button onclick="" id="getReleases"><?php echo JText::_('LBL_IMPJED_GETRELEASES_TITLE'); ?></button>
 		</div>
 		<div id="setup-release">
 			<label for="jcrelease"><?php echo JText::_('LBL_IMPJED_JCRELEASE_TITLE') ?></label>
 			<select id="jcrelease"></select>
-			<span class="ui-state-default" id="getFiles"><?php echo JText::_('LBL_IMPJED_GETFILES_TITLE'); ?></span>
+			<button onclick="" id="getFiles"><?php echo JText::_('LBL_IMPJED_GETFILES_TITLE'); ?></button>
 		</div>
 		<div id="setup-files">
 			<label for="jcfiles"><?php echo JText::_('LBL_IMPJED_JCFILES_TITLE') ?></label>
 			<span id="jcfiles"></span>
 		</div>
-	</div>
-</div>
+	</div>	
+</fieldset>
 
 <script type="text/javascript">
 (function($){

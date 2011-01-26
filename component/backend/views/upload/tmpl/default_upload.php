@@ -17,17 +17,17 @@ $i = 1;
 ?>
 
 <div id="contentsbrowser">
-	<div id="folderswidget" class="ui-widget ui-corner-all">
-		<div id="foldersheader" class="ui-widget-header ui-corner-top">
-			<?php echo JText::_('LBL_FOLDERS_LIST'); ?>
-		</div>
-		<div id="folderslist" class="ui-widget-content ui-corner-bottom">
+	<fieldset id="folderswidget">
+		<legend><?php echo JText::_('LBL_FOLDERS_LIST'); ?></legend>
+		
+		<div id="folderslist">
 			<div id="mkfolder">
 				<input type="text" size="20" value="" id="newfolder" />
-				<span class="ui-state-default" id="newfolderbtn">
+				<button id="newfolderbtn">
 					<?php echo JText::_('LBL_MKFOLDER'); ?>
-				</span>
+				</button>
 			</div>
+			<div style="clear: both;"></div>
 		<?php if(!is_null($this->parent)): ?>
 			<div class="folderrow0 folderrow" title="<?php echo $this->escape($this->parent) ?>">
 				<span class="foldername"><?php echo JText::_('LBL_PARENT_FOLDER') ?></span>
@@ -42,14 +42,14 @@ $i = 1;
 			</div>
 			<?php endforeach; ?>
 		<?php endif; ?>
-		</div>
-	</div>
+		</div>		
+	</fieldset>
 
-	<div id="fileswidget" class="ui-widget ui-corner-all">
-		<div id="filesheader" class="ui-widget-header ui-corner-top">
+	<fieldset id="fileswidget">
+		<legend>
 			<?php echo JText::_('LBL_FILES_LIST'); ?>
-		</div>
-		<div id="fileslist" class="ui-widget-content ui-corner-bottom">
+		</legend>
+		<div id="fileslist">
 		<?php if(empty($this->files)): ?>
 			<?php echo JText::_('LBL_NO_FILES'); ?>
 		<?php else: ?>
@@ -60,15 +60,17 @@ $i = 1;
 				$filesize = @filesize($filepath);
 			?>
 			<div class="filerow<?php echo $i?>">
-				<span class="ui-icon ui-icon-trash deletefile" title="<?php echo $this->escape($file) ?>">
-				</span>
+				<button class="deletefile" title="<?php echo $this->escape($file) ?>">
+					<span class="ui-icon ui-icon-trash"></span>
+				</button>
 				<span class="filename"><?php echo $this->escape($file) ?></span>
 				<span class="filesize"><?php echo ArsHelperHtml::sizeFormat($filesize) ?></span>
+				&nbsp;
 			</div>
 			<?php endforeach; ?>
 		<?php endif; ?>
 		</div>
-	</div>
+	</fieldset>
 </div>
 <div class="clr"></div>
 

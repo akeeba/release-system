@@ -18,20 +18,17 @@ defined('_JEXEC') or die('Restricted Access');
 	<input type="hidden" name="file" id="file" value="" />
 	<input type="hidden" name="<?php echo JUtility::getToken();?>" value="1" />
 
-	<div id="category-selection" class="ui-widget ui-corner-all">
-		<div class="ui-widget-header ui-corner-top">
-			<label for="category">
-				<?php echo JText::_('LBL_CATEGORY_SELECT');?>
-			</label>
-		</div>
-		<div class="ui-widget-content ui-corner-bottom">
-			<?php echo ArsHelperSelect::categories($this->category, 'id', array('onchange'=>'document.forms.adminForm.submit()')) ?>
-			<input type="submit" value="<?php echo JText::_('GO') ?>" />
-			<?php if(!empty($this->folder)): ?>
-			<br/>
-			<label for="subfoldername"><?php echo JText::_('LBL_SUBFOLDER_NAME') ?></label>
-			<span id="subfoldername"><?php echo $this->escape($this->folder); ?></span>
-			<?php endif; ?>
-		</div>
-	</div>
+	<fieldset id="category-selection">
+		<legend><?php echo JText::_('LBL_CATEGORY_SELECT');?></legend>
+		
+		<?php echo ArsHelperSelect::categories($this->category, 'id', array('onchange'=>'document.forms.adminForm.submit()')) ?>
+		<input type="submit" value="<?php echo JText::_('GO') ?>" />
+		<?php if(!empty($this->folder)): ?>
+		<div class="clr"></div>
+		<br/>
+		<?php echo JText::_('LBL_SUBFOLDER_NAME') ?>
+		<span id="subfoldername"><?php echo $this->escape($this->folder); ?></span>
+		<?php endif; ?>		
+	</fieldset>
+	
 </form>
