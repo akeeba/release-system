@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <!--
-	Joomla! Admin Tools build file for Phing
+	Joomla! Akeeba Release System build file for Phing
 	written by Nicholas K. Dionysopoulos
 	
-	Run "phing" from the build directory to build the component and plugins
+	Run "phing svn" from the build directory to build everything except the docs
 -->
-<project name="AkeebaReleaseSystem" description="Akeeba Release System" default="all" >
+<project name="AkeebaReleaseSystem" description="Akeeba Release System" default="svn" >
 	<property file="./build.properties" />
 	<!-- Default properties, set only if not already assigned in the build.properties file -->
 	<property name="dirs.root" value=".." />
@@ -13,9 +13,17 @@
 	<property name="dirs.languages" value="../component/translation" />
 	<property name="dirs.release" value="../release" />
 	<property name="version" value="svn" />
+	
+	<property name="dirs.bin" value="bin" />
+	<property name="dirs.bin.libxml" value="${dirs.bin}/libxml" />
+	<property name="dirs.bin.fop" value="${dirs.bin}/fop" />
+	<property name="dirs.bin.dbxsl" value="${dirs.bin}/dbxsl" />
+	<property name="dirs.bin.release" value="../release" />
+	<property name="dirs.documentation" value="../documentation" />	
 
 	<taskdef name="zipme" classname="phingext.ZipmeTask" />
 	<taskdef name="svnversion" classname="phingext.SvnVersionTask" />
+	<taskdef name="docexport" classname="phingext.DocexportTask" />	
 
 	<!--
 	====================================================================================================
@@ -39,9 +47,17 @@
 	====================================================================================================
 	-->
 	
-	<target name="all" description="Makes everything"
+	<target name="svn" description="Makes everything except the documentation"
 		depends="new-release,setup-properties,component-package">
 	</target>
+	
+	<target name="all" description="Makes everything"
+		depends="svn,documentation">
+	</target>
+
+	<target name="documentation" description="Creates the documentation packages"
+		depends="doc-j-pdf,doc-j-import">
+	</target>	
 
 	<target name="new-release" description="Empty the release directory">
 		<!-- Recreate the release directory -->
@@ -90,5 +106,30 @@
 		<zipme basedir="${dirs.component}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
 			<fileset refid="ars" />
 		</zipme>
-	</target>	
+	</target>
+	
+	<!--
+	====================================================================================================
+	Tasks - Documentation
+	====================================================================================================
+	-->
+	
+	<target name="doc-j-pdf" description="Documentation for Joomla! in PDF format">
+		<exec command="xsltproc --nonet --xinclude --novalid --stringparam img.src.path ${dirs.documentation}/arsguide/ --stringparam body.start.indent 0 --stringparam variablelist.term.break.after 1 --stringparam variablelist.term.separator &quot;&quot; --stringparam variablelist.max.termlength 12 --stringparam section.autolabel 1 --stringparam toc.section.depth 5 --output ${dirs.bin.release}/arsguide.fo ${dirs.bin.dbxsl}/fo/docbook.xsl ${dirs.documentation}/arsguide/ars-users-guide.xml" dir="${project.basedir}" />
+		<exec command="fop -fo ${dirs.bin.release}/arsguide.fo -pdf ${dirs.bin.release}/ars-users-guide.pdf" logoutput="true" />
+		<delete file="${dirs.release}arsguide.fo" quiet="yes" />
+	</target>
+
+	<target name="doc-j-import" description="Documentation for Joomla! in DocImport format">
+		<docexport
+			version="${version}"
+			outdir="${dirs.release}"
+			xslstyleroot="${dirs.bin.dbxsl}"
+			title="Akeeba Backup User's Guide"
+			docbookfile="${dirs.documentation}/arsguide/ars-users-guide.xml"
+			imagedir="images"
+			docbookimages="images"
+			package="ars-users-guide"
+		/>
+	</target>
 </project>
