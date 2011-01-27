@@ -61,7 +61,7 @@
 	<administration>
 		<!-- Administration menu -->
 		<menu view="cpanel"
-			img="/media/com_ars/icons/images/ars_logo_16.png">COM_ARS</menu>
+			img="components/com_ars/assets/images/ars-16.png">COM_ARS</menu>
 
 		<!-- Back-end files -->
 		<files folder="backend">
@@ -84,6 +84,7 @@
 		<!-- Back-end translation files -->
 		<languages folder="translation/backend">
 			<language tag="en-GB">en-GB.com_ars.ini</language>
+			<language tag="en-GB">en-GB.com_ars.menu.ini</language>
 		</languages>
 	</administration>
 </install>

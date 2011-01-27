@@ -44,7 +44,7 @@ defined('_JEXEC') or die();
 	</div>
 
 	<p class="liveupdate-poweredby">
-		Powered by <a href="https://www.akeebabackup.com/liveupdate">Akeeba Live Update</a>
+		Powered by <a href="https://www.akeebabackup.com/software/akeeba-live-update.html">Akeeba Live Update</a>
 	</p>
 
 </div>
