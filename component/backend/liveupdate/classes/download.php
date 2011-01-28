@@ -120,7 +120,7 @@ class LiveUpdateDownloadHelper
 
 		if(is_null($result))
 		{
-			$result = function_exists('curl_init') && function_exists('curl_exec');
+			$result = function_exists('curl_init');
 		}
 
 		return $result;

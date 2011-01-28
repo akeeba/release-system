@@ -28,9 +28,9 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 		}
 
 		if(!array_key_exists('key', $config)) {
-			self::$component = 'liveupdate';
+			self::$key = 'liveupdate';
 		} else {
-			self::$component = $config['key'];
+			self::$key = $config['key'];
 		}
 		
 		jimport('joomla.html.parameter');

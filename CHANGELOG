@@ -1,2 +1,6 @@
-Version 0.2 (Current trunk)
+Version 1.0
 ================================================================================
+
+Live Update:
+# The component storage class was broken
+# Updating was impossible on servers lying about their cURL support status
