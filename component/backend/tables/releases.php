@@ -107,7 +107,7 @@ class TableReleases extends ArsTable
 		// Automaticaly fix the maturity
 		if(!in_array($this->maturity, array('alpha','beta','rc','stable')))
 		{
-			$this->type = 'beta';
+			$this->maturity = 'beta';
 		}
 
 		jimport('joomla.filter.filterinput');

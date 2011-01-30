@@ -1,6 +1,9 @@
 Version 1.0
 ================================================================================
 
+# Category manager: you can add category without files directory (thank you @themexpert for the heads up)
+# Release manager: if no maturity is specified, a SQL error occurs (thank you @themexpert for the heads up)
+
 Live Update:
 # The component storage class was broken
 # Updating was impossible on servers lying about their cURL support status

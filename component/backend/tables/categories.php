@@ -75,6 +75,16 @@ class TableCategories extends ArsTable
 
 		// Check directory
 		jimport('joomla.filesystem.folder');
+		
+		$check = trim($this->directory);
+		if(!empty($check)) {
+			$check = JPath::clean($check);
+		}
+		if(empty($check)) {
+			$this->setError(JText::_('ERR_CATEGORY_NEEDS_DIRECTORY'));
+			return false;
+		}
+		
 		if(!JFolder::exists($this->directory)) {
 			$directory = JPATH_SITE.DS.$this->directory;
 			if(!JFolder::exists($directory)) {
