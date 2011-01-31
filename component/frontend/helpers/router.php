@@ -3,7 +3,7 @@
  * @package AkeebaReleaseSystem
  * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
- * @version $Id: router.php 51 2011-01-12 19:23:15Z nicholas $
+ * @version $Id$
  */
 
 // Protect from unauthorized access

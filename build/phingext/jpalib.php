@@ -6,7 +6,7 @@ define( '_JPA_MINOR', 0 ); // JPA Format minor version number
 /**
  * Creates JPA archives
  * @author Nicholas K. Dionysopoulos
- * @version $Id: jpalib.php 407 2011-01-24 09:30:22Z nikosdion $
+ * @version $Id$
  * @package akeebabuilder
  * @copyright Copyright (c)2009-2011 Nicholas K. Dionysopoulos
  * @license GNU GPL version 3 or, at your option, any later version
