@@ -37,6 +37,7 @@ defined('_JEXEC') or die();
 	<?php
 		$class = $this->updateInfo->hasUpdates ? 'hasupdates' : 'noupdates';
 		$auth = $this->config->getAuthorization();
+		$auth = empty($auth) ? '' : '?'.$auth;
 	?>
 	<?php if($this->needsAuth): ?>
 	<p class="liveupdate-error-needsauth">
