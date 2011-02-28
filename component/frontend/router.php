@@ -1060,7 +1060,7 @@ ENDSQL;
 		$db->setQuery($sql);
 		$item = $db->loadObject();
 
-		if(empty($rel))
+		if(empty($item))
 		{
 			$query['view'] = 'browse';
 			$query['layout'] = 'repository';
