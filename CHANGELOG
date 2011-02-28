@@ -4,7 +4,8 @@ Version 1.0
 # Category manager: you can add category without files directory (thank you @themexpert for the heads up)
 # Release manager: if no maturity is specified, a SQL error occurs (thank you @themexpert for the heads up)
 # PHP 5.3.3+ would throw an E_WARNING because Joomla! doesn't set the default timezone on systems where php.ini doesn't specify a timezone setting
-~ Added Norwegian translation
+# Latest Release page didn't use the Chameleon styling engine
+# Notices thrown accessign a Category or Release when there is no menu item to a parent ARS view on your site
 
 Live Update:
 # The component storage class was broken
