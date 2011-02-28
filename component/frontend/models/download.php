@@ -40,7 +40,7 @@ class ArsModelDownload extends ArsModelBaseFE
 	public function antiLeech()
 	{
 		$myURI = JURI::getInstance();
-		$myURI->setPath($path);
+		$myURI->setPath('');
 		$myURI->setQuery('');
 		$me = $myURI->toString();
 
@@ -131,6 +131,29 @@ ENDSQL;
             else {
             	$header_file = $basename;
             }
+            
+            // Call any plugins to post-process the download file parameters
+            $object = (object)array(
+            	'rawentry'		=> $item,
+            	'filename'		=> $filename,
+            	'basename'		=> $basename,
+            	'header_file'	=> $header_file,
+            	'mimetype'		=> $mime_type,
+            	'filesize'		=> $filesize
+            );
+            $app = JFactory::getApplication();
+            $retArray = $app->triggerEvent('onARSBeforeSendFile', $object);
+            if(!empty($retArray)) {
+            	foreach($retArray as $ret)
+            	{
+            		if(empty($ret) || !is_object($ret)) continue;
+	            	$filename = $ret->filename;
+	            	$basename = $ret->basename;
+	            	$header_file = $ret->header_file;
+	            	$mime_type = $ret->mimetype;
+	            	$filesize = $ret->filesize;
+            	}
+            }
 
 			@clearstatcache();
 			// Disable caching
@@ -146,7 +169,7 @@ ENDSQL;
 			header('Content-Disposition: attachment; filename='.$header_file);
 			header('Content-Transfer-Encoding: binary');
 			// Notify of filesize, if this info is available
-			if($filesize > 0) header('Content-Length: '.@filesize($filename));
+			if($filesize > 0) header('Content-Length: '.(int)$filesize);
 
 			error_reporting(0);
         	if ( ! ini_get('safe_mode') ) {
@@ -171,6 +194,24 @@ ENDSQL;
 	   		{
 	   			@readfile($filename);
 	   		}
+	   		
+            // Call any plugins to post-process the file download
+            $object = (object)array(
+            	'rawentry'		=> $item,
+            	'filename'		=> $filename,
+            	'basename'		=> $basename,
+            	'header_file'	=> $header_file,
+            	'mimetype'		=> $mime_type,
+            	'filesize'		=> $filesize
+            );
+            $app = JFactory::getApplication();
+            $ret = $app->triggerEvent('onARSAfterSendFile', $object);
+            if(!empty($ret)) {
+            	foreach($ret as $r) {
+            		echo $r;
+            	}
+            }
+	   		
 		}
 		exit(0);
 	}
