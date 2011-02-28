@@ -14,6 +14,8 @@ class ArsHelperBreadcrumbs
 	{
 		$menus =& JMenu::getInstance('site');
 		$menuitem =& $menus->getActive();
+		
+		$rootName = null;
 
 		if (!is_object($menuitem) || $menuitem->query['view'] != 'browse')
 		{
@@ -42,8 +44,9 @@ class ArsHelperBreadcrumbs
 					}
 				}
 			}
-
-			$pathway->addItem($rootName, $rootURI);
+			
+			if(!is_null($rootName))
+				$pathway->addItem($rootName, $rootURI);
 		}
 	}
 
