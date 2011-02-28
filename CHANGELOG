@@ -1,11 +1,15 @@
 Version 1.0
 ================================================================================
 
++ Adding ability for plugins to post-process downloads
 # Category manager: you can add category without files directory (thank you @themexpert for the heads up)
 # Release manager: if no maturity is specified, a SQL error occurs (thank you @themexpert for the heads up)
 # PHP 5.3.3+ would throw an E_WARNING because Joomla! doesn't set the default timezone on systems where php.ini doesn't specify a timezone setting
 # Latest Release page didn't use the Chameleon styling engine
-# Notices thrown accessign a Category or Release when there is no menu item to a parent ARS view on your site
+# Notices thrown accessing a Category or Release when there is no menu item to a parent ARS view on your site
+# Could not download file if a menu item pointing to ARS wasn't present on the site
+# Downloading files failed when Admin Tools' Geoblocking was active
+# Anti-leech protection caused a PHP notice to be thrown
 
 Live Update:
 # The component storage class was broken
