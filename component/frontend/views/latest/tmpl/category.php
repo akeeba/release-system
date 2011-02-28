@@ -12,13 +12,6 @@ jimport('joomla.utilities.date');
 $released = new JDate($cat->release->created);
 ?>
 <div class="ars-list-release">
-	<h3 class="ars-release-title">
-		<img src="<?php echo JURI::base(); ?>/media/com_ars/icons/status_<?php echo $cat->release->maturity ?>.png" width="16" height="16" align="left" />
-		&nbsp;
-		<a href="<?php echo AKRouter::_('index.php?option=com_ars&view=release&id='.$cat->release->id.'&Itemid='.$Itemid) ?>">
-			<?php echo $cat->title ?> <?php echo $cat->release->version?>
-		</a>
-	</h3>
 	<div class="ars-release-properties">
 		<span class="ars-release-property">
 			<span class="ars-label"><?php echo JText::_('LBL_RELEASES_MATURITY') ?>:</span>
@@ -47,10 +40,12 @@ $released = new JDate($cat->release->created);
 		?>
 		</ul>
 	</div>
-	<div>
-		<a class="readon" href="<?php echo AKRouter::_('index.php?option=com_ars&view=category&id='.$cat->id.'&Itemid='.$Itemid) ?>">
-			<?php echo JText::_('LBL_CATEGORY_VIEW') ?>
-		</a>
+	<div class="ars-category-readon">
+		<?php 
+		$title = JText::_('LBL_CATEGORY_VIEW');
+		$url = AKRouter::_('index.php?option=com_ars&view=category&id='.$cat->id.'&Itemid='.$Itemid);
+		echo ArsHelperChameleon::getReadOn($title, $url);
+		?>
 	</div>
 	<div class="clr"></div>
 </div>

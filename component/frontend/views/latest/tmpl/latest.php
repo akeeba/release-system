@@ -24,7 +24,14 @@ $Itemid = JRequest::getInt('Itemid',0);
 		foreach($this->items['all'] as $id => $cat):
 			if( !empty($cat->release) )
 				if( !empty($cat->release->files) )
+				{
+					$params = ArsHelperChameleon::getParams('category');
+					@ob_start();
 					include dirname(__FILE__).'/category.php';
+					$contents = ob_get_clean();
+					$module = ArsHelperChameleon::getModule($cat->title, $contents, $params);
+					echo JModuleHelper::renderModule($module, $params);					
+				}
 		endforeach;
 	?>
 	<?php else: ?>
@@ -43,7 +50,14 @@ $Itemid = JRequest::getInt('Itemid',0);
 		foreach($this->items['normal'] as $id => $cat):
 			if( !empty($cat->release) )
 				if( !empty($cat->release->files) )
+				{
+					$params = ArsHelperChameleon::getParams('category');
+					@ob_start();
 					include dirname(__FILE__).'/category.php';
+					$contents = ob_get_clean();
+					$module = ArsHelperChameleon::getModule($cat->title, $contents, $params);
+					echo JModuleHelper::renderModule($module, $params);					
+				}
 		endforeach;
 	?>
 	<?php else: ?>
@@ -61,7 +75,14 @@ $Itemid = JRequest::getInt('Itemid',0);
 		foreach($this->items['bleedingedge'] as $id => $cat):
 			if( !empty($cat->release) )
 				if( !empty($cat->release->files) )
+				{
+					$params = ArsHelperChameleon::getParams('category');
+					@ob_start();
 					include dirname(__FILE__).'/category.php';
+					$contents = ob_get_clean();
+					$module = ArsHelperChameleon::getModule($cat->title, $contents, $params);
+					echo JModuleHelper::renderModule($module, $params);					
+				}
 		endforeach;
 	?>
 	<?php else: ?>
