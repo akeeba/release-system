@@ -10,6 +10,7 @@ Version 1.0
 # Could not download file if a menu item pointing to ARS wasn't present on the site
 # Downloading files failed when Admin Tools' Geoblocking was active
 # Anti-leech protection caused a PHP notice to be thrown
+# Extra slash in the download URLs in update INI files (thank you deros)
 
 Live Update:
 # The component storage class was broken

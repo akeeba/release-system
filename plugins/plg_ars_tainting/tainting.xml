@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/plugin-install.dtd">
+<install version="1.5" type="plugin" group="ars" method="upgrade">
+	<name>ZIP file tainting</name>
+	<author>Nicholas K. Dionysopoulos</author>
+	<authorEmail>nicholas@dionysopoulos.me</authorEmail>
+	<authorUrl>http://www.akeebabackup.com</authorUrl>
+	<copyright>Copyright (c)2011 Nicholas K. Dionysopoulos</copyright>
+	<license>GNU General Public License version 3, or later</license>
+	<creationDate>2011-02-28</creationDate>
+	<version>1.0</version>
+	<description>
+		Taints ZIP files with downloading tracking code
+	</description>
+	<files>
+		<filename plugin="tainting">tainting.php</filename>
+	</files>
+</install>
