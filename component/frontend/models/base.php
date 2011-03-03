@@ -75,7 +75,7 @@ class ArsModelBaseFE extends JModel
 					$user = JFactory::getUser();
 					$parameters['username']	= $user->get('username');
 					$parameters['id']		= $user->get('id');
-					$results = $app->triggerEvent('onLogoutUser', array($parameters, $options));
+					//$results = $app->triggerEvent('onLogoutUser', array($parameters, $options));
 				}
 			} elseif( !empty($credentials['username']) && !empty($credentials['password']) ) {
 				// AUTHENTICATE AGAINST USERNAME/PASSWORD PAIR IN QUERY
@@ -91,7 +91,7 @@ class ArsModelBaseFE extends JModel
 					$user = JFactory::getUser();
 					$parameters['username']	= $user->get('username');
 					$parameters['id']		= $user->get('id');
-					$results = $app->triggerEvent('onLogoutUser', array($parameters, $options));
+					//$results = $app->triggerEvent('onLogoutUser', array($parameters, $options));
 				} else {
 					$user = JFactory::getUser();
 				}

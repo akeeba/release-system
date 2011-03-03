@@ -132,8 +132,12 @@ ENDSQL;
             	$header_file = $basename;
             }
             
+            // Import ARS plugins
+            jimport('joomla.plugin.helper');
+            JPluginHelper::importPlugin('ars');
+            
             // Call any plugins to post-process the download file parameters
-            $object = (object)array(
+            $object = array(
             	'rawentry'		=> $item,
             	'filename'		=> $filename,
             	'basename'		=> $basename,
@@ -142,11 +146,12 @@ ENDSQL;
             	'filesize'		=> $filesize
             );
             $app = JFactory::getApplication();
-            $retArray = $app->triggerEvent('onARSBeforeSendFile', $object);
+            $retArray = $app->triggerEvent('onARSBeforeSendFile', array($object));
             if(!empty($retArray)) {
             	foreach($retArray as $ret)
             	{
-            		if(empty($ret) || !is_object($ret)) continue;
+            		if(empty($ret) || !is_array($ret)) continue;
+            		$ret = (object)$ret;
 	            	$filename = $ret->filename;
 	            	$basename = $ret->basename;
 	            	$header_file = $ret->header_file;
@@ -196,7 +201,7 @@ ENDSQL;
 	   		}
 	   		
             // Call any plugins to post-process the file download
-            $object = (object)array(
+            $object = array(
             	'rawentry'		=> $item,
             	'filename'		=> $filename,
             	'basename'		=> $basename,
@@ -205,7 +210,7 @@ ENDSQL;
             	'filesize'		=> $filesize
             );
             $app = JFactory::getApplication();
-            $ret = $app->triggerEvent('onARSAfterSendFile', $object);
+            $ret = $app->triggerEvent('onARSAfterSendFile', array($object));
             if(!empty($ret)) {
             	foreach($ret as $r) {
             		echo $r;
