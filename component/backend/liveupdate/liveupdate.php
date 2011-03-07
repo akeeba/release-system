@@ -29,10 +29,9 @@ require_once dirname(__FILE__).'/config.php';
 class LiveUpdate
 {
 	/**
-	 * Handles requests to the "liveupdate" view which is used to display
-	 * update information and perform the live updates
+	 * Loads the translation strings -- this is an internal function, called automatically
 	 */
-	public static function handleRequest()
+	private static function loadLanguage()
 	{
 		// Load translations
 		$basePath = dirname(__FILE__);
@@ -40,7 +39,17 @@ class LiveUpdate
 		$jlang->load('liveupdate', $basePath, 'en-GB', true); // Load English (British)
 		$jlang->load('liveupdate', $basePath, $jlang->getDefault(), true); // Load the site's default language
 		$jlang->load('liveupdate', $basePath, null, true); // Load the currently selected language
-
+	}
+	
+	/**
+	 * Handles requests to the "liveupdate" view which is used to display
+	 * update information and perform the live updates
+	 */
+	public static function handleRequest()
+	{
+		// Load language strings
+		self::loadLanguage();
+		
 		// Load the controller and let it run the show
 		require_once dirname(__FILE__).'/classes/controller.php';
 		$controller = new LiveUpdateController();
@@ -70,6 +79,9 @@ class LiveUpdate
 	
 	public static function getIcon($config=array())
 	{
+		// Load language strings
+		self::loadLanguage();
+		
 		$defaultConfig = array(
 			'option'			=> JRequest::getCmd('option',''),
 			'view'				=> 'liveupdate',

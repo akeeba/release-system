@@ -66,7 +66,6 @@ class LiveUpdateModel extends JModel
 		
 		// Let's download!
 		require_once dirname(__FILE__).'/download.php';
-		$url .= $auth;
 		return LiveUpdateDownloadHelper::download($url, $target);
 	}
 	

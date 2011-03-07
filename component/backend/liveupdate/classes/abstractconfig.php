@@ -112,7 +112,7 @@ abstract class LiveUpdateAbstractConfig extends JObject
 	public final function getAuthorization()
 	{
 		if(!empty($this->_downloadID)) {
-			return "downloadid=".urlencode($this->_downloadID);
+			return "dlid=".urlencode($this->_downloadID);
 		}
 		if(!empty($this->_username) && !empty($this->_password)) {
 			return "username=".urlencode($this->_username)."&password=".urlencode($this->_password);
