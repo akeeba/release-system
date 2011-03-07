@@ -15,3 +15,6 @@ Version 1.0
 Live Update:
 # The component storage class was broken
 # Updating was impossible on servers lying about their cURL support status
+# Wrong URL parameter (downloadid) passed on Pro downloads, instead of the expected dlid parameter
+# Double authentication string appended to URL, potentially causing download error in the Professional release
+# The translation strings where not loaded when getIcon() was being called
