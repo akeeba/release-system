@@ -27,6 +27,7 @@
 	<languages folder="translation/frontend">
 		<language tag="en-GB">en-GB.com_ars.ini</language>
 		<language tag="da-DK">da-DK.com_ars.ini</language>
+		<language tag="nl-NL">nl-NL.com_ars.ini</language>
 		<language tag="no-NO">no-NO.com_ars.ini</language>
 		<language tag="tr-TR">tr-TR.com_ars.ini</language>
 	</languages>
@@ -90,6 +91,8 @@
 			<language tag="en-GB">en-GB.com_ars.menu.ini</language>
 			<language tag="da-DK">da-DK.com_ars.ini</language>
 			<language tag="da-DK">da-DK.com_ars.menu.ini</language>
+			<language tag="nl-NL">nl-NL.com_ars.ini</language>
+			<language tag="nl-NL">nl-NL.com_ars.menu.ini</language>
 			<language tag="no-NO">no-NO.com_ars.ini</language>
 			<language tag="no-NO">no-NO.com_ars.menu.ini</language>
 			<language tag="tr-TR">tr-TR.com_ars.ini</language>
