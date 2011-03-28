@@ -35,9 +35,9 @@ class LiveUpdateModel extends JModel
 
 		// Oki. Let's get the URL of the package
 		$updateInfo = LiveUpdate::getUpdateInformation();
-		$url = $updateInfo->downloadURL;
 		$config = LiveUpdateConfig::getInstance();
 		$auth = $config->getAuthorization();
+		$url = $updateInfo->downloadURL.(empty($auth) ? '' : '?'.$auth);
 		
 		// Sniff the package type. If sniffing is impossible, I'll assume a ZIP package
 		$basename = basename($url);
