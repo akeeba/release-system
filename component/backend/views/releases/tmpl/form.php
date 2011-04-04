@@ -78,7 +78,12 @@ $asModel = JModel::getInstance('Ambra','ArsModel');
 			</label>
 			<?php echo JHTML::_('list.accesslevel', $this->item); ?>
 		</div>
-		<?php if(ArsModelAmbra::hasAMBRA()): ?>
+		<?php if(ArsModelAmbra::hasAkeebaSubs()): ?>
+		<div class="editform-row editform-row-noheight">
+			<label for="groups"><?php echo JText::_('LBL_CATEGORIES_GROUPS_AKEEBA'); ?></label>
+			<?php echo ArsHelperSelect::akeebasubsgroups($this->item->groups, 'groups') ?>
+		</div>
+		<?php elseif(ArsModelAmbra::hasAMBRA()): ?>
 		<div class="editform-row editform-row-noheight">
 			<label for="groups"><?php echo JText::_('LBL_CATEGORIES_GROUPS'); ?></label>
 			<?php echo ArsHelperSelect::ambragroups($this->item->groups, 'groups') ?>

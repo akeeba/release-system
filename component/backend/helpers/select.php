@@ -161,6 +161,43 @@ class ArsHelperSelect
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
+	public static function akeebasubsgroups($selected = null, $name = 'groups')
+	{
+		if(!is_array($selected))
+		{
+			if(empty($selected)) {
+				$selected = array();
+			} else {
+				$selected = explode(',',$selected);
+			}
+		}
+		
+		$ambraModel = JModel::getInstance('Ambra', 'ArsModel');
+		$hasAkeebaSubs = ArsModelAmbra::hasAkeebaSubs();
+		
+		if($hasAkeebaSubs) {
+			$groups = ArsModelAmbra::getAkeebaGroups();
+	
+			$html = '';
+	
+			if(count($groups))
+			{
+				$options = array();
+				foreach($groups as $group) {
+					$item = '<input type="checkbox" class="checkbox" name="'.$name.'[]" value="'.$group->id.'" ';
+					if(in_array($group->id, $selected)) $item .= ' checked="checked" ';
+					$item .= '/> '.$group->title;
+					$options[] = $item;
+				}
+				$html = implode("\n&nbsp;", $options);
+			}			
+		} else {
+			$html = '';
+		}
+
+		return $html;
+	}
+	
 	public static function ambragroups($selected = null, $name = 'groups')
 	{
 		if(!is_array($selected))

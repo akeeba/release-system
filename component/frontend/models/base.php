@@ -108,10 +108,10 @@ class ArsModelBaseFE extends JModel
 			}
 
 			// Get AMBRA groups of current user
-			if(!ArsModelAmbra::hasAMBRA()) {
+			if(!ArsModelAmbra::hasSubscriptionsExtension()) {
 				$mygroups = array();
 			} else {
-				$mygroups = $groupModel->getUserGroups($user->id);
+				$mygroups = ArsModelAmbra::getUserGroups($user->id);
 			}
 		}
 
