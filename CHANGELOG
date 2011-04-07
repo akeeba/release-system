@@ -18,3 +18,4 @@ Live Update:
 # Wrong URL parameter (downloadid) passed on Pro downloads, instead of the expected dlid parameter
 # Double authentication string appended to URL, potentially causing download error in the Professional release
 # The translation strings where not loaded when getIcon() was being called
+# Download didn't work when cURL couldn't be set up to follow redirections (e.g. when Safe Mode is enabled)
