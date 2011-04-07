@@ -133,13 +133,13 @@ class LiveUpdateDownloadHelper
 	 * @param resource $fp The file pointer to download to. Omit to return the contents.
 	 * @return bool|string False on failure, true on success ($fp not null) or the URL contents (if $fp is null)
 	 */
-	private static function &getCURL($url, $fp = null)
+	private static function &getCURL($url, $fp = null, $nofollow = false)
 	{
 		$result = false;
 		
 		$ch = curl_init($url);
 		
-		if( !@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1) ) {
+		if( !@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1) && !$nofollow ) {
 			// Safe Mode is enabled. We have to fetch the headers and
 			// parse any redirections present in there.
 			curl_setopt($ch, CURLOPT_AUTOREFERER, true);
@@ -166,7 +166,11 @@ class LiveUpdateDownloadHelper
 			}
 
 			// Download from the new URL
-			return self::getCURL($newURL, $fp);
+			if($url != $newURL) {
+				return self::getCURL($newURL, $fp);
+			} else {
+				return self::getCURL($newURL, $fp, true);
+			}
 		} else {
 			@curl_setopt($ch, CURLOPT_MAXREDIRS, 20);
 		}
