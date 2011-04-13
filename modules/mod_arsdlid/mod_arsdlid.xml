@@ -15,6 +15,14 @@
 	<languages folder="translations">
 		<language tag="en-GB">en-GB.mod_arsdlid.ini</language>
 		<language tag="en-GB">en-GB.mod_arsdlid.sys.ini</language>
+		<language tag="da-DK">da-DK.mod_arsdlid.ini</language>
+		<language tag="da-DK">da-DK.mod_arsdlid.sys.ini</language>
+		<language tag="nb-NO">nb-NO.mod_arsdlid.ini</language>
+		<language tag="nb-NO">nb-NO.mod_arsdlid.sys.ini</language>
+		<language tag="nl-NL">nl-NL.mod_arsdlid.ini</language>
+		<language tag="nl-NL">nl-NL.mod_arsdlid.sys.ini</language>
+		<language tag="uk-UA">uk-UA.mod_arsdlid.ini</language>
+		<language tag="uk-UA">uk-UA.mod_arsdlid.sys.ini</language>
 	</languages>
 	<params>
 		<param name="cache" type="list" default="1" label="MOD_ARSDLID_OPT_CACHING_LBL" description="MOD_ARSDLID_OPT_CACHING_DESC">
