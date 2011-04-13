@@ -99,4 +99,13 @@
 			<language tag="tr-TR">tr-TR.com_ars.menu.ini</language>
 		</languages>
 	</administration>
+	
+	<!-- Installation / uninstallation PHP scripts -->
+	<installfile>install.ars.php</installfile>
+	<uninstallfile>uninstall.ars.php</uninstallfile>
+	<scriptfile>script.ars.php</scriptfile>
+
+	<updateservers>
+		<server type="extension" priority="1" name="Akeeba Release System Updates"><![CDATA[http://www.akeebabackup.com/index.php?option=com_ars&view=update&task=stream&id=9&format=xml]]></server>
+	</updateservers>	
 </install>

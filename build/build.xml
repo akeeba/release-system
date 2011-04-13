@@ -11,6 +11,7 @@
 	<property name="dirs.root" value=".." />
 	<property name="dirs.component" value="../component" />
 	<property name="dirs.languages" value="../component/translation" />
+	<property name="dirs.modules" value="../modules" />
 	<property name="dirs.release" value="../release" />
 	<property name="version" value="svn" />
 	
@@ -32,11 +33,14 @@
 	-->
 	
 	<fileset dir="${dirs.component}" id="ars">
+		<include name="ars.xml" />
+		<include name="install.ars.php" />
+		<include name="uninstall.ars.php" />
+		<include name="script.ars.php" />
 		<include name="backend/**" />
 		<include name="frontend/**" />
 		<include name="media/**" />
 		<include name="translation/**" />
-		<include name="ars.xml" />
 		<include name="LICENSE.txt" />
 		<include name="README.php" />
 	</fileset>
@@ -105,6 +109,11 @@
 		
 		<zipme basedir="${dirs.component}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
 			<fileset refid="ars" />
+		</zipme>
+		<zipme basedir="${dirs.modules}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
+			<fileset dir="${dirs.modules}">
+				<include name="**" />
+			</fileset>
 		</zipme>
 	</target>
 	
