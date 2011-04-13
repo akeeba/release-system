@@ -1,6 +1,7 @@
 Version 1.0
 ================================================================================
 
++ Download ID module
 + Adding ability for plugins to post-process downloads
 # Category manager: you can add category without files directory (thank you @themexpert for the heads up)
 # Release manager: if no maturity is specified, a SQL error occurs (thank you @themexpert for the heads up)
