@@ -41,6 +41,11 @@ $installer = new JInstaller;
 $result = $installer->install($src.'/mod_arsdlid');
 $status->modules[] = array('name'=>'mod_arsdlid','client'=>'site', 'result'=>$result);
 
+// -- My Downloads
+$installer = new JInstaller;
+$result = $installer->install($src.'/mod_arsdownloads');
+$status->modules[] = array('name'=>'mod_arsdownloads','client'=>'site', 'result'=>$result);
+
 // Install modules and plugins -- END
 
 // Load the translation strings (Joomla! 1.5 and 1.6 compatible)

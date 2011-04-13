@@ -16,6 +16,7 @@ $status->modules = array();
 $status->plugins = array();
 $src = $this->parent->getPath('source');
 
+// -- Download ID
 if(version_compare(JVERSION,'1.6.0','ge')) {
 	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `element` = "mod_arsdlid" AND `type` = "module"');
 } else {
@@ -27,6 +28,20 @@ if($id)
 	$installer = new JInstaller;
 	$result = $installer->uninstall('module',$id,1);
 	$status->modules[] = array('name'=>'mod_arsdlid','client'=>'site', 'result'=>$result);
+}
+
+// -- My Downloads
+if(version_compare(JVERSION,'1.6.0','ge')) {
+	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `element` = "mod_arsdownloads" AND `type` = "module"');
+} else {
+	$db->setQuery('SELECT `id` FROM #__modules WHERE `module` = "mod_arsdownloads"');
+}
+$id = $db->loadResult();
+if($id)
+{
+	$installer = new JInstaller;
+	$result = $installer->uninstall('module',$id,1);
+	$status->modules[] = array('name'=>'mod_arsdownloads','client'=>'site', 'result'=>$result);
 }
 
 ?>
