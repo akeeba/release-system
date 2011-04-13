@@ -37,7 +37,7 @@ class LiveUpdateModel extends JModel
 		$updateInfo = LiveUpdate::getUpdateInformation();
 		$config = LiveUpdateConfig::getInstance();
 		$auth = $config->getAuthorization();
-		$url = $updateInfo->downloadURL.(empty($auth) ? '' : '?'.$auth);
+		$url = $updateInfo->downloadURL;
 		
 		// Sniff the package type. If sniffing is impossible, I'll assume a ZIP package
 		$basename = basename($url);
