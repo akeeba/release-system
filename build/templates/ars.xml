@@ -27,9 +27,12 @@
 	<languages folder="translation/frontend">
 		<language tag="en-GB">en-GB.com_ars.ini</language>
 		<language tag="da-DK">da-DK.com_ars.ini</language>
+		<language tag="de-DE">de-DE.com_ars.ini</language>
+		<language tag="el-GR">el-GR.com_ars.ini</language>
+		<language tag="nb-NO">nb-NO.com_ars.ini</language>
 		<language tag="nl-NL">nl-NL.com_ars.ini</language>
-		<language tag="no-NO">no-NO.com_ars.ini</language>
 		<language tag="tr-TR">tr-TR.com_ars.ini</language>
+		<language tag="uk-UA">uk-UA.com_ars.ini</language>
 	</languages>
 
 	<!-- SQL query files to execute on installation -->
@@ -91,12 +94,17 @@
 			<language tag="en-GB">en-GB.com_ars.menu.ini</language>
 			<language tag="da-DK">da-DK.com_ars.ini</language>
 			<language tag="da-DK">da-DK.com_ars.menu.ini</language>
+			<language tag="de-DE">de-DE.com_ars.ini</language>
+			<language tag="de-DE">de-DE.com_ars.menu.ini</language>
+			<language tag="el-GR">el-GR.com_ars.ini</language>
+			<language tag="nb-NO">nb-NO.com_ars.ini</language>
+			<language tag="nb-NO">nb-NO.com_ars.menu.ini</language>
 			<language tag="nl-NL">nl-NL.com_ars.ini</language>
 			<language tag="nl-NL">nl-NL.com_ars.menu.ini</language>
-			<language tag="no-NO">no-NO.com_ars.ini</language>
-			<language tag="no-NO">no-NO.com_ars.menu.ini</language>
 			<language tag="tr-TR">tr-TR.com_ars.ini</language>
 			<language tag="tr-TR">tr-TR.com_ars.menu.ini</language>
+			<language tag="uk-UA">uk-UA.com_ars.ini</language>
+			<language tag="uk-UA">uk-UA.com_ars.menu.ini</language>
 		</languages>
 	</administration>
 	
