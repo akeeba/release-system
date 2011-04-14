@@ -15,6 +15,8 @@
 	<languages folder="translations">
 		<language tag="en-GB">en-GB.mod_arsdlid.ini</language>
 		<language tag="en-GB">en-GB.mod_arsdlid.sys.ini</language>
+		<language tag="el-GR">el-GR.mod_arsdlid.ini</language>
+		<language tag="el-GR">el-GR.mod_arsdlid.sys.ini</language>
 		<language tag="da-DK">da-DK.mod_arsdlid.ini</language>
 		<language tag="da-DK">da-DK.mod_arsdlid.sys.ini</language>
 		<language tag="nb-NO">nb-NO.mod_arsdlid.ini</language>
