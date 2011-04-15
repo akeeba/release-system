@@ -151,9 +151,10 @@ class TableItems extends ArsTable
 					break;
 
 				case 'link':
-					if($this->url) $$source = basename($this->url);
+					if($this->url) $source = basename($this->url);
 					break;
 			}
+			$this->alias = str_replace('.','-',$this->alias);
 
 			// Create a smart alias
 			$alias = strtolower($source);

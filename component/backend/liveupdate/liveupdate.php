@@ -63,7 +63,7 @@ class LiveUpdate
 	 */
 	public static function getUpdateInformation($force = false)
 	{
-		require dirname(__FILE__).'/classes/updatefetch.php';
+		require_once dirname(__FILE__).'/classes/updatefetch.php';
 		$update = new LiveUpdateFetch();
 		$info = $update->getUpdateInformation($force);
 		$hasUpdates = $update->hasUpdates();
