@@ -14,6 +14,7 @@ Version 1.0
 # Anti-leech protection caused a PHP notice to be thrown
 # Extra slash in the download URLs in update INI files (thank you deros)
 # Aliases containing dots would cause download URLs to be broken when using Joomla!'s standard SEF
+# Toolbars no longer work in Joomla! 1.6.2 because the Joomla! core team is incompetent
 
 Live Update:
 # The component storage class was broken
