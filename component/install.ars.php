@@ -37,14 +37,18 @@ if( version_compare( JVERSION, '1.6.0', 'ge' ) ) {
 }
 
 // -- Download ID
-$installer = new JInstaller;
-$result = $installer->install($src.'/mod_arsdlid');
-$status->modules[] = array('name'=>'mod_arsdlid','client'=>'site', 'result'=>$result);
+if(is_dir($src.'/mod_arsdlid')) {
+	$installer = new JInstaller;
+	$result = $installer->install($src.'/mod_arsdlid');
+	$status->modules[] = array('name'=>'mod_arsdlid','client'=>'site', 'result'=>$result);
+}
 
 // -- My Downloads
-$installer = new JInstaller;
-$result = $installer->install($src.'/mod_arsdownloads');
-$status->modules[] = array('name'=>'mod_arsdownloads','client'=>'site', 'result'=>$result);
+if(is_dir($src.'/mod_arsdownloads')) {
+	$installer = new JInstaller;
+	$result = $installer->install($src.'/mod_arsdownloads');
+	$status->modules[] = array('name'=>'mod_arsdownloads','client'=>'site', 'result'=>$result);
+}
 
 // Install modules and plugins -- END
 
