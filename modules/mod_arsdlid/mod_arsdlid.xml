@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="module" version="1.5.0" method="upgrade" client="site">
-	<name>MOD_ARSDLID_TITLE</name>
+	<name>Akeeba Release System - Download ID</name>
 	<author>Nicholas K. Dionysopoulos</author>
 	<creationDate>April 2011</creationDate>
 	<copyright>Copyright (c) 2010-2011 Nicholas K. Dionysopoulos</copyright>
@@ -8,7 +8,7 @@
 	<authorEmail>nicholas@dionysopoulos.me</authorEmail>
 	<authorUrl>http://www.akeebabackup.com</authorUrl>
 	<version>1.0</version>
-	<description>Akeeba Release System - Download ID</description>
+	<description>MOD_ARSDLID_DESC</description>
 	<files>
 		<filename module="mod_arsdlid">mod_arsdlid.php</filename>
 	</files>

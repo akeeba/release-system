@@ -37,4 +37,19 @@
 		<param name="pretext" type="textarea" cols="30" rows="5" default="" label="MOD_ARSDOWNLOADS_OPT_PRETEXT_LBL" description="MOD_ARSDOWNLOADS_OPT_PRETEXT_DESC" />
 		<param name="posttext" type="textarea" cols="30" rows="5" default="" label="MOD_ARSDOWNLOADS_OPT_POSTTEXT_LBL" description="MOD_ARSDOWNLOADS_OPT_POSTTEXT_DESC" />
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
+					<option value="0">Never</option>
+				</field>
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="streams" type="text" size="20" default="" label="MOD_ARSDOWNLOADS_OPT_STREAMS_LBL" description="MOD_ARSDOWNLOADS_OPT_STREAMS_DESC" />
+				<field name="pretext" type="textarea" cols="30" rows="5" default="" label="MOD_ARSDOWNLOADS_OPT_PRETEXT_LBL" description="MOD_ARSDOWNLOADS_OPT_PRETEXT_DESC" />
+				<field name="posttext" type="textarea" cols="30" rows="5" default="" label="MOD_ARSDOWNLOADS_OPT_POSTTEXT_LBL" description="MOD_ARSDOWNLOADS_OPT_POSTTEXT_DESC" />
+			</fieldset>
+		</fields>
+	</config>
 </install>
