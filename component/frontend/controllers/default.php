@@ -46,8 +46,13 @@ class ArsControllerDefault extends JController
 		if($viewType == 'feed')
 		{
 			// Extra data required for feeds
-			$model->processFeedData();
-			$view->setLayout('feed');
+			if(method_exists($model, 'processFeedData')) {
+				$model->processFeedData();
+				$view->setLayout('feed');
+			} else {
+				JError::raiseError(500, 'Invalid format in request');
+				return;
+			}
 		}
 		
 		// Turn off caching for registered users
