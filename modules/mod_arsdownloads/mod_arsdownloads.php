@@ -6,6 +6,9 @@ JModel::addIncludePath(JPATH_SITE.DS.'components'.DS.'com_ars'.DS.'models');
 JModel::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_ars'.DS.'models');
 JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_ars'.DS.'tables');
 
+$ars_backend = JPATH_SITE . DS . 'administrator' . DS . 'components' . DS . 'com_ars' . DS . 'models';
+$ars_frontend = JPATH_SITE . DS . 'components' . DS . 'com_ars' . DS . 'models';
+
 include_once($ars_backend.DS.'base.php');
 include_once($ars_frontend.DS.'base.php');
 include_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_ars'.DS.'tables'.DS.'base.php';

@@ -1,26 +1,5 @@
-Version 1.0
+Version 1.0 (current trunk)
 ================================================================================
 
-+ Download ID module
-+ My Downloads module
-+ Adding ability for plugins to post-process downloads
-# Category manager: you can add category without files directory (thank you @themexpert for the heads up)
-# Release manager: if no maturity is specified, a SQL error occurs (thank you @themexpert for the heads up)
-# PHP 5.3.3+ would throw an E_WARNING because Joomla! doesn't set the default timezone on systems where php.ini doesn't specify a timezone setting
-# Latest Release page didn't use the Chameleon styling engine
-# Notices thrown accessing a Category or Release when there is no menu item to a parent ARS view on your site
-# Could not download file if a menu item pointing to ARS wasn't present on the site
-# Downloading files failed when Admin Tools' Geoblocking was active
-# Anti-leech protection caused a PHP notice to be thrown
-# Extra slash in the download URLs in update INI files (thank you deros)
-# Aliases containing dots would cause download URLs to be broken when using Joomla!'s standard SEF
-# Toolbars no longer work in Joomla! 1.6.2 because the Joomla! core team is incompetent
-# Fatal error thrown when a feed URL is requested for a view which doesn't support feed data
-
-Live Update:
-# The component storage class was broken
-# Updating was impossible on servers lying about their cURL support status
-# Wrong URL parameter (downloadid) passed on Pro downloads, instead of the expected dlid parameter
-# Double authentication string appended to URL, potentially causing download error in the Professional release
-# The translation strings where not loaded when getIcon() was being called
-# Download didn't work when cURL couldn't be set up to follow redirections (e.g. when Safe Mode is enabled)
+# PHP Fatal Error in ambra.php (thanks Alan)
+# mod_arsdownloads.php missing two variable definitions, causing a PHP warning (thanks Alan)
