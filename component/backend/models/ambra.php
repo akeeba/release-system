@@ -127,7 +127,7 @@ class ArsModelAmbra extends JModel
 		{
 			if(self::hasAMBRA())
 			{
-				$db = $this->getDBO();
+				$db = JFactory::getDBO();
 				$query = "SELECT `id`,`title` FROM `#__ambrasubs_types` WHERE `published` = 1";
 				$db->setQuery($query);
 				$groupsList = $db->loadObjectList();
@@ -205,7 +205,7 @@ class ArsModelAmbra extends JModel
 	{
 		if(!self::hasAMBRA()) return array();
 
-		$db = $this->getDBO();
+		$db = JFactory::getDBO();
 		$query = <<<ENDSQL
 SELECT
 	`typeid`
