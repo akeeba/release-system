@@ -196,6 +196,8 @@ class LiveUpdateFetch extends JObject
 		$url = $extInfo['updateurl'];
 		
 		$process = curl_init($url);
+		$config = new LiveUpdateConfig();
+		$config->applyCACert($process);
 		curl_setopt($process, CURLOPT_HEADER, 0);
 		// Pretend we are Firefox, so that webservers play nice with us
 		curl_setopt($process, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.14) Gecko/20110105 Firefox/3.6.14');

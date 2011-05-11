@@ -56,6 +56,9 @@ abstract class LiveUpdateAbstractConfig extends JObject
 	/** @var string The Download ID to authorize a download on your site; use it instead of the username/password pair */
 	protected $_downloadID = '';
 	
+	/** @var string The path to a local copy of cacert.pem, required if you plan on using HTTPS URLs to fetch live udpate information or download files from */
+	protected $_cacerts = null;
+	
 	/**
 	 * Singleton implementation
 	 * @return LiveUpdateConfig An instance of the Live Update configuration class
@@ -191,5 +194,14 @@ abstract class LiveUpdateAbstractConfig extends JObject
 		$this->_username	= $params->getValue('username','');
 		$this->_password	= $params->getValue('password','');
 		$this->_downloadID	= $params->getValue('downloadid','');
+	}
+	
+	public function applyCACert(&$ch)
+	{
+		if(!empty($this->_cacerts)) {
+			if(file_exists($this->_cacerts)) {
+				@curl_setopt($ch, CURLOPT_CAINFO, $this->_cacerts);
+			}
+		}
 	}
 }

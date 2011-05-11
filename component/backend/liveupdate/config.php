@@ -17,4 +17,11 @@ class LiveUpdateConfig extends LiveUpdateAbstractConfig
 	var $_updateURL				= 'http://www.akeebabackup.com/index.php?option=com_ars&view=update&format=ini&id=9';
 	var $_requiresAuthorization	= false;
 	var $_versionStrategy		= 'different';
+	
+	function __construct()
+	{
+		$this->_cacerts = dirname(__FILE__).'/../assets/cacert.pem';
+		
+		parent::__construct();
+	}
 }

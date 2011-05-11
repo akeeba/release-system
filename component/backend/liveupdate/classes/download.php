@@ -138,6 +138,8 @@ class LiveUpdateDownloadHelper
 		$result = false;
 		
 		$ch = curl_init($url);
+		$config = new LiveUpdateConfig();
+		$config->applyCACert($ch);
 		
 		if( !@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1) && !$nofollow ) {
 			// Safe Mode is enabled. We have to fetch the headers and
