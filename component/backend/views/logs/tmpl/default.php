@@ -144,7 +144,7 @@ $model = $this->getModel();
 			</td>
 			<td>
 				<div style="width: 200px; overflow: hidden;">
-					<a href="<?php echo $this->escape($item->referer) ?>">
+					<a href="<?php echo $this->escape($item->referer) ?>" target="_blank">
 						<?php echo $this->escape($item->referer, -15) ?>
 					</a>
 				</div>
