@@ -2,6 +2,7 @@ Version 1.0 (current trunk)
 ================================================================================
 
 + Local copy of cacerts.pem allows Live Update and other download requests to work with HTTPS URLs on Windows, CentOS and other servers without a system copy of cacert.pem
++ Referer links in log view now open in new window
 # PHP Fatal Error in ambra.php (thanks Alan)
 # mod_arsdownloads.php missing two variable definitions, causing a PHP warning (thanks Alan)
 # Menu parameters wouldn't show up in Joomla! 1.6
