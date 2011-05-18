@@ -14,7 +14,7 @@ class LiveUpdateConfig extends LiveUpdateAbstractConfig
 {
 	var $_extensionName			= 'com_ars';
 	var $_extensionTitle		= 'Akeeba Release System';
-	var $_updateURL				= 'http://www.akeebabackup.com/index.php?option=com_ars&view=update&format=ini&id=9';
+	var $_updateURL				= 'https://www.akeebabackup.com/index.php?option=com_ars&view=update&format=ini&id=9';
 	var $_requiresAuthorization	= false;
 	var $_versionStrategy		= 'different';
 	
