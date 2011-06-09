@@ -6,3 +6,5 @@ Version 1.0 (current trunk)
 # PHP Fatal Error in ambra.php (thanks Alan)
 # mod_arsdownloads.php missing two variable definitions, causing a PHP warning (thanks Alan)
 # Menu parameters wouldn't show up in Joomla! 1.6
+# Non-ASCII characters were not displayed properly in backend list views, even though they were stored correctly in the database
+# Breadcrumbs would throw PHP notices under Joomla! 1.6/1.7
