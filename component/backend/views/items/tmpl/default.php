@@ -115,17 +115,17 @@ $model = $this->getModel();
 			</td>
 			<td>
 				<a href="index.php?option=com_ars&view=categories&task=edit&id=<?php echo (int)$item->category_id ?>">
-					<?php echo htmlentities($item->cat_title) ?>
+					<?php echo htmlentities($item->cat_title, ENT_COMPAT, 'UTF-8') ?>
 				</a>
 			</td>
 			<td>
 				<a href="index.php?option=com_ars&view=releases&task=edit&id=<?php echo (int)$item->release_id ?>">
-					<?php echo htmlentities($item->version) ?>
+					<?php echo htmlentities($item->version, ENT_COMPAT, 'UTF-8') ?>
 				</a>
 			</td>
 			<td>
 				<a href="index.php?option=com_ars&view=items&task=edit&id=<?php echo (int)$item->id ?>">
-					<?php echo htmlentities($item->title) ?>
+					<?php echo htmlentities($item->title, ENT_COMPAT, 'UTF-8') ?>
 				</a>
 			</td>
 			<td>

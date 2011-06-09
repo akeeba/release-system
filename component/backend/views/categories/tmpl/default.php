@@ -109,10 +109,10 @@ $model = $this->getModel();
 			</td>
 			<td>
 				<a href="index.php?option=com_ars&view=categories&task=edit&id=<?php echo (int)$item->id ?>">
-					<?php echo htmlentities($item->title) ?>
+					<?php echo htmlentities($item->title, ENT_COMPAT, 'UTF-8') ?>
 				</a>
 				<br/>
-				<span class="cat-directory-name"><?php echo htmlentities($item->directory) ?></span>
+				<span class="cat-directory-name"><?php echo htmlentities($item->directory, ENT_COMPAT, 'UTF-8') ?></span>
 			</td>
 			<td>
 				<span class="category-type-<?php echo $item->type ?>">

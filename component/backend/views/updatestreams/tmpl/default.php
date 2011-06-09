@@ -88,7 +88,7 @@ $model = $this->getModel();
 			<td>
 				<strong>
 					<a href="index.php?option=com_ars&view=updatestreams&task=edit&id=<?php echo (int)$item->id ?>">
-						<?php echo htmlentities($item->name) ?>
+						<?php echo htmlentities($item->name, ENT_COMPAT, 'UTF-8') ?>
 					</a>
 				</strong>
 			</td>
