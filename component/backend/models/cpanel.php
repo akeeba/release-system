@@ -219,6 +219,7 @@ FROM
   `#__ars_log`
 WHERE
   `country` <> ''
+  AND `accessed_on` BETWEEN CURRENT_TIMESTAMP - INTERVAL 1 MONTH AND CURRENT_TIMESTAMP
 GROUP BY `country`
 ENDSQL
 );

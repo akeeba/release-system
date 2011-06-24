@@ -63,9 +63,9 @@ class ArsViewCpanel extends JView
 		$dldetails = $cache->getValue('dldetails');
 		if(empty($dldetails)) {
 			$dldetails = array();
-			$dldetails['dllastmonth']	= $model->getNumDownloads('lastmonth');
+			//$dldetails['dllastmonth']	= $model->getNumDownloads('lastmonth');
 			$dldetails['dlmonth']		= $model->getNumDownloads('month');
-			$dldetails['dlweek']		= $model->getNumDownloads('week');
+			//$dldetails['dlweek']		= $model->getNumDownloads('week');
 			$dldetails['dlyear']		= $model->getNumDownloads('year');
 			$dldetails['dlever']		= $model->getNumDownloads('alltime');
 			
@@ -74,9 +74,9 @@ class ArsViewCpanel extends JView
 		}
 		$dldetails = json_decode($dldetails, true);
 		
-		$this->assign('dllastmonth',		$dldetails['dllastmonth'] );
+		//$this->assign('dllastmonth',		$dldetails['dllastmonth'] );
 		$this->assign('dlmonth',			$dldetails['dlmonth'] );
-		$this->assign('dlweek',				$dldetails['dlweek'] );
+		//$this->assign('dlweek',				$dldetails['dlweek'] );
 		$this->assign('dlyear',				$dldetails['dlyear'] );
 		$this->assign('dlever',				$dldetails['dlever'] );
 

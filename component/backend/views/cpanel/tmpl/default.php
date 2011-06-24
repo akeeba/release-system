@@ -33,16 +33,8 @@ $groups = array('basic','tools','update');
 				<td><?php echo number_format($this->dlyear,0) ?></td>
 			</tr>
 			<tr>
-				<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_LMONTH') ?></td>
-				<td><?php echo number_format($this->dllastmonth,0) ?></td>
-			</tr>
-			<tr>
 				<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_MONTH') ?></td>
 				<td><?php echo number_format($this->dlmonth,0) ?></td>
-			</tr>
-			<tr>
-				<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_WEEK') ?></td>
-				<td><?php echo number_format($this->dlweek,0) ?></td>
 			</tr>
 		</table>
 		<?php echo $tabs->endPanel(); ?>
