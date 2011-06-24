@@ -19,6 +19,9 @@ defined('_JEXEC') or die();
 			<?php echo $this->escape($this->updateInfo->extInfo->updateurl) ?>
 		</p>
 		<p><?php echo JText::sprintf('LIVEUPDATE_NOTSUPPORTED_ALTMETHOD', $this->escape($this->updateInfo->extInfo->title)); ?></p>
+		<p class="liveupdate-buttons">
+			<button onclick="window.location='<?php echo $this->requeryURL ?>'" ><?php echo JText::_('LIVEUPDATE_REFRESH_INFO') ?></button>
+		</p>
 	</div>
 	
 	<?php elseif($this->updateInfo->stuck):?>

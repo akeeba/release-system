@@ -34,6 +34,33 @@ class LiveUpdateFetch extends JObject
 		$config = LiveUpdateConfig::getInstance();
 		$extInfo = $config->getExtensionInformation();
 		
+		// Filter by stability level
+		$minStability = $config->getMinimumStability();
+		$stability = strtolower($updateInfo->stability);
+		
+		switch($minStability) {
+			case 'alpha':
+			default:
+				// Reports any stability level as an available update
+				break;
+			
+			case 'beta':
+				// Do not report alphas as available updates
+				if(in_array($stability, array('alpha'))) return 0;
+				break;
+			
+			case 'rc':
+				// Do not report alphas and betas as available updates
+				if(in_array($stability, array('alpha','beta'))) return 0;
+				break;
+				
+			case 'stable':
+				// Do not report alphas, betas and rcs as available updates
+				if(in_array($stability, array('alpha','beta','rc'))) return 0;
+				break;
+		}
+		
+		// Use the version strategy to determine the availability of an update
 		switch($config->getVersionStrategy()) {
 			case 'newest':
 				jimport('joomla.utilities.date');
@@ -85,28 +112,40 @@ class LiveUpdateFetch extends JObject
 		$storageOptions = $config->getStorageAdapterPreferences();
 		require_once dirname(__FILE__).'/storage/storage.php';
 		$this->storage = LiveUpdateStorage::getInstance($storageOptions['adapter'], $storageOptions['config']);
+		$storage = $this->storage;
 		
 		// Fetch information from the cache
-		jimport('joomla.utilities.date');
-		$jDefaultDate = new JDate('2000-01-01 00:00:00');
-		$lastCheck = $this->storage->get('lastcheck', $jDefaultDate->toUnix());
-		$cachedData = $this->storage->get('updatedata', null);
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$registry = $storage->getRegistry();
+			$lastCheck = $registry->get('lastcheck', 0);
+			$cachedData = $registry->get('updatedata', null);
+		} else {
+			$lastCheck = $storage->get('lastcheck', 0);
+			$cachedData = $storage->get('updatedata', null);
+		}
 		
-		if(empty($cachedData)) $lastCheck = $jDefaultDate->toUnix();
+		if(is_string($cachedData)) {
+			$cachedData = trim($cachedData,'"');
+			$cachedData = json_decode($cachedData);
+		}
+		
+		if(empty($cachedData)) {
+			$lastCheck = 0;
+		}
 		
 		// Check if the cache is at most $cacheTTL hours old
-		$jNow = new JDate();
-		$jLast = new JDate($lastCheck);
+		$now = time();
 		$maxDifference = $this->cacheTTL * 3600;
-		$difference = abs($jNow->toUnix() - $jLast->toUnix());
+		$difference = abs($now - $lastCheck);
+
 		if(!($force) && ($difference <= $maxDifference)) {
 			// The cache is fresh enough; return cached data
 			return $cachedData;
 		} else {
 			// The cache is stale; fetch new data, cache it and return it to the caller
 			$data = $this->getUpdateData($force);
-			$this->storage->set('lastcheck', $jNow->toUnix());
-			$this->storage->set('updatedata', $data);
+			$this->storage->set('lastcheck', $now);
+			$this->storage->set('updatedata', json_encode($data));
 			$this->storage->save();
 			return $data;
 		}
@@ -135,23 +174,8 @@ class LiveUpdateFetch extends JObject
 		if($this->storage->get('stuck',0) && !$force) return (object)$ret;
 		
 		$ret['stuck'] = false;
-		
-		// Does the server support cURL or URL fopen() wrappers?
-		$method = '';
-		if(function_exists('curl_exec')) {
-			$method = 'curl';
-		} else {
-			if(function_exists('ini_get')) {
-				if(ini_get('allow_url_fopen')) {
-					$method = 'fopen';
-				}
-			}
-		}
-		
-		if(empty($method)) {
-			// Live Update is not supported on this server
-			return (object)$ret;
-		}
+
+		require_once dirname(__FILE__).'/download.php';
 		
 		// First we mark Live Updates as getting stuck. This way, if fetching the update
 		// fails with a server error, reloading the page will not result to a White Screen
@@ -160,22 +184,17 @@ class LiveUpdateFetch extends JObject
 		$this->storage->set('stuck', 1);
 		$this->storage->save(); 
 		
-		switch($method) {
-			case 'curl':
-				$rawData = $this->fetchCURL();
-				break;
-				
-			case 'fopen':
-				$rawData = $this->fetchFOPEN();
-				break;
-		}
+		$config = LiveUpdateConfig::getInstance();
+		$extInfo = $config->getExtensionInformation();
+		$url = $extInfo['updateurl'];
+		$rawData = LiveUpdateDownloadHelper::downloadAndReturn($url);
 		
 		// Now that we have some data returned, let's unmark the process as being stuck ;)
 		$this->storage->set('stuck', 0);
 		$this->storage->save();
 		
 		// If we didn't get anything, assume Live Update is not supported (communication error)
-		if(empty($rawData)) return (object)$ret;
+		if(empty($rawData) || ($rawData == false)) return (object)$ret;
 		
 		// TODO Detect the content type of the returned update stream. For now, I will pretend it's an INI file.
 		

@@ -18,7 +18,7 @@ class LiveUpdateStorage
 	 * The update data registry
 	 * @var JRegistry
 	 */
-	protected static $registry = null;
+	public static $registry = null;
 
 	/**
 	 * 
@@ -36,10 +36,23 @@ class LiveUpdateStorage
 			$className = 'LiveUpdateStorage'.ucfirst($type);
 			$object = new $className($config);
 			$object->load($config);
+			$newRegistry = clone(self::$registry);
+			$object->setRegistry($newRegistry);
 			$instances[$sig] = $object;
 		}
 		return $instances[$sig];
 	}
+	
+	public function &getRegistry()
+	{
+		return self::$registry;
+	}
+	
+	public function setRegistry($registry)
+	{
+		self::$registry = $registry;
+	}
+
 	
 	public final function set($key, $value)
 	{

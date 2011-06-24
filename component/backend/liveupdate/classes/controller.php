@@ -100,13 +100,35 @@ class LiveUpdateController extends JController
 			$msg = JText::_('LIVEUPDATE_EXTRACT_FAILED');
 			$this->setRedirect('index.php?option='.JRequest::getCmd('option','').'&view='.JRequest::getCmd('view','liveupdate').'&task=overview', $msg, 'error');
 		} else {
-			// Download successful. Let's extract the package.
+			// Extract successful. Let's install the package.
 			$url = 'index.php?option='.JRequest::getCmd('option','').'&view='.JRequest::getCmd('view','liveupdate').'&task=install';
 			$user = JRequest::getString('username', null, 'GET', JREQUEST_ALLOWRAW);
 			$pass = JRequest::getString('password', null, 'GET', JREQUEST_ALLOWRAW);
 			if($user) {
 				$url .= '&username='.urlencode($user).'&password='.urlencode($pass);
-			}			
+			}
+			
+			// Do we have SRP installed yet?
+			$app = JFactory::getApplication();
+			$jResponse = $app->triggerEvent('onSRPEnabled');
+			$status = false;
+			if(!empty($jResponse)) {
+				$status = false;
+				foreach($jResponse as $response)
+				{
+					$status = $status || $response;
+				}
+			}
+			
+			// SRP enabled, use it
+			if($status) {
+				$return = $url;
+				$url = $model->getSRPURL($return);
+				if(!$url) {
+					$url = $return;
+				}
+			}
+			
 			$this->setRedirect($url);
 		}
 		$this->redirect();

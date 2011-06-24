@@ -3,9 +3,14 @@ Version 1.0 (current trunk)
 
 + Local copy of cacerts.pem allows Live Update and other download requests to work with HTTPS URLs on Windows, CentOS and other servers without a system copy of cacert.pem
 + Referer links in log view now open in new window
++ Live Update: Support for minimum stability to report as an available update
++ Live Update: Support for Akeeba Backup's System Restore Points
 ~ Massive speed improvement (2x) in the back-end control panel page for repositories with multiple millions of downloads
+~ Live Update: Using native <button> elements to improve styling
 # PHP Fatal Error in ambra.php (thanks Alan)
 # mod_arsdownloads.php missing two variable definitions, causing a PHP warning (thanks Alan)
 # Menu parameters wouldn't show up in Joomla! 1.6
 # Non-ASCII characters were not displayed properly in backend list views, even though they were stored correctly in the database
 # Breadcrumbs would throw PHP notices under Joomla! 1.6/1.7
+# Live Update: could interfere with component parameters storage
+# Live Update: Caching of update information would not function properly

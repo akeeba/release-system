@@ -64,23 +64,26 @@ class LiveUpdateXMLSlurp extends JObject
 			$filename = "$path/$extensionName.xml";
 		} elseif(JFile::exists("$path/$altExtensionName.xml")) {
 			$filename = "$path/$altExtensionName.xml";
+		} elseif(JFile::exists("$path/manifest.xml")) {
+			$filename = "$path/manifest.xml";
 		} else {
-			$filename = null;
+			$filename = $this->searchForManifest($path);
+			if($filename === false)	$filename = null;
 		}
 		
 		if(empty($filename)) {
-			return array('version' => '', 'date' => '');
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
 		
 		$xml = & JFactory::getXMLParser('Simple');
 		if (!$xml->loadFile($filename)) {
 			unset($xml);
-			return array('version' => '', 'date' => '');
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
 		
 		if ($xml->document->name() != 'install') {
 			unset($xml);
-			return array('version' => '', 'date' => '');			
+			return array('version' => '', 'date' => '', 'xmlfile' => '');			
 		}
 		
 		$data = array();
@@ -88,6 +91,8 @@ class LiveUpdateXMLSlurp extends JObject
 		$data['version'] = $element ? $element->data() : '';		
 		$element = & $xml->document->creationDate[0];
 		$data['date'] = $element ? $element->data() : '';
+		
+		$data['xmlfile'] = $filename;
 
 		return $data;
 	}
@@ -148,18 +153,18 @@ class LiveUpdateXMLSlurp extends JObject
 		}
 		
 		if(empty($filename)) {
-			return array('version' => '', 'date' => '');
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
 		
 		$xml = & JFactory::getXMLParser('Simple');
 		if (!$xml->loadFile($filename)) {
 			unset($xml);
-			return array('version' => '', 'date' => '');
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
 		
 		if ($xml->document->name() != 'install') {
 			unset($xml);
-			return array('version' => '', 'date' => '');			
+			return array('version' => '', 'date' => '', 'xmlfile' => '');			
 		}
 		
 		$data = array();
@@ -167,6 +172,8 @@ class LiveUpdateXMLSlurp extends JObject
 		$data['version'] = $element ? $element->data() : '';		
 		$element = & $xml->document->creationDate[0];
 		$data['date'] = $element ? $element->data() : '';
+		
+		$data['xmlfile'] = $filename;
 
 		return $data;
 	}
@@ -199,18 +206,18 @@ class LiveUpdateXMLSlurp extends JObject
 		}
 		
 		if(!JFile::exists($filename)) {
-			return array('version' => '', 'date' => '');
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
 
 		$xml = & JFactory::getXMLParser('Simple');
 		if (!$xml->loadFile($filename)) {
 			unset($xml);
-			return array('version' => '', 'date' => '');
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
 		
 		if ($xml->document->name() != 'install') {
 			unset($xml);
-			return array('version' => '', 'date' => '');			
+			return array('version' => '', 'date' => '', 'xmlfile' => '');			
 		}
 		
 		$data = array();
@@ -218,6 +225,8 @@ class LiveUpdateXMLSlurp extends JObject
 		$data['version'] = $element ? $element->data() : '';		
 		$element = & $xml->document->creationDate[0];
 		$data['date'] = $element ? $element->data() : '';
+		
+		$data['xmlfile'] = $filename;
 
 		return $data;		
 	}
@@ -254,18 +263,18 @@ class LiveUpdateXMLSlurp extends JObject
 			$filename = "$path/$altExtensionName.xml";
 		}
 		if(!JFile::exists($filename)) {
-			return array('version' => '', 'date' => '');
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
 		
 		$xml = & JFactory::getXMLParser('Simple');
 		if (!$xml->loadFile($filename)) {
 			unset($xml);
-			return array('version' => '', 'date' => '');
+			return array('version' => '', 'date' => '', 'xmlfile' => '');
 		}
 		
 		if ($xml->document->name() != 'install') {
 			unset($xml);
-			return array('version' => '', 'date' => '');			
+			return array('version' => '', 'date' => '', 'xmlfile' => '');			
 		}
 		
 		$data = array();
@@ -273,7 +282,33 @@ class LiveUpdateXMLSlurp extends JObject
 		$data['version'] = $element ? $element->data() : '';		
 		$element = & $xml->document->creationDate[0];
 		$data['date'] = $element ? $element->data() : '';
+		
+		$data['xmlfile'] = $filename;
 
 		return $data;		
+	}
+	
+	/**
+	 * Scans a directory for XML manifest files. The first XML file to be a
+	 * manifest wins.
+	 * 
+	 * @var $path string The path to look into
+	 * 
+	 * @return string|bool The full path to a manifest file or false if not found
+	 */
+	private function searchForManifest($path)
+	{
+		jimport('joomla.filesystem.folder');
+		$files = JFolder::files($path, '\.xml$', false, true);
+		if(!empty($files)) foreach($files as $filename) {
+			$xml = JFactory::getXMLParser('simple');
+			$result = $xml->loadFile($filename);
+			if(!$result) continue;
+			if(($xml->document->name() != 'install') && ($xml->document->name() != 'extension') && ($xml->document->name() != 'mosinstall')) continue;
+			unset($xml);
+			return $filename;
+		}
+		
+		return false;
 	}
 }

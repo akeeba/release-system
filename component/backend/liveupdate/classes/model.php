@@ -131,4 +131,37 @@ class LiveUpdateModel extends JModel
 		$session->clear('target','liveupdate');
 		$session->clear('tempdir','liveupdate');
 	}
+	
+	public function getSRPURL($return = '')
+	{
+		$session = JFactory::getSession();
+		$tempdir = $session->get('tempdir', '', 'liveupdate');
+
+		jimport('joomla.installer.installer');
+		jimport('joomla.installer.helper');
+		jimport('joomla.filesystem.file');
+		
+		$instModelFile = JPATH_ADMINISTRATOR.'/components/com_akeeba/models/installer.php';
+		if(!JFile::exists($instModelFile)) return false;
+		
+		require_once JPATH_ADMINISTRATOR.'/components/com_akeeba/models/installer.php';
+		$model	= JModel::getInstance('Installer', 'AkeebaModel');
+		$packageType = JInstallerHelper::detectType($tempdir);
+		$name = $model->getExtensionName($tempdir);
+		
+		$url = 'index.php?option=com_akeeba&view=backup&tag=restorepoint&type='.$packageType.'&name='.urlencode($name['name']);
+		switch($type) {
+			case 'module':
+			case 'template':
+				$url .= '&group='.$name['client'];
+				break;
+			case 'plugin':
+				$url .= '&group='.$name['group'];
+				break;
+		}
+		
+		if(!empty($return)) $url .= '&returnurl='.urlencode($return);
+		
+		return $url;
+	}
 }
