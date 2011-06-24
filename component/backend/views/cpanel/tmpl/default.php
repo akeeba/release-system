@@ -43,11 +43,6 @@ $groups = array('basic','tools','update');
 			<div id="mdrChart"></div>
 		<?php echo $tabs->endPanel(); ?>
 		
-		
-		<?php echo $tabs->startPanel(JText::_('LBL_ARS_CPANEL_DLSTATSMAP'), 'com-ars-dlstats-map'); ?>
-			<div id="mapChartMini"></div>
-		<?php echo $tabs->endPanel(); ?>
-				
 		<?php echo $tabs->endPane(); ?>
 		
 		<?php echo $tabs->startPane('com-ars-popular'); ?>
@@ -155,10 +150,37 @@ $groups = array('basic','tools','update');
 
 <script type="text/javascript">
 akeeba.jQuery(document).ready(function($){
-	var areaData = <?php echo json_encode((object)$this->countrystats) ?>;
-	$('#mapChartMini').gchart('destroy').
-		gchart( $.gchart.map('world', areaData, 'cccccc', 'aaaaff', '3366ff') );
-
+	$.jqplot.config.enablePlugins = true;
+	var dlPoints = [];
+	<?php foreach ($this->mdreport as $mdDate => $mdDls): ?>
+	dlPoints.push(['<?echo $mdDate?>', parseInt('<?php echo $mdDls?>' * 100) * 1 / 100]);
+	<?php endforeach; ?>
+		
+	plot1 = $.jqplot('mdrChart', [dlPoints], {
+		show: true,
+		axes:{
+			xaxis:{
+				renderer: $.jqplot.DateAxisRenderer,
+				tickInterval:'1 week'
+			},
+			yaxis:{min: 0,tickOptions:{formatString:'%u'}}
+		},
+		series:[ 
+			{
+				lineWidth:3,
+				markerOptions:{
+					style:'filledCircle',
+					size:8
+				},
+				renderer: $.jqplot.hermiteSplineRenderer,
+				rendererOptions:{steps: 60, tension: 0.6}
+			}
+		],
+		highlighter: {sizeAdjust: 7.5},
+		axesDefaults:{useSeriesColor: true}
+	});
+	
+	/**
 	$('#mdrChart').gchart('destroy').
 		gchart({
 			usePost: false,
@@ -169,6 +191,7 @@ akeeba.jQuery(document).ready(function($){
 			axes: [
 				$.gchart.axis('left', <?php echo $mdrMin?>, <?php echo $mdrMax?>)
 			] 
-		});	
+		});
+	/**/
 });
 </script>

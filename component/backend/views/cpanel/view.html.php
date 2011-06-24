@@ -80,14 +80,6 @@ class ArsViewCpanel extends JView
 		$this->assign('dlyear',				$dldetails['dlyear'] );
 		$this->assign('dlever',				$dldetails['dlever'] );
 
-		// -- Country stats
-		$countrystats = $cache->getValue('countrystats');
-		if(empty($countrystats)) {
-			$countrystats = json_encode($model->getChartData());
-			$cache->setValue('countrystats', $countrystats);
-		}
-		$this->assign('countrystats',		json_decode($countrystats) );
-		
 		// -- Monthly-Daily downloads report
 		$mdreport = $cache->getValue('mdreport');
 		if(empty($mdreport)) {
@@ -102,12 +94,12 @@ class ArsViewCpanel extends JView
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'includes.php';
 		ArsHelperIncludes::includeMedia(false);
 		$document =& JFactory::getDocument();
-		$document->addScript(JURI::base().'../media/com_ars/js/jquery.gchart.pack.js');
-		$document->addScript(JURI::base().'../media/com_ars/js/jquery.gchart.icons.pack.js');
 		
-		// Repeat after me: "Joomla! 1.6.2 and later is a piece of utter crap because it requires me
-		// to MANUALLY add this line to make its STANDARD toolbar buttons work". Yes, the PLT is a
-		// bunch of morons.
+		$document->addScript(JURI::base().'../media/com_ars/js/jquery.jqplot.min.js');
+		$document->addScript(JURI::base().'../media/com_ars/js/jqplot.dateAxisRenderer.min.js');
+		$document->addScript(JURI::base().'../media/com_ars/js/jqplot.hermite.js');
+		$document->addScript(JURI::base().'../media/com_ars/js/jqplot.highlighter.min.js');
+		
 		JHTML::_('behavior.mootools');
 
 		parent::display();

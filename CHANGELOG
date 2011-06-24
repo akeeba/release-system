@@ -7,6 +7,8 @@ Version 1.0 (current trunk)
 + Live Update: Support for Akeeba Backup's System Restore Points
 ~ Massive speed improvement (2x) in the back-end control panel page for repositories with multiple millions of downloads
 ~ Live Update: Using native <button> elements to improve styling
+~ Switched from Google Charts to jqPlot for more interactive, better-looking stats charts
+- Removed map view (unnecessary MySQL load for a near-useless feature)
 # PHP Fatal Error in ambra.php (thanks Alan)
 # mod_arsdownloads.php missing two variable definitions, causing a PHP warning (thanks Alan)
 # Menu parameters wouldn't show up in Joomla! 1.6

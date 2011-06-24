@@ -78,9 +78,6 @@ class ArsViewUpload extends JView
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'includes.php';
 		ArsHelperIncludes::includeMedia();
 		
-		// Repeat after me: "Joomla! 1.6.2 and later is a piece of utter crap because it requires me
-		// to MANUALLY add this line to make its STANDARD toolbar buttons work". Yes, the PLT is a
-		// bunch of morons.
 		JHTML::_('behavior.mootools');
 
 		parent::display($tpl);
