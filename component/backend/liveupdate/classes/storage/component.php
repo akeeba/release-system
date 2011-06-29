@@ -36,11 +36,7 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 		jimport('joomla.html.parameter');
 		jimport('joomla.application.component.helper');
 		$component =& JComponentHelper::getComponent(self::$component);
-		if(!($component->params instanceof JRegistry)) {
-			$params = new JParameter($component->params);
-		} else {
-			$params = $component->params;
-		}
+		$params = ($component->params instanceof JRegistry) ? $component->params : new JParameter($component->params);
 		$data = $params->getValue(self::$key, '');
 				
 		jimport('joomla.registry.registry');
@@ -65,7 +61,7 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 		jimport('joomla.html.parameter');
 		jimport('joomla.application.component.helper');
 		$component =& JComponentHelper::getComponent(self::$component);
-		$params = new JParameter($component->params);
+		$params = ($component->params instanceof JRegistry) ? $component->params : new JParameter($component->params);
 		$params->setValue(self::$key, $data);
 		*/
 

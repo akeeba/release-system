@@ -33,7 +33,7 @@ class ArsControllerDownload extends ArsControllerDefault
 
 		// Anti-leech protection
 		$component =& JComponentHelper::getComponent( 'com_ars' );
-		$params = new JParameter($component->params);
+		$params = ($component->params instanceof JRegistry) ? $component->params : new JParameter($component->params);
 		$antileech = $params->get('antileech',1);
 		if($antileech == 1)
 		{

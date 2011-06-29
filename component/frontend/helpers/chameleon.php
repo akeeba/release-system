@@ -90,7 +90,7 @@ class ArsHelperChameleon
 		{
 			jimport('joomla.application.component');
 			$component = JComponentHelper::getComponent('com_ars');
-			$params = new JParameter($component->params);
+			$params = ($component->params instanceof JRegistry) ? $component->params : new JParameter($component->params);
 		}
 		
 		switch($category)
@@ -133,7 +133,7 @@ class ArsHelperChameleon
 		{
 			jimport('joomla.application.component');
 			$component = JComponentHelper::getComponent('com_ars');
-			$params = new JParameter($component->params);
+			$params = ($component->params instanceof JRegistry) ? $component->params : new JParameter($component->params);
 		}
 		
 		$default_template = '<a class="readon" href="%s">%s</a>';

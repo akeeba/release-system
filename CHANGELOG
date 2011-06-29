@@ -1,6 +1,9 @@
+Version 1.1 (current trunk)
+================================================================================
+# JParameter is deprecated in Joomla! 1.6/1.7; applying workaround
+
 Version 1.0 (current trunk)
 ================================================================================
-
 + Local copy of cacerts.pem allows Live Update and other download requests to work with HTTPS URLs on Windows, CentOS and other servers without a system copy of cacert.pem
 + Referer links in log view now open in new window
 + Live Update: Support for minimum stability to report as an available update
