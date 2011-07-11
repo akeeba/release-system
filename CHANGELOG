@@ -1,6 +1,7 @@
-Version 1.1 (current trunk)
+Version 1.0.1 (current trunk)
 ================================================================================
 # JParameter is deprecated in Joomla! 1.6/1.7; applying workaround
+# SQL file didn't run on upgade on Joomla! 1.6/1.7; applying workaround
 
 Version 1.0 (current trunk)
 ================================================================================
