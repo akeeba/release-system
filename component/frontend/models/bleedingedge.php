@@ -152,7 +152,7 @@ class ArsModelBleedingedge extends JModel
 					'description'		=> '',
 					'notes'				=> $notes,
 					'groups'			=> $this->category->groups,
-					'access'			=> $this->caregory->access,
+					'access'			=> $this->category->access,
 					'published'			=> 1
 				);
 				$table->save($data,'category_id');
