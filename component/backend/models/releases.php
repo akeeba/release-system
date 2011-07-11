@@ -27,6 +27,7 @@ class ArsModelReleases extends ArsModelBase
 		$fltCategory	= $this->getState('category', null, 'int');
 		$fltVersion		= $this->getState('version', null, 'string');
 		$fltPublished	= $this->getState('published', null, 'cmd');
+		$fltNoBEUnpub	= $this->getState('nobeunpub', null, 'int');
 
 		$db = $this->getDBO();
 		if($fltCategory) {
@@ -37,6 +38,9 @@ class ArsModelReleases extends ArsModelBase
 		}
 		if($fltVersion) {
 			$where[] = '`version` ='.$db->getEscaped($fltVersion);
+		}
+		if($fltNoBEUnpub) {
+			$where[] =  "NOT(`c`.`type` = 'bleedingedge' AND `r`.`published` = 0)";
 		}
 
 		$query = <<<ENDSQL
@@ -53,6 +57,10 @@ ENDSQL;
 		if(count($where) && !$overrideLimits)
 		{
 			$query .= ' WHERE (' . implode(') AND (',$where) . ')';
+		}
+		
+		if($fltNoBEUnpub && $overrideLimits) {
+			$query .= " WHERE NOT(`c`.`type` = 'bleedingedge' AND `r`.`published` = 0)";
 		}
 
 		if(!$overrideLimits) {

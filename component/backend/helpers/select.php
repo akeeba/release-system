@@ -245,6 +245,7 @@ class ArsHelperSelect
 		}
 		$model = new ArsModelCategories(); // Do not use Singleton here!
 		$model->reset();
+		$model->setState('nobeunpub',1);
 		$items = $model->getItemList(true);
 
 		$options = array();
@@ -275,6 +276,7 @@ class ArsHelperSelect
 		$model = new ArsModelReleases(); // Do not use Singleton here!
 		$model->reset();
 		if(!empty($category_id)) $model->setState('category', $category_id);
+		if(empty($category_id)) $model->setState('nobeunpub', 1);
 		$items = $model->getItemList(true);
 
 		$options = array();
