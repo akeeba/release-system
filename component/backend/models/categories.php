@@ -29,8 +29,8 @@ class ArsModelCategories extends ArsModelBase
 		$fltAlias		= $this->getState('alias', null, 'string');
 		$fltDescription	= $this->getState('description', null, 'string');
 		$fltType		= $this->getState('type', null, 'cmd');
-		$fltAccess		= $this->getState('access', null, 'int');
-		$fltPublished	= $this->getState('published', null, 'cmd');
+		$fltAccess		= $this->getState('access', null, 'cmd');
+		$fltPublished	= $this->getState('published', null, 'int');
 
 		$db = $this->getDBO();
 		if($fltTitle) {
