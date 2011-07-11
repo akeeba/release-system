@@ -6,7 +6,7 @@ require_once 'phing/tasks/ext/svn/SvnBaseTask.php';
  * SVN latest tree version to Phing property
  * @version $Id$
  * @package akeebabuilder
- * @copyright Copyright (c)2009-2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2009-2011 Nicholas K. Dionysopoulos
  * @license GNU GPL version 3 or, at your option, any later version
  * @author nicholas
  */
@@ -65,7 +65,34 @@ class SvnVersionTask extends SvnBaseTask
 		}
 		else
 		{
-			throw new BuildException("Failed to parse the output of 'svnversion'.");
+			$this->_use_gitsvn();
 		}            
     }
+	
+	function _use_gitsvn()
+	{
+		exec('pushd '.escapeshellarg($this->workingCopy).' > /dev/null; git svn info; popd > /dev/null', $out);
+		
+		if(empty($out)) {
+			throw new BuildException("Failed to parse the output of 'git svn info'.");
+			return;
+		}
+		
+		$version = 0;
+		foreach($out as $line) {
+			$parts = explode(':', $line, 2);
+			if($parts[0] != 'Revision') continue;
+			
+			$version = intval($parts[1]);
+		}
+		
+		if( $version > 0 )
+		{
+			$this->project->setProperty($this->getPropertyName(), $version);
+		}
+		else
+		{
+			throw new BuildException("Failed to parse the output of 'git svn info'.");
+		}
+	}
 }

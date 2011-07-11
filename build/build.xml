@@ -141,4 +141,25 @@
 			package="ars-users-guide"
 		/>
 	</target>
+	
+	<target name="ftpdeploy" depends="svn">
+		<svnversion workingcopy="${dirs.root}" propertyname="svn.lastrevision" />
+		<!-- Core release -->
+		<echo>Uploading ARS nightly build</echo>
+		<ftpdeploy
+			host="${ftp.host}"
+			port="${ftp.port}"
+			username="${ftp.username}"
+			password="${ftp.password}"
+			dir="${ftp.dir}/ars/svn${svn.lastrevision}"
+			mode="${ftp.mode}"
+			level="debug">
+			<fileset dir="${dirs.root}">
+				<include name="CHANGELOG"/>
+			</fileset>			
+			<fileset dir="${dirs.release}">
+				<include name="com_ars*.zip"/>
+			</fileset>			
+		</ftpdeploy>
+	</target>
 </project>

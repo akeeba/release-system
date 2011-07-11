@@ -4,3 +4,5 @@
 /.settings
 /.buildpath
 /*.txt
+
+/build/build.properties
