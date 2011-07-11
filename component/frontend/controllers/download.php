@@ -31,7 +31,8 @@ class ArsControllerDownload extends ArsControllerDefault
 		// Get the model
 		$model = $this->getThisModel();
 
-		// Anti-leech protection
+		// Anti-leech protection (removed feature)
+		/*
 		$component =& JComponentHelper::getComponent( 'com_ars' );
 		$params = ($component->params instanceof JRegistry) ? $component->params : new JParameter($component->params);
 		$antileech = $params->get('antileech',1);
@@ -39,6 +40,7 @@ class ArsControllerDownload extends ArsControllerDefault
 		{
 			$model->antiLeech();
 		}
+		*/
 
 		// Get the log table
 		$log = JTable::getInstance('Logs','Table');

@@ -14,13 +14,15 @@
 		
 		<!-- Download options -->
 		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<!--
 		<param name="antileech" type="radio" default="1" label="ARS_CONFIG_ANTILEECH_LABEL" description="ARS_CONFIG_ANTILEECH_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
 		
-		<!-- Rendering options -->
 		<param name="@spacer" type="spacer" default="" label="" description="" />
+		-->
+		<!-- Rendering options -->
 		<param name="categorystyle" type="styles" default="rounded" label="ARS_CONFIG_CATEGORY_STYLE_LABEL" description="ARS_CONFIG_CATEGORY_STYLE_DESC"/>
 		<param name="categorysuffix" type="text" default="" label="ARS_CONFIG_CATEGORY_SFX_LABEL" description="ARS_CONFIG_CATEGORY_SFX_DESC"/>
 
@@ -47,12 +49,14 @@
 	</fieldset>
 		
 	<fieldset name="frontend" label="CONFIG_FRONTEND_HEADER_LABEL" description="CONFIG_FRONTEND_HEADER_DESC" addformpath="/administrator/components/com_ars/elements">
+		<!--
 		<field name="antileech" type="radio" default="1" label="ARS_CONFIG_ANTILEECH_LABEL" description="ARS_CONFIG_ANTILEECH_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
 		
 		<field name="@spacer" type="spacer" default="" label="" description="" />
+		-->
 		<field name="categorystyle" type="styles" default="rounded" label="ARS_CONFIG_CATEGORY_STYLE_LABEL" description="ARS_CONFIG_CATEGORY_STYLE_DESC"/>
 		<field name="categorysuffix" type="text" default="" label="ARS_CONFIG_CATEGORY_SFX_LABEL" description="ARS_CONFIG_CATEGORY_SFX_DESC"/>
 
