@@ -7,6 +7,7 @@ Version 1.0.1 (current trunk)
 # Live Update: Using authentication with non-SEF URLs always resulted in an error message that the download of the update package was impossible (thank you Daniel for the heads up!)
 # Filtering by access level in Categories view wouldn't work
 # Bug in access control checks of Bleeding Edge releases
+# Wouldn't load frontend.css due to typo in helpers/include.php
 
 Version 1.0 (current trunk)
 ================================================================================

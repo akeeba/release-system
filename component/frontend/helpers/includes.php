@@ -68,7 +68,7 @@ class ArsHelperIncludes
 	 */
 	static function includeCSS()
 	{
-		$media_folder = JURI::base().'../media/com_ars/';
+		$media_folder = rtrim(JURI::base(),'/').'/media/com_ars/';
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet($media_folder.'theme/jquery-ui.css');
 		$document->addStyleSheet($media_folder.'css/frontend.css');
