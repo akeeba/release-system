@@ -3,6 +3,7 @@ Version 1.0.1 (current trunk)
 + Minimum stability level in the Latest Releases view
 ~ Removed anti-leech protection
 ~ #32 Do not list unpublished Bleeding Edge releases in drop-downs
+~ Using CSS classes instead of inline styles for Bleeding Edge releases' changelogs
 # JParameter is deprecated in Joomla! 1.6/1.7; applying workaround
 # SQL file didn't run on upgade on Joomla! 1.6/1.7; applying workaround
 # Live Update: Using authentication with non-SEF URLs always resulted in an error message that the download of the update package was impossible (thank you Daniel for the heads up!)

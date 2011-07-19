@@ -98,3 +98,15 @@
 
 li.ars-row0 { background-color: #f0f0f0; height: 1.5em; }
 li.ars-row1 { background-color: #e0e0e0; height: 1.5em; }
+
+
+/**
+ * Bleeding edge CSS styles
+ */
+ 
+ .ars-devrelease-changelog-added		{color: #006600; font-weight: bold;}
+ .ars-devrelease-changelog-removed		{color: #660000}
+ .ars-devrelease-changelog-bugfix		{color: #000066;}
+ .ars-devrelease-changelog-minor		{color: #ccc; font-style: italics;}
+ .ars-devrelease-changelog-important	{color: red; background: yellow; font-weight: bold;}
+ .ars-devrelease-changelog-default		{color: #666666}

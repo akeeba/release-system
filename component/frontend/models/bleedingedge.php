@@ -244,30 +244,30 @@ class ArsModelBleedingedge extends JModel
 		switch($line_type)
 		{
 			case '+':
-				$style = 'color: #006600; font-weight: bold;';
+				$style = 'added';
 				$line = trim(substr($line,1));
 				break;
 			case '-':
-				$style = 'color: #660000';
+				$style = 'removed';
 				$line = trim(substr($line,1));
 				break;
 			case '#':
-				$style = 'color: #000066;';
+				$style = 'bugfix';
 				$line = trim(substr($line,1));
 				break;
 			case '~':
-				$style = 'color: #ccc; font-style: italics;';
+				$style = 'minor';
 				$line = trim(substr($line,1));
 				break;
 			case '!':
-				$style = 'color: red; background: yellow; font-weight: bold;';
+				$style = 'important';
 				$line = trim(substr($line,1));
 				break;
 			default:
-				$style = 'color: #666666';
+				$style = 'default';
 				break;
 		}
 
-		return "<span style=\"$style\">$line</span>";
+		return "<span class=\"ars-devrelease-changelog-$style\">$line</span>";
 	}
 }
