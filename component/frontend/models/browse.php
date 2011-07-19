@@ -104,6 +104,7 @@ class ArsModelBrowse extends ArsModelBaseFE
 				$model->setState('limit',			1);
 				$model->setState('order',			'ordering');
 				$model->setState('dir',				'ASC');
+				$model->setState('maturity',		$this->getState('maturity','alpha'));
 
 				$releases = $model->getItemList();
 

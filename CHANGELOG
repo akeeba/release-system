@@ -1,5 +1,6 @@
 Version 1.0.1 (current trunk)
 ================================================================================
++ Minimum stability level in the Latest Releases view
 ~ Removed anti-leech protection
 ~ #32 Do not list unpublished Bleeding Edge releases in drop-downs
 # JParameter is deprecated in Joomla! 1.6/1.7; applying workaround

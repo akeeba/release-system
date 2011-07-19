@@ -28,6 +28,7 @@ class ArsModelReleases extends ArsModelBase
 		$fltVersion		= $this->getState('version', null, 'string');
 		$fltPublished	= $this->getState('published', null, 'cmd');
 		$fltNoBEUnpub	= $this->getState('nobeunpub', null, 'int');
+		$fltMaturity	= $this->getState('maturity', 'alpha', 'cmd');
 
 		$db = $this->getDBO();
 		if($fltCategory) {
@@ -41,6 +42,17 @@ class ArsModelReleases extends ArsModelBase
 		}
 		if($fltNoBEUnpub) {
 			$where[] =  "NOT(`c`.`type` = 'bleedingedge' AND `r`.`published` = 0)";
+		}
+		switch($fltMaturity) {
+			case 'beta':
+				$where[] = '`r`.`maturity` IN ("beta","rc","stable")';
+				break;
+			case 'rc':
+				$where[] = '`r`.`maturity` IN ("rc","stable")';
+				break;
+			case 'stable':
+				$where[] = '`r`.`maturity` = "stable"';
+				break;
 		}
 
 		$query = <<<ENDSQL

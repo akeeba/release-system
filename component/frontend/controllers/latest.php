@@ -32,6 +32,7 @@ class ArsControllerLatest extends ArsControllerDefault
 		$model->setState( 'task',		$this->getTask() );
 		$model->setState( 'grouping',	$params->get('grouping',	'normal') );
 		$model->setState( 'orderby',	'order' );
+		$model->setState( 'maturity',	$params->get('min_maturity',	'alpha') );
 
 		// Push URL parameters to the model
 		$model->setState( 'start',		JRequest::getInt('start', 0) );
