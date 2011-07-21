@@ -10,6 +10,7 @@ Version 1.0.1 (current trunk)
 # Filtering by access level in Categories view wouldn't work
 # Bug in access control checks of Bleeding Edge releases
 # Wouldn't load frontend.css due to typo in helpers/include.php
+# Update XML streams would not allow Joomla! 1.7 to pick up any updates
 
 Version 1.0 (current trunk)
 ================================================================================

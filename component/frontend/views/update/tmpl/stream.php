@@ -23,7 +23,7 @@ $streamTypeMap = array(
 @ob_end_clean();
 @header('Content-type: application/xml');
 ?><?php echo $tag; ?>
-
+<!-- Update stream generated automatically by Akeeba Release System -->
 <updates>
 <?php
 foreach($this->items as $item):
@@ -61,6 +61,18 @@ foreach($this->items as $item):
 			<downloadurl type="full" format="<?php echo $format ?>"><?php echo $downloadURL?></downloadurl>
 		</downloads>
 		<targetplatform name="joomla" version="1.6" />
+	</update>
+	<update>
+		<name><?php echo $item->alias ?></name>
+		<description><?php echo $item->name ?></description>
+		<element><?php echo $item->element ?></element>
+		<type><?php echo $streamTypeMap[$item->type]; ?></type>
+		<version><?php echo $item->version ?></version>
+		<infourl title="<?php echo $item->cat_title.' '.$item->version ?>"><?php echo rtrim(JURI::base(),'/').AKRouter::_('index.php?option=com_ars&view=release&id='.$item->release_id) ?></infourl>
+		<downloads>
+			<downloadurl type="full" format="<?php echo $format ?>"><?php echo $downloadURL?></downloadurl>
+		</downloads>
+		<targetplatform name="joomla" version="1.7" />
 	</update>
 <?php endforeach ?>
 </updates><?php die(); ?>
