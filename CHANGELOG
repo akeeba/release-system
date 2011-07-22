@@ -1,4 +1,8 @@
-Version 1.0.1 (current trunk)
+Version 1.0.2 (current trunk)
+================================================================================
+# Fatal error thrown when accessing the component parameters
+
+Version 1.0.1
 ================================================================================
 + Minimum stability level in the Latest Releases view
 ~ Removed anti-leech protection
@@ -12,7 +16,7 @@ Version 1.0.1 (current trunk)
 # Wouldn't load frontend.css due to typo in helpers/include.php
 # Update XML streams would not allow Joomla! 1.7 to pick up any updates
 
-Version 1.0 (current trunk)
+Version 1.0
 ================================================================================
 + Local copy of cacerts.pem allows Live Update and other download requests to work with HTTPS URLs on Windows, CentOS and other servers without a system copy of cacert.pem
 + Referer links in log view now open in new window

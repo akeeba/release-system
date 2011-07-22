@@ -28,6 +28,10 @@ class ARSElementStyles extends ARSElementBase
 	
 	public function getInput()
 	{
+		if(!class_exists('JHTMLSelect')) {
+			$dummy = JHtml::_('select.genericlist',array( JHtml::_('select.option','foobar') ),'foobar');
+		}
+		
 		$styles = $this->getStyles();
 		$class = $this->element['class'] ? 'class="'.$this->element['class'].'"' : 'class="inputbox"';
 		
@@ -46,6 +50,10 @@ class ARSElementStyles extends ARSElementBase
 	
 	public function fetchElement($name, $value, &$node, $control_name)
 	{
+		if(!class_exists('JHTMLSelect')) {
+			$dummy = JHtml::_('select.genericlist',array( JHtml::_('select.option','foobar') ),'foobar');
+		}
+		
 		$styles = $this->getStyles();
 		$class = $node->attributes('class') ? 'class="'.$node->attributes('class').'"' : 'class="inputbox"';
 		
