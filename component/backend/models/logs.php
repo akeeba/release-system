@@ -74,10 +74,24 @@ class ArsModelLogs extends ArsModelBase
 			$where[] = '`authorized` = '.$db->Quote($fltAuthorized);
 		}
 		if($fltCategory) {
-			$where[] = '`category_id` = '.$db->Quote($fltCategory);
+			$query_inner = 'SELECT '.$db->nameQuote('id').' FROM '.$db->nameQuote('#__ars_releases').' WHERE '.
+				$db->nameQuote('category_id').' = '.$db->quote($fltCategory);
+			$query_outer = 'SELECT '.$db->nameQuote('id').' FROM '.$db->nameQuote('#__ars_items').' WHERE '.
+				$db->nameQuote('release_id').' IN ('.$query_inner.')';
+			$db->setQuery($query_outer);
+			$ids = $db->loadResultArray();
+			$clause = '('.implode(", ", $ids).')';
+			
+			$where[] = '`item_id` IN '.$clause;
 		}
 		if($fltVersion) {
-			$where[] = '`release_id` = '.$db->Quote($fltVersion);
+			$query_outer = 'SELECT '.$db->nameQuote('id').' FROM '.$db->nameQuote('#__ars_items').' WHERE '.
+				$db->nameQuote('release_id').' = '.$db->quote($fltVersion);
+			$db->setQuery($query_outer);
+			$ids = $db->loadResultArray();
+			$clause = '('.implode(", ", $ids).')';
+			
+			$where[] = '`item_id` IN '.$clause;
 		}
 
 		$query = <<<ENDSQL
@@ -174,10 +188,24 @@ ENDSQL;
 			$where[] = '`authorized` = '.$db->Quote($fltAuthorized);
 		}
 		if($fltCategory) {
-			$where[] = '`category_id` = '.$db->Quote($fltCategory);
+			$query_inner = 'SELECT '.$db->nameQuote('id').' FROM '.$db->nameQuote('#__ars_releases').' WHERE '.
+				$db->nameQuote('category_id').' = '.$db->quote($fltCategory);
+			$query_outer = 'SELECT '.$db->nameQuote('id').' FROM '.$db->nameQuote('#__ars_items').' WHERE '.
+				$db->nameQuote('release_id').' IN ('.$query_inner.')';
+			$db->setQuery($query_outer);
+			$ids = $db->loadResultArray();
+			$clause = '('.implode(", ", $ids).')';
+			
+			$where[] = '`item_id` IN '.$clause;
 		}
 		if($fltVersion) {
-			$where[] = '`release_id` = '.$db->Quote($fltVersion);
+			$query_outer = 'SELECT '.$db->nameQuote('id').' FROM '.$db->nameQuote('#__ars_items').' WHERE '.
+				$db->nameQuote('release_id').' = '.$db->quote($fltVersion);
+			$db->setQuery($query_outer);
+			$ids = $db->loadResultArray();
+			$clause = '('.implode(", ", $ids).')';
+			
+			$where[] = '`item_id` IN '.$clause;
 		}
 
 		$query = <<<ENDSQL

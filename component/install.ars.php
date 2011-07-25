@@ -30,6 +30,9 @@ $db->query();
 $db->setQuery('CREATE INDEX `ars_log_authorized` ON `#__ars_log` (`authorized`)');
 $db->query();
 
+$db->setQuery('CREATE INDEX `ars_log_itemid` ON `#__ars_log` (`item_id`)');
+$db->query();
+
 // Schema updates -- END
 
 // Install modules and plugins -- BEGIN
