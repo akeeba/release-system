@@ -20,63 +20,52 @@ $groups = array('basic','tools','update');
 <div id="cpanel">
 	<div class="ak_cpanel_modules" id="ak_cpanel_modules">
 
-		<?php echo $tabs->startPane('com-ars-dlstats'); ?>
-		
-		<?php echo $tabs->startPanel(JText::_('LBL_ARS_CPANEL_DLSTATSDETAILS'), 'com-ars-dlstats-details'); ?>
-		<table border="0" width="100%" class="dlstats">
-			<tr>
-				<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_EVER') ?></td>
-				<td><?php echo number_format($this->dlever,0) ?></td>
-			</tr>
-			<tr>
-				<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_MONTH') ?></td>
-				<td><?php echo number_format($this->dlmonth,0) ?></td>
-			</tr>
-			<tr>
-				<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_WEEK') ?></td>
-				<td><?php echo number_format($this->dlweek,0) ?></td>
-			</tr>
-		</table>
-		<?php echo $tabs->endPanel(); ?>
-		
-		<?php echo $tabs->startPanel(JText::_('LBL_ARS_CPANEL_DLSTATSMONTHLY'),'com-ars-dlstats-mdr'); ?>
+		<fieldset>
+			<legend><?php echo JText::_('LBL_ARS_CPANEL_DLSTATSMONTHLY')?></legend>
 			<div id="mdrChart"></div>
-		<?php echo $tabs->endPanel(); ?>
-		
-		<?php echo $tabs->endPane(); ?>
-		
-		<?php echo $tabs->startPane('com-ars-popular'); ?>
-		
-		<?php echo $tabs->startPanel(JText::_('LBL_ARS_CPANEL_POPULAR_WEEK'), 'com-ars-popular-week'); ?>
-		<?php if(empty($this->popularweek)): ?>
-			<p><?php echo JText::_('LBL_ARS_NOITEMS') ?></p>
-		<?php else: ?>
-			<?php foreach ($this->popularweek as $item): ?>
-			<div class="dlpopular">
-				<div class="dlbasic">
-					<a class="dltitle" href="../index.php?option=com_ars&view=download&id=<?php echo (int)$item->item_id ?>">
-						<?php echo $this->escape($item->title) ?>
-					</a>
-					<span class="dltimes"><?php echo $this->escape($item->dl) ?></span>
-				</div>
-				<div class="dladvanced">
-					<span class="dlcategory"><?php echo $this->escape($item->category) ?></span>
-					<span class="dlversion"><?php echo $this->escape($item->version) ?></span>
-				</div>
-			</div>
-			<?php endforeach; ?>
-		<?php endif; ?>
-		<?php echo $tabs->endPanel(); ?>
-				
-		<?php echo $tabs->endPane(); ?>
-		
-		<br/>
+		</fieldset>
 		
 		<fieldset>
-			<legend><?php echo JText::_('FIELDSET_LABEL_LIVEUPDATE'); ?></legend>
-			<p><?php echo LiveUpdate::getIcon(); ?></p>
+			<legend><?php echo JText::_('LBL_ARS_CPANEL_DLSTATSDETAILS')?></legend>
+			<table border="0" width="100%" class="dlstats">
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_EVER') ?></td>
+					<td><?php echo number_format($this->dlever,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_MONTH') ?></td>
+					<td><?php echo number_format($this->dlmonth,0) ?></td>
+				</tr>
+				<tr>
+					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_WEEK') ?></td>
+					<td><?php echo number_format($this->dlweek,0) ?></td>
+				</tr>
+			</table>
 		</fieldset>
-
+		
+		<fieldset>
+			<legend><?php echo JText::_('LBL_ARS_CPANEL_POPULAR_WEEK')?></legend>
+			
+			<?php if(empty($this->popularweek)): ?>
+				<p><?php echo JText::_('LBL_ARS_NOITEMS') ?></p>
+			<?php else: ?>
+				<?php foreach ($this->popularweek as $item): ?>
+				<div class="dlpopular">
+					<div class="dlbasic">
+						<a class="dltitle" href="../index.php?option=com_ars&view=download&id=<?php echo (int)$item->item_id ?>">
+							<?php echo $this->escape($item->title) ?>
+						</a>
+						<span class="dltimes"><?php echo $this->escape($item->dl) ?></span>
+					</div>
+					<div class="dladvanced">
+						<span class="dlcategory"><?php echo $this->escape($item->category) ?></span>
+						<span class="dlversion"><?php echo $this->escape($item->version) ?></span>
+					</div>
+				</div>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</fieldset>
+		
 	</div>
 
 	<div class="ak_cpanel_main_container">
@@ -96,6 +85,10 @@ $groups = array('basic','tools','update');
 				</a>
 			</div>
 			<?php endforeach; ?>
+			
+			<?php if($group == 'basic'): ?>
+			<p><?php echo LiveUpdate::getIcon(); ?></p>
+			<?php endif; ?>
 			<!-- <div class="ak_clr_left"></div>  -->
 		</fieldset>
 		
