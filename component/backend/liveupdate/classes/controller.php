@@ -157,9 +157,14 @@ class LiveUpdateController extends JController
 	
 	public function cleanup()
 	{
+		// Perform the cleanup
 		$ftp = $this->setCredentialsFromRequest('ftp');
 		$model = $this->getThisModel();
 		$model->cleanup();
+		
+		// Force reload update information
+		$dummy = LiveUpdate::getUpdateInformation(true);
+		
 		die('OK');
 	}
 	

@@ -1,7 +1,3 @@
-Version 1.0.2 (current trunk)
-================================================================================
-# Fatal error thrown when accessing the component parameters
-
 Version 1.0.1
 ================================================================================
 + Minimum stability level in the Latest Releases view
@@ -15,6 +11,9 @@ Version 1.0.1
 # Bug in access control checks of Bleeding Edge releases
 # Wouldn't load frontend.css due to typo in helpers/include.php
 # Update XML streams would not allow Joomla! 1.7 to pick up any updates
+# Fatal error thrown when accessing the component parameters
+# Live Update: would not reload the update information after installing an update
+# Live Update: would not support package, library and file extension types for Joomla! 1.6/1.7
 
 Version 1.0
 ================================================================================
