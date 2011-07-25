@@ -213,10 +213,6 @@ SELECT
   COUNT(*)
 FROM
   #__ars_log AS l
-  JOIN #__ars_items AS i ON(i.id = l.item_id)
-  JOIN #__ars_releases AS r ON(r.id = i.release_id)
-  JOIN #__ars_categories AS c ON(c.id = r.category_id)
-  LEFT JOIN #__users AS u ON(u.id = user_id)
 ENDSQL;
 
 		if(count($where))
