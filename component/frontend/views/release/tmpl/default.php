@@ -26,7 +26,7 @@ $item = $this->item;
 $item->id = 0;
 $params = ArsHelperChameleon::getParams('release');
 @ob_start();
-@include dirname(__FILE__).DS.'../../category/tmpl/release.php';
+@include $this->getSubLayout('release','category');
 $contents = ob_get_clean();
 $title = "<img src=\"".JURI::base()."/media/com_ars/icons/status_".$item->maturity.".png\" width=\"16\" height=\"16\" align=\"left\" />".
 	"&nbsp;<span class=\"ars-release-title-version\">".
@@ -52,7 +52,7 @@ echo JModuleHelper::renderModule($module, $params);
 			$title = "<a href=\"$download_url\">".$this->escape($item->title)."</a>";			
 			$params = ArsHelperChameleon::getParams('item');
 			@ob_start();
-			@include dirname(__FILE__).DS.'item.php';
+			@include $this->getSubLayout('item');
 			$contents = ob_get_clean();
 			$module = ArsHelperChameleon::getModule($title, $contents, $params);
 			echo JModuleHelper::renderModule($module, $params);			

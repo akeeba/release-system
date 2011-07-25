@@ -24,7 +24,7 @@ $Itemid = JRequest::getInt('Itemid',0);
 			$title = "<a href=\"$catURL\">{$item->title}</a>";
 			$params = ArsHelperChameleon::getParams('category', true);
 			@ob_start();
-			@include 'category.php';
+			@include $this->getSubLayout('category');
 			$contents = ob_get_clean();
 			$module = ArsHelperChameleon::getModule($title, $contents, $params);
 			echo JModuleHelper::renderModule($module, $params);

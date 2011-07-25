@@ -47,5 +47,35 @@ class ArsViewBase extends JView
 		$this->assignRef( 'params',		$params );
 
 		parent::display($tpl);
-	}	
+	}
+	
+	function getSubLayout($layout, $altview = null)
+	{
+		$file = $layout;
+		$file = preg_replace('/[^A-Z0-9_\.-]/i', '', $file);
+		
+		if(is_null($altview)) {
+			$altview = $this->getName();
+		}
+
+		$path = $this->_basePath. '/views/' . strtolower($altview) . '/tmpl';
+		$template = JFactory::getApplication()->getTemplate();
+		$altpath = JPATH_ROOT.'/templates/'.$template.'/html/com_ars/'.strtolower($altview);
+
+		jimport('joomla.filesystem.path');
+		$filetofind	= $this->_createFileName('template', array('name' => $file));
+		$subtemplate = JPath::find($altpath, $filetofind);
+		if($subtemplate == false) {
+			$subtemplate = JPath::find($path, $filetofind);
+		}
+		if($subtemplate == false) {
+			$filetofind = $this->_createFileName('', array('name' => 'default'));
+			$subtemplate = JPath::find($altpath, $filetofind);
+		}
+		if($subtemplate == false) {
+			$subtemplate = JPath::find($path, $filetofind);
+		}
+
+		return $subtemplate;
+	}
 }

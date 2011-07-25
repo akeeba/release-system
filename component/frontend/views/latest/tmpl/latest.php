@@ -27,7 +27,7 @@ $Itemid = JRequest::getInt('Itemid',0);
 				{
 					$params = ArsHelperChameleon::getParams('category');
 					@ob_start();
-					include dirname(__FILE__).'/category.php';
+					@include $this->getSubLayout('category');
 					$contents = ob_get_clean();
 					$module = ArsHelperChameleon::getModule($cat->title, $contents, $params);
 					echo JModuleHelper::renderModule($module, $params);					
@@ -53,7 +53,7 @@ $Itemid = JRequest::getInt('Itemid',0);
 				{
 					$params = ArsHelperChameleon::getParams('category');
 					@ob_start();
-					include dirname(__FILE__).'/category.php';
+					@include $this->getSubLayout('category');
 					$contents = ob_get_clean();
 					$module = ArsHelperChameleon::getModule($cat->title, $contents, $params);
 					echo JModuleHelper::renderModule($module, $params);					
@@ -78,7 +78,7 @@ $Itemid = JRequest::getInt('Itemid',0);
 				{
 					$params = ArsHelperChameleon::getParams('category');
 					@ob_start();
-					include dirname(__FILE__).'/category.php';
+					@include $this->getSubLayout('category');
 					$contents = ob_get_clean();
 					$module = ArsHelperChameleon::getModule($cat->title, $contents, $params);
 					echo JModuleHelper::renderModule($module, $params);					

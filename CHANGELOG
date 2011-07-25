@@ -1,6 +1,7 @@
 Version 1.0.1
 ================================================================================
 + Minimum stability level in the Latest Releases view
+~ Improved rendering engine to properly support template overrides
 ~ Removed anti-leech protection
 ~ #32 Do not list unpublished Bleeding Edge releases in drop-downs
 ~ Using CSS classes instead of inline styles for Bleeding Edge releases' changelogs

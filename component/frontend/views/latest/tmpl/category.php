@@ -35,7 +35,7 @@ $released = new JDate($cat->release->created);
 			foreach($cat->release->files as $item)
 			{
 				$i = 1 - $i;
-				include dirname(__FILE__).DS.'item.php';
+				@include $this->getSubLayout('item');
 			}
 		?>
 		</ul>

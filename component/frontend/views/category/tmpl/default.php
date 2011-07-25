@@ -18,7 +18,7 @@ $tabs = array();
 	$item = $this->item; $item->id = 0;
 	$params = ArsHelperChameleon::getParams('category');
 	@ob_start();
-	@include dirname(__FILE__).DS.'../../browse/tmpl/category.php';
+	@include $this->getSubLayout('category','browse');
 	$contents = ob_get_clean();
 	$module = ArsHelperChameleon::getModule($item->title, $contents, $params);
 	echo JModuleHelper::renderModule($module, $params);
@@ -35,7 +35,7 @@ $tabs = array();
 		{
 			$params = ArsHelperChameleon::getParams('release');
 			@ob_start();
-			@include dirname(__FILE__).DS.'release.php';
+			@include $this->getSubLayout('release');
 			$contents = ob_get_clean();
 			$Itemid = JRequest::getInt('Itemid',0);
 			$release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);
