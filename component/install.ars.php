@@ -20,6 +20,18 @@ if( version_compare( JVERSION, '1.6.0', 'ge' ) && !defined('_AKEEBA_HACK') ) {
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
+// Schema updates -- BEGIN
+$db = JFactory::getDBO();
+
+// --- Update to 1.0.1
+$db->setQuery('CREATE INDEX `ars_log_accessed` ON `#__ars_log` (`accessed_on`)');
+$db->query();
+
+$db->setQuery('CREATE INDEX `ars_log_authorized` ON `#__ars_log` (`authorized`)');
+$db->query();
+
+// Schema updates -- END
+
 // Install modules and plugins -- BEGIN
 
 // -- General settings

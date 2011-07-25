@@ -45,12 +45,14 @@ class ArsViewCpanel extends JView
 		$cache = new ArsHelperCache();
 		
 		// -- Popular items (ever & week)
+		/*
 		$popularever = $cache->getValue('popularever');
 		if(empty($popularever)) {
 			$popularever = json_encode($model->getAllTimePopular());
 			$cache->setValue('popularever', $popularever);
 		}
 		$this->assign('popularever',		json_decode($popularever) );
+		*/
 		
 		$popularweek = $cache->getValue('popularweek');
 		if(empty($popularweek)) {
@@ -65,8 +67,8 @@ class ArsViewCpanel extends JView
 			$dldetails = array();
 			//$dldetails['dllastmonth']	= $model->getNumDownloads('lastmonth');
 			$dldetails['dlmonth']		= $model->getNumDownloads('month');
-			//$dldetails['dlweek']		= $model->getNumDownloads('week');
-			$dldetails['dlyear']		= $model->getNumDownloads('year');
+			$dldetails['dlweek']		= $model->getNumDownloads('week');
+			//$dldetails['dlyear']		= $model->getNumDownloads('year');
 			$dldetails['dlever']		= $model->getNumDownloads('alltime');
 			
 			$dldetails = json_encode($dldetails);
@@ -76,8 +78,8 @@ class ArsViewCpanel extends JView
 		
 		//$this->assign('dllastmonth',		$dldetails['dllastmonth'] );
 		$this->assign('dlmonth',			$dldetails['dlmonth'] );
-		//$this->assign('dlweek',				$dldetails['dlweek'] );
-		$this->assign('dlyear',				$dldetails['dlyear'] );
+		$this->assign('dlweek',				$dldetails['dlweek'] );
+		//$this->assign('dlyear',				$dldetails['dlyear'] );
 		$this->assign('dlever',				$dldetails['dlever'] );
 
 		// -- Monthly-Daily downloads report

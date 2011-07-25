@@ -1,6 +1,7 @@
 Version 1.0.1
 ================================================================================
 + Minimum stability level in the Latest Releases view
+~ Massively improved the loading speed of the Control Panel by removing statistics queries which took a very long time to complete
 ~ Improved rendering engine to properly support template overrides
 ~ Removed anti-leech protection
 ~ #32 Do not list unpublished Bleeding Edge releases in drop-downs

@@ -164,11 +164,12 @@ ENDSQL;
 	public function getNumDownloads($interval)
 	{
 		$interval = strtolower($interval);
+		$alltime = false;
 		switch($interval)
 		{
 			case 'alltime':
 			default:
-				$date = "0 AND '2100-01-01'";
+				$alltime = true;
 				break;
 
 			case 'year':
@@ -192,7 +193,8 @@ ENDSQL;
 				break;
 		}
 		$db = $this->getDBO();
-		$db->setQuery( <<<ENDSQL
+		if(!$alltime) {
+			$db->setQuery( <<<ENDSQL
 SELECT
 	COUNT(*)
 FROM
@@ -202,6 +204,17 @@ WHERE
 	AND `l`.`authorized` = 1
 ENDSQL
 );
+		} else {
+			$db->setQuery( <<<ENDSQL
+SELECT
+	COUNT(*)
+FROM
+	`#__ars_log` AS `l`
+WHERE
+	`l`.`authorized` = 1
+ENDSQL
+);
+		}
 		return $db->loadResult();
 	}
 
