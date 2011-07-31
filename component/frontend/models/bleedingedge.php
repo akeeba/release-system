@@ -126,7 +126,8 @@ class ArsModelBleedingedge extends JModel
 				$notes = '';
 
 				$changelog = $this->folder.DS.$folder.DS.'CHANGELOG';
-				if(JFile::exists($changelog))
+				$hasChangelog = JFile::exists($changelog);
+				if($hasChangelog)
 				{
 					$this_changelog = JFile::read($this->folder.DS.$folder.DS.'CHANGELOG');
 					if(!empty($this_changelog)) {
@@ -139,6 +140,8 @@ class ArsModelBleedingedge extends JModel
 						}
 						$notes .= '</ul>';
 					}
+				} else {
+					$this_changelog = '';
 				}
 
 				$table = JTable::getInstance('Releases','Table');
@@ -155,6 +158,36 @@ class ArsModelBleedingedge extends JModel
 					'access'			=> $this->category->access,
 					'published'			=> 1
 				);
+				
+				// Before saving the category, call the onNewARSBleedingEdgeRelease()
+				// event of ars plugins so that they have the chance to modify
+				// this information.
+				// -- Load plugins
+				jimport('joomla.plugin.helper');
+				JPluginHelper::importPlugin('ars');
+				// -- Setup information data
+				$infoData = array(
+					'folder'			=> $folder,
+					'category_id'		=> $this->category_id,
+					'category'			=> $this->category,
+					'has_changelog'		=> $hasChangelog,
+					'changelog_file'	=> $changelog,
+					'changelog'			=> $this_changelog,
+					'first_changelog'	=> $first_changelog
+				);
+				// -- Trigger the plugin event
+				$app = JFactory::getApplication();
+				$jResponse = $app->triggerEvent('onNewARSBleedingEdgeRelease',array(
+					$infoData,
+					$data
+				));
+				// -- Merge response
+				if(is_array($jResponse)) foreach($jResponse as $response) {
+					if(is_array($response)) {
+						$data = array_merge($data, $response);
+					}
+				}
+				// -- Create the BE release
 				$table->save($data,'category_id');
 				$this->checkFiles($table);
 			}

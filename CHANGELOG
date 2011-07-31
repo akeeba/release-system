@@ -1,5 +1,6 @@
 Version 1.0.2
 ================================================================================
++ Plugin events to customise Bleeding Edge releases
 # Live Update did not properly support library and file extensions type in Joomla! 1.6/1.7 (patched by Michael Babker)
 # Workarounds for Joomla! 1.6/1.7 bugs which could prevent the component from being installed/unnstalled
 

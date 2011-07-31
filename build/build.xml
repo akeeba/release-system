@@ -12,6 +12,7 @@
 	<property name="dirs.component" value="../component" />
 	<property name="dirs.languages" value="../component/translation" />
 	<property name="dirs.modules" value="../modules" />
+	<property name="dirs.plugins" value="../plugins" />
 	<property name="dirs.release" value="../release" />
 	<property name="version" value="svn" />
 	
@@ -113,6 +114,11 @@
 		<zipme basedir="${dirs.modules}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
 			<fileset dir="${dirs.modules}">
 				<include name="**" />
+			</fileset>
+		</zipme>
+		<zipme basedir="${dirs.plugins}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
+			<fileset dir="${dirs.plugins}">
+				<include name="plg_bleedingedge**" />
 			</fileset>
 		</zipme>
 	</target>

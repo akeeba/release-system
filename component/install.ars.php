@@ -65,6 +65,13 @@ if(is_dir($src.'/mod_arsdownloads')) {
 	$status->modules[] = array('name'=>'mod_arsdownloads','client'=>'site', 'result'=>$result);
 }
 
+// -- Plugin: plg_bleedingedgematurity
+if(is_dir($src.'/plg_bleedingedgematurity')) {
+	$installer = new JInstaller;
+	$result = $installer->install($src.'/plg_bleedingedgematurity');
+	$status->plugins[] = array('name'=>'plg_bleedingedgematurity','group'=>'ars', 'result'=>$result);
+}
+
 // Install modules and plugins -- END
 
 // Load the translation strings (Joomla! 1.5 and 1.6 compatible)
