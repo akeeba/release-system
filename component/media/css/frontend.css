@@ -110,3 +110,17 @@ li.ars-row1 { background-color: #e0e0e0; height: 1.5em; }
  .ars-devrelease-changelog-minor		{color: #ccc; font-style: italics;}
  .ars-devrelease-changelog-important	{color: red; background: yellow; font-weight: bold;}
  .ars-devrelease-changelog-default		{color: #666666}
+ 
+ .ars-diff-container {
+	 font-family: Consolas, "Courier New", "Courier", monospace;
+	 background-color: #fafafa;
+	 border: thin solid #ccc;
+	 border-radius: 8px;
+	 color: #333;
+	 font-style: normal;
+ }
+ .ars-diff-container > div { margin: 1px 0; }
+ .ars-diff-header { color: black; background-color: #ccc; }
+ .ars-diff-context { color: #999; font-style: italic; }
+ .ars-diff-added { background-color: #00ff00; }
+ .ars-diff-deleted { background-color: #ff0000; color: white; }

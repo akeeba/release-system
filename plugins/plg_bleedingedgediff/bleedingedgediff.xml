@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/plugin-install.dtd">
+<install version="1.5" type="plugin" group="ars" method="upgrade">
+	<name>Akeeba Release System - Bleeding Edge automatic file diff</name>
+	<author>Nicholas K. Dionysopoulos</author>
+	<authorEmail>nicholas@dionysopoulos.me</authorEmail>
+	<authorUrl>http://www.akeebabackup.com</authorUrl>
+	<copyright>Copyright (c)2011 Nicholas K. Dionysopoulos</copyright>
+	<license>GNU General Public License version 3, or later</license>
+	<creationDate>2011-07-31</creationDate>
+	<version>1.0</version>
+	<description>
+		Automatically generates a colorised unified diff (like what GitHub does)
+		for items automatically created in a Bleeding Edge repository.
+	</description>
+	<files>
+		<filename plugin="bleedingedgediff">bleedingedgediff.php</filename>
+		<filename>bleedingedgediff.diff.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_ars_bleedingedgediff.ini</language>
+		<language tag="en-GB">en-GB.plg_ars_bleedingedgediff.sys.ini</language>
+	</languages>
+	
+	<!-- Joomla! 1.5 parameters -->
+	<params>
+		<param type="textarea" name="validextensions" cols="50" rows="5"
+			label="PLG_ARS_BLEEDINGEDGEDIFF_VALIDEXTENSIONS_LABEL"
+			description="PLG_ARS_BLEEDINGEDGEDIFF_VALIDEXTENSIONS_DESC"
+			default="txt,js,htm,html,css" />
+		<param name="use_description" type="radio" default="0" label="PLG_ARS_BLEEDINGEDGEDIFF_USEDESCRIPTION_LABEL" description="PLG_ARS_BLEEDINGEDGEDIFF_USEDESCRIPTION_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param type="textarea" name="pretext" cols="50" rows="5"
+			label="PLG_ARS_BLEEDINGEDGEDIFF_PRETEXT_LABEL"
+			description="PLG_ARS_BLEEDINGEDGEDIFF_PRETEXT_DESC"
+			default="" />
+		<param type="textarea" name="midtext" cols="50" rows="5"
+			label="PLG_ARS_BLEEDINGEDGEDIFF_MIDTEXT_LABEL"
+			description="PLG_ARS_BLEEDINGEDGEDIFF_MIDTEXT_DESC"
+			default="" />
+		<param type="textarea" name="posttext" cols="50" rows="5"
+			label="PLG_ARS_BLEEDINGEDGEDIFF_POSTTEXT_LABEL"
+			description="PLG_ARS_BLEEDINGEDGEDIFF_POSTTEXT_DESC"
+			default="" />
+	</params>
+	<!-- Joomla! 1.6+ parameters -->
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field type="textarea" name="validextensions" cols="50" rows="5"
+					label="PLG_ARS_BLEEDINGEDGEDIFF_VALIDEXTENSIONS_LABEL"
+					description="PLG_ARS_BLEEDINGEDGEDIFF_VALIDEXTENSIONS_DESC"
+					default="txt,js,htm,html,css" />
+				<field name="use_description" type="radio" default="0" label="PLG_ARS_BLEEDINGEDGEDIFF_USEDESCRIPTION_LABEL" description="PLG_ARS_BLEEDINGEDGEDIFF_USEDESCRIPTION_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field type="textarea" name="pretext" cols="50" rows="5"
+					label="PLG_ARS_BLEEDINGEDGEDIFF_PRETEXT_LABEL"
+					description="PLG_ARS_BLEEDINGEDGEDIFF_PRETEXT_DESC"
+					default="" />
+				<field type="textarea" name="midtext" cols="50" rows="5"
+					label="PLG_ARS_BLEEDINGEDGEDIFF_MIDTEXT_LABEL"
+					description="PLG_ARS_BLEEDINGEDGEDIFF_MIDTEXT_DESC"
+					default="" />
+				<field type="textarea" name="posttext" cols="50" rows="5"
+					label="PLG_ARS_BLEEDINGEDGEDIFF_POSTTEXT_LABEL"
+					description="PLG_ARS_BLEEDINGEDGEDIFF_POSTTEXT_DESC"
+					default="" />
+			</fieldset>
+		</fields>
+	</config>
+</install>

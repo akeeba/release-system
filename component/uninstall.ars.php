@@ -44,6 +44,33 @@ if($id)
 	$status->modules[] = array('name'=>'mod_arsdownloads','client'=>'site', 'result'=>$result);
 }
 
+// -- Plugin: plg_bleedingedgematurity
+if(version_compare(JVERSION,'1.6.0','ge')) {
+	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `type` = "plugin" AND `element` = "bleedingedgematurity" AND `folder` = "ars"');
+} else {
+	$db->setQuery('SELECT `id` FROM #__plugins WHERE `element` = "bleedingedgematurity" AND `folder` = "ars"');
+}
+$id = $db->loadResult();
+if($id)
+{
+	$installer = new JInstaller;
+	$result = $installer->uninstall('plugin',$id,1);
+	$status->plugins[] = array('name'=>'plg_bleedingedgematurity','group'=>'system', 'result'=>$result);
+}
+
+// -- Plugin: plg_bleedingedgediff
+if(version_compare(JVERSION,'1.6.0','ge')) {
+	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `type` = "plugin" AND `element` = "bleedingedgediff" AND `folder` = "ars"');
+} else {
+	$db->setQuery('SELECT `id` FROM #__plugins WHERE `element` = "bleedingedgediff" AND `folder` = "ars"');
+}
+$id = $db->loadResult();
+if($id)
+{
+	$installer = new JInstaller;
+	$result = $installer->uninstall('plugin',$id,1);
+	$status->plugins[] = array('name'=>'plg_bleedingedgediff','group'=>'system', 'result'=>$result);
+}
 ?>
 
 <?php $rows = 0;?>

@@ -72,6 +72,13 @@ if(is_dir($src.'/plg_bleedingedgematurity')) {
 	$status->plugins[] = array('name'=>'plg_bleedingedgematurity','group'=>'ars', 'result'=>$result);
 }
 
+// -- Plugin: plg_bleedingedgediff
+if(is_dir($src.'/plg_bleedingedgediff')) {
+	$installer = new JInstaller;
+	$result = $installer->install($src.'/plg_bleedingedgediff');
+	$status->plugins[] = array('name'=>'plg_bleedingedgediff','group'=>'ars', 'result'=>$result);
+}
+
 // Install modules and plugins -- END
 
 // Load the translation strings (Joomla! 1.5 and 1.6 compatible)
