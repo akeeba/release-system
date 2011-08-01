@@ -246,12 +246,14 @@ class ArsModelBleedingedge extends JModel
 				$table->save($item);
 			}
 		}
-
+		
 		if(!empty($files)) foreach($files as $file)
 		{
 			if( basename($file) == 'CHANGELOG' ) continue;
 
 			if(in_array($file, $known_items)) continue;
+			if(in_array($release->alias.'/'.$file, $known_items)) continue;
+			
 			$data = array(
 				'release_id'		=> $release->id,
 				'description'		=> '',
