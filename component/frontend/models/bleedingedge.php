@@ -159,7 +159,7 @@ class ArsModelBleedingedge extends JModel
 					'published'			=> 1
 				);
 				
-				// Before saving the category, call the onNewARSBleedingEdgeRelease()
+				// Before saving the release, call the onNewARSBleedingEdgeRelease()
 				// event of ars plugins so that they have the chance to modify
 				// this information.
 				// -- Load plugins
@@ -262,6 +262,37 @@ class ArsModelBleedingedge extends JModel
 				'hits'				=> '0',
 				'published'			=> '1'
 			);
+			
+			// Before saving the item, call the onNewARSBleedingEdgeItem()
+			// event of ars plugins so that they have the chance to modify
+			// this information.
+			// -- Load plugins
+			jimport('joomla.plugin.helper');
+			JPluginHelper::importPlugin('ars');
+			// -- Setup information data
+			$infoData = array(
+				'folder'			=> $folder,
+				'file'				=> $file,
+				'release_id'		=> $release->id,
+				'release'			=> $this->release
+			);
+			// -- Trigger the plugin event
+			$app = JFactory::getApplication();
+			$jResponse = $app->triggerEvent('onNewARSBleedingEdgeItem',array(
+				$infoData,
+				$data
+			));
+			// -- Merge response
+			if(is_array($jResponse)) foreach($jResponse as $response) {
+				if(is_array($response)) {
+					$data = array_merge($data, $response);
+				}
+			}
+			
+			if(isset($data['ignore'])) {
+				if($data['ignore']) continue;
+			}
+			
 			$table = JTable::getInstance('Items','Table');
 			$table->save($data);
 		}
