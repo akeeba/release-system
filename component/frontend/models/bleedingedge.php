@@ -274,7 +274,7 @@ class ArsModelBleedingedge extends JModel
 				'folder'			=> $folder,
 				'file'				=> $file,
 				'release_id'		=> $release->id,
-				'release'			=> $this->release
+				'release'			=> $release
 			);
 			// -- Trigger the plugin event
 			$app = JFactory::getApplication();
