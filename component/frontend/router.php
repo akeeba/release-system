@@ -43,6 +43,7 @@ function arsBuildRoute(&$query)
 			return arsBuildRouteIni($query);
 			break;
 		case 'raw':
+		default:
 			return arsBuildRouteRaw($query);
 			break;
 	}
@@ -758,6 +759,7 @@ function arsParseRoute(&$segments)
 			break;
 
 		case 'raw':
+		default:
 			$segments = ArsRouterHelper::preconditionSegments($segments);
 			return arsParseRouteRaw($segments);
 			break;
@@ -1138,6 +1140,7 @@ ENDSQL;
 
 		if(empty($item))
 		{
+			JError::raiseError('404', 'Item not found');
 			$query['view'] = 'browse';
 			$query['layout'] = 'repository';
 		}

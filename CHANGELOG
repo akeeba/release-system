@@ -4,6 +4,8 @@ Version 1.0.2
 + Plugin events to customise Bleeding Edge items
 # Live Update did not properly support library and file extensions type in Joomla! 1.6/1.7 (patched by Michael Babker)
 # Workarounds for Joomla! 1.6/1.7 bugs which could prevent the component from being installed/unnstalled
+# ARS' router would produce an empty $segments list parsing a malformed URL
+# ARS' router would case a 500 error message to be shown when an item no longer exists; fixed to throw a 404 instead
 
 Version 1.0.1
 ================================================================================
