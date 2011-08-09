@@ -46,6 +46,12 @@ foreach($this->items as $item):
 		$format = 'tgz';
 	} elseif( substr(strtolower($basename),-4) == '.tar' ) {
 		$format = 'tar';
+	} elseif( substr(strtolower($basename),-8) == '.tar.bz2' ) {
+		$format = 'tbz2';
+	} elseif( substr(strtolower($basename),-4) == '.tbz' ) {
+		$format = 'tbz2';
+	} elseif( substr(strtolower($basename),-5) == '.tbz2' ) {
+		$format = 'tbz2';
 	} else {
 		continue;
 	}
