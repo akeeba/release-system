@@ -55,6 +55,9 @@ foreach($this->items as $item):
 	} else {
 		continue;
 	}
+	
+	$platforms = array('1.6','1.7');
+	foreach($platforms as $platform):
 ?>
 	<update>
 		<name><?php echo $item->alias ?></name>
@@ -66,19 +69,15 @@ foreach($this->items as $item):
 		<downloads>
 			<downloadurl type="full" format="<?php echo $format ?>"><?php echo $downloadURL?></downloadurl>
 		</downloads>
-		<targetplatform name="joomla" version="1.6" />
+		<tags>
+			<tag><?php echo $item->maturity ?></tag>
+		</tags>
+		<maintainer><?php echo JFactory::getConfig()->getValue('config.sitename'); ?></maintainer>
+		<maintainerurl><?php echo JURI::base();?></maintainerurl>
+		<section>Updates</section>
+		<targetplatform name="joomla" version="<?php echo $platform?>" />
 	</update>
-	<update>
-		<name><?php echo $item->alias ?></name>
-		<description><?php echo $item->name ?></description>
-		<element><?php echo $item->element ?></element>
-		<type><?php echo $streamTypeMap[$item->type]; ?></type>
-		<version><?php echo $item->version ?></version>
-		<infourl title="<?php echo $item->cat_title.' '.$item->version ?>"><?php echo rtrim(JURI::base(),'/').AKRouter::_('index.php?option=com_ars&view=release&id='.$item->release_id) ?></infourl>
-		<downloads>
-			<downloadurl type="full" format="<?php echo $format ?>"><?php echo $downloadURL?></downloadurl>
-		</downloads>
-		<targetplatform name="joomla" version="1.7" />
-	</update>
-<?php endforeach ?>
+<?php
+	endforeach;
+endforeach; ?>
 </updates><?php die(); ?>
