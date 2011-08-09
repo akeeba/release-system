@@ -32,6 +32,8 @@ WHERE
 	u.type = $esc_category
 	AND u.published = 1
 	AND i.published = 1
+	AND r.published = 1
+	AND c.published = 1
 GROUP BY
 	u.id
 ORDER BY
@@ -61,6 +63,8 @@ WHERE
 	u.id = $esc_id
 	AND u.published = 1
 	AND i.published = 1
+	AND r.published = 1
+	AND c.published = 1	
 ORDER BY
 	r.`created` DESC
 ENDQUERY;
