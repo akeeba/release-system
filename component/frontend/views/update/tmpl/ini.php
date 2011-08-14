@@ -9,11 +9,17 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die('Restricted Access');
 
+$rootURL = rtrim(JURI::base(),'/');
+$subpathURL = JURI::base(true);
+if(!empty($subpathURL) && ($subpathURL != '/')) {
+	$rootURL = substr($rootURL, 0, -1 * strlen($subpathURL));
+}
+
 if( !empty($this->items) ):
 	$item = array_shift($this->items);
 	switch($item->itemtype) {
 		case 'file':
-			$downloadURL = rtrim(JURI::base(),'/').str_replace('&amp;', '&', AKRouter::_('index.php?option=com_ars&view=download&id='.$item->item_id));
+			$downloadURL = $rootURL.str_replace('&amp;', '&', AKRouter::_('index.php?option=com_ars&view=download&id='.$item->item_id));
 			break;
 		case 'link':
 		default:
