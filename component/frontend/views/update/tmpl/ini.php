@@ -30,4 +30,8 @@ software="<?php echo $item->cat_title ?>"
 version="<?php echo $item->version; ?>"
 link="<?php echo $downloadURL; ?>"
 date="<?php echo $date->toFormat('%Y-%m-%d'); ?>"
-<?php die(); endif; ?>
+<?php else: ?>
+; Live Update provision file
+; No updates are available!
+<?php endif; ?>
+<?php JFactory::getApplication()->close(); ?>

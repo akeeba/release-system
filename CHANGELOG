@@ -11,6 +11,7 @@ Version 1.0.2
 # ARS' router would case a 500 error message to be shown when an item no longer exists; fixed to throw a 404 instead
 # BleedingEdge would always try to add files, even if they were already added, leading to waste of CPU power
 # Update XML shows items in unpublished categories and releases
+# Update INI stream throwing a fatal error under Joomla! 1.7 when there are no updates available
 
 Version 1.0.1
 ================================================================================
