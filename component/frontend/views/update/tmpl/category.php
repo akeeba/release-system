@@ -8,6 +8,12 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
+$rootURL = rtrim(JURI::base(),'/');
+$subpathURL = JURI::base(true);
+if(!empty($subpathURL) && ($subpathURL != '/')) {
+	$rootURL = substr($rootURL, 0, -1 * strlen($subpathURL));
+}
+
 $tag = "<"."?xml version=\"1.0\" encoding=\"utf-8\""."?".">";
 
 @ob_end_clean();
@@ -15,7 +21,7 @@ $tag = "<"."?xml version=\"1.0\" encoding=\"utf-8\""."?".">";
 ?><?php echo $tag; ?>
 <!-- Update stream generated automatically by Akeeba Release System -->
 <extensionset category="<?php echo ucfirst($this->category)?>" name="<?php echo ucfirst($this->category)?>" description="<?php echo JText::_('LBL_UPDATETYPES_'.strtoupper($this->category)); ?>">
-<?php if(!empty($this->items)) foreach($this->items as $item): ?>	<extension name="<?php echo $item->name ?>" element="<?php echo $item->element ?>" type="<?php echo $item->type ?>" version="<?php echo $item->version?>" detailsurl="<?php echo rtrim(JURI::base(),'/').AKRouter::_('index.php?option=com_ars&view=update&format=xml&task=stream&id='.$item->id) ?>" />
+<?php if(!empty($this->items)) foreach($this->items as $item): ?>	<extension name="<?php echo $item->name ?>" element="<?php echo $item->element ?>" type="<?php echo $item->type ?>" version="<?php echo $item->version?>" detailsurl="<?php echo $rootURL.AKRouter::_('index.php?option=com_ars&view=update&format=xml&task=stream&id='.$item->id) ?>" />
 <?php endforeach ?>
 </extensionset>
 <?php die(); ?>

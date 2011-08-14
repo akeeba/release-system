@@ -13,6 +13,7 @@ Version 1.0.2
 # Update XML shows items in unpublished categories and releases
 # Update INI stream throwing a fatal error under Joomla! 1.7 when there are no updates available
 # Duplicated directory path in INI update stream when the site is inside a directory
+# Duplicated directory path in all of the XML update streams when the site is inside a directory
 
 Version 1.0.1
 ================================================================================
