@@ -22,6 +22,15 @@ if(!class_exists('ArsModelBase'))
 
 class ArsModelCategories extends ArsModelBase
 {
+	public function save($data) {
+		// When the user unselects all group checkboxes, the groups key is not
+		// set, causing the model to never reset them to "none selected"
+		if(!array_key_exists('groups', $data)) {
+			$data['groups'] = '';
+		}
+		parent::save($data);
+	}
+	
 	function  buildQuery($overrideLimits = false) {
 		$where = array();
 

@@ -14,6 +14,7 @@ Version 1.0.2
 # Update INI stream throwing a fatal error under Joomla! 1.7 when there are no updates available
 # Duplicated directory path in INI update stream when the site is inside a directory
 # Duplicated directory path in all of the XML update streams when the site is inside a directory
+# If you had limited access to specific AMBRA.subs/Akeeba Subscriptions it was impossible to unselect all of them again
 
 Version 1.0.1
 ================================================================================
