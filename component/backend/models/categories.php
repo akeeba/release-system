@@ -28,7 +28,7 @@ class ArsModelCategories extends ArsModelBase
 		if(!array_key_exists('groups', $data)) {
 			$data['groups'] = '';
 		}
-		parent::save($data);
+		return parent::save($data);
 	}
 	
 	function  buildQuery($overrideLimits = false) {
