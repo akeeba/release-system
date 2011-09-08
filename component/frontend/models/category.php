@@ -75,11 +75,11 @@ class ArsModelCategory extends ArsModelBaseFE
 				$model->setState('dir','DESC');
 				break;
 			case 'created':
-				$model->setState('order','created_on');
+				$model->setState('order','created');
 				$model->setState('dir','ASC');
 				break;
 			case 'rcreated':
-				$model->setState('order','created_on');
+				$model->setState('order','created');
 				$model->setState('dir','DESC');
 				break;
 			case 'order':

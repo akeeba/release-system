@@ -15,6 +15,7 @@ Version 1.0.2
 # Duplicated directory path in INI update stream when the site is inside a directory
 # Duplicated directory path in all of the XML update streams when the site is inside a directory
 # If you had limited access to specific AMBRA.subs/Akeeba Subscriptions it was impossible to unselect all of them again
+# Sorting categories, releases or items by created date caused nothing to be displayed due to a typo in the front-end models
 
 Version 1.0.1
 ================================================================================

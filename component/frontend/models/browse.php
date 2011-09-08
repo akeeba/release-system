@@ -47,12 +47,12 @@ class ArsModelBrowse extends ArsModelBaseFE
 				break;
 
 			case 'created':
-				$catModel->setState('order','created_on');
+				$catModel->setState('order','created');
 				$catModel->setState('dir','ASC');
 				break;
 
 			case 'rcreated':
-				$catModel->setState('order','created_on');
+				$catModel->setState('order','created');
 				$catModel->setState('dir','DESC');
 				break;
 
