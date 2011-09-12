@@ -18,6 +18,30 @@ class Com_ArsInstallerScript extends ComAkeebaStandardInstallationLibrary
 		$this->_akeeba_script_install	= 'install.ars.php';
 		$this->_akeeba_script_update	= 'install.ars.php';
 		$this->_akeeba_script_uninstall	= 'uninstall.ars.php';
+				
+		// Let's try the "session trick"
+		$db =& JFactory::getDBO();
+		$sql = 'DESCRIBE `#__session`';
+		$db->setQuery($sql);
+		try {
+			$ctableAssoc = $db->loadAssocList('Field');
+		} catch (Exception $e) {
+			$ctableAssoc = '';
+		}
+		$ctable = empty($ctableAssoc) ? array() : $ctableAssoc;
+		if(!empty($ctable)) {
+			$type = $ctable['data']['Type'];
+			$type = strtolower($type);
+			if(strstr($type, 'varchar')) {
+				$sql = 'ALTER TABLE `#__session` MODIFY COLUMN `data` MEDIUMTEXT';
+				$db->setQuery($sql);
+				try {
+					$db->query();
+				} catch(Exception $e) {
+					die('Fuck me');
+				}
+			}
+		}
 	}
 }
 
