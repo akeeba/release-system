@@ -33,6 +33,7 @@ class TableReleases extends ArsTable
 	var $ordering = 0;
 	var $access = 0;
 	var $published = 0;
+	var $language = '*';
 
 	function __construct( &$db )
 	{

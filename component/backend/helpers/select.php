@@ -471,4 +471,18 @@ class ArsHelperSelect
 			return 'UNKNOWN '.$access_level_id;
 		}
 	}
+	
+	public static function languages($selected = null, $id = 'language', $attribs = array() )
+	{
+		jimport('joomla.language.helper');
+		$languages = JLanguageHelper::getLanguages('lang_code');
+		$options = array();
+		$options[] = JHTML::_('select.option','*',JText::_('JALL_LANGUAGE'));
+		if(!empty($languages)) foreach($languages as $key => $lang)
+		{
+			$options[] = JHTML::_('select.option',$key,$lang->title);
+		}
+		
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
 }

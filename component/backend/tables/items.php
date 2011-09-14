@@ -47,6 +47,7 @@ class TableItems extends ArsTable
 	var $md5 = '';
 	var $sha1 = '';
 	var $filesize = 0;
+	var $language = '*';
 
 	function __construct( &$db )
 	{
