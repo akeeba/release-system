@@ -38,6 +38,7 @@ class ArsModelItems extends ArsModelBase
 		$fltPublished	= $this->getState('published', null, 'cmd');
 		$fltFilename	= $this->getState('filename', null, 'string');
 		$fltUrl			= $this->getState('url', null, 'string');
+		$fltLanguage	= $this->getState('language', null, 'cmd');
 
 		$db = $this->getDBO();
 		if($fltCategory) {
@@ -55,15 +56,20 @@ class ArsModelItems extends ArsModelBase
 		if(!empty($fltUrl)) {
 			$where[] = '`url` = '.$db->Quote($fltUrl);
 		}
+		if($fltLanguage) {
+			$where[] = '`language` IN ("*", '.$db->quote($fltLanguage).')';
+			$where[] = '`cat_language` IN ("*", '.$db->quote($fltLanguage).')';
+			$where[] = '`rel_language` IN ("*", '.$db->quote($fltLanguage).')';
+		}
 
 		$query = <<<ENDSQL
 SELECT
     `i`.*,
     `r`.`category_id`, `r`.`version`, `r`.`alias` as `rel_alias`,
     `maturity`, `r`.`groups` as `rel_groups`, `r`.`access` as `rel_access`,
-    `r`.`published` as `rel_published`,
+    `r`.`published` as `rel_published`, `r`.`language` as `rel_language`
     `cat_title`, `cat_alias`, `cat_type`, `cat_groups`,
-    `cat_directory`, `cat_access`, `cat_published`
+    `cat_directory`, `cat_access`, `cat_published`, `cat_language`
 FROM
     `#__ars_items` as `i`
     INNER JOIN (
@@ -71,7 +77,7 @@ FROM
 	    `r`.*, `c`.`title` as `cat_title`, `c`.`alias` as `cat_alias`,
 	    `c`.`type` as `cat_type`, `c`.`groups` as `cat_groups`,
 	    `c`.`directory` as `cat_directory`, `c`.`access` as `cat_access`,
-	    `c`.`published` as `cat_published`
+	    `c`.`published` as `cat_published`, `c`.`language` as `cat_language`
 	FROM
 	    `#__ars_releases` AS `r`
 	    INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)

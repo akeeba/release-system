@@ -38,6 +38,7 @@ class ArsModelReleases extends ArsModelBase
 		$fltPublished	= $this->getState('published', null, 'cmd');
 		$fltNoBEUnpub	= $this->getState('nobeunpub', null, 'int');
 		$fltMaturity	= $this->getState('maturity', 'alpha', 'cmd');
+		$fltLanguage	= $this->getState('language', null, 'cmd');
 
 		$db = $this->getDBO();
 		if($fltCategory) {
@@ -63,13 +64,17 @@ class ArsModelReleases extends ArsModelBase
 				$where[] = '`r`.`maturity` = "stable"';
 				break;
 		}
+		if($fltLanguage) {
+			$where[] = '`language` IN ("*", '.$db->quote($fltLanguage).')';
+			$where[] = '`cat_language` IN ("*", '.$db->quote($fltLanguage).')';
+		}
 
 		$query = <<<ENDSQL
 SELECT
     `r`.*, `c`.`title` as `cat_title`, `c`.`alias` as `cat_alias`,
     `c`.`type` as `cat_type`, `c`.`groups` as `cat_groups`,
     `c`.`directory` as `cat_directory`, `c`.`access` as `cat_access`,
-    `c`.`published` as `cat_published`
+    `c`.`published` as `cat_published`, `c`.`language` AS `cat_language`
 FROM
     `#__ars_releases` AS `r`
     INNER JOIN `#__ars_categories` AS `c` ON(`c`.`id` = `r`.`category_id`)

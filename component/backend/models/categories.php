@@ -41,6 +41,7 @@ class ArsModelCategories extends ArsModelBase
 		$fltAccess		= $this->getState('access', null, 'cmd');
 		$fltPublished	= $this->getState('published', null, 'int');
 		$fltNoBEUnpub	= $this->getState('nobeunpub', null, 'int');
+		$fltLanguage	= $this->getState('language', null, 'cmd');
 
 		$db = $this->getDBO();
 		if($fltTitle) {
@@ -64,6 +65,10 @@ class ArsModelCategories extends ArsModelBase
 		// No BleedingEdge unpublished releases
 		if($fltNoBEUnpub) {
 			$where[] = 'NOT (`published` = 0 AND `type` = "bleedingedge")';
+		}
+		
+		if($fltLanguage) {
+			$where[] = '`language` IN ("*", '.$db->quote($fltLanguage).')';
 		}
 
 		$query = 'SELECT * FROM `#__ars_categories`';
