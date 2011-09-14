@@ -62,6 +62,14 @@ class ArsModelCategory extends ArsModelBaseFE
 		$model->setState('limit',$limit);
 		$model->setState('published',1);
 		$model->setState('category',$cat_id);
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$app = JFactory::getApplication();
+			if($app->getLanguageFilter()) {
+				$model->setState('language', JRequest::getCmd('language','*'));
+			} else {
+				$model->setState('language', JRequest::getCmd('language',''));
+			}
+		}
 
 		// Apply ordering
 		switch($orderby)

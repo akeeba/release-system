@@ -32,6 +32,15 @@ class ArsModelBrowse extends ArsModelBaseFE
 		$catModel->setState('limit',$limit);
 		$catModel->setState('published',1);
 		$catModel->setState('type','');
+		
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$app = JFactory::getApplication();
+			if($app->getLanguageFilter()) {
+				$catModel->setState('language', JRequest::getCmd('language','*'));
+			} else {
+				$catModel->setState('language', JRequest::getCmd('language',''));
+			}
+		}
 
 		// Apply ordering
 		switch($orderby)
@@ -105,6 +114,14 @@ class ArsModelBrowse extends ArsModelBaseFE
 				$model->setState('order',			'ordering');
 				$model->setState('dir',				'ASC');
 				$model->setState('maturity',		$this->getState('maturity','alpha'));
+				if(version_compare(JVERSION, '1.6.0', 'ge')) {
+					$app = JFactory::getApplication();
+					if($app->getLanguageFilter()) {
+						$model->setState('language', JRequest::getCmd('language','*'));
+					} else {
+						$model->setState('language', JRequest::getCmd('language',''));
+					}
+				}
 
 				$releases = $model->getItemList();
 
@@ -138,6 +155,14 @@ class ArsModelBrowse extends ArsModelBaseFE
 				$model->setState('release',			$cat->release->id);
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			0);
+				if(version_compare(JVERSION, '1.6.0', 'ge')) {
+					$app = JFactory::getApplication();
+					if($app->getLanguageFilter()) {
+						$model->setState('language', JRequest::getCmd('language','*'));
+					} else {
+						$model->setState('language', JRequest::getCmd('language',''));
+					}
+				}
 				$rawlist = $model->getItemList();
 				$cat->release->files = $this->filterList($rawlist);
 			}
