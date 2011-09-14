@@ -33,6 +33,26 @@ $db->query();
 $db->setQuery('CREATE INDEX `ars_log_itemid` ON `#__ars_log` (`item_id`)');
 $db->query();
 
+// Update to 1.0.2
+$sql = 'SHOW CREATE TABLE `#__ars_categories`';
+$db->setQuery($sql);
+$ctableAssoc = $db->loadResultArray(1);
+$ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
+if(!strstr($ctable, '`language`'))
+{
+	$sql = "ALTER TABLE `#__ars_categories` ADD COLUMN `language` char(7) NOT NULL DEFAULT '*' AFTER `published`";
+	$db->setQuery($sql);
+	$status = $db->query();
+	
+	$sql = "ALTER TABLE `#__ars_releases` ADD COLUMN `language` char(7) NOT NULL DEFAULT '*' AFTER `published`";
+	$db->setQuery($sql);
+	$status = $db->query();
+	
+	$sql = "ALTER TABLE `#__ars_items` ADD COLUMN `language` char(7) NOT NULL DEFAULT '*' AFTER `published`";
+	$db->setQuery($sql);
+	$status = $db->query();
+}
+
 // Schema updates -- END
 
 // Install modules and plugins -- BEGIN

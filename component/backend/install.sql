@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_categories` (
     `ordering` bigint(20) NOT NULL DEFAULT '0',
     `access` int(11) NOT NULL DEFAULT '0',
     `published` int(11) NOT NULL DEFAULT '1',
+	`language` char(7) NOT NULL DEFAULT '*',
     PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
@@ -36,7 +37,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_releases` (
     `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `ordering` bigint(20) unsigned NOT NULL,
     `access` int(11) NOT NULL DEFAULT '0',
-    `published` tinyint(1) NOT NULL DEFAULT '1'
+    `published` tinyint(1) NOT NULL DEFAULT '1',
+	`language` char(7) NOT NULL DEFAULT '*'
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_items` (
@@ -62,7 +64,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_items` (
     `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `ordering` bigint(20) unsigned NOT NULL,
     `access` int(11) NOT NULL DEFAULT '0',
-    `published` tinyint(1) NOT NULL DEFAULT '1'
+    `published` tinyint(1) NOT NULL DEFAULT '1',
+	`language` char(7) NOT NULL DEFAULT '*',
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_log` (
