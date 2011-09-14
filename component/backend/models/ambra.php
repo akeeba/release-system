@@ -230,7 +230,7 @@ ENDSQL;
 		jimport('joomla.utilities.date');
 		$jNow = new JDate();
 		
-		$rawList = KFactory::tmp('admin::com.akeebasubs.model.subscriptions')
+		$rawList = KFactory::get('com://admin/akeebasubs.model.subscriptions')
 			->enabled(1)
 			->user_id($user_id)
 			->limit(0)
