@@ -152,7 +152,7 @@ class ArsModelAmbra extends JModel
 		if(is_null($theList)) {
 			$theList = array();
 			
-			$rawList = KFactory::tmp('admin::com.akeebasubs.model.levels')
+			$rawList = KFactory::get('com://admin/akeebasubs.model.levels')
 				->getList();
 			
 			if(!empty($rawList)) foreach($rawList as $item) {
