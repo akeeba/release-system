@@ -6,3 +6,5 @@
 /*.txt
 
 /build/build.properties
+/plugins/plg_ars_tainting/arstainting.php
+/plugins/plg_ars_tainting/arstainting.xml
