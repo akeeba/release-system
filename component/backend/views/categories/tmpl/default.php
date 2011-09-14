@@ -49,6 +49,11 @@ $model = $this->getModel();
 				<?php echo JHTML::_('grid.sort', 'PUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order); ?>
 				<?php endif; ?>
 			</th>
+			<?if(version_compare(JVERSION, '1.6.0', 'ge')):?>
+			<th>
+				<?php echo JHTML::_('grid.sort', 'JFIELD_LANGUAGE_LABEL', 'language',$this->lists->order_Dir, $this->lists->order); ?>
+			</th>
+			<?endif;?>
 		</tr>
 		<tr>
 			<td></td>
@@ -71,11 +76,14 @@ $model = $this->getModel();
 			<td>
 				<?php echo ArsHelperSelect::published($this->lists->fltPublished, 'published', array('onchange'=>'this.form.submit();')) ?>
 			</td>
+			<?if(version_compare(JVERSION, '1.6.0', 'ge')):?>
+			<td></td>
+			<?endif;?>
 		</tr>
 	</thead>
 	<tfoot>
 		<tr>
-			<td colspan="6">
+			<td colspan="20">
 				<?php if($this->pagination->total > 0) echo $this->pagination->getListFooter() ?>
 			</td>
 		</tr>
@@ -139,6 +147,9 @@ $model = $this->getModel();
 			<td>
 				<?php echo JHTML::_('grid.published', $item, $i); ?>
 			</td>
+			<?if(version_compare(JVERSION, '1.6.0', 'ge')):?>
+			<td><?php echo $item->language ?></td>
+			<?endif;?>
 		</tr>
 	<?php
 			$i++;
@@ -146,7 +157,7 @@ $model = $this->getModel();
 	?>
 	<?php else : ?>
 		<tr>
-			<td colspan="6" align="center"><?php echo JText::_('LBL_ARS_NOITEMS') ?></td>
+			<td colspan="10" align="center"><?php echo JText::_('LBL_ARS_NOITEMS') ?></td>
 		</tr>
 	<?php endif ?>
 	</tbody>
