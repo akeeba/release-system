@@ -52,6 +52,13 @@ class ArsControllerDefault extends JController
 
 	public function add($cachable = false)
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.create', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// Load and reset the model
 		$model = $this->getThisModel();
 		$model->reset();
@@ -69,6 +76,13 @@ class ArsControllerDefault extends JController
 
 	public function edit($cachable = false)
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// Load the model
 		$model = $this->getThisModel();
 		$model->setIDsFromRequest();
@@ -98,6 +112,13 @@ class ArsControllerDefault extends JController
 
 	public function apply()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));
@@ -118,6 +139,13 @@ class ArsControllerDefault extends JController
 
 	public function save()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));
@@ -136,6 +164,13 @@ class ArsControllerDefault extends JController
 
 	public function savenew()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));
@@ -168,6 +203,13 @@ class ArsControllerDefault extends JController
 
 	public function accesspublic()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit.state', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));
@@ -178,6 +220,13 @@ class ArsControllerDefault extends JController
 
 	public function accessregistered()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit.state', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));
@@ -188,6 +237,13 @@ class ArsControllerDefault extends JController
 
 	public function accessspecial()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit.state', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));
@@ -198,6 +254,13 @@ class ArsControllerDefault extends JController
 
 	public function publish()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit.state', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));
@@ -208,6 +271,13 @@ class ArsControllerDefault extends JController
 
 	public function unpublish()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit.state', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));
@@ -218,6 +288,13 @@ class ArsControllerDefault extends JController
 
 	public function saveorder()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit.state', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));
@@ -260,6 +337,13 @@ class ArsControllerDefault extends JController
 
 	public function orderdown()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit.state', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));
@@ -286,6 +370,13 @@ class ArsControllerDefault extends JController
 
 	public function orderup()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.edit.state', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));
@@ -312,6 +403,13 @@ class ArsControllerDefault extends JController
 
 	public function remove()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.delete', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// CSRF prevention
 		if(!JRequest::getVar(JUtility::getToken(), false, 'POST')) {
 			JError::raiseError('403', JText::_('Request Forbidden'));

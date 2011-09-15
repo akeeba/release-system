@@ -26,29 +26,41 @@ class ArsViewCategories extends ArsViewBase
 			'published', null));
 
 		// Add toolbar buttons
-		JToolBarHelper::publishList();
-		JToolBarHelper::unpublishList();
-		JToolBarHelper::divider();
-		JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'ARS_GLOBAL_COPY', false);
-		JToolBarHelper::deleteList();
-		JToolBarHelper::editListX();
-		JToolBarHelper::addNewX();
+		if($this->perms->editstate) {
+			JToolBarHelper::publishList();
+			JToolBarHelper::unpublishList();
+			JToolBarHelper::divider();
+		}
+		if($this->perms->create) {
+			JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'ARS_GLOBAL_COPY', false);
+		}
+		if($this->perms->delete) {
+			JToolBarHelper::deleteList();
+		}
+		if($this->perms->edit) {
+			JToolBarHelper::editListX();
+		}
+		if($this->perms->create) {
+			JToolBarHelper::addNewX();
+		}
 		JToolBarHelper::divider();
 		JToolBarHelper::back(version_compare(JVERSION,'1.6.0','ge') ? 'JTOOLBAR_BACK' : 'Back', 'index.php?option='.JRequest::getCmd('option'));
 
 		// Add submenus (those nifty text links below the toolbar!)
 		// -- Categories
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=categories';
-		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_CATEGORIES'), $link);
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_CATEGORIES'), $link, (JRequest::getCmd('view','cpanel') == 'categories'));
 		// -- Releases
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=releases';
-		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_RELEASES'), $link);
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_RELEASES'), $link, (JRequest::getCmd('view','cpanel') == 'releases'));
 		// -- Items
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=items';
-		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link);
-		// -- Import
-		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=impjed';
-		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_IMPORT_JED'), $link);
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link, (JRequest::getCmd('view','cpanel') == 'items'));
+		if($this->perms->create) {
+			// -- Import
+			$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=impjed';
+			JSubMenuHelper::addEntry(JText::_('ARS_TITLE_IMPORT_JED'), $link, (JRequest::getCmd('view','cpanel') == 'impjed'));
+		}
 		
 		// Load the select box helper
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';

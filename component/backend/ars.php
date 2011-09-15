@@ -22,6 +22,15 @@ if(function_exists('date_default_timezone_get') && function_exists('date_default
 	@date_default_timezone_set( $serverTimezone);
 }
 
+// Access check
+if(version_compare(JVERSION, '1.6.0', 'ge')) {
+	// Access check, Joomla! 1.6 style.
+	$user = JFactory::getUser();
+	if (!$user->authorise('core.manage', 'com_ars') && !$user->authorise('core.admin', 'com_ars')) {
+		return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
+}
+
 // Handle Live Update requests
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 if(JRequest::getCmd('view','') == 'liveupdate') {

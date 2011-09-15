@@ -6,6 +6,7 @@ Version 1.0.2
 + Plugin to set the Bleeding Edge item's description to a colorised diff (GitHub-style!) against the previous version of the same file
 + Support for tar.bz2/.tbz/.tbz2 archives in XML update streams
 + Joomla! 1.7 multilingual support
++ Joomla! 1.7 ACL support
 # Live Update did not properly support library and file extensions type in Joomla! 1.6/1.7 (patched by Michael Babker)
 # Workarounds for Joomla! 1.6/1.7 bugs which could prevent the component from being installed/unnstalled
 # ARS' router would produce an empty $segments list parsing a malformed URL

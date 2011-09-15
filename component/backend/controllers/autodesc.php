@@ -15,6 +15,13 @@ class ArsControllerAutodesc extends ArsControllerDefault
 {
 	public function copy()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.create', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		$model = $this->getThisModel();
 		$model->setIDsFromRequest();
 		$ids = $model->getIds();

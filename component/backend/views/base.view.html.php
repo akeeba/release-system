@@ -13,10 +13,31 @@ jimport('joomla.application.component.view');
 class ArsViewBase extends JView
 {
 	protected $lists = null;
+	protected $perms = null;
 
 	function  __construct($config = array()) {
 		parent::__construct($config);
 		$this->lists = new JObject();
+		
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			$perms = (object)array(
+				'create'	=> $user->authorise('core.create', 'com_ars'),
+				'edit'		=> $user->authorise('core.edit', 'com_ars'),
+				'editstate'	=> $user->authorise('core.edit.state', 'com_ars'),
+				'delete'	=> $user->authorise('core.delete', 'com_ars'),
+			);
+		} else {
+			$perms = (object)array(
+				'create'	=> true,
+				'edit'		=> true,
+				'editstate'	=> true,
+				'delete'	=> true,
+			);
+		}
+		$this->assign('aclperms', $perms);
+		$this->perms = $perms;
+		
 	}
 
 	function  display($tpl = null)

@@ -22,6 +22,13 @@ class ArsControllerImpjed extends ArsControllerDefault
 	 */
 	function jcpackages()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.create', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		$project = JRequest::getCmd('project','');
 
 		if(empty($project))
@@ -46,6 +53,13 @@ class ArsControllerImpjed extends ArsControllerDefault
 	 */
 	function jcreleases()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.create', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		$project = JRequest::getCmd('project','');
 		$package = JRequest::getCmd('package','');
 
@@ -71,6 +85,13 @@ class ArsControllerImpjed extends ArsControllerDefault
 	 */
 	function jcfiles()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.create', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		$project = JRequest::getCmd('project','');
 		$package = JRequest::getCmd('package','');
 		$release = JRequest::getCmd('release','');
@@ -97,6 +118,13 @@ class ArsControllerImpjed extends ArsControllerDefault
 	 */
 	function import()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.create', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		$release = JRequest::getInt('release', 0);
 		$url = JRequest::getString('url', '');
 

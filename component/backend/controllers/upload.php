@@ -27,6 +27,13 @@ class ArsControllerUpload extends JController
 	 */
 	function category()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.manage', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		if(!JRequest::getVar(JUtility::getToken(), false))
 		{
 			JError::raiseError('403', JText::_('Access Denied'));
@@ -57,6 +64,13 @@ class ArsControllerUpload extends JController
 	 */
 	function upload()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.create', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		// Check the token
 		if(!JRequest::getVar(JUtility::getToken(), false))
 		{
@@ -148,6 +162,13 @@ class ArsControllerUpload extends JController
 	 */
 	public function delete()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.delete', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		if(!JRequest::getVar(JUtility::getToken(), false))
 		{
 			JError::raiseError('403', JText::_('Access Denied'));
@@ -182,6 +203,13 @@ class ArsControllerUpload extends JController
 	 */
 	public function newfolder()
 	{
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			if (!$user->authorise('core.create', 'com_ars')) {
+				return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		
 		if(!JRequest::getVar(JUtility::getToken(), false))
 		{
 			JError::raiseError('403', JText::_('Access Denied'));

@@ -17,6 +17,25 @@ class ArsViewUpload extends JView
 
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';
 
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			$perms = (object)array(
+				'create'	=> $user->authorise('core.create', 'com_ars'),
+				'edit'		=> $user->authorise('core.edit', 'com_ars'),
+				'editstate'	=> $user->authorise('core.edit.state', 'com_ars'),
+				'delete'	=> $user->authorise('core.delete', 'com_ars'),
+			);
+		} else {
+			$perms = (object)array(
+				'create'	=> true,
+				'edit'		=> true,
+				'editstate'	=> true,
+				'delete'	=> true,
+			);
+		}
+		$this->assign('aclperms', $perms);
+		$this->perms = $perms;
+		
 		$task = JRequest::getCmd('task','');
 		if($task == 'category')
 		{
@@ -67,13 +86,13 @@ class ArsViewUpload extends JView
 		// Add submenus (those nifty text links below the toolbar!)
 		// -- Categories
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=categories';
-		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_CATEGORIES'), $link);
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_CATEGORIES'), $link, (JRequest::getCmd('view','cpanel') == 'categories'));
 		// -- Releases
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=releases';
-		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_RELEASES'), $link);
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_RELEASES'), $link, (JRequest::getCmd('view','cpanel') == 'releases'));
 		// -- Items
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=items';
-		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link);
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link, (JRequest::getCmd('view','cpanel') == 'items'));
 
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'includes.php';
 		ArsHelperIncludes::includeMedia();

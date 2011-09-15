@@ -36,20 +36,22 @@ class ArsViewLogs extends ArsViewBase
 			'version', null));
 
 		// Add toolbar buttons
-		JToolBarHelper::deleteList();
-		JToolBarHelper::divider();
+		if($this->perms->delete) {
+			JToolBarHelper::deleteList();
+			JToolBarHelper::divider();
+		}
 		JToolBarHelper::back(version_compare(JVERSION,'1.6.0','ge') ? 'JTOOLBAR_BACK' : 'Back', 'index.php?option='.JRequest::getCmd('option'));
 
 		// Add submenus (those nifty text links below the toolbar!)
 		// -- Categories
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=categories';
-		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_CATEGORIES'), $link);
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_CATEGORIES'), $link, (JRequest::getCmd('view','cpanel') == 'categories'));
 		// -- Releases
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=releases';
-		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_RELEASES'), $link);
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_RELEASES'), $link, (JRequest::getCmd('view','cpanel') == 'releases'));
 		// -- Items
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=items';
-		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link);
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link, (JRequest::getCmd('view','cpanel') == 'items'));
 
 		// Load the select box helper
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';
