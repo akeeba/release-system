@@ -71,6 +71,20 @@ if($id)
 	$result = $installer->uninstall('plugin',$id,1);
 	$status->plugins[] = array('name'=>'plg_bleedingedgediff','group'=>'system', 'result'=>$result);
 }
+
+// -- Plugin: plg_arsdlid
+if(version_compare(JVERSION,'1.6.0','ge')) {
+	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `type` = "plugin" AND `element` = "arsdlid" AND `folder` = "content"');
+} else {
+	$db->setQuery('SELECT `id` FROM #__plugins WHERE `element` = "arsdlid" AND `folder` = "content"');
+}
+$id = $db->loadResult();
+if($id)
+{
+	$installer = new JInstaller;
+	$result = $installer->uninstall('plugin',$id,1);
+	$status->plugins[] = array('name'=>'plg_arsdlid','group'=>'content', 'result'=>$result);
+}
 ?>
 
 <?php $rows = 0;?>
