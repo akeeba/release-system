@@ -121,6 +121,6 @@
 	<scriptfile>script.ars.php</scriptfile>
 
 	<updateservers>
-		<server type="extension" priority="1" name="Akeeba Release System Updates"><![CDATA[http://www.akeebabackup.com/index.php?option=com_ars&view=update&task=stream&id=9&format=xml]]></server>
+		<server type="extension" priority="1" name="Akeeba Release System Updates"><![CDATA[http://nocdn.akeebabackup.com/updates/ars.xml]]></server>
 	</updateservers>	
 </install>
