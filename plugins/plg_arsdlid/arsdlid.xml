@@ -16,6 +16,8 @@
 	<languages>
 		<language tag="en-GB">en-GB.plg_content_arsdlid.ini</language>
 		<language tag="en-GB">en-GB.plg_content_arsdlid.sys.ini</language>
+		<language tag="da-DK">da-DK.plg_content_arsdlid.ini</language>
+		<language tag="da-DK">da-DK.plg_content_arsdlid.sys.ini</language>
 		<language tag="el-GR">el-GR.plg_content_arsdlid.ini</language>
 		<language tag="el-GR">el-GR.plg_content_arsdlid.sys.ini</language>
 		<language tag="nb-NO">nb-NO.plg_content_arsdlid.ini</language>
