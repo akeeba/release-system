@@ -65,8 +65,8 @@ class ArsModelReleases extends ArsModelBase
 				break;
 		}
 		if($fltLanguage) {
-			$where[] = '`language` IN ("*", '.$db->quote($fltLanguage).')';
-			$where[] = '`cat_language` IN ("*", '.$db->quote($fltLanguage).')';
+			$where[] = '`r`.`language` IN ("*", '.$db->quote($fltLanguage).')';
+			$where[] = '`c`.`language` IN ("*", '.$db->quote($fltLanguage).')';
 		}
 
 		$query = <<<ENDSQL
@@ -105,7 +105,6 @@ ENDSQL;
 			}
 			$query .= ' ORDER BY '.$db->nameQuote($order).' '.$dir;
 		}
-
 		return $query;
 	}
 
