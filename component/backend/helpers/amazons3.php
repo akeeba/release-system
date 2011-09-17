@@ -671,6 +671,7 @@ class ArsHelperAmazons3 extends JObject
 	* @return string
 	*/
 	public static function getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false) {
+		if(empty($bucket)) $bucket = self::$__default_bucket;
 		if(is_null($lifetime)) $lifetime = self::$__default_time;
 		$expires = time() + $lifetime;
 		$uri = str_replace('%2F', '/', rawurlencode($uri)); // URI should be encoded (thanks Sean O'Dea)
