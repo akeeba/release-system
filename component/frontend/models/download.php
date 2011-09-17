@@ -57,7 +57,7 @@ class ArsModelDownload extends ArsModelBaseFE
 	{
 		if($this->item->type == 'link')
 		{
-			if(ob_get_length () !== FALSE) {
+			if(@ob_get_length () !== FALSE) {
 				@ob_end_clean();
 			}
 			header('Location: '.$this->item->url);
@@ -96,6 +96,23 @@ ENDSQL;
 			jimport('joomla.filesystem.file');
 
 			$folder = $item->cat_directory;
+			
+			$potentialPrefix = substr($folder, 0, 5);
+			$potentialPrefix = strtolower($potentialPrefix);
+			$useS3 = $potentialPrefix == 's3://';
+			
+			if($useS3) {
+				$filename = substr($folder,5).'/'.$item->filename;
+				$s3 = ArsHelperAmazons3::getInstance();
+				$url = $s3->getAuthenticatedURL('', $filename);
+				
+				if(@ob_get_length () !== FALSE) {
+					@ob_end_clean();
+				}
+				header('Location: '.$url);
+				JFactory::getApplication()->close();
+			}
+			
 			if(!JFolder::exists($folder)) {
 				$folder = JPATH_ROOT.DS.$folder;
 				if(!JFolder::exists($folder)) {
