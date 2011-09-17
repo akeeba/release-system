@@ -57,9 +57,9 @@ class ArsModelItems extends ArsModelBase
 			$where[] = '`url` = '.$db->Quote($fltUrl);
 		}
 		if($fltLanguage) {
-			$where[] = '`language` IN ("*", '.$db->quote($fltLanguage).')';
-			$where[] = '`cat_language` IN ("*", '.$db->quote($fltLanguage).')';
-			$where[] = '`rel_language` IN ("*", '.$db->quote($fltLanguage).')';
+			$where[] = '`i`.`language` IN ("*", '.$db->quote($fltLanguage).')';
+			$where[] = '`r`.`cat_language` IN ("*", '.$db->quote($fltLanguage).')';
+			$where[] = '`r`.`language` IN ("*", '.$db->quote($fltLanguage).')';
 		}
 
 		$query = <<<ENDSQL
