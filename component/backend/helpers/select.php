@@ -350,13 +350,27 @@ class ArsHelperSelect
 			$category = $catModel->getItem();
 
 			// Get which directory to use
-			jimport('joomla.filesystem.folder');
 			$directory = $category->directory;
-			if(!JFolder::exists($directory))
-			{
-				$directory = JPATH_ROOT.DS.$directory;
-				if(!JFolder::exists($directory)) {
+			
+			$potentialPrefix = substr($directory, 0, 5);
+			$potentialPrefix = strtolower($potentialPrefix);
+			$useS3 = ($potentialPrefix == 's3://');
+			
+			if($useS3) {
+				$directory = substr($directory, 5);
+				$s3 = ArsHelperAmazons3::getInstance();
+				$items = $s3->getBucket('', $directory.'/');
+				if(empty($items)) {
 					$directory = null;
+				}
+			} else {
+				jimport('joomla.filesystem.folder');
+				if(!JFolder::exists($directory))
+				{
+					$directory = JPATH_ROOT.DS.$directory;
+					if(!JFolder::exists($directory)) {
+						$directory = null;
+					}
 				}
 			}
 		}
@@ -402,14 +416,24 @@ class ArsHelperSelect
 		$useFiles = array();
 		if(!empty($directory))
 		{
-			$allFiles = JFolder::files($directory, '.', 3, true);
-			$root = str_replace('\\', '/', $directory);
-			if(!empty($allFiles)) foreach($allFiles as $aFile)
-			{
-				$aFile = str_replace('\\', '/', $aFile);
-				$aFile = ltrim(substr($aFile, strlen($root)), '/');
-				if(in_array($aFile, $files)) continue;
-				$useFiles[] = $aFile;
+			if($useS3) {
+				$s3 = ArsHelperAmazons3::getInstance();
+				$allFiles = $s3->getBucket('', $directory, null, null, null, true);
+				if(!empty($allFiles)) foreach($allFiles as $aFile => $info) {
+					$aFile = ltrim(substr($aFile, strlen($directory)), '/');
+					if(in_array($aFile, $files)) continue;
+					$useFiles[] = $aFile;
+				}
+			} else {
+				$allFiles = JFolder::files($directory, '.', 3, true);
+				$root = str_replace('\\', '/', $directory);
+				if(!empty($allFiles)) foreach($allFiles as $aFile)
+				{
+					$aFile = str_replace('\\', '/', $aFile);
+					$aFile = ltrim(substr($aFile, strlen($root)), '/');
+					if(in_array($aFile, $files)) continue;
+					$useFiles[] = $aFile;
+				}
 			}
 		}
 
