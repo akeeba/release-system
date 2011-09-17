@@ -515,7 +515,7 @@ class ArsHelperAmazons3 extends JObject
 			$rest->response->error['code'], $rest->response->error['message']));
 			return false;
 		}
-		return true;
+		return ($saveTo === false) ? $rest->response : true;
 	}
 
 	/**

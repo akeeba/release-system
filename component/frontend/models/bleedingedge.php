@@ -33,10 +33,22 @@ class ArsModelBleedingedge extends JModel
 
 		// Store folder
 		$folder = $this->category->directory;
-		jimport('joomla.filesystem.folder');
-		if(!JFolder::exists($folder)) {
-			$folder = JPATH_ROOT.DS.$folder;
-			if(!JFolder::exists($folder)) return;
+		
+		$potentialPrefix = substr($folder, 0, 5);
+		$potentialPrefix = strtolower($potentialPrefix);
+		if($potentialPrefix == 's3://') {
+			$check = substr($folder, 5);
+			$s3 = ArsHelperAmazons3::getInstance();
+			$items = $s3->getBucket('', $check.'/');
+			if(empty($items)) {
+				return;
+			}
+		} else {
+			jimport('joomla.filesystem.folder');
+			if(!JFolder::exists($folder)) {
+				$folder = JPATH_ROOT.DS.$folder;
+				if(!JFolder::exists($folder)) return;
+			}
 		}
 		$this->folder = $folder;
 	}
@@ -72,6 +84,10 @@ class ArsModelBleedingedge extends JModel
 		$model->setState('limit',0);
 		$allReleases = $model->getItemList();
 
+		$potentialPrefix = substr($this->category->directory, 0, 5);
+		$potentialPrefix = strtolower($potentialPrefix);
+		$useS3 = ($potentialPrefix == 's3://');
+		
 		jimport('joomla.filesystem.folder');
 
 		$known_folders = array();
@@ -86,7 +102,17 @@ class ArsModelBleedingedge extends JModel
 
 				if(!$release->published) continue;
 
-				if(!JFolder::exists($folder)) {
+				$exists = false;
+				if($useS3) {
+					$check = substr($folder, 5);
+					$s3 = ArsHelperAmazons3::getInstance();
+					$items = $s3->getBucket('', $check.'/');
+					$exists = !empty($items);
+				} else {
+					$exists = JFolder::exists($folder);
+				}
+				
+				if(!$exists) {
 					$release->published = 0;
 					$table = JTable::getInstance('Releases','Table');
 					$table->save($release);
@@ -105,9 +131,24 @@ class ArsModelBleedingedge extends JModel
 		$first_changelog = array();
 		if(!empty($first_release))
 		{
-			$changelog = $this->folder.DS.$first_release->alias.DS.'CHANGELOG';
-			if(JFile::exists($changelog)) {
-				$first_changelog = JFile::read($changelog);
+			$changelog = $this->folder.'/'.$first_release->alias.'/CHANGELOG';
+			
+			$hasChangelog = false;
+			if($useS3) {
+				$s3 = ArsHelperAmazons3::getInstance();
+				$response = $s3->getObject('', substr($changelog,5));
+				$hasChangelog = $response !== false;
+				if($hasChangelog) {
+					$first_changelog = $response->body;
+				}
+			} else {
+				if(JFile::exists($changelog)) {
+					$hasChangelog = true;
+					$first_changelog = JFile::read($changelog);
+				}
+			}
+			
+			if($hasChangelog) {
 				if(!empty($first_changelog)) {
 					$first_changelog = explode("\n", str_replace("\r\n", "\n", $first_changelog));
 				} else {
@@ -117,7 +158,22 @@ class ArsModelBleedingedge extends JModel
 		}
 
 		// Get a list of all folders
-		$allFolders = JFolder::folders($this->folder);
+		if($useS3) {
+			$allFolders = array();
+			$everything = $this->_listS3Contents($this->folder);
+			$dirLength = strlen($this->folder) - 5;
+			if(count($everything)) foreach($everything as $path => $info) {
+				if(!array_key_exists('size', $info) && (substr($path, -1) == '/')) {
+					if(substr($path, 0, $dirLength) == substr($this->folder,5)) {
+						$path = substr($path, $dirLength);
+					}
+					$path = trim($path,'/');
+					$allFolders[] = $path;
+				}
+			}
+		} else {
+			$allFolders = JFolder::folders($this->folder);
+		}
 		if(!empty($allFolders)) foreach($allFolders as $folder)
 		{
 			if(!in_array($folder, $known_folders))
@@ -125,11 +181,26 @@ class ArsModelBleedingedge extends JModel
 				// Create a new entry
 				$notes = '';
 
-				$changelog = $this->folder.DS.$folder.DS.'CHANGELOG';
+				$changelog = $this->folder.'/'.$folder.'/'.'CHANGELOG';
 				$hasChangelog = JFile::exists($changelog);
+				
+				$hasChangelog = false;
+				if($useS3) {
+					$s3 = ArsHelperAmazons3::getInstance();
+					$response = $s3->getObject('', substr($changelog,5));
+					$hasChangelog = $response !== false;
+					if($hasChangelog) {
+						$this_changelog = $response->body;
+					}
+				} else {
+					if(JFile::exists($changelog)) {
+						$hasChangelog = true;
+						$this_changelog = JFile::read($changelog);
+					}
+				}
+				
 				if($hasChangelog)
 				{
-					$this_changelog = JFile::read($this->folder.DS.$folder.DS.'CHANGELOG');
 					if(!empty($this_changelog)) {
 						$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
 						$notes = '<h3>Changelog</h3><ul>';
@@ -203,13 +274,32 @@ class ArsModelBleedingedge extends JModel
 		if($this->category->type != 'bleedingedge') return;
 
 		$folder = $this->folder.DS.$release->alias;
+		
+		$potentialPrefix = substr($folder, 0, 5);
+		$potentialPrefix = strtolower($potentialPrefix);
+		$useS3 = ($potentialPrefix == 's3://');
 
 		// Do we have a changelog?
 		if(empty($release->notes))
 		{
-			if(JFile::exists($folder.DS.'CHANGELOG'))
+			$changelog = $folder.DS.'CHANGELOG';
+			$hasChangelog = false;
+			if($useS3) {
+				$s3 = ArsHelperAmazons3::getInstance();
+				$response = $s3->getObject('', substr($changelog,5));
+				$hasChangelog = $response !== false;
+				if($hasChangelog) {
+					$this_changelog = $response->body;
+				}
+			} else {
+				if(JFile::exists($changelog)) {
+					$hasChangelog = true;
+					$this_changelog = JFile::read($changelog);
+				}
+			}
+			
+			if($hasChangelog)
 			{
-				$this_changelog = JFile::read($folder.DS.'CHANGELOG');
 				$notes = '';
 				$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
 				$notes = '<h3>Changelog</h3><p>';
@@ -233,14 +323,29 @@ class ArsModelBleedingedge extends JModel
 		$allItems = $model->getItemList();
 
 		$known_items = array();
-		$files = JFolder::files($folder);
+		if($useS3) {
+			$files = array();
+			$everything = $this->_listS3Contents($folder);
+			$dirLength = strlen($folder) - 5;
+			if(count($everything)) foreach($everything as $path => $info) {
+				if(array_key_exists('size', $info) && (substr($path, -1) != '/')) {
+					if(substr($path, 0, $dirLength) == substr($folder,5)) {
+						$path = substr($path, $dirLength);
+					}
+					$path = trim($path,'/');
+					$files[] = $path;
+				}
+			}
+		} else {
+			$files = JFolder::files($folder);
+		}
 		if(!empty($allItems)) foreach($allItems as $item)
 		{
 			$known_items[] = $item->filename;
 			if(!$item->published) continue;
-			if(!JFile::exists($this->folder.DS.$item->filename) && !JFile::exists(JPATH_ROOT.DS.$this->folder.DS.$item->filename))
+			//if(!JFile::exists($this->folder.DS.$item->filename) && !JFile::exists(JPATH_ROOT.DS.$this->folder.DS.$item->filename))
+			if(!in_array($item->filename, $files))
 			{
-				var_dump($item->filename);
 				$table = JTable::getInstance('Items','Table');
 				$item->published = 0;
 				$table->save($item);
@@ -252,7 +357,7 @@ class ArsModelBleedingedge extends JModel
 			if( basename($file) == 'CHANGELOG' ) continue;
 
 			if(in_array($file, $known_items)) continue;
-			if(in_array($release->alias.'/'.$file, $known_items)) continue;
+			if(in_array($file, $known_items)) continue;
 			
 			$data = array(
 				'release_id'		=> $release->id,
@@ -296,7 +401,7 @@ class ArsModelBleedingedge extends JModel
 			}
 			
 			$table = JTable::getInstance('Items','Table');
-			$table->save($data);
+			$result = $table->save($data);
 		}
 
 		if(isset($table)) $table->reorder('`release_id` = '.$release->id);
@@ -335,5 +440,24 @@ class ArsModelBleedingedge extends JModel
 		}
 
 		return "<span class=\"ars-devrelease-changelog-$style\">$line</span>";
+	}
+	
+	private function _listS3Contents($path = null)
+	{
+		static $lastDirectory = null;
+		static $lasListing = array();
+		
+		$directory = substr($path, 5);
+		
+		if($lastDirectory != $directory) {
+			if($directory == '/') {
+				$directory = null;
+			} else {
+				$directory = trim($directory,'/').'/';
+			}
+			$s3 = ArsHelperAmazons3::getInstance();
+			$lastListing = $s3->getBucket('', $directory, null, null, '/', true);
+		}
+		return $lastListing;
 	}
 }
