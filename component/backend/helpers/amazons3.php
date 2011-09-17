@@ -58,10 +58,10 @@ class ArsHelperAmazons3 extends JObject
 				$params = $component->params;
 			}
 			
-			if(empty($accessKey) && empty($secretKey) && empty($useSSL)) {
-				$accessKey	= $params->getValue('s3access');
-				$secretKey	= $params->getValue('s3secret');
-				$useSSL		= $params->getValue('s3ssl');
+			if(empty($accessKey) && empty($secretKey)) {
+				$accessKey	= $params->getValue('s3access','');
+				$secretKey	= $params->getValue('s3secret','');
+				$useSSL		= $params->getValue('s3ssl',true);
 			}
 			
 			$instance = new ArsHelperAmazons3($accessKey, $secretKey, $useSSL);
