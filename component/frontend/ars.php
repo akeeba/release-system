@@ -70,6 +70,9 @@ else
 	require_once $path;
 }
 
+// Load the Amazon S3 support
+require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
+
 // Instanciate and execute the controller
 jimport('joomla.utilities.string');
 $c = 'ArsController'.ucfirst($c);
