@@ -87,6 +87,19 @@ class ArsControllerUpload extends JController
 		$model->setState('category',(int)$catid);
 		$model->setState('folder',$folder);
 		$outdir = $model->getCategoryFolder();
+		
+		$potentialPrefix = substr($outdir,0,5);
+		$potentialPrefix = strtolower($potentialPrefix);
+		$useS3 = $potentialPrefix == 's3://';
+		
+		if($useS3) {
+			// When using S3, we are uploading to the temporary directory so that
+			// we can then upload to S3 and remove from our server.
+			$jconfig = JFactory::getConfig();
+			$s3dir = $outdir;
+			$outdir = $jconfig->get('tmp_path','');
+		}
+		
 		if(empty($outdir) || !JFolder::exists($outdir))
 		{
 			JError::raiseError(500, 'Output directory not found');
@@ -110,6 +123,8 @@ class ArsControllerUpload extends JController
 			if (!MediaHelper::canUpload($file, $err))
 			{
 				// The file can't be upload
+				$lang = JFactory::getLanguage();
+				$lang->load('com_media', JPATH_ADMINISTRATOR);
 				JError::raiseNotice(100, JText::_($err));
 				return false;
 			}
@@ -144,7 +159,23 @@ class ArsControllerUpload extends JController
 		{
 			$this->setRedirect('index.php', JText::_('MSG_UPLOAD_INVALID_REQUEST'), 'error');
 			return false;
-		}		
+		}
+		
+		if($useS3) {
+			$s3 = ArsHelperAmazons3::getInstance();
+			$input = $s3->inputFile($filepath);
+			$success = $s3->putObject($input, '', substr($s3dir,5).'/'.$file['name']);
+			if(!@unlink($filepath)) {
+				JFile::delete($filepath);
+			}
+			if(!$success) {
+				$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
+					.'&folder='.urlencode(JRequest::getString('folder'))
+					.'&'.JUtility::getToken(true).'=1';
+				$this->setRedirect($url, $s3->getError(), 'error');
+				return false;
+			}
+		}
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
 			.'&folder='.urlencode(JRequest::getString('folder'))
