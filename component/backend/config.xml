@@ -36,8 +36,8 @@
 		<param name="readontemplate" type="text" default="&lt;a href=&quot;%s&quot; class=&quot;readon&quot;&gt;%s&lt;/a&gt;" label="ARS_CONFIG_READON_LABEL" description="ARS_CONFIG_READON_DESC" size="50"/>
 		
 		<!-- Amazon S3 integration -->
-		<param name="s3access" type="text" default="" label="ARS_CONFIG_S3_ACCESSKEY_LABEL" description="ARS_CONFIG_S3_ACCESSKEY_DESC"/>
-		<param name="s3secret" type="text" default="" label="ARS_CONFIG_S3_SECRETKEY_LABEL" description="ARS_CONFIG_S3_SECRETKEY_DESC"/>
+		<param name="s3access" type="text" default="" label="ARS_CONFIG_S3_ACCESSKEY_LABEL" description="ARS_CONFIG_S3_ACCESSKEY_DESC" size="50"/>
+		<param name="s3secret" type="password" default="" label="ARS_CONFIG_S3_SECRETKEY_LABEL" description="ARS_CONFIG_S3_SECRETKEY_DESC" size="50"/>
 		<param name="s3bucket" type="text" default="" label="ARS_CONFIG_S3_BUCKET_LABEL" description="ARS_CONFIG_S3_BUCKET_LABEL"/>
 		<param name="s3perms" type="list" default="private"
 			label="ARS_CONFIG_S3_PERMS_LABEL"
@@ -48,6 +48,17 @@
 			<option value="authenticated-read">ARS_CONFIG_S3_PERMS_ACL_AUTHENTICATED_READ</option>
 			<option value="bucket-owner-read">ARS_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_READ</option>
 			<option value="bucket-owner-full-control">ARS_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_FULL_CONTROL</option>
+		</param>
+		<param name="s3time" type="list" default="900"
+			label="ARS_CONFIG_S3_TIME_LABEL" desc="ARS_CONFIG_S3_TIME_DESC">
+			<option value="60">ARS_CONFIG_S3_TIME_1MINUTE</option>	
+			<option value="900">ARS_CONFIG_S3_TIME_15MINUTES</option>
+			<option value="3600">ARS_CONFIG_S3_TIME_1HOUR</option>
+			<option value="21600">ARS_CONFIG_S3_TIME_6HOURS</option>
+			<option value="43200">ARS_CONFIG_S3_TIME_12HOURS</option>
+			<option value="86400">ARS_CONFIG_S3_TIME_1DAY</option>
+			<option value="604800">ARS_CONFIG_S3_TIME_7DAYS</option>
+			<option value="2592000">ARS_CONFIG_S3_TIME_1MONTH</option>
 		</param>
 	</params>
 
@@ -93,8 +104,8 @@
 		name="s3integration"
 		label="CONFIG_S3INTEGRATION_HEADER_LABEL"
 		description="CONFIG_S3INTEGRATION_HEADER_DESC">
-		<field name="s3access" type="text" default="" label="ARS_CONFIG_S3_ACCESSKEY_LABEL" description="ARS_CONFIG_S3_ACCESSKEY_DESC"/>
-		<field name="s3secret" type="text" default="" label="ARS_CONFIG_S3_SECRETKEY_LABEL" description="ARS_CONFIG_S3_SECRETKEY_DESC"/>
+		<field name="s3access" type="text" default="" label="ARS_CONFIG_S3_ACCESSKEY_LABEL" description="ARS_CONFIG_S3_ACCESSKEY_DESC" size="50"/>
+		<field name="s3secret" type="password" default="" label="ARS_CONFIG_S3_SECRETKEY_LABEL" description="ARS_CONFIG_S3_SECRETKEY_DESC" size="50"/>
 		<field name="s3bucket" type="text" default="" label="ARS_CONFIG_S3_BUCKET_LABEL" description="ARS_CONFIG_S3_BUCKET_LABEL"/>
 		<field name="s3perms" type="list" default="private"
 			label="ARS_CONFIG_S3_PERMS_LABEL"
@@ -105,6 +116,17 @@
 			<option value="authenticated-read">ARS_CONFIG_S3_PERMS_ACL_AUTHENTICATED_READ</option>
 			<option value="bucket-owner-read">ARS_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_READ</option>
 			<option value="bucket-owner-full-control">ARS_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_FULL_CONTROL</option>
+		</field>
+		<field name="s3time" type="list" default="900"
+			label="ARS_CONFIG_S3_TIME_LABEL" desc="ARS_CONFIG_S3_TIME_DESC">
+			<option value="60">ARS_CONFIG_S3_TIME_1MINUTE</option>	
+			<option value="900">ARS_CONFIG_S3_TIME_15MINUTES</option>
+			<option value="3600">ARS_CONFIG_S3_TIME_1HOUR</option>
+			<option value="21600">ARS_CONFIG_S3_TIME_6HOURS</option>
+			<option value="43200">ARS_CONFIG_S3_TIME_12HOURS</option>
+			<option value="86400">ARS_CONFIG_S3_TIME_1DAY</option>
+			<option value="604800">ARS_CONFIG_S3_TIME_7DAYS</option>
+			<option value="2592000">ARS_CONFIG_S3_TIME_1MONTH</option>
 		</field>
 	</fieldset>
 	

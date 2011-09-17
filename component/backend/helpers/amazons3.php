@@ -39,6 +39,9 @@ class ArsHelperAmazons3 extends JObject
 
 	private static $__accessKey; // AWS Access key
 	private static $__secretKey; // AWS Secret key
+	private static $__default_bucket = null;
+	private static $__default_acl = 'private'; // Default ACLs to use: private
+	private static $__default_time = 900; // Default timeout for signed URLs: 15 minutes
 
 	/**
 	 * Singleton implemetation
@@ -48,7 +51,23 @@ class ArsHelperAmazons3 extends JObject
 		static $instance = null;
 		
 		if(!is_object($instance)) {
+			$component = JComponentHelper::getComponent('com_ars');
+			if(!($component->params instanceof JRegistry)) {
+				$params = new JParameter($component->params);
+			} else {
+				$params = $component->params;
+			}
+			
+			if(empty($accessKey) && empty($secretKey) && empty($useSSL)) {
+				$accessKey	= $params->getValue('s3access');
+				$secretKey	= $params->getValue('s3secret');
+				$useSSL		= $params->getValue('s3ssl');
+			}
+			
 			$instance = new ArsHelperAmazons3($accessKey, $secretKey, $useSSL);
+			self::$__default_bucket = $params->getValue('s3bucket', '');
+			self::$__default_acl = $params->getValue('s3perms','private');
+			self::$__default_time = $params->getValue('s3time', 900);
 		}
 		
 		return $instance;
@@ -145,10 +164,13 @@ class ArsHelperAmazons3 extends JObject
 	* @param array $requestHeaders Array of request headers or content type as a string
 	* @return boolean
 	*/
-	public static function putObject($input, $bucket, $uri, $acl = self::ACL_PRIVATE, $metaHeaders = array(), $requestHeaders = array()) {
+	public static function putObject($input, $bucket, $uri, $acl = null, $metaHeaders = array(), $requestHeaders = array()) {
 		if ($input === false) return false;
+		if(empty($bucket)) $bucket = self::$__default_bucket;
 		$rest = new ArsHelperS3Request('PUT', $bucket, $uri);
 
+		if(is_null($acl)) $acl = self::$__default_acl;
+		
 		if (is_string($input)) $input = array(
 			'data' => $input, 'size' => strlen($input),
 			'md5sum' => base64_encode(md5($input, true))
@@ -220,11 +242,14 @@ class ArsHelperAmazons3 extends JObject
 	* @param array $requestHeaders Array of request headers or content type as a string
 	* @return boolean
 	*/
-	public static function startMultipart($input, $bucket, $uri, $acl = self::ACL_PRIVATE, $metaHeaders = array(), $requestHeaders = array()) {
+	public static function startMultipart($input, $bucket, $uri, $acl = null, $metaHeaders = array(), $requestHeaders = array()) {
 		if ($input === false) return false;
+		if(empty($bucket)) $bucket = self::$__default_bucket;
 		$rest = new ArsHelperS3Request('POST', $bucket, $uri);
 		$rest->setParameter('uploads','');
 
+		if(is_null($acl)) $acl = self::$__default_acl;
+		
 		if (is_string($input)) $input = array(
 			'data' => $input, 'size' => strlen($input),
 			'md5sum' => base64_encode(md5($input, true))
@@ -278,12 +303,15 @@ class ArsHelperAmazons3 extends JObject
 	* @param array $requestHeaders Array of request headers or content type as a string
 	* @return boolean
 	*/
-	public static function uploadMultipart($input, $bucket, $uri, $acl = self::ACL_PRIVATE, $metaHeaders = array(), $requestHeaders = array()) {
+	public static function uploadMultipart($input, $bucket, $uri, $acl = null, $metaHeaders = array(), $requestHeaders = array()) {
 		if ($input === false) {
 			$o =& self::getInstance();
 			$o->setError(__CLASS__."::uploadMultipart(): No input specified");
 			return false;	
 		}
+		if(empty($bucket)) $bucket = self::$__default_bucket;
+		
+		if(is_null($acl)) $acl = self::$__default_acl;
 		
 		if (is_string($input)) $input = array(
 			'data' => $input, 'size' => strlen($input),
@@ -414,6 +442,7 @@ class ArsHelperAmazons3 extends JObject
 			$o->setError(__CLASS__."::finalizeMultipart(): No ETags array specified");
 			return false;	
 		}
+		if(empty($bucket)) $bucket = self::$__default_bucket;
 		if(!array_key_exists('UploadID', $input)) {
 			$o =& self::getInstance();
 			$o->setError(__CLASS__."::finalizeMultipart(): No UploadID specified");
@@ -472,6 +501,7 @@ class ArsHelperAmazons3 extends JObject
 	* @return mixed
 	*/
 	public static function getObject($bucket, $uri, $saveTo = false, $from = null, $to = null) {
+		if(empty($bucket)) $bucket = self::$__default_bucket;
 		$rest = new ArsHelperS3Request('GET', $bucket, $uri);
 		if ($saveTo !== false) {
 			if (is_resource($saveTo))
@@ -510,6 +540,7 @@ class ArsHelperAmazons3 extends JObject
 	* @return boolean
 	*/
 	public static function deleteObject($bucket, $uri) {
+		if(empty($bucket)) $bucket = self::$__default_bucket;
 		$rest = new ArsHelperS3Request('DELETE', $bucket, $uri);
 		$rest = $rest->getResponse();
 		if ($rest->error === false && $rest->code !== 204)
@@ -572,6 +603,7 @@ class ArsHelperAmazons3 extends JObject
 	* @return array | false
 	*/
 	public static function getBucket($bucket, $prefix = null, $marker = null, $maxKeys = null, $delimiter = null, $returnCommonPrefixes = false) {
+		if(empty($bucket)) $bucket = self::$__default_bucket;
 		$rest = new ArsHelperS3Request('GET', $bucket, '');
 		if ($prefix !== null && $prefix !== '') $rest->setParameter('prefix', $prefix);
 		if ($marker !== null && $marker !== '') $rest->setParameter('marker', $marker);
@@ -650,6 +682,7 @@ class ArsHelperAmazons3 extends JObject
 	* @return boolean
 	*/
 	public static function deleteObject($bucket, $uri) {
+		if(empty($bucket)) $bucket = self::$__default_bucket;
 		$rest = new ArsHelperS3Request('DELETE', $bucket, $uri);
 		$rest = $rest->getResponse();
 		if ($rest->error === false && $rest->code !== 204)
@@ -672,7 +705,8 @@ class ArsHelperAmazons3 extends JObject
 	* @param boolean $https Use HTTPS ($hostBucket should be false for SSL verification)
 	* @return string
 	*/
-	public static function getAuthenticatedURL($bucket, $uri, $lifetime, $hostBucket = false, $https = false) {
+	public static function getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false) {
+		if(is_null($lifetime)) $lifetime = self::$__default_time;
 		$expires = time() + $lifetime;
 		$uri = str_replace('%2F', '/', rawurlencode($uri)); // URI should be encoded (thanks Sean O'Dea)
 		return sprintf(($https ? 'https' : 'http').'://%s/%s?AWSAccessKeyId=%s&Expires=%u&Signature=%s',
