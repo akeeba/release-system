@@ -250,12 +250,23 @@ class ArsControllerUpload extends JController
 		$model->setState('category',(int)$catid);
 		$model->setState('folder', $folder);
 		$model->setState('file', $file);
-
-		jimport('joomla.filesystem.folder');
+		
 		$parent = $model->getCategoryFolder();
-		$newFolder = $parent.DS.JFolder::makeSafe($file);
-
-		$status = JFolder::create($newFolder);
+		$potentialPrefix = substr($parent, 0, 5);
+		$potentialPrefix = strtolower($potentialPrefix);
+		$useS3 = $potentialPrefix == 's3://';
+		
+		if($useS3) {
+			$newFolder = $parent.'/'.$file;
+			$newFolder = rtrim($newFolder, '/') . '/';
+			$s3 = ArsHelperAmazons3::getInstance();
+			$status = $s3->putObject('', '', substr($newFolder,5));
+		} else {
+			jimport('joomla.filesystem.folder');
+			
+			$newFolder = $parent.DS.JFolder::makeSafe($file);
+			$status = JFolder::create($newFolder);
+		}
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
 			.'&folder='.urlencode(JRequest::getString('folder'))
