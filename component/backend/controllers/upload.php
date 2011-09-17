@@ -56,10 +56,6 @@ class ArsControllerUpload extends JController
 	}
 
 	/**
-	 * Saves a chunk of a file in the temp folder, used internally by the uploader
-	 */
-
-	/**
 	 * Handles the file uploads
 	 */
 	function upload()

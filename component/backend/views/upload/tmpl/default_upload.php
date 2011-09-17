@@ -37,7 +37,7 @@ $i = 1;
 			<?php echo JText::_('LBL_NO_FOLDERS'); ?>
 		<?php else: ?>
 			<?php foreach($this->folders as $folder): $i = 1 - $i; ?>
-			<div class="folderrow<?php echo $i?> folderrow" title="<?php echo $this->escape($folder) ?>">
+			<div class="folderrow<?php echo $i?> folderrow" title="<?php echo $this->escape($this->folder.'/'.$folder) ?>">
 				<span class="foldername"><?php echo $this->escape($folder) ?></span>
 			</div>
 			<?php endforeach; ?>
@@ -56,14 +56,14 @@ $i = 1;
 			<?php $i = 1; foreach($this->files as $file): ?>
 			<?php
 				$i = 1 - $i;
-				$filepath = $this->path.DS.$file;
-				$filesize = @filesize($filepath);
+				$filepath = $this->path.DS.$file['filename'];
+				$filesize = $file['size'];
 			?>
 			<div class="filerow<?php echo $i?>">
-				<button class="deletefile" title="<?php echo $this->escape($file) ?>">
+				<button class="deletefile" title="<?php echo $this->escape($file['filename']) ?>">
 					<span class="ui-icon ui-icon-trash"></span>
 				</button>
-				<span class="filename"><?php echo $this->escape($file) ?></span>
+				<span class="filename"><?php echo $this->escape($file['filename']) ?></span>
 				<span class="filesize"><?php echo ArsHelperHtml::sizeFormat($filesize) ?></span>
 				&nbsp;
 			</div>

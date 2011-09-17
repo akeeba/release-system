@@ -45,40 +45,68 @@ class ArsModelUpload extends JModel
 			else
 			{
 				$folder = $category->directory;
-
-				jimport('joomla.filesystem.folder');
-				if(!JFolder::exists($folder))
-				{
-					$folder = JPATH_ROOT.DS.$folder;
+				
+				$potentialPrefix = substr($folder, 0, 5);
+				$potentialPrefix = strtolower($potentialPrefix);
+				$useS3 = $potentialPrefix == 's3://';
+				
+				if($useS3) {
+					$check = substr($folder, 5);
+					$s3 = ArsHelperAmazons3::getInstance();
+					$items = $s3->getBucket('', $check.'/');
+					if(empty($items)) {
+						$folder = '';
+					}
+				} else {
+					jimport('joomla.filesystem.folder');
 					if(!JFolder::exists($folder))
 					{
-						$folder = '';
+						$folder = JPATH_ROOT.DS.$folder;
+						if(!JFolder::exists($folder))
+						{
+							$folder = '';
+						}
 					}
 				}
 			}
-
+			
+			if(empty($folder)) return $folder;
+			
 			$subfolder = $this->getState('folder','');
 			if(!empty($subfolder))
 			{
-				// Clean and check subfolder
-				$subfolder = JPath::clean($subfolder);
-				if (strpos($subfolder, '..') !== false) {
-					JError::raiseError( 20, 'ARS - Use of relative paths not permitted'); // don't translate
-					jexit();
+				if($useS3) {
+					if (strpos($subfolder, '..') !== false) {
+						JError::raiseError( 20, 'ARS - Use of relative paths not permitted'); // don't translate
+						jexit();
+					}
+					$subfolder = trim($subfolder,'/');
+					$folder = $folder.(empty($subfolder) ? '' : '/'.$subfolder);
+					
+					$pieces = explode('/', $subfolder);
+					$debris = array_pop($pieces);
+					$parent = implode('/', $pieces);
+				} else {
+					// Clean and check subfolder
+					$subfolder = JPath::clean($subfolder);
+					if (strpos($subfolder, '..') !== false) {
+						JError::raiseError( 20, 'ARS - Use of relative paths not permitted'); // don't translate
+						jexit();
+					}
+					// Find the parent path to our subfolder
+					$parent = JPath::clean( @realpath($folder.DS.$subfolder.DS.'..') );
+					$parent = trim( str_replace(JPath::clean($folder), '', $parent) , '/\\' );
+					$folder = JPath::clean($folder.DS.$subfolder);
 				}
-				// Find the parent path to our subfolder
-				$parent = JPath::clean( @realpath($folder.DS.$subfolder.DS.'..') );
-				$parent = trim( str_replace(JPath::clean($folder), '', $parent) , '/\\' );
-				$this->setState('parent',$parent);
 
 				// Calculate the full path to the subfolder
-				$folder = JPath::clean($folder.DS.$subfolder);
 				$this->setState('parent',$parent);
 				$this->setState('folder',$subfolder);
 			}
 			else
 			{
 				$this->setState('parent',null);
+				$this->setState('folder','');
 			}
 		}
 
@@ -91,8 +119,36 @@ class ArsModelUpload extends JModel
 		$folder = $this->getCategoryFolder();
 		if(empty($folder)) return $files;
 
-		jimport('joomla.filesystem.folder');
-		$files = JFolder::files($folder);
+		$potentialPrefix = substr($folder, 0, 5);
+		$potentialPrefix = strtolower($potentialPrefix);
+		$useS3 = $potentialPrefix == 's3://';
+		
+		if($useS3) {
+			$everything = $this->_listS3Contents($folder);
+			$dirLength = strlen($folder) - 5;
+			if(count($everything)) foreach($everything as $path => $info) {
+				if(array_key_exists('size', $info) && (substr($path, -1) != '/')) {
+					if(substr($path, 0, $dirLength) == substr($folder,5)) {
+						$path = substr($path, $dirLength);
+					}
+					$path = trim($path,'/');
+					$files[] = array(
+						'filename'	=> $path,
+						'size'		=> $info['size']
+					);
+				}
+			}
+		} else {
+			jimport('joomla.filesystem.folder');
+			$temp = JFolder::files($folder);
+			if(!empty($temp)) foreach($temp as $file) {
+				$files[] = array(
+					'filename'	=> $file,
+					'size'		=> @filesize($folder.'/'.$file)
+				);
+			}
+		}
+		
 		return $files;
 	}
 
@@ -101,10 +157,48 @@ class ArsModelUpload extends JModel
 		$folders = array();
 		$folder = $this->getCategoryFolder();
 		if(empty($folder)) return $folders;
-
-		jimport('joomla.filesystem.folder');
-		$folders = JFolder::folders($folder);
+		
+		$potentialPrefix = substr($folder, 0, 5);
+		$potentialPrefix = strtolower($potentialPrefix);
+		$useS3 = $potentialPrefix == 's3://';
+		
+		if($useS3) {
+			$everything = $this->_listS3Contents($folder);
+			$dirLength = strlen($folder) - 5;
+			if(count($everything)) foreach($everything as $path => $info) {
+				if(!array_key_exists('size', $info) && (substr($path, -1) == '/')) {
+					if(substr($path, 0, $dirLength) == substr($folder,5)) {
+						$path = substr($path, $dirLength);
+					}
+					$path = trim($path,'/');
+					$folders[] = $path;
+				}
+			}
+		} else {
+			jimport('joomla.filesystem.folder');
+			$folders = JFolder::folders($folder);
+		}
+		
 		return $folders;
+	}
+	
+	private function _listS3Contents($path = null)
+	{
+		static $lastDirectory = null;
+		static $lasListing = array();
+		
+		$directory = substr($path, 5);
+		
+		if($lastDirectory != $directory) {
+			if($directory == '/') {
+				$directory = null;
+			} else {
+				$directory = trim($directory,'/').'/';
+			}
+			$s3 = ArsHelperAmazons3::getInstance();
+			$lastListing = $s3->getBucket('', $directory, null, null, '/', true);
+		}
+		return $lastListing;
 	}
 
 	function delete()
