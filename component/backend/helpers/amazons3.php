@@ -88,20 +88,6 @@ class ArsHelperAmazons3 extends JObject
 	}
 
 	/**
-	 * Singleton
-	 * @return ArsHelperAmazons3
-	 */
-	public function &getInstance($accessKey = null, $secretKey = null, $useSSL = true)
-	{
-		static $instance = null;
-		if(!is_object($instance))
-		{
-			$instance = new ArsHelperAmazons3($accessKey, $secretKey, $useSSL);
-		}
-		return $instance;
-	}
-
-	/**
 	* Set AWS access key and secret key
 	*
 	* @param string $accessKey Access key
@@ -672,27 +658,6 @@ class ArsHelperAmazons3 extends JObject
 		} while ($response !== false && (string)$response->body->IsTruncated == 'true');
 
 		return $results;
-	}
-	
-	/**
-	* Delete an object
-	*
-	* @param string $bucket Bucket name
-	* @param string $uri Object URI
-	* @return boolean
-	*/
-	public static function deleteObject($bucket, $uri) {
-		if(empty($bucket)) $bucket = self::$__default_bucket;
-		$rest = new ArsHelperS3Request('DELETE', $bucket, $uri);
-		$rest = $rest->getResponse();
-		if ($rest->error === false && $rest->code !== 204)
-			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
-		if ($rest->error !== false) {
-			self::getInstance()->setError(sprintf(__CLASS__."::deleteObject(): [%s] %s",
-			$rest->error['code'], $rest->error['message']));
-			return false;
-		}
-		return true;
 	}
 	
 	/**
