@@ -67,7 +67,7 @@ SELECT
     `i`.*,
     `r`.`category_id`, `r`.`version`, `r`.`alias` as `rel_alias`,
     `maturity`, `r`.`groups` as `rel_groups`, `r`.`access` as `rel_access`,
-    `r`.`published` as `rel_published`, `r`.`language` as `rel_language`
+    `r`.`published` as `rel_published`, `r`.`language` as `rel_language`,
     `cat_title`, `cat_alias`, `cat_type`, `cat_groups`,
     `cat_directory`, `cat_access`, `cat_published`, `cat_language`
 FROM
