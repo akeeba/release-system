@@ -287,22 +287,40 @@ class TableItems extends ArsTable
 					}
 				}
 
+				$url = null;
 				if(!empty($folder))
 				{
-					jimport('joomla.filesystem.folder');
-					if(!JFolder::exists($folder)) {
-						$folder = JPATH_ROOT.DS.$folder;
-						if(!JFolder::exists($folder)) $folder = null;
+					$potentialPrefix = substr($folder, 0, 5);
+					$potentialPrefix = strtolower($potentialPrefix);
+					if($potentialPrefix == 's3://') {
+						$check = substr($folder, 5);
+						$s3 = ArsHelperAmazons3::getInstance();
+						$items = $s3->getBucket('', $check);
+						if(empty($items)) {
+							$folder = null;
+							return false;
+						} else {
+							// Get a signed URL
+							$s3 = ArsHelperAmazons3::getInstance();
+							$url = $s3->getAuthenticatedURL('', rtrim($folder,'/').'/'.ltrim($filename,'/'));
+						}
+					} else {
+						jimport('joomla.filesystem.folder');
+						if(!JFolder::exists($folder)) {
+							$folder = JPATH_ROOT.DS.$folder;
+							if(!JFolder::exists($folder)) $folder = null;
+						}
+						
+						if(!empty($folder)) {
+							$filename = $folder.DS.$filename;
+						}
 					}
 				}
-
-				if(!empty($folder)) {
-					$filename = $folder.DS.$filename;
-				}
 			}
-			elseif($this->type == 'link')
+			
+			if(($this->type == 'link') || !is_null($url))
 			{
-				$url = $this->url;
+				if(is_null($url)) $url = $this->url;
 				$config =& JFactory::getConfig();
 				$target = $config->getValue('config.tmp_path').DS.'temp.dat';
 
