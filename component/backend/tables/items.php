@@ -302,7 +302,7 @@ class TableItems extends ArsTable
 						} else {
 							// Get a signed URL
 							$s3 = ArsHelperAmazons3::getInstance();
-							$url = $s3->getAuthenticatedURL('', rtrim($folder,'/').'/'.ltrim($filename,'/'));
+							$url = $s3->getAuthenticatedURL('', rtrim(substr($folder,5),'/').'/'.ltrim($filename,'/'));
 						}
 					} else {
 						jimport('joomla.filesystem.folder');
