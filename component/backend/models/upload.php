@@ -208,16 +208,22 @@ class ArsModelUpload extends JModel
 		if(empty($file)) return '';
 
 		$filepath = $folder.DS.$file;
-
-		jimport('joomla.filesystem.file');
-		if(!JFile::exists($filepath)) return false;
-
+		
+		$potentialPrefix = substr($folder, 0, 5);
+		$potentialPrefix = strtolower($potentialPrefix);
+		$useS3 = $potentialPrefix == 's3://';
+		
+		if(!$useS3) {
+			jimport('joomla.filesystem.file');
+			if(!JFile::exists($filepath)) return false;
+		}
+		
 		$model = JModel::getInstance('Items','ArsModel');
 		$model->reset();
 		$model->setState('category', $this->getState('category',0));
 		$model->setState('filename', $this->getState('file',''));
 		$files = $model->getItemList();
-
+		
 		if(!empty($files))
 		{
 			// Unpublish entries
@@ -230,6 +236,11 @@ class ArsModelUpload extends JModel
 			}
 		}
 
-		return JFile::delete($filepath);
+		if($useS3) {
+			$s3 = ArsHelperAmazons3::getInstance();
+			return $s3->deleteObject('', substr($filepath,5));
+		} else {
+			return JFile::delete($filepath);
+		}
 	}
 }

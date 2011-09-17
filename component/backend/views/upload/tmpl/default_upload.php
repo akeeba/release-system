@@ -126,7 +126,7 @@ $i = 1;
 		});
 	})
 
-	$('#fileslist span.deletefile').each(function(i,el){
+	$('#fileslist button.deletefile').each(function(i,el){
 		$(el).click(function(){
 			var title = $(this).attr('title');
 			if(title == '') return;
