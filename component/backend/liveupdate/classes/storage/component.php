@@ -81,7 +81,13 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 			$db->setQuery($sql);
 		}
 		$rawparams = $db->loadResult();
-		$params = new JParameter($rawparams);
+		$params = new JRegistry();
+		if( version_compare(JVERSION,'1.6.0','ge') ) {
+			$params->loadJSON($rawparams);
+		} else {
+			$params->loadINI($rawparams);
+		}
+		
 		$params->setValue(self::$key, $data);
 		
 		if( version_compare(JVERSION,'1.6.0','ge') )
