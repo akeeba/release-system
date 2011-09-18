@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_categories` (
     `published` int(11) NOT NULL DEFAULT '1',
 	`language` char(7) NOT NULL DEFAULT '*',
     PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_releases` (
     `id` SERIAL,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_releases` (
     `access` int(11) NOT NULL DEFAULT '0',
     `published` tinyint(1) NOT NULL DEFAULT '1',
 	`language` char(7) NOT NULL DEFAULT '*'
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_items` (
     `id` SERIAL,
@@ -65,8 +65,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_items` (
     `ordering` bigint(20) unsigned NOT NULL,
     `access` int(11) NOT NULL DEFAULT '0',
     `published` tinyint(1) NOT NULL DEFAULT '1',
-	`language` char(7) NOT NULL DEFAULT '*',
-) DEFAULT CHARSET=utf8;
+	`language` char(7) NOT NULL DEFAULT '*'
+) DEFAULT CHARACTER SET utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_log` (
     `id` SERIAL,
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_log` (
     `ip` VARCHAR(255) NOT NULL,
     `country` VARCHAR(3) NOT NULL,
     `authorized` TINYINT(1) NOT NULL DEFAULT '1'
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_updatestreams` (
   `id` SERIAL,
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_updatestreams` (
   `checked_out` int(11) NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `published` int(11) NOT NULL DEFAULT '1'
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc` (
   `id` SERIAL,
@@ -103,4 +103,4 @@ CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc` (
   `title` varchar(255) NOT NULL,
   `description` MEDIUMTEXT NOT NULL,
   `published` int(11) NOT NULL DEFAULT '1'
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET utf8;
