@@ -192,7 +192,11 @@ abstract class LiveUpdateAbstractConfig extends JObject
 		jimport('joomla.html.parameter');
 		jimport('joomla.application.component.helper');
 		$component =& JComponentHelper::getComponent($this->_extensionName);
-		$params = new JParameter($component->params);		
+		if(!($component->params instanceof JRegistry)) {
+			$params = new JParameter($component->params);
+		} else {
+			$params = $component->params;
+		}
 		
 		$this->_username	= $params->getValue('username','');
 		$this->_password	= $params->getValue('password','');
