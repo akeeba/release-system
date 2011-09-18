@@ -217,10 +217,11 @@ abstract class ArsModelBase extends JModel
 			$table->load($oid);
 		}
 
-		if(!$table->save($data))
-		{
+		if(!$table->save($data)) {
 			$this->setError($table->getError());
 			return false;
+		} else {
+			$this->id = $table->$key;
 		}
 
 		$this->otable = $table;

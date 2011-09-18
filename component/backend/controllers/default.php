@@ -130,7 +130,7 @@ class ArsControllerDefault extends JController
 		// Redirect to the edit task
 		$option = JRequest::getCmd('option');
 		$view = JRequest::getCmd('view');
-		$id = $model->getId();
+		$id = JRequest::getInt('id',0);
 		$textkey = 'LBL_'.strtoupper($view).'_SAVED';
 		$url = 'index.php?option='.$option.'&view='.$view.'&task=edit&id='.$id;
 		$this->setRedirect($url, JText::_($textkey));
@@ -505,17 +505,12 @@ class ArsControllerDefault extends JController
 		$data = JRequest::get('POST',4);
 		$status = $model->save($data);
 
-		if($status && ($id == 0)) {
-			// Update the internally used ID if we saved a new record
-			$saved = $model->getSavedTable();
-			$key = $saved->getKeyName();
-			$id = $saved->$key;
-			JRequest::setVar('id', $id);
-			$model->setId($id);
-		} elseif($status) {
+		if($status && ($id != 0)) {
 			// Try to check-in the record if it's not a new one
 			$status = $model->checkin();
 		}
+		
+		JRequest::setVar('id', $model->getId());
 
 		if(!$status) {
 			// Redirect on error

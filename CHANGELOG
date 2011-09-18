@@ -20,6 +20,7 @@ Version 1.0.2
 # Duplicated directory path in all of the XML update streams when the site is inside a directory
 # If you had limited access to specific AMBRA.subs/Akeeba Subscriptions it was impossible to unselect all of them again
 # Sorting categories, releases or items by created date caused nothing to be displayed due to a typo in the front-end models
+# Using Apply (Joomla! 1.5) or Save (Joomla! 1.6+) on a new record, didn't display the just saved record, essentialy acting as Save & New
 
 Version 1.0.1
 ================================================================================
