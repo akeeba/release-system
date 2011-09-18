@@ -51,6 +51,13 @@
           </listitem>
 
           <listitem>
+            <para><emphasis role="bold">Full support for Amazon S3</emphasis>,
+            including the ability to manage (upload, delete, create
+            directories) your files stored on S3 from within the
+            component</para>
+          </listitem>
+
+          <listitem>
             <para>Chameleon skinning; the front-end automatically matches its
             output to your template, using module chrome.</para>
           </listitem>
@@ -193,7 +200,7 @@
           <listitem>
             <para><trademark>Joomla!</trademark> 1.5.17 or later in the 1.5.x
             range, or Joomla! 1.6.0 or later (betas and RCs are not
-            supported).</para>
+            supported). Joomla! 1.7 is fully supported.</para>
           </listitem>
 
           <listitem>
@@ -1249,7 +1256,8 @@ deny from all</programlisting>
       </section>
 
       <section xml:id="advanced-features">
-        <title>Advanced: update streams, automatic descriptions</title>
+        <title>Advanced: update streams, automatic descriptions, Amazon
+        S3</title>
 
         <para>One of the most distinctive features of ARS is that it is
         designed with software delivery in mind. Two of the most common
@@ -1563,6 +1571,164 @@ date="2010-10-10"</programlisting>
           <para>You can use <guibutton>Save &amp; New</guibutton> to
           mass-create many Automatic Item Description records one after the
           other.</para>
+        </section>
+
+        <section xml:id="amazons3-integration">
+          <title>Amazon S3 integration</title>
+
+          <para>Akeeba Release System fully support Amazon S3 for storing your
+          download items and serving them directly from there. It also
+          supports Bleeding Edge categories hosted on Amazon S3.</para>
+
+          <para>We chose to integrate Amazon S3 with ARS because it is the
+          most reputable and very low cost cloud storage provider. Using S3 to
+          store your download items instead of your server's filesystem means
+          that you don't consume your server's bandwidth with your downloads.
+          Instead, everything is diverted to S3 where bandwidth is generally
+          much cheaper than what hosting providers offer. Moreover, your files
+          are always privately stored and can not be accessed by unauthorised
+          users, even if they successfully guess the correct path to the
+          files, something which is much harder to implement on a regular web
+          server.</para>
+
+          <bridgehead>Configuring the Amazon S3 integration</bridgehead>
+
+          <para>Before you can use Amazon S3 with ARS, you have to configure
+          it. Go to the main page (<guilabel>Control Panel</guilabel>) of the
+          component and click on the <guibutton>Parameters</guibutton>
+          (Joomla! 1.5) or <guibutton>Options</guibutton> (Joomla! 1.6 and
+          later). You will see the Amazon S3 integration area in the
+          configuration page. The available options are:</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Access Key</term>
+
+              <listitem>
+                <para>This is the "Access Key" you have created in your Amazon
+                S3 account page. In order to retrieve it, please go to <link
+                xlink:href="http://aws.amazon.com/s3/"
+                xmlns:xlink="http://www.w3.org/1999/xlink">http://aws.amazon.com/s3/</link>
+                and click on <guimenu>Account</guimenu>, <guimenuitem>Security
+                Credentials</guimenuitem>. In the <guilabel>Access
+                Credentials</guilabel> area, click on the <guilabel>Access
+                Keys</guilabel> tab. You will see your <guilabel>Access Key
+                ID</guilabel> there. Copy it and paste it in the Access Key
+                field of ARS' configuration.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Secret Key</term>
+
+              <listitem>
+                <para>This is the "Secret Key" which corresponds to your
+                Amazon S3 Access Key. In the same page as the the Access Key,
+                find your Access Key on the list. On its right, you will see a
+                link reading <guilabel>Show</guilabel>. Click on it to reveal
+                your <guilabel>Secret Access Key</guilabel>. Copy it and paste
+                it in the Secret Key configuration field of ARS.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Bucket</term>
+
+              <listitem>
+                <para>This is the name of your Amazon S3 bucket. A "bucket"
+                can be thought of as a virtual drive living in Amazon's cloud
+                where you can store files in. In order to manage your Amazon
+                S3 buckets, please visit <link
+                xlink:href="https://console.aws.amazon.com/s3/home"
+                xmlns:xlink="http://www.w3.org/1999/xlink">https://console.aws.amazon.com/s3/home</link>.
+                The list of bucket names appears on the left hand side. If you
+                don't have any buckets yet, click on the
+                <guibutton>Create</guibutton> button to create one.</para>
+
+                <para>Click on the bucket you want to use with ARS. It becomes
+                selected and the right-hand pane loads a list of its contents.
+                Above the right-hand pane there is a toolbar. Click on the
+                <guilabel>Properties</guilabel> button. A bottom pane opens.
+                On the let-hand side, you will see the
+                <guilabel>Name</guilabel> field. Copy the name appearing there
+                and paste it to ARS' configuration field.</para>
+
+                <important>
+                  <para>Bucket names are case sensitive! This means that ABC,
+                  abc and Abc are three different bucket names. Be perfectly
+                  sure that you copy and paste the bucket name as instructed
+                  above to avoid upper/lower-case mismatch which could cause
+                  ARS to not be able to use your Amazon S3 bucket.</para>
+                </important>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Default permissions</term>
+
+              <listitem>
+                <para>Amazon S3 has its own set of ACLs for the files created
+                in the S3 buckets. If you are going to be offering private
+                downloads, we urge you to set this option to
+                <option>Private</option>. This will cause all files uploaded
+                by ARS to your S3 bucket to be only accessible by your Amazon
+                S3 user (and, since you configured the integration, ARS will
+                be able to access them too). For more information about Amazon
+                S3 ACLs please consult the Amazon S3 documentation.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Timeout for authenticated URLs</term>
+
+              <listitem>
+                <para>Since ARS is designed to work with files stored on
+                Amazon S3 as "Private", there would be an issue: how could we
+                serve those files to the site's visitors? One way would be to
+                download the file to your server, then serve it like the other
+                file downloads. This would make the downloads dead slow!
+                Instead, we use what Amazon calls "authenticated URLs". An
+                authenticated URL is a specially crafted URL which allows
+                anyone knowing it to access and download the private file it
+                references for a limited amount of time. So, ARS creates an
+                authenticated URL and redirects the user's browser to it when
+                he asks to download the file.</para>
+
+                <para>This ARS configuration option determines for how long
+                the authenticated URL will be valid. By default, this is 1
+                minute, which is more than ample time to initiate the
+                download. However, if your client is using a download manager
+                and schedules the download for a later time, the URL will have
+                expired before the download manager tries to access it,
+                causing the download to fail. If you get grumpy users
+                complaining that your downloads don't work, you can increase
+                this timeout. We consider that anything over one day is an
+                overkill, but it's your option to set it to as high as you
+                want, up to a full month.</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <bridgehead>Creating categories linked to S3</bridgehead>
+
+          <para>Any ARS category can be instructed to look inside your
+          configured S3 bucket instead of your server's filesystem. In the
+          <guilabel>Files Directory</guilabel> option of the category you have
+          to enter something like <filename>s3://mydirectory</filename> where
+          mydirectory is the name of a directory in your S3 bucket. If you
+          want to use your bucket's root for this category (not recommended!)
+          you can simply enter <filename>s3://</filename> in this
+          field.</para>
+
+          <para>From that point, all file operations are performed against the
+          S3 bucket instead of your server's filesystem. In fact, you can use
+          the <guibutton>Upload and Manage Files</guibutton> button in ARS'
+          Control Panel page to upload and delete files in your S3 bucket, or
+          create new directories into it. When you are creating items in this
+          category, make sure you select "File" from the type drop-down and
+          after a few seconds you will see a list of your files stored on
+          Amazon S3. And, yes, Amazon S3 integration works with Normal and
+          Bleeding Edge categories alike!</para>
         </section>
       </section>
     </chapter>
