@@ -108,7 +108,7 @@ function arsBuildRouteHtml(&$query)
 				// No, we have to find another root
 				if( ($mView == 'category') )
 				{
-					$params = ($menu->params instanceof JParameter) ? $menu->params : $menus->getParams($Itemid);
+					$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
 					if($params->get('cat_id',0) == $id)
 					{
 						$query['Itemid'] = $Itemid;
@@ -199,7 +199,7 @@ function arsBuildRouteHtml(&$query)
 				elseif( ($mView == 'category') )
 				{
 					// Yes! Is it the category we want?
-					$params = ($menu->params instanceof JParameter) ? $menu->params : $menus->getParams($Itemid);
+					$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
 					if($params->get('catid',0) == $release->category_id)
 					{
 						// Cool! Just append the release alias
@@ -389,7 +389,7 @@ function arsBuildRouteRaw(&$query)
 				break;
 
 			case 'category':
-				$params = ($menu->params instanceof JParameter) ? $menu->params : $menus->getParams($Itemid);
+				$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
 				if($params->get('catid',0) == $release->category_id)
 				{
 					$segments[] = $release->alias;
@@ -403,7 +403,7 @@ function arsBuildRouteRaw(&$query)
 				break;
 
 			case 'release':
-				$params = ($menu->params instanceof JParameter) ? $menu->params : $menus->getParams($Itemid);
+				$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
 				if($params->get('relid',0) == $release->id)
 				{
 					$segments[] = $download->alias;
@@ -509,13 +509,13 @@ function arsBuildRouteXml(&$query)
 			if(empty($id)) switch($task)
 			{
 				case 'category':
-					$params = new JParameter($menuitem->params);
+					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JParameter($menuitem->params);
 					$id = $params->get('category','components');
 					break;
 				
 				case 'ini':
 				case 'stream':
-					$params = new JParameter($menuitem->params);
+					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JParameter($menuitem->params);
 					$id = $params->get('streamid',0);
 					break;
 			}
@@ -689,13 +689,13 @@ function arsBuildRouteIni(&$query)
 			if(empty($id)) switch($task)
 			{
 				case 'category':
-					$params = new JParameter($menuitem->params);
+					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JParameter($menuitem->params);
 					$id = $params->get('category','components');
 					break;
 				
 				case 'ini':
 				case 'stream':
-					$params = new JParameter($menuitem->params);
+					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JParameter($menuitem->params);
 					$id = $params->get('streamid',0);
 					break;
 			}
@@ -1193,13 +1193,13 @@ function arsParseRouteXml(&$segments)
 			if(empty($id)) switch($task)
 			{
 				case 'category':
-					$params = new JParameter($menuitem->params);
+					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JParameter($menuitem->params);
 					$id = $params->get('category','components');
 					break;
 				
 				case 'ini':
 				case 'stream':
-					$params = new JParameter($menuitem->params);
+					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JParameter($menuitem->params);
 					$id = $params->get('streamid',0);
 					break;
 			}
@@ -1361,7 +1361,7 @@ class ArsRouterHelper
 		if(!is_null($params))
 		{
 			$menus =& JMenu::getInstance('site');
-			$check =  $menu->params instanceof JParameter ? $menu->params : $menus->getParams($menu->id);
+			$check =  $menu->params instanceof JRegistry ? $menu->params : $menus->getParams($menu->id);
 
 			foreach($params as $key => $value)
 			{
