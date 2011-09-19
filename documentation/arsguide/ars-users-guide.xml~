@@ -1,0 +1,3052 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V5.0//EN"
+"http://www.docbook.org/xml/5.0/dtd/docbook.dtd">
+<book version="5.0" xmlns="http://docbook.org/ns/docbook">
+  <info>
+    <title>Akeeba Release System User's Guide</title>
+
+    <authorgroup>
+      <author>
+        <personname><firstname>Nicholas</firstname><othername>K.</othername><surname>Dionysopoulos</surname></personname>
+      </author>
+    </authorgroup>
+
+    <pubdate>January 2011</pubdate>
+
+    <legalnotice>
+      <para>Permission is granted to copy, distribute and/or modify this
+      document under the terms of the GNU Free Documentation License, Version
+      1.3 or any later version published by the Free Software Foundation; with
+      no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A
+      copy of the license is included in the appendix entitled "The GNU Free
+      Documentation License".</para>
+    </legalnotice>
+
+    <abstract>
+      <para>This book covers the use of the <application>Akeeba Release
+      System</application> (a.k.a. ARS) download directory for
+      <trademark>Joomla!</trademark>-powered web sites.</para>
+    </abstract>
+  </info>
+
+  <part xml:id="part1-users-guide">
+    <title>User's Guide to Akeeba Release System</title>
+
+    <chapter xml:id="introduction">
+      <title>Introduction</title>
+
+      <section>
+        <title>Introducing <application>Akeeba Release
+        System</application></title>
+
+        <para>Akeeba Release System (or ARS for short) is a download manager
+        component quite different than its competition. It is primarily geared
+        towards developers who want to disseminate their software products to
+        their clients, but can also be used as a generic downloads manager.
+        Its key features are:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Joomla! 1.5 and 1.6 ready.</para>
+          </listitem>
+
+          <listitem>
+            <para>Chameleon skinning; the front-end automatically matches its
+            output to your template, using module chrome.</para>
+          </listitem>
+
+          <listitem>
+            <para>Sensible three-level organization of your downloads
+            (package, version, files).</para>
+          </listitem>
+
+          <listitem>
+            <para>The best out-of-the box SEF URLs, without requiring a SEF
+            component.</para>
+          </listitem>
+
+          <listitem>
+            <para>Excellent performance; before its first public beta it has
+            already served one million downloads with a rate of 200,000
+            downloads per day. Smart caching will use Joomla!'s caching
+            options to intelligently cache your public download pages, saving
+            tons of resources on busy sites.</para>
+          </listitem>
+
+          <listitem>
+            <para>Integration with AMBRA.Subscriptions and Joomla! 1.6 Access
+            Levels for limiting access to downloads only to specific
+            subscribers.</para>
+          </listitem>
+
+          <listitem>
+            <para>Integration with JoomlaCode.org; you can directly import
+            download items from it.</para>
+          </listitem>
+
+          <listitem>
+            <para>Allows you to add files either stored on any directory under
+            your site's root -even a different one per package!- or directly
+            link to externally hosted files without revealing their URL to
+            your visitors.</para>
+          </listitem>
+
+          <listitem>
+            <para>Automatic determination of th file size and MD5 and SHA1
+            hashes of all files you add to it.</para>
+          </listitem>
+
+          <listitem>
+            <para>Helps you keep it organized! You can create subdirectories,
+            upload, replace and delete files from the component itself.</para>
+          </listitem>
+
+          <listitem>
+            <para>Automatic item descriptions. Tired of typing the same
+            descriptions over and over? Stop typing! ARS can do it for
+            you.</para>
+          </listitem>
+
+          <listitem>
+            <para>Update streams. Offer updates to your software in two
+            formats: INI files easily usable by any and all programming
+            languages or automatic creation of <emphasis role="bold">Joomla!
+            1.6 XML extension update streams</emphasis>. That's right! As soon
+            as you publish a new version, all your clients using Joomla! 1.6
+            will be able to automatically upgrade to it. No extra file
+            creation necessary.</para>
+          </listitem>
+
+          <listitem>
+            <para>Allows for automatic updates of restricted downloads. You
+            can authenticate automatic downloads of restricted access items by
+            passing the username and password or a secure Download ID to the
+            URL. This is how we allow you to do 1-click live updates of Akeeba
+            Backup Professional and Admin Tools Professional!</para>
+          </listitem>
+
+          <listitem>
+            <para>Automatic RSS and Atom feed creation.</para>
+          </listitem>
+
+          <listitem>
+            <para>Automatic handling of release notes separately from your
+            generic release description.</para>
+          </listitem>
+
+          <listitem>
+            <para>All texts are edited using Joomla!'s WYSIWYG editor and
+            support content plugins. Need to include an image gallery to your
+            description? No problem!</para>
+          </listitem>
+
+          <listitem>
+            <para>Latest releases overview for one-stop-shop presentation of
+            your newest downloads on a single page.</para>
+          </listitem>
+
+          <listitem>
+            <para>Download logging like no other. Even the referrer, IP
+            address and country (using the free MaxMind GeoIP database) is
+            logged. Know who downloaded when and what.</para>
+          </listitem>
+
+          <listitem>
+            <para><trademark>BleedingEdge</trademark> repositories support.
+            Just upload files to your server by FTP and ARS will automatically
+            create new releases, download items and publish them, while
+            refreshing their update stream. In other words, 0-click
+            releases.</para>
+          </listitem>
+
+          <listitem>
+            <para>GPL v3 software. We value your Freedom of choice and
+            transparency in our code.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>ARS is still in beta. We keep on adding new features to it every
+        day. Download it now and discover the future in software delivery over
+        the web.</para>
+
+        <important>
+          <para>While we provide the component free of charge, we do not
+          provide support for free. If you're interested in receiving support
+          for ARS please consider an AkeebaBackup.com subscription to the
+          "SUPPORT" or "AKEEBADELUXE" levels.</para>
+        </important>
+
+        <note>
+          <para>This product includes GeoLite data created by MaxMind,
+          available from http://www.maxmind.com/.</para>
+        </note>
+      </section>
+
+      <section xml:id="requirements">
+        <title>Server environment requirements</title>
+
+        <para>In order to work, <application>Akeeba Release
+        System</application> requires the following server software
+        environment:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para><trademark>Joomla!</trademark> 1.5.17 or later in the 1.5.x
+            range, or Joomla! 1.6.0 or later (betas and RCs are not
+            supported).</para>
+          </listitem>
+
+          <listitem>
+            <para><productname>PHP</productname> 5.2.10 or later.
+            <application>Akeeba Backup</application> will not work on
+            <productname>PHP</productname> 4! Even though it will run on
+            earlier PHP versions they <emphasis role="bold">are not</emphasis>
+            supported because they contain grave bugs which will not allow
+            Akeeba Release System to function properly. Akeeba Release System
+            is also compatible with the newest PHP 5.3 releases.</para>
+          </listitem>
+
+          <listitem>
+            <para><productname>MySQL</productname> 5.0 or greater.</para>
+          </listitem>
+
+          <listitem>
+            <para>Minimum 16Mb of <productname>PHP</productname>
+            <varname>memory_limit</varname>. More is better.</para>
+          </listitem>
+
+          <listitem>
+            <para>The hash PHP module should be enabled for trouble-free
+            operation.</para>
+          </listitem>
+
+          <listitem>
+            <para>The cURL PHP module or URL fopen() wrappers must be enabled
+            for automatic determination of MD5 and SHA1 hashes of remotely
+            stored files and importing files from JoomlaCode.org.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+    </chapter>
+
+    <chapter xml:id="installation-updates-upgrades">
+      <title>Installation, updates and upgrades</title>
+
+      <section xml:id="installing">
+        <title>Installing Akeeba Release System</title>
+
+        <para>Installing <application>Akeeba Release System</application> is
+        no different than installing any other <trademark>Joomla!</trademark>
+        extension on your site. You can read the complete instructions for
+        installing <trademark>Joomla!</trademark> extensions on the <link
+        xlink:href="http://help.joomla.org/content/view/1476/235/"
+        xmlns:xlink="http://www.w3.org/1999/xlink">official help page</link>.
+        Throughout this chapter we assume that you are familiar with these
+        instructions and we will not duplicate them.</para>
+
+        <section>
+          <title>Getting the installation packages</title>
+
+          <para>You can download the latest installation packages by visiting
+          our site at <link xlink:href="http://www.akeebabackup.com"
+          xmlns:xlink="http://www.w3.org/1999/xlink">http://www.akeebabackup.com</link>.
+          Just click on the Download, Official Releases menu item on the top
+          menu of our site. Then click on Akeeba Release System. The releases
+          are listed with the newest release always on top, using ARS itself
+          to present them! Click on it to view the files. Click on the "Akeeba
+          Release System" item to download the ZIP installation
+          package.</para>
+
+          <note>
+            <para>Do not forget to download the documentation PDF file or read
+            it online. As we do not provide support free of charge this is
+            your best bet in solving your problems if you do not have a
+            SUPPORT or AKEEBAPRO subscription.</para>
+          </note>
+
+          <para>The installation package can be installed on both Joomla! 1.5
+          and Joomla! 1.6 sites. It can also be used to upgrade Akeeba Release
+          System; just install it <emphasis>without</emphasis> uninstalling
+          the previous release.</para>
+
+          <para>In any case, do not extract the ZIP files yet!</para>
+        </section>
+
+        <section>
+          <title>Installing the component</title>
+
+          <para>Log in to your site's administrator section. Click on the
+          <guimenu>Extensions</guimenu>,
+          <guimenuitem>Install/Uninstall</guimenuitem> (Joomla! 1.5) or
+          <guimenu>Extensions</guimenu>, <guimenuitem>Manage</guimenuitem>
+          (Joomla! 1.6 users) link on the top menu. In this page, locate the
+          <guibutton>Browse</guibutton> button in the <guilabel>Upload Package
+          File</guilabel> area. Locate the installation ZIP file you had
+          previously downloaded and select it. Back to the page, click on the
+          <guibutton>Upload File &amp; Install</guibutton> button. After a
+          short while, <trademark>Joomla!</trademark> will tell you that the
+          component has been installed.</para>
+
+          <section>
+            <title>Manual installation</title>
+
+            <para>Sometimes <trademark>Joomla!</trademark> is unable to
+            properly extract ZIP archives due to technical limitations on your
+            server. In this case, you can follow a manual installation
+            procedure.</para>
+
+            <para>First, you have to extract the installation ZIP file in a
+            subdirectory named <filename>akeeba</filename> on your local PC.
+            Then, upload the entire subdirectory inside your site's temporary
+            directory. At this point, there should be a subdirectory named
+            <filename>akeeba</filename> inside your site's temporary directory
+            which contains all of the ZIP package's files.</para>
+
+            <para>If you are unsure where your site's temporary directory is
+            located, you can look it up by going to the <guimenuitem>Global
+            Configuration</guimenuitem>, click on the
+            <guilabel>Server</guilabel> tab and take a look at the
+            <guilabel>Path to Temp-folder</guilabel> setting. The default
+            setting is the <filename>tmp</filename> directory under your
+            site's root. Rarely, especially on automated installations using
+            Fantastico, this might have been assigned the system-wide
+            <filename>/tmp</filename> directory. In this case, please consult
+            your host for instructions on how to upload files inside this
+            directory, or about changing your <trademark>Joomla!</trademark>
+            temporary directory back to the default location and making it
+            writable.</para>
+
+            <para>Assuming that you are past this uploading step, click on the
+            <guimenu>Extensions</guimenu>,
+            <guimenuitem>Install/Uninstall</guimenuitem> (Joomla! 1.5) or
+            <guimenu>Extensions</guimenu>, <guimenuitem>Manage</guimenuitem>
+            (Joomla! 1.6 users) link on the top menu. In this page, locate the
+            <guibutton>Install Directory</guibutton> edit box in the
+            <guilabel>Install from Directory</guilabel> area. It is already
+            filled in with the absolute path to your temporary directory, for
+            example <filename>/var/www/joomla/tmp</filename>. Please append
+            <filename>/akeeba</filename> to it. As per our example, it should
+            look something like
+            <filename>/var/www/joomla/tmp/akeeba</filename>. Then, click on
+            the <guibutton>Install</guibutton> button.</para>
+
+            <para>If you still can't install Akeeba Release System and you are
+            receiving messages regarding unwritable directories, inability to
+            move files or other similar file system related error messages,
+            please do not ask us for support. These errors stem from your site
+            set up and can best be resolved by asking for help in the <link
+            xlink:href="http://forum.joomla.org"
+            xmlns:xlink="http://www.w3.org/1999/xlink">official
+            <trademark>Joomla!</trademark> forums</link>.</para>
+          </section>
+        </section>
+      </section>
+
+      <section xml:id="update">
+        <title>Updating to the latest version</title>
+
+        <bridgehead>Checking for the latest version and upgrading</bridgehead>
+
+        <para>You can easily check for the latest published version of the ARS
+        component by visiting <link os=""
+        xlink:href="http://www.akeebabackup.com/latest"
+        xmlns:xlink="http://www.w3.org/1999/xlink">http://www.akeebabackup.com/latest</link>.
+        The page lists the version and release date of the latest ARS release.
+        You can check it against the data which appear on the bottom of your
+        ARS Control Panel. If your release is out of date, simply click on the
+        Download link to download the install package of the latest release to
+        your PC.</para>
+
+        <para>Updating <application>ARS</application> to the latest version is
+        by no means different than installing the component. You do not have
+        to uninstall the previous version; in fact, you are discouraged from
+        doing so. Simply follow the installation instructions so as to install
+        the latest <application>A</application>RS version over the existing
+        <application>ARS</application> installation. That's all! All your
+        settings are preserved.</para>
+
+        <bridgehead>Live update</bridgehead>
+
+        <para>There is also an alternate update path, if your server supports
+        it. It is called the "Live Update" feature. Whenever you visit the ARS
+        Control Panel, it will automatically check for the existence of an
+        updated version and it will notify you. You can see the notification
+        button on the bottom of the left-hand section of the Control Panel
+        page. Clicking on the notification allows you to perform a live update
+        without further interaction. Do note that if your server is protected
+        by a firewall you'll have to enable port 80 and 443 TCP traffic to
+        www.akeebabackup.com and joomlacode.org for this feature to work
+        properly.</para>
+      </section>
+    </chapter>
+
+    <chapter xml:id="using-the-backend">
+      <title>Using the back-end</title>
+
+      <para>The bulk of ARS is in its back-end. This is where you will be
+      setting up your repositories, update streams, view your log files,
+      upload files and more. Since you are going to spend most of your time
+      looking at the back-end, we have done our best to streamline your
+      administrative experience. Our goal is to have you spend as little time
+      as humanly possible while publishing files. Your time is better spent
+      creating the files, be it code, documentation, your dissertation, your
+      weekly e-magazine or anything which can be downloaded.</para>
+
+      <section xml:id="the-structure-of-a-repo">
+        <title>Understanding the structure of a repository</title>
+
+        <para>Akeeba Release System is designed as a dual-repository,
+        three-level system. Quite fancy wording and I'm sure you didn't
+        understand anything. Let's break it down and understand how an ARS
+        repository is structured.</para>
+
+        <para>The repository is logically separated to two sub-repositories.
+        By default, they are named "Official Releases" and "Development
+        Releases". Their only difference is the way items are added to them.
+        In "Official Releases" you have to manually go to the back-end, enter
+        an existing "category", create a new "release" and start uploading
+        "items" to it, then publish the lot for your site visitors to see and
+        download. In "Development Releases" you do not have to use your site's
+        back-end. All you need to do is to use FTP to create a new directory,
+        which automatically creates and publishes a new "release", and upload
+        files, which automatically creates and publishes a new "item". The
+        separation is only logical. If you wish to do so, you can display both
+        sub-repositories as a single repository.</para>
+
+        <para>The repository follows the standard convention of Joomla! 1.0
+        and 1.5 article categorization. Each repository can have one or more
+        "categories". Each category can have one or more "releases". Each
+        release can have one or more "items". The "categories" are the top
+        organization level of your data. Usually you have to create one
+        category per software you want to publish. If you are not interested
+        in publishing software, create one category per general file type.
+        Think of them as article Sections.</para>
+
+        <para>Each category has one more "releases". Think of a release as a
+        group of files belonging to the same chronological order. Each release
+        is supposed to supersede the directly previous release (the one with a
+        higher ordering number than itself).</para>
+
+        <para>Finally, "items" are what your visitors download. We chose to
+        name them "items" instead of "files" because they can either be
+        physical files stored on your server or links to a remote resource
+        served from a different web server.</para>
+
+        <bridgehead>Practical example: Software distribution</bridgehead>
+
+        <para>This is the kind of repositories ARS excels at. Create one
+        category per software you want to publish. Let's say you produce an
+        application named "Kitten Finder" and a Joomla! component named
+        "Kitten.me". Each one of them is a category in ARS. Create one release
+        per version of the software. For instance, "Kitten Finder" has
+        released versions 1.0.b1 (a beta release) and 1.0 stable. Each one of
+        the versions is a release in ARS. Each downloadable file is an ARS
+        item. For example, you may have an installer of Kitten Finder for
+        Windows, another for Linux, a third one for Mac OS X, a PDF with
+        instructions and so on. Each file belonging to specific version of the
+        application is an item in ARS.</para>
+
+        <para>In order to allow your visitors to browse the entirety of your
+        repository, you will have to create a menu item to the full
+        repository.</para>
+
+        <bridgehead>Practical example: Community site</bridgehead>
+
+        <para>In this case, you will be using ARS as a generic download
+        system, much like DOCman or PhocaDownloads. Do the following mind
+        mapping:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Section - ARS Category</para>
+          </listitem>
+
+          <listitem>
+            <para>Category - ARS Release</para>
+          </listitem>
+
+          <listitem>
+            <para>File - ARS Item</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>Now, let's say you want to publish your weekly newsletter in PDF
+        format. Create an ARS category item named "Newsletter". For each new
+        issue, create an ARS release named after the date of publication, e.g.
+        "January 2011", "February 2011" and so on inside the "Newsletter"
+        category. Finally, create a single ARS item per issue so that your
+        visitors can download the PDF file of your newsletter.</para>
+
+        <para>In order to reduce the number of clicks required by your
+        visitors to get to the desired download, just create a menu item to
+        the specific Category you created. There's no need to create a link to
+        the full repository.</para>
+
+        <bridgehead>Practical example: A personal site / blog</bridgehead>
+
+        <para>This is the most peculiar download repository setup. Usually,
+        such users only need to publish a bunch of files and track download
+        stats. The easy way to do that is to create an ARS category (the name
+        is indifferent), an ARS release under it (use something descriptive of
+        your site) and just publish items in that single release. In order to
+        save your visitors some clicks, you can create a menu item directly to
+        this sole release, so that nothing but your files gets listed.</para>
+      </section>
+
+      <section xml:id="basic-features">
+        <title>Basic: categories, releases, items</title>
+
+        <section xml:id="category-management">
+          <title>Category management</title>
+
+          <para>In order to manage the categories in ARS, just click on the
+          <guibutton>Categories</guibutton> button on the Control Panel page,
+          or the Categories link right below the component's name in any ARS
+          page. A standard Joomla! administrator list page appears. Do note
+          that the search box below the <guilabel>Title</guilabel> field will
+          filter categories based on their title or description.</para>
+
+          <para>You can quickly make a copy of a category by selecting its
+          checkbox on the left-hand column and clicking the
+          <guibutton>Copy</guibutton> button on the toolbar. The releases and
+          items belonging to that category will not be copied along. Deleting
+          a category by selecting it and clicking on the
+          <guibutton>Delete</guibutton> button will remove all releases and
+          items associated with that category. Beware! You will not be asked
+          to confirm this choice. Deleting a category is an irreversible
+          change. If you are not sure, unpublish instead of removing the
+          category. You can edit a category either by clicking on its name in
+          the list, or selecting it and clicking on the
+          <guibutton>Edit</guibutton> button. You can add one or more new
+          categories by clicking on the <guibutton>New
+          </guibutton>button.</para>
+
+          <bridgehead>Editing or adding a category</bridgehead>
+
+          <para>The category editor page consists of the following
+          fields:</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Title</term>
+
+              <listitem>
+                <para>This is the title of the category displayed to your
+                site's visitors</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Alias</term>
+
+              <listitem>
+                <para>This is the alias (slug) appended to the URL pointing to
+                that category's page. It's best to keep it short and only use
+                lowercase unaccented Latin letters (a-z), numbers (0-9),
+                dashes and underscores. Anything else may behave oddly.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Directory Type</term>
+
+              <listitem>
+                <para>You have two options. In a <emphasis
+                role="bold">Normal</emphasis> directory you have to manually
+                create releases and items. In a <emphasis
+                role="bold">BleedingEdge</emphasis> directory all
+                subdirectories created in the selected <guilabel>Files
+                Directory</guilabel> will result into new releases being
+                created and published without your intervention. Similarly,
+                files uploaded in the subdirectories will be automatically
+                turned into items and published.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Files Directory</term>
+
+              <listitem>
+                <para>This is the path to a directory which contains the files
+                to be published in this category's releases. The paths are
+                given relative to your site's root. This field is mandatory.
+                You can not create a category without assigning it a files
+                directory. You can use the same directory in multiple
+                releases. You can use directories in completely different base
+                folders on each release. If a directory doesn't already exists
+                it will not be created, you will see an error message and your
+                category won't be created.</para>
+
+                <para>Please note that ARS uses Joomla!'s API to filter
+                directories. This limits you to using directories under your
+                site's root. If you want to protect your files from direct web
+                access, please create a .htaccess file with the following
+                content inside your files directory:</para>
+
+                <programlisting>order deny, allow
+deny from all</programlisting>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Published</term>
+
+              <listitem>
+                <para>Should it be visible to your users? Set to off to hide
+                the category from view.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Access</term>
+
+              <listitem>
+                <para>The Joomla! access level / view level to apply to the
+                release. In Joomla! 1.5 you only have a choice between public,
+                registered and special. In Joomla! 1.6 you can create custom
+                view levels, effectively choosing which user groups should be
+                granted access.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>AMBRA Groups</term>
+
+              <listitem>
+                <para>If you have AMBRA.Subscriptions from Dioscouri Design
+                installed, you will be presented with a list of subscription
+                groups. Tick the boxes on the subscription groups you want to
+                be granted access to this category.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Description</term>
+
+              <listitem>
+                <para>Use the WYSIWYG editor to type in a description to be
+                displayed for this category. You can use plugins
+                freely.</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <para>Please note that if a category is unavailable to a particular
+          user, i.e. due to Published, Access or AMBRA Groups settings, the
+          user will not see the category listed in the front-end and will be
+          unable to access the category, its releases or download its
+          items.</para>
+
+          <para>Clicking on the <guibutton>Save &amp; New</guibutton> button
+          will save the category and immediately let you create a new
+          category.</para>
+        </section>
+
+        <section xml:id="release-management">
+          <title>Release management</title>
+
+          <important>
+            <para>You can edit releases even if the category is unpublished,
+            unlike DOCman.</para>
+          </important>
+
+          <para>In order to manage the releases in ARS, just click on the
+          <guibutton>Releases</guibutton> button on the Control Panel page, or
+          the Releases link right below the component's name in any ARS page.
+          A standard Joomla! administrator list page appears. Do note that the
+          search box below the <guilabel>Title</guilabel> field will filter
+          categories based on their title or description.</para>
+
+          <para>You can quickly make a copy of a release by selecting its
+          checkbox on the left-hand column and clicking the
+          <guibutton>Copy</guibutton> button on the toolbar. The items
+          belonging to that category will be copied along. The copied release
+          will be unpublished by default and have an ordering of 0. Deleting a
+          category by selecting it and clicking on the
+          <guibutton>Delete</guibutton> button will remove all items
+          associated with that category. Beware! You will not be asked to
+          confirm this choice. Deleting a release is an irreversible change.
+          If you are not sure, unpublish instead of removing the release. You
+          can edit a release either by clicking on its name (the
+          <guilabel>Version</guilabel> column) in the list, or selecting it
+          and clicking on the <guibutton>Edit</guibutton> button. You can add
+          one or more new releases by clicking on the <guibutton>New
+          </guibutton>button. You can edit the category the release is in by
+          clicking on the name of the category in the
+          <guilabel>Category</guilabel> column.</para>
+
+          <bridgehead>Editing or adding a release</bridgehead>
+
+          <para>The release editor page consists of the following
+          fields:</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Category</term>
+
+              <listitem>
+                <para>Choose the category where the release will be placed
+                in.</para>
+
+                <tip>
+                  <para>If you had filtered the releases list based on a
+                  category, that category will be automatically selected in
+                  this box! Filter the list, save some time.</para>
+                </tip>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Version</term>
+
+              <listitem>
+                <para>Type in the title of this release. Since ARS is
+                optimised for software delivery, we call this field Version,
+                but you may type in anything you want, not just
+                numbers.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Alias</term>
+
+              <listitem>
+                <para>This is the alias (slug) appended to the URL pointing to
+                that category's page. It's best to keep it short and only use
+                lowercase unaccented Latin letters (a-z), numbers (0-9),
+                dashes and underscores. Anything else may behave oddly.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Maturity</term>
+
+              <listitem>
+                <para>If you are using ARS for software distribution, select
+                the maturity level of this release. The possible options are
+                Alpha, Beta, Release Candidate and Stable.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Hits</term>
+
+              <listitem>
+                <para>How many times the release page has been displayed. You
+                can use this field to alter that number. Do note that you do
+                not need to change it on copied releases; copies will
+                automatically receive a Hits number of zero.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Published</term>
+
+              <listitem>
+                <para>Should it be visible to your users? Set to off to hide
+                the category from view.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Access</term>
+
+              <listitem>
+                <para>The Joomla! access level / view level to apply to the
+                release. In Joomla! 1.5 you only have a choice between public,
+                registered and special. In Joomla! 1.6 you can create custom
+                view levels, effectively choosing which user groups should be
+                granted access.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>AMBRA Groups</term>
+
+              <listitem>
+                <para>If you have AMBRA.Subscriptions from Dioscouri Design
+                installed, you will be presented with a list of subscription
+                groups. Tick the boxes on the subscription groups you want to
+                be granted access to this release.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Description</term>
+
+              <listitem>
+                <para>Use the WYSIWYG editor to type in a description to be
+                displayed for this release. You can use plugins freely.</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <para>Please note that if a release is unavailable to a particular
+          user, i.e. due to Published, Access or AMBRA Groups settings, the
+          user will not see the release listed in the front-end and will be
+          unable to download its items.</para>
+
+          <para>Clicking on the <guibutton>Save &amp; New</guibutton> button
+          will save the release and immediately let you create a new
+          category.</para>
+        </section>
+
+        <section xml:id="item-management">
+          <title>Item management</title>
+
+          <important>
+            <para>You can edit items even if the category or release they are
+            in is unpublished, unlike DOCman.</para>
+          </important>
+
+          <para>In order to manage the items in ARS, just click on the
+          <guibutton>Items</guibutton> button on the Control Panel page, or
+          the Items link right below the component's name in any ARS page. A
+          standard Joomla! administrator list page appears.</para>
+
+          <para>You can quickly make a copy of an item by selecting its
+          checkbox on the left-hand column and clicking the
+          <guibutton>Copy</guibutton> button on the toolbar. The copied item
+          will be unpublished by default and have an ordering of 0. Deleting
+          an item is an irreversible change. If you are not sure, unpublish
+          instead of removing the item. You can edit an item either by
+          clicking on its name (the <guilabel>Title</guilabel> column) in the
+          list, or selecting it and clicking on the
+          <guibutton>Edit</guibutton> button. You can add one or more new
+          items by clicking on the <guibutton>New </guibutton>button. You can
+          edit the category the item is in by clicking on the name of the
+          category in the <guilabel>Category</guilabel> column. You can edit
+          the release the item is in by clicking the name of the release in
+          the <guilabel>Release</guilabel> column.</para>
+
+          <bridgehead>Editing or adding a release</bridgehead>
+
+          <para>The release editor page consists of the following
+          fields:</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Release</term>
+
+              <listitem>
+                <para>Choose the release where the item will be placed
+                in.</para>
+
+                <tip>
+                  <para>If you had filtered the items list using a specific
+                  release, that release will be automatically selected in this
+                  field! Filter the list, save some time.</para>
+                </tip>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Title</term>
+
+              <listitem>
+                <para>The title of the item, used to display it to your users.
+                If you are using Automatic Descriptions you don't have to fill
+                it in.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Alias</term>
+
+              <listitem>
+                <para>This is the alias (slug) appended to the URL pointing to
+                that category's page. It's best to keep it short and only use
+                lowercase unaccented Latin letters (a-z), numbers (0-9),
+                dashes and underscores. Anything else may behave oddly.</para>
+
+                <tip>
+                  <para>Leave it blank. As soon as you select a file or type
+                  in a link, ARS will automatically fill it in before your
+                  eyes. Didn't I already mention that ARS is designed to
+                  <emphasis>save you lots of time</emphasis>?</para>
+                </tip>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Type</term>
+
+              <listitem>
+                <para>What kind of download is this. <guilabel>File</guilabel>
+                items allow your visitors to download files stored on your
+                server, the most common case of downloads. However,
+                <guilabel>Link</guilabel> items allow you to link to a file or
+                even a web page by its URL. You can use it to let your
+                visitors download files hosted on external sites (e.g. your
+                friend's site, JoomlaCode.org, SourceForge, Amazon S3,
+                DropBox, Windows Live SkyDrive, RapidShare, MegaUpload etc) or
+                redirect visitors to an external page. Using the Link type
+                will not reveal the URL of the external item to your visitors
+                until they proceed with downloading the item. Furthermore, all
+                download links are marked as no-follow and no-index, so that
+                search engines do not reveal the URL to the linked
+                file/page.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>File Name</term>
+
+              <listitem>
+                <para>If you chose the File type, this displays a drop down of
+                files found in the category's Files Directory and all of its
+                subdirectories. Yes, that list could be very long, so we are
+                cheating: we only show you the files which have not been
+                already used in other File items on any category. So, instead
+                of having to scroll through a never ending list of files you
+                will only see the files you haven't already used. That's what
+                we call a clever repository! Oh, yes... As soon as you choose
+                a file, the Alias will be filled in if and only if it was
+                empty.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>URL</term>
+
+              <listitem>
+                <para>If you chose the Link type, type in the full URL to the
+                file or web page you want to link to. Oh, yes... As soon as
+                you click anywhere outside this field, the Alias will be
+                filled in automatically based on the contents of the URL field
+                if and only if you had an empty alias.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>File size</term>
+
+              <listitem>
+                <para>Type in the file size in bytes. Or don't. If you leave
+                it empty, ARS will try to determine this automatically. In the
+                case of Link items, it will try to download the linked
+                file.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>MD5 Signature</term>
+
+              <listitem>
+                <para>Type in the MD5 hash of the file. Or don't. If you leave
+                it empty, ARS will try to determine this automatically. In the
+                case of Link items, it will try to download the linked
+                file.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>SHA1 Signature</term>
+
+              <listitem>
+                <para>Type in the SHA1 hash of the file. Or don't. If you
+                leave it empty, ARS will try to determine this automatically.
+                In the case of Link items, it will try to download the linked
+                file.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Hits</term>
+
+              <listitem>
+                <para>How many times the item has been downloaded. You can use
+                this field to alter that number. Do note that you do not need
+                to change it on copied items; copies will automatically
+                receive a Hits number of zero.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Published</term>
+
+              <listitem>
+                <para>Should it be visible to your users? Set to off to hide
+                the category from view.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Access</term>
+
+              <listitem>
+                <para>The Joomla! access level / view level to apply to the
+                item. In Joomla! 1.5 you only have a choice between public,
+                registered and special. In Joomla! 1.6 you can create custom
+                view levels, effectively choosing which user groups should be
+                granted access.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>AMBRA Groups</term>
+
+              <listitem>
+                <para>If you have AMBRA.Subscriptions from Dioscouri Design
+                installed, you will be presented with a list of subscription
+                groups. Tick the boxes on the subscription groups you want to
+                be granted access to this item.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Description</term>
+
+              <listitem>
+                <para>Use the WYSIWYG editor to type in a description to be
+                displayed for this item. You can use plugins freely.</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <para>Please note that if an item is unavailable to a particular
+          user, i.e. due to Published, Access or AMBRA Groups settings, the
+          user will not see the item listed in the front-end page showing the
+          release and will also be unable to download it.</para>
+
+          <para>Clicking on the <guibutton>Save &amp; New</guibutton> button
+          will save the item and immediately let you create a new
+          category.</para>
+        </section>
+      </section>
+
+      <section xml:id="intermediate-features">
+        <title>Intermediate: file management, JoomlaCode integration and
+        logs</title>
+
+        <section xml:id="uploading-files">
+          <title>Uploading and managing files</title>
+
+          <para>ARS comes with an integrated system to handle file uploads,
+          manage files and create sub-directories. It is accessible from ARS
+          Control Panel page by clicking on the <guibutton>Upload and Manage
+          Files</guibutton> button.</para>
+
+          <para>When you launch that feature, it asks you to select a
+          category. Select a category from the drop-down. This step is
+          required for ARS to know which directory it should operate on.
+          Remember that each category is linked with one Files Directory. Upon
+          selecting a category, the page reloads with the full
+          interface.</para>
+
+          <para>Right below the category selection area you will find two
+          panes. The left hand pane contains a list of folders. You can create
+          a new folder by typing a name in the box and clicking on the
+          <guibutton>New folder</guibutton> button. Do note that the Joomla!
+          API will convert dots and spaces to underscores and turn everything
+          to lowercase characters. You can click on any directory to go
+          "inside" it. The right hand pane contains a list of file. The name
+          and size of each file is displayed. Click on the trashcan icon to
+          delete the file.</para>
+
+          <warning>
+            <para>ARS will not check if the file you delete belongs to an
+            active item. It is perfectly possible that you end up deleting a
+            file used by an active item, causing problems to users who try to
+            download that item.</para>
+          </warning>
+
+          <para>The bottom part of the page is the upload form. It uses
+          Joomla!'s upload feature. This means that if you have enabled the
+          Flash uploader you will be able to upload multiple files at once to
+          the directory. Otherwise (default Joomla! behaviour) you will only
+          be able to upload one file at a time. Do note that all files are
+          uploaded to the the directory you are currently viewing.</para>
+        </section>
+
+        <section xml:id="joomlacode-integration">
+          <title>JoomlaCode.org integration</title>
+
+          <para>Having primarily developers of free Joomla! extensions in
+          mind, we are providing an integration with JoomlaCode.org, the
+          official project and file hosting facility of the Joomla! project.
+          The idea is that if you produce free Joomla! software you most
+          likely want JoomlaCode.org to host your downloads (free bandwidth!)
+          and you don't really fancy having to manually copy links from
+          JoomlaCode.org to ARS. We have semi-automated this procedure for
+          you.</para>
+
+          <para>Start by clicking on the <guibutton>Import from JoomlaCode
+          FRS</guibutton> button in ARS Control Panel page. In the new page,
+          you will have to select an ARS release where you want to import the
+          file links into. Select it from the drop-down.</para>
+
+          <para>In the <guilabel>JoomlaCode project tag</guilabel> text box
+          enter the shorthand name of your project in JoomlaCode.org. If you
+          are not sure, you can find that out from your JoomlaCode.org URL.
+          Visit your project's page and you'll see a URL in your address bar
+          similar to <uri>http://joomlacode.org/gf/project/example</uri>. That
+          last part of the URL (i.e. <uri>example</uri>) is what you need to
+          type in the JoomlaCode project tag text box in ARS. Then press the
+          Tab key or click on <guibutton>Get packages</guibutton>.</para>
+
+          <para>A list of JoomlaCode packages appears below. Select the
+          package which holds your releases in the <guilabel>Select
+          package</guilabel> drop-down list and press the Tab key or click on
+          <guibutton>Get Releases</guibutton>.</para>
+
+          <para>A list of JoomlaCode releases appears below. Select the
+          release which holds your files in the <guilabel>Select
+          release</guilabel> drop-down list and press the Tab key or click on
+          <guibutton>Get Files</guibutton>.</para>
+
+          <para>A list of files appears below. Click on each file to create a
+          new item linking to it in the selected ARS release. All items are
+          unpublished by default. When you are done importing files from
+          JoomlaCode, simply click on the Items link just below the toolbar to
+          get back to the ARS Items page where you can publish your
+          files.</para>
+
+          <tip>
+            <para>If you are using the Automatic Descriptions feature, the
+            name of the item, its description and all of its fields will be
+            automatically populated. This means that all you have to do is to
+            publish it and you're done.</para>
+          </tip>
+        </section>
+
+        <section xml:id="viewing-logs">
+          <title>Viewing the logs</title>
+
+          <para>ARS keeps detailed logs of all download attempts of all items.
+          In order to view you logs, please click on the <guibutton>Download
+          Logs</guibutton> button on the component's Control Panel page. This
+          takes you to the log viewer page.</para>
+
+          <para>The top row of the list contains the filters. Below the
+          <guilabel>Item</guilabel> column you can find three filters:</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Category</term>
+
+              <listitem>
+                <para>Select a category from the drop-down box. When you
+                select a category, the release drop-down will also be filtered
+                and show releases belonging to that category.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Release</term>
+
+              <listitem>
+                <para>Select a release from the drop-down box.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>The search box</term>
+
+              <listitem>
+                <para>Type in a part of an item's title so as to filter the
+                list by it.</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <para>Below the <guilabel>User</guilabel> column you will find a
+          search box. Type in a part of the user's full name, username or
+          email address to filter the list. There are also two search boxes
+          below the <guilabel>Referer</guilabel> and <guilabel>IP
+          Address</guilabel> columns which work in a similar fashion should
+          you need to filter the list by the HTTP referer or IP address
+          respectively. Finally, you have <guilabel>Country</guilabel> and
+          <guilabel>Authorized</guilabel> drop downs.</para>
+
+          <para>The columns which appear in the list are:</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Item</term>
+
+              <listitem>
+                <para>Displays the item title (top row) and the category and
+                release (bottom row) pertaining to this download record</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>User</term>
+
+              <listitem>
+                <para>Displays the user full name (top row) and username and
+                email address (bottom row) of the user who tried to download
+                this item. Download attempts by guest (not logged in) users
+                are displayed as a single bullet.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Accessed</term>
+
+              <listitem>
+                <para>The date and time of the download attempt. Do note that
+                this is the server local time, which is not necessarily the
+                same as your timezone.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Referer</term>
+
+              <listitem>
+                <para>The HTTP referer set by the user's download client. It
+                only makes sense if the download was initiated by a browser.
+                This allows you to detect hot-linked files, i.e. people
+                linking directly to your download item from their own
+                sites.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>IP Address</term>
+
+              <listitem>
+                <para>The IP address of the user who attempted to download the
+                item.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Country</term>
+
+              <listitem>
+                <para>The country of origin of the particular IP address
+                recorded. IP to country conversion is performed using a local
+                copy of the (free version of) MaxMind's GeoIP database. This
+                documentation contains instructions on updating it.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Authorized</term>
+
+              <listitem>
+                <para>If the user was allowed to download the item, it is a
+                green check. If the user was denied the download it is marked
+                as a white X inside a red circle. Download are denied if the
+                category, release or item are unpublished, or if the view
+                level / AMBRA group settings of a particular category, release
+                or item indicate that a user should be denied access.</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <para>You can short by any column by simply clicking on its
+          title.</para>
+
+          <note>
+            <para>This product includes GeoLite data created by MaxMind,
+            available from http://www.maxmind.com/.</para>
+          </note>
+        </section>
+      </section>
+
+      <section xml:id="advanced-features">
+        <title>Advanced: update streams, automatic descriptions</title>
+
+        <para>One of the most distinctive features of ARS is that it is
+        designed with software delivery in mind. Two of the most common
+        problems in that arena is providing updates to your clients and having
+        to type in the same descriptions over and over again. ARS solves both
+        problems. It can automatically produce update streams in a generic and
+        reusable INI format, or automatically produce Joomla! 1.6 XML update
+        streams for use with any Joomla! 1.6 extension. Then, instead of
+        having to manually type in the title and description of files, you can
+        set up automatic descriptions so that ARS can type in this information
+        for you.</para>
+
+        <section xml:id="update-streams">
+          <title>Setting up update streams</title>
+
+          <para>ARS comes with integrated update stream provisioning. Update
+          streams are, in short, a machine-readable representation of your
+          repository. They can be used by remote clients to figure out if
+          there is an update available and optionally ask the user to download
+          it and install it. ARS can serve two types of update streams:</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>INI format</term>
+
+              <listitem>
+                <para>This is a custom format, designed with portability in
+                mind. The update information is rendered as a standard INI
+                format text file. The downside of this format is that only the
+                latest version is displayed in the stream.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>XML format</term>
+
+              <listitem>
+                <para>Joomla! 1.6 comes with an extension update manager. In
+                order for it to work, it requires developers to supply update
+                information in a custom XML format. There are actually three
+                type of XML files Joomla! 1.6 understands. The "extensionset"
+                document serves as the master update stream. It contains links
+                to one or more repositories, one for each extension type
+                Joomla! 1.6 understands, i.e. components, plugins, modules,
+                libraries, packages, templates and files. The second form of
+                an "extensionset" document is the master index of extensions
+                of a specific type (called "category") known to this server,
+                e.g. a list of components. Each item on that list points to an
+                "updates" XML document. This third and final XML format
+                contains the history of an extension. It tells us the version
+                history, details about the extension, links to an information
+                page and, most importantly, tells us where to download the
+                extension from.</para>
+
+                <para>This is an overly complex system and maintaining such
+                files manually can be a drag. ARS handles all three types of
+                documents for you, automatically. In order to add updates
+                support to your Joomla! 1.6 extension, all you have to do is
+                to add the following lines just before the closing
+                &lt;/install&gt; tag in your extension's manifest XML
+                file:</para>
+
+                <programlisting>&lt;updateservers&gt;
+    &lt;server type="extension" priority="1"
+        name="<replaceable>Whatever you want to call it</replaceable>"&gt;
+        &lt;![CDATA[<replaceable>link_to_your_update_stream_xml</replaceable>]]&gt;
+    &lt;/server&gt;
+&lt;/updateservers&gt;
+</programlisting>
+
+                <para>The name attribute can be anything you want. Usually it
+                should be something like "<replaceable>Name Of
+                Extension</replaceable> Updates", e.g. "Akeeba Backup Core
+                Updates". The link in the CDATA section is the XML link
+                provided by ARS.</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <para>In order to set up update streams, please click on the
+          <guibutton>Update Streams</guibutton> button in ARS Control
+          Panel.</para>
+
+          <para>On the very top of the page you will find a link to your
+          master Joomla! 1.6 update stream (the first type of "extensionset"
+          XML document). You can use that link in your Joomla! 1.6 extensions'
+          XML files.</para>
+
+          <para>The grid below is a standard Joomla! administrator table.
+          Clicking on a stream name allows you to edit it. The most important
+          column is the <guilabel>Links</guilabel> column. It provides direct
+          links to the publicly accessible formats of your update stream. The
+          INI link will take you to the INI format update stream, which is
+          necessary for Live Update to work. More information on including
+          Live Update in your components can be found in a later section of
+          this documentation. The XML link will take you to the Joomla! 1.6
+          XML "update" document for that stream. This is the XML file you
+          should in extension manifest files, inside the CDATA section
+          mentioned above.</para>
+
+          <bridgehead>Editing or adding an update stream</bridgehead>
+
+          <para>Editing or adding an update stream will present you with an
+          editor page. Please note that update streams look for similarly
+          named files (using a pattern) across all releases inside a specific
+          category. You are called to provide this relationship in this page.
+          The fields you have to fill in are:</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Stream Name</term>
+
+              <listitem>
+                <para>A name for the update stream. It can be anything you
+                want and is only used in the Joomla! 1.6 XML format
+                streams</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Alias</term>
+
+              <listitem>
+                <para>Used to construct the URL in the front-end. Keep it
+                short and sweet.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Extension type</term>
+
+              <listitem>
+                <para>This is used by the Joomla! 1.6 XML format update
+                stream. If you don't care about Joomla! 1.6 or it's not a
+                Joomla! 1.6 extension, you'd better use "Files".</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Category</term>
+
+              <listitem>
+                <para>The category where we're going to look for
+                updates.</para>
+
+                <note>
+                  <para>You can have more than one update streams per
+                  category. However, a single update stream can only look
+                  inside a single category.</para>
+                </note>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Package naming pattern</term>
+
+              <listitem>
+                <para>An update stream looks for files following a specific
+                naming convention. You have to supply a "shell pattern" in
+                here. This is fancy wording for saying that you provide a
+                filename and use a single question mark (?) to match any
+                single character or a single start (*) to match any number of
+                characters. It's what you already use on your operating
+                system! Only items whose File or URL field matches this
+                pattern will be included in the update stream.</para>
+
+                <para>For instance, all Akeeba Backup Core installation
+                packages are named com_akeeba-VERSIONNUMBER-core.zip, where
+                only VERSIONNUMBER changes, i.e. com_akeeba-3.1-core.zip,
+                com_akeeba-3.1.5-core.zip etc. This leads us to a naming
+                pattern of <filename>com_akeeba-*-core.zip</filename> and
+                that's what I would use.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Element</term>
+
+              <listitem>
+                <para>This is required for Joomla! 1.6 update streams. It
+                should contain the name of your extension, e.g. com_something,
+                mod_something, plg_something etc.</para>
+
+                <para>For example, Akeeba Backup Core installs in the
+                com_akeeba directory. This is the element name:
+                com_akeeba</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Published</term>
+
+              <listitem>
+                <para>Well, I guess you know what this means! Just note that
+                unpublished streams result in empty pages</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <section>
+            <title>The INI update format</title>
+
+            <para>The INI update format was designed with portability in mind.
+            It is a deliberately simple format so that it can be parsed by
+            PHP, as well as a plethora of programming languages such as Ruby,
+            Python, Delphi, Pascal, C/C++, C#, VB.NET, or even Visual Basic
+            for Applications (if you consider <emphasis>that</emphasis> a
+            programming language!). A typical stream looks like this:</para>
+
+            <programlisting>; Live Update provision file
+software="Foo Bar"
+version="1.2.3"
+link="http://www.example.com/downloads/foobar-1.2.3.zip.html"
+date="2010-10-10"</programlisting>
+
+            <para>The first line is a comment and is always there. It allow
+            you to figure out if the rest of the file is a valid INI update
+            stream.</para>
+
+            <para>The software key provide the name of the software item. The
+            version key provides the latest version published. The link key
+            provides a download link to the item linked to that update stream.
+            Do note that due to Joomla!'s routing the extension of the file
+            might always be .html! <emphasis role="bold">Do not</emphasis>
+            trust the extension to tell you about the file type. When you
+            initiate the download, ARS will set the correct MIME type in the
+            HTTP headers. You should trust that header instead to figure out
+            the real file type. Finally, the date key gives you the release
+            date of the latest version in YYYY-MM-DD format.</para>
+          </section>
+        </section>
+
+        <section xml:id="automatic-descriptions">
+          <title>Automatic item descriptions</title>
+
+          <para>Most often than not, when dealing with software distribution,
+          you need to provide the same description and title to similarly
+          named files. For example, if you have an installable package of your
+          software you may want to give short installation instructions and a
+          link to the thorough installation guide in its description. Most
+          likely, it will also have a standard title, e.g. "com_foobar for
+          Joomla! 1.5". Traditionally, this is dealt with by copying the
+          release items from one release to the next. However, this is the
+          least convenient way to do it, as you have to copy items, edit them
+          one by one and change the file or URL they point to. That takes
+          time. What's better is to have your download system somehow "know"
+          the title and description of each download item. This is even more
+          important with zero-click item publishing like what ARS does with
+          its BleedingEdge-type repositories. So, ARS does exactly that: it
+          knows the title and description of any file, with its Automatic Item
+          Descriptions feature.</para>
+
+          <para>Launch this feature by using the <guibutton>Automatic Item
+          Descriptions</guibutton> button in ARS Control Panel. You are
+          presented with a standard Joomla! administration table. Editing an
+          item presents you with an editor form, containing the following
+          fields:</para>
+
+          <variablelist>
+            <varlistentry>
+              <term>Category</term>
+
+              <listitem>
+                <para>The category where this automatic item description will
+                be applied to</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Package name pattern</term>
+
+              <listitem>
+                <para>The file naming pattern of the files which will be
+                handled by this automatic description. For example, if you
+                type in <filename>com_foobar-*.zip</filename> all items whose
+                File or URL field matches this pattern (e.g.
+                com_foobar-1.0.zip, com_foobar-extras-1.0.zip) will be
+                assigned the Title and Description provided below if these
+                fields are not provided when you create them.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Title</term>
+
+              <listitem>
+                <para>The title to be applied to download items matching this
+                automatic description's pattern rule.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Published</term>
+
+              <listitem>
+                <para>If you want to temporarily disable an automatic
+                description, set Published to No.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Description</term>
+
+              <listitem>
+                <para>The description to be applied to download items matching
+                this automatic description's pattern rule.</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+          <para>You can use <guibutton>Save &amp; New</guibutton> to
+          mass-create many Automatic Item Description records one after the
+          other.</para>
+        </section>
+      </section>
+    </chapter>
+
+    <chapter xml:id="creating-frontend-items">
+      <title>Creating front-end items</title>
+
+      <para>A repository system is worth nothing if it can't be accessed from
+      your site's visitors. ARS comes with ten different public layouts so
+      that you can always present it the way you want. On top of that it uses
+      Chameleon skinning. This is a technique originally developed by Stian
+      Didriksen and used in the NinjaBoard forum component. Instead of
+      providing you a huge CSS file you have to customize to make the
+      component look good, Chameleon skinning uses module chrome to render its
+      output. In other words, pieces of the pages generated by ARS look like
+      Joomla! modules. Leveraging this technique allows you to quickly "skin"
+      ARS to look beautiful on your site in less than 5 minutes, without
+      writing a single line of CSS.</para>
+
+      <section xml:id="repository-views">
+        <title>Creating repository views</title>
+
+        <para>When creating a new menu item, select the <guilabel>Akeeba
+        Release System</guilabel> menu type. In the expanded layout tree you
+        can select one of the following options:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>BleedingEdge releases</term>
+
+            <listitem>
+              <para>It only shows the BleedingEdge categories, most commonly
+              used to serve developer releases / nightly builds.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Normal releases</term>
+
+            <listitem>
+              <para>It only shows the categories of the "Normal" type.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Entire repository</term>
+
+            <listitem>
+              <para>Shows both kinds of categories.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>You have the following <guilabel>Parameters
+        (Basic)</guilabel>:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Categories grouping</term>
+
+            <listitem>
+              <para>Set to Normal first in order to show categories of the
+              Normal type on top. Set to None to show all categories based on
+              the ordering you specify below.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Category ordering</term>
+
+            <listitem>
+              <para>Choose the ordering you'd like to apply to the categories
+              listing</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Releases ordering</term>
+
+            <listitem>
+              <para>When a user clicks on a category, it defines the ordering
+              to be applied to the release of that category</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Items ordering</term>
+
+            <listitem>
+              <para>When a user clicks on a release, it defines the ordering
+              to be applied to the items of that release</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>In the <guilabel>Parameters Advanced</guilabel> you have the
+        following options:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Show pagination</term>
+
+            <listitem>
+              <para>Should we show the pagination (links to the individual
+              pages) on the bottom of the page?</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Pagination results</term>
+
+            <listitem>
+              <para>Should we show the pagination results (page X of Y) on the
+              bottom of the page?</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Show a feed link</term>
+
+            <listitem>
+              <para>If enabled, the page will include links to the RSS and
+              Atom feeds. This is useful to provide push updates to your
+              clients.</para>
+
+              <tip>
+                <para>If you want to let people know whenever you release new
+                software by email, you can use Feedburner. First, copy the RSS
+                feed URL and then disable the feed links. Go to FeedBurner,
+                burn a new feed with that RSS feed and choose to enable email
+                subscriptions to the feed. Provide a link to the subscription
+                page or a subscription form in a module on the repository page
+                for your visitors to subscribe. Super easy and very
+                efficient!</para>
+              </tip>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </section>
+
+      <section xml:id="latest-releases-views">
+        <title>Creating a "Latest Releases" view</title>
+
+        <para>The "Latest Releases" view is a single page overview showing all
+        the categories, their latest releases and the download items on each
+        one of then. You can view a live (and working!) demo on
+        https://www.akeebabackup.com/latest. When creating a new menu item,
+        select the <guilabel>Akeeba Release System</guilabel> menu type. In
+        the expanded layout tree select <guilabel>Latest
+        Releases</guilabel>.</para>
+
+        <para>You have the following <guilabel>Parameters
+        (Basic)</guilabel>:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Category ordering</term>
+
+            <listitem>
+              <para>Choose the ordering you'd like to apply to the categories
+              listing</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Releases ordering</term>
+
+            <listitem>
+              <para>When a user clicks on a category, it defines the ordering
+              to be applied to the release of that category</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Items ordering</term>
+
+            <listitem>
+              <para>When a user clicks on a release, it defines the ordering
+              to be applied to the items of that release</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>In the <guilabel>Parameters Advanced</guilabel> you have the
+        following options:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Show pagination</term>
+
+            <listitem>
+              <para>Should we show the pagination (links to the individual
+              pages) on the bottom of the page?</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Pagination results</term>
+
+            <listitem>
+              <para>Should we show the pagination results (page X of Y) on the
+              bottom of the page?</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Show a feed link</term>
+
+            <listitem>
+              <para>If enabled, the page will include links to the RSS and
+              Atom feeds. This is useful to provide push updates to your
+              clients.</para>
+
+              <tip>
+                <para>If you want to let people know whenever you release new
+                software by email, you can use Feedburner. First, copy the RSS
+                feed URL and then disable the feed links. Go to FeedBurner,
+                burn a new feed with that RSS feed and choose to enable email
+                subscriptions to the feed. Provide a link to the subscription
+                page or a subscription form in a module on the repository page
+                for your visitors to subscribe. Super easy and very
+                efficient!</para>
+              </tip>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </section>
+
+      <section xml:id="category-views">
+        <title>Creating category views</title>
+
+        <para>When creating a new menu item, select the <guilabel>Akeeba
+        Release System</guilabel> menu type. In the expanded layout tree you
+        can select <guilabel>Category View</guilabel>.</para>
+
+        <para>You have the following <guilabel>Parameters
+        (Basic)</guilabel>:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Select category</term>
+
+            <listitem>
+              <para>Choose the category you'd like to list</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Releases ordering</term>
+
+            <listitem>
+              <para>It defines the ordering to be applied to the release of
+              that category</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Items ordering</term>
+
+            <listitem>
+              <para>When a user clicks on a release, it defines the ordering
+              to be applied to the items of that release</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>In the <guilabel>Parameters Advanced</guilabel> you have the
+        following options:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Show pagination</term>
+
+            <listitem>
+              <para>Should we show the pagination (links to the individual
+              pages) on the bottom of the page?</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Pagination results</term>
+
+            <listitem>
+              <para>Should we show the pagination results (page X of Y) on the
+              bottom of the page?</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Show a feed link</term>
+
+            <listitem>
+              <para>If enabled, the page will include links to the RSS and
+              Atom feeds. This is useful to provide push updates to your
+              clients.</para>
+
+              <tip>
+                <para>If you want to let people know whenever you release new
+                versions of your software by email, you can use Feedburner.
+                First, copy the RSS feed URL and then disable the feed links.
+                Go to FeedBurner, burn a new feed with that RSS feed and
+                choose to enable email subscriptions to the feed. Provide a
+                link to the subscription page or a subscription form in a
+                module on the repository page for your visitors to subscribe.
+                Super easy and very efficient!</para>
+              </tip>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </section>
+
+      <section xml:id="release-views">
+        <title>Creating release views</title>
+
+        <para>When creating a new menu item, select the <guilabel>Akeeba
+        Release System</guilabel> menu type. In the expanded layout tree you
+        can select <guilabel>Release View</guilabel>.</para>
+
+        <para>You have the following <guilabel>Parameters
+        (Basic)</guilabel>:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Select release</term>
+
+            <listitem>
+              <para>Choose the release you'd like to list</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Items ordering</term>
+
+            <listitem>
+              <para>It defines the ordering to be applied to the items of that
+              release</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>In the <guilabel>Parameters Advanced</guilabel> you have the
+        following options:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Show pagination</term>
+
+            <listitem>
+              <para>Should we show the pagination (links to the individual
+              pages) on the bottom of the page?</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Pagination results</term>
+
+            <listitem>
+              <para>Should we show the pagination results (page X of Y) on the
+              bottom of the page?</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Show a feed link</term>
+
+            <listitem>
+              <para>If enabled, the page will include links to the RSS and
+              Atom feeds. This is useful to provide push updates to your
+              clients.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </section>
+
+      <section xml:id="make-it-look-beautiful">
+        <title>Making it look beautiful</title>
+
+        <para>ARS is using a Chameleon skinning engine. This term was coined
+        by Stian Didriksen to name the technique he is using in the NinjaBoard
+        forum component. In short, Chameleon skinning uses your template's
+        module chrome to theme your pages. Instead of providing a truckload of
+        CSS classes and a long CSS file you need to override to make the
+        component fit your site's template, the individual parts of the page,
+        e.g. category items in the repository view, are rendered as Joomla!
+        modules. Spending 5 minutes to fine-tune the module rendering
+        parameters allows you to easily and optimally integrate the visual
+        presentation of ARS to match your template. The component
+        intelligently "changes" its "colors" to match its surroundings, much
+        like a chameleon.</para>
+
+        <para>In order to configure the Chameleon skinning engine, go to the
+        component's Control Panel page and click on the
+        <guibutton>Parameters</guibutton> (Joomla! 1.5) or
+        <guibutton>Options</guibutton> (Joomla! 1.6) button in the toolbar.
+        You can see the following options for the Category boxes:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Category module style</term>
+
+            <listitem>
+              <para>There is a drop-down box listing all the module "chrome"
+              (rendering types) for modules installed on your Joomla! site.
+              Make sure you select one under the "system" group (these are
+              basic styles always available to all templates) or one of the
+              items under your specific template's group.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Category Modulestyle Sfx</term>
+
+            <listitem>
+              <para>This is the class suffix to append to the module. Many
+              template providers supply different module styles using one or
+              more "suffixes". Type in the list of suffixes you want in this
+              box.</para>
+
+              <tip>
+                <para>You may need to leave a leading space before typing
+                suffixes, depending on your template. If, after typing in the
+                suffix(es), you see no visual change please leave a leading
+                space. Multiple suffixes are separated by spaces.</para>
+              </tip>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>There are also equivalent options for the Releases and Items
+        boxes.</para>
+
+        <para>There is also one item called <guilabel>Bleeding Edge
+        Suffix</guilabel>. These suffixes will be applied to category boxes
+        for categories of the BleedingEdge type. In other words, a category
+        box for a BleedingEdge-type category will have both the Category
+        Modulestyle Sfx and Bleeding Edge Suffix contents appended to its CSS
+        class name. This allows you to style Bleeding Edge categories
+        differently than normal categories should you choose to do so.</para>
+
+        <para>The last item is called the <guilabel>Link template</guilabel>
+        and defines how links to categories, releases and items will be
+        rendered. By default it is <code>&lt;a href="%s"
+        class="readon"&gt;%s&lt;/a&gt;</code> which is the generic way to
+        render a "read on" link in Joomla!. Different templates use a slightly
+        different HTML syntax for the "read on" links. You can type in the
+        HTML you want. The first %s occurrence will be replaced with the URL
+        of the link, whereas the second %s occurrence will be replaced with
+        the item's title.</para>
+
+        <warning>
+          <para>Joomla! 1.6 doesn't allow you to use HTML in this field. The
+          only workaround is to substitute the lower-than and greater-than
+          characters with square brackets. So, in Joomla! 1.6, the default
+          link template should be written as <code>[a href="%s"
+          class="readon"]%s[/a]</code>. ARS will intelligently figure out what
+          you meant and convert it back to valid HTML.</para>
+        </warning>
+
+        <para>If your template doesn't have adequate module styles, ARS will
+        look like crap. However, there is an easy workaround! Just select the
+        "rounded" style on all module styles and use unique suffixes for each
+        kind of module type, e.g. " ars-category" for the category module
+        suffix, " ars-release" for the category release module suffix and so
+        on. This allows you to use standard CSS in your template to skin ARS
+        to your liking, effectively working around the limitations of the
+        Chameleon engine on templates lacking good support for module
+        styles.</para>
+
+        <para>AkeebaBackup.com strongly recommends using templates from
+        respected template clubs producing feature-rich templates, such as
+        RocketTheme, if you want optimal presentation results with minimal
+        fuss.</para>
+      </section>
+    </chapter>
+
+    <chapter xml:id="advanced-uses">
+      <title>Advanced uses</title>
+
+      <para>ARS was designed with advanced users, professional site builders
+      and, most importantly, developers in mind. We offer some features never
+      seen before in a download repository, like 0-click publishing, country
+      logging and an easy way to provide 1-click updates to your own
+      extensions!</para>
+
+      <section xml:id="live-update">
+        <title>One-click Live Updates for your components</title>
+
+        <para>As part of our Open Source spirit, we are thrilled to announce
+        the availability of <guilabel>Akeeba Live Update</guilabel> (ALU). It
+        is a library licensed under the GNU Lesser General Public License
+        (LGPL) version 3 or, at your own option, any later version. It allows
+        you to enable one-click updates of your components by adding just 20
+        lines of boilerplate PHP code.</para>
+
+        <note>
+          <para>Akeeba Live Update does not require using Akeeba Release
+          System and does not require any third party software to be installed
+          on your user's site. It integrates with your own component, it is
+          distributed with your own component and is just a bunch of files
+          placed in a directory of your own component. It has zero
+          dependencies and works perfectly under Joomla! 1.5 and Joomla!
+          1.6.</para>
+        </note>
+
+        <bridgehead>Including ALU in your component</bridgehead>
+
+        <para>The first thing you need to include in your extension is the ALU
+        library itself. After installing Akeeba Release System, go to your
+        site's <filename>administrator/components/com_ars</filename> directory
+        and copy the <filename>liveupdate</filename> directory to your
+        extension's back-end directory. It's important not to name this
+        directory differently. For example, if you have a component named
+        com_foobar then the library must be installed in
+        <filename>administrator/components/com_foobar/liveupdate</filename>.</para>
+
+        <bridgehead>Configuring ALU</bridgehead>
+
+        <para>ALU needs to know which extension it updates, where to look for
+        updates and where to cache its information. You can do that by editing
+        the
+        <filename>administrator/components/com_foobar/liveupdate/config.php</filename>
+        file. The variables you have to supply are the following:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>$_extensionName</term>
+
+            <listitem>
+              <para>The folder name of your extension. In our example, that's
+              <filename>com_foobar</filename>. ALU uses this information to
+              automatically locate your extension's XML manifest file so that
+              it can read the version number and release date of the installed
+              copy of your extension to your user's site.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>$_extensionTitle</term>
+
+            <listitem>
+              <para>The human-readable name of your extension, as presented in
+              the Live Update GUI</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>$_updateURL</term>
+
+            <listitem>
+              <para>The URL to the update stream. Right now, only INI update
+              streams are supported. You can either use ARS on your site to
+              automatically provide the INI file (copy the INI link's target
+              from the Update Streams view), or manually create an INI file
+              with a text editor, place it somewhere publicly accessible and
+              type in that URL in here.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>$_requiresAuthorization</term>
+
+            <listitem>
+              <para>If you are using ARS to serve the downloads to your
+              extension and you are limiting downloads only to registered
+              users, set this to true to let ALU know that it needs to provide
+              a username/password or a download ID to the updates server
+              before downloading the update file.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>$_versionStrategy</term>
+
+            <listitem>
+              <para>This lets ALU know how to determine if the component is
+              up-to-date or out-of-date. The following options are
+              available:</para>
+
+              <variablelist>
+                <varlistentry>
+                  <term>different</term>
+
+                  <listitem>
+                    <para>If the version reported by the update server is
+                    different then the currently installed one, ALU decides
+                    that an update is available. Default and enough for most
+                    uses.</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>newest</term>
+
+                  <listitem>
+                    <para>The release date reported by the update server and
+                    the one reported by the component are compared. If the
+                    update server's release date is newer, ALU decides there
+                    is an update available.</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>vcompare</term>
+
+                  <listitem>
+                    <para>The version number reported by the update server and
+                    the one in the current extension are compared using PHP's
+                    version_compare() in order to determine which is
+                    newer.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>$_storageAdapter</term>
+
+            <listitem>
+              <para>It can either be <option>file</option> or
+              <option>component</option>. The File adapter will try to cache
+              the update information in a file named something like
+              <filename>com_foobar.update.ini</filename>. The Component
+              adapter will try to store the (serialized) update information in
+              a component parameter, by default called
+              <option>liveupdate</option>. If you do not provide this option,
+              the File adapter will be used.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>$_storageConfig</term>
+
+            <listitem>
+              <para>This is an array containing the configuration options of
+              the storage adapter. It is optional.</para>
+
+              <para>For the File adapter the following options are
+              available:</para>
+
+              <variablelist>
+                <varlistentry>
+                  <term>path</term>
+
+                  <listitem>
+                    <para>Where to store the update cache file. By default,
+                    that's JPATH_CACHE, i.e. the
+                    <filename>administrator/cache</filename> directory.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+
+              <para>An example of setting the configuration is this:</para>
+
+              <programlisting>var $_storageConfig = array('path' =&gt; JPATH_CACHE);</programlisting>
+
+              <para>For the Component adapter you have the following
+              options:</para>
+
+              <variablelist>
+                <varlistentry>
+                  <term>component</term>
+
+                  <listitem>
+                    <para>The component whose parameters will be used for
+                    saving the update information. If it's not supplied, the
+                    currently running component is assumed.</para>
+                  </listitem>
+                </varlistentry>
+
+                <varlistentry>
+                  <term>key</term>
+
+                  <listitem>
+                    <para>The component parameter used for saving the update
+                    information. It has to be a hidden parameter whose name is
+                    the same as the contents of this configuration parameter.
+                    If it is not supplied, <option>liveupdate</option> is
+                    assumed.</para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+
+              <para>An example of setting the configuration is this:</para>
+
+              <programlisting>var $_storageConfig = array('component' =&gt; 'com_foobar', 'key' =&gt; 'liveupdate');</programlisting>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <bridgehead>Letting ALU handle the view=liveupdate
+        requests</bridgehead>
+
+        <para>ALU is designed to be able to handle requests to your
+        component's view=liveupdate URLs. In order to do that, you have to
+        open the main entry point file of your component and append four lines
+        of boilerplate PHP code. For instance, if your component is named
+        com_foobar, open
+        <filename>administrator/components/com_foobar/foobar.php</filename>
+        and paste the following lines right after the <code>defined('_JEXEC')
+        or die();</code> statement.</para>
+
+        <programlisting>require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
+if(JRequest::getCmd('view','') == 'liveupdate') {
+    LiveUpdate::handleRequest();
+    return;
+}</programlisting>
+
+        <para>These lines do the following:</para>
+
+        <orderedlist>
+          <listitem>
+            <para>They load the ALU library.</para>
+          </listitem>
+
+          <listitem>
+            <para>They check if the name of the view is liveupdate. You can
+            use a different view name by editing the right hand side of the
+            conditional check.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the view matches, they hand off the execution to ALU. Do
+            not forget the return statement! If you do, your component's
+            controller will fire after ALU's integrated controller, wrecking
+            havoc.</para>
+          </listitem>
+        </orderedlist>
+
+        <bridgehead>Using ALU to create an update status Control Panel
+        icon</bridgehead>
+
+        <para>ALU has a shorthand function to create an icon div, useful for
+        displaying the update status of your extension in your extension's
+        Control Panel page. All you have to do is paste the following line in
+        your layout file:</para>
+
+        <programlisting>&lt;?php echo LiveUpdate::getIcon(); ?&gt;</programlisting>
+
+        <bridgehead>How ALU updates work</bridgehead>
+
+        <para>The first step is to get your user to visit ALU's main page. If
+        you followed the instructions above to the letter, this is done by
+        redirecting your user to view=liveupdate of your component, e.g.
+        <uri>index.php?option=com_foobar&amp;view=liveupdate</uri>.</para>
+
+        <para>Live Update will then try to fetch the update information. It
+        will first check its cache. If there are no cached data or if they are
+        older than 6 hours, it will re-fetch the information from your server.
+        If an update is found, it will notify the user. It will also notify
+        the user if Live Update is not supported on his server (lack of cURL /
+        URL fopen() wrappers or firewall disallowing connections to your
+        update server) or if ALU determined that the last time it tried to
+        fetch updates it crashed.</para>
+
+        <para>If the user chooses to install a new version, the following will
+        happen:</para>
+
+        <orderedlist>
+          <listitem>
+            <para>ALU checks if the Joomla! FTP Layer is enabled but no
+            username/password is supplied. In that case, it will ask your user
+            to supply the FTP username and password.</para>
+          </listitem>
+
+          <listitem>
+            <para>The update package is fetched from your server and saved to
+            your user's temporary directory. ALU will first try using cURL. If
+            that fails, it will try using URL fopen() wrappers. If writing
+            directly to the file is not possible, ALU will load the package in
+            memory and use JFile::write() to write it to disk. If all else
+            fails, your user will see an error messaging prompting him to
+            enable Joomla!'s FTP layer.</para>
+          </listitem>
+
+          <listitem>
+            <para>The downloaded update package is extracted using Joomla!'s
+            API. If that fails, your user is notified and the process stops. A
+            failed extraction usually means that either your package is broken
+            or your user's server doesn't allow downloading files
+            correctly.</para>
+          </listitem>
+
+          <listitem>
+            <para>The extracted package is installed using Joomla!'s API, but
+            without calling the com_installer component itself. Any
+            post-installation tasks will run normally, so don't worry if you
+            want to run AJAX calls as soon as your extension is
+            installed.</para>
+
+            <para>Without loading a different page, a hidden IFRAME will take
+            care of cleaning up, i.e. remove the update package and its
+            extracted files, just like com_installer would do.</para>
+          </listitem>
+        </orderedlist>
+
+        <para>Since ALU performs these four steps in separate page loads it is
+        much more resilient to server timeouts than Joomla!'s com_installer.
+        More specifically, com_installer tries to run all four steps within
+        the same page load. If your client is using Joomla!'s FTP layer this
+        takes forever and causes a White Screen Of Death due to timeout or
+        memory errors. ALU separates and isolates those steps, avoiding such
+        issues even with extremely large installation packages (in the range
+        of 2-4Mb!). Moreover, it provides intelligent error messages where it
+        can instead of the cryptic com_installer messages, where "Package not
+        found" may mean "I could not download the file"...</para>
+
+        <bridgehead>Allowing your user to upgrade extensions with restricted
+        downloads</bridgehead>
+
+        <para>Some developers want to provide downloads that are not openly
+        accessible to the public. For instance, downloading a file may require
+        registering for a free account and logging in before it is available.
+        Developers distributing their software for a fee have a similar
+        condition to face: they need only their subscribers to be able to
+        download their software. The common ground in all of those cases is
+        that you actually need to log in the user before downloading the
+        file.</para>
+
+        <para>ALU, when consuming the update feed of an ARS installation, can
+        cater for that. How? If you set the $_requiresAuthorization to true,
+        ALU knows that your site requires authorization before downloading a
+        backup archive. In order to achieve that, it will append a
+        username/password pair or a unique per user Download ID to the
+        download URL. Akeeba Release System on your site sees that information
+        and tries to authenticate the user. If the authentication succeeds, it
+        will continue with the download.</para>
+
+        <para>The remaining question is how ALU knows what the
+        username/password pair or the download ID is. The answer is simple.
+        All you have to do is to create component parameters in your
+        component's config.xml file. If you want to use username/password
+        pairs, add the following lines after your &lt;params&gt; tag:</para>
+
+        <programlisting>&lt;param name="username" type="text" default="" size="30"
+label="Username"
+description ="Enter the username to our site in order to enable Live Updates" /&gt;
+&lt;param name="password" type="text" default="" size="30"
+label="Password"
+description ="Enter the password to our site in order to enable Live Updates" /&gt;
+</programlisting>
+
+        <para>If you have a Joomla! 1.6 component replace &lt;param&gt; with
+        &lt;field&gt;. Similarly, in order to use a Download ID use
+        this:</para>
+
+        <programlisting>&lt;param name="downloadid" type="text" default="" size="30"
+label="Download ID"
+description ="Enter your Download ID to enable Live Updates" /&gt;</programlisting>
+
+        <para>Alternatively, you can override the LiveUpdateConfig class'
+        constructor and populate the $_username/$_password or $_downloadID
+        parameters during the class initialization.</para>
+
+        <bridgehead>Do I need to pay anything / install your software on my
+        users' site / sell my soul to the devil to use ALU?</bridgehead>
+
+        <para>No, absolutely not! We provide ALU free of charge and royalty
+        free. It's license (GNU LGPL 3 or later) allows you to use ALU on Open
+        Source and Proprietary components alike. You set up ALU to consume an
+        ARS-provided INI update stream or you can supply your own INI update
+        stream. There are no per-requisites and no strings attached. We have
+        created ALU because we needed it for our own use. We give it away to
+        the world so that all extensions can provide the smooth
+        one-click-and-you're-up-to-date experience that made us famous.</para>
+
+        <para>We kindly ask, however, to not remove the link back to us on the
+        bottom of ALU's pages. While you can legally do that (we can't and
+        won't prevent you from doing so) we consider it professional courtesy
+        to give us credit for our hard work. We also kindly ask you to submit
+        any patches, fixes, additions or observations back to us. ALU is Free
+        Software and as such it is powered by the worldwide Joomla! community.
+        Any and all improvements to ALU have a positive impact to thousands of
+        users.</para>
+      </section>
+
+      <section xml:id="bleedingedge-repositories">
+        <title>How the BleedingEdge categories work</title>
+
+        <para>BleedingEdge (BE) categories are quite different than the
+        Normal-type categories. You don't have to visit your site's back-end
+        to publish and unpublish releases and items. It all happens
+        automatically whenever you upload or delete files on your server. Here
+        is the breakdown of how that works.</para>
+
+        <para>As all ARS categories, BleedingEdge categories are linked with a
+        Files Directory. Unlike Normal-type categories, BE categories
+        continuously monitor that directory for changes. Whenever you create a
+        new subdirectory, a new ARS Release is created. The Version of the ARS
+        Release is the directory's name and its Maturity is always set to
+        "Alpha". Here is the coolness factor for software releases: If you
+        upload a plain text file named CHANGELOG (yes, all caps and no
+        extension), ARS will read it, compare it with the previous releases's
+        CHANGELOG, colorize the result and use that as the ARS Release's
+        description. The colorizer follows the Joomla! standard on marking
+        changes in the CHANGELOG:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Lines starting with # (hash) indicate bug fixes</para>
+          </listitem>
+
+          <listitem>
+            <para>Lines starting with + (plus) indicate added features</para>
+          </listitem>
+
+          <listitem>
+            <para>Lines starting with - (dash) indicate removed
+            features</para>
+          </listitem>
+
+          <listitem>
+            <para>Lines starting with ~ (tilde) indicate miscellaneous
+            changes</para>
+          </listitem>
+
+          <listitem>
+            <para>All other lines are comments and/or notes</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>If you're not interested in colorizing, changelogs and stuff
+        like that, just keep in mind that if you upload a plain text file
+        named CHANGELOG it will be used as your ARS Release's
+        description.</para>
+
+        <para>Finally, for each file you upload an item be created and
+        published. If you have set up Automatic Item Descriptions for the
+        category they will, of course, be used for naming the file. ARS
+        Releases and ARS Items created this way will inherit the access (view)
+        level and AMBRA Group settings of the BE category.</para>
+
+        <para>Let's sum it up, OK?</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Creating directories creates releases</para>
+          </listitem>
+
+          <listitem>
+            <para>A text file named CHANGELOG will be used to produce your
+            release's description</para>
+          </listitem>
+
+          <listitem>
+            <para>Uploading files creates items</para>
+          </listitem>
+
+          <listitem>
+            <para>Access (view) levels and AMBRA Group settings are inherited
+            from the category to the release, to the items</para>
+          </listitem>
+
+          <listitem>
+            <para>Deleting a directory unpublishes the release</para>
+          </listitem>
+
+          <listitem>
+            <para>Deleting a file unpublishes the item</para>
+          </listitem>
+
+          <listitem>
+            <para>You don't need to login to your back-end to manage the
+            releases and items, but if you want to, you can.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+      <section xml:id="updating-maxmind-geoip">
+        <title>Updating the MaxMind GeoIP database</title>
+
+        <note>
+          <para>This product includes GeoLite data created by MaxMind,
+          available from http://www.maxmind.com/.</para>
+        </note>
+
+        <para>Akeeba Release System uses the free MaxMind's GeoLite Country
+        database for determining the country of origin of users downloading
+        your items. More specifically, it uses the GeoLite Country database
+        file. This file is updated very frequently, about once every month.
+        You can download its latest version <link
+        xlink:href="http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz"
+        xmlns:xlink="http://www.w3.org/1999/xlink">directly from MaxMind's
+        website</link>. Why do that? IP assignments to countries change all
+        the time. By the time we release our software, the database file is
+        most likely already stale. This could cause some IP addresses to be
+        identified as coming from the wrong country. Updating the file
+        regularly will give you much better accuracy in the country
+        statistics. Do note that MaxMind claims an accuracy of 99.5% for its
+        free GeoLite Country database. This means that some IP addresses may
+        still be reported as belonging to the wrong country. Furthermore, IPv6
+        is not supported yet.</para>
+
+        <tip>
+          <para>If you are a subscriber to MaxMind's more accurate (99.8%
+          advertised accuracy), for-a-fee GeoIP Country database you can use
+          that database instead of the free GeoLite database included in the
+          component, using the same procedure.</para>
+        </tip>
+
+        <para>The file you download is a compressed file, named GeoIP.dat.gz.
+        You have to uncompress it first, using gunzip (Linux), or your
+        favourite archive file application such as 7-Zip, WinZIP, PKZIP for
+        Windows, BetterZIP, etc. This will result to an uncompressed file
+        named GeoIP.dat. Upload that file to the
+        <filename>administrator/components/com_ars/assets/geoip</filename>
+        directory of your site.</para>
+
+        <important>
+          <para>If you are on Linux hosting (most likely you are) lower and
+          upper case letters do matter! The file must be named exactly
+          <filename>GeoIP.dat</filename>. Other names, such as
+          <filename>Geoip.dat</filename>, <filename>GEOIP.DAT</filename> or
+          <filename>geoip.dat</filename> will not work.</para>
+        </important>
+
+        <para>Do note that download log records prior to installing the new
+        version of the database will not be affected. Only download attempts
+        logged after uploading the new database version will be affected by
+        the new database version.</para>
+      </section>
+    </chapter>
+  </part>
+
+  <part xml:id="appendices">
+    <title>Appendices</title>
+
+    <appendix version="5.0" xml:id="gnu-fdl">
+      <title>GNU Free Documentation License</title>
+
+      <para>Copyright (C) 2000, 2001, 2002 Free Software Foundation,
+      <abbrev>Inc.</abbrev> 51 Franklin <abbrev>St</abbrev> , Fifth Floor,
+      Boston, <abbrev>MA</abbrev> 02110-1301 <abbrev
+      role="initialism">USA</abbrev> . Everyone is permitted to copy and
+      distribute verbatim copies of this license document, but changing it is
+      not allowed.</para>
+
+      <bridgehead renderas="sect1">0. PREAMBLE</bridgehead>
+
+      <para>The purpose of this License is to make a manual, textbook, or
+      other functional and useful document "free" in the sense of freedom: to
+      assure everyone the effective freedom to copy and redistribute it, with
+      or without modifying it, either commercially or noncommercially.
+      Secondarily, this License preserves for the author and publisher a way
+      to get credit for their work, while not being considered responsible for
+      modifications made by others.</para>
+
+      <para>This License is a kind of "copyleft", which means that derivative
+      works of the document must themselves be free in the same sense. It
+      complements the GNU General Public License, which is a copyleft license
+      designed for free software.</para>
+
+      <para>We have designed this License in order to use it for manuals for
+      free software, because free software needs free documentation: a free
+      program should come with manuals providing the same freedoms that the
+      software does. But this License is not limited to software manuals; it
+      can be used for any textual work, regardless of subject matter or
+      whether it is published as a printed book. We recommend this License
+      principally for works whose purpose is instruction or reference.</para>
+
+      <bridgehead renderas="sect1">1. APPLICABILITY AND
+      DEFINITIONS</bridgehead>
+
+      <para>This License applies to any manual or other work, in any medium,
+      that contains a notice placed by the copyright holder saying it can be
+      distributed under the terms of this License. Such a notice grants a
+      world-wide, royalty-free license, unlimited in duration, to use that
+      work under the conditions stated herein. The "Document", below, refers
+      to any such manual or work. Any member of the public is a licensee, and
+      is addressed as "you". You accept the license if you copy, modify or
+      distribute the work in a way requiring permission under copyright
+      law.</para>
+
+      <para>A "Modified Version" of the Document means any work containing the
+      Document or a portion of it, either copied verbatim, or with
+      modifications and/or translated into another language.</para>
+
+      <para>A "Secondary Section" is a named appendix or a front-matter
+      section of the Document that deals exclusively with the relationship of
+      the publishers or authors of the Document to the Document's overall
+      subject (or to related matters) and contains nothing that could fall
+      directly within that overall subject. (Thus, if the Document is in part
+      a textbook of mathematics, a Secondary Section may not explain any
+      mathematics.) The relationship could be a matter of historical
+      connection with the subject or with related matters, or of legal,
+      commercial, philosophical, ethical or political position regarding
+      them.</para>
+
+      <para>The "Invariant Sections" are certain Secondary Sections whose
+      titles are designated, as being those of Invariant Sections, in the
+      notice that says that the Document is released under this License. If a
+      section does not fit the above definition of Secondary then it is not
+      allowed to be designated as Invariant. The Document may contain zero
+      Invariant Sections. If the Document does not identify any Invariant
+      Sections then there are none.</para>
+
+      <para>The "Cover Texts" are certain short passages of text that are
+      listed, as Front-Cover Texts or Back-Cover Texts, in the notice that
+      says that the Document is released under this License. A Front-Cover
+      Text may be at most 5 words, and a Back-Cover Text may be at most 25
+      words.</para>
+
+      <para>A "Transparent" copy of the Document means a machine-readable
+      copy, represented in a format whose specification is available to the
+      general public, that is suitable for revising the document
+      straightforwardly with generic text editors or (for images composed of
+      pixels) generic paint programs or (for drawings) some widely available
+      drawing editor, and that is suitable for input to text formatters or for
+      automatic translation to a variety of formats suitable for input to text
+      formatters. A copy made in an otherwise Transparent file format whose
+      markup, or absence of markup, has been arranged to thwart or discourage
+      subsequent modification by readers is not Transparent. An image format
+      is not Transparent if used for any substantial amount of text. A copy
+      that is not "Transparent" is called "Opaque".</para>
+
+      <para>Examples of suitable formats for Transparent copies include plain
+      ASCII without markup, Texinfo input format, LaTeX input format, SGML or
+      XML using a publicly available DTD, and standard-conforming simple HTML,
+      PostScript or PDF designed for human modification. Examples of
+      transparent image formats include PNG, XCF and JPG. Opaque formats
+      include proprietary formats that can be read and edited only by
+      proprietary word processors, SGML or XML for which the DTD and/or
+      processing tools are not generally available, and the machine-generated
+      HTML, PostScript or PDF produced by some word processors for output
+      purposes only.</para>
+
+      <para>The "Title Page" means, for a printed book, the title page itself,
+      plus such following pages as are needed to hold, legibly, the material
+      this License requires to appear in the title page. For works in formats
+      which do not have any title page as such, "Title Page" means the text
+      near the most prominent appearance of the work's title, preceding the
+      beginning of the body of the text.</para>
+
+      <para>A section "Entitled XYZ" means a named subunit of the Document
+      whose title either is precisely XYZ or contains XYZ in parentheses
+      following text that translates XYZ in another language. (Here XYZ stands
+      for a specific section name mentioned below, such as "Acknowledgements",
+      "Dedications", "Endorsements", or "History".) To "Preserve the Title" of
+      such a section when you modify the Document means that it remains a
+      section "Entitled XYZ" according to this definition.</para>
+
+      <para>The Document may include Warranty Disclaimers next to the notice
+      which states that this License applies to the Document. These Warranty
+      Disclaimers are considered to be included by reference in this License,
+      but only as regards disclaiming warranties: any other implication that
+      these Warranty Disclaimers may have is void and has no effect on the
+      meaning of this License.</para>
+
+      <bridgehead renderas="sect1">2. VERBATIM COPYING</bridgehead>
+
+      <para>You may copy and distribute the Document in any medium, either
+      commercially or noncommercially, provided that this License, the
+      copyright notices, and the license notice saying this License applies to
+      the Document are reproduced in all copies, and that you add no other
+      conditions whatsoever to those of this License. You may not use
+      technical measures to obstruct or control the reading or further copying
+      of the copies you make or distribute. However, you may accept
+      compensation in exchange for copies. If you distribute a large enough
+      number of copies you must also follow the conditions in section
+      3.</para>
+
+      <para>You may also lend copies, under the same conditions stated above,
+      and you may publicly display copies.</para>
+
+      <bridgehead renderas="sect1">3. COPYING IN QUANTITY</bridgehead>
+
+      <para>If you publish printed copies (or copies in media that commonly
+      have printed covers) of the Document, numbering more than 100, and the
+      Document's license notice requires Cover Texts, you must enclose the
+      copies in covers that carry, clearly and legibly, all these Cover Texts:
+      Front-Cover Texts on the front cover, and Back-Cover Texts on the back
+      cover. Both covers must also clearly and legibly identify you as the
+      publisher of these copies. The front cover must present the full title
+      with all words of the title equally prominent and visible. You may add
+      other material on the covers in addition. Copying with changes limited
+      to the covers, as long as they preserve the title of the Document and
+      satisfy these conditions, can be treated as verbatim copying in other
+      respects.</para>
+
+      <para>If the required texts for either cover are too voluminous to fit
+      legibly, you should put the first ones listed (as many as fit
+      reasonably) on the actual cover, and continue the rest onto adjacent
+      pages.</para>
+
+      <para>If you publish or distribute Opaque copies of the Document
+      numbering more than 100, you must either include a machine-readable
+      Transparent copy along with each Opaque copy, or state in or with each
+      Opaque copy a computer-network location from which the general
+      network-using public has access to download using public-standard
+      network protocols a complete Transparent copy of the Document, free of
+      added material. If you use the latter option, you must take reasonably
+      prudent steps, when you begin distribution of Opaque copies in quantity,
+      to ensure that this Transparent copy will remain thus accessible at the
+      stated location until at least one year after the last time you
+      distribute an Opaque copy (directly or through your agents or retailers)
+      of that edition to the public.</para>
+
+      <para>It is requested, but not required, that you contact the authors of
+      the Document well before redistributing any large number of copies, to
+      give them a chance to provide you with an updated version of the
+      Document.</para>
+
+      <bridgehead renderas="sect1">4. MODIFICATIONS</bridgehead>
+
+      <para>You may copy and distribute a Modified Version of the Document
+      under the conditions of sections 2 and 3 above, provided that you
+      release the Modified Version under precisely this License, with the
+      Modified Version filling the role of the Document, thus licensing
+      distribution and modification of the Modified Version to whoever
+      possesses a copy of it. In addition, you must do these things in the
+      Modified Version:</para>
+
+      <orderedlist numeration="upperalpha">
+        <listitem>
+          <simpara>Use in the Title Page (and on the covers, if any) a title
+          distinct from that of the Document, and from those of previous
+          versions (which should, if there were any, be listed in the History
+          section of the Document). You may use the same title as a previous
+          version if the original publisher of that version gives
+          permission.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>List on the Title Page, as authors, one or more persons or
+          entities responsible for authorship of the modifications in the
+          Modified Version, together with at least five of the principal
+          authors of the Document (all of its principal authors, if it has
+          fewer than five), unless they release you from this
+          requirement.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>State on the Title page the name of the publisher of the
+          Modified Version, as the publisher.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>Preserve all the copyright notices of the
+          Document.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>Add an appropriate copyright notice for your modifications
+          adjacent to the other copyright notices.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>Include, immediately after the copyright notices, a license
+          notice giving the public permission to use the Modified Version
+          under the terms of this License, in the form shown in the Addendum
+          below.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>Preserve in that license notice the full lists of Invariant
+          Sections and required Cover Texts given in the Document's license
+          notice.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>Include an unaltered copy of this License.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>Preserve the section Entitled "History", Preserve its
+          Title, and add to it an item stating at least the title, year, new
+          authors, and publisher of the Modified Version as given on the Title
+          Page. If there is no section Entitled "History" in the Document,
+          create one stating the title, year, authors, and publisher of the
+          Document as given on its Title Page, then add an item describing the
+          Modified Version as stated in the previous sentence.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>Preserve the network location, if any, given in the
+          Document for public access to a Transparent copy of the Document,
+          and likewise the network locations given in the Document for
+          previous versions it was based on. These may be placed in the
+          "History" section. You may omit a network location for a work that
+          was published at least four years before the Document itself, or if
+          the original publisher of the version it refers to gives
+          permission.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>For any section Entitled "Acknowledgements" or
+          "Dedications", Preserve the Title of the section, and preserve in
+          the section all the substance and tone of each of the contributor
+          acknowledgements and/or dedications given therein.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>Preserve all the Invariant Sections of the Document,
+          unaltered in their text and in their titles. Section numbers or the
+          equivalent are not considered part of the section titles.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>Delete any section Entitled "Endorsements". Such a section
+          may not be included in the Modified Version.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>Do not retitle any existing section to be Entitled
+          "Endorsements" or to conflict in title with any Invariant
+          Section.</simpara>
+        </listitem>
+
+        <listitem>
+          <simpara>Preserve any Warranty Disclaimers.</simpara>
+        </listitem>
+      </orderedlist>
+
+      <para>If the Modified Version includes new front-matter sections or
+      appendices that qualify as Secondary Sections and contain no material
+      copied from the Document, you may at your option designate some or all
+      of these sections as invariant. To do this, add their titles to the list
+      of Invariant Sections in the Modified Version's license notice. These
+      titles must be distinct from any other section titles.</para>
+
+      <para>You may add a section Entitled "Endorsements", provided it
+      contains nothing but endorsements of your Modified Version by various
+      parties--for example, statements of peer review or that the text has
+      been approved by an organization as the authoritative definition of a
+      standard.</para>
+
+      <para>You may add a passage of up to five words as a Front-Cover Text,
+      and a passage of up to 25 words as a Back-Cover Text, to the end of the
+      list of Cover Texts in the Modified Version. Only one passage of
+      Front-Cover Text and one of Back-Cover Text may be added by (or through
+      arrangements made by) any one entity. If the Document already includes a
+      cover text for the same cover, previously added by you or by arrangement
+      made by the same entity you are acting on behalf of, you may not add
+      another; but you may replace the old one, on explicit permission from
+      the previous publisher that added the old one.</para>
+
+      <para>The author(s) and publisher(s) of the Document do not by this
+      License give permission to use their names for publicity for or to
+      assert or imply endorsement of any Modified Version.</para>
+
+      <bridgehead renderas="sect1">5. COMBINING DOCUMENTS</bridgehead>
+
+      <para>You may combine the Document with other documents released under
+      this License, under the terms defined in section 4 above for modified
+      versions, provided that you include in the combination all of the
+      Invariant Sections of all of the original documents, unmodified, and
+      list them all as Invariant Sections of your combined work in its license
+      notice, and that you preserve all their Warranty Disclaimers.</para>
+
+      <para>The combined work need only contain one copy of this License, and
+      multiple identical Invariant Sections may be replaced with a single
+      copy. If there are multiple Invariant Sections with the same name but
+      different contents, make the title of each such section unique by adding
+      at the end of it, in parentheses, the name of the original author or
+      publisher of that section if known, or else a unique number. Make the
+      same adjustment to the section titles in the list of Invariant Sections
+      in the license notice of the combined work.</para>
+
+      <para>In the combination, you must combine any sections Entitled
+      "History" in the various original documents, forming one section
+      Entitled "History"; likewise combine any sections Entitled
+      "Acknowledgements", and any sections Entitled "Dedications". You must
+      delete all sections Entitled "Endorsements".</para>
+
+      <bridgehead renderas="sect1">6. COLLECTIONS OF DOCUMENTS</bridgehead>
+
+      <para>You may make a collection consisting of the Document and other
+      documents released under this License, and replace the individual copies
+      of this License in the various documents with a single copy that is
+      included in the collection, provided that you follow the rules of this
+      License for verbatim copying of each of the documents in all other
+      respects.</para>
+
+      <para>You may extract a single document from such a collection, and
+      distribute it individually under this License, provided you insert a
+      copy of this License into the extracted document, and follow this
+      License in all other respects regarding verbatim copying of that
+      document.</para>
+
+      <bridgehead renderas="sect1">7. AGGREGATION WITH INDEPENDENT
+      WORKS</bridgehead>
+
+      <para>A compilation of the Document or its derivatives with other
+      separate and independent documents or works, in or on a volume of a
+      storage or distribution medium, is called an "aggregate" if the
+      copyright resulting from the compilation is not used to limit the legal
+      rights of the compilation's users beyond what the individual works
+      permit. When the Document is included in an aggregate, this License does
+      not apply to the other works in the aggregate which are not themselves
+      derivative works of the Document.</para>
+
+      <para>If the Cover Text requirement of section 3 is applicable to these
+      copies of the Document, then if the Document is less than one half of
+      the entire aggregate, the Document's Cover Texts may be placed on covers
+      that bracket the Document within the aggregate, or the electronic
+      equivalent of covers if the Document is in electronic form. Otherwise
+      they must appear on printed covers that bracket the whole
+      aggregate.</para>
+
+      <bridgehead renderas="sect1">8. TRANSLATION</bridgehead>
+
+      <para>Translation is considered a kind of modification, so you may
+      distribute translations of the Document under the terms of section 4.
+      Replacing Invariant Sections with translations requires special
+      permission from their copyright holders, but you may include
+      translations of some or all Invariant Sections in addition to the
+      original versions of these Invariant Sections. You may include a
+      translation of this License, and all the license notices in the
+      Document, and any Warranty Disclaimers, provided that you also include
+      the original English version of this License and the original versions
+      of those notices and disclaimers. In case of a disagreement between the
+      translation and the original version of this License or a notice or
+      disclaimer, the original version will prevail.</para>
+
+      <para>If a section in the Document is Entitled "Acknowledgements",
+      "Dedications", or "History", the requirement (section 4) to Preserve its
+      Title (section 1) will typically require changing the actual
+      title.</para>
+
+      <bridgehead renderas="sect1">9. TERMINATION</bridgehead>
+
+      <para>You may not copy, modify, sublicense, or distribute the Document
+      except as expressly provided for under this License. Any other attempt
+      to copy, modify, sublicense or distribute the Document is void, and will
+      automatically terminate your rights under this License. However, parties
+      who have received copies, or rights, from you under this License will
+      not have their licenses terminated so long as such parties remain in
+      full compliance.</para>
+
+      <bridgehead renderas="sect1">10. FUTURE REVISIONS OF THIS
+      LICENSE</bridgehead>
+
+      <para>The Free Software Foundation may publish new, revised versions of
+      the GNU Free Documentation License from time to time. Such new versions
+      will be similar in spirit to the present version, but may differ in
+      detail to address new problems or concerns. See <link
+      xlink:href="http://www.gnu.org/copyleft/"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+      http://www.gnu.org/copyleft/</link> .</para>
+
+      <para>Each version of the License is given a distinguishing version
+      number. If the Document specifies that a particular numbered version of
+      this License "or any later version" applies to it, you have the option
+      of following the terms and conditions either of that specified version
+      or of any later version that has been published (not as a draft) by the
+      Free Software Foundation. If the Document does not specify a version
+      number of this License, you may choose any version ever published (not
+      as a draft) by the Free Software Foundation.</para>
+
+      <bridgehead renderas="sect1">ADDENDUM: How to use this License for your
+      documents</bridgehead>
+
+      <para>To use this License in a document you have written, include a copy
+      of the License in the document and put the following copyright and
+      license notices just after the title page:</para>
+
+      <blockquote>
+        <para>Copyright (C) YEAR YOUR NAME.</para>
+
+        <para>Permission is granted to copy, distribute and/or modify this
+        document under the terms of the GNU Free Documentation License,
+        Version 1.2 or any later version published by the Free Software
+        Foundation; with no Invariant Sections, no Front-Cover Texts, and no
+        Back-Cover Texts. A copy of the license is included in the section
+        entitled "GNU Free Documentation License".</para>
+      </blockquote>
+
+      <para>If you have Invariant Sections, Front-Cover Texts and Back-Cover
+      Texts, replace the "with...Texts." line with this:</para>
+
+      <blockquote>
+        <para>with the Invariant Sections being LIST THEIR TITLES, with the
+        Front-Cover Texts being LIST, and with the Back-Cover Texts being
+        LIST.</para>
+      </blockquote>
+
+      <para>If you have Invariant Sections without Cover Texts, or some other
+      combination of the three, merge those two alternatives to suit the
+      situation.</para>
+
+      <para>If your document contains nontrivial examples of program code, we
+      recommend releasing these examples in parallel under your choice of free
+      software license, such as the GNU General Public License, to permit
+      their use in free software.</para>
+    </appendix>
+  </part>
+</book>
