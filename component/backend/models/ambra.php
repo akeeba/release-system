@@ -58,6 +58,10 @@ class ArsModelAmbra extends JModel
 				jimport('joomla.application.component.helper');
 				$hasAkeebaSubs = JComponentHelper::getComponent( 'com_akeebasubs', true )->enabled;
 			}
+			
+			if($hasAkeebaSubs) {
+				$hasAkeebaSubs = defined('KOOWA');
+			}
 		}
 
 		return $hasAkeebaSubs;
