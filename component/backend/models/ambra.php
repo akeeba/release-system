@@ -152,8 +152,17 @@ class ArsModelAmbra extends JModel
 		if(is_null($theList)) {
 			$theList = array();
 			
-			$rawList = KFactory::get('com://admin/akeebasubs.model.levels')
-				->getList();
+			jimport('joomla.filesystem.folder');
+			if(JFolder::exists(JPATH_SITE.'/administrator/components/com_akeebasubs/databases/row')) {
+				// Akeeba Subscriptions 1.0.RC1 or earlier
+				$rawList = KFactory::get('admin.com.akeebasubs.model.levels')
+					->getList();
+			} else {
+				// Akeeba Subscriptions 1.0.RC2 or later
+				$rawList = KFactory::get('com://admin/akeebasubs.model.levels')
+					->getList();
+			}
+				
 			
 			if(!empty($rawList)) foreach($rawList as $item) {
 				$theList[] = (object)array(
@@ -230,11 +239,22 @@ ENDSQL;
 		jimport('joomla.utilities.date');
 		$jNow = new JDate();
 		
-		$rawList = KFactory::get('com://admin/akeebasubs.model.subscriptions')
-			->enabled(1)
-			->user_id($user_id)
-			->limit(0)
-			->getList();
+		jimport('joomla.filesystem.folder');
+		if(JFolder::exists(JPATH_SITE.'/administrator/components/com_akeebasubs/databases/row')) {
+			// Akeeba Subscriptions 1.0.RC1 or earlier
+			$rawList = KFactory::get('admin.com.akeebasubs.model.subscriptions')
+				->enabled(1)
+				->user_id($user_id)
+				->limit(0)
+				->getList();
+		} else {
+			// Akeeba Subscriptions 1.0.RC2 or later
+			$rawList = KFactory::get('com://admin/akeebasubs.model.subscriptions')
+				->enabled(1)
+				->user_id($user_id)
+				->limit(0)
+				->getList();
+		}
 			
 		$theList = array();
 		
