@@ -9,6 +9,10 @@
 defined('_JEXEC') or die('Restricted Access');
 
 $model = $this->getModel();
+
+$base_folder = rtrim(JURI::base(), '/');
+if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
+
 ?>
 <form name="adminForm" action="index.php" method="POST">
 	<input type="hidden" name="option" id="option" value="com_ars" />
@@ -109,7 +113,7 @@ $model = $this->getModel();
 				case 2: $item->groupname = JText::_('special'); break;
 			}
 
-			$icon = '../media/com_ars/icons/' . (empty($item->groups) ? 'unlocked_16.png' : 'locked_16.png');
+			$icon = $base_folder.'/media/com_ars/icons/' . (empty($item->groups) ? 'unlocked_16.png' : 'locked_16.png');
 		?>
 		<tr class="row<?php echo $m?>">
 			<td>
@@ -126,7 +130,7 @@ $model = $this->getModel();
 				</a>
 			</td>
 			<td>
-				<img src="../media/com_ars/icons/status_<?php echo $item->maturity ?>.png" width="16" height="16" align="left" />
+				<img src="<?php echo $base_folder ?>/media/com_ars/icons/status_<?php echo $item->maturity ?>.png" width="16" height="16" align="left" />
 				<span class="ars-access">
 					&nbsp;<span class="status-<?php echo $item->maturity?>">
 						<?php echo JText::_('LBL_RELEASES_MATURITY_'.  strtoupper($item->maturity)); ?>

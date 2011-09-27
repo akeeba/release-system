@@ -155,7 +155,7 @@ if(!function_exists('pisprint'))
 <h1><?php pitext('COM_ARS_PIHEADER'); ?></h1>
 
 <?php $rows = 0;?>
-<img src="/media/com_ars/icons/ars_logo_48.png" width="48" height="48" alt="Akeeba Release System" align="right" />
+<img src="../media/com_ars/icons/ars_logo_48.png" width="48" height="48" alt="Akeeba Release System" align="right" />
 
 <h2><?php pitext('COM_ARS_PIWELCOME') ?></h2>
 <table class="adminlist">

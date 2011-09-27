@@ -88,7 +88,6 @@ if($id)
 ?>
 
 <?php $rows = 0;?>
-<img src="/media/com_ars/icons/ars_logo_48.png" width="48" height="48" alt="Admin Tools" align="right" />
 <h2><?php echo JText::_('Akeeba Release System Uninstallation Status'); ?></h2>
 <table class="adminlist">
 	<thead>

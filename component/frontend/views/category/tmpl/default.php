@@ -9,6 +9,10 @@
 defined('_JEXEC') or die('Restricted Access');
 
 $tabs = array();
+
+$base_folder = rtrim(JURI::base(), '/');
+if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
+
 ?>
 <?php if ($this->params->get('show_page_title', 1)) : ?>
 	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></div>
@@ -40,7 +44,7 @@ $tabs = array();
 			$Itemid = JRequest::getInt('Itemid',0);
 			$release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);
 			
-			$title = "<img src=\"".JURI::base()."/media/com_ars/icons/status_".$item->maturity.".png\" width=\"16\" height=\"16\" align=\"left\" />".
+			$title = "<img src=\"".$base_folder."/media/com_ars/icons/status_".$item->maturity.".png\" width=\"16\" height=\"16\" align=\"left\" />".
 				"&nbsp;	<a href=\"".$release_url."\"><span class=\"ars-release-title-version\">".
 				$this->escape($item->version)."</span><span class=\"ars-release-title-maturity\">(".
 				JText::_('LBL_RELEASES_MATURITY_'.  strtoupper($item->maturity)).")</span></a>";

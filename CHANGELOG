@@ -22,6 +22,7 @@ Version 1.0.2
 # Sorting categories, releases or items by created date caused nothing to be displayed due to a typo in the front-end models
 # Using Apply (Joomla! 1.5) or Save (Joomla! 1.6+) on a new record, didn't display the just saved record, essentialy acting as Save & New
 # Crashes if Akeeba Subscriptions is installed and enabled, but the Nooku Framework "System - Koowa" plugin is disabled or hasn't loaded
+# JavaScript not loading on sites returning the site's web root URL in JURI::base() (thanks Chris for the find!)
 
 Version 1.0.1
 ================================================================================

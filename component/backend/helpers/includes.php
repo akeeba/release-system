@@ -23,7 +23,9 @@ class ArsHelperIncludes
 
 	static function getScriptDefs()
 	{
-		$media_folder = JURI::base().'../media/com_ars/';
+        $base_folder = rtrim(JURI::base(), '/');
+        if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
+		$media_folder = $base_folder.'/media/com_ars/';
 		$scriptDefs = array(
 			$media_folder.'js/gui-helpers.js'
 		);
@@ -68,7 +70,9 @@ class ArsHelperIncludes
 	 */
 	static function includeCSS()
 	{
-		$media_folder = JURI::base().'../media/com_ars/';
+		$base_folder = rtrim(JURI::base(), '/');
+        if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
+		$media_folder = $base_folder.'/media/com_ars/';
 		$document =& JFactory::getDocument();
 		$document->addStyleSheet($media_folder.'theme/jquery-ui.css');
 		$document->addStyleSheet($media_folder.'css/backend.css');
@@ -88,7 +92,9 @@ class ArsHelperIncludes
 	 */
 	static function jQueryLoad()
 	{
-		$js = JURI::base().'../media/com_ars/js/jquery.js';
+        $base_folder = rtrim(JURI::base(), '/');
+        if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
+		$js = $base_folder.'/media/com_ars/js/jquery.js';
 		self::$scriptURLs[] = $js;
 	}
 
@@ -97,7 +103,9 @@ class ArsHelperIncludes
 	 */
 	static function jQueryUILoad()
 	{
-		$js = JURI::base().'../media/com_ars/js/jquery-ui.js';
+        $base_folder = rtrim(JURI::base(), '/');
+        if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
+		$js = $base_folder.'/media/com_ars/js/jquery-ui.js';
 		self::$scriptURLs[] = $js;
 	}
 }

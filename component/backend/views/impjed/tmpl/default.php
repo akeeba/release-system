@@ -8,6 +8,8 @@
 
 // Protect from unauthorized access
 defined('_JEXEC') or die('Restricted Access');
+$base_folder = rtrim(JURI::base(), '/');
+if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
 ?>
 
 <fieldset id="setup-ars">
@@ -171,7 +173,7 @@ defined('_JEXEC') or die('Restricted Access');
 function doAjax(data, successCallback, errorCallback, useCaching)
 {
 	(function($) {
-		$.blockUI({ message: '<h1><img src="<?php echo JURI::base() ?>../media/com_ars/theme/images/throbber.gif" /> <?php echo JText::_('ARS_WORKING_MESSAGE') ?></h1>' });
+		$.blockUI({ message: '<h1><img src="<?php echo $base_folder ?>/media/com_ars/theme/images/throbber.gif" /> <?php echo JText::_('ARS_WORKING_MESSAGE') ?></h1>' });
 		var structure =
 		{
 			type: "POST",

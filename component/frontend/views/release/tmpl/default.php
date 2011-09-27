@@ -15,6 +15,9 @@ $this->item->hit();
 $released = new JDate($this->item->created);
 $tabs = array();
 
+$base_folder = rtrim(JURI::base(), '/');
+if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
+
 ?>
 <?php if ($this->params->get('show_page_title', 1)) : ?>
 	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></div>
@@ -28,7 +31,7 @@ $params = ArsHelperChameleon::getParams('release');
 @ob_start();
 @include $this->getSubLayout('release','category');
 $contents = ob_get_clean();
-$title = "<img src=\"".JURI::base()."/media/com_ars/icons/status_".$item->maturity.".png\" width=\"16\" height=\"16\" align=\"left\" />".
+$title = "<img src=\"".$base_folder."/media/com_ars/icons/status_".$item->maturity.".png\" width=\"16\" height=\"16\" align=\"left\" />".
 	"&nbsp;<span class=\"ars-release-title-version\">".
 	$this->escape($item->version)."</span><span class=\"ars-release-title-maturity\">(".
 	JText::_('LBL_RELEASES_MATURITY_'.  strtoupper($item->maturity)).")</span>";

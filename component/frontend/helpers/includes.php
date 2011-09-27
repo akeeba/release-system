@@ -23,7 +23,7 @@ class ArsHelperIncludes
 
 	static function getScriptDefs()
 	{
-		$media_folder = JURI::base().'../media/com_ars/';
+		$media_folder = JURI::base().'/media/com_ars/';
 		$scriptDefs = array(
 			$media_folder.'js/gui-helpers.js'
 		);

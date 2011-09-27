@@ -97,10 +97,13 @@ class ArsViewCpanel extends JView
 		ArsHelperIncludes::includeMedia(false);
 		$document =& JFactory::getDocument();
 		
-		$document->addScript(JURI::base().'../media/com_ars/js/jquery.jqplot.min.js');
-		$document->addScript(JURI::base().'../media/com_ars/js/jqplot.dateAxisRenderer.min.js');
-		$document->addScript(JURI::base().'../media/com_ars/js/jqplot.hermite.js');
-		$document->addScript(JURI::base().'../media/com_ars/js/jqplot.highlighter.min.js');
+        $base_folder = rtrim(JURI::base(), '/');
+        if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
+        
+		$document->addScript($base_folder.'/media/com_ars/js/jquery.jqplot.min.js');
+		$document->addScript($base_folder.'/media/com_ars/js/jqplot.dateAxisRenderer.min.js');
+		$document->addScript($base_folder.'/media/com_ars/js/jqplot.hermite.js');
+		$document->addScript($base_folder.'/media/com_ars/js/jqplot.highlighter.min.js');
 		
 		JHTML::_('behavior.mootools');
 
