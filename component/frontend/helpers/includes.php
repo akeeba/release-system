@@ -88,7 +88,7 @@ class ArsHelperIncludes
 	 */
 	static function jQueryLoad()
 	{
-		$js = JURI::base().'../media/com_ars/js/jquery.js';
+		$js = JURI::base().'../media/com_ars/js/akeebajq.js';
 		self::$scriptURLs[] = $js;
 	}
 
@@ -97,7 +97,7 @@ class ArsHelperIncludes
 	 */
 	static function jQueryUILoad()
 	{
-		$js = JURI::base().'../media/com_ars/js/jquery-ui.js';
+		$js = JURI::base().'../media/com_ars/js/akeebajqui.js';
 		self::$scriptURLs[] = $js;
 	}
 }

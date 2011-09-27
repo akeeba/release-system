@@ -94,7 +94,7 @@ class ArsHelperIncludes
 	{
         $base_folder = rtrim(JURI::base(), '/');
         if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
-		$js = $base_folder.'/media/com_ars/js/jquery.js';
+		$js = $base_folder.'/media/com_ars/js/akeebajq.js';
 		self::$scriptURLs[] = $js;
 	}
 
@@ -105,7 +105,7 @@ class ArsHelperIncludes
 	{
         $base_folder = rtrim(JURI::base(), '/');
         if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
-		$js = $base_folder.'/media/com_ars/js/jquery-ui.js';
+		$js = $base_folder.'/media/com_ars/js/akeebajqui.js';
 		self::$scriptURLs[] = $js;
 	}
 }
