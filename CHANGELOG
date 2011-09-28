@@ -24,6 +24,8 @@ Version 1.0.2
 # Using Apply (Joomla! 1.5) or Save (Joomla! 1.6+) on a new record, didn't display the just saved record, essentialy acting as Save & New
 # Crashes if Akeeba Subscriptions is installed and enabled, but the Nooku Framework "System - Koowa" plugin is disabled or hasn't loaded
 # JavaScript not loading on sites returning the site's web root URL in JURI::base() (thanks Chris for the find!)
+# Release ordering ignored in Latest view
+# Item ordering ignored in Latest view (thank Michael for reporting this)
 
 Version 1.0.1
 ================================================================================

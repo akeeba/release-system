@@ -94,7 +94,7 @@ class ArsModelBrowse extends ArsModelBaseFE
 		return $list;
 	}
 
-	public function processFeedData()
+	public function processFeedData($orderby = 'order')
 	{
 		if(empty($this->itemList)) return;
 
@@ -111,8 +111,34 @@ class ArsModelBrowse extends ArsModelBaseFE
 				$model->setState('published',		1);
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			1);
-				$model->setState('order',			'ordering');
-				$model->setState('dir',				'ASC');
+				switch($orderby)
+				{
+					case 'alpha':
+						$model->setState('order','title');
+						$model->setState('dir','ASC');
+						break;
+
+					case 'ralpha':
+						$model->setState('order','title');
+						$model->setState('dir','DESC');
+						break;
+
+					case 'created':
+						$model->setState('order','created');
+						$model->setState('dir','ASC');
+						break;
+
+					case 'rcreated':
+						$model->setState('order','created');
+						$model->setState('dir','DESC');
+						break;
+
+					case 'order':
+						$model->setState('order','ordering');
+						$model->setState('dir','ASC');
+						break;
+
+				}
 				$model->setState('maturity',		$this->getState('maturity','alpha'));
 				if(version_compare(JVERSION, '1.6.0', 'ge')) {
 					$app = JFactory::getApplication();
@@ -136,7 +162,10 @@ class ArsModelBrowse extends ArsModelBaseFE
 
 	public function processLatest()
 	{
-		$this->processFeedData();
+		$app = JFactory::getApplication();
+		$params =& $app->getPageParameters('com_ars');
+		
+		$this->processFeedData($params->get('rel_orderby', 'order'));
 
 		if(empty($this->itemList)) return;
 
@@ -151,12 +180,43 @@ class ArsModelBrowse extends ArsModelBaseFE
 
 				$model = JModel::getInstance('Items','ArsModel');
 				$model->reset();
+
+				$orderby = $params->get('items_orderby',	'order');
+				switch($orderby)
+				{
+					case 'alpha':
+						$model->setState('order','title');
+						$model->setState('dir','ASC');
+						break;
+
+					case 'ralpha':
+						$model->setState('order','title');
+						$model->setState('dir','DESC');
+						break;
+
+					case 'created':
+						$model->setState('order','created');
+						$model->setState('dir','ASC');
+						break;
+
+					case 'rcreated':
+						$model->setState('order','created');
+						$model->setState('dir','DESC');
+						break;
+
+					case 'order':
+						$model->setState('order','ordering');
+						$model->setState('dir','ASC');
+						break;
+
+				}
+				
 				$model->setState('published',		1);
 				$model->setState('release',			$cat->release->id);
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			0);
+                
 				if(version_compare(JVERSION, '1.6.0', 'ge')) {
-					$app = JFactory::getApplication();
 					if($app->getLanguageFilter()) {
 						$model->setState('language', JRequest::getCmd('language','*'));
 					} else {

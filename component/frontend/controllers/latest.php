@@ -31,7 +31,7 @@ class ArsControllerLatest extends ArsControllerDefault
 		$model = $this->getThisModel();
 		$model->setState( 'task',		$this->getTask() );
 		$model->setState( 'grouping',	$params->get('grouping',	'normal') );
-		$model->setState( 'orderby',	'order' );
+		$model->setState( 'orderby',	$params->get('orderby',	'order'));
 		$model->setState( 'maturity',	$params->get('min_maturity',	'alpha') );
 
 		// Push URL parameters to the model
