@@ -139,6 +139,7 @@ class ArsHelperChameleon
 		$default_template = '<a class="readon" href="%s">%s</a>';
 		$template = $params->getValue('readontemplate',$default_template);
 		
+		$template = str_replace('&quot;','"', $template);
 		$template = str_replace('[[','\\<', $template);
 		$template = str_replace(']]','\\>', $template);
 		$template = str_replace('[','<', $template);
