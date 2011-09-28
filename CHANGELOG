@@ -26,6 +26,8 @@ Version 1.0.2
 # JavaScript not loading on sites returning the site's web root URL in JURI::base() (thanks Chris for the find!)
 # Release ordering ignored in Latest view
 # Item ordering ignored in Latest view (thank Michael for reporting this)
+# Read on rendering issues in Joomla! 1.7, where quotation marks are auto-replaced with &quot; (known Joomla! 1.7 bug)
+# Released date was unformatted in Latest view under Joomla! 1.7
 
 Version 1.0.1
 ================================================================================
