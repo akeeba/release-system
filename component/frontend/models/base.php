@@ -88,7 +88,13 @@ class ArsModelBaseFE extends JModel
 				if ($response->status == JAUTHENTICATE_STATUS_SUCCESS) {
 					JPluginHelper::importPlugin('user');
 					$results = $app->triggerEvent('onLoginUser', array((array)$response, $options));
-					$user = JFactory::getUser();
+					if(version_compare(JVERSION,'1.6.0','ge')) {
+						jimport('joomla.user.helper');
+						$userid = JUserHelper::getUserId($response->username);
+						$user = &JFactory::getUser($userid);
+					} else {
+						$user = JFactory::getUser();
+					}
 					$parameters['username']	= $user->get('username');
 					$parameters['id']		= $user->get('id');
 					//$results = $app->triggerEvent('onLogoutUser', array($parameters, $options));

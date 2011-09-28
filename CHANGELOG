@@ -28,6 +28,7 @@ Version 1.0.2
 # Item ordering ignored in Latest view (thank Michael for reporting this)
 # Read on rendering issues in Joomla! 1.7, where quotation marks are auto-replaced with &quot; (known Joomla! 1.7 bug)
 # Released date was unformatted in Latest view under Joomla! 1.7
+# Authentication with username/password fails in Joomla! 1.7 (Thank you Cholalabs Team for the fix!)
 
 Version 1.0.1
 ================================================================================
