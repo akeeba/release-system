@@ -106,8 +106,8 @@ class ARSElementStyles extends ARSElementBase
 	
 	private function searchTemplate($template, $path)
 	{
-		if(!file_exists($path.$template.DS.'html'.DS.'modules.php')) return array();
-		$fileData = JFile::read($path.$template.DS.'html'.DS.'modules.php', false, 0, filesize($path.$template.DS.'html'.DS.'modules.php'));
+		if(!file_exists($path.$template.'/html/modules.php')) return array();
+		$fileData = JFile::read($path.$template.'/html/modules.php', false, 0, filesize($path.$template.'/html/modules.php'));
 		
 		preg_match_all("/function(.)modChrome_(.*?)\(/", $fileData, $matches);
 	

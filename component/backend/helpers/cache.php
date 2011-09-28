@@ -25,7 +25,7 @@ class ArsHelperCache
 		$this->domain = $domain;
 		
 		// Get the cache paths
-		$this->cachepath = JPATH_CACHE.DS.'com_ars'.DS.$domain.'.ini';
+		$this->cachepath = JPATH_CACHE.'/com_ars/'.$domain.'.ini';
 		
 		// Create a new registry
 		$this->registry = JRegistry::getInstance('arscache');

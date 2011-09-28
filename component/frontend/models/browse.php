@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-require_once dirname(__FILE__).DS.'base.php';
+require_once dirname(__FILE__).'/base.php';
 
 class ArsModelBrowse extends ArsModelBaseFE
 {

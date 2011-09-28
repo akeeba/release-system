@@ -33,7 +33,7 @@ class ArsModelCpanel extends JModel
 	 */
 	public function getIconDefinitions()
 	{
-		return $this->loadIconDefinitions(JPATH_COMPONENT_ADMINISTRATOR.DS.'views');
+		return $this->loadIconDefinitions(JPATH_COMPONENT_ADMINISTRATOR.'/views');
 	}
 
 	/**
@@ -44,11 +44,11 @@ class ArsModelCpanel extends JModel
 	{
 		$ret = array();
 
-		if(!@file_exists($path.DS.'views.ini')) return $ret;
+		if(!@file_exists($path.'/views.ini')) return $ret;
 
-		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'ini.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/ini.php';
 
-		$ini_data = ArsHelperINI::parse_ini_file($path.DS.'views.ini', true);
+		$ini_data = ArsHelperINI::parse_ini_file($path.'/views.ini', true);
 		if(!empty($ini_data))
 		{
 			foreach($ini_data as $view => $def)

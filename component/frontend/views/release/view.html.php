@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-require_once( dirname(__FILE__).DS.'..'.DS.'view.html.php' );
+require_once( dirname(__FILE__).'/../view.html.php' );
 
 class ArsViewRelease extends ArsViewBase
 {
@@ -24,12 +24,12 @@ class ArsViewRelease extends ArsViewBase
 
 		$repoType = $category->type;
 
-		require_once JPATH_COMPONENT.DS.'helpers'.DS.'breadcrumbs.php';
+		require_once JPATH_COMPONENT.'/helpers/breadcrumbs.php';
 		ArsHelperBreadcrumbs::addRepositoryRoot($repoType);
 		ArsHelperBreadcrumbs::addCategory($category->id, $category->title);
 		ArsHelperBreadcrumbs::addRelease($model->item->id, $model->item->version);
 
-		require_once JPATH_COMPONENT.DS.'helpers'.DS.'html.php';
+		require_once JPATH_COMPONENT.'/helpers/html.php';
 
 		$this->assignRef( 'category',	$category );
 

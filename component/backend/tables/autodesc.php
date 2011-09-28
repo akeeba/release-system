@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted Access');
 
 if(!class_exists('ArsTable'))
 {
-	require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'base.php';
+	require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
 }
 
 class TableAutodesc extends ArsTable

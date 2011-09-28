@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted Access');
 $session  =& JFactory::getSession();
 $suffix = '&'.$session->getName() .'='. $session->getId();
 
-require_once dirname(__FILE__).DS.'default.php';
+require_once dirname(__FILE__).'/default.php';
 $i = 1;
 ?>
 
@@ -56,7 +56,7 @@ $i = 1;
 			<?php $i = 1; foreach($this->files as $file): ?>
 			<?php
 				$i = 1 - $i;
-				$filepath = $this->path.DS.$file['filename'];
+				$filepath = $this->path.'/'.$file['filename'];
 				$filesize = $file['size'];
 			?>
 			<div class="filerow<?php echo $i?>">

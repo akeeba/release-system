@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted Access');
 
 if(!class_exists('ArsTable'))
 {
-	require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'base.php';
+	require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
 }
 
 if (!function_exists('fnmatch')) {
@@ -307,12 +307,12 @@ class TableItems extends ArsTable
 					} else {
 						jimport('joomla.filesystem.folder');
 						if(!JFolder::exists($folder)) {
-							$folder = JPATH_ROOT.DS.$folder;
+							$folder = JPATH_ROOT.'/'.$folder;
 							if(!JFolder::exists($folder)) $folder = null;
 						}
 						
 						if(!empty($folder)) {
-							$filename = $folder.DS.$filename;
+							$filename = $folder.'/'.$filename;
 						}
 					}
 				}
@@ -322,7 +322,7 @@ class TableItems extends ArsTable
 			{
 				if(is_null($url)) $url = $this->url;
 				$config =& JFactory::getConfig();
-				$target = $config->getValue('config.tmp_path').DS.'temp.dat';
+				$target = $config->getValue('config.tmp_path').'/temp.dat';
 
 				if(function_exists('curl_exec'))
 				{

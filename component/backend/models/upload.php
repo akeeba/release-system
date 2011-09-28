@@ -61,7 +61,7 @@ class ArsModelUpload extends JModel
 					jimport('joomla.filesystem.folder');
 					if(!JFolder::exists($folder))
 					{
-						$folder = JPATH_ROOT.DS.$folder;
+						$folder = JPATH_ROOT.'/'.$folder;
 						if(!JFolder::exists($folder))
 						{
 							$folder = '';
@@ -94,9 +94,9 @@ class ArsModelUpload extends JModel
 						jexit();
 					}
 					// Find the parent path to our subfolder
-					$parent = JPath::clean( @realpath($folder.DS.$subfolder.DS.'..') );
+					$parent = JPath::clean( @realpath($folder.'/'.$subfolder.'/..') );
 					$parent = trim( str_replace(JPath::clean($folder), '', $parent) , '/\\' );
-					$folder = JPath::clean($folder.DS.$subfolder);
+					$folder = JPath::clean($folder.'/'.$subfolder);
 				}
 
 				// Calculate the full path to the subfolder
@@ -207,7 +207,7 @@ class ArsModelUpload extends JModel
 		$file = $this->getState('file','');
 		if(empty($file)) return '';
 
-		$filepath = $folder.DS.$file;
+		$filepath = $folder.'/'.$file;
 		
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);

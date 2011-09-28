@@ -16,8 +16,8 @@ class ArsViewImpjed extends JView
 	public function display($tpl = null)
 	{
 		// Load helpers
-		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';
-		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'includes.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/select.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/includes.php';
 		
 		// Set the view title
 		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD').' &ndash; <small>'.JText::_('ARS_TITLE_IMPORT_JED').'</small>','ars');

@@ -41,7 +41,7 @@ class ArsViewCpanel extends JView
 		// -- Icon definitions
 		$this->assign('icondefs',			$model->getIconDefinitions() );
 		
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'cache.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/cache.php');
 		$cache = new ArsHelperCache();
 		
 		// -- Popular items (ever & week)
@@ -93,7 +93,7 @@ class ArsViewCpanel extends JView
 		$cache->save();
 
 		// Add references to CSS and JS files
-		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'includes.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/includes.php';
 		ArsHelperIncludes::includeMedia(false);
 		$document =& JFactory::getDocument();
 		

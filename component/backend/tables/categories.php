@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted Access');
 
 if(!class_exists('ArsTable'))
 {
-	require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'base.php';
+	require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
 }
 
 class TableCategories extends ArsTable
@@ -93,7 +93,7 @@ class TableCategories extends ArsTable
 			} else {
 				$check = JPath::clean($check);
 				if(!JFolder::exists($this->directory)) {
-					$directory = JPATH_SITE.DS.$this->directory;
+					$directory = JPATH_SITE.'/'.$this->directory;
 					if(!JFolder::exists($directory)) {
 						$this->setError(JText::_('ERR_CATEGORY_DIRECTORY_NOT_EXISTS'));
 						return false;

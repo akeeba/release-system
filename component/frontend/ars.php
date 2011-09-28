@@ -41,16 +41,16 @@ $jlang->load('com_ars', JPATH_SITE, null, true);
 
 // Tell JModel to look for models and tables in the back-end component directory
 jimport('joomla.application.component.model');
-JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'models');
-JModel::addTablePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
+JModel::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/models');
+JModel::addTablePath(JPATH_COMPONENT_ADMINISTRATOR.'/tables');
 
 // Load the routeing helper
-require_once dirname(__FILE__).DS.'helpers'.DS.'router.php';
+require_once dirname(__FILE__).'/helpers/router.php';
 
 // Load the appropriate controller
 $c = JRequest::getCmd('c','cpanel');
-$path = JPATH_COMPONENT.DS.'controllers'.DS.$c.'.php';
-$alt_path = JPATH_COMPONENT.DS.'plugins'.DS.'controllers'.DS.$c.'.php';
+$path = JPATH_COMPONENT.'/controllers/'.$c.'.php';
+$alt_path = JPATH_COMPONENT.'/plugins/controllers/'.$c.'.php';
 if(JFile::exists($path))
 {
 	// The requested controller exists and there you load it...
@@ -63,7 +63,7 @@ elseif(JFile::exists($alt_path))
 else
 {
 	$c = 'Default';
-	$path = JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.'default.php';
+	$path = JPATH_COMPONENT_ADMINISTRATOR.'/controllers/default.php';
 	if(!JFile::exists($path)) {
 		JError::raiseError('500',JText::_('Unknown controller').' '.$c);
 	}

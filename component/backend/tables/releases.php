@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted Access');
 
 if(!class_exists('ArsTable'))
 {
-	require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'base.php';
+	require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
 }
 
 class TableReleases extends ArsTable
@@ -82,7 +82,7 @@ class TableReleases extends ArsTable
 
 			// Get the category title
 			if(!class_exists('ArsModelCategories')) {
-				require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'categories.php';
+				require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/categories.php';
 			}
 			$catModel = new ArsModelCategories();
 			$catModel->setId($this->category_id);

@@ -241,7 +241,7 @@ class ArsHelperSelect
 	public static function categories($selected = null, $id = 'category', $attribs = array())
 	{
 		if(!class_exists('ArsModelCategories')) {
-			require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'categories.php';
+			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/categories.php';
 		}
 		$model = new ArsModelCategories(); // Do not use Singleton here!
 		$model->reset();
@@ -271,7 +271,7 @@ class ArsHelperSelect
 	public static function releases($selected = null, $id = 'release', $attribs = array(), $category_id = null)
 	{
 		if(!class_exists('ArsModelReleases')) {
-			require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'releases.php';
+			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/releases.php';
 		}
 		$model = new ArsModelReleases(); // Do not use Singleton here!
 		$model->reset();
@@ -333,7 +333,7 @@ class ArsHelperSelect
 		{
 			// Get the release
 			if(!class_exists('ArsModelReleases')) {
-				require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'releases.php';
+				require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/releases.php';
 			}
 			$relModel = new ArsModelReleases(); // Do not use Singleton here!
 			$relModel->reset();
@@ -342,7 +342,7 @@ class ArsHelperSelect
 			
 			// Get the category
 			if(!class_exists('ArsModelCategories')) {
-				require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'categories.php';
+				require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/categories.php';
 			}
 			$catModel = new ArsModelCategories(); // Do not use Singleton here!
 			$catModel->reset();
@@ -367,7 +367,7 @@ class ArsHelperSelect
 				jimport('joomla.filesystem.folder');
 				if(!JFolder::exists($directory))
 				{
-					$directory = JPATH_ROOT.DS.$directory;
+					$directory = JPATH_ROOT.'/'.$directory;
 					if(!JFolder::exists($directory)) {
 						$directory = null;
 					}
@@ -380,7 +380,7 @@ class ArsHelperSelect
 		if(!empty($directory))
 		{
 			if(!class_exists('ArsModelItems')) {
-				require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'items.php';
+				require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/items.php';
 			}
 			$model = new ArsModelItems();
 			$model->reset();

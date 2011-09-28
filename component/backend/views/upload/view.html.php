@@ -15,7 +15,7 @@ class ArsViewUpload extends JView
 {
 	public function  display($tpl = null) {
 
-		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/select.php';
 
 		if(version_compare(JVERSION, '1.6.0', 'ge')) {
 			$user = JFactory::getUser();
@@ -61,7 +61,7 @@ class ArsViewUpload extends JView
 			$document->addScript('http://code.google.com/intl/en/apis/gears/gears_init.js');
 			$document->addScript('http://bp.yahooapis.com/2.4.21/browserplus-min.js');
 
-			require_once JPATH_ROOT.DS.'components'.DS.'com_ars'.DS.'helpers'.DS.'html.php';
+			require_once JPATH_ROOT.'/components/com_ars/helpers/html.php';
 
 			if(function_exists('ini_get')) {
 				$safe_mode = ini_get('safe_mode');
@@ -94,7 +94,7 @@ class ArsViewUpload extends JView
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=items';
 		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link, (JRequest::getCmd('view','cpanel') == 'items'));
 
-		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'includes.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/includes.php';
 		ArsHelperIncludes::includeMedia();
 		
 		JHTML::_('behavior.mootools');

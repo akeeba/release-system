@@ -32,7 +32,7 @@ if(version_compare(JVERSION, '1.6.0', 'ge')) {
 }
 
 // Handle Live Update requests
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/liveupdate/liveupdate.php';
 if(JRequest::getCmd('view','') == 'liveupdate') {
 	LiveUpdate::handleRequest();
 	return;
@@ -57,8 +57,8 @@ $jlang->load('com_ars', JPATH_ADMINISTRATOR, null, true);
 
 // Load the appropriate controller
 $c = JRequest::getCmd('c','cpanel');
-$path = JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.$c.'.php';
-$alt_path = JPATH_COMPONENT_ADMINISTRATOR.DS.'plugins'.DS.'controllers'.DS.$c.'.php';
+$path = JPATH_COMPONENT_ADMINISTRATOR.'/controllers/'.$c.'.php';
+$alt_path = JPATH_COMPONENT_ADMINISTRATOR.'/plugins/controllers/'.$c.'.php';
 if(JFile::exists($path))
 {
 	// The requested controller exists and there you load it...
@@ -71,7 +71,7 @@ elseif(JFile::exists($alt_path))
 else
 {
 	$c = 'Default';
-	$path = JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.'default.php';
+	$path = JPATH_COMPONENT_ADMINISTRATOR.'/controllers/default.php';
 	if(!JFile::exists($path)) {
 		JError::raiseError('500',JText::_('Unknown controller').' '.$c);
 	}

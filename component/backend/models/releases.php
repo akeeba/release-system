@@ -13,11 +13,11 @@ jimport('joomla.filesystem.file');
 
 if(!class_exists('ArsModelBase'))
 {
-	if(!JFile::exists(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'base.php')) {
+	if(!JFile::exists(JPATH_COMPONENT_ADMINISTRATOR.'/models/base.php')) {
 		JError::raiseError(500,'Base Model not found');
 		return false;
 	}
-	require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'base.php';
+	require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/base.php';
 }
 class ArsModelReleases extends ArsModelBase
 {

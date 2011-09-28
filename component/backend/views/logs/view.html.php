@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'base.view.html.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/views/base.view.html.php';
 
 class ArsViewLogs extends ArsViewBase
 {
@@ -54,7 +54,7 @@ class ArsViewLogs extends ArsViewBase
 		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link, (JRequest::getCmd('view','cpanel') == 'items'));
 
 		// Load the select box helper
-		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/select.php';
 
 		// Run the parent method
 		parent::onDisplay();

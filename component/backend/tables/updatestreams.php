@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'base.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
 
 class TableUpdatestreams extends ArsTable
 {

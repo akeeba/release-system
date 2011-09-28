@@ -8,14 +8,14 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-require_once( dirname(__FILE__).DS.'..'.DS.'view.html.php' );
+require_once( dirname(__FILE__).'/../view.html.php' );
 
 class ArsViewLatest extends ArsViewBase
 {
 	function onDisplay()
 	{
-		require_once JPATH_COMPONENT.DS.'helpers'.DS.'html.php';
-		require_once JPATH_COMPONENT.DS.'helpers'.DS.'router.php';
+		require_once JPATH_COMPONENT.'/helpers/html.php';
+		require_once JPATH_COMPONENT.'/helpers/router.php';
 
 		// Add RSS links
 		$app = JFactory::getApplication();

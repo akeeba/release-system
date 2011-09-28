@@ -57,7 +57,7 @@ class ArsViewBase extends JView
 		// Add the CSS/JS definitions
 		$doc = JFactory::getDocument();
 		if($doc->getType() == 'html') {
-			require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'includes.php';
+			require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/includes.php';
 			ArsHelperIncludes::includeMedia();
 		}
 		

@@ -57,7 +57,7 @@ class ArsHelperChameleon
 	{
 		// Get the template's contents
 		@ob_start();
-		@include $basedir.DS.$template.'.php';
+		@include $basedir.'/'.$template.'.php';
 		$contents = ob_get_clean();
 		
 		// Set up the rendering attributes

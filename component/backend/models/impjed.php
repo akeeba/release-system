@@ -186,7 +186,7 @@ class ArsModelFRS
 
 	private function getCacheFilename($url)
 	{
-		return JPATH_CACHE.DS.'ars_'.md5($url).'.cache';
+		return JPATH_CACHE.'/ars_'.md5($url).'.cache';
 	}
 
 	private function cacheExists($url)

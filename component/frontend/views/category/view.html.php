@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-require_once( dirname(__FILE__).DS.'..'.DS.'view.html.php' );
+require_once( dirname(__FILE__).'/../view.html.php' );
 
 class ArsViewCategory extends ArsViewBase
 {
@@ -18,11 +18,11 @@ class ArsViewCategory extends ArsViewBase
 		$model = $this->getModel();
 		$repoType = $model->item->type;
 
-		require_once JPATH_COMPONENT.DS.'helpers'.DS.'breadcrumbs.php';
+		require_once JPATH_COMPONENT.'/helpers/breadcrumbs.php';
 		ArsHelperBreadcrumbs::addRepositoryRoot($repoType);
 		ArsHelperBreadcrumbs::addCategory($model->item->id, $model->item->title);
 
-		require_once JPATH_COMPONENT.DS.'helpers'.DS.'html.php';
+		require_once JPATH_COMPONENT.'/helpers/html.php';
 
 		// Add RSS links
 		$app = JFactory::getApplication();

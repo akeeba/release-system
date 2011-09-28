@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'tables'.DS.'base.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
 
 class TableLogs extends ArsTable
 {
@@ -58,8 +58,8 @@ class TableLogs extends ArsTable
 			if(isset($_SERVER['REMOTE_ADDR']))
 			{
 				$this->ip = $_SERVER['REMOTE_ADDR'];
-				require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'geoip.php';
-				$gi = geoip_open(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'geoip'.DS.'GeoIP.dat',GEOIP_STANDARD);
+				require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/geoip.php';
+				$gi = geoip_open(JPATH_COMPONENT_ADMINISTRATOR.'/assets/geoip/GeoIP.dat',GEOIP_STANDARD);
 				$this->country = geoip_country_code_by_addr($gi, $this->ip);
 				geoip_close($gi);
 			}

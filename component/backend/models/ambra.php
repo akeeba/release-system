@@ -32,7 +32,7 @@ class ArsModelAmbra extends JModel
 
 		if(is_null($hasAmbra)) {
 			jimport('joomla.filesystem.folder');
-			$hasAmbra = JFolder::exists(JPATH_ROOT.DS.'components/com_ambrasubs');
+			$hasAmbra = JFolder::exists(JPATH_ROOT.'/components/com_ambrasubs');
 			
 			if($hasAmbra) {
 				jimport('joomla.application.component.helper');
@@ -52,7 +52,7 @@ class ArsModelAmbra extends JModel
 
 		if(is_null($hasAkeebaSubs)) {
 			jimport('joomla.filesystem.folder');
-			$hasAkeebaSubs = JFolder::exists(JPATH_ROOT.DS.'components/com_akeebasubs');
+			$hasAkeebaSubs = JFolder::exists(JPATH_ROOT.'/components/com_akeebasubs');
 			
 			if($hasAkeebaSubs) {
 				jimport('joomla.application.component.helper');

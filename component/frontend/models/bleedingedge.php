@@ -46,7 +46,7 @@ class ArsModelBleedingedge extends JModel
 		} else {
 			jimport('joomla.filesystem.folder');
 			if(!JFolder::exists($folder)) {
-				$folder = JPATH_ROOT.DS.$folder;
+				$folder = JPATH_ROOT.'/'.$folder;
 				if(!JFolder::exists($folder)) return;
 			}
 		}
@@ -97,7 +97,7 @@ class ArsModelBleedingedge extends JModel
 		{
 			foreach($allReleases as $release)
 			{
-				$folder = $this->folder.DS.$release->alias;
+				$folder = $this->folder.'/'.$release->alias;
 				$known_folders[] = $release->alias;
 
 				if(!$release->published) continue;
@@ -273,7 +273,7 @@ class ArsModelBleedingedge extends JModel
 		}
 		if($this->category->type != 'bleedingedge') return;
 
-		$folder = $this->folder.DS.$release->alias;
+		$folder = $this->folder.'/'.$release->alias;
 		
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
@@ -282,7 +282,7 @@ class ArsModelBleedingedge extends JModel
 		// Do we have a changelog?
 		if(empty($release->notes))
 		{
-			$changelog = $folder.DS.'CHANGELOG';
+			$changelog = $folder.'/CHANGELOG';
 			$hasChangelog = false;
 			if($useS3) {
 				$s3 = ArsHelperAmazons3::getInstance();
@@ -343,7 +343,7 @@ class ArsModelBleedingedge extends JModel
 		{
 			$known_items[] = $item->filename;
 			if(!$item->published) continue;
-			//if(!JFile::exists($this->folder.DS.$item->filename) && !JFile::exists(JPATH_ROOT.DS.$this->folder.DS.$item->filename))
+			//if(!JFile::exists($this->folder.'/'.$item->filename) && !JFile::exists(JPATH_ROOT.'/'.$this->folder.'/'.$item->filename))
 			if(!in_array($item->filename, $files))
 			{
 				$table = JTable::getInstance('Items','Table');

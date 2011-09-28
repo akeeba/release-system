@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-require_once(dirname(__FILE__).DS.'default.php');
+require_once(dirname(__FILE__).'/default.php');
 
 class ArsControllerDownload extends ArsControllerDefault
 {

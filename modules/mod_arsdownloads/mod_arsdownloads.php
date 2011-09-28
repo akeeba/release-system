@@ -2,16 +2,16 @@
 
 defined('_JEXEC') or die();
 
-JModel::addIncludePath(JPATH_SITE.DS.'components'.DS.'com_ars'.DS.'models');
-JModel::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_ars'.DS.'models');
-JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_ars'.DS.'tables');
+JModel::addIncludePath(JPATH_SITE.'/components/com_ars/models');
+JModel::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_ars/models');
+JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_ars/tables');
 
 $ars_backend = JPATH_SITE . DS . 'administrator' . DS . 'components' . DS . 'com_ars' . DS . 'models';
 $ars_frontend = JPATH_SITE . DS . 'components' . DS . 'com_ars' . DS . 'models';
 
-include_once($ars_backend.DS.'base.php');
-include_once($ars_frontend.DS.'base.php');
-include_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_ars'.DS.'tables'.DS.'base.php';
+include_once($ars_backend.'/base.php');
+include_once($ars_frontend.'/base.php');
+include_once JPATH_ADMINISTRATOR.'/components/com_ars/tables/base.php';
 
 if(!class_exists('MydownloadsModel')) {
 	class MydownloadsModel

@@ -9,7 +9,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die('Restricted Access');
 
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'controllers'.DS.'default.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/controllers/default.php';
 
 class ArsControllerLogs extends ArsControllerDefault
 {

@@ -18,7 +18,7 @@ class ArsViewBase extends JView
 		$task = $model->getState('task','cmd');
 		
 		// Include the Chameleon helper
-		require_once dirname(__FILE__).DS.'..'.DS.'helpers'.DS.'chameleon.php';
+		require_once dirname(__FILE__).'/../helpers/chameleon.php';
 
 		// Call the relevant method
 		$method_name = 'on'.ucfirst($task);
@@ -31,7 +31,7 @@ class ArsViewBase extends JView
 		// Add the CSS/JS definitions
 		$doc = JFactory::getDocument();
 		if($doc->getType() == 'html') {
-			require_once JPATH_COMPONENT.DS.'helpers'.DS.'includes.php';
+			require_once JPATH_COMPONENT.'/helpers/includes.php';
 			ArsHelperIncludes::includeMedia();
 		}
 

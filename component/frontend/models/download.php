@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-require_once dirname(__FILE__).DS.'base.php';
+require_once dirname(__FILE__).'/base.php';
 
 class ArsModelDownload extends ArsModelBaseFE
 {
@@ -114,14 +114,14 @@ ENDSQL;
 			}
 			
 			if(!JFolder::exists($folder)) {
-				$folder = JPATH_ROOT.DS.$folder;
+				$folder = JPATH_ROOT.'/'.$folder;
 				if(!JFolder::exists($folder)) {
 					header('HTTP/1.0 404 Not Found');
 					exit(0);
 				}
 			}
 
-			$filename = $folder.DS.$item->filename;
+			$filename = $folder.'/'.$item->filename;
 			if(!JFile::exists($filename)) {
 				header('HTTP/1.0 404 Not Found');
 				exit(0);
@@ -239,11 +239,11 @@ ENDSQL;
 	}
 
 	private function get_mime_type($filename) {
-		$mimePath = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'mime';
+		$mimePath = JPATH_COMPONENT_ADMINISTRATOR.'/assets/mime';
 		$fileext = substr(strrchr($filename, '.'), 1);
 		if (empty($fileext)) return (false);
 		$regex = "/^([\w\+\-\.\/]+)\s+(\w+\s)*($fileext\s)/i";
-		$lines = file($mimePath.DS."mime.types");
+		$lines = file($mimePath.'/'."mime.types");
 		foreach($lines as $line) {
 			if (substr($line, 0, 1) == '#') continue; // skip comments
 			$line = rtrim($line) . " ";

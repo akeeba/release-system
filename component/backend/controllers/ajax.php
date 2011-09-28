@@ -15,7 +15,7 @@ class ArsControllerAjax extends JController
 {
 	function getfiles()
 	{
-		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/select.php';
 
 		$item_id = JRequest::getInt('item_id',0);
 		$release_id = JRequest::getInt('release_id',0);

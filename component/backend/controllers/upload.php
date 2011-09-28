@@ -118,7 +118,7 @@ class ArsControllerUpload extends JController
 			// The request is valid
 			$err = null;
 			if(!class_exists('MediaHelper')) {
-				require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_media'.DS.'helpers'.DS.'media.php');	
+				require_once(JPATH_ADMINISTRATOR.'/components/com_media/helpers/media.php');	
 			}
 			if (!MediaHelper::canUpload($file, $err))
 			{
@@ -129,7 +129,7 @@ class ArsControllerUpload extends JController
 				return false;
 			}
 			
-			$filepath = JPath::clean($outdir.DS.$folder.DS.strtolower($file['name']));
+			$filepath = JPath::clean($outdir.'/'.$folder.'/'.strtolower($file['name']));
 
 			if (JFile::exists($filepath))
 			{
@@ -264,7 +264,7 @@ class ArsControllerUpload extends JController
 		} else {
 			jimport('joomla.filesystem.folder');
 			
-			$newFolder = $parent.DS.JFolder::makeSafe($file);
+			$newFolder = $parent.'/'.JFolder::makeSafe($file);
 			$status = JFolder::create($newFolder);
 		}
 

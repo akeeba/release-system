@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'base.view.html.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR.'/views/base.view.html.php';
 
 class ArsViewCategories extends ArsViewBase
 {
@@ -63,7 +63,7 @@ class ArsViewCategories extends ArsViewBase
 		}
 		
 		// Load the select box helper
-		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/select.php';
 
 		// Run the parent method
 		parent::onDisplay();
@@ -72,7 +72,7 @@ class ArsViewCategories extends ArsViewBase
 	protected function onAdd()
 	{
 		// Load the select box helper
-		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'select.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/select.php';
 		parent::onAdd();
 	}
 }
