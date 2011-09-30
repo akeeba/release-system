@@ -15,5 +15,7 @@
 	<languages>
 		<language tag="en-GB">en-GB.plg_editors-xtd_arslink.ini</language>
 		<language tag="en-GB">en-GB.plg_editors-xtd_arslink.sys.ini</language>
+		<language tag="nb-NO">nb-NO.plg_editors-xtd_arslink.ini</language>
+		<language tag="nb-NO">nb-NO.plg_editors-xtd_arslink.sys.ini</language>
 	</languages>
 </install>
