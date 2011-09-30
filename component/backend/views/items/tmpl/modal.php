@@ -13,6 +13,7 @@ $model = $this->getModel();
 $base_folder = rtrim(JURI::base(), '/');
 if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
 
+$function	= JRequest::getCmd('function', 'arsSelectItem');
 ?>
 <form name="adminForm" action="index.php" method="POST">
 	<input type="hidden" name="option" id="option" value="com_ars" />
@@ -26,9 +27,6 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 <table class="adminlist">
 	<thead>
 		<tr>
-			<th width="20">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ) + 1; ?>);" />
-			</th>
 			<th width="160">
 				<?php echo JHTML::_('grid.sort', 'LBL_ITEMS_CATEGORY', 'category_id', $this->lists->order_Dir, $this->lists->order); ?>
 			</th>
@@ -37,34 +35,6 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 			</th>
 			<th>
 				<?php echo JHTML::_('grid.sort', 'LBL_ITEMS_TITLE', 'title', $this->lists->order_Dir, $this->lists->order); ?>
-			</th>
-			<th width="100">
-				<?php echo JHTML::_('grid.sort', 'LBL_ITEMS_TYPE', 'type', $this->lists->order_Dir, $this->lists->order); ?>
-			</th>
-			<th width="100">
-				<?php echo JHTML::_('grid.sort', 'Ordering', 'ordering', $this->lists->order_Dir, $this->lists->order); ?>
-				<?php echo JHTML::_('grid.order', $this->items); ?>
-			</th>
-			<th width="150">
-				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
-				<?php echo JHTML::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->lists->order_Dir, $this->lists->order); ?>
-				<?php else: ?>
-				<?php echo JHTML::_('grid.sort', 'ACCESS', 'access', $this->lists->order_Dir, $this->lists->order); ?>
-				<?php endif; ?>
-			</th>
-			<th width="80">
-				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
-				<?php echo JHTML::_('grid.sort', 'JPUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order); ?>
-				<?php else: ?>
-				<?php echo JHTML::_('grid.sort', 'PUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order); ?>
-				<?php endif; ?>
-			</th>
-			<th width="80">
-				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
-				<?php echo JHTML::_('grid.sort', 'JGLOBAL_HITS', 'hits', $this->lists->order_Dir, $this->lists->order); ?>
-				<?php else: ?>
-				<?php echo JHTML::_('grid.sort', 'HITS', 'hits', $this->lists->order_Dir, $this->lists->order); ?>
-				<?php endif; ?>
 			</th>
 			<?if(version_compare(JVERSION, '1.6.0', 'ge')):?>
 			<th>
@@ -80,14 +50,6 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 			<td>
 				<?php echo ArsHelperSelect::releases($this->lists->fltRelease, 'release', array('onchange'=>'this.form.submit();'), $this->lists->fltCategory) ?>
 			</td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td>
-				<?php echo ArsHelperSelect::published($this->lists->fltPublished, 'published', array('onchange'=>'this.form.submit();')) ?>
-			</td>
-			<td></td>
 			<?if(version_compare(JVERSION, '1.6.0', 'ge')):?>
 			<td></td>
 			<?endif;?>
@@ -123,49 +85,15 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 		?>
 		<tr class="row<?php echo $m?>">
 			<td>
-				<?php echo JHTML::_('grid.id', $i, $item->id, $checkedout); ?>
+				<?php echo htmlentities($item->cat_title, ENT_COMPAT, 'UTF-8') ?>
 			</td>
 			<td>
-				<a href="index.php?option=com_ars&view=categories&task=edit&id=<?php echo (int)$item->category_id ?>">
-					<?php echo htmlentities($item->cat_title, ENT_COMPAT, 'UTF-8') ?>
-				</a>
+				<?php echo htmlentities($item->cat_title, ENT_COMPAT, 'UTF-8') ?>
 			</td>
 			<td>
-				<a href="index.php?option=com_ars&view=releases&task=edit&id=<?php echo (int)$item->release_id ?>">
-					<?php echo htmlentities($item->version, ENT_COMPAT, 'UTF-8') ?>
-				</a>
-			</td>
-			<td>
-				<a href="index.php?option=com_ars&view=items&task=edit&id=<?php echo (int)$item->id ?>">
+				<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->id; ?>', '<?php echo $this->escape(addslashes($item->title)); ?>');" href="#">
 					<?php echo empty($item->title) ? '&mdash;&mdash;&mdash;' : htmlentities($item->title, ENT_COMPAT, 'UTF-8') ?>
 				</a>
-			</td>
-			<td>
-				<?php echo JText::_('LBL_ITEMS_TYPE_'.  strtoupper($item->type)); ?>
-			</td>
-
-			<td class="order">
-				<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', 'Move Up', $ordering ); ?></span>
-				<span><?php echo $this->pagination->orderDownIcon( $i, $count, true, 'orderdown', 'Move Down', $ordering ); ?></span>
-				<?php $disabled = $ordering ?  '' : 'disabled="disabled"'; ?>
-				<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
-			</td>
-			<td>
-				<img src="<?php echo $icon ?>" width="16" height="16" align="left" />
-				<span class="ars-access">
-				&nbsp;
-				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
-				<?php echo ArsHelperSelect::renderaccess($item->access); ?>
-				<?php else: ?>
-				<?php echo JHTML::_('grid.access', $item, $i); ?>
-				<?php endif; ?>				
-				</span>
-			</td>
-			<td>
-				<?php echo JHTML::_('grid.published', $item, $i); ?>
-			</td>
-			<td>
-				<?php echo (int)$item->hits ?>
 			</td>
 			<?if(version_compare(JVERSION, '1.6.0', 'ge')):?>
 			<td><?php echo $item->language ?></td>

@@ -119,6 +119,8 @@
 		<zipme basedir="${dirs.plugins}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
 			<fileset dir="${dirs.plugins}">
 				<include name="plg_bleedingedge**" />
+				<include name="plg_arsdlid**" />
+				<include name="plg_arslink**" />
 			</fileset>
 		</zipme>
 	</target>

@@ -85,6 +85,21 @@ if($id)
 	$result = $installer->uninstall('plugin',$id,1);
 	$status->plugins[] = array('name'=>'plg_arsdlid','group'=>'content', 'result'=>$result);
 }
+
+// -- Plugin: plg_arslink
+if(version_compare(JVERSION,'1.6.0','ge')) {
+	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `type` = "plugin" AND `element` = "arslink" AND `folder` = "content"');
+} else {
+	$db->setQuery('SELECT `id` FROM #__plugins WHERE `element` = "arslink" AND `folder` = "content"');
+}
+$id = $db->loadResult();
+if($id)
+{
+	$installer = new JInstaller;
+	$result = $installer->uninstall('plugin',$id,1);
+	$status->plugins[] = array('name'=>'plg_arslink','group'=>'editors-xtd', 'result'=>$result);
+}
+
 ?>
 
 <?php $rows = 0;?>

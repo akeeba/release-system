@@ -106,6 +106,13 @@ if(is_dir($src.'/plg_arsdlid')) {
 	$status->plugins[] = array('name'=>'plg_arsdlid','group'=>'content', 'result'=>$result);
 }
 
+// -- Plugin: plg_arslink
+if(is_dir($src.'/plg_arslink')) {
+	$installer = new JInstaller;
+	$result = $installer->install($src.'/plg_arslink');
+	$status->plugins[] = array('name'=>'plg_arslink','group'=>'editors-xtd', 'result'=>$result);
+}
+
 // Install modules and plugins -- END
 
 // Load the translation strings (Joomla! 1.5 and 1.6 compatible)
