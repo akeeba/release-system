@@ -38,7 +38,6 @@ class Com_ArsInstallerScript extends ComAkeebaStandardInstallationLibrary
 				try {
 					$db->query();
 				} catch(Exception $e) {
-					die('Fuck me');
 				}
 			}
 		}

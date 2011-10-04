@@ -10,7 +10,7 @@
 defined('_JEXEC') or die('Restricted Access');
 
 // Timezone fix; avoids errors printed out by PHP 5.3.3+ (thanks Yannick!)
-if(function_exists('date_default_timezone_get') && function_exists('date_default_timezone_set')) {
+if( !version_compare(JVERSION, '1.6.0', 'ge') && function_exists('date_default_timezone_get') && function_exists('date_default_timezone_set')) {
 	if(function_exists('error_reporting')) {
 		$oldLevel = error_reporting(0);
 	}
