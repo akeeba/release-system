@@ -24,16 +24,22 @@ jimport('joomla.filesystem.file');
 $db = JFactory::getDBO();
 
 // --- Update to 1.0.1
-$db->setQuery('CREATE INDEX `ars_log_accessed` ON `#__ars_log` (`accessed_on`)');
-$db->query();
+$sql = 'SHOW CREATE TABLE `#__ars_log`';
+$db->setQuery($sql);
+$ctableAssoc = $db->loadResultArray(1);
+$ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
+if(!strstr($ctable, '`ars_log_accessed`')) {
+	$db->setQuery('CREATE INDEX `ars_log_accessed` ON `#__ars_log` (`accessed_on`)');
+	$db->query();
 
-$db->setQuery('CREATE INDEX `ars_log_authorized` ON `#__ars_log` (`authorized`)');
-$db->query();
+	$db->setQuery('CREATE INDEX `ars_log_authorized` ON `#__ars_log` (`authorized`)');
+	$db->query();
 
-$db->setQuery('CREATE INDEX `ars_log_itemid` ON `#__ars_log` (`item_id`)');
-$db->query();
+	$db->setQuery('CREATE INDEX `ars_log_itemid` ON `#__ars_log` (`item_id`)');
+	$db->query();
+}
 
-// Update to 1.0.2
+// Update to 1.0.2 - Part I: Language fields
 $sql = 'SHOW CREATE TABLE `#__ars_categories`';
 $db->setQuery($sql);
 $ctableAssoc = $db->loadResultArray(1);
@@ -49,6 +55,18 @@ if(!strstr($ctable, '`language`'))
 	$status = $db->query();
 	
 	$sql = "ALTER TABLE `#__ars_items` ADD COLUMN `language` char(7) NOT NULL DEFAULT '*' AFTER `published`";
+	$db->setQuery($sql);
+	$status = $db->query();
+}
+
+// Update to 1.0.2 - Part II: Visual groups
+$sql = 'SHOW CREATE TABLE `#__ars_categories`';
+$db->setQuery($sql);
+$ctableAssoc = $db->loadResultArray(1);
+$ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
+if(!strstr($ctable, '`vgroup_id`'))
+{
+	$sql = "ALTER TABLE `#__ars_categories` ADD COLUMN `vgroup_id` bigint(20) NOT NULL DEFAULT '0' AFTER `directory`";
 	$db->setQuery($sql);
 	$status = $db->query();
 }

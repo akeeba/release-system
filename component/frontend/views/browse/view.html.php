@@ -16,6 +16,15 @@ class ArsViewBrowse extends ArsViewBase
 	{
 		require_once JPATH_COMPONENT.'/helpers/html.php';
 		require_once JPATH_COMPONENT.'/helpers/router.php';
+		
+		// Load visual group definitions
+		$vgModel = JModel::getInstance('Vgroups','ArsModel');
+		$raw = $vgModel->getItemList(true);
+		$vgroups = array('0' => '');
+		if(!empty($raw)) foreach($raw as $r) {
+			$vgroups[$r->id] = $r->title;
+		}
+		$this->assign('vgroups', $vgroups);
 
 		// Add RSS links
 		$app = JFactory::getApplication();

@@ -10,6 +10,7 @@ Version 1.0.2
 + #11 Plugin to display the Download ID in your site's content
 + #31 Full support for Amazon S3
 + Editor button plugin allows you to link to any ARS Item
++ Visual grouping support
 ~ Renamed jquery.js and jqueryui.js to work around some stupid plugins removing all instances of jQuery from the page's source
 ~ Replacing DS with / as the directory separator
 # Live Update did not properly support library and file extensions type in Joomla! 1.6/1.7 (patched by Michael Babker)

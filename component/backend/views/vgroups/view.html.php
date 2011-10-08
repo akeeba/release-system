@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted Access');
 
 require_once JPATH_COMPONENT_ADMINISTRATOR.'/views/base.view.html.php';
 
-class ArsViewCategories extends ArsViewBase
+class ArsViewVgroups extends ArsViewBase
 {
 	protected function onDisplay()
 	{
@@ -20,29 +20,14 @@ class ArsViewCategories extends ArsViewBase
 		// ...filter states
 		$this->lists->set('fltTitle',	$app->getUserStateFromRequest($hash.'filter_title',
 			'title', null));
-		$this->lists->set('fltType',	$app->getUserStateFromRequest($hash.'filter_type',
-			'type', null));
 		$this->lists->set('fltPublished',$app->getUserStateFromRequest($hash.'filter_published',
 			'published', null));
-		$this->lists->set('fltVgroups',$app->getUserStateFromRequest($hash.'filter_published',
-			'vgroup', null));
-		
-		$vgModel = JModel::getInstance('Vgroups','ArsModel');
-		$raw = $vgModel->getItemList(true);
-		$vgroups = array();
-		if(!empty($raw)) foreach($raw as $r) {
-			$vgroups[$r->id] = $r->title;
-		}
-		$this->assign('vgroups', $vgroups);
 
 		// Add toolbar buttons
 		if($this->perms->editstate) {
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::divider();
-		}
-		if($this->perms->create) {
-			JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'ARS_GLOBAL_COPY', false);
 		}
 		if($this->perms->delete) {
 			JToolBarHelper::deleteList();

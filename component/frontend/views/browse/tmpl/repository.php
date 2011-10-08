@@ -17,6 +17,8 @@ $Itemid = JRequest::getInt('Itemid',0);
 <?php if( array_key_exists('all', $this->items) ): ?>
 <div id="ars-categories-all">
 	<?php if(!empty($this->items)): ?>
+	<?php foreach($this->vgroups as $vgroupID => $vgroupTitle): ?>
+	<?php if($vgroupTitle): ?><h3><?php echo $vgroupTitle; ?></h3><?php endif; ?>
 	<?php
 		foreach($this->items['all'] as $id => $item):
 			$catURL = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
@@ -29,6 +31,7 @@ $Itemid = JRequest::getInt('Itemid',0);
 			echo JModuleHelper::renderModule($module, $params);
 		endforeach;
 	?>
+	<?php endforeach; ?>
 	<?php else: ?>
 	<div class="ars-nocategories">
 		<?php echo JText::_('ARS_NO_CATEGORIES'); ?>
@@ -41,6 +44,8 @@ $Itemid = JRequest::getInt('Itemid',0);
 	<h2><?php echo JText::_('ARS_CATEGORY_NORMAL'); ?></h2>
 
 	<?php if(!empty($this->items['normal'])): ?>
+	<?php foreach($this->vgroups as $vgroupID => $vgroupTitle): ?>
+	<?php if($vgroupTitle): ?><h3><?php echo $vgroupTitle; ?></h3><?php endif; ?>
 	<?php
 		foreach($this->items['normal'] as $id => $item):
 			$catURL = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
@@ -53,6 +58,7 @@ $Itemid = JRequest::getInt('Itemid',0);
 			echo JModuleHelper::renderModule($module, $params);
 		endforeach;
 	?>
+	<?php endforeach; ?>
 	<?php else: ?>
 	<div class="ars-noitems">
 		<?php echo JText::_('ARS_NO_CATEGORIES'); ?>
@@ -64,6 +70,8 @@ $Itemid = JRequest::getInt('Itemid',0);
 	<h2><?php echo JText::_('ARS_CATEGORY_BLEEDINGEDGE'); ?></h2>
 
 	<?php if(!empty($this->items['bleedingedge'])): ?>
+	<?php foreach($this->vgroups as $vgroupID => $vgroupTitle): ?>
+	<?php if($vgroupTitle): ?><h3><?php echo $vgroupTitle; ?></h3><?php endif; ?>
 	<?php
 		foreach($this->items['bleedingedge'] as $id => $item):
 			$catURL = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
@@ -76,6 +84,7 @@ $Itemid = JRequest::getInt('Itemid',0);
 			echo JModuleHelper::renderModule($module, $params);
 		endforeach;
 	?>
+	<?php endforeach; ?>
 	<?php else: ?>
 	<div class="ars-noitems">
 		<?php echo JText::_('ARS_NO_CATEGORIES'); ?>

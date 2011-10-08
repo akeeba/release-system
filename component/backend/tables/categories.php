@@ -22,6 +22,7 @@ class TableCategories extends ArsTable
 	var $type = '';
 	var $groups = '';
 	var $directory = '';
+	var $vgroup_id = 0;
 	var $created = null;
 	var $created_by = 0;
 	var $modified = '0000-00-00 00:00:00';

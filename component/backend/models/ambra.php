@@ -157,20 +157,30 @@ class ArsModelAmbra extends JModel
 			$theList = array();
 			
 			jimport('joomla.filesystem.folder');
+			jimport('joomla.filesystem.file');
 			if(JFolder::exists(JPATH_SITE.'/administrator/components/com_akeebasubs/databases/row')) {
 				// Akeeba Subscriptions 1.0.RC1 or earlier
+				$nooku = true;
 				$rawList = KFactory::get('admin.com.akeebasubs.model.levels')
 					->getList();
-			} else {
+			} elseif(JFile::exists(JPATH_SITE.'/administrator/components/com_akeebasubs/databases/tables/coupons.php')) {
 				// Akeeba Subscriptions 1.0.RC2 or later
+				$nooku = true;
 				$rawList = KFactory::get('com://admin/akeebasubs.model.levels')
+					->getList();
+			} else {
+				$nooku = false;
+				require_once JPATH_ADMINISTRATOR.'/components/com_akeebasubs/fof/include.php';
+				require_once JPATH_ADMINISTRATOR.'/components/com_akeebasubs/models/levels.php';
+				$rawList = FOFModel::getAnInstance('Levels','AkeebasubsModel')
+					->enabled('')
 					->getList();
 			}
 				
 			
 			if(!empty($rawList)) foreach($rawList as $item) {
 				$theList[] = (object)array(
-					'id'		=> $item->id,
+					'id'		=> $nooku ? $item->id : $item->akeebasubs_level_id,
 					'title'		=> $item->title
 				);
 			}
@@ -244,6 +254,7 @@ ENDSQL;
 		$jNow = new JDate();
 		
 		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
 		if(JFolder::exists(JPATH_SITE.'/administrator/components/com_akeebasubs/databases/row')) {
 			// Akeeba Subscriptions 1.0.RC1 or earlier
 			$rawList = KFactory::get('admin.com.akeebasubs.model.subscriptions')
@@ -251,12 +262,21 @@ ENDSQL;
 				->user_id($user_id)
 				->limit(0)
 				->getList();
-		} else {
+		} elseif(JFile::exists(JPATH_SITE.'/administrator/components/com_akeebasubs/databases/tables/coupons.php')) {
 			// Akeeba Subscriptions 1.0.RC2 or later
 			$rawList = KFactory::get('com://admin/akeebasubs.model.subscriptions')
 				->enabled(1)
 				->user_id($user_id)
 				->limit(0)
+				->getList();
+		} else {
+			require_once JPATH_ADMINISTRATOR.'/components/com_akeebasubs/fof/include.php';
+			require_once JPATH_ADMINISTRATOR.'/components/com_akeebasubs/models/subscriptions.php';
+			require_once JPATH_ADMINISTRATOR.'/components/com_akeebasubs/tables/subscription.php';
+			$rawList = FOFModel::getTmpInstance('Subscriptions','AkeebasubsModel',array('table'=>'subscriptions','input'=>array('option'=>'com_akeebasubs')))
+				->enabled(1)
+				->user_id($user_id)
+				->skipOnProcessList(1)
 				->getList();
 		}
 			

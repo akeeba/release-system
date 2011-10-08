@@ -509,4 +509,22 @@ class ArsHelperSelect
 		
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
+	
+	public static function vgroups($selected = null, $id = 'vgroup', $attribs = array() )
+	{
+		if(!class_exists('ArsModelVgroups')) {
+			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/vgroups.php';
+		}
+		$model = new ArsModelVgroups(); // Do not use Singleton here!
+		$model->reset();
+		$items = $model->getItemList(true);
+
+		$options = array();
+		$options[] = JHTML::_('select.option',0,'- '.JText::_('LBL_VGROUP_SELECT').' -');
+		if(count($items)) foreach($items as $item)
+		{
+			$options[] = JHTML::_('select.option',$item->id,$item->title);
+		}
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
 }

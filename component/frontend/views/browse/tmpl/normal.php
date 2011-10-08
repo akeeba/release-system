@@ -18,6 +18,8 @@ $Itemid = JRequest::getInt('Itemid',0);
 	<h2><?php echo JText::_('ARS_CATEGORY_NORMAL'); ?></h2>
 
 	<?php if(!empty($this->items['normal'])): ?>
+	<?php foreach($this->vgroups as $vgroupID => $vgroupTitle): ?>
+	<?php if($vgroupTitle): ?><h3><?php echo $vgroupTitle; ?></h3><?php endif; ?>
 	<?php
 		foreach($this->items['normal'] as $id => $item):
 			$catURL = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
@@ -30,6 +32,7 @@ $Itemid = JRequest::getInt('Itemid',0);
 			echo JModuleHelper::renderModule($module, $params);
 		endforeach;
 	?>
+	<?php endforeach; ?>
 	<?php else: ?>
 	<div class="ars-noitems">
 		<?php echo JText::_('ARS_NO_CATEGORIES'); ?>

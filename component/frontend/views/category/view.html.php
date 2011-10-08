@@ -23,7 +23,7 @@ class ArsViewCategory extends ArsViewBase
 		ArsHelperBreadcrumbs::addCategory($model->item->id, $model->item->title);
 
 		require_once JPATH_COMPONENT.'/helpers/html.php';
-
+		
 		// Add RSS links
 		$app = JFactory::getApplication();
 		$params =& $app->getPageParameters('com_ars');

@@ -31,6 +31,10 @@ $asModel = JModel::getInstance('Ambra','ArsModel');
 			<input type="text" name="alias" id="alias" value="<?php echo $this->item->alias ?>">
 		</div>
 		<div class="editform-row">
+			<label for="vgroup_id"><?php echo JText::_('LBL_CATEGORIES_VGROUP'); ?></label>
+			<?php echo ArsHelperSelect::vgroups($this->item->vgroup_id, 'vgroup_id') ?>
+		</div>
+		<div class="editform-row">
 			<label for="type"><?php echo JText::_('LBL_CATEGORIES_TYPE'); ?></label>
 			<?php echo ArsHelperSelect::categorytypes($this->item->type, 'type') ?>
 		</div>
