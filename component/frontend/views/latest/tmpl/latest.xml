@@ -57,7 +57,7 @@
 			</param>
 			
 			<param name="@spacer" type="spacer" default="" label="" description="" />
-			<param name="min_maturity" type="radio" default="alpha" label="ARS_LATEST_MINMATURITY_LBL" description="ARS_LATEST_MINMATURITY_DESC">
+			<param name="min_maturity" type="list" default="alpha" label="ARS_LATEST_MINMATURITY_LBL" description="ARS_LATEST_MINMATURITY_DESC">
 				<option value="alpha">LBL_RELEASES_MATURITY_ALPHA</option>
 				<option value="beta">LBL_RELEASES_MATURITY_BETA</option>
 				<option value="rc">LBL_RELEASES_MATURITY_RC</option>
@@ -113,7 +113,7 @@
                         <option value="1">JYes</option>
                 </field>
 				
-				<field name="min_maturity" type="radio" default="alpha" label="ARS_LATEST_MINMATURITY_LBL" description="ARS_LATEST_MINMATURITY_DESC">
+				<field name="min_maturity" type="list" default="alpha" label="ARS_LATEST_MINMATURITY_LBL" description="ARS_LATEST_MINMATURITY_DESC">
 					<option value="alpha">LBL_RELEASES_MATURITY_ALPHA</option>
 					<option value="beta">LBL_RELEASES_MATURITY_BETA</option>
 					<option value="rc">LBL_RELEASES_MATURITY_RC</option>
