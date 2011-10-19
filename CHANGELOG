@@ -1,3 +1,8 @@
+Version 1.0.3
+================================================================================
+# Bleeding Edge releases on Amazon S3 would never list any files
+# If you remove and re-upload a file for a Bleeding Edge release it wouldn't be auto-published again
+
 Version 1.0.2
 ================================================================================
 + Plugin events to customise Bleeding Edge releases

@@ -342,12 +342,14 @@ class ArsModelBleedingedge extends JModel
 		if(!empty($allItems)) foreach($allItems as $item)
 		{
 			$known_items[] = $item->filename;
-			if(!$item->published) continue;
 			//if(!JFile::exists($this->folder.'/'.$item->filename) && !JFile::exists(JPATH_ROOT.'/'.$this->folder.'/'.$item->filename))
-			if(!in_array(basename($item->filename), $files))
-			{
+			if($item->published && !in_array(basename($item->filename), $files)) {
 				$table = JTable::getInstance('Items','Table');
 				$item->published = 0;
+				$table->save($item);
+			} if(!$item->published && in_array(basename($item->filename), $files)) {
+				$table = JTable::getInstance('Items','Table');
+				$item->published = 1;
 				$table->save($item);
 			}
 		}
@@ -445,7 +447,7 @@ class ArsModelBleedingedge extends JModel
 	private function _listS3Contents($path = null)
 	{
 		static $lastDirectory = null;
-		static $lasListing = array();
+		static $lastListing = array();
 		
 		$directory = substr($path, 5);
 		
