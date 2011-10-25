@@ -161,6 +161,7 @@
 			password="${ftp.password}"
 			dir="${ftp.dir}/ars/svn${svn.lastrevision}"
 			mode="${ftp.mode}"
+			passive="true"
 			level="debug">
 			<fileset dir="${dirs.root}">
 				<include name="CHANGELOG"/>
