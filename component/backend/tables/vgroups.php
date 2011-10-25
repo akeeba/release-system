@@ -69,7 +69,7 @@ class TableVgroups extends ArsTable
 				'name'		=> '#__ars_categories',
 				'idfield'	=> 'id',
 				'idalias'	=> 'vgroup_id',
-				'joinfield'	=> 'vgroupid'
+				'joinfield'	=> 'vgroup_id'
 			)
 		);
 		if($this->canDelete($oid, $joins)) {
