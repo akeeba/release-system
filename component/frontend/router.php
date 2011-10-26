@@ -9,17 +9,13 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die('Restricted Access');
 
-if(!class_exists('ArsModelCategories'))
-{
-	jimport('joomla.application.component.model');
-	JModel::addTablePath(JPATH_ADMINISTRATOR.'/components/com_ars/tables');
-	require_once JPATH_ADMINISTRATOR.'/components/com_ars/tables/base.php';
-	require_once JPATH_ADMINISTRATOR.'/components/com_ars/models/base.php';
-	require_once JPATH_ADMINISTRATOR.'/components/com_ars/models/categories.php';
-	require_once JPATH_ADMINISTRATOR.'/components/com_ars/models/releases.php';
-	require_once JPATH_ADMINISTRATOR.'/components/com_ars/models/items.php';
-}
-
+jimport('joomla.application.component.model');
+JModel::addTablePath(JPATH_ADMINISTRATOR.'/components/com_ars/tables');
+require_once JPATH_ADMINISTRATOR.'/components/com_ars/tables/base.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_ars/models/base.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_ars/models/categories.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_ars/models/releases.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_ars/models/items.php';
 
 function arsBuildRoute(&$query)
 {
