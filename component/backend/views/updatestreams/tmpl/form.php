@@ -50,6 +50,14 @@ defined('_JEXEC') or die('Restricted Access');
 			<input type="text" name="element" id="element" value="<?php echo $this->item->element ?>" >
 		</div>
 		<div class="editform-row">
+			<label for="client_id"><?php echo JText::_('LBL_RELEASES_CLIENT_ID'); ?></label>
+			<?php echo ArsHelperSelect::clientid($this->item->client_id, 'client_id') ?>
+		</div>
+		<div class="editform-row">
+			<label for="folder"><?php echo JText::_('LBL_UPDATES_FOLDER'); ?></label>
+			<input type="text" name="folder" id="folder" value="<?php echo $this->item->folder ?>" >
+		</div>
+		<div class="editform-row">
 			<label for="published">
 				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
 				<?php echo JText::_('JPUBLISHED'); ?>

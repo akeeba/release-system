@@ -108,6 +108,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_updatestreams` (
 	`element` VARCHAR(255) NOT NULL,
 	`category` BIGINT(20) UNSIGNED NOT NULL,
 	`packname` VARCHAR(255),
+	`client_id` int(1) NOT NULL DEFAULT '1',
+	`folder` varchar(255) DEFAULT '',
 	`created` datetime NOT NULL,
 	`created_by` int(11) NOT NULL DEFAULT '0',
 	`modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',

@@ -71,6 +71,22 @@ if(!strstr($ctable, '`vgroup_id`'))
 	$status = $db->query();
 }
 
+// Update to 1.0.3 - client_id and folder in #__updatestreams
+$sql = 'SHOW CREATE TABLE `#__ars_updatestreams`';
+$db->setQuery($sql);
+$ctableAssoc = $db->loadResultArray(1);
+$ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
+if(!strstr($ctable, '`client_id`'))
+{
+	$sql = "ALTER TABLE `#__ars_updatestreams` ADD COLUMN `folder` varchar(255) DEFAULT '' AFTER `packname`";
+	$db->setQuery($sql);
+	$status = $db->query();
+
+	$sql = "ALTER TABLE `#__ars_updatestreams` ADD COLUMN `client_id` int(1) NOT NULL DEFAULT '1' AFTER `packname`";
+	$db->setQuery($sql);
+	$status = $db->query();
+}
+
 // Schema updates -- END
 
 // Install modules and plugins -- BEGIN

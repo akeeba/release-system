@@ -4,6 +4,7 @@ Version 1.0.3
 # If you remove and re-upload a file for a Bleeding Edge release it wouldn't be auto-published again
 # It was impossible to delete visual groups
 # Router throwing a fatal error when displaying the Download ID module on the repository page
+# Workaround for Joomla! 1.7.0-1.7.2 updater bug #27023 (ref http://joomlacode.org/gf/project/joomla/tracker/?action=TrackerItemEdit&tracker_id=8103&tracker_item_id=27023)
 
 Version 1.0.2
 ================================================================================

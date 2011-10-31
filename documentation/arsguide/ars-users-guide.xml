@@ -118,10 +118,10 @@
             <para>Update streams. Offer updates to your software in two
             formats: INI files easily usable by any and all programming
             languages or automatic creation of <emphasis role="bold">Joomla!
-            1.6 XML extension update streams</emphasis>. That's right! As soon
-            as you publish a new version, all your clients using Joomla! 1.6
-            will be able to automatically upgrade to it. No extra file
-            creation necessary.</para>
+            1.6 or later XML extension update streams</emphasis>. That's
+            right! As soon as you publish a new version, all your clients
+            using Joomla! 1.6 or later will be able to automatically upgrade
+            to it. No extra file creation necessary.</para>
           </listitem>
 
           <listitem>
@@ -167,14 +167,15 @@
           </listitem>
 
           <listitem>
+            <para>Full integration of Amazon S3, including a file manager for
+            all of your Amazon S3-stored files, right out of the box!</para>
+          </listitem>
+
+          <listitem>
             <para>GPL v3 software. We value your Freedom of choice and
             transparency in our code.</para>
           </listitem>
         </itemizedlist>
-
-        <para>ARS is still in beta. We keep on adding new features to it every
-        day. Download it now and discover the future in software delivery over
-        the web.</para>
 
         <important>
           <para>While we provide the component free of charge, we do not
@@ -1333,6 +1334,21 @@ deny from all</programlisting>
                 Extension</replaceable> Updates", e.g. "Akeeba Backup Core
                 Updates". The link in the CDATA section is the XML link
                 provided by ARS.</para>
+
+                <important>
+                  <para>Since Joomla! 1.7.0, you URL must end with
+                  <filename>.xml</filename> for Joomla! to be able to use it.
+                  This means that the long, non-SEF form of the URL, e.g.
+                  <uri>http://www.example.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=1</uri>
+                  mentioned in the XML link on the <guilabel>Update
+                  Streams</guilabel> page will not work. Just append
+                  <uri>&amp;dummy=extension.xml</uri> to it and it will work,
+                  e.g.
+                  <uri>http://www.example.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=1&amp;dummy=extension.xml</uri>
+                  for the example above. ARS will do that automatically for
+                  you when generating the Master Joomla! 1.6 XML Update
+                  stream.</para>
+                </important>
               </listitem>
             </varlistentry>
           </variablelist>
@@ -1444,6 +1460,42 @@ deny from all</programlisting>
                 <para>For example, Akeeba Backup Core installs in the
                 com_akeeba directory. This is the element name:
                 com_akeeba</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Site area (client_id)</term>
+
+              <listitem>
+                <para>Since Joomla! 1.7.0, all update streams must indicate
+                the site area (frontend or backend) the extension applies to.
+                For component, library and file extensions you must always use
+                "Backend". For plugins, modules and templates select
+                "Frontend" or "Backend" depending on whether your extension
+                applies to the frontend or the backend of your clients' sites
+                respectively.</para>
+
+                <para>This is only required for XML update streams. If you are
+                only interested in providing INI update streams, e.g. for
+                desktop software, simply ignore this option.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>Folder (for plugins)</term>
+
+              <listitem>
+                <para>For all extension types except plugins, leave this
+                blank. For plugins, this must be set to the plugin type. For
+                example, if you have a system plugin, type in
+                <option>system</option> in this box. If you have a content
+                plugin, type in <option>content</option> in this box. You get
+                the idea! This is the name of the plugins folder's
+                subdirectory where the plugin is being installed to.</para>
+
+                <para>This is only required for XML update streams. If you are
+                only interested in providing INI update streams, e.g. for
+                desktop software, simply ignore this option.</para>
               </listitem>
             </varlistentry>
 

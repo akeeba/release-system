@@ -527,4 +527,13 @@ class ArsHelperSelect
 		}
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
+	
+	public static function clientid($selected = null, $id = 'clientid', $attribs = array() )
+	{
+		$options = array();
+		$options[] = JHTML::_('select.option','1',JText::_('LBL_CLIENTID_BACKEND'));
+		$options[] = JHTML::_('select.option','0',JText::_('LBL_CLIENTID_FRONTEND'));
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
 }

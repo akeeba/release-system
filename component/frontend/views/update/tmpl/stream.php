@@ -82,6 +82,8 @@ foreach($this->items as $item):
 		<maintainerurl><?php echo JURI::base();?></maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="joomla" version="<?php echo $platform?>" />
+		<client_id><?php echo $item->client_id?></client_id>
+		<folder><?php echo empty($item->folder) ? '' : $item->folder?></folder>>
 	</update>
 <?php
 	endforeach;
