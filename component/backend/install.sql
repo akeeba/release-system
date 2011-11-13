@@ -97,7 +97,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_log` (
 	PRIMARY KEY `id` (`id`),
 	KEY `ars_log_accessed` (`accessed_on`),
 	KEY `ars_log_authorized` (`authorized`),
-	KEY `ars_log_itemid` (`item_id`)
+	KEY `ars_log_itemid` (`item_id`),
+	KEY `ars_log_userid` (`user_id`)
 ) DEFAULT CHARACTER SET utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_updatestreams` (

@@ -87,6 +87,16 @@ if(!strstr($ctable, '`client_id`'))
 	$status = $db->query();
 }
 
+// --- Update to 1.0.4
+$sql = 'SHOW CREATE TABLE `#__ars_log`';
+$db->setQuery($sql);
+$ctableAssoc = $db->loadResultArray(1);
+$ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
+if(!strstr($ctable, '`ars_log_userid`')) {
+	$db->setQuery('CREATE INDEX `ars_log_userid` ON `#__ars_log` (`user_id`)');
+	$db->query();
+}
+
 // Schema updates -- END
 
 // Install modules and plugins -- BEGIN

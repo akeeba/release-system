@@ -1,3 +1,7 @@
+Version 1.0.4
+================================================================================
+~ Added index on user_id to the log table to speed up log lookups by username
+
 Version 1.0.3
 ================================================================================
 # Bleeding Edge releases on Amazon S3 would never list any files
