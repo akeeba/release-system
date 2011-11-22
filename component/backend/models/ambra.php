@@ -174,8 +174,10 @@ class ArsModelAmbra extends JModel
 				$nooku = false;
 				require_once JPATH_ADMINISTRATOR.'/components/com_akeebasubs/fof/include.php';
 				require_once JPATH_ADMINISTRATOR.'/components/com_akeebasubs/models/levels.php';
-				$rawList = FOFModel::getAnInstance('Levels','AkeebasubsModel')
+				$rawList = FOFModel::getTmpInstance('Levels','AkeebasubsModel')
 					->enabled('')
+					->limit(0)
+					->limitstart(0)
 					->getList();
 			}
 				
