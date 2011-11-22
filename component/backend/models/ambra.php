@@ -60,7 +60,7 @@ class ArsModelAmbra extends JModel
 			}
 			
 			// If we have Akeeba Subscriptions 1.x make sure Koowa is loaded
-			$hasAkeebasubs2x = JFolder::exists(JPATH_ROOT.'/components/com_akeebasubs/fof');
+			$hasAkeebasubs2x = JFolder::exists(JPATH_ADMINISTRATOR.'/components/com_akeebasubs/fof');
 			if($hasAkeebaSubs && !$hasAkeebasubs2x) {
 				$hasAkeebaSubs = defined('KOOWA');
 			}
