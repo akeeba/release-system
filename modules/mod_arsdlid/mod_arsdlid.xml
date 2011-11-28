@@ -11,6 +11,7 @@
 	<description>MOD_ARSDLID_DESC</description>
 	<files>
 		<filename module="mod_arsdlid">mod_arsdlid.php</filename>
+		<folder>tmpl</folder>
 	</files>
 	<languages folder="translations">
 		<language tag="en-GB">en-GB.mod_arsdlid.ini</language>

@@ -11,6 +11,7 @@
 	<description>MOD_ARSDOWNLOADS_DESC</description>
 	<files>
 		<filename module="mod_arsdownloads">mod_arsdownloads.php</filename>
+		<folder>tmpl</folder>
 	</files>
 	<languages folder="translations">
 		<language tag="en-GB">en-GB.mod_arsdownloads.ini</language>

@@ -21,10 +21,7 @@ if (!class_exists('modDLID')) {
 }
 
 $dlid = modDLID::getDLID();
-if(!is_null($dlid)):?>
-	<?php echo $params->get('pretext',''); ?>
-	<p style="font-weight: bold;">
-		<?php echo $dlid; ?>
-	</p>
-	<?php echo $params->get('posttext',''); ?>
-<?php endif; ?>
+
+if(!is_null($dlid)) {
+	require JModuleHelper::getLayoutPath('mod_arsdlid', $params->get('layout', 'default'));
+}
