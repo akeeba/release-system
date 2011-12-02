@@ -4,6 +4,7 @@ Version 1.0.4
 ~ Updated bundled JavaScript libraries to jQuery 1.7 and jQuery UI 1.8.16
 ~ The modules now support template overrides
 ! Akeeba Subscriptions 2.x would not be detected unless the no longer necessary Nooku Framework was present
+# The router would screw up under some circumstances, fetching a wrong Itemid if none was defined in the URL
 
 Version 1.0.3
 ================================================================================
