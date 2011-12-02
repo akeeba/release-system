@@ -27,22 +27,24 @@ function arsBuildRoute(&$query)
 	switch($format)
 	{
 		case 'html':
-			return arsBuildRouteHtml($query);
+			$segments = arsBuildRouteHtml($query);
 			break;
 		case 'feed':
-			return arsBuildRouteFeed($query);
+			$segments = arsBuildRouteFeed($query);
 			break;
 		case 'xml':
-			return arsBuildRouteXml($query);
+			$segments = arsBuildRouteXml($query);
 			break;
 		case 'ini':
-			return arsBuildRouteIni($query);
+			$segments = arsBuildRouteIni($query);
 			break;
 		case 'raw':
 		default:
-			return arsBuildRouteRaw($query);
+			$segments = arsBuildRouteRaw($query);
 			break;
 	}
+	
+	return $segments;
 }
 
 function arsBuildRouteHtml(&$query)
@@ -65,7 +67,7 @@ function arsBuildRouteHtml(&$query)
 	$id = ArsRouterHelper::getAndPop($query, 'id');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
 
-	$qoptions = array( 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id );
+	$qoptions = array( 'option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id );
 	switch($view)
 	{
 		case 'browse':
@@ -143,7 +145,7 @@ function arsBuildRouteHtml(&$query)
 				else
 				{
 					// Not found. Try fetching a browser menu item
-					$options = array('view' => 'browse', 'layout' => 'repository');
+					$options = array('option' => 'com_ars', 'view' => 'browse', 'layout' => 'repository');
 					$menu = ArsRouterHelper::findMenu($options);
 					$Itemid = empty($menu) ? null : $menu->id;
 					if(!empty($Itemid))
@@ -218,7 +220,7 @@ function arsBuildRouteHtml(&$query)
 			if(empty($Itemid))
 			{
 				// Try to find a category menu item
-				$options = array('view'=>'category');
+				$options = array('view'=>'category', 'option' => 'com_ars');
 				$params = array('catid'=>$release->category_id);
 				$menu = ArsRouterHelper::findMenu($options, $params);
 				if(!empty($menu))
@@ -230,7 +232,7 @@ function arsBuildRouteHtml(&$query)
 				else
 				{
 					// Nah. Let's find a browse menu item.
-					$options = array('view'=>'browse');
+					$options = array('view'=>'browse', 'option' => 'com_ars');
 					$menu = ArsRouterHelper::findMenu($options);
 					if(!empty($menu))
 					{
@@ -299,7 +301,7 @@ function arsBuildRouteFeed(&$query)
 
 			if(empty($Itemid))
 			{
-				$options = array('view'=>'category');
+				$options = array('view'=>'category', 'option' => 'com_ars');
 				$params = array('catid'=>$release->category_id);
 				$menu = ArsRouterHelper::findMenu($options, $params);
 				if(!empty($menu))
@@ -310,7 +312,7 @@ function arsBuildRouteFeed(&$query)
 				else
 				{
 					// Nah. Let's find a browse menu item.
-					$options = array('view'=>'browse');
+					$options = array('view'=>'browse', 'option' => 'com_ars');
 					$menu = ArsRouterHelper::findMenu($options);
 
 					$model = JModel::getInstance('Categories','ArsModel');
@@ -344,16 +346,16 @@ function arsBuildRouteRaw(&$query)
 
 	$view = isset($query['view']) ? $query['view'] : '';
 	if($view != 'download' ) return $segments;
-
+	
 	$view = ArsRouterHelper::getAndPop($query, 'view', 'browse');
 	$task = ArsRouterHelper::getAndPop($query, 'task');
 	$layout = ArsRouterHelper::getAndPop($query, 'layout');
 	$id = ArsRouterHelper::getAndPop($query, 'id');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
 
-	$qoptions = array( 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id );
+	$qoptions = array( 'option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id );
 	$menus =& JMenu::getInstance('site');
-
+	
 	// Get download item info
 	$dlModel = new ArsModelItems();
 	$dlModel->setId($id);
@@ -368,7 +370,6 @@ function arsBuildRouteRaw(&$query)
 	$catModel = new ArsModelCategories();
 	$catModel->setId($release->category_id);
 	$catalias = $catModel->getItem()->alias;
-
 
 	if($Itemid)
 	{
@@ -418,7 +419,7 @@ function arsBuildRouteRaw(&$query)
 
 	if(empty($Itemid))
 	{
-		$options = array('view'=>'release');
+		$options = array('option' => 'com_ars', 'view'=>'release');
 		$params = array('relid' => $release->id);
 		$menu = ArsRouterHelper::findMenu($options, $params);
 		if(is_object($menu))
@@ -428,7 +429,7 @@ function arsBuildRouteRaw(&$query)
 		}
 		if(!is_object($menu))
 		{
-			$options = array('view'=>'category');
+			$options = array('option' => 'com_ars', 'view'=>'category');
 			$params = array('catid' => $release->category_id);
 			$menu = ArsRouterHelper::findMenu($options, $params);
 		}
@@ -440,7 +441,7 @@ function arsBuildRouteRaw(&$query)
 		}
 		if(!is_object($menu))
 		{
-			$options = array('view'=>'browse');
+			$options = array('view'=>'browse', 'option' => 'com_ars');
 			$menu = ArsRouterHelper::findMenu($options);
 			if(!is_object($menu))
 			{
@@ -525,7 +526,7 @@ function arsBuildRouteXml(&$query)
 			if(empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties				
-				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'all'));
+				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'all', 'option' => 'com_ars'));
 				if(!empty($otherMenuItem)) {
 					// Exact match
 					$query['Itemid'] = $otherMenuItem->id;
@@ -547,13 +548,13 @@ function arsBuildRouteXml(&$query)
 			if(empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties				
-				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'category'),array('category'=>$local_id));
+				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'category', 'option' => 'com_ars'),array('category'=>$local_id));
 				if(!empty($otherMenuItem)) {
 					// Exact match
 					$query['Itemid'] = $otherMenuItem->id;
 				} else {
 					// Try to find an Itemid for all categories
-					$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'all'));
+					$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'all', 'option' => 'com_ars'));
 					if(!empty($otherMenuItem)) {
 						$query['Itemid'] = $otherMenuItem->id;
 						$segments[] = $local_id;
@@ -590,13 +591,13 @@ function arsBuildRouteXml(&$query)
 			if(empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties				
-				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'stream'),array('streamid'=>$local_id));
+				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'stream', 'option' => 'com_ars'),array('streamid'=>$local_id));
 				if(!empty($otherMenuItem)) {
 					// Exact match
 					$query['Itemid'] = $otherMenuItem->id;
 				} else {
 					// Try to find an Itemid for the parent category
-					$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'category'),array('category'=>$stream->type));
+					$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'category', 'option' => 'com_ars'),array('category'=>$stream->type));
 					if(!empty($otherMenuItem))
 					{
 						$query['Itemid'] = $otherMenuItem->id;
@@ -605,7 +606,7 @@ function arsBuildRouteXml(&$query)
 					else
 					{
 						// Try to find an Itemid for all categories
-						$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'all'));
+						$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'all', 'option' => 'com_ars'));
 						if(!empty($otherMenuItem)) {
 							$query['Itemid'] = $otherMenuItem->id;
 							$segments[] = $stream->type;
@@ -709,7 +710,7 @@ function arsBuildRouteIni(&$query)
 	if(empty($Itemid))
 	{
 		// Try to find an Itemid with the same properties				
-		$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'ini'),array('streamid'=>$local_id));
+		$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'ini', 'option' => 'com_ars'),array('streamid'=>$local_id));
 		if(!empty($otherMenuItem)) {
 			// Exact match
 			$query['Itemid'] = $otherMenuItem->id;
