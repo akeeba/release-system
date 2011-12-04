@@ -25,6 +25,7 @@ class ArsHelperIncludes
 	{
 		$media_folder = JURI::base().'/media/com_ars/';
 		$scriptDefs = array(
+			$media_folder.'js/akeebajq.js',
 			$media_folder.'js/gui-helpers.js'
 		);
 		return $scriptDefs;
@@ -45,11 +46,11 @@ class ArsHelperIncludes
 		global $mainframe;
 		if(!is_object($mainframe))
 		{
-			foreach(self::$scriptURLs as $url)
+			if(!empty(self::$scriptURLs)) foreach(self::$scriptURLs as $url)
 			{
 				$document->addScript($url);
 			}
-			foreach(self::$scriptDefs as $script)
+			if(!empty(self::$scriptDefs)) foreach(self::$scriptDefs as $script)
 			{
 				$document->addScriptDeclaration($script);
 			}

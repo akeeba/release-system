@@ -5,6 +5,7 @@ Version 1.0.4
 ~ The modules now support template overrides
 ! Akeeba Subscriptions 2.x would not be detected unless the no longer necessary Nooku Framework was present
 # The router would screw up under some circumstances, fetching a wrong Itemid if none was defined in the URL
+# JavaScript errors in front-end
 
 Version 1.0.3
 ================================================================================
