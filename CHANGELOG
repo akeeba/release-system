@@ -3,6 +3,7 @@ Version 1.0.4
 ~ Added index on user_id to the log table to speed up log lookups by username
 ~ Updated bundled JavaScript libraries to jQuery 1.7 and jQuery UI 1.8.16
 ~ The modules now support template overrides
+~ The INI update stream includes more information (release notes and a "read more" URL)
 ! Akeeba Subscriptions 2.x would not be detected unless the no longer necessary Nooku Framework was present
 # The router would screw up under some circumstances, fetching a wrong Itemid if none was defined in the URL
 # JavaScript errors in front-end
