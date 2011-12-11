@@ -37,7 +37,10 @@ class ArsControllerRelease extends ArsControllerDefault
 		$model->setState( 'items_orderby',$params->get('items_orderby',	'order') );
 
 		// Push URL parameters to the model
-		$model->setState( 'start',		JRequest::getInt('start', 0) );
+		$model->setState( 'start',		max(
+											JRequest::getInt('start', 0),
+											JRequest::getInt('limitstart', 0)
+											) );
 
 		// Get the item lists
 		if(empty($id))
