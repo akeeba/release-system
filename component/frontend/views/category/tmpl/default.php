@@ -60,12 +60,20 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 	<input type="hidden" name="view" value="<?php echo JRequest::getCmd('view') ?>" />
 	<input type="hidden" name="id" value="<?php echo JRequest::getInt('id',0) ?>" />
 
-<?php if ($this->params->get('show_pagination')) : ?>
-	<?php echo $this->pagination->getPagesLinks(); ?><br/>
+<?php if ($this->params->get('show_pagination') && ($this->pagination->get('pages.total') > 1)) : ?>
+	<div class="pagination">
+
+		<?php if ($this->params->get('show_pagination_results')) : ?>
+		<p class="counter">
+			<?php echo $this->pagination->getPagesCounter(); ?>
+		</p>
+		<?php endif; ?>
+		
+		<?php echo $this->pagination->getPagesLinks(); ?>
+	</div>
+
+	<br/>
 	<?php echo JText::_('ARS_RELEASES_PER_PAGE') ?>
 	<?php echo $this->pagination->getLimitBox(); ?>
-<?php endif; ?>
-<?php if ($this->params->get('show_pagination_results')) : ?>
-	<br/><?php echo $this->pagination->getPagesCounter(); ?>
 <?php endif; ?>
 </form>

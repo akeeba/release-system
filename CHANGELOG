@@ -1,3 +1,8 @@
+Version 1.0.5
+================================================================================
+# Pagination did not work in the front-end
+# Pagination formatting issues in the front end, on Joomla! 1.7
+
 Version 1.0.4
 ================================================================================
 ~ Added index on user_id to the log table to speed up log lookups by username
