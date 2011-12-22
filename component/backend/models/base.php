@@ -153,7 +153,7 @@ abstract class ArsModelBase extends JModel
 	{
 		if(empty($this->record))
 		{
-			$table = $this->getTable($this->table);
+			$table = $this->getTable($this->table, 'Table');
 			$table->load($this->id);
 			$this->record = $table;
 
@@ -182,7 +182,7 @@ abstract class ArsModelBase extends JModel
 	public final function &getItemList($overrideLimits = false)
 	{
 		if(empty($this->list)) {
-			$table = $this->getTable($this->table);
+			$table = $this->getTable($this->table, 'Table');
 			$source = $table->getTableName();
 
 			$limitstart = $this->getState('limitstart');
@@ -207,7 +207,7 @@ abstract class ArsModelBase extends JModel
 	{
 		$this->otable = null;
 
-		$table = $this->getTable($this->table);
+		$table = $this->getTable($this->table, 'Table');
 
 		$key = $table->getKeyName();
 		if(array_key_exists($key, (array)$data))
@@ -244,7 +244,7 @@ abstract class ArsModelBase extends JModel
 	public function delete()
 	{
 		if(is_array($this->id_list) && !empty($this->id_list)) {
-			$table = $this->getTable($this->table);
+			$table = $this->getTable($this->table, 'Table');
 			foreach($this->id_list as $id) {
 				if(!$table->delete($id)) {
 					$this->setError($table->getError());
@@ -268,7 +268,7 @@ abstract class ArsModelBase extends JModel
 				$oUser = JFactory::getUser();
 				$user = $oUser->id;
 			}
-			$table = $this->getTable($this->table);
+			$table = $this->getTable($this->table, 'Table');
 			if(!$table->publish($this->id_list, $publish, $user) ) {
 				$this->setError($table->getError());
 				return false;
@@ -283,7 +283,7 @@ abstract class ArsModelBase extends JModel
 	 */
 	public function checkout()
 	{
-		$table = $this->getTable($this->table);
+		$table = $this->getTable($this->table, 'Table');
 		$status = $table->checkout(JFactory::getUser()->id, $this->id);
 		if(!$status) $this->setError($table->getError());
 		return $status;
@@ -294,7 +294,7 @@ abstract class ArsModelBase extends JModel
 	 * @return bool
 	 */
 	public function checkin(){
-		$table = $this->getTable($this->table);
+		$table = $this->getTable($this->table, 'Table');
 		$status = $table->checkin($this->id);
 		if(!$status) $this->setError($table->getError());
 		return $status;
@@ -305,7 +305,7 @@ abstract class ArsModelBase extends JModel
 	 * @return bool
 	 */
 	public function isCheckedOut() {
-		$table = $this->getTable($this->table);
+		$table = $this->getTable($this->table, 'Table');
 		$status = $table->isCheckedOut($this->id);
 		if(!$status) $this->setError($table->getError());
 		return $status;
@@ -316,7 +316,7 @@ abstract class ArsModelBase extends JModel
 	 * @return bool
 	 */
 	public function hit() {
-		$table = $this->getTable($this->table);
+		$table = $this->getTable($this->table, 'Table');
 		$status = $table->hit($this->id);
 		if(!$status) $this->setError($table->getError());
 		return $status;
@@ -328,7 +328,7 @@ abstract class ArsModelBase extends JModel
 	 * @return bool
 	 */
 	public function move( $dirn ) {
-		$table = $this->getTable($this->table);
+		$table = $this->getTable($this->table, 'Table');
 
 		$id = $this->getId();
 		$status = $table->load($id);
@@ -347,7 +347,7 @@ abstract class ArsModelBase extends JModel
 	 */
 	public function reorder()
 	{
-		$table = $this->getTable($this->table);
+		$table = $this->getTable($this->table, 'Table');
 		$status = $table->reorder( $this->getReorderWhere() );
 		if(!$status) $this->setError($table->getError());
 		return $status;
