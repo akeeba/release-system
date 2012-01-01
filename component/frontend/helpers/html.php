@@ -1,9 +1,10 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @package AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
+ * @license GNU General Public License version 3, or later
+ * @version $Id$
  */
-
 
 class ArsHelperHtml
 {
