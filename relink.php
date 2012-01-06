@@ -31,10 +31,10 @@ class AkeebaRelink
 	 */
 	public function __construct($config = array())
 	{
-		if(!in_array('root', $config)) {
+		if(!array_key_exists('root', $config)) {
 			$config['root'] = dirname(__FILE__);
 		}
-		if(!in_array('site', $config)) {
+		if(!array_key_exists('site', $config)) {
 			$config['site'] = '/Users/nicholas/Sites/jbeta';
 		}
 		
@@ -782,8 +782,8 @@ ENDBANNER;
 
 $config = array();
 
-if($argc >= 1) $config['site'] = $argv[1];
-if($argc >= 2) $config['root'] = $argv[2];
+if($argc >= 2) $config['site'] = $argv[1];
+if($argc >= 3) $config['root'] = $argv[2];
 
 $relink = new AkeebaRelink($config);
 
