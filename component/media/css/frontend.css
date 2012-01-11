@@ -15,6 +15,11 @@
 	display: block;
 }
 
+img.ars-item-property-environment-icon {
+	vertical-align: bottom;
+	padding-right: 3px;
+}
+
 .ars-label {
 	display: inline-block;
 	width: 10em;

@@ -39,4 +39,22 @@ class ArsHelperHtml
 			return $filesize." bytes";
 		}
 	}
+	
+	static public function getEnvironments( $environments = null )
+	{
+		if(empty($environments)) return '';
+		
+		if (! class_exists( 'ArsHelperSelect' ) ) {
+			require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_ars' . DS . 'helpers' . DS . 'select.php' );
+		}
+		
+		if ( is_string( $environments ) ) $environments = json_decode( $environments );
+		
+		$data = null;
+		foreach ( $environments as $e ) {
+			$data .= ArsHelperSelect :: environmenticon( $e, array( 'class' => 'ars-item-property-environment-icon' ) );
+		}
+		
+		return $data;
+	}
 }

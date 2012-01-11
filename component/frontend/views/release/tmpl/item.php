@@ -49,6 +49,12 @@ $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&i
 		</span>
 		<?php endif; ?>
 
+		<?php if(!empty($item->environments)): ?>
+		<span class="ars-release-property">
+			<span class="ars-label"><?php echo JText::_('LBL_ITEMS_ENVIRONMENTS') ?>:</span>
+			<span class="ars-value"><?php echo $item->environments; ?></span>
+		</span>
+		<?php endif; ?>
 	</div>
 
 	<div class="ars-item-description">

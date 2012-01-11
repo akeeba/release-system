@@ -23,7 +23,7 @@ class ArsViewRelease extends ArsViewBase
 		$category = $catModel->getItem();
 
 		$repoType = $category->type;
-
+		
 		require_once JPATH_COMPONENT.'/helpers/breadcrumbs.php';
 		ArsHelperBreadcrumbs::addRepositoryRoot($repoType);
 		ArsHelperBreadcrumbs::addCategory($category->id, $category->title);
@@ -66,5 +66,15 @@ class ArsViewRelease extends ArsViewBase
 			$document->addHeadLink(JRoute::_($feed.'&type=atom'), 'alternate',
 				'rel', $atom);
 		}
+		
+		// Cleanup for display
+		$items	= $model->itemList;
+		
+		foreach ( $items as $item ) {
+			$item->environments = ArsHelperHtml::getEnvironments( $item->environments );
+		}
+		
+		$model->itemList = $items;
+		
 	}
 }
