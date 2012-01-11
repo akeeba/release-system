@@ -20,6 +20,26 @@ class ArsViewCpanel extends JView
 {
 	function display()
 	{
+		// Add toolbar buttons
+		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+			$user = JFactory::getUser();
+			$perms = (object)array(
+				'create'	=> $user->authorise('core.create', 'com_ars'),
+				'edit'		=> $user->authorise('core.edit', 'com_ars'),
+				'editstate'	=> $user->authorise('core.edit.state', 'com_ars'),
+				'delete'	=> $user->authorise('core.delete', 'com_ars'),
+			);
+		} else {
+			$perms = (object)array(
+				'create'	=> true,
+				'edit'		=> true,
+				'editstate'	=> true,
+				'delete'	=> true,
+			);
+		}
+		$this->assign('aclperms', $perms);
+		$this->perms = $perms;
+		
 		// Set the toolbar title
 		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD'),'ars');
 		JToolBarHelper::preferences('com_ars', '550');
