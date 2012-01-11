@@ -13,15 +13,15 @@
 		/>
 		
 		<!-- Download options -->
-		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<!--
+		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="antileech" type="radio" default="1" label="ARS_CONFIG_ANTILEECH_LABEL" description="ARS_CONFIG_ANTILEECH_DESC">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		-->
 		
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		-->
 		<!-- Rendering options -->
 		<param name="categorystyle" type="styles" default="rounded" label="ARS_CONFIG_CATEGORY_STYLE_LABEL" description="ARS_CONFIG_CATEGORY_STYLE_DESC"/>
 		<param name="categorysuffix" type="text" default="" label="ARS_CONFIG_CATEGORY_SFX_LABEL" description="ARS_CONFIG_CATEGORY_SFX_DESC"/>
@@ -34,6 +34,7 @@
 		
 		<param name="besuffix" type="text" default="" label="ARS_CONFIG_BE_SFX_LABEL" description="ARS_CONFIG_BE_SFX_DESC"/>
 		<param name="readontemplate" type="text" default="&lt;a href=&quot;%s&quot; class=&quot;readon&quot;&gt;%s&lt;/a&gt;" label="ARS_CONFIG_READON_LABEL" description="ARS_CONFIG_READON_DESC" size="50"/>
+		<param name="no_access_url" type="text" default="" label="ARS_CONFIG_FE_NOACCESSURL_LABEL" description="ARS_CONFIG_FE_NOACCESSURL_DESC" size="50" />
 		
 		<!-- Amazon S3 integration -->
 		<param name="s3access" type="text" default="" label="ARS_CONFIG_S3_ACCESSKEY_LABEL" description="ARS_CONFIG_S3_ACCESSKEY_DESC" size="50"/>
@@ -98,6 +99,9 @@
 
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="readontemplate" type="text" default="[a href=&quot;%s&quot; class=&quot;readon&quot;]%s[/a]" label="ARS_CONFIG_READON_LABEL" description="ARS_CONFIG_READON_DESC" size="50"/>		
+		
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="no_access_url" type="text" default="" label="ARS_CONFIG_FE_NOACCESSURL_LABEL" description="ARS_CONFIG_FE_NOACCESSURL_DESC" size="50" />
 	</fieldset>
 	
 	<fieldset

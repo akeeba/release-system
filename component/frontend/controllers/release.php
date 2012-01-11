@@ -65,7 +65,13 @@ class ArsControllerRelease extends ArsControllerDefault
 		}
 		else
 		{
-			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
+			$no_access_url = trim($params->get('no_access_url',''));
+			if(empty($no_access_url)) {
+				return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
+			} else {
+				$this->setRedirect($no_access_url);
+				return;
+			}
 		}
 
 		$this->display(true);
