@@ -97,7 +97,7 @@ if(!strstr($ctable, '`ars_log_userid`')) {
 	$db->query();
 }
 
-// --- Update to 1.0.5
+// --- Update to 1.1
 $sql = 'SHOW CREATE TABLE `#__ars_items`';
 $db->setQuery($sql);
 $ctableAssoc = $db->loadResultArray(1);

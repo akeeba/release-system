@@ -1,6 +1,9 @@
+Version 1.1
+================================================================================
++ Environments, which can also be used to set the Joomla! version compatibility per item
+
 Version 1.0.5
 ================================================================================
-+ Environments
 # Pagination did not work in the front-end
 # Pagination formatting issues in the front end, on Joomla! 1.7
 # Front-end pages included links to ../media for JS files, throwing a browser error (kudos to Davide T. for pointing it out)
