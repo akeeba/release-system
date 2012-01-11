@@ -68,7 +68,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 				</a>
 			</td>
 			<td>
-				<?php echo JHtml :: image( $base_folder.'/media/com_ars/environments/' . $item->icon, $item->title ); ?>
+				<?php echo JHtml::image( $base_folder.'/media/com_ars/environments/' . $item->icon, $item->title ); ?>
 			</td>
 		</tr>
 	<?php
