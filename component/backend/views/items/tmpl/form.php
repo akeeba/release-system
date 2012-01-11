@@ -173,7 +173,8 @@ $asModel = JModel::getInstance('Ambra','ArsModel');
 				if(qmPos >= 0) {
 					newAlias = newAlias.substr(0, qmPos);
 				}
-				newAlias = newAlias.replace('.','-'); 
+				newAlias = newAlias.replace(' ','-');
+				newAlias = newAlias.replace('.','-');
 				$('#alias').val( newAlias );
 			}
 		})(akeeba.jQuery);

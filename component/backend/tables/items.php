@@ -168,6 +168,7 @@ class TableItems extends ArsTable
 			// Create a smart alias
 			$alias = strtolower($source);
 			$alias = str_replace(' ', '-', $alias);
+			$alias = str_replace('.', '-', $alias);
 			$this->alias = (string) preg_replace( '/[^A-Z0-9_-]/i', '', $alias );
 		}
 

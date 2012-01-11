@@ -4,6 +4,7 @@ Version 1.1
 + #76 No access URL
 + #77 Make it possible to hide item properties (filesize, md5, sha1) in the front-end
 # "Access Forbidden" message was untranslated in Joomla! 1.6 and later
+# #78 Dots in item aliases cause problem with Joomla! SEF URLs
 
 Version 1.0.5
 ================================================================================
