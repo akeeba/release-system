@@ -28,7 +28,7 @@ $asModel = JModel::getInstance('Ambra','ArsModel');
 		</div>
 		<div class="editform-row">
 			<label for="xmltitle"><?php echo JText::_('LBL_ENVIRONMENT_XMLTITLE'); ?></label>
-			<input type="text" name="xmltitle" id="xmltitle" value="<?php echo $this->item->xmltitle ?>">
+			<input type="text" name="xmltitle" id="xmltitle" value="<?php echo $this->item->xmltitle ?>" title="<?php echo JText::_('LBL_ENVIRONMENT_XMLTITLE_TIP'); ?>">
 		</div>
 		<div class="editform-row">
 			<label for="icon"><?php echo JText::_('LBL_ENVIRONMENT_ICON'); ?></label>
