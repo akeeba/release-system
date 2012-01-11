@@ -114,7 +114,7 @@ class ArsHelperSelect
 			}
 			$attribs = $temp;
 		}
-
+		
 		return JHTML::_('select.genericlist', $list, $name, $attribs, 'value', 'text', $selected, $idTag);
 	}
 
@@ -535,5 +535,67 @@ class ArsHelperSelect
 		$options[] = JHTML::_('select.option','0',JText::_('LBL_CLIENTID_FRONTEND'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+	
+	
+	public static function environmenticon( $id, $attribs = array() )
+	{
+		static $items = array();
+		
+		if(!class_exists('ArsModelEnvironments')) {
+			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/environments.php';
+		}
+		
+		if (! isset( $items[$id] ) ) {
+			$model = new ArsModelEnvironments(); // Do not use Singleton here!
+			$model->setId( $id );
+			$items[$id] = $model->getItem();
+		}
+		
+		$base_folder = rtrim(JURI::base(), '/');
+		if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
+
+		return JHtml::image( $base_folder.'/media/com_ars/environments/' . $items[$id]->icon, $items[$id]->title, $attribs );
+	}
+	
+	
+	public static function environmenticons( $selected = null, $id = 'icon', $attribs = array() )
+	{
+		jimport('joomla.filesystem.folder');
+		$directory	= JPATH_ROOT . '/media/com_ars/environments';
+		$options[]	= JHTML::_('select.option','','- '.JText::_( 'LBL_ITEMS_FILENAME_SELECT' ) . ' -');
+		
+		$files	= JFolder :: files( $directory );
+		
+		if (! empty( $files ) ) {
+			foreach ( $files as $file ) {
+				$options[] = JHTML::_('select.option', $file, $file);
+			}
+		}
+		
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+	
+	
+	public static function environments( $selected = null, $id = 'environments', $attribs = array() )
+	{
+		if(!class_exists('ArsModelEnvironments')) {
+			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/environments.php';
+		}
+		$model = new ArsModelEnvironments(); // Do not use Singleton here!
+		$model->reset();
+		$items = $model->getItemList(true);
+		
+		$options	= array();
+		$options[]	= JHTML::_('select.option','','- '.JText::_( 'LBL_ITEMS_ENVIRONMENT_SELECT' ) . ' -');
+		
+		if (! empty( $items ) ) {
+			foreach ( $items as $item ) {
+				$options[] = JHTML::_('select.option',$item->id,$item->title );
+			}
+		}
+		
+		$attribs['multiple'] = 'yes';
+		return self::genericlist($options, $id.'[]', $attribs, $selected, $id);
 	}
 }
