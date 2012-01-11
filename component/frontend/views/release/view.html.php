@@ -76,5 +76,6 @@ class ArsViewRelease extends ArsViewBase
 		
 		$model->itemList = $items;
 		
+		$this->assign('cparams', $params);
 	}
 }

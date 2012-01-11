@@ -2,6 +2,7 @@ Version 1.1
 ================================================================================
 + #74 Environments, which can also be used to set the Joomla! version compatibility per item
 + #76 No access URL
++ #77 Make it possible to hide item properties (filesize, md5, sha1) in the front-end
 # "Access Forbidden" message was untranslated in Joomla! 1.6 and later
 
 Version 1.0.5
