@@ -34,7 +34,15 @@ class ArsViewCpanel extends JView
 		// -- Items
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=items';
 		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link);
-
+		if($this->perms->create) {
+			// -- Import
+			$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=impjed';
+			JSubMenuHelper::addEntry(JText::_('ARS_TITLE_IMPORT_JED'), $link, (JRequest::getCmd('view','cpanel') == 'impjed'));
+		}
+		// -- Environments
+		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=environments';
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ENVIRONMENTS'), $link);
+		
 		// Load the model
 		$model =& $this->getModel();
 

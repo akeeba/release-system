@@ -84,6 +84,9 @@ class ArsViewUpload extends JView
 		JToolBarHelper::title(JText::_('ARS_TITLE_DASHBOARD').' &ndash; <small>'.JText::_($subtitle_key).'</small>','ars');
 		JToolBarHelper::back(version_compare(JVERSION,'1.6.0','ge') ? 'JTOOLBAR_BACK' : 'Back', 'index.php?option='.JRequest::getCmd('option'));
 		// Add submenus (those nifty text links below the toolbar!)
+		// -- cpanel
+		$link = JURI::base().'?option='.JRequest::getCmd('option');
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_GOTODASHBOARD'), $link, (JRequest::getCmd('view','cpanel') == 'cpanel'));
 		// -- Categories
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=categories';
 		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_CATEGORIES'), $link, (JRequest::getCmd('view','cpanel') == 'categories'));
@@ -93,7 +96,15 @@ class ArsViewUpload extends JView
 		// -- Items
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=items';
 		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ITEMS'), $link, (JRequest::getCmd('view','cpanel') == 'items'));
-
+		if($this->perms->create) {
+			// -- Import
+			$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=impjed';
+			JSubMenuHelper::addEntry(JText::_('ARS_TITLE_IMPORT_JED'), $link, (JRequest::getCmd('view','cpanel') == 'impjed'));
+		}
+		// -- Environments
+		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=environments';
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ENVIRONMENTS'), $link);
+		
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/includes.php';
 		ArsHelperIncludes::includeMedia();
 		

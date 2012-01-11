@@ -45,6 +45,9 @@ class ArsViewReleases extends ArsViewBase
 		JToolBarHelper::back(version_compare(JVERSION,'1.6.0','ge') ? 'JTOOLBAR_BACK' : 'Back', 'index.php?option='.JRequest::getCmd('option'));
 
 		// Add submenus (those nifty text links below the toolbar!)
+		// -- cpanel
+		$link = JURI::base().'?option='.JRequest::getCmd('option');
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_GOTODASHBOARD'), $link, (JRequest::getCmd('view','cpanel') == 'cpanel'));
 		// -- Categories
 		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=categories';
 		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_CATEGORIES'), $link, (JRequest::getCmd('view','cpanel') == 'categories'));
@@ -59,7 +62,10 @@ class ArsViewReleases extends ArsViewBase
 			$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=impjed';
 			JSubMenuHelper::addEntry(JText::_('ARS_TITLE_IMPORT_JED'), $link, (JRequest::getCmd('view','cpanel') == 'impjed'));
 		}
-
+		// -- Environments
+		$link = JURI::base().'?option='.JRequest::getCmd('option').'&view=environments';
+		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ENVIRONMENTS'), $link);
+		
 		// Load the select box helper
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/select.php';
 
