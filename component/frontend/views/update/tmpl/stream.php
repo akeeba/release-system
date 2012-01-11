@@ -13,7 +13,6 @@ $subpathURL = JURI::base(true);
 if(!empty($subpathURL) && ($subpathURL != '/')) {
 	$rootURL = substr($rootURL, 0, -1 * strlen($subpathURL));
 }
-
 $tag = "<"."?xml version=\"1.0\" encoding=\"utf-8\""."?".">";
 
 $streamTypeMap = array(
@@ -59,11 +58,43 @@ foreach($this->items as $item):
 	} elseif( substr(strtolower($basename),-5) == '.tbz2' ) {
 		$format = 'tbz2';
 	} else {
-		continue;
+		$format = 'UNSUPPORTED';
 	}
 	
-	$platforms = array('1.6','1.7');
+	$item->environments = @json_decode($item->environments);
+	
+	if(!empty($item->environments) && is_array($item->environments)) {
+		static $envs = array();
+		
+		$platforms = array();
+		
+		if(!class_exists('ArsModelEnvironments')) {
+			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/environments.php';
+		}
+		foreach($item->environments as $eid) {
+			if (! isset( $envs[$eid] ) ) {
+				$model = new ArsModelEnvironments(); // Do not use Singleton here!
+				$model->setId( $eid );
+				$envs[$eid] = $model->getItem();
+			}
+			
+			$platforms[] = $envs[$eid]->xmltitle;
+		}
+	} else {
+		$platforms = array('joomla/1.7');
+	}
 	foreach($platforms as $platform):
+		$platformParts = explode('/',$platform, 2);
+		switch(count($platformParts)) {
+			case 1:
+				$platformName = 'joomla';
+				$platformVersion = $platformParts[0];
+				break;
+			default:
+				$platformName = $platformParts[0];
+				$platformVersion = $platformParts[1];
+				break;
+		}
 ?>
 	<update>
 		<name><?php echo $item->alias ?></name>
@@ -81,7 +112,7 @@ foreach($this->items as $item):
 		<maintainer><?php echo JFactory::getConfig()->getValue('config.sitename'); ?></maintainer>
 		<maintainerurl><?php echo JURI::base();?></maintainerurl>
 		<section>Updates</section>
-		<targetplatform name="joomla" version="<?php echo $platform?>" />
+		<targetplatform name="<?php echo $platformName?>" version="<?php echo $platformVersion?>" />
 		<client_id><?php echo $item->client_id?></client_id>
 		<folder><?php echo empty($item->folder) ? '' : $item->folder?></folder>>
 	</update>

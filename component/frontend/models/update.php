@@ -49,7 +49,8 @@ ENDQUERY;
 		$esc_id = $db->Quote($id);
 		$query = <<<ENDQUERY
 SELECT
-    `u`.*, `i`.`id` as `item_id`, `r`.`version`, `r`.`maturity`,
+    `u`.*, `i`.`id` as `item_id`, `i`.`environments` as `environments`,
+	`r`.`version`, `r`.`maturity`,
     `c`.`title` as `cat_title`, `i`.`release_id`,
     `i`.`filename`, `i`.`url`, `i`.`type` as `itemtype`, `r`.`created`,
 	`r`.`notes` as `release_notes`
