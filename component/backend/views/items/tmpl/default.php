@@ -14,7 +14,7 @@ $base_folder = rtrim(JURI::base(), '/');
 if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
 
 ?>
-<form name="adminForm" action="index.php" method="POST">
+<form name="adminForm" action="index.php" method="post">
 	<input type="hidden" name="option" id="option" value="com_ars" />
 	<input type="hidden" name="view" id="view" value="items" />
 	<input type="hidden" name="task" id="task" value="display" />
@@ -44,6 +44,9 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 			<th width="100">
 				<?php echo JHTML::_('grid.sort', 'Ordering', 'ordering', $this->lists->order_Dir, $this->lists->order); ?>
 				<?php echo JHTML::_('grid.order', $this->items); ?>
+			</th>
+			<th>
+				<?php echo JText :: _( 'LBL_ITEMS_ENVIRONMENTS' ); ?>
 			</th>
 			<th width="150">
 				<?php if(version_compare(JVERSION,'1.6.0','ge')):?>
@@ -84,6 +87,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 			<td></td>
 			<td></td>
 			<td></td>
+			<td></td>
 			<td>
 				<?php echo ArsHelperSelect::published($this->lists->fltPublished, 'published', array('onchange'=>'this.form.submit();')) ?>
 			</td>
@@ -111,6 +115,10 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 
 			$checkedout = $item->checked_out > 0;
 			$ordering = $this->lists->order == 'ordering';
+			
+			if(!is_array($item->environments)) {
+				$item->environments= json_decode($item->environments);
+			}
 
 			// This is a stupid requirement of JHTML. Go figure!
 			switch($item->access) {
@@ -151,6 +159,11 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 				<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 			</td>
 			<td>
+				<?php if(!empty($item->environments)) foreach($item->environments as $eid) {
+					echo ArsHelperSelect :: environmenticon( $eid ) . '<br/>';
+				} ?>
+			</td>
+			<td>
 				<img src="<?php echo $icon ?>" width="16" height="16" align="left" />
 				<span class="ars-access">
 				&nbsp;
@@ -177,7 +190,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 	?>
 	<?php else : ?>
 		<tr>
-			<td colspan="10" align="center"><?php echo JText::_('LBL_ARS_NOITEMS') ?></td>
+			<td colspan="11" align="center"><?php echo JText::_('LBL_ARS_NOITEMS') ?></td>
 		</tr>
 	<?php endif ?>
 	</tbody>

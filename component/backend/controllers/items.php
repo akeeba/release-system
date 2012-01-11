@@ -45,6 +45,7 @@ class ArsControllerItems extends ArsControllerDefault
 				$item->checked_out = 0;
 				$item->published = 0;
 				$item->hits = 0;
+				$item->environments = $item->environments;
 			}
 			$status = $model->save($item);
 			if(!$status) break;

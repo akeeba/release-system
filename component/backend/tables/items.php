@@ -48,6 +48,7 @@ class TableItems extends ArsTable
 	var $sha1 = '';
 	var $filesize = 0;
 	var $language = '*';
+	var $environments = array();
 
 	function __construct( &$db )
 	{
@@ -102,7 +103,10 @@ class TableItems extends ArsTable
 				}
 			}
 		}
-
+		
+		// Added environment ID
+		$this->environments = json_encode( $this->environments );
+		
 		// Check if a title exists
 		if(!$this->title) {
 			// No, try the automatic rule-based title
@@ -387,5 +391,12 @@ class TableItems extends ArsTable
 		}
 
 		return true;
+	}
+	
+	
+	public function load( $keys = null, $reset = null )
+	{
+		parent :: load( $keys, $reset );
+		if ( is_string( $this->environments ) ) $this->environments = json_decode( $this->environments );
 	}
 }

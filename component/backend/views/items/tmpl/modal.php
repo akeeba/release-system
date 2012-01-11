@@ -15,7 +15,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 
 $function	= JRequest::getCmd('function', 'arsSelectItem');
 ?>
-<form name="adminForm" action="index.php" method="POST">
+<form name="adminForm" action="index.php" method="post">
 	<input type="hidden" name="option" id="option" value="com_ars" />
 	<input type="hidden" name="view" id="view" value="items" />
 	<input type="hidden" name="task" id="task" value="display" />

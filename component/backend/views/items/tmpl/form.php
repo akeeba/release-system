@@ -44,6 +44,10 @@ $asModel = JModel::getInstance('Ambra','ArsModel');
 			<label for="type"><?php echo JText::_('LBL_ITEMS_TYPE'); ?></label>
 			<?php echo ArsHelperSelect::itemtypes($this->item->type, 'type', array('onchange'=>'onTypeChange();')) ?>
 		</div>
+		<div class="editform-row">
+			<label for="environments"><?php echo JText :: _( 'LBL_ITEMS_ENVIRONMENTS' ); ?></label>
+			<?php echo ArsHelperSelect :: environments( $this->item->environments ); ?>
+		</div>
 		<div class="editform-row" id="row-file" <?php if($this->item->type != 'file'):?>style="display: none"<?php endif;?> >
 			<label for="filename"><?php echo JText::_('LBL_ITEMS_FILE'); ?></label>
 			<span id="filename-container">
