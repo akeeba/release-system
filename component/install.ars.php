@@ -112,6 +112,73 @@ if(!strstr($ctable, '`environments`')) {
 	$status = $db->query();
 }
 
+// --- Sample records for the Environments feature
+$sql = 'SELECT COUNT(*) FROM `#__ars_environments`';
+$db->setQuery($sql);
+$num = $db->loadResult();
+if($num < 1) {
+	$samples = array(
+		(object)array(
+			'title'		=> 'Joomla! 1.5',
+			'xmltitle'	=> 'joomla/1.5',
+			'icon'		=> 'ars-joomla15.png'
+		),
+		(object)array(
+			'title'		=> 'Joomla! 1.6',
+			'xmltitle'	=> 'joomla/1.6',
+			'icon'		=> 'ars-joomla16.png'
+		),
+		(object)array(
+			'title'		=> 'Joomla! 1.7',
+			'xmltitle'	=> 'joomla/1.7',
+			'icon'		=> 'ars-joomla17.png'
+		),
+		(object)array(
+			'title'		=> 'Joomla! 2.5',
+			'xmltitle'	=> 'joomla/2.5',
+			'icon'		=> 'ars-joomla25.png'
+		),
+		(object)array(
+			'title'		=> 'WHMCS 4.5+',
+			'xmltitle'	=> 'whmcs/4.5',
+			'icon'		=> 'ars-whmcs452.png'
+		),
+		(object)array(
+			'title'		=> 'WordPress 3.2',
+			'xmltitle'	=> 'wordpress/3.2',
+			'icon'		=> 'ars-wp.png'
+		),
+		(object)array(
+			'title'		=> 'Windows XP',
+			'xmltitle'	=> 'windows/xp',
+			'icon'		=> 'ars-winxp.png'
+		),
+		(object)array(
+			'title'		=> 'Windows 7',
+			'xmltitle'	=> 'windows/7',
+			'icon'		=> 'ars-win7.png'
+		),
+		(object)array(
+			'title'		=> 'Mac OS X',
+			'xmltitle'	=> 'macosx/10.6',
+			'icon'		=> 'ars-macosx.png'
+		),
+		(object)array(
+			'title'		=> 'Linux 32-bit',
+			'xmltitle'	=> 'linux/i386',
+			'icon'		=> 'ars-linux32.png'
+		),
+		(object)array(
+			'title'		=> 'Linux 64-bit',
+			'xmltitle'	=> 'linux/x86-64',
+			'icon'		=> 'ars-linux64.png'
+		),
+	);
+	foreach($samples as $sample) {
+		$db->insertObject('#__ars_environments', $sample);
+	}
+}
+
 // Schema updates -- END
 
 // Install modules and plugins -- BEGIN
