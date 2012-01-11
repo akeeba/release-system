@@ -134,8 +134,9 @@ CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc` (
 ) DEFAULT CHARACTER SET utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_environments` (
-	`id` bigint(20) NOT NULL AUTO_INCREMENT,
-	`title` varchar(100) DEFAULT NULL,
-	`icon` varchar(255) DEFAULT NULL,
-	PRIMARY KEY `id` (`id`)
-) DEFAULT CHARACTER SET utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL DEFAULT '',
+  `xmltitle` varchar(20) NOT NULL DEFAULT '1.0',
+  `icon` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
