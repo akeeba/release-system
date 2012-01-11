@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_items` (
     `access` int(11) NOT NULL DEFAULT '0',
     `published` tinyint(1) NOT NULL DEFAULT '1',
 	`language` char(7) NOT NULL DEFAULT '*',
+    `environments` varchar(100) DEFAULT NULL,
 	PRIMARY KEY `id` (`id`)
 ) DEFAULT CHARACTER SET utf8;
 
@@ -127,6 +128,14 @@ CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc` (
 	`packname` varchar(255) DEFAULT NULL,
 	`title` varchar(255) NOT NULL,
 	`description` MEDIUMTEXT NOT NULL,
+	`environments` varchar(100) DEFAULT NULL,
 	`published` int(11) NOT NULL DEFAULT '1',
+	PRIMARY KEY `id` (`id`)
+) DEFAULT CHARACTER SET utf8;
+
+CREATE TABLE IF NOT EXISTS `#__ars_environments` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`title` varchar(100) DEFAULT NULL,
+	`icon` varchar(255) DEFAULT NULL,
 	PRIMARY KEY `id` (`id`)
 ) DEFAULT CHARACTER SET utf8;

@@ -97,6 +97,21 @@ if(!strstr($ctable, '`ars_log_userid`')) {
 	$db->query();
 }
 
+// --- Update to 1.0.5
+$sql = 'SHOW CREATE TABLE `#__ars_items`';
+$db->setQuery($sql);
+$ctableAssoc = $db->loadResultArray(1);
+$ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
+if(!strstr($ctable, '`environments`')) {
+	$sql = "ALTER TABLE `#__ars_items` ADD COLUMN `environments` varchar(100) DEFAULT NULL AFTER `language`";
+	$db->setQuery($sql);
+	$status = $db->query();
+
+	$sql = "ALTER TABLE `#__ars_autoitemdesc` ADD COLUMN `environments` varchar(100) DEFAULT NULL AFTER `description`";
+	$db->setQuery($sql);
+	$status = $db->query();
+}
+
 // Schema updates -- END
 
 // Install modules and plugins -- BEGIN
