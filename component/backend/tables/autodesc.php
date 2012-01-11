@@ -21,6 +21,7 @@ class TableAutodesc extends ArsTable
 	var $title = '';
 	var $description = '';
 	var $published = 0;
+	var $environments = array();
 
 	function __construct( &$db )
 	{
@@ -53,7 +54,17 @@ class TableAutodesc extends ArsTable
 		{
 			$this->published = 0;
 		}
+		
+		// Added environment ID
+		$this->environments = json_encode( $this->environments );		
 
 		return true;
 	}
+		
+	public function load( $keys = null, $reset = null )
+	{
+		parent :: load( $keys, $reset );
+		if ( is_string( $this->environments ) ) $this->environments = json_decode( $this->environments );
+	}
+
 }

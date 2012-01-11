@@ -34,6 +34,10 @@ $editor =& JFactory::getEditor();
 			<input type="text" name="title" id="title" value="<?php echo $this->item->title ?>">
 		</div>
 		<div class="editform-row">
+			<label for="environments"><?php echo JText :: _( 'LBL_ITEMS_ENVIRONMENTS' ); ?></label>
+			<?php echo ArsHelperSelect :: environments( $this->item->environments ); ?>
+		</div>		
+		<div class="editform-row">
 			<label for="published">
 				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
 				<?php echo JText::_('JPUBLISHED'); ?>

@@ -87,7 +87,7 @@ class TableItems extends ArsTable
 		$sql = 'SELECT * FROM `#__ars_autoitemdesc` WHERE `category` IN (SELECT `category_id` FROM `#__ars_releases` WHERE `id` = '.$db->Quote($this->release_id).') AND NOT `published` = 0';
 		$db->setQuery($sql);
 		$autoitems = $db->loadObjectList();
-		$auto = (object)array('title'=>'','description'=>'');
+		$auto = (object)array('title'=>'','description'=>'', 'environments' => '');
 		if(!empty($autoitems))
 		{
 			$fname = basename( (($this->type == 'file') ? $this->filename : $this->url) );
@@ -105,7 +105,11 @@ class TableItems extends ArsTable
 		}
 		
 		// Added environment ID
-		$this->environments = json_encode( $this->environments );
+		if(empty($this->environments)) {
+			$this->environments = $auto->environments;
+		} else {
+			$this->environments = json_encode( $this->environments );
+		}
 		
 		// Check if a title exists
 		if(!$this->title) {
