@@ -67,7 +67,7 @@ class ArsControllerRelease extends ArsControllerDefault
 		{
 			$no_access_url = trim($params->get('no_access_url',''));
 			if(empty($no_access_url)) {
-				return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
+				JError::raiseError('403', version_compare(JVERSION, '1.6.0', 'ge') ? JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN') : JText::_('Request Forbidden'));
 			} else {
 				$this->setRedirect($no_access_url);
 				return;
