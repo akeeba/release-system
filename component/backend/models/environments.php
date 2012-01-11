@@ -21,50 +21,45 @@ if(!class_exists('ArsModelBase'))
 }
 class ArsModelEnvironments extends ArsModelBase
 {
-	public function save($data) {
-		// When the user unselects all group checkboxes, the groups key is not
-		// set, causing the model to never reset them to "none selected"
-		if(!array_key_exists('groups', $data)) {
-			$data['groups'] = '';
-		}
-		return parent::save($data);
-	}
-	
-	function  buildQuery($overrideLimits = false) {
-		
+	function buildQuery($overrideLimits = false) {
 		$where = array();
-		
+
+		$fltSearch		= $this->getState('search', null, 'string');
+		$fltXML			= $this->getState('xmltitle', null, 'string');
+
 		$db = $this->getDBO();
-		
-		$query	= "SELECT * FROM #__ars_environments";
-		
+		if($fltSearch) {
+			$search = '%'.$fltSearch.'%';
+			$where[] = '`title` LIKE '.$db->Quote($search);
+		}
+		if($fltXML) {
+			$search = '%'.$fltXML.'%';
+			$where[] = '`xmltitle` LIKE '.$db->Quote($search);
+		}
+
+		$query = 'SELECT * FROM `#__ars_environments`';
+
+		if(count($where) && !$overrideLimits)
+		{
+			$query .= ' WHERE (' . implode(') AND (',$where) . ')';
+		}
+
+		if(!$overrideLimits) {
+			$order = $this->getState('order',null,'cmd');
+			$dir = $this->getState('dir',null,'cmd');
+
+			$app = JFactory::getApplication();
+			$hash = $this->getHash();
+			if(empty($order)) {
+				$order = $app->getUserStateFromRequest($hash.'filter_order', 'filter_order', 'id');
+			}
+			if(empty($dir)) {
+				$dir = $app->getUserStateFromRequest($hash.'filter_order_Dir', 'filter_order_Dir', 'DESC');
+				$dir = in_array(strtoupper($dir),array('DESC','ASC')) ? strtoupper($dir) : "ASC";
+			}
+			$query .= ' ORDER BY '.$db->nameQuote($order).' '.$dir;
+		}
+
 		return $query;
-	}
-
-
-	function getReorderWhere()
-	{
-		$where = array();
-
-		$fltCategory	= $this->getState('category', null, 'int');
-		$fltRelease		= $this->getState('release', null, 'int');
-		$fltPublished	= $this->getState('published', null, 'cmd');
-
-		$db = $this->getDBO();
-		if($fltCategory) {
-			$where[] = '`category_id` ='.$db->getEscaped($fltCategory);
-		}
-		if($fltRelease) {
-			$where[] = '`release_id` ='.$db->getEscaped($fltRelease);
-		}
-		if($fltPublished != '') {
-			$where[] = '`published` = '.$db->Quote((int)$fltPublished);
-		}
-
-		if(count($where)) {
-			return '(' . implode(') AND (',$where) . ')';
-		} else {
-			return '';
-		}
 	}
 }
