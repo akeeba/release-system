@@ -62,6 +62,7 @@
 	<!-- Media files -->
 	<media destination="com_ars" folder="media">
 		<folder>css</folder>
+		<folder>environments</folder>
 		<folder>js</folder>
 		<folder>theme</folder>
 		<folder>icons</folder>
