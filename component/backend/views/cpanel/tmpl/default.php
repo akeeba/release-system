@@ -102,7 +102,11 @@ $groups = array('basic','tools','update');
 
 <p>
 	<strong><?php echo JText::sprintf('ARS_COPYRIGHT', date('Y')); ?></strong><br/>
-	<?php echo JText::_('ARS_LICENSE'); ?>
+	<?php echo JText::_('ARS_LICENSE'); ?><br/>
+	<strong>
+	If you use Akeeba Release System, please post a rating and a review at the
+	<a href="http://extensions.joomla.org/extensions/directory-a-documentation/downloads/16825">Joomla! Extensions Directory</a>. 
+	</strong>
 </p>
 
 <?php
