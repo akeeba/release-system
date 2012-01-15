@@ -25,7 +25,6 @@ class ArsHelperIncludes
 	{
 		$media_folder = JURI::base().'/media/com_ars/';
 		$scriptDefs = array(
-			$media_folder.'js/akeebajq.js',
 			$media_folder.'js/gui-helpers.js'
 		);
 		return $scriptDefs;
@@ -42,21 +41,6 @@ class ArsHelperIncludes
 
 		$document =& JFactory::getDocument();
 
-		// In Joomla! 1.6 we have to load jQuery and jQuery UI without the hackish onAfterRender method :(
-		global $mainframe;
-		if(!is_object($mainframe))
-		{
-			if(!empty(self::$scriptURLs)) foreach(self::$scriptURLs as $url)
-			{
-				$document->addScript($url);
-			}
-			if(!empty(self::$scriptDefs)) foreach(self::$scriptDefs as $script)
-			{
-				$document->addScriptDeclaration($script);
-			}
-		}
-
-		// Joomla! 1.5 method
 		$scriptDefs = self::getScriptDefs();
 		if(!empty($scriptDefs)) foreach($scriptDefs as $scriptURI)
 		{
@@ -89,8 +73,8 @@ class ArsHelperIncludes
 	 */
 	static function jQueryLoad()
 	{
-		$js = JURI::base().'media/com_ars/js/akeebajq.js';
-		self::$scriptURLs[] = $js;
+		$document =& JFactory::getDocument();
+		$document->addScript(JURI::base().'media/com_ars/js/akeebajq.js');
 	}
 
 	/**
@@ -98,52 +82,7 @@ class ArsHelperIncludes
 	 */
 	static function jQueryUILoad()
 	{
-		$js = JURI::base().'media/com_ars/js/akeebajqui.js';
-		self::$scriptURLs[] = $js;
+		$document =& JFactory::getDocument();
+		$document->addScript(JURI::base().'media/com_ars/js/akeebajqui.js');
 	}
 }
-
-/**
- * This is an ARS hack to make sure that its own JS is going to be loaded before the one loaded by any
- * funky system plug-in. For example, many stupid plugins default to loading jQuery 1.2.6 in the backend.
- * WTF?! This is an ancient version! And why the hell load it in the backend anyway?! So, instead of having
- * to educate webmasters that the plugins work in a stupid way and plugin authors how not to write stupid
- * scripts (can't really blame newbies for being ignorant), I work around this issue by writing my hidden
- * system plug-in. Yeap! This is actually a system plugin :p It will grab the HTML and drop its own JS in
- * the head of the script, before anything else has the chance to run.
- *
- * Peace.
- */
-function ARSScriptHook()
-{
-	global $mainframe;
-
-	// If there are no script defs, just go to sleep
-	if(empty(ARSHelperIncludes::$scriptURLs) && empty(ARSHelperIncludes::$scriptDefs) ) return;
-
-	$myscripts = '';
-	if(!empty(ARSHelperIncludes::$scriptURLs)) foreach(ARSHelperIncludes::$scriptURLs as $url)
-	{
-		$myscripts .= '<script type="text/javascript" src="'.$url.'"></script>'."\n";
-	}
-	if(!empty(ARSHelperIncludes::$scriptDefs))
-	{
-		$myscripts .= '<script type="text/javascript">'."\n";
-		foreach(ARSHelperIncludes::$scriptDefs as $def)
-		{
-			$myscripts .= $def."\n";
-		}
-		$myscripts .= '</script>'."\n";
-	}
-
-	$buffer = JResponse::getBody();
-	$pos = strpos($buffer, "<head>");
-	if($pos > 0)
-	{
-		$buffer = substr($buffer, 0, $pos + 6).$myscripts.substr($buffer, $pos + 6);
-		JResponse::setBody($buffer);
-	}
-}
-
-$app = &JFactory::getApplication();
-$app->registerEvent('onAfterRender', 'ARSScriptHook');
