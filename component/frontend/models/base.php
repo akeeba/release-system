@@ -72,7 +72,7 @@ class ArsModelBaseFE extends JModel
 					$options = array();
 					jimport('joomla.user.helper');
 					$results = $app->triggerEvent('onLoginUser', array((array)$response, $options));
-					$user = JFactory::getUser();
+					$user = JFactory::getUser($user_id);
 					$parameters['username']	= $user->get('username');
 					$parameters['id']		= $user->get('id');
 					//$results = $app->triggerEvent('onLogoutUser', array($parameters, $options));
