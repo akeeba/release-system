@@ -56,8 +56,8 @@
 				<field name="moduleclass_sfx" type="text" default="" label="MOD_ARSDLID_OPT_SUFFIX_LBL" description="MOD_ARSDLID_OPT_SUFFIX_DESC" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="pretext" type="textarea" cols="30" rows="5" default="" label="MOD_ARSDLID_OPT_PRETEXT_LBL" description="MOD_ARSDLID_OPT_PRETEXT_DESC" />
-				<field name="posttext" type="textarea" cols="30" rows="5" default="" label="MOD_ARSDLID_OPT_POSTTEXT_LBL" description="MOD_ARSDLID_OPT_POSTTEXT_DESC" />
+				<field name="pretext" type="textarea" cols="30" rows="5" default="" label="MOD_ARSDLID_OPT_PRETEXT_LBL" description="MOD_ARSDLID_OPT_PRETEXT_DESC" filter="safehtml" />
+				<field name="posttext" type="textarea" cols="30" rows="5" default="" label="MOD_ARSDLID_OPT_POSTTEXT_LBL" description="MOD_ARSDLID_OPT_POSTTEXT_DESC" filter="safehtml" />
 			</fieldset>
 		</fields>
 	</config>
