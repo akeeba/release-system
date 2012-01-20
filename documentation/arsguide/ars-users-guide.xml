@@ -1323,9 +1323,7 @@ deny from all</programlisting>
 
                 <programlisting>&lt;updateservers&gt;
     &lt;server type="extension" priority="1"
-        name="<replaceable>Whatever you want to call it</replaceable>"&gt;
-        &lt;![CDATA[<replaceable>link_to_your_update_stream_xml</replaceable>]]&gt;
-    &lt;/server&gt;
+        name="<replaceable>Whatever you want to call it</replaceable>"&gt;&lt;![CDATA[<replaceable>link_to_your_update_stream_xml</replaceable>]]&gt;&lt;/server&gt;
 &lt;/updateservers&gt;
 </programlisting>
 
@@ -1349,6 +1347,14 @@ deny from all</programlisting>
                   you when generating the Master Joomla! 1.6 XML Update
                   stream.</para>
                 </important>
+
+                <warning>
+                  <para>You MUST NOT leave a space or put a newline between
+                  the server open/close tag and its contents. Anything between
+                  those tags, including newlines and spaces, are considered
+                  part of the update URL and will cause problems with
+                  Joomla!'s integrated update system.</para>
+                </warning>
               </listitem>
             </varlistentry>
           </variablelist>
