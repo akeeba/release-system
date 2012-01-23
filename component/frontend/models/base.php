@@ -42,6 +42,8 @@ class ArsModelBaseFE extends JModel
 		{
 			// Do we have a dlid in the query?
 			$dlid = JRequest::getCmd('dlid',null);
+			if(strlen($dlid) > 32) $dlid = substr($dlid,0,32);
+			
 			$credentials = array();
 			$credentials['username'] = JRequest::getVar('username', '', 'get', 'username');
 			$credentials['password'] = JRequest::getString('password', '', 'get', JREQUEST_ALLOWRAW);
@@ -58,6 +60,7 @@ class ArsModelBaseFE extends JModel
 				} else {
 					$user = JFactory::getUser($user_id);
 
+					/*
 					jimport( 'joomla.user.authentication');
 					$app = JFactory::getApplication();
 					$authenticate = JAuthentication::getInstance();
@@ -75,6 +78,7 @@ class ArsModelBaseFE extends JModel
 					$user = JFactory::getUser($user_id);
 					$parameters['username']	= $user->get('username');
 					$parameters['id']		= $user->get('id');
+					*/
 					//$results = $app->triggerEvent('onLogoutUser', array($parameters, $options));
 				}
 			} elseif( !empty($credentials['username']) && !empty($credentials['password']) ) {
@@ -110,7 +114,22 @@ class ArsModelBaseFE extends JModel
 			if(version_compare(JVERSION,'1.6.0','ge')) {
 				$user_access = $user->getAuthorisedViewLevels();
 			} else {
-				$user_access = $user->aid;	
+				$user_access = 0;
+				switch($user->gid) {
+					case 18:
+						$user_access = 1;
+						break;
+					case 19:
+					case 20:
+					case 21:
+						$user_access = 2;
+						break;
+					case 23:
+					case 24:
+					case 25:
+						$user_access = 3;
+						break;
+				}
 			}
 
 			// Get AMBRA groups of current user
