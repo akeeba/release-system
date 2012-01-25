@@ -44,10 +44,6 @@ $asModel = JModel::getInstance('Ambra','ArsModel');
 			<label for="type"><?php echo JText::_('LBL_ITEMS_TYPE'); ?></label>
 			<?php echo ArsHelperSelect::itemtypes($this->item->type, 'type', array('onchange'=>'onTypeChange();')) ?>
 		</div>
-		<div class="editform-row">
-			<label for="environments"><?php echo JText :: _( 'LBL_ITEMS_ENVIRONMENTS' ); ?></label>
-			<?php echo ArsHelperSelect :: environments( $this->item->environments ); ?>
-		</div>
 		<div class="editform-row" id="row-file" <?php if($this->item->type != 'file'):?>style="display: none"<?php endif;?> >
 			<label for="filename"><?php echo JText::_('LBL_ITEMS_FILE'); ?></label>
 			<span id="filename-container">
@@ -58,6 +54,11 @@ $asModel = JModel::getInstance('Ambra','ArsModel');
 			<label for="url"><?php echo JText::_('LBL_ITEMS_LINK'); ?></label>
 			<input type="text" name="url" id="url" value="<?php echo $this->item->url ?>" onblur="onLinkBlur();">
 		</div>
+		<div class="editform-row">
+			<label for="environments"><?php echo JText :: _( 'LBL_ITEMS_ENVIRONMENTS' ); ?></label>
+			<span style="float: left"><?php echo ArsHelperSelect :: environments( $this->item->environments ); ?></span>
+		</div>
+		<div style="clear:left"></div>
 		<div class="editform-row">
 			<label for="filesize"><?php echo JText::_('LBL_ITEMS_FILESIZE'); ?></label>
 			<input type="text" name="filesize" id="filesize" value="<?php echo $this->item->filesize ?>" >

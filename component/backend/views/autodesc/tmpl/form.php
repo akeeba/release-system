@@ -35,8 +35,9 @@ $editor =& JFactory::getEditor();
 		</div>
 		<div class="editform-row">
 			<label for="environments"><?php echo JText :: _( 'LBL_ITEMS_ENVIRONMENTS' ); ?></label>
-			<?php echo ArsHelperSelect :: environments( $this->item->environments ); ?>
-		</div>		
+			<span style="float: left"><?php echo ArsHelperSelect :: environments( $this->item->environments ); ?></span>
+		</div>
+		<div style="clear:both"></div>
 		<div class="editform-row">
 			<label for="published">
 				<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
