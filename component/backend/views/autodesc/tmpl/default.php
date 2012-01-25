@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted Access');
 
 $model = $this->getModel();
 ?>
-<form name="adminForm" action="index.php" method="post">
+<form name="adminForm" id="adminForm" action="index.php" method="post">
 	<input type="hidden" name="option" id="option" value="com_ars" />
 	<input type="hidden" name="view" id="view" value="autodesc" />
 	<input type="hidden" name="task" id="task" value="display" />

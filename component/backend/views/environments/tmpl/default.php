@@ -14,7 +14,7 @@ $base_folder = rtrim(JURI::base(), '/');
 if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
 
 ?>
-<form name="adminForm" action="index.php" method="post">
+<form name="adminForm" id="adminForm" action="index.php" method="post">
 	<input type="hidden" name="option" id="option" value="com_ars" />
 	<input type="hidden" name="view" id="view" value="environments" />
 	<input type="hidden" name="task" id="task" value="display" />

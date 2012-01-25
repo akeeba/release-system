@@ -18,7 +18,7 @@ $model = $this->getModel();
 	</a>
 </p>
 
-<form name="adminForm" action="index.php" method="post">
+<form name="adminForm" id="adminForm" action="index.php" method="post">
 	<input type="hidden" name="option" id="option" value="com_ars" />
 	<input type="hidden" name="view" id="view" value="updatestreams" />
 	<input type="hidden" name="task" id="task" value="display" />

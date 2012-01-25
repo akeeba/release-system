@@ -6,6 +6,7 @@ Version 1.1
 # "Access Forbidden" message was untranslated in Joomla! 1.6 and later
 # #78 Dots in item aliases cause problem with Joomla! SEF URLs
 # Download ID authentication did not work
+# You could not change the ordering in Joomla! 2.5.0 due to undocumented JavaScript changes in the Joomla! core
 
 Version 1.0.5
 ================================================================================
