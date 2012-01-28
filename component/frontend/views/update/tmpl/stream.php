@@ -25,6 +25,14 @@ $streamTypeMap = array(
 	'templates' => 'template'
 );
 
+$dlid = trim(JRequest::getCmd('dlid',''));
+if($dlid) {
+	if(strlen($dlid) > 32) $dlid = substr($dlid,0,32);
+	$dlid = '&dlid='.$dlid;
+} else {
+	$dlid = '';
+}
+
 @ob_end_clean();
 @header('Content-type: application/xml');
 ?><?php echo $tag; ?>
@@ -34,7 +42,7 @@ $streamTypeMap = array(
 foreach($this->items as $item):
 	switch($item->itemtype) {
 		case 'file':
-			$downloadURL = $rootURL.AKRouter::_('index.php?option=com_ars&view=download&id='.$item->item_id);
+			$downloadURL = $rootURL.AKRouter::_('index.php?option=com_ars&view=download&id='.$item->item_id.$dlid);
 			$basename = basename($item->filename);
 			break;
 		case 'link':

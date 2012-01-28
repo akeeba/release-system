@@ -1,5 +1,6 @@
 Version 1.1.1
 ================================================================================
++ Support for dlid in XML update stream URLs
 ~ Increasing the release title maximum length from 20 to 255 characters
 # PHP Warnings thrown when there are no latest downloads to display in the Control Panel
 # Latest downloads module doesn't work when the access to an item is limited by View Access Levels instead of subscription levels
