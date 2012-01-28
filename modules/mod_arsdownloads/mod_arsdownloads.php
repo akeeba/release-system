@@ -39,7 +39,7 @@ if(!class_exists('MydownloadsModel')) {
 				// Is the user authorized to download this item?
 				$iFull = $dlmodel->getItem($i->item_id);
 				if(is_null($iFull)) continue;
-				if(empty($iFull->groups)) continue;
+				//if(empty($iFull->groups)) continue;
 	
 				// Add this item
 				$newItem = array(
