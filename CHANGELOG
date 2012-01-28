@@ -1,3 +1,7 @@
+Version 1.1.1
+================================================================================
+~ Increasing the release title maximum length from 20 to 255 characters
+
 Version 1.1
 ================================================================================
 + #74 Environments, which can also be used to set the Joomla! version compatibility per item

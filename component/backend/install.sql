@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_categories` (
 CREATE TABLE IF NOT EXISTS `#__ars_releases` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `category_id` BIGINT(20) UNSIGNED NOT NULL,
-    `version` VARCHAR(20) NOT NULL,
+    `version` VARCHAR(255) NOT NULL,
     `alias` VARCHAR(255) NOT NULL,
     `maturity` ENUM('alpha','beta','rc','stable') NOT NULL DEFAULT 'beta',
     `description` MEDIUMTEXT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_items` (
     `access` int(11) NOT NULL DEFAULT '0',
     `published` tinyint(1) NOT NULL DEFAULT '1',
 	`language` char(7) NOT NULL DEFAULT '*',
-    `environments` varchar(100) DEFAULT NULL,
+    `environments` varchar(255) DEFAULT NULL,
 	PRIMARY KEY `id` (`id`)
 ) DEFAULT CHARACTER SET utf8;
 
