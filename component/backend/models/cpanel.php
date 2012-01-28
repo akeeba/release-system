@@ -133,8 +133,10 @@ ENDSQL;
 		$ret = array();
 		foreach($items as $item)
 		{
-			$info = $infoList[$item['item_id']];
-			$ret[] = (object)array_merge($info, $item);
+			$info = array_key_exists($item['item_id'],$infoList) ? $infoList[$item['item_id']] : null;
+			if(is_array($info)) {
+				$ret[] = (object)array_merge($info, $item);
+			}
 		}
 		
 		return $ret;

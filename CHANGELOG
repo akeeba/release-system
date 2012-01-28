@@ -1,6 +1,7 @@
 Version 1.1.1
 ================================================================================
 ~ Increasing the release title maximum length from 20 to 255 characters
+# PHP Warnings thrown when there are no latest downloads to display in the Control Panel
 
 Version 1.1
 ================================================================================
