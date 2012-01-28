@@ -217,6 +217,8 @@ class ArsModelBleedingedge extends JModel
 
 				$table = JTable::getInstance('Releases','Table');
 				$table->reset();
+				jimport('joomla.utilities.date');
+				$jNow = new JDate();
 				$data = array(
 					'id'				=> 0,
 					'category_id'		=> $this->category_id,
@@ -227,7 +229,8 @@ class ArsModelBleedingedge extends JModel
 					'notes'				=> $notes,
 					'groups'			=> $this->category->groups,
 					'access'			=> $this->category->access,
-					'published'			=> 1
+					'published'			=> 1,
+					'created'			=> $jNow->toMySQL(),
 				);
 				
 				// Before saving the release, call the onNewARSBleedingEdgeRelease()
@@ -361,6 +364,8 @@ class ArsModelBleedingedge extends JModel
 			if(in_array($file, $known_items)) continue;
 			if(in_array($file, $known_items)) continue;
 			
+			jimport('joomla.utilities.date');
+			$jNow = new JDate();
 			$data = array(
 				'release_id'		=> $release->id,
 				'description'		=> '',
@@ -369,7 +374,8 @@ class ArsModelBleedingedge extends JModel
 				'url'				=> '',
 				'groups'			=> $release->groups,
 				'hits'				=> '0',
-				'published'			=> '1'
+				'published'			=> '1',
+				'created'			=> $jNow->toMySQL(),
 			);
 			
 			// Before saving the item, call the onNewARSBleedingEdgeItem()
