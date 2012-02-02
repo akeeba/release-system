@@ -36,7 +36,7 @@ class ArsViewRelease extends ArsViewBase
 
 		// Add RSS links
 		$app = JFactory::getApplication();
-		$params =& $app->getPageParameters('com_ars');
+		$params = $app->getPageParameters('com_ars');
 		$show_feed = $params->get('show_feed_link');
 		if($show_feed)
 		{
@@ -60,7 +60,7 @@ class ArsViewRelease extends ArsViewBase
 				'title' => $title.' (Atom)'
 			);
 			// add the links
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate',
 				'rel', $rss);
 			$document->addHeadLink(JRoute::_($feed.'&type=atom'), 'alternate',

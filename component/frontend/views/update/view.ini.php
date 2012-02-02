@@ -14,7 +14,7 @@ class ArsViewUpdate extends JView
 {
 	function display($tpl = null) {
 		$task = JRequest::getCmd('task', '');
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setMimeEncoding('text/plain');
 
 		$model = $this->getModel();

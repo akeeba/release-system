@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die('Restricted Access');
 
-$editor =& JFactory::getEditor();
+$editor = JFactory::getEditor();
 $asModel = JModel::getInstance('Ambra','ArsModel');
 ?>
 

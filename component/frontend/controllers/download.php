@@ -26,14 +26,14 @@ class ArsControllerDownload extends ArsControllerDefault
 
 		// Get the page parameters
 		$app = JFactory::getApplication();
-		$params =& $app->getPageParameters('com_ars');
+		$params = $app->getPageParameters('com_ars');
 
 		// Get the model
 		$model = $this->getThisModel();
 
 		// Anti-leech protection (removed feature)
 		/*
-		$component =& JComponentHelper::getComponent( 'com_ars' );
+		$component = JComponentHelper::getComponent( 'com_ars' );
 		$params = ($component->params instanceof JRegistry) ? $component->params : new JParameter($component->params);
 		$antileech = $params->get('antileech',1);
 		if($antileech == 1)

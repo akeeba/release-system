@@ -12,15 +12,15 @@ class ArsHelperBreadcrumbs
 {
 	public static function addRepositoryRoot($repoType = '')
 	{
-		$menus =& JMenu::getInstance('site');
-		$menuitem =& $menus->getActive();
+		$menus = JMenu::getInstance('site');
+		$menuitem = $menus->getActive();
 		
 		$rootName = null;
 
 		if (!is_object($menuitem) || $menuitem->query['view'] != 'browse')
 		{
 			$app = JFactory::getApplication();
-			$pathway =& $app->getPathway();
+			$pathway = $app->getPathway();
 
 			// Preferably find a menu item linking to a specific repository type
 			$Itemid = null;
@@ -52,8 +52,8 @@ class ArsHelperBreadcrumbs
 
 	public static function addCategory($id, $name)
 	{
-		$menus =& JMenu::getInstance('site');
-		$menuitem =& $menus->getActive();
+		$menus = JMenu::getInstance('site');
+		$menuitem = $menus->getActive();
 
 		if (!is_object($menuitem) ||$menuitem->query['view'] != 'category')
 		{
@@ -96,8 +96,8 @@ class ArsHelperBreadcrumbs
 
 	public static function addRelease($id, $name)
 	{
-		$menus =& JMenu::getInstance('site');
-		$menuitem =& $menus->getActive();
+		$menus = JMenu::getInstance('site');
+		$menuitem = $menus->getActive();
 
 		if (!is_object($menuitem) || $menuitem->query['view'] != 'release')
 		{

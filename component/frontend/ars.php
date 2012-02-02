@@ -29,7 +29,7 @@ JRequest::setVar('view', JRequest::getCmd('view','browse'));
 JRequest::setVar('c', JRequest::getCmd('view','browse')); // Black magic: Get controller based on the selected view
 
 // Merge the default translation with the current translation
-$jlang =& JFactory::getLanguage();
+$jlang = JFactory::getLanguage();
 // Back-end translation
 $jlang->load('com_ars', JPATH_ADMINISTRATOR, 'en-GB', true);
 $jlang->load('com_ars', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);

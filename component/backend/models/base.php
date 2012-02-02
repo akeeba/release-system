@@ -37,7 +37,7 @@ abstract class ArsModelBase extends JModel
 
 
 		// Get and store the pagination request variables
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
 		$limitstart = $app->getUserStateFromRequest(JRequest::getCmd('option','com_ars').$this->getName().'limitstart','limitstart',0);
 		$this->setState('limit',$limit);

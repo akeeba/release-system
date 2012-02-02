@@ -15,7 +15,7 @@ class ArsControllerUpdate extends ArsControllerDefault
 	function  __construct($config = array()) {
 		parent::__construct($config);
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$task = JRequest::getCmd('task','');
 		$layout = JRequest::getCmd('layout','');
@@ -95,7 +95,7 @@ class ArsControllerUpdate extends ArsControllerDefault
 		{
 			// Do we have a menu item parameter?
 			$app = JFactory::getApplication();
-			$params =& $app->getPageParameters('com_ars');
+			$params = $app->getPageParameters('com_ars');
 			$cat = $params->get('category', 'components');
 		}
 		if(empty($cat)) {
@@ -113,7 +113,7 @@ class ArsControllerUpdate extends ArsControllerDefault
 		{
 			// Do we have a menu item parameter?
 			$app = JFactory::getApplication();
-			$params =& $app->getPageParameters('com_ars');
+			$params = $app->getPageParameters('com_ars');
 			$id = $params->get('streamid', 0);			
 		}
 		$model = $this->getThisModel();
@@ -128,7 +128,7 @@ class ArsControllerUpdate extends ArsControllerDefault
 		{
 			// Do we have a menu item parameter?
 			$app = JFactory::getApplication();
-			$params =& $app->getPageParameters('com_ars');
+			$params = $app->getPageParameters('com_ars');
 			$id = $params->get('streamid', 0);			
 		}
 		$model = $this->getThisModel();

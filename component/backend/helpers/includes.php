@@ -41,7 +41,7 @@ class ArsHelperIncludes
 		self::jQueryLoad();
 		self::jQueryUILoad();
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		// In Joomla! 1.6 we have to load jQuery and jQuery UI without the hackish onAfterRender method :(
 		global $mainframe;
@@ -73,7 +73,7 @@ class ArsHelperIncludes
 		$base_folder = rtrim(JURI::base(), '/');
         if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
 		$media_folder = $base_folder.'/media/com_ars/';
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet($media_folder.'theme/jquery-ui.css');
 		$document->addStyleSheet($media_folder.'css/backend.css');
 	}

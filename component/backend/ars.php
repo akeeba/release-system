@@ -45,7 +45,7 @@ JRequest::setVar('view', JRequest::getCmd('view','cpanel'));
 JRequest::setVar('c', JRequest::getCmd('view','cpanel')); // Black magic: Get controller based on the selected view
 
 // Merge the default translation with the current translation
-$jlang =& JFactory::getLanguage();
+$jlang = JFactory::getLanguage();
 // Front-end translation
 $jlang->load('com_ars', JPATH_SITE, 'en-GB', true);
 $jlang->load('com_ars', JPATH_SITE, $jlang->getDefault(), true);

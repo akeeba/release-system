@@ -9,7 +9,7 @@
 defined('_JEXEC') or die('Restricted Access');
 
 JHTML::_('behavior.calendar');
-$editor =& JFactory::getEditor();
+$editor = JFactory::getEditor();
 $asModel = JModel::getInstance('Ambra','ArsModel');
 ?>
 

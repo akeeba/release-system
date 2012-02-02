@@ -16,7 +16,7 @@ $released = new JDate($item->created);
 $release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);
 
 jimport('joomla.html.pane');
-$tabs	=& JPane::getInstance('tabs');
+$tabs	= JPane::getInstance('tabs');
 
 ?>
 <div class="ars-browse-releases">

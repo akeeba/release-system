@@ -9,7 +9,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die('Restricted Access');
 
-$session  =& JFactory::getSession();
+$session  = JFactory::getSession();
 $suffix = '&'.$session->getName() .'='. $session->getId();
 
 require_once dirname(__FILE__).'/default.php';

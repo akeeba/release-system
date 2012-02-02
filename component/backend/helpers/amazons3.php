@@ -108,7 +108,7 @@ class ArsHelperAmazons3 extends JObject
 	*/
 	public static function inputFile($file, $md5sum = false) {
 		if (!file_exists($file) || !is_file($file) || !is_readable($file)) {
-			$o =& self::getInstance();
+			$o = self::getInstance();
 			$o->setError(__CLASS__.'::inputFile(): Unable to open input file: '.$file);
 			return false;
 		}
@@ -129,7 +129,7 @@ class ArsHelperAmazons3 extends JObject
 	*/
 	public static function inputResource(&$resource, $bufferSize, $md5sum = '') {
 		if (!is_resource($resource) || $bufferSize < 0) {
-			$o =& self::getInstance();
+			$o = self::getInstance();
 			$o->setError(__CLASS__.'::inputResource(): Invalid resource or buffer size');
 			return false;
 		}
@@ -210,7 +210,7 @@ class ArsHelperAmazons3 extends JObject
 		if ($rest->response->error === false && $rest->response->code !== 200)
 			$rest->response->error = array('code' => $rest->response->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->response->error !== false) {
-			$o =& self::getInstance();
+			$o = self::getInstance();
 			$o->setError(sprintf(__CLASS__."::putObject(): [%s] %s", $rest->response->error['code'], $rest->response->error['message']));
 			return false;
 		}
@@ -268,7 +268,7 @@ class ArsHelperAmazons3 extends JObject
 		if ($rest->response->error === false && $rest->response->code !== 200)
 			$rest->response->error = array('code' => $rest->response->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->response->error !== false) {
-			$o =& self::getInstance();
+			$o = self::getInstance();
 			$o->setError(sprintf(__CLASS__."::startMultipart(): [%s] %s", $rest->response->error['code'], $rest->response->error['message']));
 			return false;
 		}
@@ -291,7 +291,7 @@ class ArsHelperAmazons3 extends JObject
 	*/
 	public static function uploadMultipart($input, $bucket, $uri, $acl = null, $metaHeaders = array(), $requestHeaders = array()) {
 		if ($input === false) {
-			$o =& self::getInstance();
+			$o = self::getInstance();
 			$o->setError(__CLASS__."::uploadMultipart(): No input specified");
 			return false;	
 		}
@@ -306,12 +306,12 @@ class ArsHelperAmazons3 extends JObject
 		
 		// We need a valid UploadID and PartNumber
 		if(!array_key_exists('UploadID', $input)) {
-			$o =& self::getInstance();
+			$o = self::getInstance();
 			$o->setError(__CLASS__."::uploadMultipart(): No UploadID specified");
 			return false;	
 		}
 		if(!array_key_exists('PartNumber', $input)) {
-			$o =& self::getInstance();
+			$o = self::getInstance();
 			$o->setError(__CLASS__."::uploadMultipart(): No PartNumber specified");
 			return false;	
 		}
@@ -404,7 +404,7 @@ class ArsHelperAmazons3 extends JObject
 				// This is not an error. AAAAARGH!
 				return $rest->response->headers['hash'];
 			} else {
-				$o =& self::getInstance();
+				$o = self::getInstance();
 				$o->setError(sprintf(__CLASS__."::uploadMultipart(): [%s] %s", $rest->response->error['code'], $rest->response->error['message']));
 				return false;
 			}
@@ -424,13 +424,13 @@ class ArsHelperAmazons3 extends JObject
 	 */
 	public static function finalizeMultipart($input, $bucket, $uri) {
 		if(!array_key_exists('etags',$input)) {
-			$o =& self::getInstance();
+			$o = self::getInstance();
 			$o->setError(__CLASS__."::finalizeMultipart(): No ETags array specified");
 			return false;	
 		}
 		if(empty($bucket)) $bucket = self::$__default_bucket;
 		if(!array_key_exists('UploadID', $input)) {
-			$o =& self::getInstance();
+			$o = self::getInstance();
 			$o->setError(__CLASS__."::finalizeMultipart(): No UploadID specified");
 			return false;	
 		}
@@ -469,7 +469,7 @@ class ArsHelperAmazons3 extends JObject
 			if($rest->response->error['code'] == 'RequestTimeout') {
 				return true;
 			} else {
-				$o =& self::getInstance();
+				$o = self::getInstance();
 				$o->setError(sprintf(__CLASS__."::finalizeMultipart(): [%s] %s", $rest->response->error['code'], $rest->response->error['message']));
 				return false;
 			}
@@ -510,7 +510,7 @@ class ArsHelperAmazons3 extends JObject
 		if ($rest->response->error === false && (($rest->response->code !== 200) && ($rest->response->code !== 206)))
 			$rest->response->error = array('code' => $rest->response->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->response->error !== false) {
-			$o =& self::getInstance();
+			$o = self::getInstance();
 			$o->setError(sprintf(__CLASS__."::getObject({$bucket}, {$uri}): [%s] %s",
 			$rest->response->error['code'], $rest->response->error['message']));
 			return false;
@@ -532,7 +532,7 @@ class ArsHelperAmazons3 extends JObject
 		if ($rest->error === false && $rest->code !== 204)
 			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->error !== false) {
-			$o =& self::getInstance();
+			$o = self::getInstance();
 			$o->setError(sprintf(__CLASS__."::deleteObject({$bucket}, {$uri}): [%s] %s",
 			$rest->error['code'], $rest->error['message']));
 			return false;

@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted Access');
 jimport('joomla.html.pane');
 $tabs	= JPane::getInstance('tabs');
 
-$lang =& JFactory::getLanguage();
+$lang = JFactory::getLanguage();
 $icons_root = JURI::base().'components/com_ars/assets/images/';
 
 $groups = array('basic','tools','update');

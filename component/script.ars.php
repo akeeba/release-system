@@ -20,7 +20,7 @@ class Com_ArsInstallerScript extends ComAkeebaStandardInstallationLibrary
 		$this->_akeeba_script_uninstall	= 'uninstall.ars.php';
 				
 		// Let's try the "session trick"
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$sql = 'DESCRIBE `#__session`';
 		$db->setQuery($sql);
 		try {

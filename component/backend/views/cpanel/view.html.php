@@ -64,7 +64,7 @@ class ArsViewCpanel extends JView
 		JSubMenuHelper::addEntry(JText::_('ARS_TITLE_ENVIRONMENTS'), $link);
 		
 		// Load the model
-		$model =& $this->getModel();
+		$model = $this->getModel();
 
 		// -- Icon definitions
 		$this->assign('icondefs',			$model->getIconDefinitions() );
@@ -123,7 +123,7 @@ class ArsViewCpanel extends JView
 		// Add references to CSS and JS files
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/includes.php';
 		ArsHelperIncludes::includeMedia(false);
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		
         $base_folder = rtrim(JURI::base(), '/');
         if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        

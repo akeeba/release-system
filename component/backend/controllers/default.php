@@ -25,7 +25,7 @@ class ArsControllerDefault extends JController
 	
 	public function display($cachable = false)
 	{
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$viewLayout	= JRequest::getCmd( 'layout', 'default' );
 
@@ -43,7 +43,7 @@ class ArsControllerDefault extends JController
 		// Display the view
 		if ($cachable && $viewType != 'feed') {
 			global $option;
-			$cache =& JFactory::getCache($option, 'view');
+			$cache = JFactory::getCache($option, 'view');
 			$cache->get($view, 'display');
 		} else {
 			$view->display();
@@ -563,7 +563,7 @@ class ArsControllerDefault extends JController
 			$prefix = $this->getName().'View';
 			$view = JRequest::getCmd('view','cpanel');
 			$viewName = ucfirst($view);
-			$document =& JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$viewType	= $document->getType();
 		}
 

@@ -163,7 +163,7 @@ class ArsModelBrowse extends ArsModelBaseFE
 	public function processLatest()
 	{
 		$app = JFactory::getApplication();
-		$params =& $app->getPageParameters('com_ars');
+		$params = $app->getPageParameters('com_ars');
 		
 		$this->processFeedData($params->get('rel_orderby', 'order'));
 

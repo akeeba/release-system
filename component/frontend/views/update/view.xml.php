@@ -14,13 +14,13 @@ class ArsViewUpdate extends JView
 {
 	function display($tpl = null) {
 		$task = JRequest::getCmd('task', '');
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setMimeEncoding('text/xml');
 
 		switch($task)
 		{
 			case 'all':
-				$component =& JComponentHelper::getComponent( 'com_ars' );
+				$component = JComponentHelper::getComponent( 'com_ars' );
 				$params = ($component->params instanceof JRegistry) ? $component->params : new JParameter($component->params);
 				$this->assign('updates_name', $params->get('updates_name','') );
 				$this->assign('updates_desc', $params->get('updates_desc','') );

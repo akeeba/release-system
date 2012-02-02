@@ -39,7 +39,7 @@ class ArsHelperIncludes
 		self::jQueryLoad();
 		self::jQueryUILoad();
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 
 		$scriptDefs = self::getScriptDefs();
 		if(!empty($scriptDefs)) foreach($scriptDefs as $scriptURI)
@@ -54,7 +54,7 @@ class ArsHelperIncludes
 	static function includeCSS()
 	{
 		$media_folder = rtrim(JURI::base(),'/').'/media/com_ars/';
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addStyleSheet($media_folder.'theme/jquery-ui.css');
 		$document->addStyleSheet($media_folder.'css/frontend.css');
 	}
@@ -73,7 +73,7 @@ class ArsHelperIncludes
 	 */
 	static function jQueryLoad()
 	{
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addScript(JURI::base().'media/com_ars/js/akeebajq.js');
 	}
 
@@ -82,7 +82,7 @@ class ArsHelperIncludes
 	 */
 	static function jQueryUILoad()
 	{
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addScript(JURI::base().'media/com_ars/js/akeebajqui.js');
 	}
 }

@@ -45,7 +45,7 @@ class ArsControllerUpload extends JController
 		$model->setState('category',(int)$catid);
 		$model->setState('folder', $folder);
 
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$viewLayout	= JRequest::getCmd( 'layout', 'default' );
 

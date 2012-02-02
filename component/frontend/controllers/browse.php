@@ -28,7 +28,7 @@ class ArsControllerBrowse extends ArsControllerDefault
 	{
 		// Get the page parameters
 		$app = JFactory::getApplication();
-		$params =& $app->getPageParameters('com_ars');
+		$params = $app->getPageParameters('com_ars');
 
 		// Push the page params to the model
 		$model = $this->getThisModel();

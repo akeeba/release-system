@@ -330,7 +330,7 @@ class TableItems extends ArsTable
 			if(($this->type == 'link') || !is_null($url))
 			{
 				if(is_null($url)) $url = $this->url;
-				$config =& JFactory::getConfig();
+				$config = JFactory::getConfig();
 				$target = $config->getValue('config.tmp_path').'/temp.dat';
 
 				if(function_exists('curl_exec'))

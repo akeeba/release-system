@@ -246,7 +246,7 @@ if( version_compare( JVERSION, '1.6.0', 'lt' ) ) {
 	global $j15;
 	// Joomla! 1.5 will have to load the translation strings
 	$j15 = true;
-	$jlang =& JFactory::getLanguage();
+	$jlang = JFactory::getLanguage();
 	$path = JPATH_ADMINISTRATOR.'/components/com_ars';
 	$jlang->load('com_ars.sys', $path, 'en-GB', true);
 	$jlang->load('com_ars.sys', $path, $jlang->getDefault(), true);

@@ -43,7 +43,7 @@ class ArsViewBase extends JView
 
 		// Pass the parameters
 		$app = JFactory::getApplication();
-		$params =& $app->getPageParameters('com_ars');
+		$params = $app->getPageParameters('com_ars');
 		$this->assignRef( 'params',		$params );
 
 		parent::display($tpl);

@@ -19,7 +19,7 @@ class ArsControllerDefault extends JController
 	public function __construct($config = null)
 	{
 		parent::__construct($config);
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$this->viewType	= $document->getType();
 		$this->viewLayout = JRequest::getCmd( 'layout', 'default' );
 	}
@@ -40,7 +40,7 @@ class ArsControllerDefault extends JController
 		$view->setLayout($viewLayout);
 
 		// Display the view
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 
 		if($viewType == 'feed')
@@ -61,7 +61,7 @@ class ArsControllerDefault extends JController
 
 		if ($guest && $cachable && $viewType != 'feed') {
 			$option	= JRequest::getCmd('option');
-			$cache =& JFactory::getCache($option, 'view');
+			$cache = JFactory::getCache($option, 'view');
 			
 			if (is_array($urlparams) && version_compare(JVERSION,'1.6.0','ge')) {
 				$app = JFactory::getApplication();

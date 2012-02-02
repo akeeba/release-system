@@ -59,7 +59,7 @@ function arsBuildRouteHtml(&$query)
 		return $segments;
 	}
 
-	$menus =& JMenu::getInstance('site');
+	$menus = JMenu::getInstance('site');
 
 	$view = ArsRouterHelper::getAndPop($query, 'view', 'browse');
 	$task = ArsRouterHelper::getAndPop($query, 'task');
@@ -354,7 +354,7 @@ function arsBuildRouteRaw(&$query)
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
 
 	$qoptions = array( 'option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id );
-	$menus =& JMenu::getInstance('site');
+	$menus = JMenu::getInstance('site');
 	
 	// Get download item info
 	$dlModel = new ArsModelItems();
@@ -475,8 +475,8 @@ function arsBuildRouteXml(&$query)
 	// Analyze the current Itemid
 	if(!empty($Itemid)) {
 		// Get the specified menu
-		$menus =& JMenu::getInstance('site');
-		$menuitem =& $menus->getItem($Itemid);
+		$menus = JMenu::getInstance('site');
+		$menuitem = $menus->getItem($Itemid);
 		
 		// Analyze URL
 		$uri = new JURI($menuitem->link);
@@ -655,8 +655,8 @@ function arsBuildRouteIni(&$query)
 	// Analyze the current Itemid
 	if(!empty($Itemid)) {
 		// Get the specified menu
-		$menus =& JMenu::getInstance('site');
-		$menuitem =& $menus->getItem($Itemid);
+		$menus = JMenu::getInstance('site');
+		$menuitem = $menus->getItem($Itemid);
 		
 		// Analyze URL
 		$uri = new JURI($menuitem->link);
@@ -777,7 +777,7 @@ function arsParseRoute(&$segments)
 function arsParseRouteFeed(&$segments)
 {
 	$query = array();
-	$menus =& JMenu::getInstance('site');
+	$menus = JMenu::getInstance('site');
 
 	$query['format'] = 'feed';
 	$query['view'] = 'browse';
@@ -1314,8 +1314,8 @@ class ArsRouterHelper
 		// Convert $qoptions to an object
 		if(empty($qoptions) || !is_array($qoptions)) $qoptions = array();
 
-		$menus =& JMenu::getInstance('site');
-		$menuitem =& $menus->getActive();
+		$menus = JMenu::getInstance('site');
+		$menuitem = $menus->getActive();
 
 		// First check the current menu item (fastest shortcut!)
 		if(is_object($menuitem)) {
@@ -1357,7 +1357,7 @@ class ArsRouterHelper
 
 		if(!is_null($params))
 		{
-			$menus =& JMenu::getInstance('site');
+			$menus = JMenu::getInstance('site');
 			$check =  $menu->params instanceof JRegistry ? $menu->params : $menus->getParams($menu->id);
 
 			foreach($params as $key => $value)
