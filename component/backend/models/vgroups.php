@@ -27,6 +27,7 @@ class ArsModelVgroups extends ArsModelBase
 
 		$fltTitle		= $this->getState('title', null, 'string');
 		$fltPublished	= $this->getState('published', null, 'int');
+		$fltFrontend	= $this->getState('frontend', 0, 'int');
 
 		$db = $this->getDBO();
 		if($fltTitle) {
@@ -50,10 +51,14 @@ class ArsModelVgroups extends ArsModelBase
 
 			$app = JFactory::getApplication();
 			$hash = $this->getHash();
-			if(empty($order)) {
+			if($fltFrontend) {
+				$order = 'ordering';
+			} elseif(empty($order)) {
 				$order = $app->getUserStateFromRequest($hash.'filter_order', 'filter_order', 'id');
 			}
-			if(empty($dir)) {
+			if($fltFrontend) {
+				$dir = 'ASC';
+			} elseif(empty($dir)) {
 				$dir = $app->getUserStateFromRequest($hash.'filter_order_Dir', 'filter_order_Dir', 'DESC');
 				$dir = in_array(strtoupper($dir),array('DESC','ASC')) ? strtoupper($dir) : "ASC";
 			}

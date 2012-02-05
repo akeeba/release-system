@@ -5,6 +5,7 @@ Version 1.1.1
 # PHP Warnings thrown when there are no latest downloads to display in the Control Panel
 # Latest downloads module doesn't work when the access to an item is limited by View Access Levels instead of subscription levels
 # Dev releases do not get the correct date (they stick with 0000-00-00 00:00:00)
+# Visual groups in the front-end were grouped by ID, not ordering
 
 Version 1.1
 ================================================================================

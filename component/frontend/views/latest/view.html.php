@@ -19,6 +19,7 @@ class ArsViewLatest extends ArsViewBase
 
 		// Load visual group definitions
 		$vgModel = JModel::getInstance('Vgroups','ArsModel');
+		$vgModel->setState('frontend',1);
 		$raw = $vgModel->getItemList(true);
 		$vgroups = array('0' => '');
 		if(!empty($raw)) foreach($raw as $r) {
