@@ -37,7 +37,8 @@ class AKRouter
 				}
 				// Remove the suffix
 				$basename = basename($url);
-				$extension = end(explode(".", $basename));
+				$exploded = explode(".", $basename);
+				$extension = end($exploded);
 				$realbase = basename($url,'.'.$extension);
 				$url = str_replace($basename, $realbase, $url).$qparams;
 				// Add a format parameter
