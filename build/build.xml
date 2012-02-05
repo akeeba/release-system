@@ -172,4 +172,22 @@
 			</fileset>			
 		</ftpdeploy>
 	</target>
+	
+	<target name="docsdeploy">
+		<!-- English manual -->
+		<echo>Uploading Akeeba Release System documentation</echo>
+		<ftpdeploy
+			host="${ftp.host}"
+			port="${ftp.port}"
+			username="${ftp.username}"
+			password="${ftp.password}"
+			dir="${ftp.dir.docs}/arsdocumentation"
+			mode="${ftp.mode}"
+			passive="true"
+			level="debug">
+			<fileset dir="${dirs.documentation}/arsguide">
+				<include name="*.xml"/>
+			</fileset>			
+		</ftpdeploy>
+	</target>
 </project>
