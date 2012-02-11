@@ -52,12 +52,17 @@ class ArsControllerReleases extends ArsControllerDefault
 		$itemModel->setState('release', $id);
 		$temp = $itemModel->getItemList();
 
+		jimport('joomla.utilities.date');
+		$date = new JDate();
+		
 		foreach($temp as $item)
 		{
 			$item->id = 0;
 			$item->release_id = $newRelease->id;
-			$item->created_by = 0;
-			$item->created = '0000-00-00 00:00:00';
+			$item->created = $date->toMySQL();
+			if(!empty($item->environments)) {
+				$item->environments = @json_decode($item->environments);
+			}
 			$item->modified = '0000-00-00 00:00:00';
 			$item->modified_by = 0;
 			$item->checked_out_time = '0000-00-00 00:00:00';
