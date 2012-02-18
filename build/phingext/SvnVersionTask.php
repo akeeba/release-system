@@ -4,7 +4,7 @@ require_once 'phing/tasks/ext/svn/SvnBaseTask.php';
 
 /**
  * SVN latest tree version to Phing property
- * @version $Id$
+ * @version $Id: SvnVersionTask.php 690 2011-06-02 19:58:58Z nikosdion $
  * @package akeebabuilder
  * @copyright Copyright (c)2009-2011 Nicholas K. Dionysopoulos
  * @license GNU GPL version 3 or, at your option, any later version
@@ -71,8 +71,17 @@ class SvnVersionTask extends SvnBaseTask
 	
 	function _use_gitsvn()
 	{
-		exec('pushd '.escapeshellarg($this->workingCopy).' > /dev/null; git svn info; popd > /dev/null', $out);
+		$path = realpath($this->workingCopy);
+		if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			$mydir = getcwd();
+			chdir($path);
+			exec('git svn info', $out);
+			chdir($mydir);
+		} else {
+			exec('pushd '.escapeshellarg($path).' > /dev/null; git svn info; popd > /dev/null', $out);
+		}
 		
+
 		if(empty($out)) {
 			throw new BuildException("Failed to parse the output of 'git svn info'.");
 			return;
