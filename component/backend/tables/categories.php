@@ -79,14 +79,18 @@ class TableCategories extends ArsTable
 		jimport('joomla.filesystem.folder');
 		
 		$this->directory = rtrim($this->directory,'/');
+		if($this->directory == 's3:') {
+			$this->directory = 's3://';
+		}
 		$check = trim($this->directory);
 		if(!empty($check)) {
 			$potentialPrefix = substr($check, 0, 5);
 			$potentialPrefix = strtolower($potentialPrefix);
 			if($potentialPrefix == 's3://') {
 				$check = substr($check, 5);
+				if(!empty($check)) $check .= '/';
 				$s3 = ArsHelperAmazons3::getInstance();
-				$items = $s3->getBucket('', $check.'/');
+				$items = $s3->getBucket('', $check);
 				if(empty($items)) {
 					$this->setError(JText::_('ERR_CATEGORY_S3_DIRECTORY_NOT_EXISTS'));
 					return false;

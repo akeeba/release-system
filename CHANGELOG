@@ -7,6 +7,7 @@ Version 1.1.1
 # Dev releases do not get the correct date (they stick with 0000-00-00 00:00:00)
 # Visual groups in the front-end were grouped by ID, not ordering
 # Copying a release would not copy the items' environment tags
+# You could not use the root of an S3 bucket
 
 Version 1.1
 ================================================================================
