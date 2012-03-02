@@ -158,8 +158,8 @@
 		name="s3integration"
 		label="CONFIG_S3INTEGRATION_HEADER_LABEL"
 		description="CONFIG_S3INTEGRATION_HEADER_DESC">
-		<field name="s3access" type="text" default="" label="ARS_CONFIG_S3_ACCESSKEY_LABEL" description="ARS_CONFIG_S3_ACCESSKEY_DESC" size="50"/>
-		<field name="s3secret" type="password" default="" label="ARS_CONFIG_S3_SECRETKEY_LABEL" description="ARS_CONFIG_S3_SECRETKEY_DESC" size="50"/>
+		<field name="s3access" type="text" default="" label="ARS_CONFIG_S3_ACCESSKEY_LABEL" description="ARS_CONFIG_S3_ACCESSKEY_DESC" size="50" filter="raw" />
+		<field name="s3secret" type="password" default="" label="ARS_CONFIG_S3_SECRETKEY_LABEL" description="ARS_CONFIG_S3_SECRETKEY_DESC" size="50" filter="raw" />
 		<field name="s3bucket" type="text" default="" label="ARS_CONFIG_S3_BUCKET_LABEL" description="ARS_CONFIG_S3_BUCKET_LABEL"/>
 		<field name="s3perms" type="list" default="private"
 			label="ARS_CONFIG_S3_PERMS_LABEL"
