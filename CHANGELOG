@@ -9,6 +9,7 @@ Version 1.1.1
 # Copying a release would not copy the items' environment tags
 # You could not use the root of an S3 bucket
 # Joomla! 1.7/2.5 are filtering out special characters from the S3 Access and Secret keys
+# The S3 integration would not work on servers lacking a Certificate Authorities (caceprt.pem) file
 
 Version 1.1
 ================================================================================

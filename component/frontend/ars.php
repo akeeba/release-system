@@ -71,6 +71,7 @@ else
 }
 
 // Load the Amazon S3 support
+define('AKEEBA_CACERT_PEM', JPATH_ADMINISTRATOR.'/components/com_ars/assets/cacert.pem');
 require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
 
 // Instanciate and execute the controller
