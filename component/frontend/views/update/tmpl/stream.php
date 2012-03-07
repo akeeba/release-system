@@ -122,6 +122,7 @@ foreach($this->items as $item):
 		<section>Updates</section>
 		<targetplatform name="<?php echo $platformName?>" version="<?php echo $platformVersion?>" />
 		<client_id><?php echo $item->client_id?></client_id>
+		<client><?php echo $item->client_id?></client>
 		<folder><?php echo empty($item->folder) ? '' : $item->folder?></folder>
 	</update>
 <?php
