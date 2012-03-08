@@ -35,6 +35,7 @@
 		<language tag="mk-MK">mk-MK.com_ars.ini</language>
 		<language tag="nb-NO">nb-NO.com_ars.ini</language>
 		<language tag="nl-NL">nl-NL.com_ars.ini</language>
+		<language tag="pt-BR">pt-BR.com_ars.ini</language>
 		<language tag="tr-TR">tr-TR.com_ars.ini</language>
 		<language tag="uk-UA">uk-UA.com_ars.ini</language>
 	</languages>
@@ -111,6 +112,8 @@
 			<language tag="nb-NO">nb-NO.com_ars.menu.ini</language>
 			<language tag="nl-NL">nl-NL.com_ars.ini</language>
 			<language tag="nl-NL">nl-NL.com_ars.menu.ini</language>
+			<language tag="pt-BR">pt-BR.com_ars.ini</language>
+			<language tag="pt-BR">pt-BR.com_ars.menu.ini</language>
 			<language tag="tr-TR">tr-TR.com_ars.ini</language>
 			<language tag="tr-TR">tr-TR.com_ars.menu.ini</language>
 			<language tag="uk-UA">uk-UA.com_ars.ini</language>
