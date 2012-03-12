@@ -11,6 +11,7 @@ Version 1.1.1
 # Joomla! 1.7/2.5 are filtering out special characters from the S3 Access and Secret keys
 # The S3 integration would not work on servers lacking a Certificate Authorities (caceprt.pem) file
 # Ho ho, Joomla! 2.5 is now using client instead of client_id in XML update streams, JUST BECAUSE THEY CAN!
+# The page heading parameters have changed in Joomla! 1.7/2.5 (thanks, Alan!)
 
 Version 1.1
 ================================================================================
