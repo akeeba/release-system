@@ -668,11 +668,11 @@ deny from all</programlisting>
           <para>You can quickly make a copy of a release by selecting its
           checkbox on the left-hand column and clicking the
           <guibutton>Copy</guibutton> button on the toolbar. The items
-          belonging to that category will be copied along. The copied release
+          belonging to that release will be copied along. The copied release
           will be unpublished by default and have an ordering of 0. Deleting a
-          category by selecting it and clicking on the
+          release by selecting it and clicking on the
           <guibutton>Delete</guibutton> button will remove all items
-          associated with that category. Beware! You will not be asked to
+          associated with that release. Beware! You will not be asked to
           confirm this choice. Deleting a release is an irreversible change.
           If you are not sure, unpublish instead of removing the release. You
           can edit a release either by clicking on its name (the
