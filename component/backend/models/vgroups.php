@@ -44,21 +44,19 @@ class ArsModelVgroups extends ArsModelBase
 			$query .= ' WHERE (' . implode(') AND (',$where) . ')';
 		}
 		
-		if(!$overrideLimits) {
+		if($fltFrontend) {
+			$query .= ' ORDER BY '.$db->nameQuote('ordering').' ASC';
+		} elseif(!$overrideLimits) {
 			$order = $this->getState('order',null,'cmd');
 			if($order === 'Array') $order = null;
 			$dir = $this->getState('dir',null,'cmd');
 
 			$app = JFactory::getApplication();
 			$hash = $this->getHash();
-			if($fltFrontend) {
-				$order = 'ordering';
-			} elseif(empty($order)) {
+			if(empty($order)) {
 				$order = $app->getUserStateFromRequest($hash.'filter_order', 'filter_order', 'id');
 			}
-			if($fltFrontend) {
-				$dir = 'ASC';
-			} elseif(empty($dir)) {
+			if(empty($dir)) {
 				$dir = $app->getUserStateFromRequest($hash.'filter_order_Dir', 'filter_order_Dir', 'DESC');
 				$dir = in_array(strtoupper($dir),array('DESC','ASC')) ? strtoupper($dir) : "ASC";
 			}

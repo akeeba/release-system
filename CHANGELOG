@@ -1,3 +1,7 @@
+Version 1.1.2
+================================================================================
+# Visual groups sorting didn't work in the front-end
+
 Version 1.1.1
 ================================================================================
 + Support for dlid in XML update stream URLs
