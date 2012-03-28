@@ -260,10 +260,15 @@ class ArsControllerUpload extends JController
 		$useS3 = $potentialPrefix == 's3://';
 		
 		if($useS3) {
-			$newFolder = $parent.'/'.$file;
-			$newFolder = rtrim($newFolder, '/') . '/';
+			if(substr($parent,0,5) == 's3://') {
+				$trimmedParent = substr($parent,5);
+			} else {
+				$trimmedParent = $parent;
+			}
+			$newFolder = $trimmedParent.'/'.$file;
+			$newFolder = trim($newFolder, '/') . '/';
 			$s3 = ArsHelperAmazons3::getInstance();
-			$status = $s3->putObject('', '', substr($newFolder,5));
+			$status = $s3->putObject('', '', $newFolder);
 		} else {
 			jimport('joomla.filesystem.folder');
 			

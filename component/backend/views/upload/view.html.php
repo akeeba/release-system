@@ -45,6 +45,9 @@ class ArsViewUpload extends JView
 			$category = $model->getState('category',0);
 			$path = $model->getCategoryFolder();
 			$folder = $model->getState('folder','');
+			if(substr($folder,0,5) == 's3://') {
+				$folder = substr($folder,5);
+			}
 			$parent = $model->getState('parent',null);
 			$config = JComponentHelper::getParams('com_media');
 

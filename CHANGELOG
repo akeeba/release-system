@@ -6,6 +6,7 @@ Version 1.1.2
 # Different versions of Joomla! handle client_id and client tags in update streams differently (thanks Peter)
 # Files always uploaded to category's root, not the intended subdirectory (thanks Peter)
 # Would not list S3 bucket contents
+# Could not create S3 subdirectories
 
 Version 1.1.1
 ================================================================================
