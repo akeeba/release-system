@@ -132,10 +132,11 @@ class ArsModelUpload extends JModel
 		
 		if($useS3) {
 			$everything = $this->_listS3Contents($folder);
-			$dirLength = strlen($folder) - 5;
+			$folder = trim(substr($folder,5),'/');
+			$dirLength = strlen($folder);
 			if(count($everything)) foreach($everything as $path => $info) {
 				if(array_key_exists('size', $info) && (substr($path, -1) != '/')) {
-					if(substr($path, 0, $dirLength) == substr($folder,5)) {
+					if(substr($path, 0, $dirLength) == $folder) {
 						$path = substr($path, $dirLength);
 					}
 					$path = trim($path,'/');
@@ -171,10 +172,11 @@ class ArsModelUpload extends JModel
 		
 		if($useS3) {
 			$everything = $this->_listS3Contents($folder);
-			$dirLength = strlen($folder) - 5;
+			$folder = trim(substr($folder,5),'/');
+			$dirLength = strlen($folder);
 			if(count($everything)) foreach($everything as $path => $info) {
 				if(!array_key_exists('size', $info) && (substr($path, -1) == '/')) {
-					if(substr($path, 0, $dirLength) == substr($folder,5)) {
+					if(substr($path, 0, $dirLength) == $folder) {
 						$path = substr($path, $dirLength);
 					}
 					$path = trim($path,'/');

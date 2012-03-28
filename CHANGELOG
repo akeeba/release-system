@@ -8,6 +8,7 @@ Version 1.1.2
 # Would not list S3 bucket contents
 # Could not create S3 subdirectories
 # Could not upload files to S3
+# The listing of S3 files and folders in subdirectories is prefixed with the directory's name
 
 Version 1.1.1
 ================================================================================
