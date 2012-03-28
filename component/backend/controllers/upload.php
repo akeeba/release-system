@@ -77,10 +77,13 @@ class ArsControllerUpload extends JController
 		$user		= JFactory::getUser();
 
 		// Get some data from the request
-		//$folder	= JRequest::getString('folder','');
 		$catid		= JRequest::getInt('id',0);
-		$folder		= JRequest::getVar('folder', '', '', 'path');
+		$folder		= JRequest::getString('folder','');
 		$file		= JRequest::getVar('Filedata', '', 'files', 'array');
+		// Clean up the folder name
+		$safeHtmlFilter = JFilterInput::getInstance(null, null, 1, 1);
+		$folder = trim($folder,'/');
+		$folder = $safeHtmlFilter->clean($folder, 'path');
 		
 		// Get output directory
 		$model = $this->getModel('Upload','ArsModel');
@@ -129,7 +132,7 @@ class ArsControllerUpload extends JController
 				return false;
 			}
 			
-			$filepath = JPath::clean($outdir.'/'.$folder.'/'.strtolower($file['name']));
+			$filepath = JPath::clean($outdir.'/'.strtolower($file['name']));
 
 			if (JFile::exists($filepath))
 			{
