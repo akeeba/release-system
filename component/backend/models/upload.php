@@ -217,11 +217,18 @@ class ArsModelUpload extends JModel
 		$file = $this->getState('file','');
 		if(empty($file)) return '';
 
-		$filepath = $folder.'/'.$file;
 		
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
 		$useS3 = $potentialPrefix == 's3://';
+
+		if($useS3) {
+			$folder = trim(substr($folder,5),'/');
+			if(!empty($folder)) $folder .= '/';
+			$filepath = $folder.$file;
+		} else {
+			$filepath = $folder.'/'.$file;
+		}
 		
 		if(!$useS3) {
 			jimport('joomla.filesystem.file');
@@ -248,7 +255,7 @@ class ArsModelUpload extends JModel
 
 		if($useS3) {
 			$s3 = ArsHelperAmazons3::getInstance();
-			return $s3->deleteObject('', substr($filepath,5));
+			return $s3->deleteObject('', $filepath);
 		} else {
 			return JFile::delete($filepath);
 		}
