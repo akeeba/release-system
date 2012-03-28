@@ -52,8 +52,10 @@ class ArsModelUpload extends JModel
 				
 				if($useS3) {
 					$check = substr($folder, 5);
+					if($check === false) $check = '';
+					if(!empty($check)) $check .= '/';
 					$s3 = ArsHelperAmazons3::getInstance();
-					$items = $s3->getBucket('', $check.'/');
+					$items = $s3->getBucket('', $check);
 					if(empty($items)) {
 						$folder = '';
 					}
@@ -69,7 +71,7 @@ class ArsModelUpload extends JModel
 					}
 				}
 			}
-			
+
 			if(empty($folder)) return $folder;
 			
 			$subfolder = $this->getState('folder','');
@@ -105,8 +107,13 @@ class ArsModelUpload extends JModel
 			}
 			else
 			{
-				$this->setState('parent',null);
-				$this->setState('folder','');
+				if($useS3) {
+					$this->setState('parent',null);
+					$this->setState('folder',$folder);
+				} else {
+					$this->setState('parent',null);
+					$this->setState('folder','');
+				}
 			}
 		}
 
@@ -188,6 +195,7 @@ class ArsModelUpload extends JModel
 		static $lasListing = array();
 		
 		$directory = substr($path, 5);
+		if($directory === false) $directory = '/';
 		
 		if($lastDirectory != $directory) {
 			if($directory == '/') {
