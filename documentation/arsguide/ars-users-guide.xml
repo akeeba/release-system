@@ -1355,6 +1355,18 @@ deny from all</programlisting>
                   part of the update URL and will cause problems with
                   Joomla!'s integrated update system.</para>
                 </warning>
+
+                <note>
+                  <para>When using the master XML stream, not the extension's
+                  versions stream, you should use type="collection" instead of
+                  type="extension"</para>
+                </note>
+
+                <tip>
+                  <para>It is not necessary to use CDATA if you escape
+                  ampersands (&amp;) to &amp;amp; as per the XML
+                  standard.</para>
+                </tip>
               </listitem>
             </varlistentry>
           </variablelist>
@@ -1395,7 +1407,12 @@ deny from all</programlisting>
               <listitem>
                 <para>A name for the update stream. It can be anything you
                 want and is only used in the Joomla! 1.6 XML format
-                streams</para>
+                streams.</para>
+
+                <warning>
+                  <para>This is what Joomla! will also display in the
+                  Extension Name when it lists new available updates.</para>
+                </warning>
               </listitem>
             </varlistentry>
 
