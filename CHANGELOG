@@ -3,6 +3,7 @@ Version 1.1.2
 # Visual groups sorting didn't work in the front-end
 # extensionset XML had the wrong types (thanks Peter)
 # Wrong ArsModelUpdate::getCategoryItems() ordering (thanks Peter)
+# Different versions of Joomla! handle client_id and client tags in update streams differently (thanks Peter)
 
 Version 1.1.1
 ================================================================================

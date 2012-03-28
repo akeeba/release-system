@@ -89,7 +89,7 @@ foreach($this->items as $item):
 			$platforms[] = $envs[$eid]->xmltitle;
 		}
 	} else {
-		$platforms = array('joomla/1.7');
+		$platforms = array('joomla/2.5');
 	}
 	foreach($platforms as $platform):
 		$platformParts = explode('/',$platform, 2);
@@ -121,8 +121,11 @@ foreach($this->items as $item):
 		<maintainerurl><?php echo JURI::base();?></maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="<?php echo $platformName?>" version="<?php echo $platformVersion?>" />
+		<?php if( ($platformName == 'joomla') && (version_compare($platformVersion, '2.5', 'lt')) ): ?>
 		<client_id><?php echo $item->client_id?></client_id>
-		<client><?php echo $item->client_id?></client>
+		<?php else: ?>
+		<client><?php echo $item->client_id ? 'administrator' : 'site' ?></client>
+		<?php endif; ?>
 		<folder><?php echo empty($item->folder) ? '' : $item->folder?></folder>
 	</update>
 <?php
