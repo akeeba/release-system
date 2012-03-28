@@ -24,8 +24,19 @@ if($dlid) {
 	$dlid = '';
 }
 
+$streamTypeMap = array(
+	'components' => 'component',
+	'libraries' => 'library',
+	'modules' => 'module',
+	'packages' => 'package',
+	'plugins' => 'plugin',
+	'files' => 'file',
+	'templates' => 'template'
+);
+
 @ob_end_clean();
 @header('Content-type: application/xml');
+
 ?><?php echo $tag; ?>
 <!-- Update stream generated automatically by Akeeba Release System -->
 <extensionset category="<?php echo ucfirst($this->category)?>" name="<?php echo ucfirst($this->category)?>" description="<?php echo JText::_('LBL_UPDATETYPES_'.strtoupper($this->category)); ?>">
@@ -33,7 +44,7 @@ if($dlid) {
 $url = $rootURL.AKRouter::_('index.php?option=com_ars&view=update&format=xml&task=stream&id='.$item->id.$dlid);
 $url=str_replace('&', '&amp;', $url);
 if(substr($url,-4) != '.xml') $url .= (strpos($url, '?') ? '&amp;' : '?').'dummy=extension.xml';
-?>	<extension name="<?php echo $item->name ?>" element="<?php echo $item->element ?>" type="<?php echo $item->type ?>" version="<?php echo $item->version?>" detailsurl="<?php echo $url ?>" />
+?>	<extension name="<?php echo $item->name ?>" element="<?php echo $item->element ?>" type="<?php echo $streamTypeMap[$item->type] ?>" version="<?php echo $item->version?>" detailsurl="<?php echo $url ?>" />
 <?php endforeach ?>
 </extensionset>
 <?php JFactory::getApplication()->close(); ?>

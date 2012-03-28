@@ -1,6 +1,7 @@
 Version 1.1.2
 ================================================================================
 # Visual groups sorting didn't work in the front-end
+# extensionset XML had the wrong types (thanks Peter)
 
 Version 1.1.1
 ================================================================================
