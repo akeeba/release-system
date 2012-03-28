@@ -7,6 +7,7 @@ Version 1.1.2
 # Files always uploaded to category's root, not the intended subdirectory (thanks Peter)
 # Would not list S3 bucket contents
 # Could not create S3 subdirectories
+# Could not upload files to S3
 
 Version 1.1.1
 ================================================================================

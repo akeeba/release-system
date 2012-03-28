@@ -166,8 +166,12 @@ class ArsControllerUpload extends JController
 		
 		if($useS3) {
 			$s3 = ArsHelperAmazons3::getInstance();
+			
+			$s3targetdir = trim(substr($s3dir,5),'/');
+			if(!empty($s3targetdir)) $s3targetdir .= '/';
+			
 			$input = $s3->inputFile($filepath);
-			$success = $s3->putObject($input, '', substr($s3dir,5).'/'.$file['name']);
+			$success = $s3->putObject($input, '', $s3targetdir.$file['name']);
 			if(!@unlink($filepath)) {
 				JFile::delete($filepath);
 			}
