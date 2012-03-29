@@ -34,20 +34,13 @@ WHERE
 	AND i.published = 1
 	AND r.published = 1
 	AND c.published = 1
+GROUP BY
+	u.id
 ORDER BY
 	u.id ASC, i.`created` DESC
 ENDQUERY;
 		$db->setQuery($query);
-		$rawItems = $db->loadObjectList();
-		
-		$this->items = array();
-		$ids = array();
-		
-		if(!empty($rawItems)) foreach($rawItems as $item) {
-			$id = $item->id;
-			if(in_array($id, $ids)) continue;
-			$this->items[] = $item;
-		}
+		$this->items = $db->loadObjectList();
 	}
 
 	function getItems($id)
