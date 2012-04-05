@@ -182,7 +182,6 @@ class ArsModelBleedingedge extends JModel
 				$notes = '';
 
 				$changelog = $this->folder.'/'.$folder.'/'.'CHANGELOG';
-				$hasChangelog = JFile::exists($changelog);
 				
 				$hasChangelog = false;
 				if($useS3) {
@@ -361,7 +360,6 @@ class ArsModelBleedingedge extends JModel
 		{
 			if( basename($file) == 'CHANGELOG' ) continue;
 
-			if(in_array($file, $known_items)) continue;
 			if(in_array($file, $known_items)) continue;
 			
 			jimport('joomla.utilities.date');
