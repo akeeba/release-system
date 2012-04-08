@@ -9,6 +9,34 @@
 // no direct access
 defined('_JEXEC') or die('');
 
+// =============================================================================
+// Akeeba Component Installation Configuration
+// =============================================================================
+$installation_queue = array(
+	// modules => { (folder) => { (module) => { (position), (published) } }* }*
+	'modules' => array(
+		'admin' => array(
+		),
+		'site' => array(
+			'arsdlid'		=> array('left', 0),
+			'arsdownloads'	=> array('left', 0),
+		)
+	),
+	// plugins => { (folder) => { (element) => (published) }* }*
+	'plugins' => array(
+		'ars' => array(
+			'bleedingedgematurity'	=> 0,
+			'bleedingedgediff'		=> 0,
+		),
+		'content' => array(
+			'arsdlid'				=> 1,
+		),
+		'editors-xtd' => array(
+			'arslink'				=> 1,
+		),
+	)
+);
+
 jimport('joomla.installer.installer');
 $db = & JFactory::getDBO();
 $status = new JObject();
@@ -16,88 +44,44 @@ $status->modules = array();
 $status->plugins = array();
 $src = $this->parent->getPath('source');
 
-// -- Download ID
-if(version_compare(JVERSION,'1.6.0','ge')) {
-	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `element` = "mod_arsdlid" AND `type` = "module"');
-} else {
-	$db->setQuery('SELECT `id` FROM #__modules WHERE `module` = "mod_arsdlid"');
-}
-$id = $db->loadResult();
-if($id)
-{
-	$installer = new JInstaller;
-	$result = $installer->uninstall('module',$id,1);
-	$status->modules[] = array('name'=>'mod_arsdlid','client'=>'site', 'result'=>$result);
-}
-
-// -- My Downloads
-if(version_compare(JVERSION,'1.6.0','ge')) {
-	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `element` = "mod_arsdownloads" AND `type` = "module"');
-} else {
-	$db->setQuery('SELECT `id` FROM #__modules WHERE `module` = "mod_arsdownloads"');
-}
-$id = $db->loadResult();
-if($id)
-{
-	$installer = new JInstaller;
-	$result = $installer->uninstall('module',$id,1);
-	$status->modules[] = array('name'=>'mod_arsdownloads','client'=>'site', 'result'=>$result);
+// Modules uninstallation
+if(count($installation_queue['modules'])) {
+	foreach($installation_queue['modules'] as $folder => $modules) {
+		if(count($modules)) foreach($modules as $module => $modulePreferences) {
+			// Find the module ID
+			if(version_compare(JVERSION,'1.6.0','ge')) {
+				$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `element` = '.$db->Quote('mod_'.$module).' AND `type` = "module"');
+			} else {
+				$db->setQuery('SELECT `id` FROM #__modules WHERE `module` = '.$db->Quote('mod_'.$module));
+			}
+			$id = $db->loadResult();
+			// Uninstall the module
+			$installer = new JInstaller;
+			$result = $installer->uninstall('module',$id,1);
+			$status->modules[] = array('name'=>'mod_'.$module,'client'=>$folder, 'result'=>$result);
+		}
+	}
 }
 
-// -- Plugin: plg_bleedingedgematurity
-if(version_compare(JVERSION,'1.6.0','ge')) {
-	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `type` = "plugin" AND `element` = "bleedingedgematurity" AND `folder` = "ars"');
-} else {
-	$db->setQuery('SELECT `id` FROM #__plugins WHERE `element` = "bleedingedgematurity" AND `folder` = "ars"');
-}
-$id = $db->loadResult();
-if($id)
-{
-	$installer = new JInstaller;
-	$result = $installer->uninstall('plugin',$id,1);
-	$status->plugins[] = array('name'=>'plg_bleedingedgematurity','group'=>'system', 'result'=>$result);
-}
-
-// -- Plugin: plg_bleedingedgediff
-if(version_compare(JVERSION,'1.6.0','ge')) {
-	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `type` = "plugin" AND `element` = "bleedingedgediff" AND `folder` = "ars"');
-} else {
-	$db->setQuery('SELECT `id` FROM #__plugins WHERE `element` = "bleedingedgediff" AND `folder` = "ars"');
-}
-$id = $db->loadResult();
-if($id)
-{
-	$installer = new JInstaller;
-	$result = $installer->uninstall('plugin',$id,1);
-	$status->plugins[] = array('name'=>'plg_bleedingedgediff','group'=>'system', 'result'=>$result);
-}
-
-// -- Plugin: plg_arsdlid
-if(version_compare(JVERSION,'1.6.0','ge')) {
-	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `type` = "plugin" AND `element` = "arsdlid" AND `folder` = "content"');
-} else {
-	$db->setQuery('SELECT `id` FROM #__plugins WHERE `element` = "arsdlid" AND `folder` = "content"');
-}
-$id = $db->loadResult();
-if($id)
-{
-	$installer = new JInstaller;
-	$result = $installer->uninstall('plugin',$id,1);
-	$status->plugins[] = array('name'=>'plg_arsdlid','group'=>'content', 'result'=>$result);
-}
-
-// -- Plugin: plg_arslink
-if(version_compare(JVERSION,'1.6.0','ge')) {
-	$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `type` = "plugin" AND `element` = "arslink" AND `folder` = "content"');
-} else {
-	$db->setQuery('SELECT `id` FROM #__plugins WHERE `element` = "arslink" AND `folder` = "content"');
-}
-$id = $db->loadResult();
-if($id)
-{
-	$installer = new JInstaller;
-	$result = $installer->uninstall('plugin',$id,1);
-	$status->plugins[] = array('name'=>'plg_arslink','group'=>'editors-xtd', 'result'=>$result);
+// Plugins uninstallation
+if(count($installation_queue['plugins'])) {
+	foreach($installation_queue['plugins'] as $folder => $plugins) {
+		if(count($plugins)) foreach($plugins as $plugin => $published) {
+			if(version_compare(JVERSION,'1.6.0','ge')) {
+				$db->setQuery('SELECT `extension_id` FROM #__extensions WHERE `type` = "plugin" AND `element` = '.$db->Quote($plugin).' AND `folder` = '.$db->Quote($folder));
+			} else {
+				$db->setQuery('SELECT `id` FROM #__plugins WHERE `element` = '.$db->Quote($plugin).' AND `folder` = '.$db->Quote($folder));
+			}
+			
+			$id = $db->loadResult();
+			if($id)
+			{
+				$installer = new JInstaller;
+				$result = $installer->uninstall('plugin',$id,1);
+				$status->plugins[] = array('name'=>'plg_'.$plugin,'group'=>$folder, 'result'=>$result);
+			}			
+		}
+	}
 }
 
 ?>

@@ -6,12 +6,10 @@
 /*.txt
 
 /build/build.properties
-/plugins/plg_ars_tainting/arstainting.php
-/plugins/plg_ars_tainting/arstainting.xml
 component/backend/liveupdate/assets
 component/backend/liveupdate/classes
 component/backend/liveupdate/language
 component/backend/liveupdate/LICENSE.txt
 component/backend/liveupdate/liveupdate.php
-plugins/plg_oneclickaction
+plugins/system/oneclickaction
 documentation/arsguide/ars-users-guide.xml~

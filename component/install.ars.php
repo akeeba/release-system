@@ -9,6 +9,34 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+// =============================================================================
+// Akeeba Component Installation Configuration
+// =============================================================================
+$installation_queue = array(
+	// modules => { (folder) => { (module) => { (position), (published) } }* }*
+	'modules' => array(
+		'admin' => array(
+		),
+		'site' => array(
+			'arsdlid'		=> array('left', 0),
+			'arsdownloads'	=> array('left', 0),
+		)
+	),
+	// plugins => { (folder) => { (element) => (published) }* }*
+	'plugins' => array(
+		'ars' => array(
+			'bleedingedgematurity'	=> 0,
+			'bleedingedgediff'		=> 0,
+		),
+		'content' => array(
+			'arsdlid'				=> 1,
+		),
+		'editors-xtd' => array(
+			'arslink'				=> 1,
+		),
+	)
+);
+
 // Joomla! 1.6 Beta 13+ hack
 if( version_compare( JVERSION, '1.6.0', 'ge' ) && !defined('_AKEEBA_HACK') ) {
 	return;
@@ -197,46 +225,126 @@ if( version_compare( JVERSION, '1.6.0', 'ge' ) ) {
 	$src = $this->parent->getPath('source');
 }
 
-// -- Download ID
-if(is_dir($src.'/mod_arsdlid')) {
-	$installer = new JInstaller;
-	$result = $installer->install($src.'/mod_arsdlid');
-	$status->modules[] = array('name'=>'mod_arsdlid','client'=>'site', 'result'=>$result);
+// Modules installation
+if(count($installation_queue['modules'])) {
+	foreach($installation_queue['modules'] as $folder => $modules) {
+		if(count($modules)) foreach($modules as $module => $modulePreferences) {
+			// Install the module
+			if(empty($folder)) $folder = 'site';
+			$path = "$src/modules/$folder/$module";
+			if(!is_dir($path)) {
+				$path = "$src/modules/$folder/mod_$module";
+			}
+			if(!is_dir($path)) {
+				$path = "$src/modules/$module";
+			}
+			if(!is_dir($path)) {
+				$path = "$src/modules/mod_$module";
+			}
+			if(!is_dir($path)) continue;
+			// Was the module already installed?
+			$sql = 'SELECT COUNT(*) FROM #__modules WHERE `module`='.$db->Quote('mod_'.$module);
+			$db->setQuery($sql);
+			$count = $db->loadResult();
+			$installer = new JInstaller;
+			$result = $installer->install($path);
+			$status->modules[] = array('name'=>'mod_'.$module, 'client'=>$folder, 'result'=>$result);
+			// Modify where it's published and its published state
+			if(!$count) {
+				// A. Position and state
+				list($modulePosition, $modulePublished) = $modulePreferences;
+				if(version_compare(JVERSION, '2.5.0', 'ge') && ($modulePosition == 'cpanel')) {
+					$modulePosition = 'icon';
+				}
+				$sql = "UPDATE #__modules SET position=".$db->Quote($modulePosition);
+				if($modulePublished) $sql .= ', published=1';
+				$sql .= ' WHERE `module`='.$db->Quote('mod_'.$module);
+				$db->setQuery($sql);
+				$db->query();
+				if(version_compare(JVERSION, '1.7.0', 'ge')) {
+					// B. Change the ordering of back-end modules to 1 + max ordering in J! 1.7+
+					if($folder == 'admin') {
+						$query = $db->getQuery(true);
+						$query->select('MAX('.$db->nq('ordering').')')
+							->from($db->nq('#__modules'))
+							->where($db->nq('position').'='.$db->q($modulePosition));
+						$db->setQuery($query);
+						$position = $db->loadResult();
+						$position++;
+						
+						$query = $db->getQuery(true);
+						$query->update($db->nq('#__modules'))
+							->set($db->nq('ordering').' = '.$db->q($position))
+							->where($db->nq('module').' = '.$db->q('mod_'.$module));
+						$db->setQuery($query);
+						$db->query();
+					}
+					// C. Link to all pages on Joomla! 1.7+
+					$query = $db->getQuery(true);
+					$query->select('id')->from($db->nq('#__modules'))
+						->where($db->nq('module').' = '.$db->q('mod_'.$module));
+					$db->setQuery($query);
+					$moduleid = $db->loadResult();
+					
+					$query = $db->getQuery(true);
+					$query->select('*')->from($db->nq('#__modules_menu'))
+						->where($db->nq('moduleid').' = '.$db->q($moduleid));
+					$db->setQuery($query);
+					$assignments = $db->loadObjectList();
+					$isAssigned = !empty($assignments);
+					if(!$isAssigned) {
+						$o = (object)array(
+							'moduleid'	=> $moduleid,
+							'menuid'	=> 0
+						);
+						$db->insertObject('#__modules_menu', $o);
+					}
+				}
+			}
+		}
+	}
 }
 
-// -- My Downloads
-if(is_dir($src.'/mod_arsdownloads')) {
-	$installer = new JInstaller;
-	$result = $installer->install($src.'/mod_arsdownloads');
-	$status->modules[] = array('name'=>'mod_arsdownloads','client'=>'site', 'result'=>$result);
-}
-
-// -- Plugin: plg_bleedingedgematurity
-if(is_dir($src.'/plg_bleedingedgematurity')) {
-	$installer = new JInstaller;
-	$result = $installer->install($src.'/plg_bleedingedgematurity');
-	$status->plugins[] = array('name'=>'plg_bleedingedgematurity','group'=>'ars', 'result'=>$result);
-}
-
-// -- Plugin: plg_bleedingedgediff
-if(is_dir($src.'/plg_bleedingedgediff')) {
-	$installer = new JInstaller;
-	$result = $installer->install($src.'/plg_bleedingedgediff');
-	$status->plugins[] = array('name'=>'plg_bleedingedgediff','group'=>'ars', 'result'=>$result);
-}
-
-// -- Plugin: plg_arsdlid
-if(is_dir($src.'/plg_arsdlid')) {
-	$installer = new JInstaller;
-	$result = $installer->install($src.'/plg_arsdlid');
-	$status->plugins[] = array('name'=>'plg_arsdlid','group'=>'content', 'result'=>$result);
-}
-
-// -- Plugin: plg_arslink
-if(is_dir($src.'/plg_arslink')) {
-	$installer = new JInstaller;
-	$result = $installer->install($src.'/plg_arslink');
-	$status->plugins[] = array('name'=>'plg_arslink','group'=>'editors-xtd', 'result'=>$result);
+// Plugins installation
+if(count($installation_queue['plugins'])) {
+	foreach($installation_queue['plugins'] as $folder => $plugins) {
+		if(count($plugins)) foreach($plugins as $plugin => $published) {
+			$path = "$src/plugins/$folder/$plugin";
+			if(!is_dir($path)) {
+				$path = "$src/plugins/$folder/plg_$plugin";
+			}
+			if(!is_dir($path)) {
+				$path = "$src/plugins/$plugin";
+			}
+			if(!is_dir($path)) {
+				$path = "$src/plugins/plg_$plugin";
+			}
+			if(!is_dir($path)) continue;
+			
+			// Was the plugin already installed?
+			if( version_compare( JVERSION, '1.6.0', 'ge' ) ) {
+				$query = "SELECT COUNT(*) FROM  #__extensions WHERE element=".$db->Quote($plugin)." AND folder=".$db->Quote($folder);
+			} else {
+				$query = "SELECT COUNT(*) FROM  #__plugins WHERE element=".$db->Quote($plugin)." AND folder=".$db->Quote($folder);
+			}
+			$db->setQuery($query);
+			$count = $db->loadResult();
+			
+			$installer = new JInstaller;
+			$result = $installer->install($path);
+			$status->plugins[] = array('name'=>'plg_'.$plugin,'group'=>$folder, 'result'=>$result);
+			
+			if($published && !$count) {
+				if( version_compare( JVERSION, '1.6.0', 'ge' ) ) {
+					$query = "UPDATE #__extensions SET enabled=1 WHERE element=".$db->Quote($plugin)." AND folder=".$db->Quote($folder);
+				} else {
+					$query = "UPDATE #__plugins SET published=1 WHERE element=".$db->Quote($plugin)." AND folder=".$db->Quote($folder);
+				}
+				$db->setQuery($query);
+				$db->query();
+			}
+		}
+	}
 }
 
 // Install modules and plugins -- END

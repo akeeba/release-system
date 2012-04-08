@@ -112,16 +112,15 @@
 		<zipme basedir="${dirs.component}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
 			<fileset refid="ars" />
 		</zipme>
-		<zipme basedir="${dirs.modules}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
+		<zipme basedir="${dirs.modules}" prefix="modules/" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
 			<fileset dir="${dirs.modules}">
 				<include name="**" />
 			</fileset>
 		</zipme>
-		<zipme basedir="${dirs.plugins}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
+		<zipme basedir="${dirs.plugins}" prefix="plugins/" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
 			<fileset dir="${dirs.plugins}">
-				<include name="plg_bleedingedge**" />
-				<include name="plg_arsdlid**" />
-				<include name="plg_arslink**" />
+				<include name="**" />
+				<exclude name="ars/tainting/**" />
 			</fileset>
 		</zipme>
 	</target>

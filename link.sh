@@ -17,5 +17,5 @@ ln `pwd`/../liveupdate/code/liveupdate.php component/backend/liveupdate/liveupda
 #
 # Link with the OTP plugin
 #
-rm plugins/plg_oneclickaction
-ln -s `pwd`/../liveupdate/plugins/system/oneclickaction plugins/plg_oneclickaction
+rm plugins/system/oneclickaction
+ln -s `pwd`/../liveupdate/plugins/system/oneclickaction plugins/system/oneclickaction
