@@ -128,7 +128,7 @@ class TableReleases extends ArsTable
 
 		// Fix the groups
 		if(is_array($this->groups)) $this->groups = implode(',', $this->groups);
-		// Set the access to registered if there are Ambra groups defined
+		// Set the access to registered if there are subscriptions defined
 		$baseAccess = version_compare(JVERSION,'1.6.0','ge') ? 1 : 0;
 		if(!empty($this->groups) && ($this->access == $baseAccess))
 		{

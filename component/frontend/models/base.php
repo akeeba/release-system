@@ -18,7 +18,7 @@ class ArsModelBaseFE extends JModel
 	var $pagination = null;
 
 	/**
-	 * Filters a list by access level and AMBRA.subs groups
+	 * Filters a list
 	 * @param array $source The source list
 	 * @return array The filtered list
 	 */
@@ -34,8 +34,8 @@ class ArsModelBaseFE extends JModel
 		if(!is_array($source)) return $list;
 		if(empty($source)) return $list;
 
-		// Load AMBRA integration
-		$groupModel = JModel::getInstance('Ambra','ArsModel');
+		// Load Filtering
+		$groupModel = JModel::getInstance('Filtering','ArsModel');
 
 		// Cache user access and groups
 		if(is_null($user_access) || is_null($myGroups))
@@ -132,11 +132,11 @@ class ArsModelBaseFE extends JModel
 				}
 			}
 
-			// Get AMBRA groups of current user
-			if(!ArsModelAmbra::hasSubscriptionsExtension()) {
+			// Get subscription groups of current user
+			if(!ArsModelFiltering::hasSubscriptionsExtension()) {
 				$mygroups = array();
 			} else {
-				$mygroups = ArsModelAmbra::getUserGroups($user->id);
+				$mygroups = ArsModelFiltering::getUserGroups($user->id);
 			}
 		}
 
@@ -151,14 +151,14 @@ class ArsModelBaseFE extends JModel
 				if( !in_array($s->access, $user_access) ) continue;
 			}
 
-			// Filter by AMBRA.subs group
+			// Filter by subscription group
 			if(!empty($s->groups))
 			{
-				// Category defines AMBRA.subs groups, user belongs to none, do
+				// Category defines subscriptions groups, user belongs to none, do
 				// not display anything.
 				if(empty($mygroups)) continue;
 
-				// Check if any of the category's AMBRA.subs groups are in the
+				// Check if any of the category's subscriptions groups are in the
 				// list of groups the user belongs to
 				$groups = explode(',', $s->groups);
 				$inGroups = false;

@@ -172,11 +172,11 @@ class ArsHelperSelect
 			}
 		}
 		
-		$ambraModel = JModel::getInstance('Ambra', 'ArsModel');
-		$hasAkeebaSubs = ArsModelAmbra::hasAkeebaSubs();
+		$filteringModel = JModel::getInstance('Filtering', 'ArsModel');
+		$hasAkeebaSubs = ArsModelFiltering::hasAkeebaSubs();
 		
 		if($hasAkeebaSubs) {
-			$groups = ArsModelAmbra::getAkeebaGroups();
+			$groups = ArsModelFiltering::getAkeebaGroups();
 	
 			$html = '';
 	
@@ -209,8 +209,8 @@ class ArsHelperSelect
 			}
 		}
 		
-		$ambraModel = JModel::getInstance('Ambra', 'ArsModel');
-		$hasAmbra = ArsModelAmbra::hasAMBRA();
+		$filteringModel = JModel::getInstance('Filtering', 'ArsModel');
+		$hasAmbra = ArsModelFiltering::hasAMBRA();
 		
 		if($hasAmbra) {
 			$db = JFactory::getDBO();

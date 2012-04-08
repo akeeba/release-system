@@ -17,7 +17,7 @@ jimport('joomla.application.component.model');
  * @author nicholas
  *
  */
-class ArsModelAmbra extends JModel
+class ArsModelFiltering extends JModel
 {
 	public static $hasSubsExtension = null;
 	

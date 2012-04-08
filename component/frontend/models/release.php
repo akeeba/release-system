@@ -29,7 +29,7 @@ class ArsModelRelease extends ArsModelBaseFE
 		// Is it published?
 		if(!$item->published) return null;
 
-		// Does it pass the access level / AMBRA.subs filter?
+		// Does it pass the access level / subscriptions filter?
 		$dummy = $this->filterList( array($item) );
 		if(!count($dummy)) return null;
 

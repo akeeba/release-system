@@ -9,7 +9,7 @@
 defined('_JEXEC') or die('Restricted Access');
 
 $editor = JFactory::getEditor();
-$asModel = JModel::getInstance('Ambra','ArsModel');
+$filteringModel = JModel::getInstance('Filtering','ArsModel');
 ?>
 
 <form name="adminForm" id="adminForm" action="index.php" method="post">

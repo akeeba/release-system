@@ -29,7 +29,7 @@ class ArsModelCategory extends ArsModelBaseFE
 		// Is it published?
 		if(!$cat->published) return null;
 
-		// Does it pass the access level / AMBRA.subs filter?
+		// Does it pass the access level / subscriptions filter?
 		$dummy = $this->filterList( array($cat) );
 		if(!count($dummy)) return null;
 

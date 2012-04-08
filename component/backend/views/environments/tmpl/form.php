@@ -9,7 +9,6 @@
 defined('_JEXEC') or die('Restricted Access');
 
 $editor = JFactory::getEditor();
-$asModel = JModel::getInstance('Ambra','ArsModel');
 ?>
 
 <form name="adminForm" id="adminForm" action="index.php" method="post">
