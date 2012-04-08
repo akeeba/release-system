@@ -99,7 +99,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 	</thead>
 	<tfoot>
 		<tr>
-			<td colspan="10">
+			<td colspan="20">
 				<?php if($this->pagination->total > 0) echo $this->pagination->getListFooter() ?>
 			</td>
 		</tr>
