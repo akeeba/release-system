@@ -45,6 +45,8 @@ link="<?php echo $downloadURL; ?>"
 date="<?php echo $date->toFormat('%Y-%m-%d'); ?>"
 releasenotes="<?php echo str_replace("\n", '', str_replace("\r", '', $item->release_notes)); ?>"
 infourl="<?php echo $moreURL ?>"
+md5="<?php echo $item->md5 ?>"
+sha1="<?php echo $item->sha1 ?>"
 <?php else: ?>
 ; Live Update provision file
 ; No updates are available!

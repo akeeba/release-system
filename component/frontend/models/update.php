@@ -50,6 +50,7 @@ ENDQUERY;
 		$query = <<<ENDQUERY
 SELECT
     `u`.*, `i`.`id` as `item_id`, `i`.`environments` as `environments`,
+	`i`.`md5`, `i`.`sha1`,
 	`r`.`version`, `r`.`maturity`,
     `c`.`title` as `cat_title`, `i`.`release_id`,
     `i`.`filename`, `i`.`url`, `i`.`type` as `itemtype`, `r`.`created`,

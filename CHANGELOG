@@ -10,6 +10,7 @@ Version 1.1.2
 # The listing of S3 files and folders in subdirectories is prefixed with the directory's name
 # Could not delete files from S3
 # Layout issue in Items view
+# The SHA1 and MD5 hashes were not made available in the update INI format, making it impossible to use them in custom implementations
 
 Version 1.1.1
 ================================================================================
