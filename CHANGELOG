@@ -11,6 +11,7 @@ Version 1.1.2
 # Could not delete files from S3
 # Layout issue in Items view
 # The SHA1 and MD5 hashes were not made available in the update INI format, making it impossible to use them in custom implementations
+# A new Bleeding Edge item was attempted to be created every single time a Bleeding Edge category was being accessed
 
 Version 1.1.1
 ================================================================================

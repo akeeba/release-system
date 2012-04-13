@@ -343,7 +343,7 @@ class ArsModelBleedingedge extends JModel
 		}
 		if(!empty($allItems)) foreach($allItems as $item)
 		{
-			$known_items[] = $item->filename;
+			$known_items[] = basename($item->filename);
 			//if(!JFile::exists($this->folder.'/'.$item->filename) && !JFile::exists(JPATH_ROOT.'/'.$this->folder.'/'.$item->filename))
 			if($item->published && !in_array(basename($item->filename), $files)) {
 				$table = JTable::getInstance('Items','Table');
