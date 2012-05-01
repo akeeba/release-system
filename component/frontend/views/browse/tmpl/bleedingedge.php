@@ -16,7 +16,7 @@ $Itemid = JRequest::getInt('Itemid',0);
 	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></div>
 <?php endif; ?>
 
-<div id="ars-categories-normal">
+<div id="ars-categories-bleedingedge">
 	<h2><?php echo JText::_('ARS_CATEGORY_BLEEDINGEDGE'); ?></h2>
 
 	<?php if(!empty($this->items['bleedingedge'])): ?>
