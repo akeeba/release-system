@@ -720,7 +720,7 @@ deny from all</programlisting>
 
               <listitem>
                 <para>This is the alias (slug) appended to the URL pointing to
-                that category's page. It's best to keep it short and only use
+                that release's page. It's best to keep it short and only use
                 lowercase unaccented Latin letters (a-z), numbers (0-9),
                 dashes and underscores. Anything else may behave oddly.</para>
               </listitem>
@@ -871,7 +871,12 @@ deny from all</programlisting>
                   <para>Leave it blank. As soon as you select a file or type
                   in a link, ARS will automatically fill it in before your
                   eyes. Didn't I already mention that ARS is designed to
-                  <emphasis>save you lots of time</emphasis>?</para>
+                  <emphasis>save you lots of time</emphasis>? But please note
+                  that ARS will also include the extension of the file (e.g.
+                  .zip) in the alias. Unless you've modified your .htaccess to
+                  redirect all extensions to Joomla!, this might cause 404
+                  errors. In this case, just edit the automatic alias,
+                  removing the dot.</para>
                 </tip>
               </listitem>
             </varlistentry>
