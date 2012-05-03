@@ -199,19 +199,11 @@
 
         <itemizedlist>
           <listitem>
-            <para><trademark>Joomla!</trademark> 1.5.17 or later in the 1.5.x
-            range, or Joomla! 1.6.0 or later (betas and RCs are not
-            supported). Joomla! 1.7 is fully supported.</para>
-          </listitem>
-
-          <listitem>
-            <para><productname>PHP</productname> 5.2.10 or later.
-            <application>Akeeba Backup</application> will not work on
-            <productname>PHP</productname> 4! Even though it will run on
-            earlier PHP versions they <emphasis role="bold">are not</emphasis>
-            supported because they contain grave bugs which will not allow
-            Akeeba Release System to function properly. Akeeba Release System
-            is also compatible with the newest PHP 5.3 releases.</para>
+            <para><trademark>Joomla!</trademark> and PHP version
+            compatibilities are detailed in <link
+            xlink:href="https://www.akeebabackup.com/compatibility.html"
+            xmlns:xlink="http://www.w3.org/1999/xlink">our Version
+            Compatibility matrix</link>.</para>
           </listitem>
 
           <listitem>
