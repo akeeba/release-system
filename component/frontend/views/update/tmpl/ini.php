@@ -36,6 +36,46 @@ if( !empty($this->items) ):
 	jimport('joomla.utilities.date');
 	$date = new JDate($item->created);
 
+	// Process supported environments
+	$item->environments = @json_decode($item->environments);
+	if(!empty($item->environments) && is_array($item->environments)) {
+		static $envs = array();
+		
+		$platforms = array();
+		
+		if(!class_exists('ArsModelEnvironments')) {
+			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/environments.php';
+		}
+		foreach($item->environments as $eid) {
+			if (! isset( $envs[$eid] ) ) {
+				$model = new ArsModelEnvironments(); // Do not use Singleton here!
+				$model->setId( $eid );
+				$envs[$eid] = $model->getItem();
+			}
+			
+			$platforms[] = $envs[$eid]->xmltitle;
+		}
+	} else {
+		$platforms = array('joomla/2.5');
+	}
+	
+	$platformKeys = array();
+	
+	foreach($platforms as $platform) {
+		$platformParts = explode('/',$platform, 2);
+		switch(count($platformParts)) {
+			case 1:
+				$platformName = 'joomla';
+				$platformVersion = $platformParts[0];
+				break;
+			default:
+				$platformName = $platformParts[0];
+				$platformVersion = $platformParts[1];
+				break;
+		}
+		$platformKeys[] = $platformName.'/'.$platformVersion;
+	}
+	
 @ob_end_clean();
 @header('Content-type: text/plain');
 ?>; Live Update provision file
@@ -47,6 +87,7 @@ releasenotes="<?php echo str_replace("\n", '', str_replace("\r", '', $item->rele
 infourl="<?php echo $moreURL ?>"
 md5="<?php echo $item->md5 ?>"
 sha1="<?php echo $item->sha1 ?>"
+platforms="<?php echo implode(',', $platformKeys) ?>"
 <?php else: ?>
 ; Live Update provision file
 ; No updates are available!
