@@ -188,7 +188,7 @@ ENDSQL;
             header("Content-Description: File Transfer");
 			header('Content-Type: '.$mime_type);
             header("Accept-Ranges: bytes");
-			header('Content-Disposition: attachment; filename='.$header_file);
+			header('Content-Disposition: attachment; filename="'.$header_file.'"');
 			header('Content-Transfer-Encoding: binary');
 			// Notify of filesize, if this info is available
 			if($filesize > 0) header('Content-Length: '.(int)$filesize);
