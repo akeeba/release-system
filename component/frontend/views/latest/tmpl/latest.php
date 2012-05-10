@@ -97,7 +97,7 @@ $Itemid = JRequest::getInt('Itemid',0);
 			if( !empty($cat->release) )
 				if( !empty($cat->release->files) )
 				{
-					$params = ArsHelperChameleon::getParams('category');
+					$params = ArsHelperChameleon::getParams('category', true);
 					if(!$echoedVgroupTitle) {
 						$echoedVgroupTitle = true;
 						if($vgroupTitle):?>
