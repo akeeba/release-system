@@ -152,5 +152,5 @@ function ARSScriptHook()
 	}
 }
 
-$app = &JFactory::getApplication();
+$app = JFactory::getApplication();
 $app->registerEvent('onAfterRender', 'ARSScriptHook');

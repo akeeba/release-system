@@ -95,7 +95,7 @@ class ArsModelBaseFE extends JModel
 					if(version_compare(JVERSION,'1.6.0','ge')) {
 						jimport('joomla.user.helper');
 						$userid = JUserHelper::getUserId($response->username);
-						$user = &JFactory::getUser($userid);
+						$user = JFactory::getUser($userid);
 					} else {
 						$user = JFactory::getUser();
 					}

@@ -127,14 +127,14 @@ class ArsHelperAmazons3 extends JObject
 	* @param string $md5sum MD5 hash to send (optional)
 	* @return array | false
 	*/
-	public static function inputResource(&$resource, $bufferSize, $md5sum = '') {
+	public static function inputResource($resource, $bufferSize, $md5sum = '') {
 		if (!is_resource($resource) || $bufferSize < 0) {
 			$o = self::getInstance();
 			$o->setError(__CLASS__.'::inputResource(): Invalid resource or buffer size');
 			return false;
 		}
 		$input = array('size' => $bufferSize, 'md5sum' => $md5sum);
-		$input['fp'] =& $resource;
+		$input['fp'] = $resource;
 		return $input;
 	}
 
@@ -164,7 +164,7 @@ class ArsHelperAmazons3 extends JObject
 
 		// Data
 		if (isset($input['fp']))
-			$rest->fp =& $input['fp'];
+			$rest->fp = $input['fp'];
 		elseif (isset($input['file']))
 			$rest->fp = @fopen($input['file'], 'rb');
 		elseif (isset($input['data']))
@@ -189,7 +189,7 @@ class ArsHelperAmazons3 extends JObject
 		// Content-Type
 		if (!isset($input['type'])) {
 			if (isset($requestHeaders['Content-Type']))
-				$input['type'] =& $requestHeaders['Content-Type'];
+				$input['type'] = $requestHeaders['Content-Type'];
 			elseif (isset($input['file']))
 				$input['type'] = self::__getMimeType($input['file']);
 			else
@@ -250,7 +250,7 @@ class ArsHelperAmazons3 extends JObject
 		// Content-Type
 		if (!isset($input['type'])) {
 			if (isset($requestHeaders['Content-Type']))
-				$input['type'] =& $requestHeaders['Content-Type'];
+				$input['type'] = $requestHeaders['Content-Type'];
 			elseif (isset($input['file']))
 				$input['type'] = self::__getMimeType($input['file']);
 			else
@@ -326,7 +326,7 @@ class ArsHelperAmazons3 extends JObject
 
 		// Data
 		if (isset($input['fp'])) {
-			$rest->fp =& $input['fp'];
+			$rest->fp = $input['fp'];
 		} elseif (isset($input['file'])) {
 			$rest->fp = @fopen($input['file'], 'rb');
 		} elseif (isset($input['data'])) {
@@ -491,7 +491,7 @@ class ArsHelperAmazons3 extends JObject
 		$rest = new ArsHelperS3Request('GET', $bucket, $uri);
 		if ($saveTo !== false) {
 			if (is_resource($saveTo))
-				$rest->fp =& $saveTo;
+				$rest->fp = $saveTo;
 			else
 				if (($rest->fp = @fopen($saveTo, 'wb')) !== false)
 					$rest->file = realpath($saveTo);

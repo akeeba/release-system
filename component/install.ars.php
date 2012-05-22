@@ -237,7 +237,7 @@ if($num < 1) {
 
 // -- General settings
 jimport('joomla.installer.installer');
-$db = & JFactory::getDBO();
+$db = JFactory::getDBO();
 $status = new JObject();
 $status->modules = array();
 $status->plugins = array();
