@@ -265,30 +265,30 @@ if(count($installation_queue['modules'])) {
 					// B. Change the ordering of back-end modules to 1 + max ordering in J! 1.7+
 					if($folder == 'admin') {
 						$query = $db->getQuery(true);
-						$query->select('MAX('.$db->nq('ordering').')')
-							->from($db->nq('#__modules'))
-							->where($db->nq('position').'='.$db->q($modulePosition));
+						$query->select('MAX('.$db->qn('ordering').')')
+							->from($db->qn('#__modules'))
+							->where($db->qn('position').'='.$db->q($modulePosition));
 						$db->setQuery($query);
 						$position = $db->loadResult();
 						$position++;
 						
 						$query = $db->getQuery(true);
-						$query->update($db->nq('#__modules'))
-							->set($db->nq('ordering').' = '.$db->q($position))
-							->where($db->nq('module').' = '.$db->q('mod_'.$module));
+						$query->update($db->qn('#__modules'))
+							->set($db->qn('ordering').' = '.$db->q($position))
+							->where($db->qn('module').' = '.$db->q('mod_'.$module));
 						$db->setQuery($query);
 						$db->query();
 					}
 					// C. Link to all pages on Joomla! 1.7+
 					$query = $db->getQuery(true);
-					$query->select('id')->from($db->nq('#__modules'))
-						->where($db->nq('module').' = '.$db->q('mod_'.$module));
+					$query->select('id')->from($db->qn('#__modules'))
+						->where($db->qn('module').' = '.$db->q('mod_'.$module));
 					$db->setQuery($query);
 					$moduleid = $db->loadResult();
 					
 					$query = $db->getQuery(true);
-					$query->select('*')->from($db->nq('#__modules_menu'))
-						->where($db->nq('moduleid').' = '.$db->q($moduleid));
+					$query->select('*')->from($db->qn('#__modules_menu'))
+						->where($db->qn('moduleid').' = '.$db->q($moduleid));
 					$db->setQuery($query);
 					$assignments = $db->loadObjectList();
 					$isAssigned = !empty($assignments);
