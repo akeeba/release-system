@@ -79,7 +79,11 @@ class ArsModelLogs extends ArsModelBase
 			$query_outer = 'SELECT '.$db->nameQuote('id').' FROM '.$db->nameQuote('#__ars_items').' WHERE '.
 				$db->nameQuote('release_id').' IN ('.$query_inner.')';
 			$db->setQuery($query_outer);
-			$ids = $db->loadResultArray();
+			if(version_compare(JVERSION, '3.0', 'ge')) {
+				$ids = $db->loadColumn();
+			} else {
+				$ids = $db->loadResultArray();
+			}
 			$clause = '('.implode(", ", $ids).')';
 			
 			$where[] = '`item_id` IN '.$clause;
@@ -88,7 +92,11 @@ class ArsModelLogs extends ArsModelBase
 			$query_outer = 'SELECT '.$db->nameQuote('id').' FROM '.$db->nameQuote('#__ars_items').' WHERE '.
 				$db->nameQuote('release_id').' = '.$db->quote($fltVersion);
 			$db->setQuery($query_outer);
-			$ids = $db->loadResultArray();
+			if(version_compare(JVERSION, '3.0', 'ge')) {
+				$ids = $db->loadColumn();
+			} else {
+				$ids = $db->loadResultArray();
+			}
 			$clause = '('.implode(", ", $ids).')';
 			
 			$where[] = '`item_id` IN '.$clause;
@@ -193,7 +201,11 @@ ENDSQL;
 			$query_outer = 'SELECT '.$db->nameQuote('id').' FROM '.$db->nameQuote('#__ars_items').' WHERE '.
 				$db->nameQuote('release_id').' IN ('.$query_inner.')';
 			$db->setQuery($query_outer);
-			$ids = $db->loadResultArray();
+			if(version_compare(JVERSION, '3.0', 'ge')) {
+				$ids = $db->loadColumn();
+			} else {
+				$ids = $db->loadResultArray();
+			}
 			$clause = '('.implode(", ", $ids).')';
 			
 			$where[] = '`item_id` IN '.$clause;
@@ -202,7 +214,11 @@ ENDSQL;
 			$query_outer = 'SELECT '.$db->nameQuote('id').' FROM '.$db->nameQuote('#__ars_items').' WHERE '.
 				$db->nameQuote('release_id').' = '.$db->quote($fltVersion);
 			$db->setQuery($query_outer);
-			$ids = $db->loadResultArray();
+			if(version_compare(JVERSION, '3.0', 'ge')) {
+				$ids = $db->loadColumn();
+			} else {
+				$ids = $db->loadResultArray();
+			}
 			$clause = '('.implode(", ", $ids).')';
 			
 			$where[] = '`item_id` IN '.$clause;
@@ -233,7 +249,11 @@ ENDSQL;
 		$db = $this->getDBO();
 		$qfrag = "'%" . $db->getEscaped($frag) . "%'";
 		$db->setQuery("SELECT `id` FROM `#__users` WHERE `name` LIKE $qfrag OR `username` LIKE $qfrag OR `email` LIKE $qfrag OR `params` LIKE $qfrag");
-		return $db->loadResultArray();
+		if(version_compare(JVERSION, '3.0', 'ge')) {
+			return $db->loadColumn();
+		} else {
+			return $db->loadResultArray();
+		}
 	}
 	
 	/**
@@ -254,6 +274,10 @@ WHERE
 	title LIKE $qfrag
 ENDQUERY;
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		if(version_compare(JVERSION, '3.0', 'ge')) {
+			return $db->loadColumn();
+		} else {
+			return $db->loadResultArray();
+		}
 	}
 }

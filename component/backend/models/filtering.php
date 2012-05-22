@@ -244,7 +244,11 @@ WHERE
 	AND `expires_datetime` >= CURRENT_TIMESTAMP
 ENDSQL;
 		$db->setQuery($query);
-		$list = $db->loadResultArray();
+		if(version_compare(JVERSION, '3.0', 'ge')) {
+			$list= $db->loadColumn();
+		} else {
+			$list = $db->loadResultArray();
+		}
 		if(empty($list)) $list = array();
 
 		return $list;

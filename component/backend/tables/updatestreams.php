@@ -58,7 +58,11 @@ class TableUpdatestreams extends ArsTable
 		$sql = 'SELECT `alias` FROM `#__ars_updatestreams`';
 		if($this->id) $sql .= ' WHERE NOT(`id`='.(int)$this->id.')';
 		$db->setQuery($sql);
-		$aliases = $db->loadResultArray();
+		if(version_compare(JVERSION, '3.0', 'ge')) {
+			$aliases = $db->loadColumn();
+		} else {
+			$aliases = $db->loadResultArray();
+		}
 		if(in_array($this->alias, $aliases))
 		{
 			$this->setError(JText::_('ERR_USTREAM_NEEDS_UNIQUE_ALIAS'));

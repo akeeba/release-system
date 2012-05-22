@@ -54,7 +54,11 @@ $db = JFactory::getDBO();
 // --- Update to 1.0.1
 $sql = 'SHOW CREATE TABLE `#__ars_log`';
 $db->setQuery($sql);
-$ctableAssoc = $db->loadResultArray(1);
+if(version_compare(JVERSION, '3.0', 'ge')) {
+	$ctableAssoc = $db->loadColumn(1);
+} else {
+	$ctableAssoc = $db->loadResultArray(1);
+}
 $ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
 if(!strstr($ctable, '`ars_log_accessed`')) {
 	$db->setQuery('CREATE INDEX `ars_log_accessed` ON `#__ars_log` (`accessed_on`)');
@@ -70,7 +74,11 @@ if(!strstr($ctable, '`ars_log_accessed`')) {
 // Update to 1.0.2 - Part I: Language fields
 $sql = 'SHOW CREATE TABLE `#__ars_categories`';
 $db->setQuery($sql);
-$ctableAssoc = $db->loadResultArray(1);
+if(version_compare(JVERSION, '3.0', 'ge')) {
+	$ctableAssoc = $db->loadColumn(1);
+} else {
+	$ctableAssoc = $db->loadResultArray(1);
+}
 $ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
 if(!strstr($ctable, '`language`'))
 {
@@ -90,7 +98,11 @@ if(!strstr($ctable, '`language`'))
 // Update to 1.0.2 - Part II: Visual groups
 $sql = 'SHOW CREATE TABLE `#__ars_categories`';
 $db->setQuery($sql);
-$ctableAssoc = $db->loadResultArray(1);
+if(version_compare(JVERSION, '3.0', 'ge')) {
+	$ctableAssoc = $db->loadColumn(1);
+} else {
+	$ctableAssoc = $db->loadResultArray(1);
+}
 $ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
 if(!strstr($ctable, '`vgroup_id`'))
 {
@@ -102,7 +114,11 @@ if(!strstr($ctable, '`vgroup_id`'))
 // Update to 1.0.3 - client_id and folder in #__updatestreams
 $sql = 'SHOW CREATE TABLE `#__ars_updatestreams`';
 $db->setQuery($sql);
-$ctableAssoc = $db->loadResultArray(1);
+if(version_compare(JVERSION, '3.0', 'ge')) {
+	$ctableAssoc = $db->loadColumn(1);
+} else {
+	$ctableAssoc = $db->loadResultArray(1);
+}
 $ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
 if(!strstr($ctable, '`client_id`'))
 {
@@ -118,7 +134,11 @@ if(!strstr($ctable, '`client_id`'))
 // --- Update to 1.0.4
 $sql = 'SHOW CREATE TABLE `#__ars_log`';
 $db->setQuery($sql);
-$ctableAssoc = $db->loadResultArray(1);
+if(version_compare(JVERSION, '3.0', 'ge')) {
+	$ctableAssoc = $db->loadColumn(1);
+} else {
+	$ctableAssoc = $db->loadResultArray(1);
+}
 $ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
 if(!strstr($ctable, '`ars_log_userid`')) {
 	$db->setQuery('CREATE INDEX `ars_log_userid` ON `#__ars_log` (`user_id`)');
@@ -128,7 +148,11 @@ if(!strstr($ctable, '`ars_log_userid`')) {
 // --- Update to 1.1
 $sql = 'SHOW CREATE TABLE `#__ars_items`';
 $db->setQuery($sql);
-$ctableAssoc = $db->loadResultArray(1);
+if(version_compare(JVERSION, '3.0', 'ge')) {
+	$ctableAssoc = $db->loadColumn(1);
+} else {
+	$ctableAssoc = $db->loadResultArray(1);
+}
 $ctable = empty($ctableAssoc) ? '' : $ctableAssoc[0];
 if(!strstr($ctable, '`environments`')) {
 	$sql = "ALTER TABLE `#__ars_items` ADD COLUMN `environments` varchar(100) DEFAULT NULL AFTER `language`";
