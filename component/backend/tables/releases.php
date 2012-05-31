@@ -18,6 +18,15 @@ class ArsTableReleases extends FOFTable
 	{
 		parent::__construct( '#__ars_releases', 'id', $db );
 		
+		$this->columnAlias = array(
+			'enabled'		=> 'published',
+			'slug'			=> 'alias',
+			'created_on'	=> 'created',
+			'modified_on'	=> 'modified',
+			'locked_on'		=> 'checked_out_time',
+			'locked_by'		=> 'checked_out',
+		);
+		
 		$baseAccess = version_compare(JVERSION,'1.6.0','ge') ? 1 : 0;
 		$this->access = $baseAccess;
 		
