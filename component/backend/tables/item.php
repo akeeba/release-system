@@ -16,7 +16,7 @@ if (!function_exists('fnmatch')) {
 	}
 }
 
-class ArsTableItems extends FOFTable
+class ArsTableItem extends FOFTable
 {
 	/**
 	 * Instantiate the table object

@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsTableUpdatestreams extends FOFTable
+class ArsTableUpdatestream extends FOFTable
 {
 	/**
 	 * Instantiate the table object

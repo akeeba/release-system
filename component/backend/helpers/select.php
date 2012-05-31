@@ -199,13 +199,9 @@ class ArsHelperSelect
 
 	public static function categories($selected = null, $id = 'category', $attribs = array())
 	{
-		if(!class_exists('ArsModelCategories')) {
-			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/categories.php';
-		}
-		$model = new ArsModelCategories(); // Do not use Singleton here!
-		$model->reset();
-		$model->setState('nobeunpub',1);
-		$items = $model->getItemList(true);
+		$items = FOFModel::getTmpInstance('Categories','ArsModel')
+			->nobeunpub(1)
+			->getItemList(true);
 
 		$options = array();
 		$options[] = JHTML::_('select.option',0,'- '.JText::_('LBL_CATEGORY_SELECT').' -');

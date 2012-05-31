@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsTableEnvironments extends FOFTable
+class ArsTableEnvironment extends FOFTable
 {
 	/**
 	 * Instantiate the table object

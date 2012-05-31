@@ -49,7 +49,7 @@ class ArsModelCategories extends FOFModel
 			$query->where($db->qn('access').' = '.$db->q($fltAccess));
 		}
 		
-		$fltPublished	= $this->getState('published', null, 'int');
+		$fltPublished	= $this->getState('published', null, 'cmd');
 		if($fltPublished != '') {
 			$query->where($db->qn('published').' = '.$db->q($fltPublished));
 		}
