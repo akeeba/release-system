@@ -9,7 +9,7 @@ defined('_JEXEC') or die();
 
 class ArsTableVgroups extends FOFTable
 {
-	function __construct( &$db )
+	function __construct( $table, $key, &$db )
 	{
 		parent::__construct( '#__ars_vgroups', 'id', $db );		
 		

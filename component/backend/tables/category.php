@@ -7,14 +7,14 @@
 
 defined('_JEXEC') or die();
 
-class ArsTableCategories extends FOFTable
+class ArsTableCategory extends FOFTable
 {
 	/**
 	 * Instantiate the table object
 	 * 
 	 * @param JDatabase $db The Joomla! database object
 	 */
-	function __construct( &$db )
+	function __construct( $table, $key, &$db )
 	{
 		parent::__construct( '#__ars_categories', 'id', $db );
 		
@@ -91,6 +91,9 @@ class ArsTableCategories extends FOFTable
 			if($potentialPrefix == 's3://') {
 				$check = substr($check, 5);
 				if(!empty($check)) $check .= '/';
+				if(!class_exists('ArsHelperAmazons3')) {
+					require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
+				}
 				$s3 = ArsHelperAmazons3::getInstance();
 				$items = $s3->getBucket('', $check);
 				if(empty($items)) {

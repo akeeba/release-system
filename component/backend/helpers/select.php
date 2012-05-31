@@ -171,51 +171,11 @@ class ArsHelperSelect
 			}
 		}
 		
-		$filteringModel = JModel::getInstance('Filtering', 'ArsModel');
-		$hasAkeebaSubs = ArsModelFiltering::hasAkeebaSubs();
+		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/filtering.php';
+		$hasAkeebaSubs = ArsHelperFiltering::hasAkeebaSubs();
 		
 		if($hasAkeebaSubs) {
-			$groups = ArsModelFiltering::getAkeebaGroups();
-	
-			$html = '';
-	
-			if(count($groups))
-			{
-				$options = array();
-				foreach($groups as $group) {
-					$item = '<input type="checkbox" class="checkbox" name="'.$name.'[]" value="'.$group->id.'" ';
-					if(in_array($group->id, $selected)) $item .= ' checked="checked" ';
-					$item .= '/> '.$group->title;
-					$options[] = $item;
-				}
-				$html = implode("\n&nbsp;", $options);
-			}			
-		} else {
-			$html = '';
-		}
-
-		return $html;
-	}
-	
-	public static function ambragroups($selected = null, $name = 'groups')
-	{
-		if(!is_array($selected))
-		{
-			if(empty($selected)) {
-				$selected = array();
-			} else {
-				$selected = explode(',',$selected);
-			}
-		}
-		
-		$filteringModel = JModel::getInstance('Filtering', 'ArsModel');
-		$hasAmbra = ArsModelFiltering::hasAMBRA();
-		
-		if($hasAmbra) {
-			$db = JFactory::getDBO();
-			$sql = 'SELECT * FROM `#__ambrasubs_types` WHERE `published` = 1';
-			$db->setQuery($sql);
-			$groups = $db->loadObjectList();
+			$groups = ArsHelperFiltering::getAkeebaGroups();
 	
 			$html = '';
 	

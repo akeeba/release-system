@@ -14,7 +14,7 @@ class ArsTableAutodesc extends FOFTable
 	 * 
 	 * @param JDatabase $db The Joomla! database object
 	 */
-	function __construct( &$db )
+	function __construct( $table, $key, &$db )
 	{
 		parent::__construct( '#__ars_autoitemdesc', 'id', $db );
 		
