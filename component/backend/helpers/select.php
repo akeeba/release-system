@@ -3,10 +3,9 @@
  * @package AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
- * @version $Id$
  */
 
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 
 class ArsHelperSelect
 {
@@ -155,8 +154,8 @@ class ArsHelperSelect
 	{
 		$options = array();
 		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_SELECT_STATE').' -');
-		$options[] = JHTML::_('select.option',0,JText::_('UNPUBLISHED'));
-		$options[] = JHTML::_('select.option',1,JText::_('PUBLISHED'));
+		$options[] = JHTML::_('select.option',0,JText::_('JUNPUBLISHED'));
+		$options[] = JHTML::_('select.option',1,JText::_('JPUBLISHED'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
@@ -512,12 +511,8 @@ class ArsHelperSelect
 	
 	public static function vgroups($selected = null, $id = 'vgroup', $attribs = array() )
 	{
-		if(!class_exists('ArsModelVgroups')) {
-			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/vgroups.php';
-		}
-		$model = new ArsModelVgroups(); // Do not use Singleton here!
-		$model->reset();
-		$items = $model->getItemList(true);
+		$items = FOFModel::getTmpInstance('Vgroups','ArsModel')
+			->getItemList(true);
 
 		$options = array();
 		$options[] = JHTML::_('select.option',0,'- '.JText::_('LBL_VGROUP_SELECT').' -');
