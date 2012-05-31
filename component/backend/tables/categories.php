@@ -3,37 +3,17 @@
  * @package AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
- * @version $Id$
  */
 
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
-if(!class_exists('ArsTable'))
+class ArsTableCategories extends FOFTable
 {
-	require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
-}
-
-class TableCategories extends ArsTable
-{
-	var $id = 0;
-	var $title = '';
-	var $alias = '';
-	var $description = '';
-	var $type = '';
-	var $groups = '';
-	var $directory = '';
-	var $vgroup_id = 0;
-	var $created = null;
-	var $created_by = 0;
-	var $modified = '0000-00-00 00:00:00';
-	var $modified_by = 0;
-	var $checked_out = 0;
-	var $checked_out_time = '0000-00-00 00:00:00';
-	var $ordering = 0;
-	var $access = 0;
-	var $published = 0;
-	var $language = '*';
-
+	/**
+	 * Instantiate the table object
+	 * 
+	 * @param JDatabase $db The Joomla! database object
+	 */
 	function __construct( &$db )
 	{
 		parent::__construct( '#__ars_categories', 'id', $db );
@@ -42,6 +22,11 @@ class TableCategories extends ArsTable
 		$this->access = $baseAccess;
 	}
 
+	/**
+	 * Checks the record for validity
+	 * 
+	 * @return int True if the record is valid
+	 */
 	function check()
 	{
 		// If the title is missing, throw an error
@@ -65,9 +50,13 @@ class TableCategories extends ArsTable
 
 		// Check alias for uniqueness
 		$db = $this->getDBO();
-		$sql = 'SELECT `alias` FROM `#__ars_categories`';
-		if($this->id) $sql .= ' WHERE NOT(`id`='.(int)$this->id.')';
-		$db->setQuery($sql);
+		$query = FOFQueryAbstract::getNew($db)
+			->select($db->qn('alias'))
+			->from($db->qn('#__ars_categories'));
+		if($this->id) {
+			$query->where('NOT('.$db->qn('id').' = '.$db->q($this->id).')');
+		}
+		$db->setQuery($query);
 		if(version_compare(JVERSION, '3.0', 'ge')) {
 			$aliases = $db->loadColumn();
 		} else {
@@ -144,12 +133,6 @@ class TableCategories extends ArsTable
 			$this->modified = $date->toMySQL();
 		}
 
-		/*
-		 if(empty($this->ordering)) {
-			$this->ordering = $this->getNextOrder();
-		}
-		*/
-
 		if(empty($this->published) && ($this->published !== 0) )
 		{
 			$this->published = 0;
@@ -158,7 +141,14 @@ class TableCategories extends ArsTable
 		return true;
 	}
 
-	function delete( $oid=null )
+	/**
+	 * Checks if we are allowed to delete this record
+	 * 
+	 * @param int $oid The numeric ID of the category to delete
+	 * 
+	 * @return bool True if allowed to delete
+	 */
+	function onBeforeDelete( $oid=null )
 	{
 		$joins = array(
 			array(
@@ -169,14 +159,8 @@ class TableCategories extends ArsTable
 				'joinfield'	=> 'category_id'
 			)
 		);
-		if($this->canDelete($oid, $joins))
-		{
-			return parent::delete($oid);
-		}
-		else
-		{
-			return false;
-		}
+		$result = $this->canDelete($oid, $joins);
+		return $result && parent::onBeforeDelete($oid);
 	}
 
 }

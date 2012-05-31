@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config addfieldpath="/administrator/components/com_ars/elements">
+	<!-- Joomla! 1.5 compatible configuration -->
+	<params addpath="/administrator/components/com_ars/elements">
+		<!-- XML Update Streams (compatible with Joomla! 1.6) -->
+		<param name="updates_name" type="text" default="Downloads"
+			label="ARS_CONFIG_UPDATES_NAME_LABEL"
+			description="ARS_CONFIG_UPDATES_NAME_DESC"
+		/>
+		<param name="updates_desc" type="text" default="My Downloads"
+			label="ARS_CONFIG_UPDATES_DESC_LABEL"
+			description="ARS_CONFIG_UPDATES_DESC_DESC"
+		/>
+		
+		<!-- Download options -->
+		<!--
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="antileech" type="radio" default="1" label="ARS_CONFIG_ANTILEECH_LABEL" description="ARS_CONFIG_ANTILEECH_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		-->
+		
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<!-- Rendering options -->
+		<param name="categorystyle" type="styles" default="rounded" label="ARS_CONFIG_CATEGORY_STYLE_LABEL" description="ARS_CONFIG_CATEGORY_STYLE_DESC"/>
+		<param name="categorysuffix" type="text" default="" label="ARS_CONFIG_CATEGORY_SFX_LABEL" description="ARS_CONFIG_CATEGORY_SFX_DESC"/>
+
+		<param name="releasestyle" type="styles" default="rounded" label="ARS_CONFIG_RELEASE_STYLE_LABEL" description="ARS_CONFIG_RELEASE_STYLE_DESC"/>
+		<param name="releasesuffix" type="text" default="" label="ARS_CONFIG_RELEASE_SFX_LABEL" description="ARS_CONFIG_RELEASE_SFX_DESC"/>
+
+		<param name="itemstyle" type="styles" default="rounded" label="ARS_CONFIG_ITEM_STYLE_LABEL" description="ARS_CONFIG_CATEGORY_STYLE_DESC"/>
+		<param name="itemsuffix" type="text" default="" label="ARS_CONFIG_ITEM_SFX_LABEL" description="ARS_CONFIG_ITEM_SFX_DESC"/>
+		
+		<param name="besuffix" type="text" default="" label="ARS_CONFIG_BE_SFX_LABEL" description="ARS_CONFIG_BE_SFX_DESC"/>
+		<param name="readontemplate" type="text" default="&lt;a href=&quot;%s&quot; class=&quot;readon&quot;&gt;%s&lt;/a&gt;" label="ARS_CONFIG_READON_LABEL" description="ARS_CONFIG_READON_DESC" size="50"/>
+		
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="no_access_url" type="text" default="" label="ARS_CONFIG_FE_NOACCESSURL_LABEL" description="ARS_CONFIG_FE_NOACCESSURL_DESC" size="50" />
+		<param name="show_filesize" type="radio" default="1"
+			label="ARS_CONFIG_SHOW_FILESIZE_LABEL"
+			description="ARS_CONFIG_SHOW_FILESIZE_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="show_md5" type="radio" default="1"
+			label="ARS_CONFIG_SHOW_MD5_LABEL"
+			description="ARS_CONFIG_SHOW_MD5_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="show_sha1" type="radio" default="1"
+			label="ARS_CONFIG_SHOW_SHA1_LABEL"
+			description="ARS_CONFIG_SHOW_SHA1_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="show_environments" type="radio" default="1"
+			label="ARS_CONFIG_SHOW_ENVIRONMENTS_LABEL"
+			description="ARS_CONFIG_SHOW_ENVIRONMENTS_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		
+		<!-- Amazon S3 integration -->
+		<param name="s3access" type="text" default="" label="ARS_CONFIG_S3_ACCESSKEY_LABEL" description="ARS_CONFIG_S3_ACCESSKEY_DESC" size="50"/>
+		<param name="s3secret" type="password" default="" label="ARS_CONFIG_S3_SECRETKEY_LABEL" description="ARS_CONFIG_S3_SECRETKEY_DESC" size="50"/>
+		<param name="s3bucket" type="text" default="" label="ARS_CONFIG_S3_BUCKET_LABEL" description="ARS_CONFIG_S3_BUCKET_LABEL"/>
+		<param name="s3perms" type="list" default="private"
+			label="ARS_CONFIG_S3_PERMS_LABEL"
+			description ="ARS_CONFIG_S3_PERMS_DESC">
+			<option value="private">ARS_CONFIG_S3_PERMS_PRIVATE</option>
+			<option value="public-read">ARS_CONFIG_S3_PERMS_PUBLIC_READ</option>
+			<option value="public-read-write">ARS_CONFIG_S3_PERMS_PUBLIC_READ_WRITE</option>
+			<option value="authenticated-read">ARS_CONFIG_S3_PERMS_ACL_AUTHENTICATED_READ</option>
+			<option value="bucket-owner-read">ARS_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_READ</option>
+			<option value="bucket-owner-full-control">ARS_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_FULL_CONTROL</option>
+		</param>
+		<param name="s3time" type="list" default="900"
+			label="ARS_CONFIG_S3_TIME_LABEL" desc="ARS_CONFIG_S3_TIME_DESC">
+			<option value="60">ARS_CONFIG_S3_TIME_1MINUTE</option>	
+			<option value="900">ARS_CONFIG_S3_TIME_15MINUTES</option>
+			<option value="3600">ARS_CONFIG_S3_TIME_1HOUR</option>
+			<option value="21600">ARS_CONFIG_S3_TIME_6HOURS</option>
+			<option value="43200">ARS_CONFIG_S3_TIME_12HOURS</option>
+			<option value="86400">ARS_CONFIG_S3_TIME_1DAY</option>
+			<option value="604800">ARS_CONFIG_S3_TIME_7DAYS</option>
+			<option value="2592000">ARS_CONFIG_S3_TIME_1MONTH</option>
+		</param>
+	</params>
+
+	<fieldset name="updatestream" label="CONFIG_BACKEND_UPDATESTREAM_LABEL" description="CONFIG_BACKEND_UPDATESTREAM_DESC">
+		<field name="updates_name" type="text" default="Downloads"
+			label="ARS_CONFIG_UPDATES_NAME_LABEL"
+			description="ARS_CONFIG_UPDATES_NAME_DESC"
+		/>
+		<field name="updates_desc" type="text" default="My Downloads"
+			label="ARS_CONFIG_UPDATES_DESC_LABEL"
+			description="ARS_CONFIG_UPDATES_DESC_DESC"
+		/>
+	</fieldset>
+		
+	<fieldset name="frontend" label="CONFIG_FRONTEND_HEADER_LABEL" description="CONFIG_FRONTEND_HEADER_DESC" addformpath="/administrator/components/com_ars/elements">
+		<!--
+		<field name="antileech" type="radio" default="1" label="ARS_CONFIG_ANTILEECH_LABEL" description="ARS_CONFIG_ANTILEECH_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		-->
+		<field name="categorystyle" type="styles" default="rounded" label="ARS_CONFIG_CATEGORY_STYLE_LABEL" description="ARS_CONFIG_CATEGORY_STYLE_DESC"/>
+		<field name="categorysuffix" type="text" default="" label="ARS_CONFIG_CATEGORY_SFX_LABEL" description="ARS_CONFIG_CATEGORY_SFX_DESC"/>
+
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="releasestyle" type="styles" default="rounded" label="ARS_CONFIG_RELEASE_STYLE_LABEL" description="ARS_CONFIG_RELEASE_STYLE_DESC"/>
+		<field name="releasesuffix" type="text" default="" label="ARS_CONFIG_RELEASE_SFX_LABEL" description="ARS_CONFIG_RELEASE_SFX_DESC"/>
+
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="itemstyle" type="styles" default="rounded" label="ARS_CONFIG_ITEM_STYLE_LABEL" description="ARS_CONFIG_CATEGORY_STYLE_DESC"/>
+		<field name="itemsuffix" type="text" default="" label="ARS_CONFIG_ITEM_SFX_LABEL" description="ARS_CONFIG_ITEM_SFX_DESC"/>
+		
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="besuffix" type="text" default="" label="ARS_CONFIG_BE_SFX_LABEL" description="ARS_CONFIG_BE_SFX_DESC"/>
+
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="readontemplate" type="text" default="[a href=&quot;%s&quot; class=&quot;readon&quot;]%s[/a]" label="ARS_CONFIG_READON_LABEL" description="ARS_CONFIG_READON_DESC" size="50"/>		
+		
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="no_access_url" type="text" default="" label="ARS_CONFIG_FE_NOACCESSURL_LABEL" description="ARS_CONFIG_FE_NOACCESSURL_DESC" size="50" />
+		<field name="show_filesize" type="radio" default="1"
+			label="ARS_CONFIG_SHOW_FILESIZE_LABEL"
+			description="ARS_CONFIG_SHOW_FILESIZE_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="show_md5" type="radio" default="1"
+			label="ARS_CONFIG_SHOW_MD5_LABEL"
+			description="ARS_CONFIG_SHOW_MD5_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="show_sha1" type="radio" default="1"
+			label="ARS_CONFIG_SHOW_SHA1_LABEL"
+			description="ARS_CONFIG_SHOW_SHA1_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="show_environments" type="radio" default="1"
+			label="ARS_CONFIG_SHOW_ENVIRONMENTS_LABEL"
+			description="ARS_CONFIG_SHOW_ENVIRONMENTS_DESC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+	</fieldset>
+	
+	<fieldset
+		name="s3integration"
+		label="CONFIG_S3INTEGRATION_HEADER_LABEL"
+		description="CONFIG_S3INTEGRATION_HEADER_DESC">
+		<field name="s3access" type="text" default="" label="ARS_CONFIG_S3_ACCESSKEY_LABEL" description="ARS_CONFIG_S3_ACCESSKEY_DESC" size="50" filter="raw" />
+		<field name="s3secret" type="password" default="" label="ARS_CONFIG_S3_SECRETKEY_LABEL" description="ARS_CONFIG_S3_SECRETKEY_DESC" size="50" filter="raw" />
+		<field name="s3bucket" type="text" default="" label="ARS_CONFIG_S3_BUCKET_LABEL" description="ARS_CONFIG_S3_BUCKET_LABEL"/>
+		<field name="s3perms" type="list" default="private"
+			label="ARS_CONFIG_S3_PERMS_LABEL"
+			description ="ARS_CONFIG_S3_PERMS_DESC">
+			<option value="private">ARS_CONFIG_S3_PERMS_PRIVATE</option>
+			<option value="public-read">ARS_CONFIG_S3_PERMS_PUBLIC_READ</option>
+			<option value="public-read-write">ARS_CONFIG_S3_PERMS_PUBLIC_READ_WRITE</option>
+			<option value="authenticated-read">ARS_CONFIG_S3_PERMS_ACL_AUTHENTICATED_READ</option>
+			<option value="bucket-owner-read">ARS_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_READ</option>
+			<option value="bucket-owner-full-control">ARS_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_FULL_CONTROL</option>
+		</field>
+		<field name="s3time" type="list" default="900"
+			label="ARS_CONFIG_S3_TIME_LABEL" desc="ARS_CONFIG_S3_TIME_DESC">
+			<option value="60">ARS_CONFIG_S3_TIME_1MINUTE</option>	
+			<option value="900">ARS_CONFIG_S3_TIME_15MINUTES</option>
+			<option value="3600">ARS_CONFIG_S3_TIME_1HOUR</option>
+			<option value="21600">ARS_CONFIG_S3_TIME_6HOURS</option>
+			<option value="43200">ARS_CONFIG_S3_TIME_12HOURS</option>
+			<option value="86400">ARS_CONFIG_S3_TIME_1DAY</option>
+			<option value="604800">ARS_CONFIG_S3_TIME_7DAYS</option>
+			<option value="2592000">ARS_CONFIG_S3_TIME_1MONTH</option>
+		</field>
+	</fieldset>
+	
+	<fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC"
+		>
+
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			filter="rules"
+			component="com_ars"
+			section="component" />
+	</fieldset>	
+</config>

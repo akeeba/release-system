@@ -3,29 +3,12 @@
  * @package AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
- * @version $Id$
  */
 
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
-if(!class_exists('ArsTable'))
+class ArsTableVgroups extends FOFTable
 {
-	require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
-}
-
-class TableVgroups extends ArsTable
-{
-	var $id = 0;
-	var $title = '';
-	var $created = null;
-	var $created_by = 0;
-	var $modified = '0000-00-00 00:00:00';
-	var $modified_by = 0;
-	var $checked_out = 0;
-	var $checked_out_time = '0000-00-00 00:00:00';
-	var $ordering = 0;
-	var $published = 0;
-
 	function __construct( &$db )
 	{
 		parent::__construct( '#__ars_vgroups', 'id', $db );		
@@ -61,7 +44,15 @@ class TableVgroups extends ArsTable
 		return true;
 	}
 
-	function delete( $oid=null )
+	
+	/**
+	 * Checks if we are allowed to delete this record
+	 * 
+	 * @param int $oid The numeric ID of the vgroup to delete
+	 * 
+	 * @return bool True if allowed to delete
+	 */
+	function onBeforeDelete( $oid=null )
 	{
 		$joins = array(
 			array(
@@ -72,11 +63,8 @@ class TableVgroups extends ArsTable
 				'joinfield'	=> 'vgroup_id'
 			)
 		);
-		if($this->canDelete($oid, $joins)) {
-			return parent::delete($oid);
-		} else {
-			return false;
-		}
+		$result = $this->canDelete($oid, $joins);
+		return $result && parent::onBeforeDelete($oid);
 	}
 
 }

@@ -3,90 +3,29 @@
  * @package AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
- * @version $Id$
  */
 
 // Protect from unauthorized access
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
-// Timezone fix; avoids errors printed out by PHP 5.3.3+ (thanks Yannick!)
-if( !version_compare(JVERSION, '1.6.0', 'ge') && function_exists('date_default_timezone_get') && function_exists('date_default_timezone_set')) {
-	if(function_exists('error_reporting')) {
-		$oldLevel = error_reporting(0);
-	}
-	$serverTimezone = @date_default_timezone_get();
-	if(empty($serverTimezone) || !is_string($serverTimezone)) $serverTimezone = 'UTC';
-	if(function_exists('error_reporting')) {
-		error_reporting($oldLevel);
-	}
-	@date_default_timezone_set( $serverTimezone);
+// Check for PHP4
+if(defined('PHP_VERSION')) {
+	$version = PHP_VERSION;
+} elseif(function_exists('phpversion')) {
+	$version = phpversion();
+} else {
+	// No version info. I'll lie and hope for the best.
+	$version = '5.0.0';
 }
 
-// Access check
-if(version_compare(JVERSION, '1.6.0', 'ge')) {
-	// Access check, Joomla! 1.6 style.
-	$user = JFactory::getUser();
-	if (!$user->authorise('core.manage', 'com_ars') && !$user->authorise('core.admin', 'com_ars')) {
-		return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
-	}
-}
-
-// Handle Live Update requests
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/liveupdate/liveupdate.php';
-if(JRequest::getCmd('view','') == 'liveupdate') {
-	LiveUpdate::handleRequest();
-	return;
-}
-
-jimport('joomla.filesystem.file');
-
-// Get the view and controller from the request, or set to default if they weren't set
-JRequest::setVar('view', JRequest::getCmd('view','cpanel'));
-JRequest::setVar('c', JRequest::getCmd('view','cpanel')); // Black magic: Get controller based on the selected view
-
-// Merge the default translation with the current translation
-$jlang = JFactory::getLanguage();
-// Front-end translation
-$jlang->load('com_ars', JPATH_SITE, 'en-GB', true);
-$jlang->load('com_ars', JPATH_SITE, $jlang->getDefault(), true);
-$jlang->load('com_ars', JPATH_SITE, null, true);
-// Back-end translation
-$jlang->load('com_ars', JPATH_ADMINISTRATOR, 'en-GB', true);
-$jlang->load('com_ars', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-$jlang->load('com_ars', JPATH_ADMINISTRATOR, null, true);
-
-// Load the appropriate controller
-$c = JRequest::getCmd('c','cpanel');
-$path = JPATH_COMPONENT_ADMINISTRATOR.'/controllers/'.$c.'.php';
-$alt_path = JPATH_COMPONENT_ADMINISTRATOR.'/plugins/controllers/'.$c.'.php';
-if(JFile::exists($path))
+// Old PHP version detected. EJECT! EJECT! EJECT!
+if(!version_compare($version, '5.2.7', '>='))
 {
-	// The requested controller exists and there you load it...
-	require_once($path);
-}
-elseif(JFile::exists($alt_path))
-{
-	require_once($alt_path);
-}
-else
-{
-	$c = 'Default';
-	$path = JPATH_COMPONENT_ADMINISTRATOR.'/controllers/default.php';
-	if(!JFile::exists($path)) {
-		JError::raiseError('500',JText::_('Unknown controller').' '.$c);
-	}
-	require_once $path;
+	return JError::raise(E_ERROR, 500, 'PHP versions 4.x, 5.0, 5.1 and 5.2.0-5.2.6 are no longer supported by Akeeba Release System.','The version of PHP used on your site is obsolete and contains known security vulenrabilities. Moreover, it is missing features required by Akeeba Release System to work properly or at all. Please ask your host to upgrade your server to the latest PHP 5.3 release. Thank you!');
 }
 
-// Load the Amazon S3 support
-define('AKEEBA_CACERT_PEM', JPATH_ADMINISTRATOR.'/components/com_ars/assets/cacert.pem');
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/amazons3.php';
+// Load FOF
+include_once JPATH_SITE.'/libraries/fof/include.php';
+if(!defined('FOF_INCLUDED')) JError::raiseError ('500', 'Your Akeeba Release System installation is broken; please re-install. Alternatively, extract the installation archive and copy the fof directory inside your site\'s libraries directory.');
 
-// Instanciate and execute the controller
-jimport('joomla.utilities.string');
-$c = 'ArsController'.ucfirst($c);
-$controller = new $c();
-$controller->execute(JRequest::getCmd('task','display'));
-
-// Redirect
-$controller->redirect();
+FOFDispatcher::getTmpInstance('com_ars')->dispatch();

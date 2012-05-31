@@ -3,31 +3,27 @@
  * @package AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
- * @version $Id$
  */
 
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
-if(!class_exists('ArsTable'))
+class ArsTableAutodesc extends FOFTable
 {
-	require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
-}
-
-class TableAutodesc extends ArsTable
-{
-	var $id = 0;
-	var $category = 0;
-	var $packname = '';
-	var $title = '';
-	var $description = '';
-	var $published = 0;
-	var $environments = array();
-
+	/**
+	 * Instantiate the table object
+	 * 
+	 * @param JDatabase $db The Joomla! database object
+	 */
 	function __construct( &$db )
 	{
 		parent::__construct( '#__ars_autoitemdesc', 'id', $db );
 	}
 
+	/**
+	 * Checks the record for validity
+	 * 
+	 * @return int True if the record is valid
+	 */
 	function check()
 	{
 		if(!$this->category) {
@@ -60,11 +56,17 @@ class TableAutodesc extends ArsTable
 
 		return true;
 	}
-		
-	public function load( $keys = null, $reset = null )
-	{
-		parent :: load( $keys, $reset );
-		if ( is_string( $this->environments ) ) $this->environments = json_decode( $this->environments );
+	
+	/**
+	 * Fires after loading a record, automatically unserialises the environments
+	 * field (by default it's JSON-encoded)
+	 * 
+	 * @param object $result The loaded row
+	 * 
+	 * @return bool
+	 */
+	protected function onAfterLoad(&$result) {
+		if ( is_string( $result->environments ) ) $result->environments = json_decode( $result->environments );
+		return parent::onAfterLoad($result);
 	}
-
 }

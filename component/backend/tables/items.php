@@ -3,15 +3,9 @@
  * @package AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
- * @version $Id$
  */
 
-defined('_JEXEC') or die('Restricted Access');
-
-if(!class_exists('ArsTable'))
-{
-	require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
-}
+defined('_JEXEC') or die();
 
 if (!function_exists('fnmatch')) {
 	function fnmatch($pattern, $string) {
@@ -22,34 +16,13 @@ if (!function_exists('fnmatch')) {
 	}
 }
 
-class TableItems extends ArsTable
+class ArsTableItems extends FOFTable
 {
-	var $id = 0;
-	var $release_id = 0;
-	var $title = '';
-	var $alias = '';
-	var $description = '';
-	var $type = '';
-	var $filename = '';
-	var $url = '';
-	var $groups = '';
-	var $hits = 0;
-	var $created = null;
-	var $created_by = 0;
-	var $modified = '0000-00-00 00:00:00';
-	var $modified_by = 0;
-	var $checked_out = 0;
-	var $checked_out_time = '0000-00-00 00:00:00';
-	var $ordering = 0;
-	var $access = 0;
-	var $published = 0;
-	var $updatestream = 0;
-	var $md5 = '';
-	var $sha1 = '';
-	var $filesize = 0;
-	var $language = '*';
-	var $environments = array();
-
+	/**
+	 * Instantiate the table object
+	 * 
+	 * @param JDatabase $db The Joomla! database object
+	 */
 	function __construct( &$db )
 	{
 		parent::__construct( '#__ars_items', 'id', $db );
@@ -58,6 +31,11 @@ class TableItems extends ArsTable
 		$this->access = $baseAccess;
 	}
 
+	/**
+	 * Checks the record for validity
+	 * 
+	 * @return int True if the record is valid
+	 */
 	function check()
 	{
 		// If the release is missing, throw an error
@@ -68,11 +46,16 @@ class TableItems extends ArsTable
 
 		// Get some useful info
 		$db = $this->getDBO();
-		$sql = 'SELECT `title`, `alias` FROM `#__ars_items` WHERE `release_id` = '.(int)$this->release_id;
+		$query = FOFQueryAbstract::getNew($db)
+			->select(array(
+				$db->qn('title'),
+				$db->qn('alias')
+			))->from($db->qn('#__ars_items'))
+			->where($db->qn('release_id').' = '.$db->q($this->release_id));
 		if($this->id) {
-			$sql .= ' AND NOT(`id`='.(int)$this->id.')';
+			$query->where('NOT('.$db->qn('id').'='.$db->q($this->id).')');
 		}
-		$db->setQuery($sql);
+		$db->setQuery($query);
 		$info = $db->loadAssocList('title');
 
 		$info = $db->loadAssocList();
@@ -84,8 +67,16 @@ class TableItems extends ArsTable
 		}
 
 		// Let's get automatic item title/description records
-		$sql = 'SELECT * FROM `#__ars_autoitemdesc` WHERE `category` IN (SELECT `category_id` FROM `#__ars_releases` WHERE `id` = '.$db->Quote($this->release_id).') AND NOT `published` = 0';
-		$db->setQuery($sql);
+		$subquery = FOFQueryAbstract::getNew($db)
+			->select($db->qn('category_id'))
+			->from($db->qn('#__ars_releases'))
+			->where($db->qn('id').' = '.$db->q($this->release_id));
+		$query = FOFQueryAbstract::getNew($db)
+			->select('*')
+			->from($db->qn('#__ars_autoitemdesc'))
+			->where($db->qn('category').' IN ('.$subquery.')')
+			->where('NOT('.$db->qn('published').'='.$db->q(0).')');
+		$db->setQuery($query);
 		$autoitems = $db->loadObjectList();
 		$auto = (object)array('title'=>'','description'=>'', 'environments' => '');
 		if(!empty($autoitems))
@@ -230,12 +221,6 @@ class TableItems extends ArsTable
 			$this->modified = $date->toMySQL();
 		}
 
-		/*
-		if(empty($this->ordering)) {
-			$this->ordering = $this->getNextOrder();
-		}
-		*/
-
 		if( is_null($this->published) || ($this->published == '') )
 		{
 			$this->published = 0;
@@ -245,6 +230,14 @@ class TableItems extends ArsTable
 		if(empty($this->updatestream))
 		{
 			$db = $this->getDBO();
+			$subquery = FOFQueryAbstract::getNew($db)
+				->select($db->qn('category_id'))
+				->from('#__ars_releases')
+				->where($db->qn('id').' = '.$db->q($this->release_id));
+			$query = FOFQueryAbstract::getNew($db)
+				->select('*')
+				->from($db->qn('#__ars_updatestreams'))
+				->where($db->qn('category').' IN ('.$subquery.')');
 			$sql = 'SELECT * FROM `#__ars_updatestreams` WHERE `category` IN (SELECT `category_id` FROM `#__ars_releases` WHERE `id` = '.$db->Quote($this->release_id).')';
 			$db->setQuery($sql);
 			$streams = $db->loadObjectList();
@@ -279,19 +272,15 @@ class TableItems extends ArsTable
 				$folder = null;
 				$filename = $this->filename;
 
-				$relModel = JModel::getInstance('Releases','ArsModel');
-				$relModel->reset();
-				$relModel->setId($this->release_id);
-				$release = $relModel->getItem();
+				$release = FOFModel::getTmpInstance('Releases','ArsModel')
+					->getItem($this->release_id);
 
-				if(is_object($release))
+				if($release->id)
 				{
-					$catModel = JModel::getInstance('Categories','ArsModel');
-					$catModel->reset();
-					$catModel->setId($release->category_id);
-					$category = $catModel->getItem();
+					$category = FOFModel::getTmpInstance('Categories','ArsModel')
+						->getItem($release->category_id);
 
-					if(is_object($category)) {
+					if($category->id) {
 						$folder = $category->directory;
 					}
 				}
@@ -398,10 +387,16 @@ class TableItems extends ArsTable
 		return true;
 	}
 	
-	
-	public function load( $keys = null, $reset = null )
-	{
-		parent :: load( $keys, $reset );
-		if ( is_string( $this->environments ) ) $this->environments = json_decode( $this->environments );
+	/**
+	 * Fires after loading a record, automatically unserialises the environments
+	 * field (by default it's JSON-encoded)
+	 * 
+	 * @param object $result The loaded row
+	 * 
+	 * @return bool
+	 */
+	protected function onAfterLoad(&$result) {
+		if ( is_string( $result->environments ) ) $result->environments = json_decode( $result->environments );
+		return parent::onAfterLoad($result);
 	}
 }

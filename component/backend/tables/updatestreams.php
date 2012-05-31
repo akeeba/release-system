@@ -3,35 +3,28 @@
  * @package AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
- * @version $Id$
  */
 
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
-
-class TableUpdatestreams extends ArsTable
+class ArsTableUpdatestreams extends FOFTable
 {
-	var $id = 0;
-	var $name = '';
-	var $alias = '';
-	var $type = 'components';
-	var $category = 0;
-	var $element = '';
-	var $packname = '';
-	var $created = '0000-00-00 00:00:00';
-	var $created_by = 0;
-	var $modified = '0000-00-00 00:00:00';
-	var $modified_by = 0;
-	var $checked_out_time = '0000-00-00 00:00:00';
-	var $checked_out = 0;
-	var $published = 0;
-
+	/**
+	 * Instantiate the table object
+	 * 
+	 * @param JDatabase $db The Joomla! database object
+	 */
 	function __construct( &$db )
 	{
 		parent::__construct( '#__ars_updatestreams', 'id', $db );
+		$this->type = 'components';
 	}
 
+	/**
+	 * Checks the record for validity
+	 * 
+	 * @return int True if the record is valid
+	 */
 	function check()
 	{
 		// If the title is missing, throw an error
@@ -55,9 +48,13 @@ class TableUpdatestreams extends ArsTable
 
 		// Check alias for uniqueness
 		$db = $this->getDBO();
-		$sql = 'SELECT `alias` FROM `#__ars_updatestreams`';
-		if($this->id) $sql .= ' WHERE NOT(`id`='.(int)$this->id.')';
-		$db->setQuery($sql);
+		$query = FOFQueryAbstract::getNew($db)
+			->select($db->qn('alias'))
+			->from($db->qn('#__ars_updatestreams'));
+		if($this->id) {
+			$query->where('NOT('.$db->qn('id').'='.$db->q($this->id).')');
+		}
+		$db->setQuery($query);
 		if(version_compare(JVERSION, '3.0', 'ge')) {
 			$aliases = $db->loadColumn();
 		} else {

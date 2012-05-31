@@ -3,46 +3,33 @@
  * @package AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
- * @version $Id$
  */
 
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
-if(!class_exists('ArsTable'))
+class ArsTableReleases extends FOFTable
 {
-	require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
-}
-
-class TableReleases extends ArsTable
-{
-	var $id = 0;
-	var $category_id = 0;
-	var $version = '';
-	var $alias = '';
-	var $maturity = 'alpha';
-	var $description = '';
-	var $notes= '';
-	var $groups = '';
-	var $hits = 0;
-	var $created = null;
-	var $created_by = 0;
-	var $modified = '0000-00-00 00:00:00';
-	var $modified_by = 0;
-	var $checked_out = 0;
-	var $checked_out_time = '0000-00-00 00:00:00';
-	var $ordering = 0;
-	var $access = 0;
-	var $published = 0;
-	var $language = '*';
-
+	/**
+	 * Instantiate the table object
+	 * 
+	 * @param JDatabase $db The Joomla! database object
+	 */
 	function __construct( &$db )
 	{
 		parent::__construct( '#__ars_releases', 'id', $db );
 		
 		$baseAccess = version_compare(JVERSION,'1.6.0','ge') ? 1 : 0;
 		$this->access = $baseAccess;
+		
+		$this->maturity = 'alpha';
+		$this->language = '*';
 	}
 
+	/**
+	 * Checks the record for validity
+	 * 
+	 * @return int True if the record is valid
+	 */
 	function check()
 	{
 		// If the category is missing, throw an error
@@ -53,11 +40,16 @@ class TableReleases extends ArsTable
 
 		// Get some useful info
 		$db = $this->getDBO();
-		$sql = 'SELECT `version`, `alias` FROM `#__ars_releases` WHERE `category_id` = '.(int)$this->category_id;
+		$query = FOFQueryAbstract::getNew($db)
+			->select(array(
+				$db->qn('version'),
+				$db->qn('alias')
+			))->from($db->qn('#__ars_releases'))
+			->where($db->qn('category_id').' = '.$db->q($this->category_id));
 		if($this->id) {
-			$sql .= ' AND NOT(`id`='.(int)$this->id.')';
+			$query->where('NOT('.$db->qn('id').'='.$db->q($this->id).')');
 		}
-		$db->setQuery($sql);
+		$db->setQuery($query);
 		$info = $db->loadAssocList();
 		$versions = array(); $aliases = array();
 		foreach($info as $infoitem)

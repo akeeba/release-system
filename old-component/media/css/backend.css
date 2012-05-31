@@ -1,0 +1,580 @@
+/*
+	Akeeba Release System User Interface CSS
+	Copyright (c)2010-2012 Nicholas K. Dionysopoulos <nicholas@dionysopoulos.me>
+	Released under the GNU General Public License, version 3 or later
+	$Id$
+*/
+
+.icon-48-ars { background-image: url(../icons/ars_logo_48.png); }
+
+/*
+ * UI Icons - 32x32
+ */
+.ak-icon { display: block; width: 32px; height: 32px; text-indent: -99999px; overflow: hidden; background: transparent url(../icons/akeeba-ui-32.png) top left no-repeat; background-position: 0 0; margin: 4px auto 6px; }
+.ak-icon-categories { background-image: url(../icons/view-categories-32.png); }
+.ak-icon-items { background-image: url(../icons/view-items-32.png); }
+.ak-icon-logs { background-image: url(../icons/view-logs-32.png); }
+.ak-icon-releases { background-image: url(../icons/view-releases-32.png); }
+.ak-icon-activity { background-image: url(../icons/view-activity-32.png); }
+.ak-icon-updatestreams { background-image: url(../icons/view-updatestreams-32.png); }
+.ak-icon-upload { background-image: url(../icons/view-upload-32.png); }
+.ak-icon-impjed { background-image: url(../icons/view-impjed-32.png); }
+.ak-icon-autodesc { background-image: url(../icons/view-autodesc-32.png); }
+
+/*
+ * Akeeba Buttons
+ */
+.akbutton {
+	display: block;
+	width: 250px;
+	height: 32px;
+	text-decoration: none;
+	padding: 3px;
+	margin: 0.5em;
+}
+
+.akbutton:hover {
+	background-color: #ffffee;
+	text-decoration: none;
+	border: thin solid #3333ff;
+}
+
+div.ak_cpanel_icons div.akbutton div.icon {
+	float: left !important;
+	top: 0px !important;
+	margin: 0 !important;
+	font-size: 9pt !important;
+}
+
+.akbutton div.text {
+	display: block;
+	width: 210px;
+	height: 20px;
+	font-size: 14px;
+	text-align: center;
+	margin: 0px;
+	float: right;
+	position: relative;
+	top: -24px;
+}
+
+/*
+ * Control Panel
+ */
+#nojquerywarning {
+	display: block;
+	border: thick solid red;
+	background: #ffffdd;
+	color: #330000;
+	margin: 1em;
+	padding: 1em;
+	text-align: justify;
+	font-size: large;
+}
+
+p.akwarningtitle {
+	font-weight: bold;
+	font-size: xx-large;
+	text-align: center;
+	margin: 0.5em;
+	color: #cc3333;
+}
+
+div.toprowcontainer {
+	width: 100%;
+	height: 65px;
+}
+
+div.activeprofile {
+	float: left;
+	width: 55%;
+	margin-left: 4%;
+	margin-bottom: 1em;
+	text-align: center;
+}
+
+div.feedrotator {
+	float: left;
+	left: 5%;
+	width: 235px;
+	height: 60px;
+}
+
+div.updateservice {
+	display:block;
+	float: right;
+	right: 5px;
+	width: 100px;
+	height: 60px;
+	font-size: 7pt !important;
+	border: thin solid silver;
+	text-align: center;
+}
+
+div.updateservice:hover {
+	background-color: #ffffff;
+}
+
+div.updateservice .ak-icon {
+	margin: 2px auto 0px;
+}
+
+div.updateservice a, div.updateservice a:hover {
+	text-decoration: none;
+}
+
+div.ak_clr_left {
+	clear: left;
+}
+
+div.ak_clr {
+	clear: both;
+}
+
+div.ak_cpanel_main_container {
+	float: right;
+	width: 39%;
+	padding: 0;
+}
+
+div.ak_cpanel_header {
+	font-size: larger;
+	padding: 2px 5px 5px;
+}
+
+div.ak_cpanel_icons {
+	padding: 4px;
+	margin-bottom: 4px;
+}
+
+div.ak_cpanel_modules {
+	float: left;
+	width: 59%;
+	margin-right: 1%;
+}
+
+#ak_cpanel_modules h3 {
+	font-size: larger;
+	padding: 2px 5px 2px 28px;
+}
+
+div.ak_cpanel_icons div.icon {
+	text-align: center;
+	float: left !important;
+	font-size: 8pt !important;
+	font-weight: normal !important;
+	color: #000000 !important;
+	background-color: #f0f0f0 !important;
+	border: 1px solid #E5E5E5 !important;
+	width: 108px;
+	height: 97px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+}
+
+div.ak_cpanel_icons div.icon span {
+	font-family: "Segoe UI", "Arial", Helvetica, sans;
+	font-weight: bold !important;
+	font-size: 8pt !important;
+}
+
+div.ak_cpanel_status_cell p {
+	text-align: center;
+	font-size: larger;
+	font-weight: bold;
+	padding: 10px 10px 10px 25px;
+}
+
+div.ak_cpanel_status_cell p.ak_version {
+	font-weight: normal;
+	font-size: 9pt;
+	color: #333333;
+	font-family: Consolas, "Courier New", Courier, monospace;
+	padding: 0px;
+}
+
+p.ok {
+	border: thin solid #008000;
+	background: #aaeeaa;
+	background-image: url(../icons/ok_small.png) !important;
+	background-position: 5px 10px !important;
+	background-repeat: no-repeat !important;
+	padding: 10px 10px 10px 25px;
+}
+
+p.statuswarning {
+	background-image: url(../icons/ok_small.png) !important;
+	background-position: 5px 10px !important;
+	background-repeat: no-repeat !important;
+	padding: 10px 10px 10px 25px;
+}
+
+p.notok {
+	background-image: url(../icons/error_small.png) !important;
+	background-position: 5px 12px !important;
+	background-repeat: no-repeat !important;
+	padding: 10px 10px 10px 25px;
+}
+
+h4.ui-widget-header {
+	padding: 2px;
+	margin: 0px;
+}
+
+div.ak_cpanel_status_cell ul {
+	padding: 0px;
+	margin: 2px;
+	list-style: none;
+}
+
+div.ak_cpanel_status_cell ul li {
+	margin: 0px;
+	padding: 0px;
+}
+
+div.ak_cpanel_status_cell ul li a {
+	display: block;
+	width: 95%;
+	padding: 4px;
+	margin: 4px 2px;
+	border: thin solid #cccccc;
+	background: #faf9f9;
+}
+
+div.ak_cpanel_status_cell ul a:hover {
+	background: #fffff9;
+}
+
+a.severity-low {
+	color: #333333;
+	font-style: italic;
+}
+
+a.severity-medium {
+	color: #cc8833 !important;
+}
+
+a.severity-high {
+	color: red;
+	font-weight: bold;
+}
+
+table.dlstats {
+	border-collapse: collapse;
+}
+
+table.dlstats td {
+	background-color: #f0f0f0;
+	border-bottom: 1px solid #e0e0e0;
+	padding: 0.3em;
+	text-align: right;
+}
+
+table.dlstats td.dlstats-label {
+	font-weight: bold;
+	text-align: left;
+}
+
+div.dlpopular {
+	background: #f0f0ff;
+	border-top: 1px solid navy;
+	border-bottom: 1px solid navy;
+	padding: 0.3em;
+	text-align: left;
+	margin: 0.25em 0;
+}
+
+div.dlpopular span {
+	display: inline !important;
+}
+
+div.dlpopular a.dltitle {
+	font-weight: bold;
+	font-size: medium;
+}
+
+div.dlpopular span.dltimes {
+	color: red;
+	font-weight: bold;
+	display:inline-block;
+	float: right;
+}
+
+div.dladvanced span {
+	color: #333;
+	font-style: italic;
+}
+
+#mapChartMini {
+	width: 300px;
+	height: 150px;
+	margin: 1em auto;
+}
+
+#mdrChart {
+	width: 450px;
+	height: 250px;
+	margin: 1em auto;
+}
+
+/*
+ * Joomla! 1.6 compatibility
+ */
+#akeebagui button, #akeebagui input, #akeebagui select { float: none; }
+#akeebagui button { margin: 0 0 0 5px; }
+fieldset label { clear: none !important; margin-right: 0.4em !important; }
+
+/*
+ * Editor forms
+ */
+div.editform-row { display:block; margin: 1px 0; padding: 1px; height: 1.6em; clear: left; }
+div.editform-row-noheight { height: auto; }
+div.editform-row > label { display: block; float: left; width: 35%; height: 1.4em; background-color: #ddd; margin: 0 2px 0 0; padding: 2px 0 0px 2px; border-bottom: 1px solid #999; border-top: 1px solid #ddd; }
+div.editform-row > input, div.editform-row .float { display: block; float: left; min-width: 30%; height: 1.6em; }
+div.editform-row > input.checkbox { display: inline; float: none; min-width: 0; height: auto; }
+div.editform-row > option { display: block; float: left; min-width: 90px; height: 1.6em; }
+
+/**
+ * Categories
+ */
+.category-type-normal { color: #cc8833; font-weight: bold; }
+.category-type-bleedingedge { color: #008000; font-style: italic; }
+.ars-access { display:inline-block; margin-top: 1px; }
+.cat-directory-name { font-family: Consolas, "Courier New", Courier, monospace; color: gray; }
+
+/**
+ * Releases
+ */
+.status-alpha { color: #cc3333; font-style: italic; }
+.status-beta { color: #cc8833 }
+.status-rc { color: #333333; font-style: italic; }
+.status-stable { color: #008000; font-weight: bold; }
+
+/*
+ * Uploads
+ */
+#category-selection { margin-bottom: 1em; }
+#category-selection div.ui-widget-content { padding: 0.5em; text-align: center; }
+#category-selection div.ui-widget-content select { min-width: 200px }
+#subfoldername { font-family: Consolas, "Courier New", Courier, monospace; font-weight: bold; }
+
+#contentsbrowser { width: 100% }
+
+#fileswidget { width: 48%; float: left; margin-left: 1%  }
+#filesheader { font-size: larger; }
+#fileslist { height: 200px; overflow: scroll; }
+#fileslist>div { padding: 2px; border-bottom: 1px solid #ccc; cursor: default; }
+.filerow0 { background: #f0f0f0; height: 20px; }
+.filerow1 { background: #DFDFDF; height: 20px; }
+.filerow0:hover, .filerow1:hover { background-color: #ccccff }
+span.filename { font-weight: bold; float: left; padding-top: 2px; }
+span.filesize { float: right; margin-right: 2px; color: #666666; font-style: italic; }
+.deletefile { display: inline-block; cursor: pointer; margin: 0 5px 0 0; padding: 0; float: left }
+
+#folderswidget { width: 48%; float: left; margin-left: 0.5%  }
+#foldersheader { font-size: larger; }
+#folderslist { height: 200px; overflow: scroll; }
+#folderslist>div { padding: 2px; border-bottom: 1px solid #ccc; cursor: pointer }
+span.foldername { font-weight: bold; }
+.folderrow0 { background: #f0f0f0 }
+.folderrow1 { background: #DFDFDF }
+.folderrow0:hover, .folderrow1:hover { background-color: #ccccff }
+
+/*
+ * Import from FRS
+ */
+#setup-ars { margin-bottom: 1em; }
+
+#setup-header, #setup-ars div.ui-widget-header { padding: 4px; }
+#setup-mainbody, #setup-ars-mainbody { padding: 8px; }
+#setup-mainbody label { display:inline-block; width: 20%; min-width: 250px; font-weight: bold; }
+#setup-mainbody>div { margin: 0.5em 0; clear: both; }
+#setup-mainbody span.ui-state-default { display: inline-block; padding: 3px 5px; cursor: pointer; width: 120px; text-align: center; }
+#setup-mainbody input,
+#setup-mainbody select { width: 15%; min-width: 150px}
+#setup-mainbody #jcfiles { display:inline-block; width: 40%; height: 200px; overflow-y: scroll; overflow-x: hidden; background: #fefefe; border: thin solid #f0f0f0; }
+.filetoimport { padding: 2px; border-bottom: thin solid gray; cursor: pointer; background: #DFDFDF }
+.filedone { padding: 2px; border-bottom: thin solid gray; cursor: default; background: #CDEB8B }
+
+/* 
+   Plupload
+------------------------------------------------------------------- */
+
+.plupload_button {
+	display: -moz-inline-box; /* FF < 3*/
+	display: inline-block;
+	font: normal 12px sans-serif;
+	text-decoration: none;
+    color: #42454a;
+    border: 1px solid #bababa;
+    padding: 2px 8px 3px 20px;
+	margin-right: 4px;
+    background: #f3f3f3 url('../theme/images/buttons.png') no-repeat 0 center;
+	outline: 0;
+
+    /* Optional rounded corners for browsers that support it */
+    -moz-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.plupload_button:hover {
+	color: #000;
+	text-decoration: none;
+}
+
+.plupload_disabled, a.plupload_disabled:hover {
+    color: #737373;
+    border-color: #c5c5c5;
+    background: #ededed url('../theme/images/buttons-disabled.png') no-repeat 0 center;
+	cursor: default;
+}
+
+.plupload_add {
+	background-position: -181px center;
+}
+
+.plupload_wrapper {
+	font: normal 11px Verdana,sans-serif;
+	width: 100%;
+}
+
+.plupload_container {
+	padding: 8px;
+	background: url('../theme/images/transp50.png');
+	/*-moz-border-radius: 5px;*/
+}
+
+.plupload_container input {
+	border: 1px solid #DDD;
+	font: normal 11px Verdana,sans-serif;
+	width: 98%;
+}
+
+.plupload_header {background: #2A2C2E url('../theme/images/backgrounds.gif') repeat-x;}
+.plupload_header_content {
+	background: url('../theme/images/backgrounds.gif') no-repeat 0 -317px;
+	min-height: 56px;
+	padding-left: 60px;
+	color: #FFF;
+}
+.plupload_header_title {
+	font: normal 18px sans-serif;
+	padding: 6px 0 3px;
+}
+.plupload_header_text {
+	font: normal 12px sans-serif;
+}
+
+.plupload_filelist {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.plupload_scroll .plupload_filelist {
+	height: 185px;
+	background: #F5F5F5;
+	overflow-y: scroll;
+}
+
+.plupload_filelist li {
+	padding: 10px 8px;
+	background: #F5F5F5 url('../theme/images/backgrounds.gif') repeat-x 0 -156px;
+	border-bottom: 1px solid #DDD;
+}
+
+.plupload_filelist_header, .plupload_filelist_footer {
+	background: #DFDFDF;
+	padding: 8px 8px;
+	color: #42454A;
+}
+.plupload_filelist_header {	
+	border-top: 1px solid #EEE;
+	border-bottom: 1px solid #CDCDCD;
+}
+
+.plupload_filelist_footer {border-top: 1px solid #FFF; height: 22px; line-height: 20px; vertical-align: middle;}
+.plupload_file_name {float: left; overflow: hidden}
+.plupload_file_status {color: #777;}
+.plupload_file_status span {color: #42454A;}
+.plupload_file_size, .plupload_file_status, .plupload_progress {
+	float: right;
+	width: 80px;
+}
+.plupload_file_size, .plupload_file_status, .plupload_file_action {text-align: right;}
+
+.plupload_filelist .plupload_file_name {width: 205px}
+
+.plupload_file_action {
+	float: right;
+	width: 16px;
+	height: 16px;
+	margin-left: 15px;
+}
+
+.plupload_file_action * {
+	display: none;
+	width: 16px;
+	height: 16px;
+}
+
+li.plupload_uploading {background: #ECF3DC url('../theme/images/backgrounds.gif') repeat-x 0 -238px;}
+li.plupload_done {color:#AAA}
+
+li.plupload_delete a {
+	background: url('../theme/images/delete.gif');
+}
+
+li.plupload_failed a {
+	background: url('../theme/images/error.gif');
+	cursor: default;
+}
+
+li.plupload_done a {
+	background: url('../theme/images/done.gif');
+	cursor: default;
+}
+
+.plupload_progress, .plupload_upload_status {
+	display: none;
+}
+
+.plupload_progress_container {
+	margin-top: 3px;
+	border: 1px solid #CCC;
+	background: #FFF;
+	padding: 1px;
+}
+.plupload_progress_bar {
+	width: 0px;
+	height: 7px;
+	background: #CDEB8B;
+}
+
+.plupload_scroll .plupload_filelist_header .plupload_file_action, .plupload_scroll .plupload_filelist_footer .plupload_file_action {
+	margin-right: 17px;
+}
+
+/* Floats */
+
+.plupload_clear,.plupload_clearer {clear: both;}
+.plupload_clearer, .plupload_progress_bar {
+	display: block;
+	font-size: 0;
+	line-height: 0;	
+}
+
+li.plupload_droptext {
+	background: transparent;
+	text-align: center;
+	vertical-align: middle;
+	border: 0;
+	line-height: 165px;
+}
+
+/* Live Update status icon */
+.liveupdate-icon-notsupported,.liveupdate-icon-crashed { color: gray; }
+.liveupdate-icon-updates { font-weight: bold; color: red; }
+.liveupdate-icon-noupdates { color: green; }

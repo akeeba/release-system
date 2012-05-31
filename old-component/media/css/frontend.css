@@ -1,0 +1,131 @@
+/*
+	Akeeba Release System User Interface CSS
+	Copyright (c)2010-2012 Nicholas K. Dionysopoulos <nicholas@dionysopoulos.me>
+	Released under the GNU General Public License, version 3 or later
+	$Id$
+*/
+
+.ars-release-properties {
+	background-color: #f0f0f0;
+	font-size: x-small;
+	margin: 0 0 0.1em;
+}
+
+.ars-release-property {
+	display: block;
+}
+
+img.ars-item-property-environment-icon {
+	vertical-align: bottom;
+	padding-right: 3px;
+}
+
+.ars-label {
+	display: inline-block;
+	width: 10em;
+	font-weight: bold;
+}
+
+.ars-browse-releases dl.tabs {
+    clear: both;
+    float: left;
+    margin: 50px 0 0;
+    z-index: 50;
+	margin: 0.3em 0 0 0;
+}
+
+.ars-browse-releases dl.tabs dt {
+    background: none repeat scroll 0 0 #F0F0F0;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    border-top: 1px solid #CCCCCC;
+    color: #666666;
+    float: left;
+    margin-right: 3px;
+    padding: 4px 10px;
+}
+
+.ars-browse-releases dl.tabs dt.open {
+	background: #f9f9f6;
+}
+
+.ars-browse-releases div.current {
+    border: 1px solid #CCCCCC;
+    clear: both;
+    max-width: 500px;
+    padding: 10px;
+}
+
+.ars-browse-releases div.current dd {
+    margin: 0;
+    padding: 0;
+}
+
+.ars-release-readon {
+	margin: 0.5em 0 0 0;
+}
+
+#ars-pagination {
+	margin: 1.2em 0;
+	padding: 0.4em;
+	text-align: center;
+	border-top: 2px solid #ccc;
+	border-bottom: 2px solid #ccc;
+}
+
+.ars-releases-latest ul
+{
+	list-style: none;
+	padding: 0.2em 0.5em;
+	line-height: 140%;
+}
+
+.ars-releases-latest ul li
+{
+	clear: left;
+}
+
+.ars-releases-latest ul span {
+	display: block;
+	width: 25%;
+	float: left;
+}
+
+.ars-latest-items-title {
+	font-weight: bold;
+	width: 35%;
+}
+
+.ars-latest-items-downloaded {
+	color: gray;
+	font-style: italic;
+}
+
+li.ars-row0 { background-color: #f0f0f0; height: 1.5em; }
+li.ars-row1 { background-color: #e0e0e0; height: 1.5em; }
+
+
+/**
+ * Bleeding edge CSS styles
+ */
+ 
+ .ars-devrelease-changelog-added		{color: #006600; font-weight: bold;}
+ .ars-devrelease-changelog-removed		{color: #660000}
+ .ars-devrelease-changelog-bugfix		{color: #000066;}
+ .ars-devrelease-changelog-minor		{color: #ccc; font-style: italics;}
+ .ars-devrelease-changelog-important	{color: red; background: yellow; font-weight: bold;}
+ .ars-devrelease-changelog-default		{color: #666666}
+ 
+ .ars-diff-container {
+	 font-family: Consolas, "Courier New", "Courier", monospace;
+	 background-color: #fafafa;
+	 border: thin solid #ccc;
+	 border-radius: 8px;
+	 color: #333;
+	 font-style: normal;
+ }
+ .ars-diff-container > div { margin: 1px 0; }
+ .ars-diff-header { color: black; background-color: #ccc; }
+ .ars-diff-context { color: #999; font-style: italic; }
+ .ars-diff-added { background-color: #00ff00; }
+ .ars-diff-deleted { background-color: #ff0000; color: white; }

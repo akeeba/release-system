@@ -3,29 +3,27 @@
  * @package AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2012 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
- * @version $Id$
  */
 
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/tables/base.php';
-
-class TableLogs extends ArsTable
+class ArsTableLogs extends FOFTable
 {
-	var $id = 0;
-	var $user_id = 0;
-	var $item_id = 0;
-	var $accessed_on = '0000-00-00 00:00:00';
-	var $referer = '';
-	var $ip = '';
-	var $country = '';
-	var $authorized = 0;
-
+	/**
+	 * Instantiate the table object
+	 * 
+	 * @param JDatabase $db The Joomla! database object
+	 */
 	function __construct( &$db )
 	{
 		parent::__construct( '#__ars_log', 'id', $db );
 	}
 
+	/**
+	 * Checks the record for validity
+	 * 
+	 * @return int True if the record is valid
+	 */
 	function check()
 	{
 		if(empty($this->user_id))
@@ -58,8 +56,8 @@ class TableLogs extends ArsTable
 			if(isset($_SERVER['REMOTE_ADDR']))
 			{
 				$this->ip = $_SERVER['REMOTE_ADDR'];
-				require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/geoip.php';
-				$gi = geoip_open(JPATH_COMPONENT_ADMINISTRATOR.'/assets/geoip/GeoIP.dat',GEOIP_STANDARD);
+				require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/geoip.php';
+				$gi = geoip_open(JPATH_ADMINISTRATOR.'/components/com_ars/assets/geoip/GeoIP.dat',GEOIP_STANDARD);
 				$this->country = geoip_country_code_by_addr($gi, $this->ip);
 				geoip_close($gi);
 			}
