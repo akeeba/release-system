@@ -287,22 +287,12 @@ class ArsHelperSelect
 		if(!empty($release_id))
 		{
 			// Get the release
-			if(!class_exists('ArsModelReleases')) {
-				require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/releases.php';
-			}
-			$relModel = new ArsModelReleases(); // Do not use Singleton here!
-			$relModel->reset();
-			$relModel->setId((int)$release_id);
-			$release = $relModel->getItem();
+			$release = FOFModel::getTmpInstance('Releases','ArsModel')
+				->getItem((int)$release_id);
 			
 			// Get the category
-			if(!class_exists('ArsModelCategories')) {
-				require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/categories.php';
-			}
-			$catModel = new ArsModelCategories(); // Do not use Singleton here!
-			$catModel->reset();
-			$catModel->setId((int)$release->category_id);
-			$category = $catModel->getItem();
+			$category = FOFModel::getTmpInstance('Categories','ArsModel')
+				->getItem((int)$release->category_id);
 
 			// Get which directory to use
 			$directory = $category->directory;
@@ -334,16 +324,10 @@ class ArsHelperSelect
 		$files = array();
 		if(!empty($directory))
 		{
-			if(!class_exists('ArsModelItems')) {
-				require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/items.php';
-			}
-			$model = new ArsModelItems();
-			$model->reset();
-			$model->setState('category',$release->category_id);
-			$model->setState('release', false);
-			$model->setState('limitstart', 0);
-			$model->setState('limit', 0);
-			$items = $model->getItemList();
+			$items = FOFModel::getTmpInstance('Items','ArsModel')
+				->category($release->category_id)
+				->release('false')
+				->getItemList(true);
 
 			if(!empty($items))
 			{
@@ -416,9 +400,8 @@ class ArsHelperSelect
 
 	public static function updatestreams($selected = null, $id = 'updatestream', $attribs = array())
 	{
-		$model = JModel::getInstance('Updatestreams','ArsModel');
-		$model->reset();
-		$items = $model->getItemList(true);
+		$items = FOFModel::getTmpInstance('Updatestreams','ArsModel')
+			->getItemList(true);
 
 		$options = array();
 		$options[] = JHTML::_('select.option',0,'- '.JText::_('LBL_ITEMS_UPDATESTREAM_SELECT').' -');
@@ -493,14 +476,9 @@ class ArsHelperSelect
 	{
 		static $items = array();
 		
-		if(!class_exists('ArsModelEnvironments')) {
-			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/environments.php';
-		}
-		
-		if (! isset( $items[$id] ) ) {
-			$model = new ArsModelEnvironments(); // Do not use Singleton here!
-			$model->setId( $id );
-			$items[$id] = $model->getItem();
+		if (!isset($items[$id])) {
+			$items[$id] = clone FOFModel::getTmpInstance('Environments','ArsModel')
+				->getItem($id);
 		}
 		
 		$base_folder = rtrim(JURI::base(), '/');
@@ -530,12 +508,8 @@ class ArsHelperSelect
 	
 	public static function environments( $selected = null, $id = 'environments', $attribs = array() )
 	{
-		if(!class_exists('ArsModelEnvironments')) {
-			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/environments.php';
-		}
-		$model = new ArsModelEnvironments(); // Do not use Singleton here!
-		$model->reset();
-		$items = $model->getItemList(true);
+		$items = FOFModel::getTmpInstance('Environments','ArsModel')
+				->getItemList(true);
 		
 		$options	= array();
 		$options[]	= JHTML::_('select.option','','- '.JText::_( 'LBL_ITEMS_ENVIRONMENT_SELECT' ) . ' -');

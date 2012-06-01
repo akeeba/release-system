@@ -405,7 +405,8 @@ class ArsTableItem extends FOFTable
 	 * @return bool
 	 */
 	protected function onAfterLoad(&$result) {
-		if ( is_string( $result->environments ) ) $result->environments = json_decode( $result->environments );
-		return parent::onAfterLoad($result);
+		if ( is_string( $this->environments ) ) $this->environments = json_decode( $this->environments );
+		parent::onAfterLoad($result);
+		return $result;
 	}
 }
