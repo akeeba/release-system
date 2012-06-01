@@ -23,7 +23,7 @@ class ArsModelAutodescs extends FOFModel
 					$db->qn('c').'.'.$db->qn('id').' = '.$db->qn('a').'.'.$db->qn('category').')')	
 			;
 		
-		$fltCategory	= $this->getState('title', null, 'int');
+		$fltCategory	= $this->getState('category', null, 'int');
 		if($fltCategory) {
 			$query->where($db->qn('category').' = '.$db->q($fltCategory));
 		}
