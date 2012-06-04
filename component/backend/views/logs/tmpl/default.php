@@ -61,10 +61,10 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 					value="<?php echo $this->escape($this->getModel()->getState('itemtext'));?>"
 					class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();">
-					<?php echo JText::_('Go'); ?>
+					<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>
 				</button>
 				<button onclick="document.adminForm.itemtext.value='';this.form.submit();">
-					<?php echo JText::_('Reset'); ?>
+					<?php echo JText::_('JSEARCH_RESET'); ?>
 				</button>
 			</td>
 			<td>
@@ -72,10 +72,10 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 					value="<?php echo $this->escape($this->getModel()->getState('usertext'));?>"
 					class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();">
-					<?php echo JText::_('Go'); ?>
+					<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>
 				</button>
 				<button onclick="document.adminForm.usertext.value='';this.form.submit();">
-					<?php echo JText::_('Reset'); ?>
+					<?php echo JText::_('JSEARCH_RESET'); ?>
 				</button>
 			</td>
 			<td>&nbsp;</td>
@@ -84,10 +84,10 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 					value="<?php echo $this->escape($this->getModel()->getState('referer'));?>"
 					class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();">
-					<?php echo JText::_('Go'); ?>
+					<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>
 				</button>
 				<button onclick="document.adminForm.referer.value='';this.form.submit();">
-					<?php echo JText::_('Reset'); ?>
+					<?php echo JText::_('JSEARCH_RESET'); ?>
 				</button>
 			</td>
 			<td>
@@ -95,10 +95,10 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 					value="<?php echo $this->escape($this->getModel()->getState('ip'));?>"
 					class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();">
-					<?php echo JText::_('Go'); ?>
+					<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>
 				</button>
 				<button onclick="document.adminForm.ip.value='';this.form.submit();">
-					<?php echo JText::_('Reset'); ?>
+					<?php echo JText::_('JSEARCH_RESET'); ?>
 				</button>
 			</td>
 			<td>

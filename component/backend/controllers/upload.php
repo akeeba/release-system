@@ -22,7 +22,7 @@ class ArsControllerUpload extends FOFController
 		
 		if(!FOFInput::getVar(JUtility::getToken(), false, $this->input))
 		{
-			JError::raiseError('403', JText::_('Access Denied'));
+			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
 
 		$catid	= FOFInput::getInt('id', 0, $this->input);
@@ -49,7 +49,7 @@ class ArsControllerUpload extends FOFController
 		
 		if(!FOFInput::getVar(JUtility::getToken(), false, $this->input))
 		{
-			JError::raiseError('403', JText::_('Access Denied'));
+			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
 		
 		// Get the user
@@ -175,7 +175,7 @@ class ArsControllerUpload extends FOFController
 		
 		if(!FOFInput::getVar(JUtility::getToken(), false, $this->input))
 		{
-			JError::raiseError('403', JText::_('Access Denied'));
+			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
 
 		$catid	= FOFInput::getInt('id', 0, $this->input);
@@ -211,7 +211,7 @@ class ArsControllerUpload extends FOFController
 		
 		if(!FOFInput::getVar(JUtility::getToken(), false, $this->input))
 		{
-			JError::raiseError('403', JText::_('Access Denied'));
+			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
 
 		$catid	= FOFInput::getInt('id', 0, $this->input);

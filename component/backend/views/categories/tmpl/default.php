@@ -60,10 +60,10 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 					value="<?php echo $this->escape($this->getModel()->getState('title'));?>"
 					class="text_area" onchange="document.adminForm.submit();" />
 				<button onclick="this.form.submit();">
-					<?php echo JText::_('Go'); ?>
+					<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>
 				</button>
 				<button onclick="document.adminForm.title.value='';this.form.submit();">
-					<?php echo JText::_('Reset'); ?>
+					<?php echo JText::_('JSEARCH_RESET'); ?>
 				</button>
 			</td>
 			<td>

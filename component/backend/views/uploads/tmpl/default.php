@@ -25,7 +25,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		<legend><?php echo JText::_('LBL_CATEGORY_SELECT');?></legend>
 		
 		<?php echo ArsHelperSelect::categories($this->category, 'id', array('onchange'=>'document.forms.adminForm.submit()')) ?>
-		<input type="submit" value="<?php echo JText::_('GO') ?>" />
+		<input type="submit" value="<?php echo JText::_('JSEARCH_FILTER_SUBMIT') ?>" />
 		<?php if(!empty($this->folder)): ?>
 		<div class="clr"></div>
 		<br/>
