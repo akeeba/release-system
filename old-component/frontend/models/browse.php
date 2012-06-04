@@ -36,6 +36,15 @@ class ArsModelBrowse extends ArsModelBaseFE
 		if(version_compare(JVERSION, '1.6.0', 'ge')) {
 			$app = JFactory::getApplication();
 			if($app->getLanguageFilter()) {
+				$lang_filter_plugin = &JPluginHelper::getPlugin('system', 'languagefilter');
+				$lang_filter_params = new JParameter($lang_filter_plugin->params);
+				if ($lang_filter_params->get('remove_default_prefix')) {
+					// Get default site language
+					$lg = &JFactory::getLanguage();
+					$catModel->setState('language', $lg->getTag());
+				}else{                                                                                                                 
+					$catModel->setState('language', JRequest::getCmd('language','*'));
+				}
 				$catModel->setState('language', JRequest::getCmd('language','*'));
 			} else {
 				$catModel->setState('language', JRequest::getCmd('language',''));
