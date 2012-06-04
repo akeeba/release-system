@@ -24,10 +24,13 @@ class ArsViewUploads extends FOFViewHtml
 		$this->perms = $perms;
 	}
 	
+	protected function onAdd($tpl = null) {
+		return $this->onDisplay($tpl);
+	}
+	
 	protected function onDisplay($tpl = null) {
 		$this->assign('category',0);
 		$this->assign('folder','');
-		$tpl = null;
 		
 		return true;
 	}
