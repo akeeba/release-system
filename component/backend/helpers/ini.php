@@ -31,18 +31,13 @@ class ArsHelperINI {
 		}
 		else
 		{
-			if( version_compare(PHP_VERSION, '5.1.0', '>=') && (!$rawdata) )
+			if( function_exists('parse_ini_file') )
 			{
-				if( function_exists('parse_ini_file') )
-				{
-					return parse_ini_file($file, $process_sections);
-				}
-				else
-				{
-					return self::parse_ini_file_php($file, $process_sections);
-				}
-			} else {
-				return self::parse_ini_file_php($file, $process_sections, $rawdata);
+				return parse_ini_file($file, $process_sections);
+			}
+			else
+			{
+				return self::parse_ini_file_php($file, $process_sections);
 			}
 		}
 	}
