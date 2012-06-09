@@ -12,4 +12,5 @@ defined('_JEXEC') or die();
  */
 class ArsDispatcher extends FOFDispatcher
 {
+	public $defaultView = 'browse';
 }

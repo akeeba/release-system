@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="ARS_BROWSE_NORMAL_TITLE">
+		<message>
+				<![CDATA[ARS_BROWSE_NORMAL_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>ARS_BROWSE_NORMAL_TITLE</name>
+		<description>ARS_BROWSE_NORMAL_DESC</description>
+		<params>
+			<param name="grouping" type="hidden" default="normal" />
+
+			<param name="orderby" type="list" default="order" label="ARS_BROWSE_REPOSITORY_ORDERBY_LBL" description="ARS_BROWSE_REPOSITORY_ORDERBY_DESC">
+				<option value="none">ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
+				<option value="alpha">ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
+				<option value="ralpha">ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
+				<option value="created">ARS_BROWSE_REPOSITORY_ORDERBY_CREATED</option>
+				<option value="rcreated">ARS_BROWSE_REPOSITORY_ORDERBY_RCREATED</option>
+				<option value="order">ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
+			</param>
+
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="rel_orderby" type="list" default="order" label="ARS_RELEASES_ORDERBY_LBL" description="ARS_RELEASES_ORDERBY_DESC">
+				<option value="none">ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
+				<option value="alpha">ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
+				<option value="ralpha">ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
+				<option value="created">ARS_BROWSE_REPOSITORY_ORDERBY_CREATED</option>
+				<option value="rcreated">ARS_BROWSE_REPOSITORY_ORDERBY_RCREATED</option>
+				<option value="order">ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
+			</param>
+
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="items_orderby" type="list" default="order" label="ARS_ITEMS_ORDERBY_LBL" description="ARS_ITEMS_ORDERBY_DESC">
+				<option value="none">ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
+				<option value="alpha">ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
+				<option value="ralpha">ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
+				<option value="created">ARS_BROWSE_REPOSITORY_ORDERBY_CREATED</option>
+				<option value="rcreated">ARS_BROWSE_REPOSITORY_ORDERBY_RCREATED</option>
+				<option value="order">ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
+			</param>
+
+		</params>
+		<advanced>
+			<param name="show_pagination" type="list" default="2" label="ARS_BROWSE_REPOSITORY_PAGINATION_LBL" description="ARS_BROWSE_REPOSITORY_PAGINATION_DESC">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+				<option value="2">Auto</option>
+			</param>
+			<param name="show_pagination_results" type="radio" default="1" label="ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_LBL" description="ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_DESC">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="show_feed_link" type="radio" default="1" label="ARS_BROWSE_REPOSITORY_RSS_LBL" description="ARS_BROWSE_REPOSITORY_RSS_DESC">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+		</advanced>
+	</state>
+        <fields name="params">
+            <fieldset name="basic" label="COM_ARS_FIELDSET_BASIC">
+                <field name="grouping" type="hidden" default="normal" />
+                    <field name="orderby" type="list" default="order" label="ARS_BROWSE_REPOSITORY_ORDERBY_LBL" description="ARS_BROWSE_REPOSITORY_ORDERBY_DESC">
+                            <option value="none">ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
+                            <option value="alpha">ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
+                            <option value="ralpha">ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
+                            <option value="created">ARS_BROWSE_REPOSITORY_ORDERBY_CREATED</option>
+                            <option value="rcreated">ARS_BROWSE_REPOSITORY_ORDERBY_RCREATED</option>
+                            <option value="order">ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
+                    </field>
+
+                    <field name="@spacer" type="spacer" default="" label="" description="" />
+                    <field name="rel_orderby" type="list" default="order" label="ARS_RELEASES_ORDERBY_LBL" description="ARS_RELEASES_ORDERBY_DESC">
+                            <option value="none">ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
+                            <option value="alpha">ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
+                            <option value="ralpha">ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
+                            <option value="created">ARS_BROWSE_REPOSITORY_ORDERBY_CREATED</option>
+                            <option value="rcreated">ARS_BROWSE_REPOSITORY_ORDERBY_RCREATED</option>
+                            <option value="order">ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
+                    </field>
+
+                    <field name="@spacer" type="spacer" default="" label="" description="" />
+                    <field name="items_orderby" type="list" default="order" label="ARS_ITEMS_ORDERBY_LBL" description="ARS_ITEMS_ORDERBY_DESC">
+                            <option value="none">ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
+                            <option value="alpha">ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
+                            <option value="ralpha">ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
+                            <option value="created">ARS_BROWSE_REPOSITORY_ORDERBY_CREATED</option>
+                            <option value="rcreated">ARS_BROWSE_REPOSITORY_ORDERBY_RCREATED</option>
+                            <option value="order">ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
+                    </field>
+            </fieldset>
+            <fieldset name="advanced" label="COM_ARS_FIELDSET_ADVANCED">
+                <field name="show_pagination" type="list" default="2" label="ARS_BROWSE_REPOSITORY_PAGINATION_LBL" description="ARS_BROWSE_REPOSITORY_PAGINATION_DESC">
+                        <option value="0">JHide</option>
+                        <option value="1">JShow</option>
+                        <option value="2">JGlobal_Auto</option>
+                </field>
+                <field name="show_pagination_results" type="radio" default="1" label="ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_LBL" description="ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_DESC">
+                        <option value="0">JHide</option>
+                        <option value="1">JShow</option>
+                </field>
+                <field name="show_feed_link" type="radio" default="1" label="ARS_BROWSE_REPOSITORY_RSS_LBL" description="ARS_BROWSE_REPOSITORY_RSS_DESC">
+                        <option value="0">JNo</option>
+                        <option value="1">JYes</option>
+                </field>
+            </fieldset>
+        </fields>
+</metadata>

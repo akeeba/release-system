@@ -27,7 +27,7 @@ class ArsHelperFilter
 		if(empty($source)) return $list;
 
 		// Load Filtering
-		$groupModel = JModel::getInstance('Filtering','ArsModel');
+		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/filtering.php';
 
 		// Cache user access and groups
 		if(is_null($user_access) || is_null($myGroups))
@@ -125,10 +125,10 @@ class ArsHelperFilter
 			}
 
 			// Get subscription groups of current user
-			if(!ArsModelFiltering::hasSubscriptionsExtension()) {
+			if(!ArsHelperFiltering::hasSubscriptionsExtension()) {
 				$mygroups = array();
 			} else {
-				$mygroups = ArsModelFiltering::getUserGroups($user->id);
+				$mygroups = ArsHelperFiltering::getUserGroups($user->id);
 			}
 		}
 
