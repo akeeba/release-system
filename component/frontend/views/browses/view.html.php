@@ -13,6 +13,8 @@ class ArsViewBrowses extends FOFViewHtml
 	}
 	
 	public function onDisplay($tpl = null) {
+		$this->loadHelper('router');
+		
 		// Load visual group definitions
 		$raw = FOFModel::getTmpInstance('Vgroups','ArsModel')
 			->frontend(1)
