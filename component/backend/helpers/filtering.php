@@ -157,27 +157,11 @@ class ArsHelperFiltering
 		
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
-		if(JFolder::exists(JPATH_SITE.'/administrator/components/com_akeebasubs/databases/row')) {
-			// Akeeba Subscriptions 1.0.RC1 or earlier
-			$rawList = KFactory::get('admin.com.akeebasubs.model.subscriptions')
-				->enabled(1)
-				->user_id($user_id)
-				->limit(0)
-				->getList();
-		} elseif(JFile::exists(JPATH_SITE.'/administrator/components/com_akeebasubs/databases/tables/coupons.php')) {
-			// Akeeba Subscriptions 1.0.RC2 or later
-			$rawList = KFactory::get('com://admin/akeebasubs.model.subscriptions')
-				->enabled(1)
-				->user_id($user_id)
-				->limit(0)
-				->getList();
-		} else {
-			$rawList = FOFModel::getTmpInstance('Subscriptions','AkeebasubsModel',array('table'=>'subscriptions','input'=>array('option'=>'com_akeebasubs')))
-				->enabled(1)
-				->user_id($user_id)
-				->skipOnProcessList(1)
-				->getList();
-		}
+		$rawList = FOFModel::getTmpInstance('Subscriptions','AkeebasubsModel',array('table'=>'subscriptions','input'=>array('option'=>'com_akeebasubs')))
+			->enabled(1)
+			->user_id($user_id)
+			->skipOnProcessList(1)
+			->getList();
 			
 		$theList = array();
 		
