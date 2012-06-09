@@ -5,23 +5,26 @@
  * @license GNU General Public License version 3, or later
  */
 
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
 jimport('joomla.application.component.view');
 
-class ArsViewBrowse extends JView
-{
+class ArsViewBrowses extends FOFView
+{	
 	function  display($tpl = null) {
+		$this->loadHelper('router');
+		
 		$document = JFactory::getDocument();
 		$document->setLink(JRoute::_('index.php?option=com_ars&view=categories'));
 
 		$model  = $this->getModel();
-		if(empty($model->itemList)) return;
+		$model->processFeedData();
+		if(!count($model->itemList)) return;
 		foreach($model->itemList as $sectionName => $section)
 		{
 			if(!empty($section)) foreach($section as $cat) {
 				if(empty($cat->release)) continue;
-				
+
 				$item = new JFeedItem();
 				$user = JFactory::getUser($cat->release->created_by);
 
@@ -48,3 +51,5 @@ class ArsViewBrowse extends JView
 		}
 	}
 }
+
+class ArsViewBrowse extends ArsViewBrowses {}

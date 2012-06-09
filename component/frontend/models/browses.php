@@ -108,9 +108,9 @@ class ArsModelBrowses extends FOFModel
 
 	public function processFeedData($orderby = 'order')
 	{
-		if(empty($this->itemList)) return;
+		$this->itemList = $this->getCategories();
 
-		if(empty($this->itemList)) return;
+		if(!count($this->itemList)) return;
 
 		foreach($this->itemList as $sectionname => $section)
 		{
