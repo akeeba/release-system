@@ -140,7 +140,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<td>
 				<?php echo (int)$item->hits ?>
 			</td>
-			<td><?php echo $item->language ?></td>
+			<td><?php echo ArsHelperSelect::renderlanguage($item->language) ?></td>
 		</tr>
 	<?php
 			$i++;

@@ -225,11 +225,7 @@ class ArsHelperSelect
 
 	public static function releases($selected = null, $id = 'release', $attribs = array(), $category_id = null)
 	{
-		if(!class_exists('ArsModelReleases')) {
-			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/releases.php';
-		}
-		$model = new ArsModelReleases(); // Do not use Singleton here!
-		$model->reset();
+		$model = FOFModel::getTmpInstance('Releases','ArsModel');
 		if(!empty($category_id)) $model->setState('category', $category_id);
 		if(empty($category_id)) $model->setState('nobeunpub', 1);
 		$items = $model->getItemList(true);
@@ -446,6 +442,27 @@ class ArsHelperSelect
 		}
 		
 		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+	
+	public static function renderlanguage($langCode)
+	{
+		static $langs = array();
+		
+		if(empty($langs)) {
+			jimport('joomla.language.helper');
+			$languages = JLanguageHelper::getLanguages('lang_code');
+			
+			$langs['*'] = JText::_('JALL_LANGUAGE');
+			if(!empty($languages)) foreach($languages as $key => $lang) {
+				$langs[$key] = $lang->title;
+			}
+		}
+		
+		if(array_key_exists($langCode, $langs)) {
+			return $langs[$langCode];
+		} else {
+			return $langCode;
+		}
 	}
 	
 	public static function vgroups($selected = null, $id = 'vgroup', $attribs = array() )

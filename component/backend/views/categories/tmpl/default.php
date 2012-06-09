@@ -143,7 +143,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<td>
 				<?php echo JHTML::_('grid.published', $item, $i); ?>
 			</td>
-			<td><?php echo $item->language ?></td>
+			<td><?php echo ArsHelperSelect::renderlanguage($item->language) ?></td>
 		</tr>
 	<?php
 			$i++;

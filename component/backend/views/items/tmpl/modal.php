@@ -96,7 +96,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 					<?php echo empty($item->title) ? '&mdash;&mdash;&mdash;' : htmlentities($item->title, ENT_COMPAT, 'UTF-8') ?>
 				</a>
 			</td>
-			<td><?php echo $item->language ?></td>
+			<td><?php echo ArsHelperSelect::renderlanguage($item->language) ?></td>
 		</tr>
 	<?php
 			$i++;
