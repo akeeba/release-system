@@ -25,7 +25,7 @@ if(!version_compare($version, '5.2.7', '>='))
 }
 
 // Load FOF
-include_once JPATH_SITE.'/libraries/fof/include.php';
+include_once JPATH_LIBRARIES.'/fof/include.php';
 if(!defined('FOF_INCLUDED')) JError::raiseError ('500', 'Your Akeeba Release System installation is broken; please re-install. Alternatively, extract the installation archive and copy the fof directory inside your site\'s libraries directory.');
 
 FOFDispatcher::getTmpInstance('com_ars')->dispatch();
