@@ -27,9 +27,7 @@ class ArsTableRelease extends FOFTable
 			'locked_by'		=> 'checked_out',
 		);
 		
-		$baseAccess = version_compare(JVERSION,'1.6.0','ge') ? 1 : 0;
-		$this->access = $baseAccess;
-		
+		$this->access = 1;
 		$this->maturity = 'alpha';
 		$this->language = '*';
 	}
@@ -130,10 +128,9 @@ class ArsTableRelease extends FOFTable
 		// Fix the groups
 		if(is_array($this->groups)) $this->groups = implode(',', $this->groups);
 		// Set the access to registered if there are subscriptions defined
-		$baseAccess = version_compare(JVERSION,'1.6.0','ge') ? 1 : 0;
-		if(!empty($this->groups) && ($this->access == $baseAccess))
+		if(!empty($this->groups) && ($this->access == 1))
 		{
-			$this->access = $baseAccess + 1;
+			$this->access = 2;
 		}
 
 		jimport('joomla.utilities.date');

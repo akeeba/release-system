@@ -53,7 +53,7 @@ class ArsHelperAmazons3 extends JObject
 		if(!is_object($instance)) {
 			$component = JComponentHelper::getComponent('com_ars');
 			if(!($component->params instanceof JRegistry)) {
-				$params = new JParameter($component->params);
+				$params = new JRegistry($component->params);
 			} else {
 				$params = $component->params;
 			}

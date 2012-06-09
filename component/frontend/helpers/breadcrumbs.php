@@ -35,11 +35,11 @@ class ArsHelperBreadcrumbs
 					if( array_key_exists('layout', $item->query) && ($item->query['layout'] == 'repository') && empty($Itemid) )
 					{
 						$Itemid = $item->id;
-						$rootName = version_compare(JVERSION, '1.6.0', 'ge') ? $item->title : $item->name;
+						$rootName = $item->title;
 						$rootURI = JRoute::_($item->link.'&Itemid='.$Itemid);
 					} elseif( array_key_exists('layout', $item->query) && $item->query['layout'] == $repoType ) {
 						$Itemid = $item->id;
-						$rootName = version_compare(JVERSION, '1.6.0', 'ge') ? $item->title : $item->name;
+						$rootName = $item->title;
 						$rootURI = JRoute::_($item->link.'&Itemid='.$Itemid);
 					}
 				}
@@ -61,7 +61,6 @@ class ArsHelperBreadcrumbs
 			$pathway = $app->getPathway();
 
 			// Preferably find a menu item linking to a specific repository type
-			$isJoomla16 = version_compare(JVERSION,'1.6.0','ge');
 			$Itemid = null;
 			$all_items = $menus->getItems('type', 'component', false);
 			if(empty($all_items)) return;
@@ -72,10 +71,10 @@ class ArsHelperBreadcrumbs
 					&& ($item->query['view'] == 'category')
 				)
 				{
-					$params = is_object($item->params) ? $item->params : new JParameter($item->params);
+					$params = is_object($item->params) ? $item->params : new JRegistry($item->params);
 					if( $params->get('catid',0) == $id ) {
 						$Itemid = $item->id;
-						$rootName = version_compare(JVERSION, '1.6.0', 'ge') ? $item->title : $item->name;
+						$rootName = $item->title;
 						$rootURI = JRoute::_($item->link.'&Itemid='.$Itemid);
 					}
 				}
@@ -114,10 +113,10 @@ class ArsHelperBreadcrumbs
 					&& ($item->query['view'] == 'release')
 				)
 				{
-					$params = is_object($item->params) ? $item->params : new JParameter($item->params);
+					$params = is_object($item->params) ? $item->params : new JRegistry($item->params);
 					if( $params->get('relid',0) == $id ) {
 						$Itemid = $item->id;
-						$rootName = version_compare(JVERSION, '1.6.0', 'ge') ? $item->title : $item->name;
+						$rootName = $item->title;
 						$rootURI = JRoute::_($item->link.'&Itemid='.$Itemid);
 					}
 				}

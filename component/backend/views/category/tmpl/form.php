@@ -68,12 +68,10 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		</div>
 		<?php endif; ?>
 		
-		<?php if(version_compare(JVERSION,'1.6.0','ge')): ?>
 		<div class="editform-row editform-row-noheight">
 			<label for="language"><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?></label>
 			<?php echo ArsHelperSelect::languages($this->item->language, 'language') ?>
 		</div>
-		<?php endif; ?>
 		<div style="clear:left"></div>
 
 	</fieldset>

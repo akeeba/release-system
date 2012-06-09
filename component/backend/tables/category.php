@@ -27,8 +27,7 @@ class ArsTableCategory extends FOFTable
 			'locked_by'		=> 'checked_out',
 		);
 		
-		$baseAccess = version_compare(JVERSION,'1.6.0','ge') ? 1 : 0;
-		$this->access = $baseAccess;
+		$this->access = 1;
 	}
 
 	/**

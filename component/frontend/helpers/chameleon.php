@@ -23,15 +23,7 @@ class ArsHelperChameleon
 	 */
 	static public function getModule($title, $contents, $params = array())
 	{
-		if(version_compare(JVERSION,'1.6.0','ge')) {
-			$jsonParams = json_encode($params);
-		} else {
-			$jsonParams = '';
-			foreach($params as $k => $v)
-			{
-				$jsonParams .= "$k=$v\n";	
-			}
-		}
+		$jsonParams = json_encode($params);
 		
 		$result = new StdClass;
 		$result->id			= 0;
@@ -90,7 +82,7 @@ class ArsHelperChameleon
 		{
 			jimport('joomla.application.component');
 			$component = JComponentHelper::getComponent('com_ars');
-			$params = ($component->params instanceof JRegistry) ? $component->params : new JParameter($component->params);
+			$params = ($component->params instanceof JRegistry) ? $component->params : new JRegistry($component->params);
 		}
 		
 		switch($category)
@@ -133,7 +125,7 @@ class ArsHelperChameleon
 		{
 			jimport('joomla.application.component');
 			$component = JComponentHelper::getComponent('com_ars');
-			$params = ($component->params instanceof JRegistry) ? $component->params : new JParameter($component->params);
+			$params = ($component->params instanceof JRegistry) ? $component->params : new JRegistry($component->params);
 		}
 		
 		$default_template = '<a class="readon" href="%s">%s</a>';
