@@ -105,6 +105,101 @@ class ArsModelBrowses extends FOFModel
 
 		return $list;
 	}
+	
+	/**
+	 * Loads and returns a category definition
+	 * @param int $id The Category ID to load
+	 * @return ArsTableCategory|null An instance of ArsTableCategory, or null if the user shouldn't view the category
+	 */
+	public function getCategory($id = 0)
+	{
+		$this->setState('category_id', $id);
+		
+		$cat = FOFModel::getTmpInstance('Categories','ArsModel')
+			->getItem($id);
+		
+		// Is it published?
+		if(!$cat->published) {
+			return null;
+		}
+
+		// Does it pass the access level / subscriptions filter?
+		$dummy = $list = ArsHelperFilter::filterList(array($cat));
+		if(!count($dummy)) {
+			return null;
+		}
+
+		$this->item = $cat;		
+		
+		return $cat;
+	}
+	
+	/**
+	 * Get a list of all releases in a given category
+	 * @param int $cat_id The category ID
+	 * @return array
+	 */
+	public function getReleases($cat_id = 0)
+	{
+		// Get state variables
+		$orderby = $this->getState('rel_orderby', 'order');
+
+		// Get limits
+		$start = $this->getState('limitstart', 0);
+		$app = JFactory::getApplication();
+		$limit = $this->getState('limit',-1);
+		if($limit == -1) {
+			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
+		}
+
+		// Get all published releases
+		$model = FOFModel::getTmpInstance('Releases','ArsModel')
+			->limitstart($start)
+			->limit($limit)
+			->published(1)
+			->category($cat_id);
+		
+		if($app->getLanguageFilter()) {
+			$model->setState('language', JRequest::getCmd('language','*'));
+		} else {
+			$model->setState('language', JRequest::getCmd('language',''));
+		}
+
+		// Apply ordering
+		switch($orderby)
+		{
+			case 'alpha':
+				$model->setState('order','version');
+				$model->setState('dir','ASC');
+				break;
+			case 'ralpha':
+				$model->setState('order','version');
+				$model->setState('dir','DESC');
+				break;
+			case 'created':
+				$model->setState('order','created');
+				$model->setState('dir','ASC');
+				break;
+			case 'rcreated':
+				$model->setState('order','created');
+				$model->setState('dir','DESC');
+				break;
+			case 'order':
+				$model->setState('order','ordering');
+				$model->setState('dir','ASC');
+				break;
+		}
+
+		$allItems = $model->getItemList();
+
+		// Filter and return the list
+		$list = ArsHelperFilter::filterList($allItems);
+
+		$this->relPagination = $model->getPagination();
+		$this->itemList = $list;
+
+		return $list;
+	}
 
 	public function processFeedData($orderby = 'order')
 	{
