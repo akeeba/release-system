@@ -10,12 +10,10 @@ defined('_JEXEC') or die();
 $this->loadHelper('chameleon');
 $this->loadHelper('router');
 
-$Itemid = JRequest::getInt('Itemid',0);
+$Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 ?>
-<?php if(version_compare(JVERSION, '1.7.0', 'ge') && $this->params->get('show_page_heading', 1)): ?>
+<?php if($this->params->get('show_page_heading', 1)): ?>
 	<h2 class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h2>
-<?php elseif (!version_compare(JVERSION, '1.7.0', 'ge') && $this->params->get('show_page_title', 1)) : ?>
-	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></div>
 <?php endif; ?>
 
 <div id="ars-categories-bleedingedge">

@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die();
 
-jimport('joomla.application.component.view');
-
 class ArsViewBrowses extends FOFView
 {	
 	function  display($tpl = null) {
