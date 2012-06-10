@@ -14,12 +14,12 @@ defined('_JEXEC') or die();
  */
 class ArsViewCpanels extends FOFViewHtml
 {
-	protected function onAdd($tpl)
+	protected function onAdd($tpl = null)
 	{
 		return $this->onDisplay($tpl);
 	}
 	
-	protected function onDisplay($tpl)
+	protected function onDisplay($tpl = null)
 	{
 		// Load the model
 		$model = $this->getModel();
