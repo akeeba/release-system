@@ -15,6 +15,10 @@ $this->loadHelper('filtering');
 FOFTemplateUtils::addJS('media://com_ars/js/akeebajq.js');
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
+if($this->item->id == 0) {
+	$this->item->release_id = $this->getModel()->getState('release', 0);
+}
+
 ?>
 
 <form name="adminForm" id="adminForm" action="index.php" method="post">
