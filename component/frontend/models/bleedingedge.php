@@ -9,11 +9,17 @@ defined('_JEXEC') or die();
 
 jimport('joomla.application.component.model');
 
-class ArsModelBleedingedge extends JModel
+class ArsModelBleedingedge extends FOFModel
 {
 	private $category_id;
 	private $category;
 	private $folder = null;
+	
+	public function __construct($config = array()) {
+		parent::__construct($config);
+		
+		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
+	}
 
 	public function setCategory($cat)
 	{
@@ -112,7 +118,7 @@ class ArsModelBleedingedge extends JModel
 				if(!$exists) {
 					$release->published = 0;
 					
-					$tmp = FOFModel::getTmpInstance('Releases','ArsTable')
+					$tmp = FOFModel::getTmpInstance('Releases','ArsModel')
 						->getTable()
 						->save($release);
 				} else {
@@ -258,7 +264,7 @@ class ArsModelBleedingedge extends JModel
 					}
 				}
 				// -- Create the BE release
-				$table = FOFModel::getTmpInstance('Releases','ArsTable')
+				$table = FOFModel::getTmpInstance('Releases','ArsModel')
 						->getTable();
 				$table->save($data,'category_id');
 				$this->checkFiles($table);
@@ -310,8 +316,8 @@ class ArsModelBleedingedge extends JModel
 				}
 				$notes .= '</p>';
 				$release->notes = $notes;
-				
-				$table = FOFModel::getTmpInstance('Releases','ArsTable')
+
+				$table = FOFModel::getTmpInstance('Releases','ArsModel')
 						->getTable()
 						->save($release,'category_id');
 			}
@@ -344,11 +350,11 @@ class ArsModelBleedingedge extends JModel
 			$known_items[] = basename($item->filename);
 			//if(!JFile::exists($this->folder.'/'.$item->filename) && !JFile::exists(JPATH_ROOT.'/'.$this->folder.'/'.$item->filename))
 			if($item->published && !in_array(basename($item->filename), $files)) {
-				$table = FOFModel::getTmpInstance('Items','ArsTable')->getTable();
+				$table = FOFModel::getTmpInstance('Items','ArsModel')->getTable();
 				$item->published = 0;
 				$table->save($item);
 			} if(!$item->published && in_array(basename($item->filename), $files)) {
-				$table = FOFModel::getTmpInstance('Items','ArsTable')->getTable();
+				$table = FOFModel::getTmpInstance('Items','ArsModel')->getTable();
 				$item->published = 1;
 				$table->save($item);
 			}
@@ -404,7 +410,7 @@ class ArsModelBleedingedge extends JModel
 				if($data['ignore']) continue;
 			}
 			
-			$table = FOFModel::getTmpInstance('Items','ArsTable')->getTable();
+			$table = FOFModel::getTmpInstance('Items','ArsModel')->getTable();
 			$result = $table->save($data);
 		}
 
