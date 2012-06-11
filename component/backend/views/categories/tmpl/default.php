@@ -18,7 +18,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 <form name="adminForm" id="adminForm" action="index.php" method="post">
 	<input type="hidden" name="option" id="option" value="com_ars" />
 	<input type="hidden" name="view" id="view" value="categories" />
-	<input type="hidden" name="task" id="task" value="display" />
+	<input type="hidden" name="task" id="task" value="browse" />
 	<input type="hidden" name="boxchecked" id="boxchecked" value="0" />
 	<input type="hidden" name="hidemainmenu" id="hidemainmenu" value="0" />
 	<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->lists->order ?>" />
