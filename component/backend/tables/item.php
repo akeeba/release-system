@@ -104,6 +104,14 @@ class ArsTableItem extends FOFTable
 		}
 		
 		// Added environment ID
+		if(!empty($this->environments) && is_array($this->environments)) {
+			// Filter out empty environments
+			$temp = array();
+			foreach($this->environments as $eid) {
+				if($eid) $temp[] = $eid;
+			}
+			$this->environments = $temp;
+		}
 		if(empty($this->environments)) {
 			$this->environments = $auto->environments;
 		} else {
