@@ -43,11 +43,11 @@ class ArsModelItems extends FOFModel
 		
 		$fltCategory	= $this->getState('category', null, 'int');
 		if($fltCategory > 0) {
-			$query->where($db->qn('category_id').' = '.$db->q($fltCategory));
+			$query->where($db->qn('r').'.'.$db->qn('category_id').' = '.$db->q($fltCategory));
 		}
 		
 		$fltRelease		= $this->getState('release', null, 'int');
-		if($fltCategory > 0) {
+		if($fltRelease > 0) {
 			$query->where($db->qn('release_id').' = '.$db->q($fltRelease));
 		}
 		
