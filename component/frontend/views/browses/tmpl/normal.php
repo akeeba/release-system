@@ -28,7 +28,7 @@ $Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 			$title = "<a href=\"$catURL\">{$item->title}</a>";
 			$params = ArsHelperChameleon::getParams('category');
 			@ob_start();
-			$this->loadAnyTemplate('site:com_ars/browses/category');
+			echo $this->loadAnyTemplate('site:com_ars/browses/category', array('item' => $item, 'id' => $id));
 			$contents = ob_get_clean();
 			$module = ArsHelperChameleon::getModule($title, $contents, $params);
 			echo JModuleHelper::renderModule($module, $params);
