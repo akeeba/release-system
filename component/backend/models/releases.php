@@ -52,6 +52,12 @@ class ArsModelReleases extends FOFModel
 					$db->qn('c').'.'.$db->qn('type').'='.$db->q('bleedingedge').')');
 		}
 		
+		$fltLanguage	= $this->getState('language', null, 'cmd');
+		if($fltLanguage != '') {
+			$query->where($db->qn('r').'.'.$db->qn('language').' IN ('.$db->q('*').','.$db->q($fltLanguage).')');
+			$query->where($db->qn('c').'.'.$db->qn('language').' IN ('.$db->q('*').','.$db->q($fltLanguage).')');
+		}
+		
 		$fltMaturity	= $this->getState('maturity', 'alpha', 'cmd');
 		switch($fltMaturity) {
 			case 'beta':
