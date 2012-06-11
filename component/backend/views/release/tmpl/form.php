@@ -16,6 +16,10 @@ $this->loadHelper('filtering');
 
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
+if($this->item->id == 0) {
+	$this->item->category_id = $this->getModel()->getState('category', 0);
+}
+
 ?>
 
 <form name="adminForm" id="adminForm" action="index.php" method="post">
