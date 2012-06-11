@@ -46,11 +46,11 @@ class ArsModelBrowses extends FOFModel
 					$lg = &JFactory::getLanguage();
 					$catModel->setState('language', $lg->getTag());
 				}else{                                                                                                                 
-					$catModel->setState('language', JRequest::getCmd('language','*'));
+					$catModel->setState('language', FOFInput::getCmd('language', '*', $this->input));
 				}
-				$catModel->setState('language', JRequest::getCmd('language','*'));
+				$catModel->setState('language', FOFInput::getCmd('language', '*', $this->input));
 			} else {
-				$catModel->setState('language', JRequest::getCmd('language',''));
+				$catModel->setState('language', FOFInput::getCmd('language', '', $this->input));
 			}
 		}
 
@@ -159,10 +159,20 @@ class ArsModelBrowses extends FOFModel
 			->published(1)
 			->category($cat_id);
 		
+		$app = JFactory::getApplication();
 		if($app->getLanguageFilter()) {
-			$model->setState('language', JRequest::getCmd('language','*'));
+			$lang_filter_plugin = &JPluginHelper::getPlugin('system', 'languagefilter');
+			$lang_filter_params = new JRegistry($lang_filter_plugin->params);
+			if ($lang_filter_params->get('remove_default_prefix')) {
+				// Get default site language
+				$lg = &JFactory::getLanguage();
+				$model->setState('language', $lg->getTag());
+			}else{                                                                                                                 
+				$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
+			}
+			$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
 		} else {
-			$model->setState('language', JRequest::getCmd('language',''));
+			$model->setState('language', FOFInput::getCmd('language', '', $this->input));
 		}
 
 		// Apply ordering
@@ -201,6 +211,108 @@ class ArsModelBrowses extends FOFModel
 		return $list;
 	}
 
+	
+	/**
+	 * Loads and returns a release definition
+	 * @param int $id The Release ID to load
+	 * @return ArsTableReleases|null An instance of ArsTableReleases, or null if the user shouldn't view the release
+	 */
+	public function getRelease($id = 0)
+	{
+		$this->item = null;
+
+		$item = FOFModel::getTmpInstance('Releases','ArsModel')
+			->getItem($id);
+
+		// Is it published?
+		if(!$item->published) {
+			return null;
+		}
+
+		// Does it pass the access level / subscriptions filter?
+		$dummy = ArsHelperFilter::filterList( array($item) );
+		if(!count($dummy)) return null;
+
+		$this->item = $item;
+		return $item;
+	}
+
+	/**
+	 * Get a list of all items in a given release
+	 * @param int $rel_id The release ID
+	 * @return array
+	 */
+	public function getItems($rel_id = 0)
+	{
+		// Get state variables
+		$orderby = $this->getState('items_orderby', 'order');
+
+		// Get limits
+		$start = $this->getState('start', 0);
+		$app = JFactory::getApplication();
+		$limit = $this->getState('limit',-1);
+		if($limit == -1) {
+			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
+		}
+
+		// Get all published releases
+		$model = FOFModel::getTmpInstance('Items','ArsModel')
+			->limitstart($start)
+			->limit($limit)
+			->published(1)
+			->release($rel_id);
+		$app = JFactory::getApplication();
+		if($app->getLanguageFilter()) {
+			$lang_filter_plugin = &JPluginHelper::getPlugin('system', 'languagefilter');
+			$lang_filter_params = new JRegistry($lang_filter_plugin->params);
+			if ($lang_filter_params->get('remove_default_prefix')) {
+				// Get default site language
+				$lg = &JFactory::getLanguage();
+				$model->setState('language', $lg->getTag());
+			}else{                                                                                                                 
+				$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
+			}
+			$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
+		} else {
+			$model->setState('language', FOFInput::getCmd('language', '', $this->input));
+		}
+
+		// Apply ordering
+		switch($orderby)
+		{
+			case 'alpha':
+				$model->setState('order','title');
+				$model->setState('dir','ASC');
+				break;
+			case 'ralpha':
+				$model->setState('order','title');
+				$model->setState('dir','DESC');
+				break;
+			case 'created':
+				$model->setState('order','created');
+				$model->setState('dir','ASC');
+				break;
+			case 'rcreated':
+				$model->setState('order','created');
+				$model->setState('dir','DESC');
+				break;
+			case 'order':
+				$model->setState('order','ordering');
+				$model->setState('dir','ASC');
+				break;
+		}
+
+		$allItems = $model->getItemList();
+
+		// Filter and return the list
+		$list = ArsHelperFilter::filterList($allItems);
+
+		$this->items_pagination = $model->getPagination();
+		$this->itemList = $list;
+
+		return $list;
+	}
+	
 	public function processFeedData($orderby = 'order')
 	{
 		$this->itemList = $this->getCategories();
@@ -245,15 +357,22 @@ class ArsModelBrowses extends FOFModel
 
 				}
 				$model->setState('maturity',		$this->getState('maturity','alpha'));
-				if(version_compare(JVERSION, '1.6.0', 'ge')) {
-					$app = JFactory::getApplication();
-					if($app->getLanguageFilter()) {
-						$model->setState('language', JRequest::getCmd('language','*'));
-					} else {
-						$model->setState('language', JRequest::getCmd('language',''));
+				$app = JFactory::getApplication();
+				if($app->getLanguageFilter()) {
+					$lang_filter_plugin = &JPluginHelper::getPlugin('system', 'languagefilter');
+					$lang_filter_params = new JRegistry($lang_filter_plugin->params);
+					if ($lang_filter_params->get('remove_default_prefix')) {
+						// Get default site language
+						$lg = &JFactory::getLanguage();
+						$model->setState('language', $lg->getTag());
+					}else{                                                                                                                 
+						$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
 					}
+					$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
+				} else {
+					$model->setState('language', FOFInput::getCmd('language', '', $this->input));
 				}
-
+				
 				$releases = $model->getItemList();
 
 				if(empty($releases)) {
@@ -320,13 +439,21 @@ class ArsModelBrowses extends FOFModel
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			0);
                 
-				if(version_compare(JVERSION, '1.6.0', 'ge')) {
-					if($app->getLanguageFilter()) {
-						$model->setState('language', JRequest::getCmd('language','*'));
-					} else {
-						$model->setState('language', JRequest::getCmd('language',''));
+				if($app->getLanguageFilter()) {
+					$lang_filter_plugin = &JPluginHelper::getPlugin('system', 'languagefilter');
+					$lang_filter_params = new JRegistry($lang_filter_plugin->params);
+					if ($lang_filter_params->get('remove_default_prefix')) {
+						// Get default site language
+						$lg = &JFactory::getLanguage();
+						$model->setState('language', $lg->getTag());
+					}else{                                                                                                                 
+						$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
 					}
+					$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
+				} else {
+					$model->setState('language', FOFInput::getCmd('language', '', $this->input));
 				}
+				
 				$rawlist = $model->getItemList();
 				$cat->release->files = ArsHelperFilter::filterList($rawlist);
 			}

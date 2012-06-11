@@ -7,9 +7,10 @@
 
 defined('_JEXEC') or die();
 
-class ArsViewCategory extends FOFViewHtml
+class ArsViewRelease extends FOFViewHtml
 {
-	public function onRead($tpl = null) {
+	function onRead($tpl = null)
+	{
 		// Load helpers
 		$this->loadHelper('breadcrumbs');
 		$this->loadHelper('chameleon');
@@ -19,14 +20,20 @@ class ArsViewCategory extends FOFViewHtml
 		// Load CSS
 		FOFTemplateUtils::addCSS('media://com_ars/css/frontend.css');
 		
-		// Get some useful information
+		// Add a breadcrumb if necessary
 		$model = $this->getModel();
-		$repoType = $model->item->type;
+
+		$catModel = FOFModel::getTmpInstance('Categories','ArsModel');
+		$category = $catModel->getItem($model->item->category_id);
+
+		$repoType = $category->type;
 		
-		// Add breadcrumbs
 		ArsHelperBreadcrumbs::addRepositoryRoot($repoType);
-		ArsHelperBreadcrumbs::addCategory($model->item->id, $model->item->title);
-		
+		ArsHelperBreadcrumbs::addCategory($category->id, $category->title);
+		ArsHelperBreadcrumbs::addRelease($model->item->id, $model->item->version);
+
+		$this->assignRef( 'category',	$category );
+
 		// Add RSS links
 		$app = JFactory::getApplication();
 		$params = $app->getPageParameters('com_ars');
@@ -43,7 +50,7 @@ class ArsViewCategory extends FOFViewHtml
 			}
 
 
-			$feed = 'index.php?option=com_ars&view=category&id='.$model->item->id.'&format=feed';
+			$feed = 'index.php?option=com_ars&view=category&id='.$category->id.'&format=feed';
 			$rss = array(
 				'type' => 'application/rss+xml',
 				'title' => $title.' (RSS)'
@@ -60,11 +67,24 @@ class ArsViewCategory extends FOFViewHtml
 				'rel', $atom);
 		}
 		
-		$this->assignRef('pparams', $params);
-		$this->assignRef('pagination', $model->relPagination);
-		$this->assignRef('items', $model->itemList);
+		// Cleanup for display
+		$items	= $model->itemList;
+		
+		foreach ( $items as $item ) {
+			$item->environments = ArsHelperHtml::getEnvironments( $item->environments );
+		}
+		
+		$model->itemList = $items;
+		
+		$this->assignRef('cparams', $params);
 		$this->assignRef('item', $model->item);
-		$this->assignRef('category_id', $model->getState('category_id', 0));
+		$this->assignRef('items', $model->itemList);
+		$this->assignRef('pagination', $model->items_pagination);
+		$this->assign('release_id', $model->item->id);
+		
+		if($this->getLayout() == 'item') {
+			$this->setLayout('default');
+		}
 		
 		return true;
 	}
