@@ -30,14 +30,14 @@ if($this->item->id == 0) {
 	<input type="hidden" name="<?php echo JUtility::getToken();?>" value="1" />
 
 	<fieldset>
-		<legend><?php echo JText::_('LBL_ARS_RELEASE_BASIC'); ?></legend>
+		<legend><?php echo JText::_('COM_ARS_RELEASE_BASIC_LABEL'); ?></legend>
 
 		<div class="editform-row">
-			<label for="category_id"><?php echo JText::_('LBL_RELEASES_CATEGORY'); ?></label>
+			<label for="category_id"><?php echo JText::_('COM_ARS_RELEASES_FIELD_CATEGORY'); ?></label>
 			<?php echo ArsHelperSelect::categories($this->item->category_id, 'category_id') ?>
 		</div>
 		<div class="editform-row">
-			<label for="version"><?php echo JText::_('LBL_RELEASES_VERSION'); ?></label>
+			<label for="version"><?php echo JText::_('COM_ARS_RELEASES_FIELD_VERSION'); ?></label>
 			<input type="text" name="version" id="version" value="<?php echo $this->item->version ?>">
 		</div>
 		<div class="editform-row">
@@ -47,7 +47,7 @@ if($this->item->id == 0) {
 			<input type="text" name="alias" id="alias" value="<?php echo $this->item->alias ?>">
 		</div>
 		<div class="editform-row">
-			<label for="maturity"><?php echo JText::_('LBL_RELEASES_MATURITY'); ?></label>
+			<label for="maturity"><?php echo JText::_('COM_ARS_RELEASES_FIELD_MATURITY'); ?></label>
 			<?php echo ArsHelperSelect::maturities($this->item->maturity, 'maturity') ?>
 		</div>
 		<div class="editform-row">
@@ -88,11 +88,11 @@ if($this->item->id == 0) {
 	</fieldset>
 
 	<fieldset>
-		<legend><?php echo JText::_('LBL_ARS_RELEASE_DESCRIPTION'); ?></legend>
+		<legend><?php echo JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'); ?></legend>
 		<?php echo $editor->display( 'description',  $this->item->description, '600', '350', '60', '20', array() ) ; ?>
 	</fieldset>
 	<fieldset>
-		<legend><?php echo JText::_('LBL_ARS_RELEASE_NOTES'); ?></legend>
+		<legend><?php echo JText::_('COM_ARS_RELEASE_NOTES_LABEL'); ?></legend>
 		<?php echo $editor->display( 'notes',  $this->item->notes, '600', '350', '60', '20', array() ) ; ?>
 	</fieldset>
 </form>

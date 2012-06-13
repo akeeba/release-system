@@ -41,7 +41,7 @@ class ArsTableRelease extends FOFTable
 	{
 		// If the category is missing, throw an error
 		if(!$this->category_id) {
-			$this->setError(JText::_('ERR_RELEASE_NEEDS_CATEGORY'));
+			$this->setError(JText::_('COM_RELEASE_ERR_NEEDS_CATEGORY'));
 			return false;
 		}
 
@@ -66,12 +66,12 @@ class ArsTableRelease extends FOFTable
 		}
 
 		if(!$this->version) {
-			$this->setError(JText::_('ERR_RELEASE_NEEDS_VERSION'));
+			$this->setError(JText::_('COM_RELEASE_ERR_NEEDS_VERSION'));
 			return false;
 		}
 
 		if(in_array($this->version, $versions)) {
-			$this->setError(JText::_('ERR_RELEASE_NEEDS_VERSION_UNIQUE'));
+			$this->setError(JText::_('COM_RELEASE_ERR_NEEDS_VERSION_UNIQUE'));
 			return false;
 		}
 
@@ -95,12 +95,12 @@ class ArsTableRelease extends FOFTable
 		}
 
 		if(!$this->alias) {
-			$this->setError(JText::_('ERR_RELEASE_NEEDS_ALIAS'));
+			$this->setError(JText::_('COM_RELEASE_ERR_NEEDS_ALIAS'));
 			return false;
 		}
 
 		if(in_array($this->alias, $aliases)) {
-			$this->setError(JText::_('ERR_RELEASE_NEEDS_ALIAS_UNIQUE'));
+			$this->setError(JText::_('COM_RELEASE_ERR_NEEDS_ALIAS_UNIQUE'));
 			return false;
 		}
 

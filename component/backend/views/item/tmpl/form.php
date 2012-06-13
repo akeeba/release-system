@@ -29,7 +29,7 @@ if($this->item->id == 0) {
 	<input type="hidden" name="<?php echo JUtility::getToken();?>" value="1" />
 
 	<fieldset>
-		<legend><?php echo JText::_('LBL_ARS_RELEASE_BASIC'); ?></legend>
+		<legend><?php echo JText::_('COM_ARS_RELEASE_BASIC_LABEL'); ?></legend>
 
 		<div class="editform-row">
 			<label for="release_id"><?php echo JText::_('LBL_ITEMS_RELEASE'); ?></label>

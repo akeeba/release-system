@@ -13,9 +13,9 @@ $released = new JDate($cat->release->created);
 <div class="ars-list-release">
 	<div class="ars-release-properties">
 		<span class="ars-release-property">
-			<span class="ars-label"><?php echo JText::_('LBL_RELEASES_MATURITY') ?>:</span>
+			<span class="ars-label"><?php echo JText::_('COM_ARS_RELEASES_FIELD_MATURITY') ?>:</span>
 			<span class="ars-value">
-				<?php echo JText::_('LBL_RELEASES_MATURITY_'.  strtoupper($cat->release->maturity)) ?>
+				<?php echo JText::_('COM_ARS_RELEASES_MATURITY_'.  strtoupper($cat->release->maturity)) ?>
 			</span>
 		</span>
 

@@ -257,7 +257,7 @@ class ArsHelperSelect
 				$options[] = JHTML::_('select.option',$item->id,$item->version);
 		}
 
-	   array_unshift($options, JHTML::_('select.option',0,'- '.JText::_('LBL_RELEASES_SELECT').' -'));
+	   array_unshift($options, JHTML::_('select.option',0,'- '.JText::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL').' -'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}

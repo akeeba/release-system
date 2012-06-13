@@ -31,13 +31,13 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ) + 1; ?>);" />
 			</th>
 			<th>
-				<?php echo JHTML::_('grid.sort', 'LBL_RELEASES_CATEGORY', 'category_id', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_ARS_RELEASES_FIELD_CATEGORY', 'category_id', $this->lists->order_Dir, $this->lists->order); ?>
 			</th>
 			<th width="100">
-				<?php echo JHTML::_('grid.sort', 'LBL_RELEASES_VERSION', 'version', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_ARS_RELEASES_FIELD_VERSION', 'version', $this->lists->order_Dir, $this->lists->order); ?>
 			</th>
 			<th width="150">
-				<?php echo JHTML::_('grid.sort', 'LBL_RELEASES_MATURITY', 'maturity', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_ARS_RELEASES_FIELD_MATURITY', 'maturity', $this->lists->order_Dir, $this->lists->order); ?>
 			</th>
 			<th width="100">
 				<?php echo JHTML::_('grid.sort', 'JFIELD_ORDERING_LABEL', 'ordering', $this->lists->order_Dir, $this->lists->order); ?>
@@ -116,7 +116,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<img src="<?php echo $base_folder ?>/media/com_ars/icons/status_<?php echo $item->maturity ?>.png" width="16" height="16" align="left" />
 				<span class="ars-access">
 					&nbsp;<span class="status-<?php echo $item->maturity?>">
-						<?php echo JText::_('LBL_RELEASES_MATURITY_'.  strtoupper($item->maturity)); ?>
+						<?php echo JText::_('COM_ARS_RELEASES_MATURITY_'.  strtoupper($item->maturity)); ?>
 					</span>
 				</span>
 			</td>

@@ -44,10 +44,10 @@ $tabs	= JPane::getInstance('tabs');
 	</div>
 
 	<?php echo $tabs->startPane('reltabs-'.$item->id); ?>
-		<?php echo $tabs->startPanel(JText::_('LBL_ARS_RELEASE_DESCRIPTION'),'reltabs-'.$item->id.'-desc') ?>
+		<?php echo $tabs->startPanel(JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'),'reltabs-'.$item->id.'-desc') ?>
 			<?php echo ArsHelperHtml::preProcessMessage($item->description); ?>
 		<?php echo $tabs->endPanel(); ?>
-		<?php echo $tabs->startPanel(JText::_('LBL_ARS_RELEASE_NOTES'),'reltabs-'.$item->id.'-notes') ?>
+		<?php echo $tabs->startPanel(JText::_('COM_ARS_RELEASE_NOTES_LABEL'),'reltabs-'.$item->id.'-notes') ?>
 			<?php echo ArsHelperHtml::preProcessMessage($item->notes) ?>
 		<?php echo $tabs->endPanel(); ?>
 	<?php echo $tabs->endPane(); ?>

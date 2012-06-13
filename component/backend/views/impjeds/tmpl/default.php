@@ -20,7 +20,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 ?>
 <fieldset id="setup-ars">
-	<legend><?php echo JText::_('LBL_RELEASES_SELECT') ?></legend>
+	<legend><?php echo JText::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL') ?></legend>
 	<div id="setup-ars-mainbody">
 		<label for="arsrelease"><?php echo JText::_('LBL_IMPJED_SELECTRELEASE') ?></label>
 		<?php echo ArsHelperSelect::releases(null, 'arsrelease') ?>

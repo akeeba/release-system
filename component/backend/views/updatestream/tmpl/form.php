@@ -37,7 +37,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<?php echo ArsHelperSelect::updatetypes($this->item->type, 'type') ?>
 		</div>
 		<div class="editform-row">
-			<label for="category"><?php echo JText::_('LBL_RELEASES_CATEGORY'); ?></label>
+			<label for="category"><?php echo JText::_('COM_ARS_RELEASES_FIELD_CATEGORY'); ?></label>
 			<?php echo ArsHelperSelect::categories($this->item->category, 'category') ?>
 		</div>
 		<div class="editform-row">

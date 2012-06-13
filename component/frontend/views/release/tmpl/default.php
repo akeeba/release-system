@@ -34,7 +34,7 @@ $contents = ob_get_clean();
 $title = "<img src=\"".$base_folder."/media/com_ars/icons/status_".$item->maturity.".png\" width=\"16\" height=\"16\" align=\"left\" />".
 	"&nbsp;<span class=\"ars-release-title-version\">".
 	$this->escape($item->version)."</span><span class=\"ars-release-title-maturity\">(".
-	JText::_('LBL_RELEASES_MATURITY_'.  strtoupper($item->maturity)).")</span>";
+	JText::_('COM_ARS_RELEASES_MATURITY_'.  strtoupper($item->maturity)).")</span>";
 $module = ArsHelperChameleon::getModule($title, $contents, $params);
 echo JModuleHelper::renderModule($module, $params);
 ?>

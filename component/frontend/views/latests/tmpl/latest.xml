@@ -54,10 +54,10 @@
 			</field>
 
 			<field name="min_maturity" type="list" default="alpha" label="ARS_LATEST_MINMATURITY_LBL" description="ARS_LATEST_MINMATURITY_DESC">
-				<option value="alpha">LBL_RELEASES_MATURITY_ALPHA</option>
-				<option value="beta">LBL_RELEASES_MATURITY_BETA</option>
-				<option value="rc">LBL_RELEASES_MATURITY_RC</option>
-				<option value="stable">LBL_RELEASES_MATURITY_STABLE</option>
+				<option value="alpha">COM_ARS_RELEASES_MATURITY_ALPHA</option>
+				<option value="beta">COM_ARS_RELEASES_MATURITY_BETA</option>
+				<option value="rc">COM_ARS_RELEASES_MATURITY_RC</option>
+				<option value="stable">COM_ARS_RELEASES_MATURITY_STABLE</option>
 			</field>
 		</fieldset>
 	</fields>
