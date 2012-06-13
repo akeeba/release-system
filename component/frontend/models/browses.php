@@ -391,7 +391,7 @@ class ArsModelBrowses extends FOFModel
 		
 		$this->processFeedData($params->get('rel_orderby', 'order'));
 
-		if(empty($this->itemList)) return;
+		if(!count($this->itemList)) return;
 
 		foreach($this->itemList as $sectionname => $section)
 		{
@@ -402,7 +402,7 @@ class ArsModelBrowses extends FOFModel
 					continue;
 				}
 
-				$model = JModel::getTmpInstance('Items','ArsModel');
+				$model = FOFModel::getTmpInstance('Items','ArsModel');
 
 				$orderby = $params->get('items_orderby',	'order');
 				switch($orderby)
