@@ -31,13 +31,13 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ) + 1; ?>);" />
 			</th>
 			<th>
-				<?php echo JHTML::_('grid.sort', 'LBL_CATEGORIES_TITLE', 'title', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_ARS_CATEGORIES_FIELD_TITLE', 'title', $this->lists->order_Dir, $this->lists->order); ?>
 			</th>
 			<th width="160">
 				<?php echo JHTML::_('grid.sort', 'LBL_CATEGORIES_VGROUP', 'vgroup_id', $this->lists->order_Dir, $this->lists->order); ?>
 			</th>
 			<th width="160">
-				<?php echo JHTML::_('grid.sort', 'LBL_CATEGORIES_TYPE', 'type', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_ARS_CATEGORIES_FIELD_TYPE', 'type', $this->lists->order_Dir, $this->lists->order); ?>
 			</th>
 			<th width="100">
 				<?php echo JHTML::_('grid.sort', 'JFIELD_ORDERING_LABEL', 'ordering', $this->lists->order_Dir, $this->lists->order); ?>
@@ -124,7 +124,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			</td>
 			<td>
 				<span class="category-type-<?php echo $item->type ?>">
-				<?php echo JText::_('LBL_CATEGORIES_TYPE_'.  strtoupper($item->type)); ?>
+				<?php echo JText::_('COM_ARS_CATEGORIES_TYPE_'.  strtoupper($item->type)); ?>
 				</span>
 			</td>
 			<td class="order">

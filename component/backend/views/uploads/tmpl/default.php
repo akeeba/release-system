@@ -22,7 +22,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="<?php echo JUtility::getToken();?>" value="1" />
 
 	<fieldset id="category-selection">
-		<legend><?php echo JText::_('LBL_CATEGORY_SELECT');?></legend>
+		<legend><?php echo JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL');?></legend>
 		
 		<?php echo ArsHelperSelect::categories($this->category, 'id', array('onchange'=>'document.forms.adminForm.submit()')) ?>
 		<input type="submit" value="<?php echo JText::_('JSEARCH_FILTER_SUBMIT') ?>" />

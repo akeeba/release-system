@@ -25,14 +25,14 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="<?php echo JUtility::getToken();?>" value="1" />
 
 	<fieldset>
-		<legend><?php echo JText::_('LBL_ARS_CATEGORY_BASIC'); ?></legend>
+		<legend><?php echo JText::_('COM_ARS_CATEGORY_BASIC_LABEL'); ?></legend>
 		
 		<div class="editform-row">
-			<label for="title"><?php echo JText::_('LBL_CATEGORIES_TITLE'); ?></label>
+			<label for="title"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_TITLE'); ?></label>
 			<input type="text" name="title" id="title" value="<?php echo $this->item->title ?>">
 		</div>
 		<div class="editform-row">
-			<label for="alias"><?php echo JText::_('LBL_CATEGORIES_ALIAS'); ?></label>
+			<label for="alias"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_ALIAS'); ?></label>
 			<input type="text" name="alias" id="alias" value="<?php echo $this->item->alias ?>">
 		</div>
 		<div class="editform-row">
@@ -40,11 +40,11 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<?php echo ArsHelperSelect::vgroups($this->item->vgroup_id, 'vgroup_id') ?>
 		</div>
 		<div class="editform-row">
-			<label for="type"><?php echo JText::_('LBL_CATEGORIES_TYPE'); ?></label>
+			<label for="type"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_TYPE'); ?></label>
 			<?php echo ArsHelperSelect::categorytypes($this->item->type, 'type') ?>
 		</div>
 		<div class="editform-row">
-			<label for="directory"><?php echo JText::_('LBL_CATEGORIES_DIRECTORY'); ?></label>
+			<label for="directory"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_DIRECTORY'); ?></label>
 			<input type="text" name="directory" id="directory" value="<?php echo $this->item->directory ?>">
 		</div>
 		<div class="editform-row">
@@ -63,7 +63,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		</div>
 		<?php if(ArsHelperFiltering::hasAkeebaSubs()): ?>
 		<div class="editform-row editform-row-noheight">
-			<label for="groups"><?php echo JText::_('LBL_CATEGORIES_GROUPS_AKEEBA'); ?></label>
+			<label for="groups"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_AKEEBA_LABEL'); ?></label>
 			<?php echo ArsHelperSelect::akeebasubsgroups($this->item->groups, 'groups') ?>
 		</div>
 		<?php endif; ?>
@@ -77,7 +77,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	</fieldset>
 
 	<fieldset>
-		<legend><?php echo JText::_('LBL_ARS_CATEGORY_DESCRIPTION'); ?></legend>
+		<legend><?php echo JText::_('COM_ARS_CATEGORY_DESCRIPTION_LABEL'); ?></legend>
 		
 		<?php echo $editor->display( 'description',  $this->item->description, '600', '350', '60', '20', array() ) ; ?>
 	</fieldset>

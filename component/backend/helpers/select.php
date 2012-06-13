@@ -120,9 +120,9 @@ class ArsHelperSelect
 	public static function categorytypes($selected = null, $id = 'type', $attribs = array() )
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_CATEGORIES_TYPE_SELECT').' -');
-		$options[] = JHTML::_('select.option','normal',JText::_('LBL_CATEGORIES_TYPE_NORMAL'));
-		$options[] = JHTML::_('select.option','bleedingedge',JText::_('LBL_CATEGORIES_TYPE_BLEEDINGEDGE'));
+		$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_CATEGORIES_TYPE_SELECT').' -');
+		$options[] = JHTML::_('select.option','normal',JText::_('COM_ARS_CATEGORIES_TYPE_NORMAL'));
+		$options[] = JHTML::_('select.option','bleedingedge',JText::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
@@ -153,7 +153,7 @@ class ArsHelperSelect
 	public static function published($selected = null, $id = 'enabled', $attribs = array())
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_COMMON_SELECTSTATE_LABEL').' -');
+		$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL').' -');
 		$options[] = JHTML::_('select.option',0,JText::_('JUNPUBLISHED'));
 		$options[] = JHTML::_('select.option',1,JText::_('JPUBLISHED'));
 
@@ -204,7 +204,7 @@ class ArsHelperSelect
 			->getItemList(true);
 
 		$options = array();
-		$options[] = JHTML::_('select.option',0,'- '.JText::_('LBL_CATEGORY_SELECT').' -');
+		$options[] = JHTML::_('select.option',0,'- '.JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL').' -');
 		if(count($items)) foreach($items as $item)
 		{
 			$options[] = JHTML::_('select.option',$item->id,$item->title);

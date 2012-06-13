@@ -22,7 +22,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="<?php echo JUtility::getToken();?>" value="1" />
 
 	<fieldset>
-		<legend><?php echo JText::_('LBL_ARS_CATEGORY_BASIC'); ?></legend>
+		<legend><?php echo JText::_('COM_ARS_CATEGORY_BASIC_LABEL'); ?></legend>
 		
 		<div class="editform-row">
 			<label for="title"><?php echo JText::_('LBL_ENVIRONMENT_TITLE'); ?></label>

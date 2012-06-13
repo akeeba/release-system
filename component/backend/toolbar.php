@@ -133,7 +133,7 @@ class ArsToolbar extends FOFToolbar
 			JToolBarHelper::divider();
 		} 
 		if($this->perms->create) {
-			JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'ARS_GLOBAL_COPY', false);
+			JToolBarHelper::custom( 'copy', 'copy.png', 'copy_f2.png', 'COM_ARS_COMMON_COPY_LABEL', false);
 			JToolBarHelper::divider();
 		}
 		if($this->perms->delete) {

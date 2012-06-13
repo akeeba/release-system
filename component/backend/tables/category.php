@@ -39,7 +39,7 @@ class ArsTableCategory extends FOFTable
 	{
 		// If the title is missing, throw an error
 		if(!$this->title) {
-			$this->setError(JText::_('ERR_CATEGORY_NEEDS_TITLE'));
+			$this->setError(JText::_('COM_ARS_CATEGORY_ERR_NEEDS_TITLE'));
 			return false;
 		}
 
@@ -52,7 +52,7 @@ class ArsTableCategory extends FOFTable
 
 		// If no alias could be auto-generated, fail
 		if(!$this->alias) {
-			$this->setError(JText::_('ERR_CATEGORY_NEEDS_SLUG'));
+			$this->setError(JText::_('COM_ARS_CATEGORY_ERR_NEEDS_SLUG'));
 			return false;
 		}
 
@@ -72,7 +72,7 @@ class ArsTableCategory extends FOFTable
 		}
 		if(in_array($this->alias, $aliases))
 		{
-			$this->setError(JText::_('ERR_CATEGORY_NEEDS_UNIQUE_SLUG'));
+			$this->setError(JText::_('COM_ARS_CATEGORY_ERR_NEEDS_UNIQUE_SLUG'));
 			return false;
 		}
 
@@ -96,7 +96,7 @@ class ArsTableCategory extends FOFTable
 				$s3 = ArsHelperAmazons3::getInstance();
 				$items = $s3->getBucket('', $check);
 				if(empty($items)) {
-					$this->setError(JText::_('ERR_CATEGORY_S3_DIRECTORY_NOT_EXISTS'));
+					$this->setError(JText::_('COM_ARS_CATEGORY_ERR_S3_DIRECTORY_NOT_EXISTS'));
 					return false;
 				}
 			} else {
@@ -104,13 +104,13 @@ class ArsTableCategory extends FOFTable
 				if(!JFolder::exists($this->directory)) {
 					$directory = JPATH_SITE.'/'.$this->directory;
 					if(!JFolder::exists($directory)) {
-						$this->setError(JText::_('ERR_CATEGORY_DIRECTORY_NOT_EXISTS'));
+						$this->setError(JText::_('COM_ARS_CATEGORY_ERR_DIRECTORY_NOT_EXISTS'));
 						return false;
 					}
 				}
 			}
 		} else {
-			$this->setError(JText::_('ERR_CATEGORY_NEEDS_DIRECTORY'));
+			$this->setError(JText::_('COM_ARS_CATEGORY_ERR_NEEDS_DIRECTORY'));
 			return false;
 		}
 

@@ -72,7 +72,7 @@ if($this->item->id == 0) {
 		</div>
 		<?php if(ArsHelperFiltering::hasAkeebaSubs()): ?>
 		<div class="editform-row editform-row-noheight">
-			<label for="groups"><?php echo JText::_('LBL_CATEGORIES_GROUPS_AKEEBA'); ?></label>
+			<label for="groups"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_AKEEBA_LABEL'); ?></label>
 			<?php echo ArsHelperSelect::akeebasubsgroups($this->item->groups, 'groups') ?>
 		</div>
 		<?php endif; ?>
