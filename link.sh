@@ -1,6 +1,15 @@
 #!/bin/bash
 
 #
+# Internal linking with the language files
+#
+# -- Component
+rm component/language/backend/en-GB
+ln -s `pwd`/translations/component/backend/en-GB component/language/backend/en-GB
+rm component/language/frontend/en-GB
+ln -s `pwd`/translations/component/frontend/en-GB component/language/frontend/en-GB
+
+#
 # Link with Live Update
 #
 rm component/backend/liveupdate/LICENSE.txt
@@ -15,7 +24,7 @@ rm component/backend/liveupdate/liveupdate.php
 ln `pwd`/../liveupdate/code/liveupdate.php component/backend/liveupdate/liveupdate.php
 
 #
-# Link with the OTP plugin
+# Link with FOF
 #
-rm plugins/system/oneclickaction
-ln -s `pwd`/../liveupdate/plugins/system/oneclickaction plugins/system/oneclickaction
+rm component/fof
+ln -s `pwd`/../fof/fof component/fof
