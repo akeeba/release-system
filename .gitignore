@@ -14,3 +14,12 @@ component/backend/liveupdate/liveupdate.php
 component/fof
 plugins/system/oneclickaction
 documentation/arsguide/ars-users-guide.xml~
+
+plugins/ars/bleedingedgediff/language/en-GB
+plugins/ars/bleedingedgematurity/language/en-GB
+plugins/ars/tainting/language/en-GB
+plugins/content/arsdlid/language/en-GB
+plugins/editors-xtd/arslink/language/en-GB
+modules/site/arsdlid/language/en-GB
+modules/site/arsdownloads/language/en-GB
+
