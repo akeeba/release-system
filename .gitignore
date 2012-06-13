@@ -22,4 +22,5 @@ plugins/content/arsdlid/language/en-GB
 plugins/editors-xtd/arslink/language/en-GB
 modules/site/arsdlid/language/en-GB
 modules/site/arsdownloads/language/en-GB
-
+component/language/backend/en-GB
+component/language/frontend/en-GB
