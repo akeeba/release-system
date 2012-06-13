@@ -180,7 +180,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 function doAjax(data, successCallback, errorCallback, useCaching)
 {
 	(function($) {
-		$.blockUI({ message: '<h1><img src="<?php echo $base_folder ?>/media/com_ars/theme/images/throbber.gif" /> <?php echo JText::_('ARS_WORKING_MESSAGE') ?></h1>' });
+		$.blockUI({ message: '<h1><img src="<?php echo $base_folder ?>/media/com_ars/theme/images/throbber.gif" /> <?php echo JText::_('COM_ARS_CPANEL_WORKING_LABEL') ?></h1>' });
 		var structure =
 		{
 			type: "POST",

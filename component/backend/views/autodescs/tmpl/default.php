@@ -102,7 +102,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	?>
 	<?php else : ?>
 		<tr>
-			<td colspan="5" align="center"><?php echo JText::_('LBL_ARS_NOITEMS') ?></td>
+			<td colspan="5" align="center"><?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL') ?></td>
 		</tr>
 	<?php endif ?>
 	</tbody>

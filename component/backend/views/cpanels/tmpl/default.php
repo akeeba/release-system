@@ -32,33 +32,33 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 	<div class="ak_cpanel_modules" id="ak_cpanel_modules">
 
 		<fieldset>
-			<legend><?php echo JText::_('LBL_ARS_CPANEL_DLSTATSMONTHLY')?></legend>
+			<legend><?php echo JText::_('COM_ARS_CPANEL_DLSTATSMONTHLY_LABEL')?></legend>
 			<div id="mdrChart"></div>
 		</fieldset>
 		
 		<fieldset>
-			<legend><?php echo JText::_('LBL_ARS_CPANEL_DLSTATSDETAILS')?></legend>
+			<legend><?php echo JText::_('COM_ARS_CPANEL_DLSTATSDETAILS_LABEL')?></legend>
 			<table border="0" width="100%" class="dlstats">
 				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_EVER') ?></td>
+					<td class="dlstats-label"><?php echo JText::_('COM_ARS_CPANEL_DL_EVER_LABEL') ?></td>
 					<td><?php echo number_format($this->dlever,0) ?></td>
 				</tr>
 				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_MONTH') ?></td>
+					<td class="dlstats-label"><?php echo JText::_('COM_ARS_CPANEL_DL_THISMONTH_LABEL') ?></td>
 					<td><?php echo number_format($this->dlmonth,0) ?></td>
 				</tr>
 				<tr>
-					<td class="dlstats-label"><?php echo JText::_('LBL_ARS_CPANEL_DL_WEEK') ?></td>
+					<td class="dlstats-label"><?php echo JText::_('COM_ARS_CPANEL_DL_THISWEEK_LABEL') ?></td>
 					<td><?php echo number_format($this->dlweek,0) ?></td>
 				</tr>
 			</table>
 		</fieldset>
 		
 		<fieldset>
-			<legend><?php echo JText::_('LBL_ARS_CPANEL_POPULAR_WEEK')?></legend>
+			<legend><?php echo JText::_('COM_ARS_CPANEL_POPULAR_WEEK_LABEL')?></legend>
 			
 			<?php if(empty($this->popularweek)): ?>
-				<p><?php echo JText::_('LBL_ARS_NOITEMS') ?></p>
+				<p><?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL') ?></p>
 			<?php else: ?>
 				<?php foreach ($this->popularweek as $item): ?>
 				<div class="dlpopular">
@@ -112,8 +112,8 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 <div class="ak_clr"></div>
 
 <p>
-	<strong><?php echo JText::sprintf('ARS_COPYRIGHT', date('Y')); ?></strong><br/>
-	<?php echo JText::_('ARS_LICENSE'); ?><br/>
+	<strong><?php echo JText::sprintf('COM_ARS_CPANEL_COPYRIGHT_LABEL', date('Y')); ?></strong><br/>
+	<?php echo JText::_('COM_ARS_CPANEL_LICENSE_LABEL'); ?><br/>
 	<strong>
 	If you use Akeeba Release System, please post a rating and a review at the
 	<a href="http://extensions.joomla.org/extensions/directory-a-documentation/downloads/16825">Joomla! Extensions Directory</a>. 

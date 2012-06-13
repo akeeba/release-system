@@ -153,7 +153,7 @@ class ArsHelperSelect
 	public static function published($selected = null, $id = 'enabled', $attribs = array())
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_SELECT_STATE').' -');
+		$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_COMMON_SELECTSTATE_LABEL').' -');
 		$options[] = JHTML::_('select.option',0,JText::_('JUNPUBLISHED'));
 		$options[] = JHTML::_('select.option',1,JText::_('JPUBLISHED'));
 
