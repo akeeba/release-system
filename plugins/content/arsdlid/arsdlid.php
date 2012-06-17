@@ -7,11 +7,12 @@
  */
 
 // Protect from unauthorized access
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
 class plgContentArsdlid extends JPlugin
 {
-	public function onPrepareContent( &$article, &$params, $limitstart = 0 )
+
+	public function onContentPrepare($context, &$article, &$params, $limitstart = 0)
 	{
 		// Check whether the plugin should process or not
 		if ( JString::strpos( $article->text, 'downloadid' ) === false )
@@ -25,11 +26,6 @@ class plgContentArsdlid extends JPlugin
 		$article->text = preg_replace_callback( $regex, array('self', 'process'), $article->text );
 	}
 	
-	public function onContentPrepare($context, &$article, &$params, $limitstart = 0)
-	{
-		return $this->onPrepareContent($article, $params, $limitstart);
-	}
-	
 	private static function process($match)
 	{
 		$ret = '';
@@ -37,9 +33,12 @@ class plgContentArsdlid extends JPlugin
 		$user = JFactory::getUser();
 		if(!$user->guest) {
 			$db = JFactory::getDBO();
-			$query = 'SELECT md5(concat(`id`,`username`,`password`)) FROM `#__users` WHERE `id` = '.
-				$db->Quote($user->id);
-			$db->setQuery($query);
+			
+			$query = $db->getQuery(true)
+				->select('MD5(CONCAT('.$db->qn('id').','.$db->qn('username').','.$db->qn('password').')) AS '.$db->qn('dlid'))
+				->from($db->qn('#__users'))
+				->where($db->qn('id').' = '.$db->q($user->id));
+			$db->setQuery($query, 0, 1);
 			$ret = $db->loadResult();
 		}
 		
