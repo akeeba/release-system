@@ -14,30 +14,8 @@
 		<folder>tmpl</folder>
 	</files>
 	<languages folder="translations">
-		<language tag="en-GB">en-GB.mod_arsdlid.ini</language>
-		<language tag="en-GB">en-GB.mod_arsdlid.sys.ini</language>
-		<language tag="el-GR">el-GR.mod_arsdlid.ini</language>
-		<language tag="el-GR">el-GR.mod_arsdlid.sys.ini</language>
-		<language tag="es-ES">es-ES.mod_arsdlid.ini</language>
-		<language tag="es-ES">es-ES.mod_arsdlid.sys.ini</language>
-		<language tag="fa-IR">fa-IR.mod_arsdlid.ini</language>
-		<language tag="fa-IR">fa-IR.mod_arsdlid.sys.ini</language>
-		<language tag="fr-FR">fr-FR.mod_arsdlid.ini</language>
-		<language tag="fr-FR">fr-FR.mod_arsdlid.sys.ini</language>
-		<language tag="da-DK">da-DK.mod_arsdlid.ini</language>
-		<language tag="da-DK">da-DK.mod_arsdlid.sys.ini</language>
-		<language tag="mk-MK">mk-MK.mod_arsdlid.ini</language>
-		<language tag="mk-MK">mk-MK.mod_arsdlid.sys.ini</language>
-		<language tag="nb-NO">nb-NO.mod_arsdlid.ini</language>
-		<language tag="nb-NO">nb-NO.mod_arsdlid.sys.ini</language>
-		<language tag="nl-NL">nl-NL.mod_arsdlid.ini</language>
-		<language tag="nl-NL">nl-NL.mod_arsdlid.sys.ini</language>
-		<language tag="pt-BR">pt-BR.mod_arsdlid.ini</language>
-		<language tag="pt-BR">pt-BR.mod_arsdlid.sys.ini</language>
-        <language tag="tr-TR">tr-TR.mod_arsdlid.ini</language>
-		<language tag="tr-TR">tr-TR.mod_arsdlid.sys.ini</language>
-		<language tag="uk-UA">uk-UA.mod_arsdlid.ini</language>
-		<language tag="uk-UA">uk-UA.mod_arsdlid.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_arsdlid.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_arsdlid.sys.ini</language>
 	</languages>
 	<params>
 		<param name="cache" type="list" default="1" label="MOD_ARSDLID_OPT_CACHING_LBL" description="MOD_ARSDLID_OPT_CACHING_DESC">

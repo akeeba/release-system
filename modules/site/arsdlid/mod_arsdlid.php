@@ -19,8 +19,11 @@ if (!class_exists('modDLID')) {
 			if(empty($id)) return null;
 			
 			$db = JFactory::getDBO();
-			$sql = 'SELECT md5(concat(`id`,`username`,`password`)) AS `dlid` FROM `#__users` WHERE `id` = '.$id;
-			$db->setQuery($sql);
+			$query = $db->getQuery(true)
+				->select('MD5(CONCAT('.$db->qn('id').','.$db->qn('username').','.$db->qn('password').')) AS '.$db->qn('dlid'))
+				->from($db->qn('#__users'))
+				->where($db->qn('id').' = '.$db->q($id));
+			$db->setQuery($query, 0, 1);
 			return $db->loadResult();
 		}
 	}
