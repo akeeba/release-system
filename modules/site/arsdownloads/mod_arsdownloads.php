@@ -21,7 +21,7 @@ if(!class_exists('MydownloadsModel')) {
 			$items = array();
 			
 			$model = FOFModel::getTmpInstance('Updates','ArsModel');
-			$dlmodel = FOFModel::getTmpInstance('Download','ArsModel');
+			$dlmodel = FOFModel::getTmpInstance('Downloads','ArsModel');
 			
 			foreach($streams as $stream_id) {
 				$model->getItems($stream_id);
