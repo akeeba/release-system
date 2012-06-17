@@ -13,31 +13,9 @@
 		<filename module="mod_arsdownloads">mod_arsdownloads.php</filename>
 		<folder>tmpl</folder>
 	</files>
-	<languages folder="translations">
-		<language tag="en-GB">en-GB.mod_arsdownloads.ini</language>
-		<language tag="en-GB">en-GB.mod_arsdownloads.sys.ini</language>
-		<language tag="el-GR">el-GR.mod_arsdownloads.ini</language>
-		<language tag="el-GR">el-GR.mod_arsdownloads.sys.ini</language>
-		<language tag="es-ES">es-ES.mod_arsdownloads.ini</language>
-		<language tag="es-ES">es-ES.mod_arsdownloads.sys.ini</language>
-		<language tag="fa-IR">fa-IR.mod_arsdownloads.ini</language>
-		<language tag="fa-IR">fa-IR.mod_arsdownloads.sys.ini</language>
-		<language tag="fr-FR">fr-FR.mod_arsdownloads.ini</language>
-		<language tag="fr-FR">fr-FR.mod_arsdownloads.sys.ini</language>
-		<language tag="da-DK">da-DK.mod_arsdownloads.ini</language>
-		<language tag="da-DK">da-DK.mod_arsdownloads.sys.ini</language>
-		<language tag="mk-MK">mk-MK.mod_arsdownloads.ini</language>
-		<language tag="mk-MK">mk-MK.mod_arsdownloads.sys.ini</language>
-		<language tag="nb-NO">nb-NO.mod_arsdownloads.ini</language>
-		<language tag="nb-NO">nb-NO.mod_arsdownloads.sys.ini</language>
-		<language tag="nl-NL">nl-NL.mod_arsdownloads.ini</language>
-		<language tag="nl-NL">nl-NL.mod_arsdownloads.sys.ini</language>
-		<language tag="pt-BR">pt-BR.mod_arsdownloads.ini</language>
-		<language tag="pt-BR">pt-BR.mod_arsdownloads.sys.ini</language>
-		<language tag="tr-TR">tr-TR.mod_arsdownloads.ini</language>
-		<language tag="tr-TR">tr-TR.mod_arsdownloads.sys.ini</language>
-        <language tag="uk-UA">uk-UA.mod_arsdownloads.ini</language>
-		<language tag="uk-UA">uk-UA.mod_arsdownloads.sys.ini</language>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.mod_arsdownloads.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_arsdownloads.sys.ini</language>
 	</languages>
 	<params>
 		<param name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">

@@ -8,16 +8,10 @@
 
 defined('_JEXEC') or die();
 
-JModel::addIncludePath(JPATH_SITE.'/components/com_ars/models');
-JModel::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_ars/models');
-JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_ars/tables');
-
-$ars_backend = JPATH_SITE . DS . 'administrator' . DS . 'components' . DS . 'com_ars' . DS . 'models';
-$ars_frontend = JPATH_SITE . DS . 'components' . DS . 'com_ars' . DS . 'models';
-
-include_once($ars_backend.'/base.php');
-include_once($ars_frontend.'/base.php');
-include_once JPATH_ADMINISTRATOR.'/components/com_ars/tables/base.php';
+if(!defined('FOF_INCLUDED')) {
+	include_once JPATH_LIBRARIES.'/fof/include.php';
+	if(!defined('FOF_INCLUDED')) JError::raiseError ('500', 'Your Akeeba Release System installation is broken; please re-install. Alternatively, extract the installation archive and copy the fof directory inside your site\'s libraries directory.');
+}
 
 if(!class_exists('MydownloadsModel')) {
 	class MydownloadsModel
@@ -26,8 +20,8 @@ if(!class_exists('MydownloadsModel')) {
 		{
 			$items = array();
 			
-			$model = JModel::getInstance('Update','ArsModel');
-			$dlmodel = JModel::getInstance('Download', 'ArsModel');
+			$model = FOFModel::getTmpInstance('Updates','ArsModel');
+			$dlmodel = FOFModel::getTmpInstance('Download','ArsModel');
 			
 			foreach($streams as $stream_id) {
 				$model->getItems($stream_id);
@@ -39,7 +33,6 @@ if(!class_exists('MydownloadsModel')) {
 				// Is the user authorized to download this item?
 				$iFull = $dlmodel->getItem($i->item_id);
 				if(is_null($iFull)) continue;
-				//if(empty($iFull->groups)) continue;
 	
 				// Add this item
 				$newItem = array(
