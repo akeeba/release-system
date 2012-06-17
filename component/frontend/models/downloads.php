@@ -21,7 +21,7 @@ class ArsModelDownloads extends FOFModel
 	 * @param int $id The Item ID to load
 	 * @return TableItems|null An instance of TableItems, or null if the user shouldn't view the item
 	 */
-	public function getItem($id = 0)
+	public function &getItem($id = null)
 	{
 		$this->item = null;
 
