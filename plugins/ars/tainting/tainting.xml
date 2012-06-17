@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/plugin-install.dtd">
-<install version="1.5" type="plugin" group="ars" method="upgrade">
+<extension version="2.5.0" type="plugin" group="ars" method="upgrade">
 	<name>ZIP file tainting</name>
 	<author>Nicholas K. Dionysopoulos</author>
 	<authorEmail>nicholas@dionysopoulos.me</authorEmail>
@@ -15,4 +14,4 @@
 	<files>
 		<filename plugin="tainting">tainting.php</filename>
 	</files>
-</install>
+</extension>

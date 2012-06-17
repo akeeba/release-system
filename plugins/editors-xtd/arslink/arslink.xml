@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install version="1.5.0" type="plugin" group="editors-xtd" method="upgrade">
+<extension version="2.5.0" type="plugin" group="editors-xtd" method="upgrade">
 	<name>PLG_EDITORS-XTD_ARSLINK</name>
 	<author>Nicholas K. Dionysopoulos / AkeebaBackup.com</author>
 	<creationDate>September 2011</creationDate>
@@ -12,18 +12,8 @@
 	<files>
 		<filename plugin="arslink">arslink.php</filename>
 	</files>
-	<languages>
-		<language tag="en-GB">en-GB.plg_editors-xtd_arslink.ini</language>
-		<language tag="en-GB">en-GB.plg_editors-xtd_arslink.sys.ini</language>
-		<language tag="el-GR">el-GR.plg_editors-xtd_arslink.ini</language>
-		<language tag="el-GR">el-GR.plg_editors-xtd_arslink.sys.ini</language>
-		<language tag="es-ES">es-ES.plg_editors-xtd_arslink.ini</language>
-		<language tag="es-ES">es-ES.plg_editors-xtd_arslink.sys.ini</language>
-		<language tag="nb-NO">nb-NO.plg_editors-xtd_arslink.ini</language>
-		<language tag="nb-NO">nb-NO.plg_editors-xtd_arslink.sys.ini</language>
-		<language tag="pt-BR">pt-BR.plg_editors-xtd_arslink.ini</language>
-		<language tag="pt-BR">pt-BR.plg_editors-xtd_arslink.sys.ini</language>
-		<language tag="uk-UA">uk-UA.plg_editors-xtd_arslink.ini</language>
-		<language tag="uk-UA">uk-UA.plg_editors-xtd_arslink.sys.ini</language>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_editors-xtd_arslink.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_editors-xtd_arslink.sys.ini</language>
 	</languages>
-</install>
+</extension>
