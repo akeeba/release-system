@@ -93,9 +93,11 @@ class plgArsBleedingedgediff extends JPlugin
 	private function _getCategoryDirectory($category_id)
 	{
 		$db = JFactory::getDbo();
-		$sql = 'SELECT * FROM '.$db->nameQuote('#__ars_categories').' WHERE '.
-			$db->nameQuote('id').' = '.$db->quote($category_id);
-		$db->setQuery($sql);
+		$query = $db->getQuery(true)
+			->select('*')
+			->from($db->qn('#__ars_categories'))
+			->where($db->qn('id').' = '.$db->q($category_id));
+		$db->setQuery($query);
 		$category = $db->loadObject();
 		
 		$folder = $category->directory;
@@ -124,13 +126,14 @@ class plgArsBleedingedgediff extends JPlugin
 		
 		// Find the previous release
 		$db = JFactory::getDbo();
-		$sql = 'SELECT * FROM '.$db->nameQuote('#__ars_releases').' WHERE '.
-			$db->nameQuote('category_id').' = '.$db->quote($category_id).
-			' AND '.$db->nameQuote('id').' < '.$db->quote($release->id).
-			' AND '.$db->nameQuote('published').' = '.$db->quote(1)
-			.' ORDER BY '.$db->nameQuote('id').' DESC LIMIT 0,1';
-		$db->setQuery($sql);
-		
+		$query = $db->getQuery(true)
+			->select('*')
+			->from($db->qn('#__ars_releases'))
+			->where($db->qn('category_id').' = '.$db->q($category_id))
+			->where($db->qn('id').' < '.$db->q($release->id))
+			->where($db->qn('published').' = '.$db->q('1'))
+			->order($db->qn('id').' DESC');
+		$db->setQuery($query, 0, 1);
 		$record = $db->loadObject();
 		if(empty($record)) {
 			return null;
@@ -150,8 +153,16 @@ class plgArsBleedingedgediff extends JPlugin
 	private function _getAutoDescription($info, $data)
 	{
 		// Let's get automatic item title/description records
-		$sql = 'SELECT * FROM `#__ars_autoitemdesc` WHERE `category` IN (SELECT `category_id` FROM `#__ars_releases` WHERE `id` = '.$db->Quote($info['release_id']).') AND NOT `published` = 0';
-		$db->setQuery($sql);
+		$subquery = $db->getQuery(true)
+			->select($db->qn('category_id'))
+			->from('#__ars_releases')
+			->where($db->qn('id').' = '.$db->q($info['release_id']));
+		$query = $db->getQuery(true)
+			->select('*')
+			->from($db->qn('#__ars_autoitemdesc'))
+			->where($db->qn('category').' IN ('.$subquery.')')
+			->where('NOT '.$db->qn('published').' = '.$db->q('0'));
+		$db->setQuery($query);
 		$autoitems = $db->loadObjectList();
 		$auto = (object)array('title'=>'','description'=>'');
 		if(!empty($autoitems))
