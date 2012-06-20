@@ -34,16 +34,15 @@
 	-->
 	
 	<fileset dir="${dirs.component}" id="ars">
-		<include name="ars.xml" />
-		<include name="install.ars.php" />
-		<include name="uninstall.ars.php" />
-		<include name="script.ars.php" />
 		<include name="backend/**" />
+		<include name="fof/**" />
 		<include name="frontend/**" />
+		<include name="language/**" />
 		<include name="media/**" />
-		<include name="translation/**" />
 		<include name="LICENSE.txt" />
 		<include name="README.php" />
+		<include name="ars.xml" />
+		<include name="script.ars.php" />
 	</fileset>
 	
 	<!--

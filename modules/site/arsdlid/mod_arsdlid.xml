@@ -13,7 +13,7 @@
 		<filename module="mod_arsdlid">mod_arsdlid.php</filename>
 		<folder>tmpl</folder>
 	</files>
-	<languages folder="translations">
+	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.mod_arsdlid.ini</language>
 		<language tag="en-GB">en-GB/en-GB.mod_arsdlid.sys.ini</language>
 	</languages>

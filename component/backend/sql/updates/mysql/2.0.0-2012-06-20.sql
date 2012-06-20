@@ -1,0 +1,1 @@
+/* Dummy file to satisfy Joomla!'s extensions installer */

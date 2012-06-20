@@ -67,6 +67,7 @@
 		<folder>js</folder>
 		<folder>plugins</folder>
 		<folder>theme</folder>
+		<filename>index.html</filename>
 	</media>
 
 	<!-- Administrator back-end section -->
@@ -92,6 +93,7 @@
 			<filename>config.xml</filename>
 			<filename>dispatcher.php</filename>
 			<filename>index.html</filename>
+			<filename>toolbar.php</filename>
 		</files>
 
 		<!-- Back-end translation files -->

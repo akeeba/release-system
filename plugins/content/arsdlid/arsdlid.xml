@@ -12,7 +12,7 @@
 	<files>
 		<filename plugin="arsdlid">arsdlid.php</filename>
 	</files>
-	<languages folder="translations">
+	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.plg_content_arsdlid.ini</language>
 		<language tag="en-GB">en-GB/en-GB.plg_content_arsdlid.sys.ini</language>
 	</languages>
