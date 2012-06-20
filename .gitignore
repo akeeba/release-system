@@ -25,3 +25,4 @@ modules/site/arsdownloads/language/en-GB
 component/language/backend/en-GB
 component/language/frontend/en-GB
 /component/ars.xml
+/.tx/
