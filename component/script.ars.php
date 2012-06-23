@@ -508,7 +508,7 @@ class Com_ArsInstallerScript
 						}
 						$sql = $db->getQuery(true)
 							->update($db->qn('#__modules'))
-							->set($db->qn('position'.' = '.$db->q($modulePosition)))
+							->set($db->qn('position').' = '.$db->q($modulePosition))
 							->where($db->qn('module').' = '.$db->q('mod_'.$module));
 						if($modulePublished) {
 							$sql->set($db->qn('published').' = '.$db->q('1'));
