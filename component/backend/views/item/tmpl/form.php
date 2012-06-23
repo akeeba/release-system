@@ -172,7 +172,10 @@ if($this->item->id == 0) {
 	function onFileChange()
 	{
 		(function($){
-			$('#alias').val( basename($('#filename').val()) );
+			var newAlias = basename($('#filename').val());
+			newAlias = newAlias.replace(' ','-');
+			newAlias = newAlias.replace('.','-');
+			$('#alias').val( newAlias );
 		})(akeeba.jQuery);
 	}
 </script>
