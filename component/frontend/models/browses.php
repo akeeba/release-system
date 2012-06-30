@@ -39,11 +39,11 @@ class ArsModelBrowses extends FOFModel
 		if(version_compare(JVERSION, '1.6.0', 'ge')) {
 			$app = JFactory::getApplication();
 			if($app->getLanguageFilter()) {
-				$lang_filter_plugin = &JPluginHelper::getPlugin('system', 'languagefilter');
+				$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 				$lang_filter_params = new JRegistry($lang_filter_plugin->params);
 				if ($lang_filter_params->get('remove_default_prefix')) {
 					// Get default site language
-					$lg = &JFactory::getLanguage();
+					$lg = JFactory::getLanguage();
 					$catModel->setState('language', $lg->getTag());
 				}else{                                                                                                                 
 					$catModel->setState('language', FOFInput::getCmd('language', '*', $this->input));
@@ -161,11 +161,11 @@ class ArsModelBrowses extends FOFModel
 		
 		$app = JFactory::getApplication();
 		if($app->getLanguageFilter()) {
-			$lang_filter_plugin = &JPluginHelper::getPlugin('system', 'languagefilter');
+			$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 			$lang_filter_params = new JRegistry($lang_filter_plugin->params);
 			if ($lang_filter_params->get('remove_default_prefix')) {
 				// Get default site language
-				$lg = &JFactory::getLanguage();
+				$lg = JFactory::getLanguage();
 				$model->setState('language', $lg->getTag());
 			}else{                                                                                                                 
 				$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
@@ -263,11 +263,11 @@ class ArsModelBrowses extends FOFModel
 			->release($rel_id);
 		$app = JFactory::getApplication();
 		if($app->getLanguageFilter()) {
-			$lang_filter_plugin = &JPluginHelper::getPlugin('system', 'languagefilter');
+			$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 			$lang_filter_params = new JRegistry($lang_filter_plugin->params);
 			if ($lang_filter_params->get('remove_default_prefix')) {
 				// Get default site language
-				$lg = &JFactory::getLanguage();
+				$lg = JFactory::getLanguage();
 				$model->setState('language', $lg->getTag());
 			}else{                                                                                                                 
 				$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
@@ -359,11 +359,11 @@ class ArsModelBrowses extends FOFModel
 				$model->setState('maturity',		$this->getState('maturity','alpha'));
 				$app = JFactory::getApplication();
 				if($app->getLanguageFilter()) {
-					$lang_filter_plugin = &JPluginHelper::getPlugin('system', 'languagefilter');
+					$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 					$lang_filter_params = new JRegistry($lang_filter_plugin->params);
 					if ($lang_filter_params->get('remove_default_prefix')) {
 						// Get default site language
-						$lg = &JFactory::getLanguage();
+						$lg = JFactory::getLanguage();
 						$model->setState('language', $lg->getTag());
 					}else{                                                                                                                 
 						$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
@@ -440,11 +440,11 @@ class ArsModelBrowses extends FOFModel
 				$model->setState('limit',			0);
                 
 				if($app->getLanguageFilter()) {
-					$lang_filter_plugin = &JPluginHelper::getPlugin('system', 'languagefilter');
+					$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 					$lang_filter_params = new JRegistry($lang_filter_plugin->params);
 					if ($lang_filter_params->get('remove_default_prefix')) {
 						// Get default site language
-						$lg = &JFactory::getLanguage();
+						$lg = JFactory::getLanguage();
 						$model->setState('language', $lg->getTag());
 					}else{                                                                                                                 
 						$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
