@@ -62,7 +62,7 @@ class ArsViewCategory extends FOFViewHtml
 		
 		$this->assignRef('pparams', $params);
 		$this->assignRef('pagination', $model->relPagination);
-		$this->assignRef('items', $model->itemList);
+		$this->assign('items', $model->itemList);
 		$this->assignRef('item', $model->item);
 		$this->assignRef('category_id', $model->getState('category_id', 0));
 		

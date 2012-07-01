@@ -78,7 +78,7 @@ class ArsViewRelease extends FOFViewHtml
 		
 		$this->assignRef('cparams', $params);
 		$this->assignRef('item', $model->item);
-		$this->assignRef('items', $model->itemList);
+		$this->assign('items', $model->itemList);
 		$this->assignRef('pagination', $model->items_pagination);
 		$this->assign('release_id', $model->item->id);
 		

@@ -72,7 +72,7 @@ class ArsViewLatests extends FOFViewHtml
 		
 		// Assign data to the view
 		$model->processLatest();
-		$this->assignRef( 'items', $model->itemList);
+		$this->assign   ( 'items', $model->itemList);
 		$this->assign   ( 'pagination',	$model->getPagination());
 		$this->assignRef( 'lists',		$this->lists);
 		

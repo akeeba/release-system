@@ -9,6 +9,8 @@ defined('_JEXEC') or die();
 
 $this->loadHelper('chameleon');
 $this->loadHelper('html');
+
+$Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 ?>
 <div class="ars-browse-category">
 	<div class="ars-category-description">

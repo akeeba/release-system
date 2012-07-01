@@ -29,7 +29,7 @@ $item = $this->item;
 $item->id = 0;
 $params = ArsHelperChameleon::getParams('release');
 @ob_start();
-$this->loadAnyTemplate('site:com_ars/category/release', array('item' => $item));
+echo $this->loadAnyTemplate('site:com_ars/category/release', array('item' => $item));
 $contents = ob_get_clean();
 $title = "<img src=\"".$base_folder."/media/com_ars/icons/status_".$item->maturity.".png\" width=\"16\" height=\"16\" align=\"left\" />".
 	"&nbsp;<span class=\"ars-release-title-version\">".

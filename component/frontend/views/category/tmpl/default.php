@@ -21,7 +21,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 	$item = $this->item; $item->id = 0;
 	$params = ArsHelperChameleon::getParams('category');
 	@ob_start();
-	$this->loadAnyTemplate('site:com_ars/browses/category', array('item' => $item));
+	echo $this->loadAnyTemplate('site:com_ars/browses/category', array('item' => $item));
 	$contents = ob_get_clean();
 	$module = ArsHelperChameleon::getModule($item->title, $contents, $params);
 	echo JModuleHelper::renderModule($module, $params);
@@ -38,7 +38,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 		{
 			$params = ArsHelperChameleon::getParams('release');
 			@ob_start();
-			$this->loadAnyTemplate('site:com_ars/category/release', array('item' => $item));
+			echo $this->loadAnyTemplate('site:com_ars/category/release', array('item' => $item));
 			$contents = ob_get_clean();
 			$Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 			$release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);

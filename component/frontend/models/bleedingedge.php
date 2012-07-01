@@ -23,7 +23,7 @@ class ArsModelBleedingedge extends FOFModel
 
 	public function setCategory($cat)
 	{
-		if($cat instanceof TableCategories)
+		if($cat instanceof ArsTableCategory)
 		{
 			$this->category = $cat;
 			$this->category_id = $cat->id;
