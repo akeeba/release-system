@@ -540,4 +540,25 @@ class ArsHelperSelect
 		$attribs['multiple'] = 'yes';
 		return self::genericlist($options, $id.'[]', $attribs, $selected, $id);
 	}
+	
+	public static function getVisualGroupName($vgroup_id)
+	{
+		$vgroups = null;
+		
+		if(is_null($vgroups)) {
+			$items = FOFModel::getTmpInstance('Vgroups','ArsModel')
+				->published(1)
+				->getItemList(true);
+			
+			if(count($items)) foreach($items as $item) {
+				$vgroups[$item->id] = $item->title;
+			}
+		}
+		
+		if(array_key_exists($vgroup_id, $vgroups)) {
+			return $vgroups[$vgroup_id];
+		} else {
+			return '';
+		}
+	}
 }

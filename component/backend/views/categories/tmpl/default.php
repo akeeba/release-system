@@ -120,7 +120,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<span class="cat-directory-name"><?php echo htmlentities($item->directory, ENT_COMPAT, 'UTF-8') ?></span>
 			</td>
 			<td>
-				<?php echo $item->vgroup_id ? $this->vgroups[$item->vgroup_id] : '&mdash;'; ?>
+				<?php echo $item->vgroup_id ? ArsHelperSelect::getVisualGroupName($item->vgroup_id) : '&mdash;'; ?>
 			</td>
 			<td>
 				<span class="category-type-<?php echo $item->type ?>">
