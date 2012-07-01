@@ -215,10 +215,10 @@ class ArsHelperSelect
 	public static function maturities($selected = null, $id = 'maturity', $attribs = array())
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_RELEASES_MATURITY_SELECT').' -');
+		$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_RELEASES_MATURITY_SELECT').' -');
 		
 		$maturities = array('alpha','beta','rc','stable');
-		foreach($maturities as $maturity) $options[] = JHTML::_('select.option',$maturity,JText::_('LBL_RELEASES_MATURITY_'.strtoupper($maturity)));
+		foreach($maturities as $maturity) $options[] = JHTML::_('select.option',$maturity,JText::_('COM_ARS_RELEASES_MATURITY_'.strtoupper($maturity)));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
