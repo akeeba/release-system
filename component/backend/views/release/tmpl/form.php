@@ -83,6 +83,11 @@ if($this->item->id == 0) {
 				<?php echo JHTML::_('calendar', $this->item->created, 'created', 'created'); ?>
 			</div>
 		</div>
+		
+		<div class="editform-row editform-row-noheight">
+			<label for="language"><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?></label>
+			<?php echo ArsHelperSelect::languages($this->item->language, 'language') ?>
+		</div>
 		<div style="clear:left"></div>
 
 	</fieldset>

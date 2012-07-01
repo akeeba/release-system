@@ -106,6 +106,11 @@ if($this->item->id == 0) {
 			<label for="updatestream"><?php echo JText::_('LBL_ITEMS_UPDATESTREAM'); ?></label>
 			<?php echo ArsHelperSelect::updatestreams($this->item->updatestream, 'updatestream') ?>
 		</div>
+		
+		<div class="editform-row editform-row-noheight">
+			<label for="language"><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?></label>
+			<?php echo ArsHelperSelect::languages($this->item->language, 'language') ?>
+		</div>
 		<div style="clear:left"></div>
 
 	</fieldset>
