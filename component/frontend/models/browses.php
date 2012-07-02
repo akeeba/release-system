@@ -48,7 +48,6 @@ class ArsModelBrowses extends FOFModel
 				}else{                                                                                                                 
 					$catModel->setState('language', FOFInput::getCmd('language', '*', $this->input));
 				}
-				$catModel->setState('language', FOFInput::getCmd('language', '*', $this->input));
 			} else {
 				$catModel->setState('language', FOFInput::getCmd('language', '', $this->input));
 			}
@@ -170,7 +169,6 @@ class ArsModelBrowses extends FOFModel
 			}else{                                                                                                                 
 				$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
 			}
-			$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
 		} else {
 			$model->setState('language', FOFInput::getCmd('language', '', $this->input));
 		}
@@ -272,7 +270,6 @@ class ArsModelBrowses extends FOFModel
 			}else{                                                                                                                 
 				$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
 			}
-			$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
 		} else {
 			$model->setState('language', FOFInput::getCmd('language', '', $this->input));
 		}
@@ -368,7 +365,6 @@ class ArsModelBrowses extends FOFModel
 					}else{                                                                                                                 
 						$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
 					}
-					$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
 				} else {
 					$model->setState('language', FOFInput::getCmd('language', '', $this->input));
 				}
@@ -449,7 +445,6 @@ class ArsModelBrowses extends FOFModel
 					}else{                                                                                                                 
 						$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
 					}
-					$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
 				} else {
 					$model->setState('language', FOFInput::getCmd('language', '', $this->input));
 				}
