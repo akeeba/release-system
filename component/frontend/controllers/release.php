@@ -14,6 +14,14 @@ class ArsControllerRelease extends FOFController
 		parent::__construct($config);
 	}
 	
+	public function execute($task) {
+		if(!in_array($task, array('browse','read'))) {
+			$task = 'read';
+		}
+		
+		parent::execute($task);
+	}
+	
 	function onBeforeRead() {
 		$id = FOFInput::getInt('id', 0, $this->input);
 
