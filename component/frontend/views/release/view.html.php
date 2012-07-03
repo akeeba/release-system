@@ -9,6 +9,14 @@ defined('_JEXEC') or die();
 
 class ArsViewRelease extends FOFViewHtml
 {
+	public function onAdd($tpl = null) {
+		return $this->onRead();
+	}
+	
+	public function onEdit($tpl = null) {
+		return $this->onRead();
+	}
+	
 	function onRead($tpl = null)
 	{
 		// Load helpers
