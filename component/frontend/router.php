@@ -1305,11 +1305,48 @@ class ArsRouterHelper
 			}
 		}
 
+		// Find all potential menu items
+		$possible_items = array();
 		foreach($menus->getMenu() as $item)
 		{
-			if(self::checkMenu($item, $qoptions, $params)) return $item;
+			if(self::checkMenu($item, $qoptions, $params)) {
+				$possible_items[] = $item;
+			}
 		}
-
+		
+		// If no potential item exists, return null
+		if(empty($possible_items)) {
+			return null;
+		}
+		
+		// Filter by language, if required
+		$app = JFactory::getApplication();
+		$langCode = '*';
+		if($app->getLanguageFilter()) {
+			$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
+			$lang_filter_params = new JRegistry($lang_filter_plugin->params);
+			if ($lang_filter_params->get('remove_default_prefix')) {
+				// Get default site language
+				$lg = JFactory::getLanguage();
+				$langCode = $lg->getTag();
+			}else{
+				$langCode = JRequest::getCmd('language', '*');
+			}
+		} else {
+			$langCode = JRequest::getCmd('language', '*');
+		}
+		
+		if($langCode == '*') {
+			// No language filtering required, return the first item
+			return array_shift($possible_items);
+		} else {
+			// Filter for exact language or *
+			foreach($possible_items as $item) {
+				if(in_array($item->language, array($langCode, '*'))) {
+					return $item;
+				}
+			}
+		}
 		return null;
 	}
 
