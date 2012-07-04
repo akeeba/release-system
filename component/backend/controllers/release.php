@@ -64,13 +64,15 @@ class ArsControllerRelease extends FOFController
 			$item->published = 0;
 			$item->hits = 0;
 
-			$newStatus = $itemModel->save($item);
+			$table = FOFModel::getTmpInstance('Items','ArsModel')->getTable();
+			$table->reset();
+			$newStatus = $table->save($item);
 			$status = $status && $newStatus;
 		}
 
 		// redirect
-		$option = $this->input->getCmd('option');
-		$view = $this->input->getCmd('view');
+		$option = FOFInput::getCmd('option','com_ars',$this->input);
+		$view = FOFInput::getCmd('view','category',$this->input);
 		$url = 'index.php?option='.$option.'&view='.$view;
 		if(!$status)
 		{

@@ -40,8 +40,8 @@ class ArsControllerCategory extends FOFController
 		$status = $model->save($item);
 
 		// redirect
-		$option = $this->input->getCmd('option');
-		$view = $this->input->getCmd('view');
+		$option = FOFInput::getCmd('option','com_ars',$this->input);
+		$view = FOFInput::getCmd('view','category',$this->input);
 		$url = 'index.php?option='.$option.'&view='.$view;
 		if(!$status)
 		{

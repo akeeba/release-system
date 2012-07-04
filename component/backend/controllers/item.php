@@ -25,7 +25,7 @@ class ArsControllerItem extends FOFController
 			$model->setId($id);
 			$item = $model->getItem();
 			
-			if($item->$key == $id)
+			if($item->id == $id)
 			{
 				$item->id = 0;
 				$item->title = 'Copy of '.$item->title;
@@ -46,8 +46,8 @@ class ArsControllerItem extends FOFController
 		}
 
 		// redirect
-		$option = $this->input->getCmd('option');
-		$view = $this->input->getCmd('view');
+		$option = FOFInput::getCmd('option','com_ars',$this->input);
+		$view = FOFInput::getCmd('view','category',$this->input);
 		$url = 'index.php?option='.$option.'&view='.$view;
 		if(!$status)
 		{
