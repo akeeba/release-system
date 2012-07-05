@@ -27,7 +27,7 @@ class ArsControllerDownload extends FOFController
 		$model = $this->getThisModel();
 
 		// Get the log table
-		$log = FOFTable::getAnInstance('Logs','Table');
+		$log = FOFModel::getTmpInstance('Logs','ArsModel')->getTable();
 
 		// Get the item lists
 		if($id > 0) {
