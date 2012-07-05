@@ -26,7 +26,7 @@
 defined('_JEXEC') or die();
 
 if(!defined('AKEEBA_CACERT_PEM')) {
-	define(AKEEBA_CACERT_PEM, JPATH_ADMINISTRATOR.'/components/com_ars/assets/cacert.pem');
+	define('AKEEBA_CACERT_PEM', JPATH_ADMINISTRATOR.'/components/com_ars/assets/cacert.pem');
 }
 
 class ArsHelperAmazons3 extends JObject
