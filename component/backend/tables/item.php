@@ -37,6 +37,8 @@ class ArsTableItem extends FOFTable
 		);
 		
 		$this->access = 1;
+		
+		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
 	}
 
 	/**
