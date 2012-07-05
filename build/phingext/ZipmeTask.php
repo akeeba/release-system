@@ -10,9 +10,9 @@ require_once 'pclzip.php';
 /**
  * Creates a JPA archive
  * @author Nicholas K. Dionysopoulos
- * @version $Id$
+ * @version $Id: ZipmeTask.php 409 2011-01-24 09:30:22Z nikosdion $
  * @package akeebabuilder
- * @copyright Copyright (c)2009-2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2009-2011 Nicholas K. Dionysopoulos
  * @license GNU GPL version 3 or, at your option, any later version
  */
 class ZipmeTask extends MatchingTask {
@@ -155,6 +155,9 @@ class ZipmeTask extends MatchingTask {
 					if(substr($fileDir, -4) == '.svn') continue;
 					if($fileBase == '.svn') continue;
 					if(substr( rtrim($fileAbsolutePath,'/\\'), -4 ) == '.svn' ) continue;
+					if($fileBase == '.gitignore') continue;
+					if(strtolower($fileBase) == '.ds_store') continue;
+					if($fileBase == 'Thumbs.db') continue;
 
 					//echo "\t\t$fileAbsolutePath\n";
 
