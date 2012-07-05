@@ -26,9 +26,13 @@ class ArsHelperBreadcrumbs
 			$all_items = $menus->getItems('type', 'component', false);
 			foreach($all_items as $item)
 			{
+				$qOption = array_key_exists('option', $item->query) ? $item->query['option'] : '';
+				$qView = array_key_exists('view', $item->query) ? $item->query['view'] : '';
+				$qLayout = array_key_exists('layout', $item->query) ? $item->query['layout'] : '';
+				
 				if( (!property_exists($item, 'published') || ($item->published))
-					&& ($item->query['option'] == 'com_ars')
-					&& ($item->query['view'] == 'browse')
+					&& ($qOption == 'com_ars')
+					&& ($qView == 'browse')
 				)
 				{
 					if( array_key_exists('layout', $item->query) && ($item->query['layout'] == 'repository') && empty($Itemid) )
