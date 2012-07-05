@@ -26,7 +26,7 @@ class ArsControllerAutodesc extends FOFController
 			$model->setId($id);
 			$item = $model->getItem();
 			
-			if($item->$key == $id)
+			if($item->id == $id)
 			{
 				$item->title = 'Copy of '.$item->title;
 				$item->id = 0;
@@ -36,9 +36,9 @@ class ArsControllerAutodesc extends FOFController
 		}
 
 		// redirect
-		$option = $this->input->getCmd('option');
-		$view = $this->input->getCmd('view');
-		$url = 'index.php?option='.$option.'&view='.$view;
+		$option = FOFInput::getCmd('option','com_ars',$this->input);
+		$view = FOFInput::getCmd('view','autodescs',$this->input);
+		$url = 'index.php?option='.$option.'&view='.$view.'&task=browse';
 		if(!$status)
 		{
 			$this->setRedirect($url, $model->getError(), 'error');
