@@ -275,6 +275,8 @@ class ArsHelperSelect
 
 	public static function getFiles($selected = null, $release_id = 0, $item_id = 0, $id = 'type', $attribs = array())
 	{
+		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
+		
 		$options = array();
 		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_ITEMS_FILENAME_SELECT').' -');
 
