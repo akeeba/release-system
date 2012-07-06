@@ -265,6 +265,8 @@ function arsBuildRouteFeed(&$query)
 	switch($view)
 	{
 		case 'browse':
+		case 'categories':
+			$view = 'browse';
 			$query['Itemid'] = $Itemid;
 			break;
 
@@ -288,12 +290,16 @@ function arsBuildRouteFeed(&$query)
 						$query['Itemid'] = $menu->id;
 					}
 				}
+				else
+				{
+					$Itemid = null;
+				}
 			}
 
 			if(empty($Itemid))
 			{
 				$options = array('view'=>'category', 'option' => 'com_ars');
-				$params = array('catid'=>$release->category_id);
+				$params = array('catid'=>$id);
 				$menu = ArsRouterHelper::findMenu($options, $params);
 				if(!empty($menu))
 				{
