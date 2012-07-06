@@ -46,7 +46,7 @@ class ArsTableLog extends FOFTable
 			$this->item_id = JRequest::getInt('id',0);
 		}
 
-		if($this->accessed_on == '0000-00-00 00:00:00')
+		if(empty($this->accessed_on) || ($this->accessed_on == '0000-00-00 00:00:00'))
 		{
 			jimport('joomla.utilities.date');
 			$date = new JDate();
