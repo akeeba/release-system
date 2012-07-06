@@ -8,6 +8,9 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
+// Load the Amazon S3 helper
+require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
+
 class ArsControllerUpload extends FOFController
 {
 	/**
