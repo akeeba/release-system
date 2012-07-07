@@ -89,7 +89,7 @@ class ArsModelCpanels extends FOFModel
 		if(!$noTimeLimits) {
 			$from = $db->q($from);
 			$to = $db->q($to);
-			$query->where($db->qn('l').'.'.$db->qn('accessed_on').' BETWEEN '.$db->q($from).' AND '.$db->q($to));
+			$query->where($db->qn('l').'.'.$db->qn('accessed_on').' BETWEEN '.$from.' AND '.$to);
 		}
 
 		$db->setQuery($query, 0, $itemCount);
