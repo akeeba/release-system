@@ -345,6 +345,7 @@ class ArsModelBleedingedge extends FOFModel
 		} else {
 			$files = JFolder::files($folder);
 		}
+
 		if(!empty($allItems)) foreach($allItems as $item)
 		{
 			$known_items[] = basename($item->filename);
@@ -359,7 +360,7 @@ class ArsModelBleedingedge extends FOFModel
 				$table->save($item);
 			}
 		}
-		
+
 		if(!empty($files)) foreach($files as $file)
 		{
 			if( basename($file) == 'CHANGELOG' ) continue;
@@ -369,6 +370,7 @@ class ArsModelBleedingedge extends FOFModel
 			jimport('joomla.utilities.date');
 			$jNow = new JDate();
 			$data = array(
+				'id'				=> 0,
 				'release_id'		=> $release->id,
 				'description'		=> '',
 				'type'				=> 'file',
@@ -378,6 +380,7 @@ class ArsModelBleedingedge extends FOFModel
 				'hits'				=> '0',
 				'published'			=> '1',
 				'created'			=> $jNow->toMySQL(),
+				'access'			=> '1'
 			);
 			
 			// Before saving the item, call the onNewARSBleedingEdgeItem()
@@ -410,7 +413,8 @@ class ArsModelBleedingedge extends FOFModel
 				if($data['ignore']) continue;
 			}
 			
-			$table = FOFModel::getTmpInstance('Items','ArsModel')->getTable();
+			$table = clone FOFModel::getTmpInstance('Items','ArsModel')->getTable();
+			$table->reset();
 			$result = $table->save($data);
 		}
 

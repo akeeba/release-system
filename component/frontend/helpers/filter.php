@@ -140,7 +140,7 @@ class ArsHelperFilter
 				// Joomla! 1.5
 				if($s->access > $user_access) continue;
 			} else {
-				if( !in_array($s->access, $user_access) ) continue;
+				if( $s->access > 0 && !in_array((int)$s->access, $user_access) ) continue;
 			}
 
 			// Filter by subscription group
