@@ -83,12 +83,10 @@ class ArsModelCpanels extends FOFModel
 			->where($db->qn('l').'.'.$db->qn('authorized').' = '.$db->q(1))
 			->group($db->qn('item_id'))
 			->order($db->qn('dl').' DESC');
-			
+		
 		
 		$noTimeLimits = (is_null($from) || is_null($to));
-		if(!$noTimeLimits) {
-			$from = $db->q($from);
-			$to = $db->q($to);
+		if(!$noTimeLimits) { 
 			$query->where($db->qn('l').'.'.$db->qn('accessed_on').' BETWEEN '.$from.' AND '.$to);
 		}
 
