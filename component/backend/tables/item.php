@@ -255,8 +255,7 @@ class ArsTableItem extends FOFTable
 				->select('*')
 				->from($db->qn('#__ars_updatestreams'))
 				->where($db->qn('category').' IN ('.$subquery.')');
-			$sql = 'SELECT * FROM `#__ars_updatestreams` WHERE `category` IN (SELECT `category_id` FROM `#__ars_releases` WHERE `id` = '.$db->Quote($this->release_id).')';
-			$db->setQuery($sql);
+			$db->setQuery($query);
 			$streams = $db->loadObjectList();
 			if(!empty($streams))
 			{
