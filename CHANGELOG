@@ -2,7 +2,8 @@ Version 2.0.a1
 ================================================================================
 ! Rewritten to use the FOF framework
 ~ Overall stability improvements
-# The item alias would include dots and spaces when using files, causing trouble with the router
+# [LOW] The item alias would include dots and spaces when using files, causing trouble with the router
+# [LOW] The Visual Group feature would not work properly on BleedingEdge Only and Normal Only views
 
 Version 1.1.3
 ================================================================================

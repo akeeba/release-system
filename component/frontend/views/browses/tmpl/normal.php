@@ -21,9 +21,16 @@ $Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 
 	<?php if(!empty($this->items['normal'])): ?>
 	<?php foreach($this->vgroups as $vgroupID => $vgroupTitle): ?>
-	<?php if($vgroupTitle): ?><h3><?php echo $vgroupTitle; ?></h3><?php endif; ?>
+	<?php $echoedVgroupTitle = false; ?>
 	<?php
 		foreach($this->items['normal'] as $id => $item):
+			if($item->vgroup_id != $vgroupID) continue;
+			if(!$echoedVgroupTitle) {
+				$echoedVgroupTitle = true;
+				if($vgroupTitle):?>
+<h3><?php echo $vgroupTitle; ?></h3>
+				<?php endif;
+			}
 			$catURL = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
 			$title = "<a href=\"$catURL\">{$item->title}</a>";
 			$params = ArsHelperChameleon::getParams('category');
