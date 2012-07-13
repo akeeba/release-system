@@ -32,7 +32,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<thead>
 		<tr>
 			<th width="20">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ) + 1; ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(<?php echo count( $this->items ) + 1; ?>);" />
 			</th>
 			<th>
 				<?php echo JHTML::_('grid.sort', 'LBL_UPDATES_NAME', 'name', $this->lists->order_Dir, $this->lists->order); ?>
