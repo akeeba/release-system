@@ -19,7 +19,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="task" id="task" value="category" />
 	<input type="hidden" name="folder" id="folder" value="<?php echo isset($this->folder) ? $this->escape($this->folder) : '' ?>" />
 	<input type="hidden" name="file" id="file" value="" />
-	<input type="hidden" name="<?php echo JUtility::getToken();?>" value="1" />
+	<input type="hidden" name="<?php echo JFactory::getSession()->getToken();?>" value="1" />
 
 	<fieldset id="category-selection">
 		<legend><?php echo JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL');?></legend>

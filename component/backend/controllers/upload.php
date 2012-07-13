@@ -23,7 +23,7 @@ class ArsControllerUpload extends FOFController
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 		
-		if(!FOFInput::getVar(JUtility::getToken(), false, $this->input))
+		if(!FOFInput::getVar(JFactory::getSession()->getToken(), false, $this->input))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
@@ -50,7 +50,7 @@ class ArsControllerUpload extends FOFController
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 		
-		if(!FOFInput::getVar(JUtility::getToken(), false, $this->input))
+		if(!FOFInput::getVar(JFactory::getSession()->getToken(), false, $this->input))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
@@ -176,7 +176,7 @@ class ArsControllerUpload extends FOFController
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 		
-		if(!FOFInput::getVar(JUtility::getToken(), false, $this->input))
+		if(!FOFInput::getVar(JFactory::getSession()->getToken(), false, $this->input))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
@@ -212,7 +212,7 @@ class ArsControllerUpload extends FOFController
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 		
-		if(!FOFInput::getVar(JUtility::getToken(), false, $this->input))
+		if(!FOFInput::getVar(JFactory::getSession()->getToken(), false, $this->input))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
