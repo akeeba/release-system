@@ -63,7 +63,7 @@ class ArsHelperAmazons3 extends JObject
 			}
 			
 			if(empty($accessKey) && empty($secretKey)) {
-				if(version_compare(JVERSION, '3.0.0', 'ge')) {
+				if(version_compare(JVERSION, '3.0', 'ge')) {
 					$accessKey	= $params->get('s3access','');
 					$secretKey	= $params->get('s3secret','');
 					$useSSL		= $params->get('s3ssl',true);
@@ -75,7 +75,7 @@ class ArsHelperAmazons3 extends JObject
 			}
 			
 			$instance = new ArsHelperAmazons3($accessKey, $secretKey, $useSSL);
-			if(version_compare(JVERSION, '3.0.0', 'ge')) {
+			if(version_compare(JVERSION, '3.0', 'ge')) {
 				self::$__default_bucket = $params->get('s3bucket', '');
 				self::$__default_acl = $params->get('s3perms','private');
 				self::$__default_time = $params->get('s3time', 900);

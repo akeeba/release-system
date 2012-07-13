@@ -88,7 +88,7 @@ class ArsHelperChameleon
 		{
 			case 'category':
 			default:
-				if(version_compare(JVERSION, '3.0.0', 'ge')) {
+				if(version_compare(JVERSION, '3.0', 'ge')) {
 					$style = $params->get('categorystyle','rounded');
 					$sfx = $params->get('categorysuffix','');
 				} else {
@@ -98,7 +98,7 @@ class ArsHelperChameleon
 				break;
 				
 			case 'release':
-				if(version_compare(JVERSION, '3.0.0', 'ge')) {
+				if(version_compare(JVERSION, '3.0', 'ge')) {
 					$style = $params->get('releasestyle','rounded');
 					$sfx = $params->get('releasesuffix','');
 				} else {
@@ -108,7 +108,7 @@ class ArsHelperChameleon
 				break;
 				
 			case 'item':
-				if(version_compare(JVERSION, '3.0.0', 'ge')) {
+				if(version_compare(JVERSION, '3.0', 'ge')) {
 					$style = $params->get('itemstyle','rounded');
 					$sfx = $params->get('itemsuffix','');
 				} else {
@@ -119,7 +119,7 @@ class ArsHelperChameleon
 		}
 		
 		if($bleeding_edge) {
-			if(version_compare(JVERSION, '3.0.0', 'ge')) {
+			if(version_compare(JVERSION, '3.0', 'ge')) {
 				$sfx2 = $params->get('besuffix','');
 			} else {
 				$sfx2 = $params->getValue('besuffix','');
@@ -147,7 +147,7 @@ class ArsHelperChameleon
 		}
 		
 		$default_template = '<a class="readon" href="%s">%s</a>';
-		if(version_compare(JVERSION, '3.0.0', 'ge')) {
+		if(version_compare(JVERSION, '3.0', 'ge')) {
 			$template = $params->get('readontemplate',$default_template);
 		} else {
 			$template = $params->getValue('readontemplate',$default_template);

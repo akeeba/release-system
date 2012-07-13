@@ -117,7 +117,7 @@ foreach($this->items as $item):
 			<tag><?php echo $item->maturity ?></tag>
 		</tags>
 		<maintainer><?php
-		if(version_compare(JVERSION, '3.0.0', 'ge')) {
+		if(version_compare(JVERSION, '3.0', 'ge')) {
 			echo JFactory::getConfig()->get('sitename');
 		} else {
 			echo JFactory::getConfig()->getValue('config.sitename');
