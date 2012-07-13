@@ -88,23 +88,42 @@ class ArsHelperChameleon
 		{
 			case 'category':
 			default:
-				$style = $params->getValue('categorystyle','rounded');
-				$sfx = $params->getValue('categorysuffix','');
+				if(version_compare(JVERSION, '3.0.0', 'ge')) {
+					$style = $params->get('categorystyle','rounded');
+					$sfx = $params->get('categorysuffix','');
+				} else {
+					$style = $params->getValue('categorystyle','rounded');
+					$sfx = $params->getValue('categorysuffix','');
+				}
 				break;
 				
 			case 'release':
-				$style = $params->getValue('releasestyle','rounded');
-				$sfx = $params->getValue('releasesuffix','');
+				if(version_compare(JVERSION, '3.0.0', 'ge')) {
+					$style = $params->get('releasestyle','rounded');
+					$sfx = $params->get('releasesuffix','');
+				} else {
+					$style = $params->getValue('releasestyle','rounded');
+					$sfx = $params->getValue('releasesuffix','');
+				}
 				break;
 				
 			case 'item':
-				$style = $params->getValue('itemstyle','rounded');
-				$sfx = $params->getValue('itemsuffix','');
+				if(version_compare(JVERSION, '3.0.0', 'ge')) {
+					$style = $params->get('itemstyle','rounded');
+					$sfx = $params->get('itemsuffix','');
+				} else {
+					$style = $params->getValue('itemstyle','rounded');
+					$sfx = $params->getValue('itemsuffix','');
+				}
 				break;
 		}
 		
 		if($bleeding_edge) {
-			$sfx2 = $params->getValue('besuffix','');
+			if(version_compare(JVERSION, '3.0.0', 'ge')) {
+				$sfx2 = $params->get('besuffix','');
+			} else {
+				$sfx2 = $params->getValue('besuffix','');
+			}
 			if(!empty($sfx2)) {
 				$sfx .= ' '.$sfx2;
 			}
@@ -128,7 +147,11 @@ class ArsHelperChameleon
 		}
 		
 		$default_template = '<a class="readon" href="%s">%s</a>';
-		$template = $params->getValue('readontemplate',$default_template);
+		if(version_compare(JVERSION, '3.0.0', 'ge')) {
+			$template = $params->get('readontemplate',$default_template);
+		} else {
+			$template = $params->getValue('readontemplate',$default_template);
+		}
 		
 		$template = str_replace('&quot;','"', $template);
 		$template = str_replace('[[','\\<', $template);

@@ -52,6 +52,10 @@ class AKRouter
 	static function doesItAddSuffix()
 	{
 		$config = JFactory::getConfig();
-		self::$addsSuffix = $config->getValue('config.sef_suffix',0) == 1;
+		if(version_compare(JVERSION, '3.0.0', 'ge')) {
+			self::$addsSuffix = $config->get('sef_suffix',0) == 1;
+		} else {
+			self::$addsSuffix = $config->getValue('config.sef_suffix',0) == 1;
+		}
 	}
 }

@@ -60,7 +60,11 @@ class ArsHelperCache
 		if(!$this->hasCache) {
 			return $default;
 		} else {
-			return $this->registry->getValue($key, $default);
+			if(version_compare(JVERSION, '3.0.0', 'ge')) {
+				return $this->registry->get($key, $default);
+			} else {
+				return $this->registry->getValue($key, $default);
+			}
 		}
 	}
 	
@@ -69,7 +73,11 @@ class ArsHelperCache
 		if(!$this->hasCache) {
 			return;
 		} else {
-			$this->registry->setValue($key, $value);
+			if(version_compare(JVERSION, '3.0.0', 'ge')) {
+				$this->registry->set($key, $value);
+			} else {
+				$this->registry->setValue($key, $value);
+			}
 		}
 	}
 	

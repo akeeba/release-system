@@ -64,7 +64,11 @@ class ArsViewUploads extends FOFViewHtml
 			$safe_mode = true;
 		}
 		$jconfig = JFactory::getConfig();
-		$temp = $jconfig->getValue('config.tmp_path', '');
+		if(version_compare(JVERSION, '3.0.0', 'ge')) {
+			$temp = $jconfig->get('tmp_path', '');
+		} else {
+			$temp = $jconfig->getValue('config.tmp_path', '');
+		}
 		$isWritable = @is_writable($temp) && !$safe_mode;
 		$this->assign('chunking', !$isWritable);
 		
