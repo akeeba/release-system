@@ -153,7 +153,7 @@ class ArsControllerUpload extends FOFController
 			if(!$success) {
 				$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
 					.'&folder='.urlencode(JRequest::getString('folder'))
-					.'&'.JUtility::getToken(true).'=1';
+					.'&'.JFactory::getSession()->getToken(true).'=1';
 				$this->setRedirect($url, $s3->getError(), 'error');
 				return false;
 			}
@@ -161,7 +161,7 @@ class ArsControllerUpload extends FOFController
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
 			.'&folder='.urlencode(JRequest::getString('folder'))
-			.'&'.JUtility::getToken(true).'=1';
+			.'&'.JFactory::getSession()->getToken(true).'=1';
 		$this->setRedirect($url, JText::_('MSG_ALL_FILES_UPLOADED'));
 	}
 
@@ -193,7 +193,7 @@ class ArsControllerUpload extends FOFController
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
 			.'&folder='.urlencode(JRequest::getString('folder'))
-			.'&'.JUtility::getToken(true).'=1';
+			.'&'.JFactory::getSession()->getToken(true).'=1';
 		
 		if($status) {
 			$this->setRedirect($url, JText::_('MSG_FILE_DELETED'));
@@ -250,7 +250,7 @@ class ArsControllerUpload extends FOFController
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
 			.'&folder='.urlencode(JRequest::getString('folder'))
-			.'&'.JUtility::getToken(true).'=1';
+			.'&'.JFactory::getSession()->getToken(true).'=1';
 		if($status) {
 			$this->setRedirect($url, JText::_('MSG_FOLDER_CREATED'));
 		} else {
