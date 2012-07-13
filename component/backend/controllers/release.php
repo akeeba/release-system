@@ -53,7 +53,7 @@ class ArsControllerRelease extends FOFController
 		{
 			$item->id = 0;
 			$item->release_id = $newRelease->id;
-			$item->created = $date->toMySQL();
+			$item->created = $date->toSql();
 			if(!empty($item->environments)) {
 				$item->environments = @json_decode($item->environments);
 			}

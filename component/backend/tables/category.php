@@ -136,12 +136,12 @@ class ArsTableCategory extends FOFTable
 		if(!$this->created_by && empty($this->id))
 		{
 			$this->created_by = $user->id;
-			$this->created = $date->toMySQL();
+			$this->created = $date->toSql();
 		}
 		else
 		{
 			$this->modified_by = $user->id;
-			$this->modified = $date->toMySQL();
+			$this->modified = $date->toSql();
 		}
 
 		if(empty($this->published) && ($this->published !== 0) )

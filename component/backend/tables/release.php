@@ -139,12 +139,12 @@ class ArsTableRelease extends FOFTable
 		if(!$this->created_by && empty($this->id))
 		{
 			$this->created_by = $user->id;
-			if(empty($this->created)) $this->created = $date->toMySQL();
+			if(empty($this->created)) $this->created = $date->toSql();
 		}
 		else
 		{
 			$this->modified_by = $user->id;
-			$this->modified = $date->toMySQL();
+			$this->modified = $date->toSql();
 		}
 
 		/*

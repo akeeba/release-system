@@ -50,7 +50,7 @@ class ArsTableLog extends FOFTable
 		{
 			jimport('joomla.utilities.date');
 			$date = new JDate();
-			$this->accessed_on = $date->toMySQL();
+			$this->accessed_on = $date->toSql();
 		}
 
 		if(empty($this->referer))

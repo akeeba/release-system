@@ -232,7 +232,7 @@ class ArsModelBleedingedge extends FOFModel
 					'groups'			=> $this->category->groups,
 					'access'			=> $this->category->access,
 					'published'			=> 1,
-					'created'			=> $jNow->toMySQL(),
+					'created'			=> $jNow->toSql(),
 				);
 				
 				// Before saving the release, call the onNewARSBleedingEdgeRelease()
@@ -379,7 +379,7 @@ class ArsModelBleedingedge extends FOFModel
 				'groups'			=> $release->groups,
 				'hits'				=> '0',
 				'published'			=> '1',
-				'created'			=> $jNow->toMySQL(),
+				'created'			=> $jNow->toSql(),
 				'access'			=> '1'
 			);
 			
