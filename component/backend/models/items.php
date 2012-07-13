@@ -33,7 +33,7 @@ class ArsModelItems extends FOFModel
 				$db->qn('c').'.'.$db->qn('published').' AS '.$db->qn('cat_published'),
 				$db->qn('c').'.'.$db->qn('language').' AS '.$db->qn('cat_language'),
 			))
-			->from($db->nameQuote('#__ars_items').' AS '.$db->qn('i'))
+			->from($db->quoteName('#__ars_items').' AS '.$db->qn('i'))
 			->join('INNER', $db->qn('#__ars_releases').' AS '.$db->qn('r').' ON('.
 				$db->qn('r').'.'.$db->qn('id').' = '.$db->qn('i').'.'.$db->qn('release_id').')')
 			->join('INNER', $db->qn('#__ars_categories').' AS '.$db->qn('c').' ON('.

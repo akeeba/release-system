@@ -15,7 +15,7 @@ class ArsModelCategories extends FOFModel
 		
 		$query = FOFQueryAbstract::getNew($db)
 			->select('*')
-			->from($db->nameQuote('#__ars_categories'));
+			->from($db->quoteName('#__ars_categories'));
 		
 		$fltTitle		= $this->getState('title', null, 'string');
 		if($fltTitle) {
