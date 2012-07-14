@@ -214,7 +214,7 @@ class ArsModelCpanels extends FOFModel
 			->from($db->qn('#__ars_log'))
 			->where($db->qn('country').' <> '.$db->q(''))
 			->where($db->qn('accessed_on').' BETWEEN CURRENT_TIMESTAMP - INTERVAL 1 MONTH AND CURRENT_TIMESTAMP')
-			->group($db->nq('country'))
+			->group($db->qn('country'))
 			;
 		$db->setQuery($query);
 		$data = $db->loadObjectList();
@@ -241,7 +241,7 @@ class ArsModelCpanels extends FOFModel
 			->from($db->qn('#__ars_log'))
 			->where($db->qn('accessed_on').' BETWEEN CURRENT_TIMESTAMP - INTERVAL 1 MONTH AND CURRENT_TIMESTAMP')
 			->group('DAYOFYEAR('.$db->qn('accessed_on').')')
-			->order($db->nq('accessed_on').' ASC')
+			->order($db->qn('accessed_on').' ASC')
 		;
 		$db->setQuery($query);
 		

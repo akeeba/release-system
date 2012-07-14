@@ -58,38 +58,38 @@ class ArsModelDownloads extends FOFModel
 			
 			$innerQuery = FOFQueryAbstract::getNew($db)
 				->select(array(
-					$db->nq('r').'.'.'*',
-					$db->nq('c').'.'.$db->nq('title').' AS '.$db->nq('cat_title'),
-					$db->nq('c').'.'.$db->nq('alias').' AS '.$db->nq('cat_alias'),
-					$db->nq('c').'.'.$db->nq('type').' AS '.$db->nq('cat_type'),
-					$db->nq('c').'.'.$db->nq('groups').' AS '.$db->nq('cat_groups'),
-					$db->nq('c').'.'.$db->nq('directory').' AS '.$db->nq('cat_directory'),
-					$db->nq('c').'.'.$db->nq('access').' AS '.$db->nq('cat_access'),
-					$db->nq('c').'.'.$db->nq('published').' AS '.$db->nq('cat_published'),
+					$db->qn('r').'.'.'*',
+					$db->qn('c').'.'.$db->qn('title').' AS '.$db->qn('cat_title'),
+					$db->qn('c').'.'.$db->qn('alias').' AS '.$db->qn('cat_alias'),
+					$db->qn('c').'.'.$db->qn('type').' AS '.$db->qn('cat_type'),
+					$db->qn('c').'.'.$db->qn('groups').' AS '.$db->qn('cat_groups'),
+					$db->qn('c').'.'.$db->qn('directory').' AS '.$db->qn('cat_directory'),
+					$db->qn('c').'.'.$db->qn('access').' AS '.$db->qn('cat_access'),
+					$db->qn('c').'.'.$db->qn('published').' AS '.$db->qn('cat_published'),
 				))
-				->from($db->nq('#__ars_releases').' AS '.$db->nq('r'))
-				->join('INNER',$db->nq('#__ars_categories').' AS '.$db->nq('c').' ON ('.
-					$db->nq('c').'.'.$db->nq('id').' = '.$db->nq('r').'.'.$db->nq('category_id')
+				->from($db->qn('#__ars_releases').' AS '.$db->qn('r'))
+				->join('INNER',$db->qn('#__ars_categories').' AS '.$db->qn('c').' ON ('.
+					$db->qn('c').'.'.$db->qn('id').' = '.$db->qn('r').'.'.$db->qn('category_id')
 				.')')
 			;
 			
 			$query = FOFQueryAbstract::getNew($db)
 				->select(array(
-					$db->nq('i').'.'.'*',
-					$db->nq('r').'.'.$db->nq('category_id'),
-					$db->nq('r').'.'.$db->nq('version'),
-					$db->nq('r').'.'.$db->nq('alias').' AS '.$db->nq('rel_alias'),
-					$db->nq('maturity'),
-					$db->nq('r').'.'.$db->nq('groups').' AS '.$db->nq('rel_groups'),
-					$db->nq('r').'.'.$db->nq('access').' AS '.$db->nq('rel_access'),
-					$db->nq('r').'.'.$db->nq('published').' AS '.$db->nq('rel_published'),
-					$db->nq('cat_title'), $db->nq('cat_alias'), $db->nq('cat_type'),
-					$db->nq('cat_groups'), $db->nq('cat_directory'), $db->nq('cat_access'),
-					$db->nq('cat_published')
-				))->from($db->nq('#__ars_items').' AS '.$db->nq('i'))
-				->join('INNER', '('.$innerQuery.') AS '.$db->nq('r').' ON('.
-						$db->nq('r').'.'.$db->nq('id').' = '.$db->nq('i').'.'.$db->nq('release_id').')')
-				->where($db->nq('i').'.'.$db->nq('id').' = '.$db->q($this->item->id))
+					$db->qn('i').'.'.'*',
+					$db->qn('r').'.'.$db->qn('category_id'),
+					$db->qn('r').'.'.$db->qn('version'),
+					$db->qn('r').'.'.$db->qn('alias').' AS '.$db->qn('rel_alias'),
+					$db->qn('maturity'),
+					$db->qn('r').'.'.$db->qn('groups').' AS '.$db->qn('rel_groups'),
+					$db->qn('r').'.'.$db->qn('access').' AS '.$db->qn('rel_access'),
+					$db->qn('r').'.'.$db->qn('published').' AS '.$db->qn('rel_published'),
+					$db->qn('cat_title'), $db->qn('cat_alias'), $db->qn('cat_type'),
+					$db->qn('cat_groups'), $db->qn('cat_directory'), $db->qn('cat_access'),
+					$db->qn('cat_published')
+				))->from($db->qn('#__ars_items').' AS '.$db->qn('i'))
+				->join('INNER', '('.$innerQuery.') AS '.$db->qn('r').' ON('.
+						$db->qn('r').'.'.$db->qn('id').' = '.$db->qn('i').'.'.$db->qn('release_id').')')
+				->where($db->qn('i').'.'.$db->qn('id').' = '.$db->q($this->item->id))
 			;
 			
 			$db->setQuery($query);
