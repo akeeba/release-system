@@ -8,9 +8,6 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-jimport('joomla.html.pane');
-$tabs	= JPane::getInstance('tabs');
-
 $lang = JFactory::getLanguage();
 $icons_root = JURI::base().'components/com_ars/assets/images/';
 
