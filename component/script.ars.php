@@ -786,7 +786,7 @@ class Com_ArsInstallerScript
 			'required'	=> $haveToInstallFOF,
 			'installed'	=> $installedFOF,
 			'version'	=> $fofVersion[$versionSource]['version'],
-			'date'		=> $fofVersion[$versionSource]['date']->toFormat('Y-m-d'),
+			'date'		=> $fofVersion[$versionSource]['date']->format('Y-m-d'),
 		);
 	}
 }
