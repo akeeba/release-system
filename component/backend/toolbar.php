@@ -45,10 +45,10 @@ class ArsToolbar extends FOFToolbar
 
 		// Add toolbar buttons
 		if($this->perms->create) {
-			JToolBarHelper::addNewX();
+			JToolBarHelper::addNew();
 		}
 		if($this->perms->edit) {
-			JToolBarHelper::editListX();
+			JToolBarHelper::editList();
 		}
 		if($this->perms->create || $this->perms->edit) {
 			JToolBarHelper::divider();
@@ -118,10 +118,10 @@ class ArsToolbar extends FOFToolbar
 
 		// Add toolbar buttons
 		if($this->perms->create) {
-			JToolBarHelper::addNewX();
+			JToolBarHelper::addNew();
 		}
 		if($this->perms->edit) {
-			JToolBarHelper::editListX();
+			JToolBarHelper::editList();
 		}
 		if($this->perms->create || $this->perms->edit) {
 			JToolBarHelper::divider();
