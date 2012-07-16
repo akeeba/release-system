@@ -188,4 +188,8 @@
 			</fileset>			
 		</ftpdeploy>
 	</target>
+	
+	<target name="lang" description="Generate and upload language files">
+		<exec command="php ./buildlang.php" dir="buildlang" passthru="true" />
+	</target>
 </project>
