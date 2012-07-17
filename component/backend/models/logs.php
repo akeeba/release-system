@@ -236,14 +236,13 @@ class ArsModelLogs extends FOFModel
 		$db = $this->getDBO();
 		
 		$qfrag = $db->q("%".$frag."%");
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select($db->qn('id'))
 			->from($db->qn('#__users'))
-			->where($db->qn('name').' LIKE '.$qfrag)
+			->where($db->qn('name').' LIKE '.$qfrag, 'OR')
 			->where($db->qn('username').' LIKE '.$qfrag, 'OR')
 			->where($db->qn('email').' LIKE '.$qfrag, 'OR')
 			->where($db->qn('params').' LIKE '.$qfrag, 'OR');
-		
 		$db->setQuery($query);
 		if(version_compare(JVERSION, '3.0', 'ge')) {
 			return $db->loadColumn();
