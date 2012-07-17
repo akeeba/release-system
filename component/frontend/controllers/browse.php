@@ -9,6 +9,14 @@ defined('_JEXEC') or die();
 
 class ArsControllerBrowse extends FOFController
 {
+	public function __construct($config = array()) {
+		parent::__construct($config);
+
+		// Do not remove these two lines. Required to handle fallback to repo view on invalid URLs.
+		$config['view'] = 'browses';
+		$dummy = $this->getThisView($config);
+	}
+	
 	public function execute($task) {
 		if(!in_array( $this->layout, array('normal','bleedingedge','repository') ))
 		{
@@ -21,7 +29,6 @@ class ArsControllerBrowse extends FOFController
 	
 	public function onBeforeBrowse() {
 		$result = parent::onBeforeBrowse();
-		
 		if($result) {
 			$app = JFactory::getApplication();
 			$params = $app->getPageParameters('com_ars');
