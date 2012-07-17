@@ -907,8 +907,8 @@ function arsParseRouteHtml(&$segments)
 		$view = $menu->query['view'];
 		$catalias = null;
 		$relalias = null;
-
-		if( empty($view) || ($view == 'browse') )
+		
+		if( empty($view) || ($view == 'browse') || ($view == 'browses') )
 		{
 			switch(count($segments))
 			{
@@ -926,6 +926,22 @@ function arsParseRouteHtml(&$segments)
 					break;
 
 				case 3:
+					// Degenerate case :(
+					return arsParseRouteRaw($segments);
+					break;
+			}
+		}
+		elseif( empty($view) || ($view == 'category') )
+		{
+			switch(count($segments))
+			{
+				case 1:
+					// Release view
+					$query['view'] = 'release';
+					$relalias = array_pop($segments);
+					break;
+
+				case 2:
 					// Degenerate case :(
 					return arsParseRouteRaw($segments);
 					break;
@@ -1016,7 +1032,7 @@ function arsParseRouteHtml(&$segments)
 				->innerJoin($db->qn('#__ars_categories').' AS '.$db->qn('c').' ON('.
 					$db->qn('c').'.'.$db->qn('id').'='.$db->qn('r').'.'.$db->qn('category_id').')')
 				->where($db->qn('r').'.'.$db->qn('alias').' = '.$db->q($relalias))
-				->where($db->qn('c').'.'.$db->qn('alias').' = '.$db->q($catalias))
+				->where($db->qn('c').'.'.$db->qn('id').' = '.$db->q($catid))
 			;
 				
 			$db->setQuery($dbquery, 0, 1);
