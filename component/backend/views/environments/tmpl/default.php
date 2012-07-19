@@ -27,7 +27,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<thead>
 		<tr>
 			<th width="20">
-				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(<?php echo count( $this->items ) + 1; ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 			</th>
 			<th>
 				<?php echo JHTML::_('grid.sort', 'LBL_ENVIRONMENTS_TITLE', 'title', $this->lists->order_Dir, $this->lists->order); ?>

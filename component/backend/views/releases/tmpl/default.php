@@ -28,7 +28,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<thead>
 		<tr>
 			<th width="20">
-				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(<?php echo count( $this->items ) + 1; ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 			</th>
 			<th>
 				<?php echo JHTML::_('grid.sort', 'COM_ARS_RELEASES_FIELD_CATEGORY', 'category_id', $this->lists->order_Dir, $this->lists->order); ?>
