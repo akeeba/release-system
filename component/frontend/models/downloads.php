@@ -191,13 +191,42 @@ class ArsModelDownloads extends FOFModel
             header("Accept-Ranges: bytes");
 			header('Content-Disposition: attachment; filename="'.$header_file.'"');
 			header('Content-Transfer-Encoding: binary');
-			// Notify of filesize, if this info is available
-			if($filesize > 0) header('Content-Length: '.(int)$filesize);
+			header('Connection: close');
 
 			error_reporting(0);
         	if ( ! ini_get('safe_mode') ) {
 		    	set_time_limit(0);
         	}
+
+			// Support resumable downloads
+			$isResumable = false;
+			$seek_start = 0;
+			$seek_end = $filesize - 1;
+			if(isset($_SERVER['HTTP_RANGE'])) {
+				list($size_unit, $range_orig) = explode('=', $_SERVER['HTTP_RANGE'], 2);
+
+				if ($size_unit == 'bytes') {
+					//multiple ranges could be specified at the same time, but for simplicity only serve the first range
+					//http://tools.ietf.org/id/draft-ietf-http-range-retrieval-00.txt
+					list($range, $extra_ranges) = explode(',', $range_orig, 2);
+				} else {
+					$range = '';
+				}
+			} else {
+				$range = '';
+			}
+			
+			if($range) {
+				//figure out download piece from range (if set)
+				list($seek_start, $seek_end) = explode('-', $range, 2);
+
+				//set start and end based on range (if set), else set defaults
+				//also check for invalid ranges.
+				$seek_end = (empty($seek_end)) ? ($size - 1) : min(abs(intval($seek_end)),($filesize - 1));
+				$seek_start = (empty($seek_start) || $seek_end < abs(intval($seek_start))) ? 0 : max(abs(intval($seek_start)),0);
+				
+				$isResumable = true;
+			}
 
 			// Use 1M chunks for echoing the data to the browser
 			$chunksize = 1024*1024; //1M chunks
@@ -205,8 +234,37 @@ class ArsModelDownloads extends FOFModel
 	   		$handle = @fopen($filename, 'rb');
 	   		if($handle !== false)
 	   		{
-	   			while (!feof($handle)) {
+			
+				if($isResumable) {
+					//Only send partial content header if downloading a piece of the file (IE workaround)
+					if ($seek_start > 0 || $seek_end < ($filesize - 1)) {
+						header('HTTP/1.1 206 Partial Content');
+					}
+
+					// Necessary headers
+					$totalLength = $seek_end - $seek_start + 1;
+					header('Content-Range: bytes '.$seek_start.'-'.$seek_end.'/'.$size);
+					header('Content-Length: '.$totalLength);
+					
+					// Seek to start
+					fseek($handle, $seek_start);
+				} else {
+					$isResumable = false;
+					// Notify of filesize, if this info is available
+					if($filesize > 0) header('Content-Length: '.(int)$filesize);
+				}
+				$read = 0;
+	   			while (!feof($handle) && ($chunksize > 0)) {
+					if($isResumable) {
+						if($totalLength - $read < $chunksize) {
+							$chunksize = $totalLength - $read;
+							if($chunksize < 0) continue;
+						}
+					}
 	   				$buffer = fread($handle, $chunksize);
+					if($isResumable) {
+						$read += strlen($buffer);
+					}
 	   				echo $buffer;
 	   				@ob_flush();
 	   				flush();
@@ -215,6 +273,8 @@ class ArsModelDownloads extends FOFModel
 	   		}
 	   		else
 	   		{
+				// Notify of filesize, if this info is available
+				if($filesize > 0) header('Content-Length: '.(int)$filesize);
 	   			@readfile($filename);
 	   		}
 	   		
@@ -225,7 +285,10 @@ class ArsModelDownloads extends FOFModel
             	'basename'		=> $basename,
             	'header_file'	=> $header_file,
             	'mimetype'		=> $mime_type,
-            	'filesize'		=> $filesize
+            	'filesize'		=> $filesize,
+				'resumable'		=> $isResumable,
+				'range_start'	=> $seek_start,
+				'range_end'		=> $seek_end,
             );
             $app = JFactory::getApplication();
             $ret = $app->triggerEvent('onARSAfterSendFile', array($object));
