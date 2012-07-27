@@ -103,6 +103,8 @@ class ArsControllerUpdate extends FOFController
 		}
 		$model = $this->getThisModel();
 		$model->getItems($id);
+		$model->getPublished($id);
+
 		$this->display(true);
 	}
 
@@ -117,7 +119,8 @@ class ArsControllerUpdate extends FOFController
 		}
 		$model = $this->getThisModel();
 		$model->getItems($id);
-		
+		$model->getPublished($id);
+
 		$this->display(true);
 	}
 }

@@ -112,4 +112,16 @@ class ArsModelUpdates extends FOFModel
 
 		$this->items = $db->loadObjectList();
 	}
+
+	public function getPublished($id)
+	{
+		$db = $this->getDBO();
+		
+		$query = FOFQueryAbstract::getNew($db)
+			->select($db->qn('published'))
+			->from($db->qn('#__ars_updatestreams'))
+			->where($db->qn('id').' = '.$db->q($id));			
+		$db->setQuery($query);
+		$this->published = $db->loadResult();
+	}
 }

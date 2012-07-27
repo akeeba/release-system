@@ -7,6 +7,10 @@
 
 defined('_JEXEC') or die();
 
+if(!$this->published) {
+	die();
+}
+
 $rootURL = rtrim(JURI::base(),'/');
 $subpathURL = JURI::base(true);
 if(!empty($subpathURL) && ($subpathURL != '/')) {

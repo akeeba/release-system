@@ -8,6 +8,9 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
+if(!$this->published) {
+	die();
+}
 
 $rootURL = rtrim(JURI::base(),'/');
 $subpathURL = JURI::base(true);

@@ -14,9 +14,11 @@ class ArsViewUpdate extends FOFViewHtml
 		
 		$task = JRequest::getCmd('task', '');
 		
-		$model = $this->getModel();
-		$items = $model->items;
-		$this->assign('items',			$items);
+		$model 		= $this->getModel();
+		$items 		= $model->items;
+		$published  = $model->published;
+		$this->assign('items', $items);
+		$this->assign('published', $published);
 		
 		$this->setLayout($this->getModel()->getState('task'));
 		
