@@ -14,6 +14,8 @@ component/backend/liveupdate/liveupdate.php
 component/fof
 plugins/system/oneclickaction
 documentation/arsguide/ars-users-guide.xml~
+component/language/backend/*.ini
+component/language/frontend/*.ini
 
 plugins/ars/bleedingedgediff/language/en-GB
 plugins/ars/bleedingedgematurity/language/en-GB
