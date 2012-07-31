@@ -18,7 +18,7 @@ class ArsTableEnvironment extends FOFTable
 	{
 		parent::__construct( '#__ars_environments', 'id', $db );
 		
-		$this->columnAlias = array(
+		$this->_columnAlias = array(
 			'enabled'		=> 'published',
 			'slug'			=> 'alias',
 			'created_on'	=> 'created',

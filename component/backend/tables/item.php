@@ -27,7 +27,7 @@ class ArsTableItem extends FOFTable
 	{
 		parent::__construct( '#__ars_items', 'id', $db );
 		
-		$this->columnAlias = array(
+		$this->_columnAlias = array(
 			'enabled'		=> 'published',
 			'slug'			=> 'alias',
 			'created_on'	=> 'created',
