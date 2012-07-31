@@ -1,4 +1,8 @@
-Version 2.0.a1
+Version 2.0.1
+================================================================================
+! LiveUpdate was not included in the installation package
+
+Version 2.0.0
 ================================================================================
 ! Rewritten to use the FOF framework
 + Support for resumable downloads (Range headers)
