@@ -15,7 +15,9 @@ class ArsControllerLatest extends FOFController
 	}
 	
 	public function execute($task) {
-		$this->layout = 'latest';
+		if(!$this->layout) {
+			$this->layout = 'latest';
+		}
 		$task = 'browse';
 		
 		parent::execute($task);
