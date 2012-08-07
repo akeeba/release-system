@@ -25,7 +25,7 @@ class ArsModelBrowses extends FOFModel
 		// Get state variables
 		$grouping = $this->getState('grouping','normal');
 		$orderby = $this->getState('orderby', 'order');
-
+		
 		$start = 0;
 		$limit = 0;
 
@@ -57,28 +57,28 @@ class ArsModelBrowses extends FOFModel
 		switch($orderby)
 		{
 			case 'alpha':
-				$catModel->setState('order','title');
-				$catModel->setState('dir','ASC');
+				$catModel->setState('filter_order','title');
+				$catModel->setState('filter_order_Dir','ASC');
 				break;
 
 			case 'ralpha':
-				$catModel->setState('order','title');
-				$catModel->setState('dir','DESC');
+				$catModel->setState('filter_order','title');
+				$catModel->setState('filter_order_Dir','DESC');
 				break;
 
 			case 'created':
-				$catModel->setState('order','created');
-				$catModel->setState('dir','ASC');
+				$catModel->setState('filter_order','created');
+				$catModel->setState('filter_order_Dir','ASC');
 				break;
 
 			case 'rcreated':
-				$catModel->setState('order','created');
-				$catModel->setState('dir','DESC');
+				$catModel->setState('filter_order','created');
+				$catModel->setState('filter_order_Dir','DESC');
 				break;
 
 			case 'order':
-				$catModel->setState('order','ordering');
-				$catModel->setState('dir','ASC');
+				$catModel->setState('filter_order','ordering');
+				$catModel->setState('filter_order_Dir','ASC');
 				break;
 
 		}
@@ -177,24 +177,24 @@ class ArsModelBrowses extends FOFModel
 		switch($orderby)
 		{
 			case 'alpha':
-				$model->setState('order','version');
-				$model->setState('dir','ASC');
+				$model->setState('filter_order','version');
+				$model->setState('filter_order_Dir','ASC');
 				break;
 			case 'ralpha':
-				$model->setState('order','version');
-				$model->setState('dir','DESC');
+				$model->setState('filter_order','version');
+				$model->setState('filter_order_Dir','DESC');
 				break;
 			case 'created':
-				$model->setState('order','created');
-				$model->setState('dir','ASC');
+				$model->setState('filter_order','created');
+				$model->setState('filter_order_Dir','ASC');
 				break;
 			case 'rcreated':
-				$model->setState('order','created');
-				$model->setState('dir','DESC');
+				$model->setState('filter_order','created');
+				$model->setState('filter_order_Dir','DESC');
 				break;
 			case 'order':
-				$model->setState('order','ordering');
-				$model->setState('dir','ASC');
+				$model->setState('filter_order','ordering');
+				$model->setState('filter_order_Dir','ASC');
 				break;
 		}
 
@@ -278,24 +278,24 @@ class ArsModelBrowses extends FOFModel
 		switch($orderby)
 		{
 			case 'alpha':
-				$model->setState('order','title');
-				$model->setState('dir','ASC');
+				$model->setState('filter_order','title');
+				$model->setState('filter_order_Dir','ASC');
 				break;
 			case 'ralpha':
-				$model->setState('order','title');
-				$model->setState('dir','DESC');
+				$model->setState('filter_order','title');
+				$model->setState('filter_order_Dir','DESC');
 				break;
 			case 'created':
-				$model->setState('order','created');
-				$model->setState('dir','ASC');
+				$model->setState('filter_order','created');
+				$model->setState('filter_order_Dir','ASC');
 				break;
 			case 'rcreated':
-				$model->setState('order','created');
-				$model->setState('dir','DESC');
+				$model->setState('filter_order','created');
+				$model->setState('filter_order_Dir','DESC');
 				break;
 			case 'order':
-				$model->setState('order','ordering');
-				$model->setState('dir','ASC');
+				$model->setState('filter_order','ordering');
+				$model->setState('filter_order_Dir','ASC');
 				break;
 		}
 
@@ -328,28 +328,28 @@ class ArsModelBrowses extends FOFModel
 				switch($orderby)
 				{
 					case 'alpha':
-						$model->setState('order','title');
-						$model->setState('dir','ASC');
+						$model->setState('filter_order','title');
+						$model->setState('filter_order_Dir','ASC');
 						break;
 
 					case 'ralpha':
-						$model->setState('order','title');
-						$model->setState('dir','DESC');
+						$model->setState('filter_order','title');
+						$model->setState('filter_order_Dir','DESC');
 						break;
 
 					case 'created':
-						$model->setState('order','created');
-						$model->setState('dir','ASC');
+						$model->setState('filter_order','created');
+						$model->setState('filter_order_Dir','ASC');
 						break;
 
 					case 'rcreated':
-						$model->setState('order','created');
-						$model->setState('dir','DESC');
+						$model->setState('filter_order','created');
+						$model->setState('filter_order_Dir','DESC');
 						break;
 
 					case 'order':
-						$model->setState('order','ordering');
-						$model->setState('dir','ASC');
+						$model->setState('filter_order','ordering');
+						$model->setState('filter_order_Dir','ASC');
 						break;
 
 				}
@@ -404,28 +404,28 @@ class ArsModelBrowses extends FOFModel
 				switch($orderby)
 				{
 					case 'alpha':
-						$model->setState('order','title');
-						$model->setState('dir','ASC');
+						$model->setState('filter_order','title');
+						$model->setState('filter_order_Dir','ASC');
 						break;
 
 					case 'ralpha':
-						$model->setState('order','title');
-						$model->setState('dir','DESC');
+						$model->setState('filter_order','title');
+						$model->setState('filter_order_Dir','DESC');
 						break;
 
 					case 'created':
-						$model->setState('order','created');
-						$model->setState('dir','ASC');
+						$model->setState('filter_order','created');
+						$model->setState('filter_order_Dir','ASC');
 						break;
 
 					case 'rcreated':
-						$model->setState('order','created');
-						$model->setState('dir','DESC');
+						$model->setState('filter_order','created');
+						$model->setState('filter_order_Dir','DESC');
 						break;
 
 					case 'order':
-						$model->setState('order','ordering');
-						$model->setState('dir','ASC');
+						$model->setState('filter_order','ordering');
+						$model->setState('filter_order_Dir','ASC');
 						break;
 
 				}
