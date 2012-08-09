@@ -52,6 +52,9 @@ class ArsHelperFiltering
 			if( self::hasAkeebaSubs() ) {
 				self::$hasSubsExtension = true;
 				self::$subsExtensionType = 'akeeba';
+			} elseif( defined('PAYPLANS_LOADED') ) {
+				self::$hasSubsExtension = true;
+				self::$subsExtensionType = 'payplans';
 			} else {
 				self::$hasSubsExtension = false;
 				self::$subsExtensionType = null;
@@ -80,6 +83,10 @@ class ArsHelperFiltering
 		switch(self::getExtensionType()) {
 			case 'akeeba':
 				return self::getAkeebaGroups();
+				break;
+			
+			case 'payplans':
+				return PayplansApi::getPlans();
 				break;
 				
 			default:
@@ -142,6 +149,11 @@ class ArsHelperFiltering
 				return self::getAMBRAUserGroups($user_id);
 				break;
 				
+			case 'payplans':
+				$status = PayplansStatus::SUBSCRIPTION_ACTIVE;
+				return PayplansApi::getUser($user_id)->getSubscriptions($status);
+				break;  
+
 			default:
 				return array();
 				break;

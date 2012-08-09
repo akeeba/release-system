@@ -66,6 +66,11 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<label for="groups"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_AKEEBA_LABEL'); ?></label>
 			<?php echo ArsHelperSelect::akeebasubsgroups($this->item->groups, 'groups') ?>
 		</div>
+		<?php elseif(defined('PAYPLANS_LOADED')): ?>
+		<div class="editform-row editform-row-noheight">
+			<label for="groups"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_PAYPLANS_LABEL'); ?></label>
+			<?php echo PayplansHtml::_('plans.edit', 'groups', $this->item->groups) ?>
+		</div>
 		<?php endif; ?>
 		
 		<div class="editform-row editform-row-noheight">
