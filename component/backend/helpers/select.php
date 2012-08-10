@@ -301,11 +301,13 @@ class ArsHelperSelect
 			
 			if($useS3) {
 				$directory = substr($directory, 5);
+				if($directory === false) $directory = '';
 				$s3 = ArsHelperAmazons3::getInstance();
 				$items = $s3->getBucket('', $directory.'/');
 				if(empty($items)) {
 					$directory = null;
 				}
+				if(empty($directory)) $directory = '/';
 			} else {
 				jimport('joomla.filesystem.folder');
 				if(!JFolder::exists($directory))
