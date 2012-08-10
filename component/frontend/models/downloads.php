@@ -36,7 +36,8 @@ class ArsModelDownloads extends FOFModel
 		// Does it pass the access level / subscriptions filter?
 		$dummy = ArsHelperFilter::filterList( array($item) );
 		if(!count($dummy)) {
-			return null;
+			$null = null;
+			return $null;
 		}
 
 		$this->item = $item;
