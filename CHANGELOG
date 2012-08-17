@@ -2,6 +2,7 @@ Version 2.0.2
 ================================================================================
 + PayPlans integration. Many thanks to Shyam Verma for the original code of this feature.
 # [HIGH] Could not select files from an S3 bucket
+# [HIGH] You could not de-select subscription assignment for categories, releases and items
 # [MEDIUM] Ordering preferences not respected in front-end
 
 Version 2.0.1

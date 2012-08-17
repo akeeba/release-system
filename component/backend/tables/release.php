@@ -126,7 +126,7 @@ class ArsTableRelease extends FOFTable
 		}
 
 		// Fix the groups
-		if(is_array($this->groups)) $this->groups = implode(',', $this->groups);
+		if(is_array($this->groups)) $this->groups = implode(',', $this->groups);		
 		// Set the access to registered if there are subscriptions defined
 		if(!empty($this->groups) && ($this->access == 1))
 		{

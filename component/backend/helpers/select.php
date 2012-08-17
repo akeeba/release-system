@@ -160,7 +160,7 @@ class ArsHelperSelect
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
-	public static function akeebasubsgroups($selected = null, $name = 'groups')
+	public static function akeebasubsgroups($selected = null, $name = 'groups', $attribs = array())
 	{
 		if(!is_array($selected))
 		{
@@ -177,19 +177,21 @@ class ArsHelperSelect
 		if($hasAkeebaSubs) {
 			$groups = ArsHelperFiltering::getAkeebaGroups();
 	
-			$html = '';
+			$options = array();
+			$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL').' -');
 	
 			if(count($groups))
 			{
-				$options = array();
 				foreach($groups as $group) {
-					$item = '<input type="checkbox" class="checkbox" name="'.$name.'[]" value="'.$group->id.'" ';
-					if(in_array($group->id, $selected)) $item .= ' checked="checked" ';
-					$item .= '/> '.$group->title;
-					$options[] = $item;
+					$options[] = JHTML::_('select.option', $group->id, $group->title);
 				}
-				$html = implode("\n&nbsp;", $options);
-			}			
+				$default_attribs = array(
+					'multiple'	=> 'multiple',
+					'size'		=> 5
+				);
+				$attribs = array_merge($default_attribs, $attribs);
+				$html = self::genericlist($options, $name, $attribs, $selected, $name);
+			}
 		} else {
 			$html = '';
 		}
