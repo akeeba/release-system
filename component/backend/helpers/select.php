@@ -190,7 +190,7 @@ class ArsHelperSelect
 					'size'		=> 5
 				);
 				$attribs = array_merge($default_attribs, $attribs);
-				$html = self::genericlist($options, $name, $attribs, $selected, $name);
+				$html = self::genericlist($options, $name.'[]', $attribs, $selected, $name);
 			}
 		} else {
 			$html = '';
