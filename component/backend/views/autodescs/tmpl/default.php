@@ -28,16 +28,16 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 			</th>
 			<th width="160">
-				<?php echo JHTML::_('grid.sort', 'LBL_AUTODESC_CATEGORY', 'category', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'LBL_AUTODESC_CATEGORY', 'category', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 			<th>
-				<?php echo JHTML::_('grid.sort', 'LBL_AUTODESC_PACKNAME', 'packname', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'LBL_AUTODESC_PACKNAME', 'packname', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 			<th>
-				<?php echo JHTML::_('grid.sort', 'LBL_AUTODESC_TITLE', 'title', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'LBL_AUTODESC_TITLE', 'title', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 			<th width="80">
-				<?php echo JHTML::_('grid.sort', 'JPUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'JPUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 		</tr>
 		<tr>

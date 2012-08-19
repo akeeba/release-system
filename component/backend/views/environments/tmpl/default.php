@@ -30,10 +30,10 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 			</th>
 			<th>
-				<?php echo JHTML::_('grid.sort', 'LBL_ENVIRONMENTS_TITLE', 'title', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'LBL_ENVIRONMENTS_TITLE', 'title', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 			<th width="120">
-				<?php echo JHTML::_('grid.sort', 'LBL_ENVIRONMENTS_ICON', 'icon', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'LBL_ENVIRONMENTS_ICON', 'icon', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 		</tr>
 	</thead>

@@ -33,16 +33,16 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<thead>
 		<tr>
 			<th width="160">
-				<?php echo JHTML::_('grid.sort', 'LBL_ITEMS_CATEGORY', 'category_id', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'LBL_ITEMS_CATEGORY', 'category_id', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 			<th width="100">
-				<?php echo JHTML::_('grid.sort', 'LBL_ITEMS_RELEASE', 'release_id', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'LBL_ITEMS_RELEASE', 'release_id', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 			<th>
-				<?php echo JHTML::_('grid.sort', 'LBL_ITEMS_TITLE', 'title', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'LBL_ITEMS_TITLE', 'title', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 			<th>
-				<?php echo JHTML::_('grid.sort', 'JFIELD_LANGUAGE_LABEL', 'language',$this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'JFIELD_LANGUAGE_LABEL', 'language',$this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 		</tr>
 		<tr>

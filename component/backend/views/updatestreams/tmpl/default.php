@@ -35,19 +35,19 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 			</th>
 			<th>
-				<?php echo JHTML::_('grid.sort', 'LBL_UPDATES_NAME', 'name', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'LBL_UPDATES_NAME', 'name', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 			<th width="180">
-				<?php echo JHTML::_('grid.sort', 'LBL_UPDATES_TYPE', 'type', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'LBL_UPDATES_TYPE', 'type', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 			<th width="180">
-				<?php echo JHTML::_('grid.sort', 'LBL_UPDATES_ELEMENT', 'element', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'LBL_UPDATES_ELEMENT', 'element', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 			<th>
 				<?php echo JText::_('LBL_UPDATESTREAMS_LINKS'); ?>
 			</th>
 			<th width="80">
-				<?php echo JHTML::_('grid.sort', 'JPUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order); ?>
+				<?php echo JHTML::_('grid.sort', 'JPUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
 		</tr>
 		<tr>
