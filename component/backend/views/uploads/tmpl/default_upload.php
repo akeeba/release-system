@@ -23,18 +23,19 @@ require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 
 ?>
 
-<div id="contentsbrowser">
-	<fieldset id="folderswidget">
-		<legend><?php echo JText::_('LBL_FOLDERS_LIST'); ?></legend>
+<div class="row-fluid">
+	
+	<div class="span6">
+		<h3><?php echo JText::_('LBL_FOLDERS_LIST'); ?></h3>
 		
 		<div id="folderslist">
-			<div id="mkfolder">
-				<input type="text" size="20" value="" id="newfolder" />
-				<button id="newfolderbtn">
+			<div id="mkfolder" style="clear: both; border: none;">
+				<input type="text" size="20" value="" id="newfolder" style="margin: 0;" />
+				<button class="btn btn-mini" id="newfolderbtn">
 					<?php echo JText::_('LBL_MKFOLDER'); ?>
 				</button>
 			</div>
-			<div style="clear: both;"></div>
+			<div style="clear: both; border: none;"></div>
 		<?php if(!is_null($this->parent)): ?>
 			<div class="folderrow0 folderrow" title="<?php echo $this->escape($this->parent) ?>">
 				<span class="foldername"><?php echo JText::_('LBL_PARENT_FOLDER') ?></span>
@@ -50,12 +51,12 @@ require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 			<?php endforeach; ?>
 		<?php endif; ?>
 		</div>		
-	</fieldset>
+	</div>
 
-	<fieldset id="fileswidget">
-		<legend>
+	<div class="span6">
+		<h3>
 			<?php echo JText::_('LBL_FILES_LIST'); ?>
-		</legend>
+		</h3>
 		<div id="fileslist">
 		<?php if(empty($this->files)): ?>
 			<?php echo JText::_('LBL_NO_FILES'); ?>
@@ -67,7 +68,7 @@ require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 				$filesize = $file['size'];
 			?>
 			<div class="filerow<?php echo $i?>">
-				<button class="deletefile" title="<?php echo $this->escape($file['filename']) ?>">
+				<button class="deletefile btn btn-mini" title="<?php echo $this->escape($file['filename']) ?>">
 					<span class="ui-icon ui-icon-trash"></span>
 				</button>
 				<span class="filename"><?php echo $this->escape($file['filename']) ?></span>
@@ -77,12 +78,16 @@ require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 			<?php endforeach; ?>
 		<?php endif; ?>
 		</div>
-	</fieldset>
+	</div>
 </div>
-<div class="clr"></div>
+
+<div style="clear: both;">&nbsp;</div>
+		
+<div class="row-fluid">
+<div class="span12">
 
 <!-- File Upload Form -->
-<form name="fileForm" action="<?php echo JURI::base(); ?>index.php" method="post" enctype="multipart/form-data">
+<form name="fileForm" action="<?php echo JURI::base(); ?>index.php" method="post" enctype="multipart/form-data" class="form form-horizontal">
 	<input type="hidden" name="option" value="<?php echo JRequest::getCmd('option') ?>" />
 	<input type="hidden" name="view" value="<?php echo JRequest::getCmd('view') ?>" />
 	<input type="hidden" name="task" value="upload" />
@@ -91,15 +96,10 @@ require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 	<input type="hidden" id="token" name="<?php echo JFactory::getSession()->getToken();?>" value="1" />
 	<input type="hidden" name="format" value="html" />
 
-	<fieldset id="uploadform">
 		<?php $usize = $this->mediaconfig->get('upload_maxsize') ?>
-		<legend><?php echo $usize == 0 ? JText::_('LBL_UPLOAD_FILES_NOLIMIT') : JText::sprintf('LBL_UPLOAD_FILES', (int)$usize); ?></legend>
-		<fieldset id="upload-noflash" class="actions">
-			<label for="upload-file" class="hidelabeltxt"><?php echo JText::_('LBL_UPLOAD_FILE'); ?></label>
-			<input type="file" id="upload-file" name="Filedata" />
-			<label for="upload-submit" class="hidelabeltxt"><?php echo JText::_('LBL_START_UPLOAD'); ?></label>
-			<input type="submit" id="upload-submit" value="<?php echo JText::_('LBL_START_UPLOAD'); ?>"/>
-		</fieldset>
+		<h3><?php echo $usize == 0 ? JText::_('LBL_UPLOAD_FILES_NOLIMIT') : JText::sprintf('LBL_UPLOAD_FILES', (int)$usize); ?></h3>
+		<input type="file" style="width: auto;" id="upload-file" name="Filedata" />
+		<input class="btn btn-mini" type="submit" id="upload-submit" value="<?php echo JText::_('LBL_START_UPLOAD'); ?>"/>
 		<div id="upload-flash" class="hide">
 			<ul>
 				<li><a href="#" id="upload-browse"><?php echo JText::_('LBL_BROWSE_FILES'); ?></a></li>
@@ -117,8 +117,10 @@ require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 		<ul class="upload-queue" id="upload-queue">
 			<li style="display:none;"></li>
 		</ul>
-	</fieldset>
 </form>
+
+</div>
+</div>	
 
 <script type="text/javascript">
 // Convert divs to queue widgets when the DOM is ready
