@@ -146,8 +146,11 @@ class Com_ArsInstallerScript
 		// Install FOF
 		$fofStatus = $this->_installFOF($parent);
 		
+		// Install Akeeba Straper
+		$straperStatus = $this->_installStraper($parent);
+		
 		// Show the post-installation page
-		$this->_renderPostInstallation($status, $fofStatus, $parent);
+		$this->_renderPostInstallation($status, $fofStatus, $straperStatus, $parent);
 	}
 	
 	/**
@@ -787,6 +790,91 @@ class Com_ArsInstallerScript
 			'installed'	=> $installedFOF,
 			'version'	=> $fofVersion[$versionSource]['version'],
 			'date'		=> $fofVersion[$versionSource]['date']->format('Y-m-d'),
+		);
+	}
+	
+	
+	private function _installStraper($parent)
+	{
+		$src = $parent->getParent()->getPath('source');
+		
+		// Install the FOF framework
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+		jimport('joomla.utilities.date');
+		$source = $src.'/strapper';
+		$target = JPATH_ROOT.'/media/akeeba_strapper';
+
+		$haveToInstallStraper = false;
+		if(!JFolder::exists($target)) {
+			$haveToInstallStraper = true;
+		} else {
+			$straperVersion = array();
+			if(JFile::exists($target.'/version.txt')) {
+				$rawData = JFile::read($target.'/version.txt');
+				$info = explode("\n", $rawData);
+				$straperVersion['installed'] = array(
+					'version'	=> trim($info[0]),
+					'date'		=> new JDate(trim($info[1]))
+				);
+			} else {
+				$straperVersion['installed'] = array(
+					'version'	=> '0.0',
+					'date'		=> new JDate('2011-01-01')
+				);
+			}
+			$rawData = JFile::read($source.'/version.txt');
+			$info = explode("\n", $rawData);
+			$straperVersion['package'] = array(
+				'version'	=> trim($info[0]),
+				'date'		=> new JDate(trim($info[1]))
+			);
+
+			$haveToInstallStraper = $straperVersion['package']['date']->toUNIX() > $straperVersion['installed']['date']->toUNIX();
+		}
+
+		$installedStraper = false;
+		if($haveToInstallStraper) {
+			$versionSource = 'package';
+			$installer = new JInstaller;
+			$installedStraper = $installer->install($source);
+		} else {
+			$versionSource = 'installed';
+		}
+		
+		if(!isset($straperVersion)) {
+			$straperVersion = array();
+			if(JFile::exists($target.'/version.txt')) {
+				$rawData = JFile::read($target.'/version.txt');
+				$info = explode("\n", $rawData);
+				$straperVersion['installed'] = array(
+					'version'	=> trim($info[0]),
+					'date'		=> new JDate(trim($info[1]))
+				);
+			} else {
+				$straperVersion['installed'] = array(
+					'version'	=> '0.0',
+					'date'		=> new JDate('2011-01-01')
+				);
+			}
+			$rawData = JFile::read($source.'/version.txt');
+			$info = explode("\n", $rawData);
+			$straperVersion['package'] = array(
+				'version'	=> trim($info[0]),
+				'date'		=> new JDate(trim($info[1]))
+			);
+			$versionSource = 'installed';
+		}
+		
+		if(!($straperVersion[$versionSource]['date'] instanceof JDate)) {
+			$straperVersion[$versionSource]['date'] = new JDate();
+		}
+		
+		return array(
+			'required'	=> $haveToInstallStraper,
+			'installed'	=> $installedStraper,
+			'version'	=> $straperVersion[$versionSource]['version'],
+			'date'		=> $straperVersion[$versionSource]['date']->format('Y-m-d'),
 		);
 	}
 }
