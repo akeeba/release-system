@@ -12,6 +12,10 @@ $this->loadHelper('select');
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 ?>
+
+<div class="row-fluid">
+<div class="span12">
+
 <form name="adminForm" id="adminForm" action="index.php" method="post">
 	<input type="hidden" name="option" id="option" value="com_ars" />
 	<input type="hidden" name="view" id="view" value="autodesc" />
@@ -21,7 +25,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->lists->order ?>" />
 	<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->lists->order_Dir ?>" />
 	<input type="hidden" name="<?php echo JFactory::getSession()->getToken();?>" value="1" />
-<table class="adminlist">
+<table class="adminlist table table-striped">
 	<thead>
 		<tr>
 			<th width="20">
@@ -43,22 +47,25 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		<tr>
 			<td></td>
 			<td>
-				<?php echo ArsHelperSelect::categories($this->getModel()->getState('category'), 'category', array('onchange'=>'this.form.submit();')) ?>
+				<?php echo ArsHelperSelect::categories($this->getModel()->getState('category'), 'category', array('onchange'=>'this.form.submit();','class'=>'input-medium')) ?>
 			</td>
 			<td></td>
 			<td>
 				<input type="text" name="title" id="title"
 					value="<?php echo $this->escape($this->getModel()->getState('title'));?>"
-					class="text_area" onchange="document.adminForm.submit();" />
-				<button onclick="this.form.submit();">
+					class="input-medium" onchange="document.adminForm.submit();"
+					placeholder="<?php echo JText::_('LBL_AUTODESC_TITLE') ?>" />
+				<nobr>
+				<button class="btn btn-mini" onclick="this.form.submit();">
 					<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>
 				</button>
-				<button onclick="document.adminForm.title.value='';this.form.submit();">
+				<button class="btn btn-mini" onclick="document.adminForm.title.value='';this.form.submit();">
 					<?php echo JText::_('JSEARCH_RESET'); ?>
 				</button>
+				</nobr>
 			</td>
 			<td>
-				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();')) ?>
+				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();','class'=>'input-medium')) ?>
 			</td>
 		</tr>
 	</thead>
@@ -109,3 +116,6 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 </table>
 
 </form>
+
+</div>
+</div>
