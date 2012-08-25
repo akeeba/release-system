@@ -11,6 +11,10 @@ $this->loadHelper('select');
 
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 ?>
+
+<div class="row-fluid">
+<div class="span12">
+
 <form name="adminForm" id="adminForm" action="index.php" method="post">
 	<input type="hidden" name="option" id="option" value="com_ars" />
 	<input type="hidden" name="view" id="view" value="vgroups" />
@@ -42,17 +46,18 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<td>
 				<input type="text" name="title" id="title"
 					value="<?php echo $this->escape($this->getModel()->getState('title'));?>"
-					class="text_area" onchange="document.adminForm.submit();" />
-				<button onclick="this.form.submit();">
+					class="input-medium" onchange="document.adminForm.submit();"
+					placeholder="<?php echo JText::_('LBL_VGROUPS_TITLE') ?>" />
+				<button class="btn btn-mini" onclick="this.form.submit();">
 					<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>
 				</button>
-				<button onclick="document.adminForm.title.value='';this.form.submit();">
+				<button class="btn btn-mini" onclick="document.adminForm.title.value='';this.form.submit();">
 					<?php echo JText::_('JSEARCH_RESET'); ?>
 				</button>
 			</td>
 			<td></td>
 			<td>
-				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();')) ?>
+				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();','class' => 'input-medium')) ?>
 			</td>
 		</tr>
 	</thead>
@@ -107,3 +112,6 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 </table>
 
 </form>
+
+</div>
+</div>
