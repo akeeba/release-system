@@ -12,12 +12,16 @@ $this->loadHelper('select');
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 ?>
 
-<p>
+<div class="row-fluid">
+<div class="span12">
+
+<div class="alert alert-info">
+	<button class="close" data-dismiss="alert">×</button>
 	<?php echo JText::_('LBL_UPDATESTREAMS_ALLLINKS_INTRO') ?>
 	<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=all&format=xml" target="_blank">
 		<?php echo JText::_('LBL_UPDATESTREAMS_ALLLINKS') ?>
 	</a>
-</p>
+</div>
 
 <form name="adminForm" id="adminForm" action="index.php" method="post">
 	<input type="hidden" name="option" id="option" value="com_ars" />
@@ -28,7 +32,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->lists->order ?>" />
 	<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->lists->order_Dir ?>" />
 	<input type="hidden" name="<?php echo JFactory::getSession()->getToken();?>" value="1" />
-<table class="adminlist">
+<table class="adminlist table table-striped">
 	<thead>
 		<tr>
 			<th width="20">
@@ -53,13 +57,13 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		<tr>
 			<td></td>
 			<td>
-				<?php echo ArsHelperSelect::updatetypes($this->getModel()->getState('type'), 'type', array('onchange'=>'this.form.submit();')) ?>
+				<?php echo ArsHelperSelect::updatetypes($this->getModel()->getState('type'), 'type', array('onchange'=>'this.form.submit();','class'=>'input-medium')) ?>
 			</td>
 			<td></td>
 			<td></td>
 			<td></td>
 			<td>
-				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();')) ?>
+				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();','class'=>'input-medium')) ?>
 			</td>
 		</tr>
 	</thead>
@@ -110,10 +114,13 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	?>
 	<?php else : ?>
 		<tr>
-			<td colspan="5" align="center"><?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL') ?></td>
+			<td colspan="6" align="center"><?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL') ?></td>
 		</tr>
 	<?php endif ?>
 	</tbody>
 </table>
 
 </form>
+
+</div>
+</div>
