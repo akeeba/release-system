@@ -392,7 +392,7 @@ span.foldername { font-weight: bold; }
 #setup-mainbody span.ui-state-default { display: inline-block; padding: 3px 5px; cursor: pointer; width: 120px; text-align: center; }
 #setup-mainbody input,
 #setup-mainbody select { width: 15%; min-width: 150px}
-#setup-mainbody #jcfiles { display:inline-block; width: 40%; height: 200px; overflow-y: scroll; overflow-x: hidden; background: #fefefe; border: thin solid #f0f0f0; }
+span#jcfiles { display:inline-block; width: 40%; height: 200px; overflow-y: scroll; overflow-x: hidden; background: #fefefe; border: thin solid #f0f0f0; margin-left: 20px;}
 .filetoimport { padding: 2px; border-bottom: thin solid gray; cursor: pointer; background: #DFDFDF }
 .filedone { padding: 2px; border-bottom: thin solid gray; cursor: default; background: #CDEB8B }
 
