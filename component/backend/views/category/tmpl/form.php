@@ -17,73 +17,87 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 ?>
 
-<form name="adminForm" id="adminForm" action="index.php" method="post">
+<form name="adminForm" id="adminForm" action="index.php" method="post" class="form form-horizontal">
 	<input type="hidden" name="option" value="com_ars" />
 	<input type="hidden" name="view" value="categories" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="id" value="<?php echo $this->item->id ?>" />
 	<input type="hidden" name="<?php echo JFactory::getSession()->getToken();?>" value="1" />
-
-	<fieldset>
-		<legend><?php echo JText::_('COM_ARS_CATEGORY_BASIC_LABEL'); ?></legend>
+	
+<div class="row-fluid">
+	
+	<div class="span6">
+		<h3><?php echo JText::_('COM_ARS_CATEGORY_BASIC_LABEL'); ?></h3>
 		
-		<div class="editform-row">
-			<label for="title"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_TITLE'); ?></label>
-			<input type="text" name="title" id="title" value="<?php echo $this->item->title ?>">
+		<div class="control-group">
+			<label for="title" class="control-label"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_TITLE'); ?></label>
+			<div class="controls">
+				<input type="text" name="title" id="title" value="<?php echo $this->item->title ?>">
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="alias"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_ALIAS'); ?></label>
-			<input type="text" name="alias" id="alias" value="<?php echo $this->item->alias ?>">
+		<div class="control-group">
+			<label for="alias" class="control-label"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_ALIAS'); ?></label>
+			<div class="controls">
+				<input type="text" name="alias" id="alias" value="<?php echo $this->item->alias ?>">
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="vgroup_id"><?php echo JText::_('LBL_CATEGORIES_VGROUP'); ?></label>
-			<?php echo ArsHelperSelect::vgroups($this->item->vgroup_id, 'vgroup_id') ?>
+		<div class="control-group">
+			<label for="vgroup_id" class="control-label"><?php echo JText::_('LBL_CATEGORIES_VGROUP'); ?></label>
+			<div class="controls">
+				<?php echo ArsHelperSelect::vgroups($this->item->vgroup_id, 'vgroup_id') ?>
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="type"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_TYPE'); ?></label>
-			<?php echo ArsHelperSelect::categorytypes($this->item->type, 'type') ?>
+		<div class="control-group">
+			<label for="type" class="control-label"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_TYPE'); ?></label>
+			<div class="controls">
+				<?php echo ArsHelperSelect::categorytypes($this->item->type, 'type') ?>
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="directory"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_DIRECTORY'); ?></label>
-			<input type="text" name="directory" id="directory" value="<?php echo $this->item->directory ?>">
+		<div class="control-group">
+			<label for="directory" class="control-label"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_DIRECTORY'); ?></label>
+			<div class="controls">
+				<input type="text" name="directory" id="directory" value="<?php echo $this->item->directory ?>">
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="published">
-				<?php echo JText::_('JPUBLISHED'); ?>
-			</label>
-			<div>
+		<div class="control-group">
+			<label for="published" class="control-label"><?php echo JText::_('JPUBLISHED'); ?></label>
+			<div class="controls">
 				<?php echo JHTML::_('select.booleanlist', 'published', null, $this->item->published); ?>
 			</div>
 		</div>
-		<div class="editform-row editform-row-noheight">
-			<label for="access">
-				<?php echo JText::_('JFIELD_ACCESS_LABEL'); ?>
-			</label>
-			<?php echo JHTML::_('list.accesslevel', $this->item); ?>
+		<div class="control-group">
+			<label for="access" class="control-label"><?php echo JText::_('JFIELD_ACCESS_LABEL'); ?></label>
+			<div class="controls">
+				<?php echo JHTML::_('list.accesslevel', $this->item); ?>
+			</div>
 		</div>
 		<?php if(ArsHelperFiltering::hasAkeebaSubs()): ?>
-		<div class="editform-row editform-row-noheight">
-			<label for="groups"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_AKEEBA_LABEL'); ?></label>
-			<?php echo ArsHelperSelect::akeebasubsgroups($this->item->groups, 'groups') ?>
+		<div class="control-group">
+			<label for="groups" class="control-label"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_AKEEBA_LABEL'); ?></label>
+			<div class="controls">
+				<?php echo ArsHelperSelect::akeebasubsgroups($this->item->groups, 'groups') ?>
+			</div>
 		</div>
 		<?php elseif(defined('PAYPLANS_LOADED')): ?>
-		<div class="editform-row editform-row-noheight">
-			<label for="groups"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_PAYPLANS_LABEL'); ?></label>
-			<?php echo PayplansHtml::_('plans.edit', 'groups', $this->item->groups) ?>
+		<div class="control-group">
+			<label for="groups" class="control-label"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_PAYPLANS_LABEL'); ?></label>
+			<div class="controls">
+				<?php echo PayplansHtml::_('plans.edit', 'groups', $this->item->groups) ?>
+			</div>
 		</div>
 		<?php endif; ?>
 		
-		<div class="editform-row editform-row-noheight">
-			<label for="language"><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?></label>
-			<?php echo ArsHelperSelect::languages($this->item->language, 'language') ?>
+		<div class="control-group">
+			<label for="language" class="control-label"><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?></label>
+			<div class="controls">
+				<?php echo ArsHelperSelect::languages($this->item->language, 'language') ?>
+			</div>
 		</div>
-		<div style="clear:left"></div>
-
-	</fieldset>
-
-	<fieldset>
-		<legend><?php echo JText::_('COM_ARS_CATEGORY_DESCRIPTION_LABEL'); ?></legend>
-		
-		<?php echo $editor->display( 'description',  $this->item->description, '600', '350', '60', '20', array() ) ; ?>
-	</fieldset>
+	</div>
+	
+	<div class="span6">
+		<h3><?php echo JText::_('COM_ARS_CATEGORY_DESCRIPTION_LABEL'); ?></h3>	
+	
+		<?php echo $editor->display( 'description',  $this->item->description, '97%', '350', '60', '20', array() ) ; ?>
+	</div>
 </form>
