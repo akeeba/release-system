@@ -12,58 +12,72 @@ $this->loadHelper('select');
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 ?>
 
-<form name="adminForm" id="adminForm" action="index.php" method="post">
+<form name="adminForm" id="adminForm" action="index.php" method="post" class="form form-horizontal">
 	<input type="hidden" name="option" value="<?php echo JRequest::getCmd('option') ?>" />
 	<input type="hidden" name="view" value="<?php echo JRequest::getCmd('view') ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="id" value="<?php echo $this->item->id ?>" />
 	<input type="hidden" name="<?php echo JFactory::getSession()->getToken();?>" value="1" />
 
-	<fieldset>
-		<legend><?php echo JText::_('LBL_ARS_UPDATESTREAMS_BASIC'); ?></legend>
+<div class="row-fluid">
+	
+	<div class="span12">
+		<h3><?php echo JText::_('LBL_ARS_UPDATESTREAMS_BASIC'); ?></h3>
 
-		<div class="editform-row">
-			<label for="name"><?php echo JText::_('LBL_UPDATES_NAME'); ?></label>
-			<input type="text" name="name" id="name" value="<?php echo $this->item->name ?>">
+		<div class="control-group">
+			<label for="name" class="control-label"><?php echo JText::_('LBL_UPDATES_NAME'); ?></label>
+			<div class="controls">
+				<input type="text" name="name" id="name" value="<?php echo $this->item->name ?>">
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="alias">
-				<?php echo JText::_('JFIELD_ALIAS_LABEL'); ?>
-			</label>
-			<input type="text" name="alias" id="alias" value="<?php echo $this->item->alias ?>" >
+		<div class="control-group">
+			<label for="alias" class="control-label"><?php echo JText::_('JFIELD_ALIAS_LABEL'); ?></label>
+			<div class="controls">
+				<input type="text" name="alias" id="alias" value="<?php echo $this->item->alias ?>" >
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="type"><?php echo JText::_('LBL_UPDATES_TYPE'); ?></label>
-			<?php echo ArsHelperSelect::updatetypes($this->item->type, 'type') ?>
+		<div class="control-group">
+			<label for="type" class="control-label"><?php echo JText::_('LBL_UPDATES_TYPE'); ?></label>
+			<div class="controls">
+				<?php echo ArsHelperSelect::updatetypes($this->item->type, 'type') ?>
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="category"><?php echo JText::_('COM_ARS_RELEASES_FIELD_CATEGORY'); ?></label>
-			<?php echo ArsHelperSelect::categories($this->item->category, 'category') ?>
+		<div class="control-group">
+			<label for="category" class="control-label"><?php echo JText::_('COM_ARS_RELEASES_FIELD_CATEGORY'); ?></label>
+			<div class="controls">
+				<?php echo ArsHelperSelect::categories($this->item->category, 'category') ?>
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="packname"><?php echo JText::_('LBL_UPDATES_PACKNAME'); ?></label>
-			<input type="text" name="packname" id="packname" value="<?php echo $this->item->packname ?>" >
+		<div class="control-group">
+			<label for="packname" class="control-label"><?php echo JText::_('LBL_UPDATES_PACKNAME'); ?></label>
+			<div class="controls">
+				<input type="text" name="packname" id="packname" value="<?php echo $this->item->packname ?>" >
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="element"><?php echo JText::_('LBL_UPDATES_ELEMENT'); ?></label>
-			<input type="text" name="element" id="element" value="<?php echo $this->item->element ?>" >
+		<div class="control-group">
+			<label for="element" class="control-label"><?php echo JText::_('LBL_UPDATES_ELEMENT'); ?></label>
+			<div class="controls">
+				<input type="text" name="element" id="element" value="<?php echo $this->item->element ?>" >
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="client_id"><?php echo JText::_('LBL_RELEASES_CLIENT_ID'); ?></label>
-			<?php echo ArsHelperSelect::clientid($this->item->client_id, 'client_id') ?>
+		<div class="control-group">
+			<label for="client_id" class="control-label"><?php echo JText::_('LBL_RELEASES_CLIENT_ID'); ?></label>
+			<div class="controls">
+				<?php echo ArsHelperSelect::clientid($this->item->client_id, 'client_id') ?>
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="folder"><?php echo JText::_('LBL_UPDATES_FOLDER'); ?></label>
-			<input type="text" name="folder" id="folder" value="<?php echo $this->item->folder ?>" >
+		<div class="control-group">
+			<label for="folder" class="control-label"><?php echo JText::_('LBL_UPDATES_FOLDER'); ?></label>
+			<div class="controls">
+				<input type="text" name="folder" id="folder" value="<?php echo $this->item->folder ?>" >
+			</div>
 		</div>
-		<div class="editform-row">
-			<label for="published">
-				<?php echo JText::_('JPUBLISHED'); ?>
-			</label>
-			<div>
+		<div class="control-group">
+			<label for="published" class="control-label"><?php echo JText::_('JPUBLISHED'); ?></label>
+			<div class="controls">
 				<?php echo JHTML::_('select.booleanlist', 'published', null, $this->item->published); ?>
 			</div>
 		</div>
-		<div style="clear:left"></div>
-	</fieldset>
+	</div>
+</div>
 </form>
