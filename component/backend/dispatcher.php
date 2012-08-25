@@ -21,6 +21,18 @@ class ArsDispatcher extends FOFDispatcher
 		$jlang->load('liveupdate', $liveupdate_path, 'en-GB', true);
 		$jlang->load('liveupdate', $liveupdate_path, $jlang->getDefault(), true);
 		$jlang->load('liveupdate', $liveupdate_path, null, true);
+		
+		// Load Akeeba Strapper
+		if(!defined('AKEEBASUBSMEDIATAG')) {
+			$staticFilesVersioningTag = md5(AKEEBASUBS_VERSION.AKEEBASUBS_DATE);
+			define('AKEEBASUBSMEDIATAG', $staticFilesVersioningTag);
+		}
+		include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
+		AkeebaStrapper::$tag = AKEEBASUBSMEDIATAG;
+		AkeebaStrapper::bootstrap();
+		AkeebaStrapper::jQueryUI();
+		AkeebaStrapper::addCSSfile('media://com_akeebasubs/css/backend.css');
+		AkeebaStrapper::addJSfile('media://com_akeebasubs/js/backend.js');
 
 		return true;
 	}
