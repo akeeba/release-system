@@ -19,40 +19,54 @@ FOFTemplateUtils::addJS('media://com_ars/js/gui-helpers.js');
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 ?>
-<fieldset id="setup-ars">
-	<legend><?php echo JText::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL') ?></legend>
-	<div id="setup-ars-mainbody">
-		<label for="arsrelease"><?php echo JText::_('LBL_IMPJED_SELECTRELEASE') ?></label>
-		<?php echo ArsHelperSelect::releases(null, 'arsrelease') ?>
-	</div>
-</fieldset>
 
-<fieldset>
-	<legend id="setup-header"><?php echo JText::_('LBL_IMPJED_JCSETUP') ?></legend>
+<div class="row-fluid">
+<div class="span12">
+
+	<h3><?php echo JText::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL') ?></h3>
+
+	<div class="form form-horizontal">
+		<div class="control-group">
+			<label for="arsrelease" class="control-label"><?php echo JText::_('LBL_IMPJED_SELECTRELEASE'); ?></label>
+			<div class="controls">
+				<?php echo ArsHelperSelect::releases(null, 'arsrelease', array('class' => 'input-medium')) ?>
+			</div>
+		</div>
+	</div>
+
+	<h3><?php echo JText::_('LBL_IMPJED_JCSETUP') ?></h3>
 	
-	<div id="setup-mainbody">
-		<div id="setup-project">
-			<label for="jcproject"><?php echo JText::_('LBL_IMPJED_JCPROJECT_TITLE') ?></label>
-			<input type="text" size="20" id="jcproject" value="" />
-			<button onclick="" id="getPackages"><?php echo JText::_('LBL_IMPJED_GETPACKAGES_TITLE'); ?></button>
+	<div class="form form-horizontal">
+		<div id="setup-project" class="control-group">
+			<label for="jcproject" class="control-label"><?php echo JText::_('LBL_IMPJED_JCPROJECT_TITLE'); ?></label>
+			<div class="controls">
+				<input type="text" size="20" id="jcproject" value="" />
+				<button class="btn btn-mini" onclick="" id="getPackages"><?php echo JText::_('LBL_IMPJED_GETPACKAGES_TITLE'); ?></button>
+			</div>
 		</div>
-		<div id="setup-package">
-			<label for="jcpackage"><?php echo JText::_('LBL_IMPJED_JCPACKAGE_TITLE') ?></label>
-			<select id="jcpackage"></select>
-			<button onclick="" id="getReleases"><?php echo JText::_('LBL_IMPJED_GETRELEASES_TITLE'); ?></button>
+		<div id="setup-package" class="control-group">
+			<label for="jcpackage" class="control-label"><?php echo JText::_('LBL_IMPJED_JCPACKAGE_TITLE'); ?></label>
+			<div class="controls">
+				<select id="jcpackage"></select>
+				<button class="btn btn-mini" onclick="" id="getReleases"><?php echo JText::_('LBL_IMPJED_GETRELEASES_TITLE'); ?></button>
+			</div>
 		</div>
-		<div id="setup-release">
-			<label for="jcrelease"><?php echo JText::_('LBL_IMPJED_JCRELEASE_TITLE') ?></label>
-			<select id="jcrelease"></select>
-			<button onclick="" id="getFiles"><?php echo JText::_('LBL_IMPJED_GETFILES_TITLE'); ?></button>
+		<div id="setup-release" class="control-group">
+			<label for="jcrelease" class="control-label"><?php echo JText::_('LBL_IMPJED_JCRELEASE_TITLE'); ?></label>
+			<div class="controls">
+				<select id="jcrelease"></select>
+				<button class="btn btn-mini" onclick="" id="getFiles"><?php echo JText::_('LBL_IMPJED_GETFILES_TITLE'); ?></button>
+			</div>
 		</div>
-		<div id="setup-files">
-			<label for="jcfiles"><?php echo JText::_('LBL_IMPJED_JCFILES_TITLE') ?></label>
+		<div id="setup-files" class="control-group">
+			<label for="jcfiles" class="control-label"><?php echo JText::_('LBL_IMPJED_JCFILES_TITLE'); ?></label>
 			<span id="jcfiles"></span>
 		</div>
-	</div>	
-</fieldset>
+	</div>
 
+</div>
+</div>
+	
 <script type="text/javascript">
 (function($){
 	$(document).ready(function(){
