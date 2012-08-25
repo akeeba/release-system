@@ -17,6 +17,10 @@ $this->loadHelper('select');
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 ?>
+
+<div class="row-fluid">
+<div class="span12">
+		
 <form name="adminForm" id="adminForm" action="index.php" method="post">
 	<input type="hidden" name="option" id="option" value="com_ars" />
 	<input type="hidden" name="view" id="view" value="items" />
@@ -67,10 +71,10 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		<tr>
 			<td></td>
 			<td>
-				<?php echo ArsHelperSelect::categories($this->getModel()->getState('category'), 'category', array('onchange'=>'this.form.submit();')) ?>
+				<?php echo ArsHelperSelect::categories($this->getModel()->getState('category'), 'category', array('onchange'=>'this.form.submit();','class' => 'input-medium')) ?>
 			</td>
 			<td>
-				<?php echo ArsHelperSelect::releases($this->getModel()->getState('release'), 'release', array('onchange'=>'this.form.submit();'), $this->getModel()->getState('category')) ?>
+				<?php echo ArsHelperSelect::releases($this->getModel()->getState('release'), 'release', array('onchange'=>'this.form.submit();','class' => 'input-medium'), $this->getModel()->getState('category')) ?>
 			</td>
 			<td></td>
 			<td></td>
@@ -78,7 +82,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<td></td>
 			<td></td>
 			<td>
-				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();')) ?>
+				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();','class' => 'input-medium')) ?>
 			</td>
 			<td></td>
 			<td></td>
@@ -174,3 +178,6 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 </table>
 
 </form>
+
+</div>
+</div>
