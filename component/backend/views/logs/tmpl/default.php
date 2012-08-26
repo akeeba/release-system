@@ -56,7 +56,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		</tr>
 		<tr>
 			<td></td>
-			<td>
+			<td class="form-inline">
 				<?php echo ArsHelperSelect::categories($this->getModel()->getState('category'), 'category', array('onchange'=>'this.form.submit();','class'=>'input-medium')) ?>
 				<br/>
 				<?php echo ArsHelperSelect::releases($this->getModel()->getState('version'), 'version', array('onchange'=>'this.form.submit();','class'=>'input-medium'), $this->getModel()->getState('category')) ?>
@@ -74,7 +74,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				</button>
 				</nobr>
 			</td>
-			<td>
+			<td class="form-inline">
 				<input type="text" name="usertext" id="usertext"
 					value="<?php echo $this->escape($this->getModel()->getState('usertext'));?>"
 					class="input-small" onchange="document.adminForm.submit();"
@@ -89,7 +89,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				</nobr>
 			</td>
 			<td>&nbsp;</td>
-			<td>
+			<td class="form-inline">
 				<input type="text" name="referer" id="referer"
 					value="<?php echo $this->escape($this->getModel()->getState('referer'));?>"
 					class="input-small" onchange="document.adminForm.submit();"
@@ -103,7 +103,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				</button>
 				</nobr>
 			</td>
-			<td>
+			<td class="form-inline">
 				<input type="text" name="ip" id="ip"
 					value="<?php echo $this->escape($this->getModel()->getState('ip'));?>"
 					class="input-small" onchange="document.adminForm.submit();"

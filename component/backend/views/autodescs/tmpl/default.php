@@ -50,7 +50,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<?php echo ArsHelperSelect::categories($this->getModel()->getState('category'), 'category', array('onchange'=>'this.form.submit();','class'=>'input-medium')) ?>
 			</td>
 			<td></td>
-			<td>
+			<td class="form-inline">
 				<input type="text" name="title" id="title"
 					value="<?php echo $this->escape($this->getModel()->getState('title'));?>"
 					class="input-medium" onchange="document.adminForm.submit();"

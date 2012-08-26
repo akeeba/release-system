@@ -59,7 +59,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		</tr>
 		<tr>
 			<td></td>
-			<td>
+			<td class="form-inline">
 				<input type="text" name="title" id="title"
 					value="<?php echo $this->escape($this->getModel()->getState('title'));?>"
 					class="input-medium" onchange="document.adminForm.submit();"
