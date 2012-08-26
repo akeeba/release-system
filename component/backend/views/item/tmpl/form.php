@@ -29,9 +29,14 @@ if($this->item->id == 0) {
 	<input type="hidden" name="<?php echo JFactory::getSession()->getToken();?>" value="1" />
 
 <div class="row-fluid">
+	<div class="span12">
+		<h3><?php echo JText::_('COM_ARS_RELEASE_BASIC_LABEL'); ?></h3>
+	</div>
+</div>
+
+<div class="row-fluid">
 	
 	<div class="span6">
-		<h3><?php echo JText::_('COM_ARS_RELEASE_BASIC_LABEL'); ?></h3>
 		
 		<div class="control-group">
 			<label for="release_id" class="control-label"><?php echo JText::_('LBL_ITEMS_RELEASE'); ?></label>
@@ -57,25 +62,18 @@ if($this->item->id == 0) {
 				<?php echo ArsHelperSelect::itemtypes($this->item->type, 'type', array('onchange'=>'onTypeChange();')) ?>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" id="row-file" <?php if($this->item->type != 'file'): ?>style="display:none"<?php endif; ?>>
 			<label for="filename" class="control-label"><?php echo JText::_('LBL_ITEMS_FILE'); ?></label>
 			<div class="controls">
 				<?php echo ArsHelperSelect::getfiles($this->item->filename, $this->item->release_id, $this->item->id, 'filename', array('onchange'=>'onFileChange();')) ?>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" id="row-url" <?php if($this->item->type != 'link'): ?>style="display:none"<?php endif; ?>>
 			<label for="url" class="control-label"><?php echo JText::_('LBL_ITEMS_LINK'); ?></label>
 			<div class="controls">
 				<input type="text" name="url" id="url" value="<?php echo $this->item->url ?>" onblur="onLinkBlur();">
 			</div>
 		</div>
-		<div class="control-group">
-			<label for="environments" class="control-label"><?php echo JText::_('LBL_ITEMS_ENVIRONMENTS'); ?></label>
-			<div class="controls">
-				<?php echo ArsHelperSelect::environments($this->item->environments); ?>
-			</div>
-		</div>
-		<div style="clear:left"></div>
 		
 		<div class="control-group">
 			<label for="filesize" class="control-label"><?php echo JText::_('LBL_ITEMS_FILESIZE'); ?></label>
@@ -101,6 +99,8 @@ if($this->item->id == 0) {
 				<input type="text" name="hits" id="hits" value="<?php echo $this->item->hits ?>">
 			</div>
 		</div>
+	</div>
+	<div class="span6">
 		<div class="control-group">
 			<label for="published" class="control-label"><?php echo JText::_('JPUBLISHED'); ?></label>
 			<div class="controls">
@@ -129,6 +129,12 @@ if($this->item->id == 0) {
 		</div>
 		<?php endif; ?>
 		<div class="control-group">
+			<label for="environments" class="control-label"><?php echo JText::_('LBL_ITEMS_ENVIRONMENTS'); ?></label>
+			<div class="controls">
+				<?php echo ArsHelperSelect::environments($this->item->environments); ?>
+			</div>
+		</div>
+		<div class="control-group">
 			<label for="updatestream" class="control-label"><?php echo JText::_('LBL_ITEMS_UPDATESTREAM'); ?></label>
 			<div class="controls">
 				<?php echo ArsHelperSelect::updatestreams($this->item->updatestream, 'updatestream') ?>
@@ -140,15 +146,16 @@ if($this->item->id == 0) {
 				<?php echo ArsHelperSelect::languages($this->item->language, 'language') ?>
 			</div>
 		</div>
-		<div style="clear:left"></div>
-
 	</div>
-	<div class="span6">
+</div>
+<div class="row-fluid">
+	<div class="span12">
 		
 		<h3><?php echo JText::_('LBL_ARS_ITEMS_DESCRIPTION'); ?></h3>
-		<?php echo $editor->display( 'description',  $this->item->description, '97%', '350', '60', '20', array() ) ; ?>
+		<?php echo $editor->display( 'description',  $this->item->description, '97%', '480', '60', '20', array() ) ; ?>
 		
 	</div>
+</div>
 </form>
 
 <script type="text/javascript">
