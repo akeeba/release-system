@@ -67,10 +67,15 @@ class ArsModelItems extends FOFModel
 		}
 		
 		$fltLanguage	= $this->getState('language', null, 'cmd');
-		if($fltLanguage != '') {
+		$fltLanguage2	= $this->getState('language2', null, 'string');
+		if(($fltLanguage != '*') && ($fltLanguage != '')) {
 			$query->where($db->qn('i').'.'.$db->qn('language').' IN ('.$db->q('*').','.$db->q($fltLanguage).')');
 			$query->where($db->qn('r').'.'.$db->qn('language').' IN ('.$db->q('*').','.$db->q($fltLanguage).')');
 			$query->where($db->qn('c').'.'.$db->qn('language').' IN ('.$db->q('*').','.$db->q($fltLanguage).')');
+		} elseif($fltLanguage2) {
+			$query->where($db->qn('i').'.'.$db->qn('language').' = '.$db->q($fltLanguage2));
+			$query->where($db->qn('r').'.'.$db->qn('language').' = '.$db->q($fltLanguage2));
+			$query->where($db->qn('c').'.'.$db->qn('language').' = '.$db->q($fltLanguage2));
 		}
 		
 		$order = $this->getState('filter_order', 'id', 'cmd');

@@ -436,11 +436,14 @@ class ArsHelperSelect
 		}
 	}
 	
-	public static function languages($selected = null, $id = 'language', $attribs = array() )
+	public static function languages($selected = null, $id = 'language', $attribs = array(), $show_select = false )
 	{
 		jimport('joomla.language.helper');
 		$languages = JLanguageHelper::getLanguages('lang_code');
 		$options = array();
+		if($show_select) {
+			$options[] = JHTML::_('select.option','','---');
+		}
 		$options[] = JHTML::_('select.option','*',JText::_('JALL_LANGUAGE'));
 		if(!empty($languages)) foreach($languages as $key => $lang)
 		{

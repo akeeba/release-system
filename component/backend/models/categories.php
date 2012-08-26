@@ -61,8 +61,11 @@ class ArsModelCategories extends FOFModel
 		}
 		
 		$fltLanguage	= $this->getState('language', null, 'cmd');
-		if($fltLanguage) {
+		$fltLanguage2	= $this->getState('language2', null, 'string');
+		if($fltLanguage && ($fltLanguage != '*')) {
 			$query->where($db->qn('language').' IN('.$db->q('*').','.$db->q($fltLanguage).')');
+		} elseif($fltLanguage2) {
+			$query->where($db->qn('language').' = '.$db->q($fltLanguage2));
 		}
 		
 		$search = $this->getState('search',null);

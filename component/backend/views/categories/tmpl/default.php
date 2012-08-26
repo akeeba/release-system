@@ -83,9 +83,11 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<td></td>
 			<td></td>
 			<td>
-				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();','class' => 'input-medium')) ?>
+				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();','class' => 'input-small')) ?>
 			</td>
-			<td></td>
+			<td>
+				<?php echo ArsHelperSelect::languages($this->getModel()->getState('language2'), 'language2', array('onchange'=>'this.form.submit();','class' => 'input-small'), true) ?>
+			</td>
 		</tr>
 	</thead>
 	<tfoot>

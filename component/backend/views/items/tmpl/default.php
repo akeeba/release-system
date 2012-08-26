@@ -82,10 +82,12 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<td></td>
 			<td></td>
 			<td>
-				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();','class' => 'input-medium')) ?>
+				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();','class' => 'input-small')) ?>
 			</td>
 			<td></td>
-			<td></td>
+			<td>
+				<?php echo ArsHelperSelect::languages($this->getModel()->getState('language2'), 'language2', array('onchange'=>'this.form.submit();','class' => 'input-small'), true) ?>
+			</td>
 		</tr>
 	</thead>
 	<tfoot>
@@ -146,6 +148,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 			</td>
 			<td>
+				<?php if(is_string($item->environments)) { $item->environments = json_decode($item->environments); } ?>
 				<?php if(!empty($item->environments)) foreach($item->environments as $eid) {
 					echo ArsHelperSelect::environmenticon( $eid ) . '<br/>';
 				} ?>
