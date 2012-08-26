@@ -43,17 +43,19 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		</tr>
 		<tr>
 			<td></td>
-			<td>
+			<td class="form-inline">
 				<input type="text" name="title" id="title"
 					value="<?php echo $this->escape($this->getModel()->getState('title'));?>"
 					class="input-medium" onchange="document.adminForm.submit();"
 					placeholder="<?php echo JText::_('LBL_VGROUPS_TITLE') ?>" />
+				<nobr>
 				<button class="btn btn-mini" onclick="this.form.submit();">
 					<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>
 				</button>
 				<button class="btn btn-mini" onclick="document.adminForm.title.value='';this.form.submit();">
 					<?php echo JText::_('JSEARCH_RESET'); ?>
 				</button>
+				</nobr>
 			</td>
 			<td></td>
 			<td>
