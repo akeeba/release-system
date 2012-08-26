@@ -9,6 +9,8 @@ defined('_JEXEC') or die();
 
 class ArsDispatcher extends FOFDispatcher
 {
+	public $defaultView = 'cpanels';
+	
 	public function onBeforeDispatch() {
 		$result = parent::onBeforeDispatch();
 		if(!$result) {
