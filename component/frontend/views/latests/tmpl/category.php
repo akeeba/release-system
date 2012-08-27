@@ -22,7 +22,7 @@ $released = new JDate($cat->release->created);
 		<span class="ars-release-property">
 			<span class="ars-label"><?php echo JText::_('LBL_RELEASES_RELEASEDON') ?>:</span>
 			<span class="ars-value">
-				<?php echo version_compare(JVERSION, '1.6.0', 'ge') ? $released->format(JText::_('DATE_FORMAT_LC2')) : $released->toFormat(JText::_('DATE_FORMAT_LC2')) ?>
+				<?php echo version_compare(JVERSION, '1.6.0', 'ge') ? $released->format(JText::_('DATE_FORMAT_LC2'), true) : $released->toFormat(JText::_('DATE_FORMAT_LC2')) ?>
 			</span>
 		</span>
 	</div>
