@@ -28,8 +28,8 @@ class ArsDispatcher extends FOFDispatcher
 		include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
 		AkeebaStrapper::bootstrap();
 		AkeebaStrapper::jQueryUI();
-		AkeebaStrapper::addCSSfile('media://com_akeebasubs/css/backend.css');
-		AkeebaStrapper::addJSfile('media://com_akeebasubs/js/backend.js');
+		AkeebaStrapper::addCSSfile('media://com_ars/css/backend.css');
+		AkeebaStrapper::addJSfile('media://com_ars/js/backend.js');
 
 		return true;
 	}
