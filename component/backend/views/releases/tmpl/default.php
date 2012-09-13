@@ -14,6 +14,7 @@ $this->loadHelper('select');
 
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
+$hasAjaxOrderingSupport = $this->hasAjaxOrderingSupport();
 ?>
 
 <div class="row-fluid">
@@ -28,9 +29,14 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->lists->order ?>" />
 	<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->lists->order_Dir ?>" />
 	<input type="hidden" name="<?php echo JFactory::getSession()->getToken();?>" value="1" />
-<table class="adminlist">
+<table class="table table-striped" id="itemsList">
 	<thead>
 		<tr>
+			<?php if($hasAjaxOrderingSupport !== false): ?>
+			<th width="20px">
+				<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'ordering', $this->lists->order_Dir, $this->lists->order, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+			</th>
+			<?php endif; ?>
 			<th width="20">
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 			</th>
@@ -43,10 +49,12 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<th width="150">
 				<?php echo JHTML::_('grid.sort', 'COM_ARS_RELEASES_FIELD_MATURITY', 'maturity', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
+			<?php if($hasAjaxOrderingSupport === false): ?>
 			<th width="100">
 				<?php echo JHTML::_('grid.sort', 'JFIELD_ORDERING_LABEL', 'ordering', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 				<?php echo JHTML::_('grid.order', $this->items); ?>
 			</th>
+			<?php endif; ?>
 			<th width="150">
 				<?php echo JHTML::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
@@ -61,13 +69,18 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			</th>
 		</tr>
 		<tr>
+			<?php if($hasAjaxOrderingSupport !== false): ?>
+			<td></td>
+			<?php endif; ?>
 			<td></td>
 			<td>
 				<?php echo ArsHelperSelect::categories($this->getModel()->getState('category'), 'category', array('onchange'=>'this.form.submit();','class' => 'input-medium')) ?>
 			</td>
 			<td></td>
 			<td></td>
+			<?php if($hasAjaxOrderingSupport === false): ?>
 			<td></td>
+			<?php endif; ?>
 			<td></td>
 			<td>
 				<?php echo ArsHelperSelect::published($this->getModel()->getState('published'), 'published', array('onchange'=>'this.form.submit();','class' => 'input-small')) ?>
@@ -107,6 +120,27 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			$icon = $base_folder.'/media/com_ars/icons/' . (empty($item->groups) ? 'unlocked_16.png' : 'locked_16.png');
 		?>
 		<tr class="row<?php echo $m?>">
+			<?php if($hasAjaxOrderingSupport !== false): ?>
+			<td class="order nowrap center hidden-phone">
+			<?php if ($this->perms->editstate) :
+				$disableClassName = '';
+				$disabledLabel	  = '';
+				if (!$hasAjaxOrderingSupport['saveOrder']) :
+					$disabledLabel    = JText::_('JORDERINGDISABLED');
+					$disableClassName = 'inactive tip-top';
+				endif; ?>
+				<span class="sortable-handler <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>" rel="tooltip">
+					<i class="icon-menu"></i>
+				</span>
+				<input type="text" style="display:none"  name="order[]" size="5"
+					value="<?php echo $item->ordering;?>" class="input-mini text-area-order " />
+			<?php else : ?>
+				<span class="sortable-handler inactive" >
+					<i class="icon-menu"></i>
+				</span>
+			<?php endif; ?>
+			</td>
+			<?php endif; ?>
 			<td>
 				<?php echo JHTML::_('grid.id', $i, $item->id, $checkedout); ?>
 			</td>
@@ -127,12 +161,15 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				</span>
 			</td>
 
+			<?php if($hasAjaxOrderingSupport === false): ?>
 			<td class="order">
 				<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', 'Move Up', $ordering ); ?></span>
 				<span><?php echo $this->pagination->orderDownIcon( $i, $count, true, 'orderdown', 'Move Down', $ordering ); ?></span>
 				<?php $disabled = $ordering ?  '' : 'disabled="disabled"'; ?>
 				<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 			</td>
+			<?php endif; ?>
+			
 			<td>
 				<img src="<?php echo $icon ?>" width="16" height="16" align="left" />
 				<span class="ars-access">

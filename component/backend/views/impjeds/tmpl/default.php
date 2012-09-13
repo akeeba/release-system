@@ -70,6 +70,18 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 <script type="text/javascript">
 (function($){
 	$(document).ready(function(){
+		// Joomla! 3.0-beta1 workaround - Y U CHANGE ME SELECTBOX?!!
+		// Even crazier: this behaviour was REMOVED a few days after the beta
+		// was released. Why do I bother with alpha quality software?
+		if($('#jcpackage_chzn') !== undefined) {
+			$('#jcpackage_chzn').remove();
+			$('#jcpackage').css('display', 'inline');
+		}
+		if($('#jcrelease_chzn') !== undefined) {
+			$('#jcrelease_chzn').remove();
+			$('#jcrelease').css('display', 'inline');
+		}
+		
 		// Hide details
 		$('#setup-package').hide();
 		$('#setup-release').hide();
@@ -102,7 +114,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			doAjax({
 				'task': 'jcpackages',
 				'project': $('#jcproject').val()
-			}, function(data){
+			}, function(data){				
 				$('#jcpackage').html('');
 				$.each(data,function(i, pack){
 					$(document.createElement('option'))
