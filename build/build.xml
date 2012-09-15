@@ -39,6 +39,7 @@
 		<include name="frontend/**" />
 		<include name="language/**" />
 		<include name="media/**" />
+		<include name="strapper/**" />
 		<include name="LICENSE.txt" />
 		<include name="README.php" />
 		<include name="ars.xml" />
