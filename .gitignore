@@ -12,6 +12,7 @@ component/backend/liveupdate/language
 component/backend/liveupdate/LICENSE.txt
 component/backend/liveupdate/liveupdate.php
 component/fof
+component/strapper
 plugins/system/oneclickaction
 documentation/arsguide/ars-users-guide.xml~
 component/language/backend/*.ini
