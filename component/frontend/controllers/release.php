@@ -53,6 +53,10 @@ class ArsControllerRelease extends FOFController
 			$bemodel->checkFiles($release);
 			$items = $this->getThisModel()->getItems($id);
 		} else {
+			$noAccessURL = JComponentHelper::getParams('com_ars')->get('no_access_url', '');
+			if(!empty($noAccessURL)) {
+				$this->setRedirect($noAccessURL);
+			}
 			return false;
 		}
 		

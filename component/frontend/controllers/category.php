@@ -52,6 +52,10 @@ class ArsControllerCategory extends FOFController
 			$bemodel->scanCategory($category);
 			$releases = $this->getThisModel()->getReleases($id);
 		} else {
+			$noAccessURL = JComponentHelper::getParams('com_ars')->get('no_access_url', '');
+			if(!empty($noAccessURL)) {
+				$this->setRedirect($noAccessURL);
+			}
 			return false;
 		}
 		

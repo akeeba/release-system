@@ -1,5 +1,6 @@
 Version 2.0.5
 ================================================================================
+# [MEDIUM] "No Access URL" didn't have any effect
 # [MEDIUM] Akeeba Strapper wasn't included in the package
 # [LOW] Reference to non-existent backend.js file
 
