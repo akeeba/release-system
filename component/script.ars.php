@@ -194,11 +194,11 @@ class Com_ArsInstallerScript
 	/**
 	 * Renders the post-installation message 
 	 */
-	private function _renderPostInstallation($status, $fofStatus, $parent)
+	private function _renderPostInstallation($status, $fofStatus, $straperStatus, $parent)
 	{
 ?>
 
-<?php $rows = 0;?>
+<?php $rows = 1;?>
 <img src="../media/com_ars/icons/ars_logo_48.png" width="48" height="48" alt="Akeeba Release System" align="right" />
 
 <h2>Welcome to Akeeba Release System!</h2>
@@ -231,6 +231,16 @@ class Com_ArsInstallerScript
 			<td><strong>
 				<span style="color: <?php echo $fofStatus['required'] ? ($fofStatus['installed']?'green':'red') : '#660' ?>; font-weight: bold;">
 					<?php echo $fofStatus['required'] ? ($fofStatus['installed'] ?'Installed':'Not Installed') : 'Already up-to-date'; ?>
+				</span>	
+			</strong></td>
+		</tr>
+		<tr class="row0">
+			<td class="key" colspan="2">
+				<strong>Akeeba Strapper <?php echo $straperStatus['version']?></strong> [<?php echo $straperStatus['date'] ?>]
+			</td>
+			<td><strong>
+				<span style="color: <?php echo $straperStatus['required'] ? ($straperStatus['installed']?'green':'red') : '#660' ?>; font-weight: bold;">
+					<?php echo $straperStatus['required'] ? ($straperStatus['installed'] ?'Installed':'Not Installed') : 'Already up-to-date'; ?>
 				</span>	
 			</strong></td>
 		</tr>
@@ -792,7 +802,6 @@ class Com_ArsInstallerScript
 			'date'		=> $fofVersion[$versionSource]['date']->format('Y-m-d'),
 		);
 	}
-	
 	
 	private function _installStraper($parent)
 	{

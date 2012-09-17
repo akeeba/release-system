@@ -1,8 +1,10 @@
 Version 2.0.5
 ================================================================================
+# [HIGH] Wrong FOF version bundled with the component
 # [MEDIUM] "No Access URL" didn't have any effect
 # [MEDIUM] Akeeba Strapper wasn't included in the package
 # [LOW] Reference to non-existent backend.js file
+# [LOW] Akeeba Strapper installation status not shown in the post-installation page
 
 Version 2.0.4
 ================================================================================
