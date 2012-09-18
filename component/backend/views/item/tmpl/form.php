@@ -183,7 +183,7 @@ if($this->item->id == 0) {
 						'selected':		selected
 					},
 					function(data, textStatus) {
-						$('#filename-container').html(data);
+						$('#filename').html(data);
 					}
 				)
 			} else {
