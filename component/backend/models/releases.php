@@ -79,9 +79,9 @@ class ArsModelReleases extends FOFModel
 				break;
 		}
 		
-		$order = $this->getState('filter_order', 'id', 'cmd');
+		$order = $this->getState('filter_order', 'ordering', 'cmd');
 		if(!in_array($order, array_keys($this->getTable()->getData()))) $order = 'id';
-		$dir = $this->getState('filter_order_Dir', 'DESC', 'cmd');
+		$dir = $this->getState('filter_order_Dir', 'ASC', 'cmd');
 		$query->order($order.' '.$dir);
 
 		return $query;
