@@ -204,7 +204,7 @@ class Com_ArsInstallerScript
 <h2>Welcome to Akeeba Release System!</h2>
 
 <div style="margin: 1em; font-size: 14pt; background-color: #fffff9; color: black">
-	You can download translation files <a href="http://akeeba-cdn.s3-website-eu-west-1.amazonaws.com/language/ars/">directly from our CDN page</a>.
+	You can download translation files <a href="http://cdn.akeebabackup.com/language/ars/">directly from our CDN page</a>.
 </div>
 
 <table class="adminlist">
