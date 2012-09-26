@@ -14,8 +14,6 @@ $suffix = '&'.$session->getName() .'='. $session->getId();
 require_once dirname(__FILE__).'/default.php';
 $i = 1;
 
-FOFTemplateUtils::addJS('media://com_ars/js/akeebajq.js');
-FOFTemplateUtils::addJS('media://com_ars/js/akeebajqui.js');
 FOFTemplateUtils::addJS('media://com_ars/js/qui-helpers.js');
 FOFTemplateUtils::addCSS('media://com_ars/theme/jquery-ui.css');
 

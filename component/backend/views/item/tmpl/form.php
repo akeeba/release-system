@@ -12,7 +12,6 @@ $editor = JFactory::getEditor();
 $this->loadHelper('select');
 $this->loadHelper('filtering');
 
-FOFTemplateUtils::addJS('media://com_ars/js/akeebajq.js');
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 if($this->item->id == 0) {

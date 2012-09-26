@@ -15,8 +15,6 @@ $groups = array('basic','tools','update');
 
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
-FOFTemplateUtils::addJS('media://com_ars/js/akeebajq.js');
-FOFTemplateUtils::addJS('media://com_ars/js/akeebajqui.js');
 FOFTemplateUtils::addJS('media://com_ars/js/gui-helpers.js');
 FOFTemplateUtils::addJS('media://com_ars/js/jquery.jqplot.min.js');
 FOFTemplateUtils::addJS('media://com_ars/js/jqplot.dateAxisRenderer.min.js');

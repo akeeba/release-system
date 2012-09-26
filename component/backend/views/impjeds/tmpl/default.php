@@ -13,8 +13,6 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addJS('media://com_ars/js/akeebajq.js');
-FOFTemplateUtils::addJS('media://com_ars/js/akeebajqui.js');
 FOFTemplateUtils::addJS('media://com_ars/js/gui-helpers.js');
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 

@@ -1,3 +1,13 @@
+/**
+ * Setup (required for Joomla! 3)
+ */
+if(typeof(akeeba) == 'undefined') {
+	var akeeba = {};
+}
+if(typeof(akeeba.jQuery) == 'undefined') {
+	akeeba.jQuery = jQuery.noConflict();
+}
+
 // =============================================================================
 (function(jQuery){ // <<< DO NOT REMOVE - USED FOR JQUERY COMPATIBILITY <<<
 // =============================================================================

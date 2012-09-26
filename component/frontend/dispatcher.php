@@ -13,4 +13,19 @@ defined('_JEXEC') or die();
 class ArsDispatcher extends FOFDispatcher
 {
 	public $defaultView = 'browse';
+	
+	public function onBeforeDispatch() {
+		$result = parent::onBeforeDispatch();
+		if(!$result) {
+			return $result;
+		}
+		
+		// Load Akeeba Strapper
+		include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
+		AkeebaStrapper::bootstrap();
+		AkeebaStrapper::jQueryUI();
+		AkeebaStrapper::addCSSfile('media://com_ars/css/backend.css');
+
+		return true;
+	}
 }
