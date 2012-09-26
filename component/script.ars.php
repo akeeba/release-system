@@ -94,6 +94,8 @@ class Com_ArsInstallerScript
 			'components/com_ars/models/release.php',
 			'components/com_ars/models/update.php',
 			'components/com_ars/views/view.html.php',
+			'media/com_ars/js/akeebajq.js',
+			'media/com_ars/js/akeebajqui.js',
 		),
 		'folders' => array(
 			'administrator/components/com_ars/language',
