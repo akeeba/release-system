@@ -14,8 +14,10 @@ jimport('joomla.utilities.date');
 $released = new JDate($item->created);
 $release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);
 
-jimport('joomla.html.pane');
-$tabs	= JPane::getInstance('tabs');
+if(version_compare(JVERSION, '3.0', 'lt')) {
+	jimport('joomla.html.pane');
+	$tabs	= JPane::getInstance('tabs');
+}
 
 ?>
 <div class="ars-browse-releases">
@@ -43,14 +45,14 @@ $tabs	= JPane::getInstance('tabs');
 		</span>
 	</div>
 
-	<?php echo $tabs->startPane('reltabs-'.$item->id); ?>
-		<?php echo $tabs->startPanel(JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'),'reltabs-'.$item->id.'-desc') ?>
+	<?php echo version_compare(JVERSION, '3.0', 'ge') ? JHtml::_('sliders.start', 'reltabs-'.$item->id) : $tabs->startPane('reltabs-'.$item->id); ?>
+		<?php echo version_compare(JVERSION, '3.0', 'ge') ? JHtml::_('sliders.panel', JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'),'reltabs-'.$item->id.'-desc') : $tabs->startPanel(JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'),'reltabs-'.$item->id.'-desc') ?>
 			<?php echo ArsHelperHtml::preProcessMessage($item->description); ?>
-		<?php echo $tabs->endPanel(); ?>
-		<?php echo $tabs->startPanel(JText::_('COM_ARS_RELEASE_NOTES_LABEL'),'reltabs-'.$item->id.'-notes') ?>
+		<?php echo version_compare(JVERSION, '3.0', 'ge') ? '' : $tabs->endPanel(); ?>
+		<?php echo version_compare(JVERSION, '3.0', 'ge') ? JHtml::_('sliders.panel', JText::_('COM_ARS_RELEASE_NOTES_LABEL'),'reltabs-'.$item->id.'-notes') : $tabs->startPanel(JText::_('COM_ARS_RELEASE_NOTES_LABEL'),'reltabs-'.$item->id.'-notes') ?>
 			<?php echo ArsHelperHtml::preProcessMessage($item->notes) ?>
-		<?php echo $tabs->endPanel(); ?>
-	<?php echo $tabs->endPane(); ?>
+		<?php echo version_compare(JVERSION, '3.0', 'ge') ? '' : $tabs->endPanel(); ?>
+	<?php echo version_compare(JVERSION, '3.0', 'ge') ? JHtml::_('sliders.end') : $tabs->endPane(); ?>
 
 	<div class="ars-release-readon">
 		<?php
