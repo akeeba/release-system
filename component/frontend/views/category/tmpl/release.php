@@ -45,14 +45,29 @@ if(version_compare(JVERSION, '3.0', 'lt')) {
 		</span>
 	</div>
 
-	<?php echo version_compare(JVERSION, '3.0', 'ge') ? JHtml::_('sliders.start', 'reltabs-'.$item->id) : $tabs->startPane('reltabs-'.$item->id); ?>
-		<?php echo version_compare(JVERSION, '3.0', 'ge') ? JHtml::_('sliders.panel', JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'),'reltabs-'.$item->id.'-desc') : $tabs->startPanel(JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'),'reltabs-'.$item->id.'-desc') ?>
+	<?php if(version_compare(JVERSION, '3.0', 'lt')): ?>
+	<?php echo $tabs->startPane('reltabs-'.$item->id); ?>
+		<?php echo $tabs->startPanel(JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'),'reltabs-'.$item->id.'-desc') ?>
 			<?php echo ArsHelperHtml::preProcessMessage($item->description); ?>
-		<?php echo version_compare(JVERSION, '3.0', 'ge') ? '' : $tabs->endPanel(); ?>
-		<?php echo version_compare(JVERSION, '3.0', 'ge') ? JHtml::_('sliders.panel', JText::_('COM_ARS_RELEASE_NOTES_LABEL'),'reltabs-'.$item->id.'-notes') : $tabs->startPanel(JText::_('COM_ARS_RELEASE_NOTES_LABEL'),'reltabs-'.$item->id.'-notes') ?>
+		<?php echo $tabs->endPanel(); ?>
+		<?php echo $tabs->startPanel(JText::_('COM_ARS_RELEASE_NOTES_LABEL'),'reltabs-'.$item->id.'-notes') ?>
 			<?php echo ArsHelperHtml::preProcessMessage($item->notes) ?>
-		<?php echo version_compare(JVERSION, '3.0', 'ge') ? '' : $tabs->endPanel(); ?>
-	<?php echo version_compare(JVERSION, '3.0', 'ge') ? JHtml::_('sliders.end') : $tabs->endPane(); ?>
+		<?php echo $tabs->endPanel(); ?>
+	<?php echo $tabs->endPane(); ?>
+	<?php else: ?>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#reltabs-<?php echo $item->id ?>-desc" data-toggle="tab"><?php echo JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL') ?></a>
+		<li><a href="#reltabs-<?php echo $item->id ?>-notes" data-toggle="tab"><?php echo JText::_('COM_ARS_RELEASE_NOTES_LABEL') ?></a>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="reltabs-<?php echo $item->id ?>-desc">
+			<?php echo ArsHelperHtml::preProcessMessage($item->description); ?>
+		</div>
+		<div class="tab-pane" id="reltabs-<?php echo $item->id ?>-notes"
+			 <?php echo ArsHelperHtml::preProcessMessage($item->notes); ?>
+		</div>
+	</div>
+	<?php endif; ?>
 
 	<div class="ars-release-readon">
 		<?php
