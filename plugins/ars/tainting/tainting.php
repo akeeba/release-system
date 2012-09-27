@@ -7,7 +7,7 @@
  */
 
 // Protect from unauthorized access
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
 class plgArsTainting extends JPlugin
 {

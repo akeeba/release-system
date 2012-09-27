@@ -6,7 +6,7 @@
  */
 
 // Protect from unauthorized access
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
 /**
  * A sample plugin to demonstrate how you can modify Bleeding Edge releases on the

@@ -7,7 +7,7 @@
  */
 
 // Protect from unauthorized access
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
 /**
  * A class to load INI files, without bumping into incompatibilities between

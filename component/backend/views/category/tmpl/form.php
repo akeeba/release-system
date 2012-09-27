@@ -6,7 +6,7 @@
  * @version $Id$
  */
 
-defined('_JEXEC') or die('Restricted Access');
+defined('_JEXEC') or die();
 
 $editor = JFactory::getEditor();
 
