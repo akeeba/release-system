@@ -68,7 +68,11 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		<div class="control-group">
 			<label for="access" class="control-label"><?php echo JText::_('JFIELD_ACCESS_LABEL'); ?></label>
 			<div class="controls">
+				<?php if(version_compare(JVERSION, '3.0', 'gt')): ?>
+				<?php echo JHTML::_('access.level', 'access', $this->item->access); ?>
+				<?php else: ?>
 				<?php echo JHTML::_('list.accesslevel', $this->item); ?>
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php if(ArsHelperFiltering::hasAkeebaSubs()): ?>
