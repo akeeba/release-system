@@ -14,7 +14,7 @@ $Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 ?>
 <div class="ars-browse-category">
 	<div class="ars-category-description">
-		<?php echo ArsHelperHtml::preProcessMessage($item->description) ?>
+		<?php echo ArsHelperHtml::preProcessMessage($item->description, 'com_ars.category_description') ?>
 	</div>
 	<?php if($item->id): ?>
 	<div>

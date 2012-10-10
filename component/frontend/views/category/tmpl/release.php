@@ -48,10 +48,10 @@ if(version_compare(JVERSION, '3.0', 'lt')) {
 	<?php if(version_compare(JVERSION, '3.0', 'lt')): ?>
 	<?php echo $tabs->startPane('reltabs-'.$item->id); ?>
 		<?php echo $tabs->startPanel(JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'),'reltabs-'.$item->id.'-desc') ?>
-			<?php echo ArsHelperHtml::preProcessMessage($item->description); ?>
+			<?php echo ArsHelperHtml::preProcessMessage($item->description, 'com_ars.release_description'); ?>
 		<?php echo $tabs->endPanel(); ?>
 		<?php echo $tabs->startPanel(JText::_('COM_ARS_RELEASE_NOTES_LABEL'),'reltabs-'.$item->id.'-notes') ?>
-			<?php echo ArsHelperHtml::preProcessMessage($item->notes) ?>
+			<?php echo ArsHelperHtml::preProcessMessage($item->notes, 'com_ars.release_notes') ?>
 		<?php echo $tabs->endPanel(); ?>
 	<?php echo $tabs->endPane(); ?>
 	<?php else: ?>
@@ -61,10 +61,10 @@ if(version_compare(JVERSION, '3.0', 'lt')) {
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane active" id="reltabs-<?php echo $item->id ?>-desc">
-			<?php echo ArsHelperHtml::preProcessMessage($item->description); ?>
+			<?php echo ArsHelperHtml::preProcessMessage($item->description, 'com_ars.release_description'); ?>
 		</div>
 		<div class="tab-pane" id="reltabs-<?php echo $item->id ?>-notes"
-			 <?php echo ArsHelperHtml::preProcessMessage($item->notes); ?>
+			 <?php echo ArsHelperHtml::preProcessMessage($item->notes, 'com_ars.release_notes'); ?>
 		</div>
 	</div>
 	<?php endif; ?>
@@ -77,6 +77,6 @@ if(version_compare(JVERSION, '3.0', 'lt')) {
 		?>
 	</div>
 	<?php else: ?>
-	<?php echo ArsHelperHtml::preProcessMessage($item->description); ?>
+	<?php echo ArsHelperHtml::preProcessMessage($item->description, 'com_ars.release_description'); ?>
 	<?php endif; ?>
 </div>

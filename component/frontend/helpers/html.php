@@ -13,16 +13,17 @@ class ArsHelperHtml
 	 * Processes the message, replacing placeholders with their values and running any
 	 * plug-ins
 	 * @param string $message The message to process
+	 * @param string $context The context of the message to process
 	 * @return string The processed message
 	 */
-	static public function preProcessMessage($message)
+	static public function preProcessMessage($message, $context = 'com_ars.message')
 	{
 		// Parse [SITE]
 		$site_url = JURI::base();
 		$message = str_replace('[SITE]', $site_url, $message);
 
 		// Run content plug-ins
-		$message = JHTML::_('content.prepare', $message);
+		$message = JHTML::_('content.prepare', $message, null, $context);
 
 		// Return the value
 		return $message;

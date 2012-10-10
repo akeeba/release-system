@@ -57,7 +57,7 @@ $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&i
 	</div>
 
 	<div class="ars-item-description">
-		<?php echo ArsHelperHtml::preProcessMessage($item->description); ?>
+		<?php echo ArsHelperHtml::preProcessMessage($item->description, 'com_ars.item_description'); ?>
 	</div>
 
 	<div>
