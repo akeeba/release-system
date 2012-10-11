@@ -13,7 +13,7 @@ $this->loadHelper('chameleon');
 $Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 ?>
 <?php if($this->params->get('show_page_heading', 1)): ?>
-	<h2 class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_title')); ?></h2>
+	<h2 class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_heading')); ?></h2>
 <?php endif; ?>
 
 <?php if( array_key_exists('all', $this->items) ): ?>

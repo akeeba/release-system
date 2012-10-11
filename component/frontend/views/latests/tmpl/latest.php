@@ -13,7 +13,7 @@ $this->loadHelper('router');
 $Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 ?>
 <?php if($this->cparams->get('show_page_heading', 1)): ?>
-	<h2 class="componentheading<?php echo $this->escape($this->cparams->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->cparams->get('page_title')); ?></h2>
+	<h2 class="componentheading<?php echo $this->escape($this->cparams->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->cparams->get('page_heading')); ?></h2>
 <?php elseif(!$this->cparams->get('show_page_heading', 1)): ?>
 	<h2 class="componentheading<?php echo $this->escape($this->cparams->get('pageclass_sfx')); ?>"><?php echo JText::_('ARS_VIEW_LATEST_TITLE'); ?></h2>
 <?php endif; ?>

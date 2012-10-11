@@ -38,19 +38,15 @@ class ArsViewCategory extends FOFViewHtml
 		// Add RSS links
 		$app = JFactory::getApplication();
 		$params = $app->getPageParameters('com_ars');
+		
+		// Set page title and meta
+		$item = $model->item;
+		$this->loadHelper('title');
+		$title = ArsHelperTitle::setTitleAndMeta($params, $item->title);
+		
 		$show_feed = $params->get('show_feed_link');
 		if($show_feed)
 		{
-			if ($params->get('show_page_title', 1))
-			{
-				$title = $params->get('page_title');
-			}
-			else
-			{
-				$title = JText::_('ARS_VIEW_CATEGORY_TITLE');
-			}
-
-
 			$feed = 'index.php?option=com_ars&view=category&id='.$model->item->id.'&format=feed';
 			$rss = array(
 				'type' => 'application/rss+xml',
@@ -71,7 +67,7 @@ class ArsViewCategory extends FOFViewHtml
 		$this->assignRef('pparams', $params);
 		$this->assignRef('pagination', $model->relPagination);
 		$this->assign('items', $model->itemList);
-		$this->assignRef('item', $model->item);
+		$this->assignRef('item', $item);
 		$this->assign('category_id', $model->getState('category_id', 0));
 		
 		return true;

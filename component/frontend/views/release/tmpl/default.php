@@ -20,7 +20,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 
 ?>
 <?php if($this->cparams->get('show_page_heading', 1)): ?>
-	<h2 class="componentheading<?php echo $this->escape($this->cparams->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->cparams->get('page_title')); ?></h2>
+	<h2 class="componentheading<?php echo $this->escape($this->cparams->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->cparams->get('page_heading')); ?></h2>
 <?php endif; ?>
 	
 <div class="ars-list-release">

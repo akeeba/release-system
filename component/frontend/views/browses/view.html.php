@@ -31,19 +31,14 @@ class ArsViewBrowses extends FOFViewHtml
 		// Add RSS links
 		$app = JFactory::getApplication();
 		$params = $app->getPageParameters('com_ars');
+		
+		// Set page title and meta
+		$this->loadHelper('title');
+		$title = ArsHelperTitle::setTitleAndMeta($params, 'ARS_VIEW_BROWSE_TITLE');
+
 		$show_feed = $params->get('show_feed_link');
 		if($show_feed)
 		{
-			if ($params->get('show_page_title', 1))
-			{
-				$title = $params->get('page_title');
-			}
-			else
-			{
-				$title = JText::_('ARS_VIEW_BROWSE_TITLE');
-			}
-
-
 			$feed = 'index.php?option=com_ars&view=categories&format=feed';
 			$rss = array(
 				'type' => 'application/rss+xml',

@@ -25,16 +25,22 @@ class ArsViewRelease extends FOFViewHtml
 		$this->loadHelper('html');
 		$this->loadHelper('router');
 
-		// Get componetn parameters
+		$model = $this->getModel();
+
+		// Get component parameters
 		$app = JFactory::getApplication();
 		$params = $app->getPageParameters('com_ars');
+		
+		// Set page title and meta
+		$cat = FOFModel::getTmpInstance('Categories', 'ArsModel')
+			->setId($model->category_id)->getItem();
+		$this->loadHelper('title');
+		$title = ArsHelperTitle::setTitleAndMeta($params, $cat->title.' '.$model->item->version);
 		
 		// Load CSS
 		FOFTemplateUtils::addCSS('media://com_ars/css/frontend.css');
 		
 		// Add a breadcrumb if necessary
-		$model = $this->getModel();
-
 		$catModel = FOFModel::getTmpInstance('Categories','ArsModel');
 		$category = $catModel->getItem($model->item->category_id);
 
@@ -75,16 +81,6 @@ class ArsViewRelease extends FOFViewHtml
 		$show_feed = $params->get('show_feed_link');
 		if($show_feed)
 		{
-			if ($params->get('show_page_title', 1))
-			{
-				$title = $params->get('page_title');
-			}
-			else
-			{
-				$title = JText::_('ARS_VIEW_CATEGORY_TITLE');
-			}
-
-
 			$feed = 'index.php?option=com_ars&view=category&id='.$category->id.'&format=feed';
 			$rss = array(
 				'type' => 'application/rss+xml',
