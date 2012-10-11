@@ -35,34 +35,45 @@
 		<field name="besuffix" type="text" default="" label="COM_ARS_CONFIG_BE_SFX_LABEL" description="COM_ARS_CONFIG_BE_SFX_DESC"/>
 
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="readontemplate" type="text" default="[a href=&quot;%s&quot; class=&quot;readon&quot;]%s[/a]" label="COM_ARS_CONFIG_READON_LABEL" description="COM_ARS_CONFIG_READON_DESC" size="50"/>		
+		<field name="readontemplate" type="text" default="[a href=&quot;%s&quot; class=&quot;readon&quot;]%s[/a]" label="COM_ARS_CONFIG_READON_LABEL" description="COM_ARS_CONFIG_READON_DESC" size="50" filter="raw"/>
+		
+		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="directlinktemplate" type="text" default="[a href=&quot;%s&quot; class=&quot;directlink hasTip&quot; title=&quot;%s&quot;]%s[/a]" label="COM_ARS_CONFIG_DIRECTLINKTEMPLATE_LABEL" description="COM_ARS_CONFIG_DIRECTLINKTEMPLATE_DESC" size="50" filter="raw"/>		
 		
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="no_access_url" type="text" default="" label="COM_ARS_CONFIG_FE_NOACCESSURL_LABEL" description="COM_ARS_CONFIG_FE_NOACCESSURL_DESC" size="50" />
 		<field name="show_filesize" type="radio" default="1"
 			label="COM_ARS_CONFIG_SHOW_FILESIZE_LABEL"
 			description="COM_ARS_CONFIG_SHOW_FILESIZE_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
 		</field>
 		<field name="show_md5" type="radio" default="1"
 			label="COM_ARS_CONFIG_SHOW_MD5_LABEL"
 			description="COM_ARS_CONFIG_SHOW_MD5_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
 		</field>
 		<field name="show_sha1" type="radio" default="1"
 			label="COM_ARS_CONFIG_SHOW_SHA1_LABEL"
 			description="COM_ARS_CONFIG_SHOW_SHA1_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
 		</field>
 		<field name="show_environments" type="radio" default="1"
 			label="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_LABEL"
 			description="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
 		</field>
+		<field name="show_directlink" type="radio" default="1"
+			label="COM_ARS_CONFIG_SHOW_DIRECTLINK_LABEL"
+			description="COM_ARS_CONFIG_SHOW_DIRECTLINK_DESC">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
+		<field name="directlink_extensions" type="text" default="zip,tar,tar.gz" label="COM_ARS_CONFIG_DIRECTLINKEXTENSIONS_LABEL" description="COM_ARS_CONFIG_DIRECTLINKEXTENSIONS_DESC" size="50" />
+		<field name="directlink_description" type="text" default="" label="COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_LABEL" description="COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_DESC" size="50" />
 	</fieldset>
 	
 	<fieldset

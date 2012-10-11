@@ -24,6 +24,10 @@ class ArsViewRelease extends FOFViewHtml
 		$this->loadHelper('chameleon');
 		$this->loadHelper('html');
 		$this->loadHelper('router');
+
+		// Get componetn parameters
+		$app = JFactory::getApplication();
+		$params = $app->getPageParameters('com_ars');
 		
 		// Load CSS
 		FOFTemplateUtils::addCSS('media://com_ars/css/frontend.css');
@@ -41,10 +45,33 @@ class ArsViewRelease extends FOFViewHtml
 		ArsHelperBreadcrumbs::addRelease($model->item->id, $model->item->version);
 
 		$this->assignRef( 'category',	$category );
+		
+		// Pass on a user and a Download ID
+		$user = JFactory::getUser();
+		$dlid = $user->guest ? '' : md5($user->id . $user->username . $user->password);
+		$directlink = $params->get('show_directlink', 1) && !$user->guest;
+
+		$this->assignRef( 'user',		$user );
+		$this->assignRef( 'dlid',		$dlid );
+		$this->assign   ( 'directlink',	$directlink );
+		
+		// Pass on Direct Link-related stuff
+		if($directlink) {
+			$directlink_extensions = explode(',',$params->get('directlink_extensions', 'zip,tar,tar.gz'));
+			if(empty($directlink_extensions)) {
+				$directlink_extensions = array();
+			} else {
+				$temp = array();
+				foreach($directlink_extensions as $ext) {
+					$temp[] = '.' . trim($ext);
+				}
+				$directlink_extensions = $temp;
+			}
+			
+			$this->assign   ( 'directlink_extensions',	$directlink_extensions );
+		}
 
 		// Add RSS links
-		$app = JFactory::getApplication();
-		$params = $app->getPageParameters('com_ars');
 		$show_feed = $params->get('show_feed_link');
 		if($show_feed)
 		{

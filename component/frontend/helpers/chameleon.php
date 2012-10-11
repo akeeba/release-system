@@ -135,7 +135,7 @@ class ArsHelperChameleon
 		);
 	}
 	
-	static public function getReadOn($title, $link)
+	static public function getReadOn($title, $link, $style="readontemplate")
 	{
 		static $params = null;
 		
@@ -146,11 +146,16 @@ class ArsHelperChameleon
 			$params = ($component->params instanceof JRegistry) ? $component->params : new JRegistry($component->params);
 		}
 		
-		$default_template = '<a class="readon" href="%s">%s</a>';
-		if(version_compare(JVERSION, '3.0', 'ge')) {
-			$template = $params->get('readontemplate',$default_template);
+		if($style == 'readontemplate') {
+			$default_template = '<a class="readon" href="%s">%s</a>';
 		} else {
-			$template = $params->getValue('readontemplate',$default_template);
+			$default_template = '<a class="directlink" href="%s">%s</a>';
+		}
+		
+		if(version_compare(JVERSION, '3.0', 'ge')) {
+			$template = $params->get($style, $default_template);
+		} else {
+			$template = $params->getValue($style, $default_template);
 		}
 		
 		$template = str_replace('&quot;','"', $template);
@@ -161,6 +166,16 @@ class ArsHelperChameleon
 		$template = str_replace('\\<','[', $template);
 		$template = str_replace('\\>',']', $template);
 		
-		return sprintf($template, $link, $title);
+		if($style == 'readontemplate') {
+			return sprintf($template, $link, $title);
+		} else {
+			$default_description = JText::_('COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_DEFAULT');
+			if(version_compare(JVERSION, '3.0', 'ge')) {
+				$description = $params->get('directlink_description', $default_description);
+			} else {
+				$description = $params->getValue('directlink_description', $default_description);
+			}
+			return sprintf($template, $link, $description, $title);
+		}
 	}
 }

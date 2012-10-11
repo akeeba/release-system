@@ -7,10 +7,27 @@
 
 defined('_JEXEC') or die();
 
+JHtml::_('behavior.tooltip');
+
 $Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 $Itemid = empty($Itemid) ? "" : "&Itemid=$Itemid";
 $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid);
 
+$directlink = false;
+if($this->directlink) {
+	$basename = ($item->type == 'file') ? $item->filename : $item->url;
+	foreach($this->directlink_extensions as $ext) {
+		if(substr($basename, -strlen($ext)) == $ext) {
+			$directlink = true;
+			break;
+		}
+	}
+	if($directlink) {
+		$directlink_url = $download_url .
+				(strstr($download_url, '?') !== false ? '&' : '?') .
+				'dlid='.$this->dlid.'&jcompat=my'.$ext;
+	}
+}
 ?>
 <div class="ars-browse-items">
 	<div class="ars-item-properties">
@@ -67,6 +84,15 @@ $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&i
 			$link = str_replace('<a ','<a rel="nofollow"', $link);
 			echo $link;
 		?>
+		
+		<?php if($directlink): ?>
+		<?php
+			$itemTitle = JText::_('COM_ARS_LBL_ITEM_DIRECTLINK');
+			$link = ArsHelperChameleon::getReadOn($itemTitle, $directlink_url, 'directlinktemplate');
+			$link = str_replace('<a ','<a rel="nofollow"', $link);
+			echo $link;
+		?>
+		<?php endif; ?>
 	</div>
 	<div class="clr"></div>
 </div>
