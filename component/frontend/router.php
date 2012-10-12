@@ -14,7 +14,7 @@ include_once JPATH_LIBRARIES.'/fof/include.php';
 function arsBuildRoute(&$query)
 {
 	$format = isset($query['format']) ? $query['format'] : 'html';
-	$view = isset($query['view']) ? $query['view'] : 'browse';
+	$view = isset($query['view']) ? $query['view'] : 'browses';
 
 	if($view == 'download') $format = 'raw';
 
@@ -52,10 +52,10 @@ function arsBuildRouteHtml(&$query)
 	{
 		return $segments;
 	}
-
+	
 	$menus = JMenu::getInstance('site');
 
-	$view = ArsRouterHelper::getAndPop($query, 'view', 'browse');
+	$view = ArsRouterHelper::getAndPop($query, 'view', 'browses');
 	$task = ArsRouterHelper::getAndPop($query, 'task');
 	$layout = ArsRouterHelper::getAndPop($query, 'layout');
 	$id = ArsRouterHelper::getAndPop($query, 'id');
@@ -64,13 +64,13 @@ function arsBuildRouteHtml(&$query)
 	$qoptions = array( 'option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id );
 	switch($view)
 	{
-		case 'browse':
+		case 'browses':
 			// Is it a browser menu?
 			if($Itemid) {
 				$menu = $menus->getItem($Itemid);
-				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'browse';
+				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'browses';
 				// No, we have to find another root
-				if( ($mView != 'browse') ) $Itemid = null;
+				if( ($mView != 'browses') ) $Itemid = null;
 			}
 
 			if(empty($Itemid))
@@ -96,7 +96,7 @@ function arsBuildRouteHtml(&$query)
 			if($Itemid)
 			{
 				$menu = $menus->getItem($Itemid);
-				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'browse';
+				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'browses';
 				// No, we have to find another root
 				if( ($mView == 'category') )
 				{
@@ -111,7 +111,7 @@ function arsBuildRouteHtml(&$query)
 						$Itemid = null;
 					}
 				}
-				elseif($mView != 'browse')
+				elseif($mView != 'browses')
 				{
 					$Itemid = null;
 				}
@@ -138,7 +138,7 @@ function arsBuildRouteHtml(&$query)
 				else
 				{
 					// Not found. Try fetching a browser menu item
-					$options = array('option' => 'com_ars', 'view' => 'browse', 'layout' => 'repository');
+					$options = array('option' => 'com_ars', 'view' => 'browses', 'layout' => 'repository');
 					$menu = ArsRouterHelper::findMenu($options);
 					$Itemid = empty($menu) ? null : $menu->id;
 					if(!empty($Itemid))
@@ -177,8 +177,8 @@ function arsBuildRouteHtml(&$query)
 			if($Itemid)
 			{
 				$menu = $menus->getItem($Itemid);
-				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'browse';
-				if( ($mView == 'browse') )
+				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'browses';
+				if( ($mView == 'browses') )
 				{
 					// No. It is a browse menu item. We must add the category and release aliases.
 					$query['Itemid'] = $Itemid;
@@ -223,7 +223,7 @@ function arsBuildRouteHtml(&$query)
 				else
 				{
 					// Nah. Let's find a browse menu item.
-					$options = array('view'=>'browse', 'option' => 'com_ars');
+					$options = array('view'=>'browses', 'option' => 'com_ars');
 					$menu = ArsRouterHelper::findMenu($options);
 					if(!empty($menu))
 					{
@@ -253,7 +253,7 @@ function arsBuildRouteFeed(&$query)
 
 	$segments = array();
 
-	$view = ArsRouterHelper::getAndPop($query, 'view', 'browse');
+	$view = ArsRouterHelper::getAndPop($query, 'view', 'browses');
 	$layout = ArsRouterHelper::getAndPop($query, 'layout', 'repository');
 	$id = ArsRouterHelper::getAndPop($query, 'id', 0);
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
@@ -264,9 +264,9 @@ function arsBuildRouteFeed(&$query)
 
 	switch($view)
 	{
-		case 'browse':
+		case 'browses':
 		case 'categories':
-			$view = 'browse';
+			$view = 'browses';
 			$query['Itemid'] = $Itemid;
 			break;
 
@@ -278,7 +278,7 @@ function arsBuildRouteFeed(&$query)
 				{
 					$Itemid = null;
 				}
-				elseif( (isset($menu->query['view']) ? $menu->query['view'] : 'browse') == 'category' )
+				elseif( (isset($menu->query['view']) ? $menu->query['view'] : 'browses') == 'category' )
 				{
 					$params = is_object($menu->params) ? $menu->params : new JRegistry($menu->params);
 					if($params->get('catid',0) != $id)
@@ -309,7 +309,7 @@ function arsBuildRouteFeed(&$query)
 				else
 				{
 					// Nah. Let's find a browse menu item.
-					$options = array('view'=>'browse', 'option' => 'com_ars');
+					$options = array('view'=>'browses', 'option' => 'com_ars');
 					$menu = ArsRouterHelper::findMenu($options);
 
 					$model = FOFModel::getTmpInstance('Categories','ArsModel');
@@ -343,7 +343,7 @@ function arsBuildRouteRaw(&$query)
 	$view = isset($query['view']) ? $query['view'] : '';
 	if($view != 'download' ) return $segments;
 	
-	$view = ArsRouterHelper::getAndPop($query, 'view', 'browse');
+	$view = ArsRouterHelper::getAndPop($query, 'view', 'browses');
 	$task = ArsRouterHelper::getAndPop($query, 'task');
 	$layout = ArsRouterHelper::getAndPop($query, 'layout');
 	$id = ArsRouterHelper::getAndPop($query, 'id');
@@ -371,7 +371,7 @@ function arsBuildRouteRaw(&$query)
 		if(!empty($menu)) if(isset($menu->query['view'])) $mview = $menu->query['view'];
 		switch($mview)
 		{
-			case 'browse':
+			case 'browses':
 				$segments[] = $catalias;
 				$segments[] = $release->alias;
 				$segments[] = $download->alias;
@@ -434,7 +434,7 @@ function arsBuildRouteRaw(&$query)
 		}
 		if(!is_object($menu))
 		{
-			$options = array('view'=>'browse', 'option' => 'com_ars');
+			$options = array('view'=>'browses', 'option' => 'com_ars');
 			$menu = ArsRouterHelper::findMenu($options);
 			if(!is_object($menu))
 			{
@@ -781,7 +781,7 @@ function arsParseRouteFeed(&$segments)
 	$menus = JMenu::getInstance('site');
 
 	$query['format'] = 'feed';
-	$query['view'] = 'browse';
+	$query['view'] = 'browses';
 
 	if(!empty($segments))
 	{
@@ -820,7 +820,7 @@ function arsParseRouteHtml(&$segments)
 		{
 			case 1:
 				// Repository view
-				$query['view'] = 'browse';
+				$query['view'] = 'browses';
 				$query['layout'] = array_pop($segments);
 				break;
 
@@ -842,7 +842,7 @@ function arsParseRouteHtml(&$segments)
 
 				if(empty($cat))
 				{
-					$query['view'] = 'browse';
+					$query['view'] = 'browses';
 					$query['layout'] = 'repository';
 				}
 				else
@@ -885,7 +885,7 @@ function arsParseRouteHtml(&$segments)
 
 				if(empty($rel))
 				{
-					$query['view'] = 'browse';
+					$query['view'] = 'browses';
 					$query['layout'] = 'repository';
 				}
 				else
@@ -908,7 +908,7 @@ function arsParseRouteHtml(&$segments)
 		$catalias = null;
 		$relalias = null;
 		
-		if( empty($view) || ($view == 'browse') || ($view == 'browses') )
+		if( empty($view) || ($view == 'browses') || ($view == 'browses') )
 		{
 			switch(count($segments))
 			{
@@ -982,7 +982,7 @@ function arsParseRouteHtml(&$segments)
 
 			if(empty($rel))
 			{
-				$query['view'] = 'browse';
+				$query['view'] = 'browses';
 				$query['layout'] = 'repository';
 			}
 			else
@@ -1004,7 +1004,7 @@ function arsParseRouteHtml(&$segments)
 
 			if(empty($cat))
 			{
-				$query['view'] = 'browse';
+				$query['view'] = 'browses';
 				$query['layout'] = 'repository';
 			}
 			else
@@ -1040,7 +1040,7 @@ function arsParseRouteHtml(&$segments)
 
 			if(empty($rel))
 			{
-				$query['view'] = 'browse';
+				$query['view'] = 'browses';
 				$query['layout'] = 'repository';
 			}
 			else
@@ -1106,7 +1106,7 @@ function arsParseRouteRaw(&$segments)
 
 		if(empty($item))
 		{
-			$query['view'] = 'browse';
+			$query['view'] = 'browses';
 			$query['layout'] = 'repository';
 			$query['format'] = 'html';
 		}
@@ -1127,7 +1127,7 @@ function arsParseRouteRaw(&$segments)
 		$relalias = null;
 		$relid = null;
 
-		if( empty($view) || ($view == 'browse') )
+		if( empty($view) || ($view == 'browses') )
 		{
 			$itemalias = array_pop($segments);
 			$relalias = array_pop($segments);
@@ -1192,7 +1192,7 @@ function arsParseRouteRaw(&$segments)
 		if(empty($item))
 		{
 			JError::raiseError('404', 'Item not found');
-			$query['view'] = 'browse';
+			$query['view'] = 'browses';
 			$query['layout'] = 'repository';
 		}
 		else
@@ -1201,7 +1201,6 @@ function arsParseRouteRaw(&$segments)
 		}
 	}
 
-	//var_dump($query);die();
 	return $query;
 }
 
