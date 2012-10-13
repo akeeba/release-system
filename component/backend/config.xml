@@ -41,6 +41,20 @@
 		<field name="directlinktemplate" type="text" default="[a href=&quot;%s&quot; class=&quot;directlink hasTip&quot; title=&quot;%s&quot;]%s[/a]" label="COM_ARS_CONFIG_DIRECTLINKTEMPLATE_LABEL" description="COM_ARS_CONFIG_DIRECTLINKTEMPLATE_DESC" size="50" filter="raw"/>		
 		
 		<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="begenchangelog" type="radio" default="1"
+			label="COM_ARS_CONFIG_BEGENCHANGELOG_LABEL"
+			description="COM_ARS_CONFIG_BEGENCHANGELOG_DESC">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
+		<field name="becolorisechangelog" type="radio" default="1"
+			label="COM_ARS_CONFIG_BECOLORISECHANGELOG_LABEL"
+			description="COM_ARS_CONFIG_BECOLORISECHANGELOG_DESC">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
+
+		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="no_access_url" type="text" default="" label="COM_ARS_CONFIG_FE_NOACCESSURL_LABEL" description="COM_ARS_CONFIG_FE_NOACCESSURL_DESC" size="50" />
 		<field name="show_filesize" type="radio" default="1"
 			label="COM_ARS_CONFIG_SHOW_FILESIZE_LABEL"

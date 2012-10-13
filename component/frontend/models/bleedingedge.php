@@ -206,14 +206,7 @@ class ArsModelBleedingedge extends FOFModel
 				if($hasChangelog)
 				{
 					if(!empty($this_changelog)) {
-						$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
-						$notes = '<h3>Changelog</h3><ul>';
-						foreach($this_changelog as $line)
-						{
-							if(in_array($line, $first_changelog)) continue;
-							$notes .= '<li>'.$this->colorise($line)."</li>\n";
-						}
-						$notes .= '</ul>';
+						$notes = $this->coloriseChangelog($this_changelog, $first_changelog);
 					}
 				} else {
 					$this_changelog = '';
@@ -307,14 +300,7 @@ class ArsModelBleedingedge extends FOFModel
 			
 			if($hasChangelog)
 			{
-				$notes = '';
-				$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
-				$notes = '<h3>Changelog</h3><p>';
-				foreach($this_changelog as $line)
-				{
-					$notes .= $this->colorise($line)."<br/>\n";
-				}
-				$notes .= '</p>';
+				$notes = $this->coloriseChangelog($this_changelog, $first_changelog);
 				$release->notes = $notes;
 
 				$table = FOFModel::getTmpInstance('Releases','ArsModel')
@@ -421,6 +407,38 @@ class ArsModelBleedingedge extends FOFModel
 		if(isset($table)) $table->reorder('`release_id` = '.$release->id);
 	}
 
+	private function coloriseChangelog(&$this_changelog, $first_changelog = array())
+	{
+		$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
+		$notes = '';
+
+		jimport('joomla.application.component.helper');
+		$params = JComponentHelper::getParams('com_ars');
+		
+		$generate_changelog = $params->get('begenchangelog', 1);
+		$colorise_changelog = $params->get('becolorisechangelog', 1);
+		
+		if($generate_changelog) {
+			if($colorise_changelog) {
+				$notes = '<h3>'.$changelog_header.'</h3>';
+			}
+			$notes .= '<ul>';
+			
+			foreach($this_changelog as $line)
+			{
+				if(in_array($line, $first_changelog)) continue;
+				if($colorise_changelog) {
+					$notes .= '<li>'.$this->colorise($line)."</li>\n";
+				} else {
+					$notes .= "<li>$line</li>\n";
+				}
+			}
+			$notes .= '</ul>';
+		}
+		
+		return $notes;
+	}
+	
 	private function colorise($line)
 	{
 		$line = trim($line);

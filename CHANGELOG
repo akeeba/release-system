@@ -2,6 +2,7 @@ Version 2.0.6
 ================================================================================
 + Add context to the content preparation (com_ars.category_description, com_ars.release_description, com_ars.release_notes and com_ars.item_description), allowing developers to create custom content plugins which fire only when processing messages to be displayed in ARS
 + DirectLink allows users to easily download files without having to log in to your site first.
++ Control whether BleedingEdge should create and format changelogs automatically
 ~ Improved page title and metadata handling
 # [MEDIUM] Page options not respected in drill-down views (thank you Nikolai!)
 
