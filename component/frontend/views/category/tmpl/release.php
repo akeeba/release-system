@@ -63,7 +63,7 @@ if(version_compare(JVERSION, '3.0', 'lt')) {
 		<div class="tab-pane active" id="reltabs-<?php echo $item->id ?>-desc">
 			<?php echo ArsHelperHtml::preProcessMessage($item->description, 'com_ars.release_description'); ?>
 		</div>
-		<div class="tab-pane" id="reltabs-<?php echo $item->id ?>-notes"
+		<div class="tab-pane" id="reltabs-<?php echo $item->id ?>-notes">
 			 <?php echo ArsHelperHtml::preProcessMessage($item->notes, 'com_ars.release_notes'); ?>
 		</div>
 	</div>
