@@ -2176,7 +2176,9 @@ date="2010-10-10"</programlisting>
       </section>
 
       <section xml:id="make-it-look-beautiful">
-        <title>Making it look beautiful</title>
+        <title>Making it look beautiful (component options)</title>
+
+        <bridgehead>Chameleon </bridgehead>
 
         <para>ARS is using a Chameleon skinning engine. This term was coined
         by Stian Didriksen to name the technique he is using in the NinjaBoard
@@ -2193,7 +2195,6 @@ date="2010-10-10"</programlisting>
 
         <para>In order to configure the Chameleon skinning engine, go to the
         component's Control Panel page and click on the
-        <guibutton>Parameters</guibutton> (Joomla! 1.5) or
         <guibutton>Options</guibutton> (Joomla! 1.6) button in the toolbar.
         You can see the following options for the Category boxes:</para>
 
@@ -2202,11 +2203,11 @@ date="2010-10-10"</programlisting>
             <term>Category module style</term>
 
             <listitem>
-              <para>There is a drop-down box listing all the module "chrome"
-              (rendering types) for modules installed on your Joomla! site.
-              Make sure you select one under the "system" group (these are
-              basic styles always available to all templates) or one of the
-              items under your specific template's group.</para>
+              <para>There is a text entry allowing you to enter the module
+              "chrome" (rendering type) for modules installed on your Joomla!
+              site. Make sure you enter one supported by your template. If
+              unsure please ask your template developer or use
+              "rounded".</para>
             </listitem>
           </varlistentry>
 
@@ -2273,6 +2274,167 @@ date="2010-10-10"</programlisting>
         respected template clubs producing feature-rich templates, such as
         RocketTheme, if you want optimal presentation results with minimal
         fuss.</para>
+
+        <bridgehead>Bleeding Edge options</bridgehead>
+
+        <para>By default, releases in Bleeding Edge categories automatically
+        generate a CHANGELOG and save it in the release notes based on the
+        changed lines between the CHANGELOG files found in a release which is
+        about to be published and the previously published release in the same
+        Bleeding Edge category. You can customise how that works with
+        parameters found in the component Options page.</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Generate changelog for Bleeding Edge releases</term>
+
+            <listitem>
+              <para>When it's turned off the CHANGELOG will not be created and
+              saved in the release notes.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Colorise Changelog</term>
+
+            <listitem>
+              <para>By default ARS adds some class names to each CHANGELOG
+              line to allow color-coding each line based on whether it's an
+              addition, deletion, modification, bug fix and so on. When this
+              option is disabled these classes are not added. This could
+              allow, for example, a content plugin to perform its own custom
+              formatting of the CHANGELOG.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <bridgehead>Front-end display options</bridgehead>
+
+        <para>If you want to fully customise the display of the component you
+        have to do <link
+        xlink:href="http://docs.joomla.org/How_to_override_the_output_from_the_Joomla!_core"
+        xmlns:xlink="http://www.w3.org/1999/xlink">template overrides</link>.
+        But for simple stuff, like defining if the MD5 sum should be shown or
+        to define what the users see when they are not allowed to access an
+        item there are much simpler and more user friendly options.</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>No Access URL</term>
+
+            <listitem>
+              <para>When a user tries to access a category, release or item
+              that he has no access to he normally gets a standard-issue
+              Joomla! 403 Forbidden page. Not really user-friendly. Sometimes
+              it's best to direct them to a page explaining why they have no
+              access and give them instructions to subscribe to your services.
+              That's what this option does. Give the URL where the visitors
+              will be directed when they try to access a category, release or
+              item they have no access to.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Show file size</term>
+
+            <listitem>
+              <para>Should the release display the file size for each
+              item?</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Show MD5</term>
+
+            <listitem>
+              <para>Should the release display the MD5 sum for each
+              item?</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Show SHA1</term>
+
+            <listitem>
+              <para>Should the release display the SHA1 sum for each
+              item?</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Show environments (compatibility)</term>
+
+            <listitem>
+              <para>Should the release display the environment (compatibility)
+              badges for each item?</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para><bridgehead>Direct Link Options</bridgehead>ARS is excellent for
+        distributing subscription-based software. However this requires the
+        users to log in to your site, download the file to their device /
+        computer and then use it. This is just fine when your users are using
+        a full-blown computer, e.g. a desktop or a laptop. This doesn't really
+        work when they are using a mobile device like a smartphone or a
+        tablet. In those cases it would be much better if you could just give
+        them a "pre-signed" URL which allows them to download the software
+        directly, without having to log in. If you are in the business of
+        distributing Joomla! extensions (like us) this direct link can be used
+        with Joomla!'s "Install from URL" feature to allow your users to
+        easily install the extension on their site.</para>
+
+        <para>And that's exactly what the Direct Link is: a link (URL) which
+        can be used with Joomla!'s "Install from URL" feature to install
+        subscription-based extensions. Of course you may find more creative
+        uses for it!</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Show Direct Link</term>
+
+            <listitem>
+              <para>When it's enabled a "Direct Link" link will be shown next
+              to the regular download link of each item.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Direct Link template</term>
+
+            <listitem>
+              <para>It defines how the Direct Link links of each item will be
+              rendered. By default it is <code>&lt;a href="%s" class="readon"
+              title="%s"&gt;%s&lt;/a&gt;</code> which is the generic way to
+              render a "read on" link in Joomla!. Different templates use a
+              slightly different HTML syntax for the "read on" links. You can
+              type in the HTML you want. The first %s occurrence will be
+              replaced with the URL of the link, whereas the second %s
+              occurrence will be replaced with the item's title.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Direct Link extensions</term>
+
+            <listitem>
+              <para>A comma-separated list of file extensions for which we
+              should display Direct Link links. Do not include the dots. Do
+              not leave spaces between the comma and the extension. We
+              recommend using <option>zip,tar,tar.gz</option> in here.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Direct Link description</term>
+
+            <listitem>
+              <para>The tooltip for the Direct Link links. It's a good idea to
+              use this to explain to your users what the Direct Link is all
+              about.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
       </section>
     </chapter>
 
