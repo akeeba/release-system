@@ -5,6 +5,7 @@ Version 2.0.6
 + Control whether BleedingEdge should create and format changelogs automatically
 ~ Improved page title and metadata handling
 # [MEDIUM] Page options not respected in drill-down views (thank you Nikolai!)
+# [LOW] Sometimes the interface renders strangely (e.g. when a plugin sets format="")
 
 Version 2.0.6.rc1
 ================================================================================
