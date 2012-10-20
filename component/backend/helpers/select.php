@@ -198,6 +198,45 @@ class ArsHelperSelect
 
 		return $html;
 	}
+	
+	public static function payplansgroups($selected = null, $name = 'groups', $attribs = array())
+	{
+		if(!is_array($selected))
+		{
+			if(empty($selected)) {
+				$selected = array();
+			} else {
+				$selected = explode(',',$selected);
+			}
+		}
+		
+		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/filtering.php';
+		$hasPayPlans = defined('PAYPLANS_LOADED');
+		
+		if($hasPayPlans) {
+			$groups = PayplansApi::getPlans();
+	
+			$options = array();
+			$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL').' -');
+	
+			if(count($groups))
+			{
+				foreach($groups as $group) {
+					$options[] = JHTML::_('select.option', $group->plan_id, $group->title);
+				}
+				$default_attribs = array(
+					'multiple'	=> 'multiple',
+					'size'		=> 5
+				);
+				$attribs = array_merge($default_attribs, $attribs);
+				$html = self::genericlist($options, $name.'[]', $attribs, $selected, $name);
+			}
+		} else {
+			$html = '';
+		}
+
+		return $html;
+	}
 
 	public static function categories($selected = null, $id = 'category', $attribs = array())
 	{

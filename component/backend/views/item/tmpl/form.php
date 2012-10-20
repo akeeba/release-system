@@ -127,7 +127,7 @@ if($this->item->id == 0) {
 		<div class="control-group">
 			<label for="groups" class="control-label"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_PAYPLANS_LABEL'); ?></label>
 			<div class="controls">
-				<?php echo PayplansHtml::_('plans.edit', 'groups', $this->item->groups) ?>
+				<?php echo ArsHelperSelect::payplansgroups($this->item->groups, 'groups') ?>
 			</div>
 		</div>
 		<?php endif; ?>
