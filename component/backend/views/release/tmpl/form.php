@@ -53,7 +53,7 @@ if($this->item->id == 0) {
 			</div>
 		</div>
 		<div class="control-group">
-			<label for="maturity" class="control-label"><?php echo JText::_('JFIELD_ALIAS_LABEL'); ?></label>
+			<label for="maturity" class="control-label"><?php echo JText::_('COM_ARS_RELEASES_FIELD_MATURITY'); ?></label>
 			<div class="controls">
 				<?php echo ArsHelperSelect::maturities($this->item->maturity, 'maturity') ?>
 			</div>
