@@ -151,47 +151,12 @@ foreach($langs as $tag => $files) {
 	
 	// Get paths to temp and output files
 	@mkdir(realpath(dirname(__FILE__).'/../..').'/release/languages');
-	$j15ZIPPath = dirname(__FILE__).'/../../release/languages/'.$packageName.'-'.$tag.'-j15.zip';
 	$j20ZIPPath = dirname(__FILE__).'/../../release/languages/'.$packageName.'-'.$tag.'-j25.zip';
 	$tempXMLPath = realpath(dirname(__FILE__).'/../..').'/release/'.$tag.'.xml';
 	
 	// Start new ZIP files
-	@unlink($j15ZIPPath);
-	$zip15 = new PclZip( $j15ZIPPath );
 	@unlink($j20ZIPPath);
 	$zip20 = new PclZip( $j20ZIPPath );
-	
-	// Produce the Joomla! 1.5 manifest contents
-	$j15XML = <<<ENDHEAD
-<?xml version="1.0" encoding="utf-8"?>
-<install version="1.5" client="both" type="language" method="upgrade">
-    <name><![CDATA[$packageName-$tag]]></name>
-    <tag>$tag</tag>
-    <version>$version</version>
-    <date>$date</date>
-    <author><![CDATA[AkeebaBackup.com]]></author>
-    <authorurl>http://www.akeebabackup.com</authorurl>
-	<copyright>Copyright (C)$year AkeebaBackup.com. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <description><![CDATA[$langName translation file for $softwareName]]></description>
-
-ENDHEAD;
-	
-	if(array_key_exists('backend', $files)){
-		$j15XML .= "\t<administration>\n\t\t<files folder=\"backend\">\n";
-		foreach($files['backend'] as $file) {
-			$j15XML .= "\t\t\t<filename>".basename($file)."</filename>\n";
-		}
-		$j15XML .= "\t\t</files>\n\t</administration>\n";
-	}
-	if(array_key_exists('frontend', $files)){
-		$j15XML .= "\t<site>\n\t\t<files folder=\"frontend\">\n";
-		foreach($files['frontend'] as $file) {
-			$j15XML .= "\t\t\t<filename>".basename($file)."</filename>\n";
-		}
-		$j15XML .= "\t\t</files>\n\t</site>\n";
-	}
-	$j15XML .= "\t<params />\n</install>";
 	
 	// Produce the Joomla! 1.6/1.7/2.5 manifest contents
 	$j20XML = <<<ENDHEAD
@@ -225,15 +190,6 @@ ENDHEAD;
 	}
 	$j20XML .= "\t</fileset>\n</extension>";
 	
-	// Add the manifest (J! 1.5)
-	@unlink($tempXMLPath);
-	@file_put_contents($tempXMLPath, $j15XML);
-	$zip15->add($tempXMLPath,
-			PCLZIP_OPT_ADD_PATH, '', 
-			PCLZIP_OPT_REMOVE_PATH, dirname($tempXMLPath)
-	);
-	@unlink($tempXMLPath);
-	
 	// Add the manifest (J! 2.x)
 	@unlink($tempXMLPath);
 	@file_put_contents($tempXMLPath, $j20XML);
@@ -246,9 +202,6 @@ ENDHEAD;
 	// Add back-end files to archives
 	if(array_key_exists('backend', $files)){
 		foreach($files['backend'] as $file) {
-			$zip15->add($file,
-                	PCLZIP_OPT_ADD_PATH, 'backend' ,
-                	PCLZIP_OPT_REMOVE_PATH, dirname($file) );
 			$zip20->add($file,
                 	PCLZIP_OPT_ADD_PATH, 'backend' ,
                 	PCLZIP_OPT_REMOVE_PATH, dirname($file) );
@@ -257,9 +210,6 @@ ENDHEAD;
 	// Add front-end files to archives
 	if(array_key_exists('frontend', $files)){
 		foreach($files['frontend'] as $file) {
-			$zip15->add($file,
-                	PCLZIP_OPT_ADD_PATH, 'frontend' ,
-                	PCLZIP_OPT_REMOVE_PATH, dirname($file) );
 			$zip20->add($file,
                 	PCLZIP_OPT_ADD_PATH, 'frontend' ,
                 	PCLZIP_OPT_REMOVE_PATH, dirname($file) );
@@ -267,7 +217,6 @@ ENDHEAD;
 	}
 	
 	// Close archives
-	unset($zip15);
 	unset($zip20);
 	
 	$parts = explode('-', $tag);
@@ -276,7 +225,6 @@ ENDHEAD;
 		$country = 'catalonia';
 	}
 	
-	$base15 = basename($j15ZIPPath);
 	$base20 = basename($j20ZIPPath);
 	
 	$row = 1 - $row;
@@ -286,18 +234,13 @@ ENDHEAD;
 		<td width="50" align="center"><tt>$tag</tt></td>
 		<td width="250">$langName</td>
 		<td>
-			Download for
-			<a href="http://cdn.akeebabackup.com/language/$packageName/$base15">Joomla! 1.5</a>
-			or
-			<a href="http://cdn.akeebabackup.com/language/$packageName/$base20">Joomla! 1.6/1.7/2.5</a>
+			<a href="http://cdn.akeebabackup.com/language/$packageName/$base20">Download for Joomla! 1.6/1.7/2.5/3.x</a>
 		</td>
 	</tr>
 
 ENDHTML;
 
 	// @todo Upload translation files
-	echo "\tUploading ".basename($j15ZIPPath)."\n";
-	$s3->putObjectFile($j15ZIPPath, $s3Bucket, $s3Path.'/'.$packageName.'/'.basename($j15ZIPPath), S3::ACL_PUBLIC_READ);
 	echo "\tUploading ".basename($j20ZIPPath)."\n";
 	$s3->putObjectFile($j20ZIPPath, $s3Bucket, $s3Path.'/'.$packageName.'/'.basename($j20ZIPPath), S3::ACL_PUBLIC_READ);
 }
