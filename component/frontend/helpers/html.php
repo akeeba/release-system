@@ -47,7 +47,7 @@ class ArsHelperHtml
 		if(empty($environments)) return '';
 		
 		if (! class_exists( 'ArsHelperSelect' ) ) {
-			require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_ars' . DS . 'helpers' . DS . 'select.php' );
+			require_once( JPATH_ADMINISTRATOR . '/components/com_ars/helpers/select.php' );
 		}
 		
 		if ( is_string( $environments ) ) $environments = json_decode( $environments );
