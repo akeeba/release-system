@@ -63,6 +63,17 @@ class ArsViewCpanels extends FOFViewHtml
 		$this->assign('mdreport',			json_decode($mdreport, true));
 		
 		$cache->save();
+		
+		// Get chart area width
+		jimport('joomla.application.component.helper');
+		$params = JComponentHelper::getParams('com_ars');
+		$width = $params->get('graphswidth', 8);
+		if($width < 2) {
+			$width = 2;
+		} elseif($width > 10) {
+			$width = 10;
+		}
+		$this->assign('graphswidth',		$width);
 
 		return true;
 	}

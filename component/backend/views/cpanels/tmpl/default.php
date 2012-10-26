@@ -24,7 +24,7 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
 ?>
 <div class="row-fluid">
-	<div id="cpanel" class="span8">
+	<div id="cpanel" class="span<?php echo $this->graphswidth ?>">
 
 		<h3><?php echo JText::_('COM_ARS_CPANEL_DLSTATSMONTHLY_LABEL')?></h3>
 		<div id="mdrChart"></div>
@@ -69,7 +69,7 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 		
 	</div>
 
-	<div id="cpanel" class="span4">
+	<div id="cpanel" class="span<?php echo 12 - $this->graphswidth ?>">
 	<?php foreach($groups as $group): ?>
 		<?php if(array_key_exists($group, $this->icondefs)): ?>
 		<?php if(!count($this->icondefs[$group])) continue; ?>
