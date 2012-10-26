@@ -30,3 +30,4 @@ component/language/frontend/en-GB
 plugins/editors-xtd/arslink/language/en-GB
 /component/ars.xml
 /.tx/
+/*.sh
