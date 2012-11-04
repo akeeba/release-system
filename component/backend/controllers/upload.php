@@ -23,7 +23,7 @@ class ArsControllerUpload extends FOFController
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 		
-		if(!FOFInput::getVar(JFactory::getSession()->getToken(), false, $this->input))
+		if(!FOFInput::getVar(JFactory::getSession()->getFormToken(), false, $this->input))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
@@ -50,7 +50,7 @@ class ArsControllerUpload extends FOFController
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 		
-		if(!FOFInput::getVar(JFactory::getSession()->getToken(), false, $this->input))
+		if(!FOFInput::getVar(JFactory::getSession()->getFormToken(), false, $this->input))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
@@ -153,7 +153,7 @@ class ArsControllerUpload extends FOFController
 			if(!$success) {
 				$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
 					.'&folder='.urlencode(JRequest::getString('folder'))
-					.'&'.JFactory::getSession()->getToken(true).'=1';
+					.'&'.JFactory::getSession()->getFormToken(true).'=1';
 				$this->setRedirect($url, $s3->getError(), 'error');
 				return false;
 			}
@@ -161,7 +161,7 @@ class ArsControllerUpload extends FOFController
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
 			.'&folder='.urlencode(JRequest::getString('folder'))
-			.'&'.JFactory::getSession()->getToken(true).'=1';
+			.'&'.JFactory::getSession()->getFormToken(true).'=1';
 		$this->setRedirect($url, JText::_('MSG_ALL_FILES_UPLOADED'));
 	}
 
@@ -176,7 +176,7 @@ class ArsControllerUpload extends FOFController
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 		
-		if(!FOFInput::getVar(JFactory::getSession()->getToken(), false, $this->input))
+		if(!FOFInput::getVar(JFactory::getSession()->getFormToken(), false, $this->input))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
@@ -193,7 +193,7 @@ class ArsControllerUpload extends FOFController
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
 			.'&folder='.urlencode(JRequest::getString('folder'))
-			.'&'.JFactory::getSession()->getToken(true).'=1';
+			.'&'.JFactory::getSession()->getFormToken(true).'=1';
 		
 		if($status) {
 			$this->setRedirect($url, JText::_('MSG_FILE_DELETED'));
@@ -212,7 +212,7 @@ class ArsControllerUpload extends FOFController
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 		
-		if(!FOFInput::getVar(JFactory::getSession()->getToken(), false, $this->input))
+		if(!FOFInput::getVar(JFactory::getSession()->getFormToken(), false, $this->input))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
@@ -250,7 +250,7 @@ class ArsControllerUpload extends FOFController
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
 			.'&folder='.urlencode(JRequest::getString('folder'))
-			.'&'.JFactory::getSession()->getToken(true).'=1';
+			.'&'.JFactory::getSession()->getFormToken(true).'=1';
 		if($status) {
 			$this->setRedirect($url, JText::_('MSG_FOLDER_CREATED'));
 		} else {

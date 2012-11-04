@@ -27,7 +27,7 @@ if($this->item->id == 0) {
 	<input type="hidden" name="view" value="<?php echo JRequest::getCmd('view') ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="id" value="<?php echo $this->item->id ?>" />
-	<input type="hidden" name="<?php echo JFactory::getSession()->getToken();?>" value="1" />
+	<input type="hidden" name="<?php echo JFactory::getSession()->getFormToken();?>" value="1" />
 
 <div class="row-fluid">
 	

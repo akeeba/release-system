@@ -91,7 +91,7 @@ require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 	<input type="hidden" name="task" value="upload" />
 	<input type="hidden" name="id" value="<?php echo $this->category ?>" />
 	<input type="hidden" name="folder" value="<?php echo $this->escape($this->folder) ?>" />
-	<input type="hidden" id="token" name="<?php echo JFactory::getSession()->getToken();?>" value="1" />
+	<input type="hidden" id="token" name="<?php echo JFactory::getSession()->getFormToken();?>" value="1" />
 	<input type="hidden" name="format" value="html" />
 
 		<?php $usize = $this->mediaconfig->get('upload_maxsize') ?>
