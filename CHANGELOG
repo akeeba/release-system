@@ -2,6 +2,7 @@ Version 2.0.7
 ================================================================================
 + #91 Latest release content plugin, allows you to display the latest release of a category and links to it and its files in your content items
 + Option to define width of left cpanel column.
+# [HIGH] Potential unauthorized access to list of downloads, but without the ability to download anything
 
 Version 2.0.6
 ================================================================================

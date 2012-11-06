@@ -14,18 +14,30 @@ class ArsDispatcher extends FOFDispatcher
 {
 	public $defaultView = 'browse';
 	
+	private $allowedViews = array(
+		'browses','categories','downloads','latests','releases','updates'
+	);
+	
 	public function onBeforeDispatch() {
 		$result = parent::onBeforeDispatch();
-		if(!$result) {
-			return $result;
+		if($result) {
+			// Load Akeeba Strapper
+			include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
+			AkeebaStrapper::bootstrap();
+			AkeebaStrapper::jQueryUI();
+			AkeebaStrapper::addCSSfile('media://com_ars/css/backend.css');
+			
+			// Default to the "browses" view
+			$view = FOFInput::getCmd('view',$this->defaultView, $this->input);
+			if(empty($view) || ($view == 'cpanel')) {
+				$view = 'browses';
+			}
+			
+			// Set the view, if it's allowed
+			FOFInput::setVar('view',$view,$this->input);
+			if(!in_array(FOFInflector::pluralize($view), $this->allowedViews)) $result = false;
 		}
 		
-		// Load Akeeba Strapper
-		include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
-		AkeebaStrapper::bootstrap();
-		AkeebaStrapper::jQueryUI();
-		AkeebaStrapper::addCSSfile('media://com_ars/css/backend.css');
-
-		return true;
+		return $result;
 	}
 }
