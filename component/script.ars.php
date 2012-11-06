@@ -34,9 +34,10 @@ class Com_ArsInstallerScript
 			),
 			'content' => array(
 				'arsdlid'				=> 0,
+				'arslatest'				=> 1,
 			),
 			'editors-xtd' => array(
-				'arslink'				=> 0,
+				'arslink'				=> 1,
 			),
 		)
 	);

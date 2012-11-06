@@ -2178,7 +2178,7 @@ date="2010-10-10"</programlisting>
       <section xml:id="make-it-look-beautiful">
         <title>Making it look beautiful (component options)</title>
 
-        <bridgehead>Chameleon </bridgehead>
+        <bridgehead>Chameleon</bridgehead>
 
         <para>ARS is using a Chameleon skinning engine. This term was coined
         by Stian Didriksen to name the technique he is using in the NinjaBoard
@@ -2446,6 +2446,151 @@ date="2010-10-10"</programlisting>
       seen before in a download repository, like 0-click publishing, country
       logging and an easy way to provide 1-click updates to your own
       extensions!</para>
+
+      <section xml:id="content-plugins">
+        <title>The content plugins</title>
+
+        <para>Akeeba Release System comes bundled with content plugins which
+        make your life easier. Content plugins can be used in all areas of
+        Joomla! and its components which support content preparation, such as
+        articles, category descriptions, Custom HTML modules, K2, Zoo, Akeeba
+        Release System itself (the descriptions support content plugins),
+        Akeeba Subscriptions and so on.</para>
+
+        <section xml:id="content-plugins-dlid">
+          <title>The Download ID plugin</title>
+
+          <para>Shown in the plugin manager as: <guilabel>Content - Download
+          ID</guilabel></para>
+
+          <note>
+            <para>This plugin only appeals to developers. If you are not a
+            developer you don't need and you are not supposed to understand
+            this part of the documentation. If you are not a developer, just
+            disable this plugin.</para>
+          </note>
+
+          <para>If you want to provide updates to registered users /
+          subscribers you will find out that the download URL in the XML and
+          INI update streams results in a 403 Forbidden error. This is normal.
+          These downloads are only available to registered users, but
+          accessing the URL directly, from Joomla!'s perspective, is a guest
+          (non logged in) visitor trying to access the URL. This of course
+          results in a 403 Forbidden error and begs the question: how do you
+          authenticate users?</para>
+
+          <para>The answer to that question is the Download ID. The Download
+          ID is an MD5 hash derived from a user's numeric ID, username,
+          encrypted password and email address which uniquely identified the
+          user to ARS. Appending the download URL with the
+          dlid=<replaceable>download_id</replaceable> query string parameter
+          will allow ARS to authenticate the user and, if he has access to the
+          download, proceed with the download.</para>
+
+          <para>You need to be able to communicate this Download ID to your
+          users. This is where this plugin comes in use. Just enter
+          <programlisting>{dlid}</programlisting>in an article, Custom HTML
+          module or anywhere else where content plugins are supported. It will
+          be replaced with the download ID of the current user, e.g.
+          abcdef01234567890abcdef01234567890, or a blank string if the user is
+          a guest.</para>
+
+          <important>
+            <para>Just because a Download ID is displayed for a user it
+            doesn't mean that he has access to any downloads. Think of the
+            Download ID as a combined, abbreviated form of a username and a
+            password.</para>
+          </important>
+
+          <warning>
+            <para>The Download ID changes whenever your user changes or resets
+            his password, <emphasis>even if the his password is the same as
+            the old one</emphasis>. This is a consequence of the very correct
+            and secure way Joomla! handles password changes. Whenever a
+            password is changed, Joomla! stores a new encrypted form of the
+            password, based on a new random string, in the database. Since the
+            Download ID algorithm uses the encrypted password as part of its
+            calculation, the Download ID changes when Joomla! changes the
+            stored encrypted password.</para>
+          </warning>
+        </section>
+
+        <section xml:id="content-plugins-latest">
+          <title>The Latest Release plugin</title>
+
+          <para>Shown in the plugin manager as: <guilabel>Content - Akeeba
+          Release System Latest Releases</guilabel></para>
+
+          <para>Many times you want to include the latest published version
+          number of a specific category in your content articles. Surely, you
+          can just type it out. This works perfectly when you only do that in
+          one or two places, provided that you remember to edit this
+          information every single time you make a new release. However, after
+          a while, it becomes too cumbersome. Especially when this information
+          is present in more than two places and/or you have more than a
+          handful of categories. This is where this plugin comes in to save
+          your day. It allows you to automatically display the version number
+          and URL of the latest release. Moreover, it allows you to link
+          directly to specific items in the latest release of a
+          category.</para>
+
+          <bridgehead>Showing the latest release version number</bridgehead>
+
+          <para>Syntax:</para>
+
+          <programlisting>{arslatest <emphasis role="bold">release</emphasis> <replaceable>Category Name</replaceable>}</programlisting>
+
+          <para>where Category Name is the name of the Akeeba Release System
+          category (not the alias, the title). This will return the latest
+          release's version number, e.g. 1.0.</para>
+
+          <bridgehead>Creating links to the latest release</bridgehead>
+
+          <para>Syntax:</para>
+
+          <programlisting>{arslatest <emphasis role="bold">release_link</emphasis> <replaceable>Category Name</replaceable>}</programlisting>
+
+          <para>where Category Name is the name of the Akeeba Release System
+          category (not the alias, the title). This will return the URL to
+          latest release's version number, e.g. 1.0. Please note that this is
+          the URL, not a link! If you want to use it as a link you will need
+          something like this:</para>
+
+          <programlisting>&lt;a href="{arslatest <emphasis role="bold">release_link</emphasis> <replaceable>Category Name</replaceable>}"&gt;Your link text&lt;/a&gt;</programlisting>
+
+          <para>You can combine it with the version number syntax for
+          something like this:</para>
+
+          <programlisting>&lt;a href="{arslatest <emphasis role="bold">release_link</emphasis> <replaceable>Category Name</replaceable>}"&gt;My category, version {arslatest <emphasis
+              role="bold">release</emphasis> <replaceable>Category Name</replaceable>}&lt;/a&gt;</programlisting>
+
+          <bridgehead>Creating links to specific items in the latest
+          release</bridgehead>
+
+          <para>Syntax:</para>
+
+          <programlisting>{arslatest <emphasis role="bold">item_link</emphasis> <emphasis
+              role="bold">"</emphasis><replaceable>pattern</replaceable><emphasis
+              role="bold">"</emphasis> <replaceable>Category Name</replaceable>}</programlisting>
+
+          <para>where Category Name is the name of the Akeeba Release System
+          category and pattern is a file naming pattern, enclosed in double
+          quotes. For example, in order to create a link to a download item
+          for a file whose names begins with com_foobar and ends in .zip in
+          the Foobar category you would have to do:</para>
+
+          <programlisting>{arslatest item_link "com_foobar*.zip" Foobar}</programlisting>
+
+          <para>Please note that this is the URL, not a link! If you want to
+          use it as a link you will need something like this:</para>
+
+          <para><programlisting>&lt;a href="{arslatest item_link "com_foobar*.zip" Foobar}"&gt;Download latest version&lt;/a&gt;</programlisting>or
+          combine it with the version number syntax to have something even
+          more useful:</para>
+
+          <para><programlisting>&lt;a href="{arslatest item_link "com_foobar*.zip" Foobar}"&gt;Download Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
+        </section>
+      </section>
 
       <section xml:id="live-update">
         <title>One-click Live Updates for your components</title>
