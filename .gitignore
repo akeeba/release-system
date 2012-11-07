@@ -31,3 +31,4 @@ plugins/editors-xtd/arslink/language/en-GB
 /component/ars.xml
 /.tx/
 /*.sh
+plugins/*/*/language/en-GB
