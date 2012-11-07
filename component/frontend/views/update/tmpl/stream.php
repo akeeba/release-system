@@ -115,7 +115,7 @@ foreach($this->items as $item):
 		<version><?php echo $item->version ?></version>
 		<infourl title="<?php echo $item->cat_title.' '.$item->version ?>"><?php echo $rootURL.AKRouter::_('index.php?option=com_ars&view=release&id='.$item->release_id) ?></infourl>
 		<downloads>
-			<downloadurl type="full" format="<?php echo $format ?>"><?php echo $downloadURL?></downloadurl>
+			<downloadurl type="full" format="<?php echo $format ?>"><?php echo htmlentities($downloadURL)?></downloadurl>
 		</downloads>
 		<tags>
 			<tag><?php echo $item->maturity ?></tag>
