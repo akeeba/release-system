@@ -1,5 +1,6 @@
 Version 2.0.7
 ================================================================================
++ Added minimum stability option in component Options
 + #91 Latest release content plugin, allows you to display the latest release of a category and links to it and its files in your content items
 + Option to define width of left cpanel column.
 ~ Make sure we are no longer using Joomla!'s integrated extension update (it doesn't support stability and Joomla! version compatibility checks)

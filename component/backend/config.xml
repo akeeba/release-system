@@ -135,6 +135,25 @@
 			<option value="2592000">COM_ARS_CONFIG_S3_TIME_1MONTH</option>
 		</field>
 	</fieldset>
+
+	<fieldset
+		name="updates"
+		label="COM_ARS_CONFIG_UPDATES_LABEL"
+		description="COM_ARS_CONFIG_UPDATES_DESC"
+		>
+		<!--
+		<field name="downloadid" type="text" default="" size="30"
+			label="COM_ARS_CONFIG_UPDATE_DOWNLOADID_LABEL"
+			description ="COM_ARS_CONFIG_UPDATE_DOWNLOADID_DESC" />
+		-->
+		<field name="minstability" type="list" default="stable" label="COM_ARS_CONFIG_UPDATES_MINSTABILITY_LABEL" description="COM_ARS_CONFIG_UPDATES_MINSTABILITY_DESC">
+			<option value="alpha">COM_ARS_CONFIG_UPDATES_STABILITY_ALPHA</option>
+			<option value="beta">COM_ARS_CONFIG_UPDATES_STABILITY_BETA</option>
+			<option value="rc">COM_ARS_CONFIG_UPDATES_STABILITY_RC</option>
+			<option value="stable">COM_ARS_CONFIG_UPDATES_STABILITY_STABLE</option>
+		</field>
+		<field name="liveupdate" type="hidden" default="" label="" description="" />
+	</fieldset>
 	
 	<fieldset
 		name="permissions"
