@@ -10,19 +10,29 @@ defined('_JEXEC') or die();
 class ArsControllerCategory extends FOFController
 {
 	public function __construct($config = array()) {
-		$config['modelName'] = 'ArsModelBrowses';
+		if(FOFInput::getCmd('format','html',$config['input']) == 'html') {
+			$config['modelName'] = 'ArsModelBrowses';
+		} elseif(!JFactory::getUser()->authorise('com.manage', 'com_ars')) {
+			JError::raiseError(403, 'Forbidden');
+		}
 		parent::__construct($config);
 	}
 	
 	public function execute($task) {
-		if(!in_array($task, array('browse','read'))) {
-			$task = 'read';
+		if(FOFInput::getCmd('format','html',$this->input) == 'html') {
+			if(!in_array($task, array('browse','read'))) {
+				$task = 'read';
+			}
 		}
 		
 		parent::execute($task);
 	}
 	
 	function onBeforeRead() {
+		if(FOFInput::getCmd('format','html',$this->input) != 'html') {
+			return true;
+		}
+		
 		$id = FOFInput::getInt('id', 0, $this->input);
 
 		// Get the page parameters

@@ -15,7 +15,7 @@ class ArsDispatcher extends FOFDispatcher
 	public $defaultView = 'browse';
 	
 	private $allowedViews = array(
-		'browses','categories','downloads','latests','releases','updates'
+		'browses','categories','downloads','latests','releases','updates','items'
 	);
 	
 	public function onBeforeDispatch() {
@@ -36,6 +36,17 @@ class ArsDispatcher extends FOFDispatcher
 			// Set the view, if it's allowed
 			FOFInput::setVar('view',$view,$this->input);
 			if(!in_array(FOFInflector::pluralize($view), $this->allowedViews)) $result = false;
+			
+			if( (FOFInput::getCmd('format','html',$this->input) == 'html') &&
+				(FOFInflector::pluralize($view) == 'items') ) {
+				$result = false;
+			} elseif(FOFInflector::pluralize($view) == 'items') {
+				// Require admin
+				if(!JFactory::getUser()->authorise('core.manage','com_ars')) {
+					JError::raiseError(403, 'Forbidden');
+					$result = false;
+				}
+			}
 		}
 		
 		return $result;
