@@ -106,10 +106,6 @@
 	<!-- Installation / uninstallation script file -->
 	<scriptfile>script.ars.php</scriptfile>
 
-	<updateservers>
-		<server type="extension" priority="1" name="Akeeba Release System Updates"><![CDATA[http://nocdn.akeebabackup.com/updates/ars.xml]]></server>
-	</updateservers>
-	
 	<!-- Akeeba Backup System Restore Points integration -->
 	<restorepoint>
 		<customdirs>
