@@ -54,7 +54,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 <?php endif; ?>
 </div>
 
-<form id="ars-pagination" action="index.php?Itemid=<?php echo $Itemid ?>" method="post">
+<form id="ars-pagination" action="<?php echo JURI::getInstance()->toString() ?>" method="post">
 	<input type="hidden" name="option" value="com_ars" />
 	<input type="hidden" name="view" value="category" />
 	<input type="hidden" name="id" value="<?php echo JRequest::getInt('id',0) ?>" />

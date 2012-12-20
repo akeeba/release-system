@@ -1,6 +1,7 @@
 Version 2.0.7
 ================================================================================
 # [MEDIUM] Router regression, resulting in broken SEF URLs and pagination issues
+# [MEDIUM] Pagination limits (items per list) in Category and Release views were broken
 
 Version 2.0.7
 ================================================================================

@@ -64,7 +64,7 @@ echo JModuleHelper::renderModule($module, $params);
 <?php endif; ?>
 </div>
 	
-<form id="ars-pagination" action="index.php?Itemid=<?php FOFInput::getInt('Itemid', 0, $this->input) ?>" method="post">
+<form id="ars-pagination" action="<?php echo JURI::getInstance()->toString() ?>" method="post">
 	<input type="hidden" name="option" value="com_ars" />
 	<input type="hidden" name="view" value="release" />
 	<input type="hidden" name="id" value="<?php echo $this->release_id ?>" />
