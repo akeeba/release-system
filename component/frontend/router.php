@@ -45,13 +45,16 @@ function arsBuildRouteHtml(&$query)
 {
 	$segments = array();
 
-	//If there is only the option and Itemid, let Joomla! decide on the naming scheme
+	// If there is only the option and Itemid, let Joomla! decide on the naming scheme
+	// No. That was a stupid idea which broke pagination!
+	/*
 	if( isset($query['option']) && isset($query['Itemid']) &&
 		!isset($query['view']) && !isset($query['task']) &&
 		!isset($query['layout']) && !isset($query['id']) )
 	{
-		return $segments;
+		var_dump($query); echo "&bull;";
 	}
+	*/
 	
 	$menus = JMenu::getInstance('site');
 
