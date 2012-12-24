@@ -32,3 +32,6 @@ plugins/editors-xtd/arslink/language/en-GB
 /.tx/
 /*.sh
 plugins/*/*/language/en-GB
+/build/templates/release.json
+/DESCRIPTION.html
+/RELEASENOTES.html

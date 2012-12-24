@@ -150,6 +150,16 @@
 		/>
 	</target>
 	
+	<!--
+	====================================================================================================
+	Tasks - Project management
+	====================================================================================================
+	-->
+
+	<target name="lang" description="Generate and upload language files">
+		<exec command="php ./buildlang.php" dir="buildlang" passthru="true" />
+	</target>
+
 	<target name="ftpdeploy" depends="svn">
 		<svnversion workingcopy="${dirs.root}" propertyname="svn.lastrevision" />
 		<!-- Core release -->
