@@ -172,7 +172,7 @@
 			</filterchain>
 		</copy>
 
-		<exec command="../releasemaker/releasemaker/index.php ${project.basedir}/release.json" dir="${project.basedir}" />
+		<exec command="php ${project.basedir}/../../releasemaker/releasemaker/index.php ${project.basedir}/../release.json" dir="${project.basedir}" passthru="true" />
 
 		<delete file="${dirs.root}/release.json" quiet="yes" />
 	</target>
