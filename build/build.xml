@@ -25,7 +25,6 @@
 
 	<taskdef name="zipme" classname="phingext.ZipmeTask" />
 	<taskdef name="svnversion" classname="phingext.SvnVersionTask" />
-	<taskdef name="docexport" classname="phingext.DocexportTask" />	
 
 	<!--
 	====================================================================================================
@@ -61,7 +60,7 @@
 	</target>
 
 	<target name="documentation" description="Creates the documentation packages"
-		depends="doc-j-pdf,doc-j-import">
+		depends="doc-j-pdf">
 	</target>	
 
 	<target name="new-release" description="Empty the release directory">
@@ -137,19 +136,6 @@
 		<delete file="${dirs.release}arsguide.fo" quiet="yes" />
 	</target>
 
-	<target name="doc-j-import" description="Documentation for Joomla! in DocImport format">
-		<docexport
-			version="${version}"
-			outdir="${dirs.release}"
-			xslstyleroot="${dirs.bin.dbxsl}"
-			title="Akeeba Backup User's Guide"
-			docbookfile="${dirs.documentation}/arsguide/ars-users-guide.xml"
-			imagedir="images"
-			docbookimages="images"
-			package="ars-users-guide"
-		/>
-	</target>
-	
 	<!--
 	====================================================================================================
 	Tasks - Project management
