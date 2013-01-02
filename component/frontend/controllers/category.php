@@ -29,6 +29,11 @@ class ArsControllerCategory extends FOFController
 	}
 	
 	function onBeforeRead() {
+		$limitstart = FOFInput::getInt('limitstart', -1, $this->input);
+		if($limitstart >= 0) {
+			FOFInput::setVar('start', $limitstart, $this->input);
+		}		
+		
 		if(FOFInput::getCmd('format','html',$this->input) != 'html') {
 			return true;
 		}
