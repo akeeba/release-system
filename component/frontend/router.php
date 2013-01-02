@@ -43,18 +43,23 @@ function arsBuildRoute(&$query)
 
 function arsBuildRouteHtml(&$query)
 {
+	static $currentlang = null;
+	
+	if (is_null($currentlang))
+	{
+		$jlang = JFactory::getLanguage();
+		$currentlang = $jlang->getTag();
+	}
+	
 	$segments = array();
 
 	// If there is only the option and Itemid, let Joomla! decide on the naming scheme
-	// No. That was a stupid idea which broke pagination!
-	/*
 	if( isset($query['option']) && isset($query['Itemid']) &&
 		!isset($query['view']) && !isset($query['task']) &&
 		!isset($query['layout']) && !isset($query['id']) )
 	{
-		var_dump($query); echo "&bull;";
+		return $segments;
 	}
-	*/
 	
 	$menus = JMenu::getInstance('site');
 
@@ -63,8 +68,9 @@ function arsBuildRouteHtml(&$query)
 	$layout = ArsRouterHelper::getAndPop($query, 'layout');
 	$id = ArsRouterHelper::getAndPop($query, 'id');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
+	$language = ArsRouterHelper::getAndPop($query, 'language', $currentlang);
 
-	$qoptions = array( 'option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id );
+	$qoptions = array( 'option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id, 'language' => $language );
 	switch($view)
 	{
 		case 'browses':
@@ -141,7 +147,7 @@ function arsBuildRouteHtml(&$query)
 				else
 				{
 					// Not found. Try fetching a browser menu item
-					$options = array('option' => 'com_ars', 'view' => 'browses', 'layout' => 'repository');
+					$options = array('option' => 'com_ars', 'view' => 'browses', 'layout' => 'repository', 'language' => $language);
 					$menu = ArsRouterHelper::findMenu($options);
 					$Itemid = empty($menu) ? null : $menu->id;
 					if(!empty($Itemid))
@@ -214,7 +220,7 @@ function arsBuildRouteHtml(&$query)
 			if(empty($Itemid))
 			{
 				// Try to find a category menu item
-				$options = array('view'=>'category', 'option' => 'com_ars');
+				$options = array('view'=>'category', 'option' => 'com_ars', 'language' => $language);
 				$params = array('catid'=>$release->category_id);
 				$menu = ArsRouterHelper::findMenu($options, $params);
 				if(!empty($menu))
@@ -226,7 +232,7 @@ function arsBuildRouteHtml(&$query)
 				else
 				{
 					// Nah. Let's find a browse menu item.
-					$options = array('view'=>'browses', 'option' => 'com_ars');
+					$options = array('view'=>'browses', 'option' => 'com_ars', 'language' => $language);
 					$menu = ArsRouterHelper::findMenu($options);
 					if(!empty($menu))
 					{
@@ -1370,7 +1376,7 @@ class ArsRouterHelper
 
 		$menus = JMenu::getInstance('site');
 		$menuitem = $menus->getActive();
-
+		
 		// First check the current menu item (fastest shortcut!)
 		if(is_object($menuitem)) {
 			if(self::checkMenu($menuitem, $qoptions, $params)) {
@@ -1436,9 +1442,19 @@ class ArsRouterHelper
 		$query = $menu->query;
 		foreach($qoptions as $key => $value)
 		{
-			if(is_null($value)) continue;
+			//if(is_null($value)) continue;
+			if($key == 'language') continue;
+			if(empty($value)) continue;
 			if(!isset($query[$key])) return false;
 			if($query[$key] != $value) return false;
+		}
+		
+		if(isset($qoptions['language']))
+		{
+			if (($menu->language != $qoptions['language']) && ($menu->language != '*'))
+			{
+				return false;
+			}
 		}
 
 		if(!is_null($params))
@@ -1449,7 +1465,15 @@ class ArsRouterHelper
 			foreach($params as $key => $value)
 			{
 				if(is_null($value)) continue;
-				if( $check->get($key) != $value ) return false;
+				if($key == 'language')
+				{
+					$v = $check->get($key);
+					if (($v != $value) && ($v != '*') && !empty($v)) return false;
+				}
+				else
+				{
+					if( $check->get($key) != $value ) return false;
+				}
 			}
 		}
 

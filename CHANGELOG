@@ -1,3 +1,8 @@
+Version 2.0.9
+================================================================================
+~ Reverting router changes. They actually seem to break menu items.
+# [MEDIUM] Router didn't fully support multilingual sites
+
 Version 2.0.8
 ================================================================================
 # [MEDIUM] Router regression, resulting in broken SEF URLs and pagination issues
