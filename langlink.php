@@ -1,4 +1,16 @@
 <?php
+function translateWinPath($p_path)
+  {
+    if (stristr(php_uname(), 'windows')) {
+      // ----- Change potential windows directory separator
+      if ((strpos($p_path, '\\') > 0) || (substr($p_path, 0,1) == '\\')) {
+          $p_path = strtr($p_path, '\\', '/');
+      }
+      $p_path = strtr($p_path, '/','\\');
+    }
+    return $p_path;
+  }
+
 function doTheHippyHippyShake($root, $target)
 {
 	foreach(new DirectoryIterator($root) as $oArea) {
@@ -24,12 +36,26 @@ function doTheHippyHippyShake($root, $target)
 				continue;
 			}
 			
-			if(is_link($to)) {
+			if (stristr(php_uname(), 'windows') && is_dir($from)) {
+				if(file_exists($to)) {
+					if(!@unlink($to)) {
+						continue;
+					}
+				}
+			} elseif(is_link($to)) {
 				if(!@unlink($to)) {
-					continue;
+						continue;
 				}
 			}
-			@symlink($from, $to);
+
+			if (stristr(php_uname(), 'windows') && is_dir($from)) {
+				$f = translateWinPath($from);
+				$t = translateWinPath($to);
+				$cmd = 'mklink /D "'.$to.'" "'.$from.'"';
+				exec($cmd);
+			} else {
+				@symlink($from, $to);
+			}
 		}
 	}	
 }
