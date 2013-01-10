@@ -5,9 +5,52 @@
  * @license GNU/GPL version 3 or, at your option, any later version
  */
 
+if(stristr(php_uname(), 'windows')) {
+	define('AKEEBA_RELINK_WINDOWS', 1);
+}
+
+function isLink($path)
+{
+	if(defined('AKEEBA_RELINK_WINDOWS')) {
+		return file_exists($path);
+	} else {
+		return is_link($path);
+	}
+}
+
+function symlink_dir($from, $to)
+{
+	if(defined('AKEEBA_RELINK_WINDOWS')) {
+		$cmd = 'mklink /D "'.$to.'" "'.$from.'"';
+		exec($cmd);
+	} else {
+		@symlink($from, $to);
+	}
+}
+
+function symlink_file($from, $to)
+{
+	if(defined('AKEEBA_RELINK_WINDOWS')) {
+		$cmd = 'mklink "'.$to.'" "'.$from.'"';
+		exec($cmd);
+	} else {
+		@symlink($from, $to);
+	}
+}
+
+function hardlink_file($from, $to)
+{
+	if(defined('AKEEBA_RELINK_WINDOWS')) {
+		$cmd = 'mklink /H "'.$to.'" "'.$from.'"';
+		exec($cmd);
+	} else {
+		@link($from, $to);
+	}
+}
+
 function realpath2($path)
  {
-	if(DIRECTORY_SEPARATOR == '\\') {
+	if(defined('AKEEBA_RELINK_WINDOWS')) {
 		return str_replace('/', '\\', $path);
 	} else {
 		return str_replace('\\', '/', $path);
@@ -104,7 +147,7 @@ class AkeebaRelink
 		// Iterate directories
 		$this->_modules = array();
 		foreach($paths as $path) {
-			if( !is_dir($path) && !is_link($path) ) continue;
+			if( !is_dir($path) && !isLink($path) ) continue;
 			foreach(new DirectoryIterator($path) as $fileInfo) {
 				if($fileInfo->isDot()) continue;
 				if(!$fileInfo->isDir()) continue;
@@ -144,7 +187,7 @@ class AkeebaRelink
 		// Iterate directories
 		$this->_plugins = array();
 		foreach($paths as $path) {
-			if( !is_dir($path) && !is_link($path) ) continue;
+			if( !is_dir($path) && !isLink($path) ) continue;
 			foreach(new DirectoryIterator($path) as $fileInfo) {
 				if($fileInfo->isDot()) continue;
 				if(!$fileInfo->isDir()) continue;
@@ -654,11 +697,14 @@ class AkeebaRelink
 		$map = $this->_mapComponent();
 		extract($map);
 		
-		$maps = array_merge($dirs, $files);
-		
-		foreach($maps as $from => $to)
+		foreach($dirs as $from => $to)
 		{
-			@symlink(realpath2($from), realpath2($to));
+			symlink_dir(realpath2($from), realpath2($to));
+		}
+		
+		foreach($files as $from => $to)
+		{
+			symlink_file(realpath2($from), realpath2($to));
 		}
 	}
 	
@@ -675,11 +721,14 @@ class AkeebaRelink
 			$map = $this->_mapModule($module);
 			extract($map);
 		
-			$maps = array_merge($dirs, $files);
-
-			foreach($maps as $from => $to)
+			foreach($dirs as $from => $to)
 			{
-				@symlink(realpath2($from), realpath2($to));
+				symlink_dir(realpath2($from), realpath2($to));
+			}
+			
+			foreach($files as $from => $to)
+			{
+				symlink_file(realpath2($from), realpath2($to));
 			}
 		}
 	}
@@ -696,12 +745,15 @@ class AkeebaRelink
 			
 			$map = $this->_mapPlugin($plugin);
 			extract($map);
-		
-			$maps = array_merge($dirs, $files);
-
-			foreach($maps as $from => $to)
+			
+			foreach($dirs as $from => $to)
 			{
-				@symlink(realpath2($from), realpath2($to));
+				symlink_dir(realpath2($from), realpath2($to));
+			}
+			
+			foreach($files as $from => $to)
+			{
+				symlink_file(realpath2($from), realpath2($to));
 			}
 		}
 	}
@@ -714,7 +766,7 @@ class AkeebaRelink
 	private function _unlinkDirectories($dirs)
 	{
 		foreach($dirs as $dir) {
-			if(is_link($dir)) {
+			if(isLink($dir)) {
 				$result = unlink(realpath2($dir));
 			} elseif(is_dir($dir)) {
 				$result = $this->_rmrecursive($dir);
@@ -734,7 +786,7 @@ class AkeebaRelink
 	private function _unlinkFiles($files)
 	{
 		foreach($files as $file) {
-			if(is_link($file) || is_file($file)) {
+			if(isLink($file) || is_file($file)) {
 				$result = unlink(realpath2($file));
 			} else {
 				$result = true;
@@ -753,7 +805,7 @@ class AkeebaRelink
 	{
 		// When the directory is a symlink, don't delete recursively. That would
 		// fuck up the plugins.
-		if(is_link($dir)) {
+		if(isLink($dir)) {
 			return @unlink(realpath2($dir));
 		}
 		
@@ -761,7 +813,7 @@ class AkeebaRelink
 		while( false != ($item = readdir($handle))) {
 			if( !in_array($item, array('.','..')) ) {
 				$path = $dir.'/'.$item;
-				if(is_link($path)) {
+				if(isLink($path)) {
 					$result = @unlink(realpath2($path));
 				} elseif(is_file($path)) {
 					$result = @unlink(realpath2($path));
