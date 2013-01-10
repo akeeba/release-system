@@ -2574,7 +2574,7 @@
     // ----- Look for regular file
     if ($p_filedescr['type']=='file') {
       $p_header['external'] = 0x00000000;
-      $p_header['size'] = filesize($p_filename);
+      $p_header['size'] = filesize(realpath($p_filename));
     }
     
     // ----- Look for regular folder
