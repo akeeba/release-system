@@ -10,7 +10,10 @@ defined('_JEXEC') or die();
 
 if(!defined('FOF_INCLUDED')) {
 	include_once JPATH_LIBRARIES.'/fof/include.php';
-	if(!defined('FOF_INCLUDED')) JError::raiseError ('500', 'Your Akeeba Release System installation is broken; please re-install. Alternatively, extract the installation archive and copy the fof directory inside your site\'s libraries directory.');
+	if(!defined('FOF_INCLUDED') || !class_exists('FOFForm', true))
+	{
+		JError::raiseError ('500', 'Your Akeeba Release System installation is broken; please re-install. Alternatively, extract the installation archive and copy the fof directory inside your site\'s libraries directory.');
+	}
 }
 
 if(!class_exists('MydownloadsModel')) {

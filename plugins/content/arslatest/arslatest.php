@@ -15,7 +15,10 @@ jimport('joomla.plugin.plugin');
 if(!defined('FOF_INCLUDED')) {
 	include_once JPATH_LIBRARIES.'/fof/include.php';
 }
-if(!defined('FOF_INCLUDED')) return;
+if(!defined('FOF_INCLUDED') || !class_exists('FOFForm', true))
+{
+	return;
+}
 
 // Required for compatibility with certain operating systems
 if (!function_exists('fnmatch')) {
