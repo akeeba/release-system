@@ -15,7 +15,8 @@ class ArsDispatcher extends FOFDispatcher
 	public $defaultView = 'browse';
 	
 	private $allowedViews = array(
-		'browses','categories','downloads','latests','releases','updates','items'
+		'browses','categories','downloads','latests','releases','updates',
+		'items','dlidlabels'
 	);
 	
 	public function onBeforeDispatch() {
