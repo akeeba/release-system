@@ -578,3 +578,9 @@ li.plupload_droptext {
 .liveupdate-icon-notsupported,.liveupdate-icon-crashed { color: gray; }
 .liveupdate-icon-updates { font-weight: bold; color: red; }
 .liveupdate-icon-noupdates { color: green; }
+
+/* FOF common formatting */
+.fof-usersfield-username { font-weight: bold; }
+.fof-usersfield-id:before { content: " [" }
+.fof-usersfield-id:after { content: "]" }
+.fof-usersfield-name { display: block; }

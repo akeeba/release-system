@@ -1,4 +1,4 @@
-Version 2.0.9
+Version 2.1.0
 ================================================================================
 ~ Reverting router changes. They actually seem to break menu items.
 # [MEDIUM] Router didn't fully support multilingual sites
