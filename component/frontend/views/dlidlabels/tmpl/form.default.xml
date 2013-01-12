@@ -19,7 +19,7 @@
 		
 		<field name="label" type="text"
 			show_link="true"
-			url="index.php?option=com_ars&amp;view=dlidlabel&amp;id=[ITEM:ID]"
+			url="index.php?option=com_ars&amp;view=dlidlabel&amp;task=edit&amp;id=[ITEM:ID]"
 			empty_replacement="(no title)"
 		 />
 
