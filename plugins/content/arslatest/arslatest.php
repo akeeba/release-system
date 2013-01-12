@@ -11,6 +11,18 @@ defined('_JEXEC') or die();
 
 jimport('joomla.plugin.plugin');
 
+// PHP version check
+if(defined('PHP_VERSION')) {
+	$version = PHP_VERSION;
+} elseif(function_exists('phpversion')) {
+	$version = phpversion();
+} else {
+	// No version info. I'll lie and hope for the best.
+	$version = '5.0.0';
+}
+// Old PHP version detected. EJECT! EJECT! EJECT!
+if(!version_compare($version, '5.3.0', '>=')) return;
+
 // Make sure FOF is loaded, otherwise do not run
 if(!defined('FOF_INCLUDED')) {
 	include_once JPATH_LIBRARIES.'/fof/include.php';

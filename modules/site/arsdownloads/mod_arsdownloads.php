@@ -16,6 +16,21 @@ if(!defined('FOF_INCLUDED')) {
 	}
 }
 
+// PHP version check
+if(defined('PHP_VERSION')) {
+	$version = PHP_VERSION;
+} elseif(function_exists('phpversion')) {
+	$version = phpversion();
+} else {
+	// No version info. I'll lie and hope for the best.
+	$version = '5.0.0';
+}
+// Old PHP version detected. EJECT! EJECT! EJECT!
+if(!version_compare($version, '5.3.0', '>='))
+{
+	return;
+}
+
 if(!class_exists('MydownloadsModel')) {
 	class MydownloadsModel
 	{
