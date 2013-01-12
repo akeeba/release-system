@@ -135,7 +135,11 @@ class ArsControllerDlidlabels extends FOFController
 			}
 			
 			$item = $model->getItem();
-			if ($item->user_id != JFactory::getUser()->id)
+			if (!JFactory::getUser()->guest && ($model->getId() == 0))
+			{
+				$result = true;
+			}
+			elseif ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 				return false;

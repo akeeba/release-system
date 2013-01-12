@@ -274,4 +274,16 @@ class ArsHelperFilter
 		
 		return JFactory::getUser($user_id);
 	}
+	
+	static public function myDownloadID()
+	{
+		$user = JFactory::getUser();
+		
+		if ($user->guest)
+		{
+			return '';
+		}
+		
+		return md5($user->id . $user->username . $user->password);
+	}
 }

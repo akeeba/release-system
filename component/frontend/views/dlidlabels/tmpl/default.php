@@ -8,7 +8,13 @@
 defined('_JEXEC') or die();
 
 JHtml::_('behavior.framework');
+
+$this->loadHelper('filter');
 ?>
+
+<div class="alert alert-info">
+	<?php echo JText::sprintf('COM_ARS_DLIDLABELS_MASTERDLID', ArsHelperFilter::myDownloadID()); ?>
+</div>
 
 <div class="nav">
 	<button class="btn btn-primary" onclick="Joomla.submitbutton('add'); return false;">

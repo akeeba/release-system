@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form
-	cssfiles="media://com_ars/css/frontend.css"
+	cssfiles="media://com_ars/css/frontend.css, media://system/css/adminlist.css"
 	type="browse"
 	show_header="1"
 	show_filters="0"
