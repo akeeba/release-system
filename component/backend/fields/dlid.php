@@ -26,7 +26,7 @@ class FOFFormFieldDlid extends FOFFormFieldText
 			->where($db->qn('id').' = '.$db->q($this->item->user_id));
 		$masterDlid = $db->loadResult();
 		
-		$this->value = md5($this->item->user_id . $this->item->label . $masterDlid);
+		$this->value = $this->item->user_id . ':' . md5($this->item->user_id . $this->item->label . $masterDlid);
 		
 		return parent::getRepeatable();
 	}
