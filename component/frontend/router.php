@@ -61,6 +61,11 @@ function arsBuildRouteHtml(&$query)
 		return $segments;
 	}
 	
+	if(in_array($query['view'], array('dlidlabels', 'dlidlabel')))
+	{
+		return $segments;
+	}
+	
 	$menus = JMenu::getInstance('site');
 
 	$view = ArsRouterHelper::getAndPop($query, 'view', 'browses');
@@ -753,7 +758,7 @@ function arsParseRoute(&$segments)
 	if($ext == '.raw') $format = 'raw';
 	if($ext == '.xml') $format = 'xml';
 	if($ext == '.ini') $format = 'ini';
-
+	
 	switch($format)
 	{
 		case 'feed':
