@@ -17,7 +17,12 @@ if(!empty($subpathURL) && ($subpathURL != '/')) {
 $tag = "<"."?xml version=\"1.0\" encoding=\"utf-8\""."?".">";
 
 $dlid = trim(JRequest::getCmd('dlid',''));
-if($dlid) {
+if (!empty($dlid))
+{
+	$this->loadHelper('filter');
+	$dlid = ArsHelperFilter::reformatDownloadID($dlid);
+}
+if ($dlid !== false) {
 	if(strlen($dlid) > 32) $dlid = substr($dlid,0,32);
 	$dlid = '&dlid='.$dlid;
 } else {
