@@ -95,32 +95,53 @@ class ArsControllerDlidlabels extends FOFController
 		return true;
 	}
 	
-	protected function onBeforeApplySave(&$data) {
-		$result = parent::onBeforeApplySave($data);
+	protected function onBeforeCancel()
+	{
+		$result = parent::onBeforeCancel();
+		
 		
 		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+		
 		if (($result !== false) && !$isAdmin && !$isCLI)
 		{
-			if (JFactory::getUser()->guest)
+			$model = $this->getThisModel();
+			if(!$model->getId())
+			{
+				$model->setIDsFromRequest();
+			}
+			
+			$item = $model->getItem();
+			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 				return false;
 			}
-
-			$result = true;
-			
-			$user_id = JFactory::getUser()->id;
-			$myData = (array)$data;
-			if (isset($data['user_id']))
+		}
+		
+		return ($result !== false);
+	}
+	
+	protected function onBeforeSave() {
+		$result = parent::onBeforeSave();
+		
+		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+		
+		if (($result !== false) && !$isAdmin && !$isCLI)
+		{
+			$model = $this->getThisModel();
+			if(!$model->getId())
 			{
-				if ($data['user_id'] != $user_id)
-				{
-					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
-					return false;
-				}
+				$model->setIDsFromRequest();
+			}
+			
+			$item = $model->getItem();
+			if ($item->user_id != JFactory::getUser()->id)
+			{
+				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+				return false;
 			}
 		}
 		
-		return $result;
+		return ($result !== false);
 	}
 }

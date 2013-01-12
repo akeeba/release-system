@@ -3,7 +3,7 @@
 	cssfiles="media://com_ars/css/frontend.css"
 >
 	<fieldset name="basic_configuration"
-		label="COM_ARS_DLIDLABELS_GROUP_BASIC"
+		label="COM_ARS_TITLE_DLIDLABELS_EDIT"
 	>
 		<field name="label" type="text"
 			class="inputbox"
