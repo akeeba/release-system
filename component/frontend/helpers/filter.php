@@ -40,38 +40,10 @@ class ArsHelperFilter
 			$credentials['username'] = JRequest::getVar('username', '', 'get', 'username');
 			$credentials['password'] = JRequest::getString('password', '', 'get', JREQUEST_ALLOWRAW);
 			if(!empty($dlid)) {
-				// AUTHENTICATE AGAINST DLID
-				$db = JFactory::getDbo();
-				$query = 'SELECT `id`, md5(concat(`id`,`username`,`password`)) AS `dlid` FROM `#__users` WHERE md5(concat(`id`,`username`,`password`)) = '.
-					$db->Quote($dlid);
-				$db->setQuery($query);
-				$user_id = $db->loadResult();
-
-				if(empty($user_id) || ((int)$user_id <= 0) ) {
+				try {
+					$user = self::getUserFromDownloadID($dlid);
+				} catch (Exception $exc) {
 					$user = JFactory::getUser();
-				} else {
-					$user = JFactory::getUser($user_id);
-
-					/*
-					jimport( 'joomla.user.authentication');
-					$app = JFactory::getApplication();
-					$authenticate = JAuthentication::getInstance();
-					$response = new JAuthenticationResponse();
-					$response->status = JAUTHENTICATE_STATUS_SUCCESS;
-					$response->type = 'joomla';
-					$response->username = $user->username;
-					$response->email = $user->email;
-					$response->fullname = $user->name;
-
-					JPluginHelper::importPlugin('user');
-					$options = array();
-					jimport('joomla.user.helper');
-					$results = $app->triggerEvent('onLoginUser', array((array)$response, $options));
-					$user = JFactory::getUser($user_id);
-					$parameters['username']	= $user->get('username');
-					$parameters['id']		= $user->get('id');
-					*/
-					//$results = $app->triggerEvent('onLogoutUser', array($parameters, $options));
 				}
 			} elseif( !empty($credentials['username']) && !empty($credentials['password']) ) {
 				// AUTHENTICATE AGAINST USERNAME/PASSWORD PAIR IN QUERY
@@ -93,7 +65,6 @@ class ArsHelperFilter
 					}
 					$parameters['username']	= $user->get('username');
 					$parameters['id']		= $user->get('id');
-					//$results = $app->triggerEvent('onLogoutUser', array($parameters, $options));
 				} else {
 					$user = JFactory::getUser();
 				}
@@ -169,5 +140,138 @@ class ArsHelperFilter
 		}
 
 		return $list;
+	}
+	
+	static public function reformatDownloadID($dlid)
+	{
+		// Check if the Download ID is empty or consists of only whitespace
+		if (empty($dlid))
+		{
+			return false;
+		}
+		
+		$dlid = trim($dlid);
+		
+		if (empty($dlid))
+		{
+			return false;
+		}
+		
+		// Is the Download ID too short?
+		if (strlen($dlid) < 32)
+		{
+			return false;
+		}
+		
+		// Do we have a userid:downloadid format?
+		$user_id = null;
+		if (strstr($dlid, ':') !== false)
+		{
+			$parts = explode(':', $dlid, 2);
+			$user_id = (int)$parts[0];
+			if ($user_id <= 0)
+			{
+				$user_id = null;
+			}
+			if (isset($parts[1]))
+			{
+				$dlid = $parts[1];
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		// Trim the Download ID
+		if (strlen($dlid) > 32)
+		{
+			if(strlen($dlid) > 32) $dlid = substr($dlid,0,32);
+		}
+		
+		return (is_null($user_id) ? '' : $user_id.':') . $dlid;
+	}
+	
+	/**
+	 * Gets the user associated with a specific Download ID
+	 * 
+	 * @param   string  $dlid  The Download ID to check
+	 * 
+	 * @return  array  The user record of the corresponding user and the Download ID
+	 * 
+	 * @throws Exception An exception is thrown if the Download ID is invalid or empty
+	 */
+	static public function getUserFromDownloadID($dlid)
+	{
+		// Reformat the Download ID
+		$dlid = self::reformatDownloadID($dlid);
+		
+		if ($dlid === false)
+		{
+			throw new Exception('Invalid Download ID', 403);
+		}
+		
+		// Do we have a userid:downloadid format?
+		$user_id = null;
+		if (strstr($dlid, ':') !== false)
+		{
+			$parts = explode(':', $dlid, 2);
+			$user_id = (int)$parts[0];
+			$dlid = $parts[1];
+		}
+		
+		if (is_null($user_id))
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select(array(
+					$db->qn('id')
+				))
+				->from($db->qn('#__users'))
+				->where('md5(concat('.$db->qn('id').','.$db->qn('username').','.$db->qn('password').')) = '.$db->q($dlid));
+			$user_id = $db->loadResult();
+		}
+		else
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)
+				->select(array(
+					'label'
+				))->from($db->qn('#__ars_dlidlabels'))
+				->where($db->qn('user_id').' = '.$db->q($user_id))
+				->where($db->qn('enabled').' = '.$db->q(1));
+			$labels = $db->loadColumn();
+			
+			if (empty($labels))
+			{
+				throw new Exception('Invalid Download ID', 403);
+			}
+			
+			$query = $db->getQuery(true)
+				->select(array(
+					'md5(concat('.$db->qn('id').','.$db->qn('username').','.$db->qn('password').')) AS '.$db->qn('dlid')
+				))
+				->from($db->qn('#__users'))
+				->where($db->qn('id').' = '.$db->q($user_id));
+			$masterDlid = $db->loadResult();
+			
+			$found = false;
+			foreach($labels as $label)
+			{
+				$check = md5($user_id . $label . $masterDlid);
+				if ($check == $dlid)
+				{
+					$found = true;
+					break;
+				}
+			}
+			
+			if (!$found)
+			{
+				throw new Exception('Invalid Download ID', 403);
+			}
+		}
+		
+		return JFactory::getUser($user_id);
 	}
 }
