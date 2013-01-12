@@ -10,7 +10,7 @@ defined('_JEXEC') or die();
 class ArsControllerCategory extends FOFController
 {
 	public function __construct($config = array()) {
-		if(FOFInput::getCmd('format','html',$config['input']) == 'html') {
+		if(in_array(FOFInput::getCmd('format','html',$this->input), array('html','feed'))) {
 			$config['modelName'] = 'ArsModelBrowses';
 		} elseif(!JFactory::getUser()->authorise('com.manage', 'com_ars')) {
 			JError::raiseError(403, 'Forbidden');
@@ -24,17 +24,18 @@ class ArsControllerCategory extends FOFController
 				$task = 'read';
 			}
 		}
-		
+
 		parent::execute($task);
 	}
 	
-	function onBeforeRead() {
+	function onBeforeRead()
+	{
 		$limitstart = FOFInput::getInt('limitstart', -1, $this->input);
 		if($limitstart >= 0) {
 			FOFInput::setVar('start', $limitstart, $this->input);
 		}		
 		
-		if(FOFInput::getCmd('format','html',$this->input) != 'html') {
+		if(!in_array(FOFInput::getCmd('format','html',$this->input), array('html','feed'))) {
 			return true;
 		}
 		

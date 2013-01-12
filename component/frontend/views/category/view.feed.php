@@ -12,11 +12,11 @@ class ArsViewCategory extends FOFView
 	function display($tpl = null) {
 		$this->loadHelper('router');
 
+		$model = $this->getModel();
+		
 		$document = JFactory::getDocument();
 		$document->setLink(AKRouter::_('index.php?option=com_ars&view=category&id='.$model->item->id));
 		
-		$model = $this->getModel();
-
 		if(!count($model->itemList)) return;
 		foreach($model->itemList as $rel)
 		{

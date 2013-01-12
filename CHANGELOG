@@ -3,6 +3,7 @@ Version 2.1.0
 ~ Reverting router changes. They actually seem to break menu items.
 # [MEDIUM] Router didn't fully support multilingual sites
 # [MEDIUM] Joomla! uses limitstart instead of start query string parameter to browse to the first page, causing the "First page" front-end pagination link to not work
+# [LOW] Per-category RSS feeds broken since 2.0.7
 
 Version 2.0.8
 ================================================================================
