@@ -13,7 +13,7 @@ class ArsModelEnvironments extends FOFModel
 	{
 		$db = $this->getDbo();
 		
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__ars_environments'));
 		

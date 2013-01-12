@@ -13,7 +13,7 @@ class ArsModelAutodescs extends FOFModel
 	{
 		$db = $this->getDbo();
 		
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('a').'.*',
 				$db->qn('c').'.'.$db->qn('title').' AS '.$db->qn('cat_name'),

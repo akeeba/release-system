@@ -20,7 +20,7 @@ class ArsModelUpdates extends FOFModel
 	{
 		$db = $this->getDBO();
 		
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('u').'.*',
 				$db->qn('i').'.'.$db->qn('id').' AS '.$db->qn('item_id'),
@@ -74,7 +74,7 @@ class ArsModelUpdates extends FOFModel
 	{
 		$db = $this->getDBO();
 		
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('u').'.*',
 				$db->qn('i').'.'.$db->qn('id').' AS '.$db->qn('item_id'),
@@ -117,7 +117,7 @@ class ArsModelUpdates extends FOFModel
 	{
 		$db = $this->getDBO();
 		
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select($db->qn('published'))
 			->from($db->qn('#__ars_updatestreams'))
 			->where($db->qn('id').' = '.$db->q($id));			

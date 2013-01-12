@@ -13,7 +13,7 @@ class ArsModelLogs extends FOFModel
 	{
 		$db = $this->getDbo();
 		
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('l').'.*',
 				$db->qn('c').'.'.$db->qn('title').' AS '.$db->qn('category'),
@@ -84,11 +84,11 @@ class ArsModelLogs extends FOFModel
 			$query->where($db->qn('authorized').' = '.$db->q($fltAuthorized));
 		}
 		if($fltCategory) {
-			$query_inner = FOFQueryAbstract::getNew($db)
+			$query_inner = $db->getQuery(true)
 				->select($db->qn('id'))
 				->from($db->qn('#__ars_releases'))
 				->where($db->qn('category_id').' = '.$db->q($fltCategory));
-			$query_outer = FOFQueryAbstract::getNew($db)
+			$query_outer = $db->getQuery(true)
 				->select($db->qn('id'))
 				->from($db->qn('#__ars_items'))
 				->where($db->qn('release_id').' IN ('.$query_inner.')');
@@ -104,7 +104,7 @@ class ArsModelLogs extends FOFModel
 		}
 		
 		if($fltVersion) {
-			$query_outer = FOFQueryAbstract::getNew($db)
+			$query_outer = $db->getQuery(true)
 				->select($db->qn('id'))
 				->from($db->qn('#__ars_items'))
 				->where($db->qn('release_id').' = '.$db->q($fltVersion));
@@ -130,7 +130,7 @@ class ArsModelLogs extends FOFModel
 	public function buildCountQuery() {
 		$db = $this->getDbo();
 		
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select('COUNT(*)')
 			->from($db->qn('#__ars_log').' AS '.$db->qn('l'))
 			;
@@ -183,11 +183,11 @@ class ArsModelLogs extends FOFModel
 			$query->where($db->qn('authorized').' = '.$db->q($fltAuthorized));
 		}
 		if($fltCategory) {
-			$query_inner = FOFQueryAbstract::getNew($db)
+			$query_inner = $db->getQuery(true)
 				->select($db->qn('id'))
 				->from($db->qn('#__ars_releases'))
 				->where($db->qn('category_id').' = '.$db->q($fltCategory));
-			$query_outer = FOFQueryAbstract::getNew($db)
+			$query_outer = $db->getQuery(true)
 				->select($db->qn('id'))
 				->from($db->qn('#__ars_items'))
 				->where($db->qn('release_id').' IN ('.$query_inner.')');
@@ -203,7 +203,7 @@ class ArsModelLogs extends FOFModel
 		}
 		
 		if($fltVersion) {
-			$query_outer = FOFQueryAbstract::getNew($db)
+			$query_outer = $db->getQuery(true)
 				->select($db->qn('id'))
 				->from($db->qn('#__ars_items'))
 				->where($db->qn('release_id').' = '.$db->q($fltVersion));
@@ -260,7 +260,7 @@ class ArsModelLogs extends FOFModel
 	{
 		$db = $this->getDBO();
 		$qfrag = $db->q("%".$frag."%");
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select($db->qn('id'))
 			->from($db->qn('#__ars_items'))
 			->where($db->qn('title').' LIKE '.$qfrag);

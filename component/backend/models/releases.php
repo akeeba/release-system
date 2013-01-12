@@ -13,7 +13,7 @@ class ArsModelReleases extends FOFModel
 	{
 		$db = $this->getDbo();
 		
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('r').'.*',
 				$db->qn('c').'.'.$db->qn('title').' AS '.$db->qn('cat_title'),

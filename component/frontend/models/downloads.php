@@ -57,7 +57,7 @@ class ArsModelDownloads extends FOFModel
 		{
 			$db = $this->getDBO();
 			
-			$innerQuery = FOFQueryAbstract::getNew($db)
+			$innerQuery = $db->getQuery(true)
 				->select(array(
 					$db->qn('r').'.'.'*',
 					$db->qn('c').'.'.$db->qn('title').' AS '.$db->qn('cat_title'),
@@ -74,7 +74,7 @@ class ArsModelDownloads extends FOFModel
 				.')')
 			;
 			
-			$query = FOFQueryAbstract::getNew($db)
+			$query = $db->getQuery(true)
 				->select(array(
 					$db->qn('i').'.'.'*',
 					$db->qn('r').'.'.$db->qn('category_id'),

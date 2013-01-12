@@ -47,7 +47,7 @@ class ArsTableRelease extends FOFTable
 
 		// Get some useful info
 		$db = $this->getDBO();
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('version'),
 				$db->qn('alias')

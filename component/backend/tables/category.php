@@ -58,7 +58,7 @@ class ArsTableCategory extends FOFTable
 
 		// Check alias for uniqueness
 		$db = $this->getDBO();
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select($db->qn('alias'))
 			->from($db->qn('#__ars_categories'));
 		if($this->id) {

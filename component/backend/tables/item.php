@@ -56,7 +56,7 @@ class ArsTableItem extends FOFTable
 
 		// Get some useful info
 		$db = $this->getDBO();
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('title'),
 				$db->qn('alias')
@@ -77,11 +77,11 @@ class ArsTableItem extends FOFTable
 		}
 
 		// Let's get automatic item title/description records
-		$subquery = FOFQueryAbstract::getNew($db)
+		$subquery = $db->getQuery(true)
 			->select($db->qn('category_id'))
 			->from($db->qn('#__ars_releases'))
 			->where($db->qn('id').' = '.$db->q($this->release_id));
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__ars_autoitemdesc'))
 			->where($db->qn('category').' IN ('.$subquery.')')
@@ -247,11 +247,11 @@ class ArsTableItem extends FOFTable
 		if(empty($this->updatestream))
 		{
 			$db = $this->getDBO();
-			$subquery = FOFQueryAbstract::getNew($db)
+			$subquery = $db->getQuery(true)
 				->select($db->qn('category_id'))
 				->from('#__ars_releases')
 				->where($db->qn('id').' = '.$db->q($this->release_id));
-			$query = FOFQueryAbstract::getNew($db)
+			$query = $db->getQuery(true)
 				->select('*')
 				->from($db->qn('#__ars_updatestreams'))
 				->where($db->qn('category').' IN ('.$subquery.')');

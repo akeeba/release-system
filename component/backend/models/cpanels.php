@@ -75,7 +75,7 @@ class ArsModelCpanels extends FOFModel
 	{
 		$db = $this->getDBO();
 		
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('l').'.'.$db->qn('item_id'),
 				'COUNT(*) AS '.$db->qn('dl')
@@ -97,7 +97,7 @@ class ArsModelCpanels extends FOFModel
 		
 		$idLimit = implode(',', array_keys($items));
 
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('i').'.'.$db->qn('id').' AS '.$db->qn('item_id'),
 				$db->qn('i').'.'.$db->qn('title'),
@@ -183,13 +183,13 @@ class ArsModelCpanels extends FOFModel
 		}
 
 		if(!$alltime) {
-			$query = FOFQueryAbstract::getNew($db)
+			$query = $db->getQuery(true)
 				->select('COUNT(*)')
 				->from($db->qn('#__ars_log').' AS '.$db->qn('l'))
 				->where($db->qn('l').'.'.$db->qn('accessed_on').' BETWEEN '.$date)
 				->where($db->qn('l').'.'.$db->qn('authorized').' = '.$db->q(1));
 		} else {
-			$query = FOFQueryAbstract::getNew($db)
+			$query = $db->getQuery(true)
 				->select('COUNT(*)')
 				->from($db->qn('#__ars_log').' AS '.$db->qn('l'))
 				->where($db->qn('l').'.'.$db->qn('authorized').' = '.$db->q(1));
@@ -206,7 +206,7 @@ class ArsModelCpanels extends FOFModel
 	{
 		$db	= $this->getDBO();
 		
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('country'),
 				'COUNT('.$db->qn('id').') AS '.$db->qn('dl')
@@ -233,7 +233,7 @@ class ArsModelCpanels extends FOFModel
 	{
 		$db = $this->getDBO();
 		
-		$query = FOFQueryAbstract::getNew($db)
+		$query = $db->getQuery(true)
 			->select(array(
 				'DATE('.$db->qn('accessed_on').') AS '.$db->qn('day'),
 				'COUNT(*) AS '.$db->qn('dl')
