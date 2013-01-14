@@ -2561,8 +2561,8 @@ date="2010-10-10"</programlisting>
           <para>You can combine it with the version number syntax for
           something like this:</para>
 
-          <programlisting>&lt;a href="{arslatest <emphasis role="bold">release_link</emphasis> <replaceable>Category Name</replaceable>}"&gt;My category, version {arslatest <emphasis
-              role="bold">release</emphasis> <replaceable>Category Name</replaceable>}&lt;/a&gt;</programlisting>
+          <programlisting>&lt;a href="{arslatest <emphasis role="bold">release_link</emphasis> <replaceable>Category Name</replaceable>}"&gt;My category,
+version {arslatest <emphasis role="bold">release</emphasis> <replaceable>Category Name</replaceable>}&lt;/a&gt;</programlisting>
 
           <bridgehead>Creating links to specific items in the latest
           release</bridgehead>
@@ -2588,7 +2588,8 @@ date="2010-10-10"</programlisting>
           combine it with the version number syntax to have something even
           more useful:</para>
 
-          <para><programlisting>&lt;a href="{arslatest item_link "com_foobar*.zip" Foobar}"&gt;Download Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
+          <para><programlisting>&lt;a href="{arslatest item_link "com_foobar*.zip" Foobar}"&gt;Download
+Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
         </section>
       </section>
 
