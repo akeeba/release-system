@@ -22,7 +22,7 @@ class ArsControllerUpdate extends FOFController
 		}
 		
 		// Check for default task
-		if(empty($task) || ($task == 'read')) {
+		if(empty($task) || ($task == 'read') || ($task == 'add')) {
 			if($viewType == 'xml') {
 				$task = 'all';
 			} elseif( ($viewType == 'ini') && empty($id)) {
