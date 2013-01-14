@@ -38,7 +38,12 @@ class ArsModelBrowses extends FOFModel
 
 		if(version_compare(JVERSION, '1.6.0', 'ge')) {
 			$app = JFactory::getApplication();
-			if($app->getLanguageFilter()) {
+			$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
+			if ($hasLanguageFilter)
+			{
+				$hasLanguageFilter = $app->getLanguageFilter();
+			}
+			if($hasLanguageFilter) {
 				$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 				$lang_filter_params = new JRegistry($lang_filter_plugin->params);
 				if ($lang_filter_params->get('remove_default_prefix')) {
@@ -355,7 +360,12 @@ class ArsModelBrowses extends FOFModel
 				}
 				$model->setState('maturity',		$this->getState('maturity','alpha'));
 				$app = JFactory::getApplication();
-				if($app->getLanguageFilter()) {
+				$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
+				if ($hasLanguageFilter)
+				{
+					$hasLanguageFilter = $app->getLanguageFilter();
+				}
+				if($hasLanguageFilter) {
 					$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 					$lang_filter_params = new JRegistry($lang_filter_plugin->params);
 					if ($lang_filter_params->get('remove_default_prefix')) {
@@ -383,7 +393,16 @@ class ArsModelBrowses extends FOFModel
 	public function processLatest()
 	{
 		$app = JFactory::getApplication();
-		$params = $app->getPageParameters('com_ars');
+		if ($app->isAdmin())
+		{
+			// It is possible that we are called in the back-end, due to Finder
+			// trying to index the article we created/modified
+			$params = JRegistry::getInstance('com_ars');
+		}
+		else
+		{
+			$params = $app->getPageParameters('com_ars');
+		}
 		
 		$this->processFeedData($params->get('rel_orderby', 'order'));
 
@@ -435,7 +454,13 @@ class ArsModelBrowses extends FOFModel
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			0);
                 
-				if($app->getLanguageFilter()) {
+				$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
+				if ($hasLanguageFilter)
+				{
+					$hasLanguageFilter = $app->getLanguageFilter();
+				}
+				
+				if($hasLanguageFilter) {
 					$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 					$lang_filter_params = new JRegistry($lang_filter_plugin->params);
 					if ($lang_filter_params->get('remove_default_prefix')) {

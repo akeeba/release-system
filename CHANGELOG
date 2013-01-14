@@ -4,6 +4,7 @@ Version 2.1.0
 # [MEDIUM] Router didn't fully support multilingual sites
 # [MEDIUM] Joomla! uses limitstart instead of start query string parameter to browse to the first page, causing the "First page" front-end pagination link to not work
 # [MEDIUM] #93 Master XML update feed not working
+# [MEDIUM] #92 The arslatest plugin would cause a fatal error in the back-end if the Finder (Smart Search) plugin was enabled
 # [LOW] Per-category RSS feeds broken since 2.0.7
 
 Version 2.0.8
