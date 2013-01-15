@@ -332,12 +332,16 @@ class ArsTableItem extends FOFTable
 				}
 			}
 			
+			if (!isset($url))
+			{
+				$url = null;
+			}
 			if(($this->type == 'link') || !is_null($url))
 			{
 				if(is_null($url)) $url = $this->url;
 				$config = JFactory::getConfig();
 				if(version_compare(JVERSION, '3.0', 'ge')) {
-					$target = $config->get('config').'/temp.dat';
+					$target = $config->get('tmp_path').'/temp.dat';
 				} else {
 					$target = $config->getValue('config.tmp_path').'/temp.dat';
 				}

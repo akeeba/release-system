@@ -6,6 +6,7 @@ Version 2.1.0
 # [MEDIUM] #93 Master XML update feed not working
 # [MEDIUM] #92 The arslatest plugin would cause a fatal error in the back-end if the Finder (Smart Search) plugin was enabled
 # [LOW] Per-category RSS feeds broken since 2.0.7
+# [LOW] #97 "Failed deleting temp.dat" on Joomla! 3.0
 
 Version 2.0.8
 ================================================================================
