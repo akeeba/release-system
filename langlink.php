@@ -13,18 +13,23 @@ function translateWinPath($p_path)
 
 function doTheHippyHippyShake($root, $target)
 {
+	echo "$root\n";
 	foreach(new DirectoryIterator($root) as $oArea) {
 		if(!$oArea->isDir()) continue;
 		if($oArea->isDot()) continue;
 		$area = $oArea->getFilename();
 
 		$areaDir = $root.'/'.$area;
+		
+		echo "\t$area\n";
 
 		foreach(new DirectoryIterator($areaDir) as $oModule)
 		{
 			if(!$oModule->isDir()) continue;
 			if($oModule->isDot()) continue;
 			$module = $oModule->getFilename();
+			
+			echo "\t\t$module";
 
 			$moduleDir = $areaDir.'/'.$module;
 
@@ -33,19 +38,27 @@ function doTheHippyHippyShake($root, $target)
 			
 			if(!is_dir($from)) {
 				// Some things may be untranslated
+				echo "\tNot translated\n";
 				continue;
 			}
 			
 			if (stristr(php_uname(), 'windows') && is_dir($from)) {
 				if(file_exists($to)) {
 					if(!@unlink($to)) {
+						echo "\tCannot remove old link\n";
 						continue;
 					}
 				}
 			} elseif(is_link($to)) {
 				if(!@unlink($to)) {
-						continue;
+					echo "\tCannot remove old link\n";
+					continue;
 				}
+			} elseif(is_dir($to)) {
+				// Let's do it The Hard Way™
+				$cmd = 'rm -rf "'.$to.'"';
+				exec($cmd);
+				echo "\tHard Way™";
 			}
 
 			if (stristr(php_uname(), 'windows') && is_dir($from)) {
@@ -56,6 +69,8 @@ function doTheHippyHippyShake($root, $target)
 			} else {
 				@symlink($from, $to);
 			}
+			
+			echo "\tLINKED\n";
 		}
 	}	
 }
