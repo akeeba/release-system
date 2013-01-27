@@ -27,7 +27,7 @@ if(!version_compare($version, '5.3.0', '>=')) return;
 if(!defined('FOF_INCLUDED')) {
 	include_once JPATH_LIBRARIES.'/fof/include.php';
 }
-if(!defined('FOF_INCLUDED') || !class_exists('FOFForm', true))
+if(!defined('FOF_INCLUDED') || !class_exists('FOFLess', true))
 {
 	return;
 }
