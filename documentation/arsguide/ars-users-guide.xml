@@ -1057,11 +1057,12 @@ deny from all</programlisting>
           </warning>
 
           <para>The bottom part of the page is the upload form. It uses
-          Joomla!'s upload feature. This means that if you have enabled the
-          Flash uploader you will be able to upload multiple files at once to
-          the directory. Otherwise (default Joomla! behaviour) you will only
-          be able to upload one file at a time. Do note that all files are
-          uploaded to the the directory you are currently viewing.</para>
+          Joomla!'s upload feature. Do note that your file will be uploaded to
+          the the directory you are currently viewing.</para>
+
+          <important>
+            <para>You can only upload one file at a time</para>
+          </important>
         </section>
 
         <section xml:id="joomlacode-integration">
