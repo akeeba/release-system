@@ -183,15 +183,15 @@ class Com_ArsInstallerScript
 		// Install subextensions
 		$status = $this->_installSubextensions($parent);
 		
-		// Remove obsolete files and folders
-		$this->_removeObsoleteFilesAndFolders($this->akeebaRemoveFiles);
-		$this->_copyCliFiles($parent);
-		
 		// Install FOF
 		$fofStatus = $this->_installFOF($parent);
 		
 		// Install Akeeba Straper
 		$straperStatus = $this->_installStraper($parent);
+		
+		// Remove obsolete files and folders
+		$this->_removeObsoleteFilesAndFolders($this->akeebaRemoveFiles);
+		$this->_copyCliFiles($parent);
 		
 		// Show the post-installation page
 		$this->_renderPostInstallation($status, $fofStatus, $straperStatus, $parent);
