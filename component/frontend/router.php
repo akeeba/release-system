@@ -37,20 +37,20 @@ function arsBuildRoute(&$query)
 			$segments = arsBuildRouteRaw($query);
 			break;
 	}
-	
+
 	return $segments;
 }
 
 function arsBuildRouteHtml(&$query)
 {
 	static $currentlang = null;
-	
+
 	if (is_null($currentlang))
 	{
 		$jlang = JFactory::getLanguage();
 		$currentlang = $jlang->getTag();
 	}
-	
+
 	$segments = array();
 
 	// If there is only the option and Itemid, let Joomla! decide on the naming scheme
@@ -60,12 +60,12 @@ function arsBuildRouteHtml(&$query)
 	{
 		return $segments;
 	}
-	
+
 	if(in_array($query['view'], array('dlidlabels', 'dlidlabel')))
 	{
 		return $segments;
 	}
-	
+
 	$menus = JMenu::getInstance('site');
 
 	$view = ArsRouterHelper::getAndPop($query, 'view', 'browses');
@@ -356,7 +356,7 @@ function arsBuildRouteRaw(&$query)
 
 	$view = isset($query['view']) ? $query['view'] : '';
 	if($view != 'download' ) return $segments;
-	
+
 	$view = ArsRouterHelper::getAndPop($query, 'view', 'browses');
 	$task = ArsRouterHelper::getAndPop($query, 'task');
 	$layout = ArsRouterHelper::getAndPop($query, 'layout');
@@ -365,7 +365,7 @@ function arsBuildRouteRaw(&$query)
 
 	$qoptions = array( 'option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id );
 	$menus = JMenu::getInstance('site');
-	
+
 	// Get download item info
 	$dlModel = FOFModel::getTmpInstance('Items','ArsModel');
 	$download = $dlModel->getItem($id);
@@ -418,7 +418,7 @@ function arsBuildRouteRaw(&$query)
 					$Itemid = null;
 				}
 				break;
-				
+
 			default:
 				$Itemid = null;
 		}
@@ -484,7 +484,7 @@ function arsBuildRouteXml(&$query)
 		// Get the specified menu
 		$menus = JMenu::getInstance('site');
 		$menuitem = $menus->getItem($Itemid);
-		
+
 		// Analyze URL
 		$uri = new JURI($menuitem->link);
 		$option = $uri->getVar('option');
@@ -508,7 +508,7 @@ function arsBuildRouteXml(&$query)
 					$task = 'all';
 				}
 			}
-			
+
 			// make sure we can grab the ID specified in menu item options
 			if(empty($id)) switch($task)
 			{
@@ -516,7 +516,7 @@ function arsBuildRouteXml(&$query)
 					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
 					$id = $params->get('category','components');
 					break;
-				
+
 				case 'ini':
 				case 'stream':
 					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
@@ -525,14 +525,14 @@ function arsBuildRouteXml(&$query)
 			}
 		}
 	}
-	
+
 	switch($my_task)
 	{
 		case 'default':
 		case 'all':
 			if(empty($Itemid))
 			{
-				// Try to find an Itemid with the same properties				
+				// Try to find an Itemid with the same properties
 				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'all', 'option' => 'com_ars'));
 				if(!empty($otherMenuItem)) {
 					// Exact match
@@ -554,7 +554,7 @@ function arsBuildRouteXml(&$query)
 		case 'category':
 			if(empty($Itemid))
 			{
-				// Try to find an Itemid with the same properties				
+				// Try to find an Itemid with the same properties
 				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'category', 'option' => 'com_ars'),array('category'=>$local_id));
 				if(!empty($otherMenuItem)) {
 					// Exact match
@@ -598,10 +598,10 @@ function arsBuildRouteXml(&$query)
 			$stream = $db->loadObject();
 
 			if(empty($stream)) die();
-			
+
 			if(empty($Itemid))
 			{
-				// Try to find an Itemid with the same properties				
+				// Try to find an Itemid with the same properties
 				$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'stream', 'option' => 'com_ars'),array('streamid'=>$local_id));
 				if(!empty($otherMenuItem)) {
 					// Exact match
@@ -662,13 +662,13 @@ function arsBuildRouteIni(&$query)
 	$my_task = ArsRouterHelper::getAndPop($query, 'task', 'default');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid', null);
 	$local_id = ArsRouterHelper::getAndPop($query, 'id', 'components');
-	
+
 	// Analyze the current Itemid
 	if(!empty($Itemid)) {
 		// Get the specified menu
 		$menus = JMenu::getInstance('site');
 		$menuitem = $menus->getItem($Itemid);
-		
+
 		// Analyze URL
 		$uri = new JURI($menuitem->link);
 		$option = $uri->getVar('option');
@@ -692,7 +692,7 @@ function arsBuildRouteIni(&$query)
 					$task = 'all';
 				}
 			}
-			
+
 			// make sure we can grab the ID specified in menu item options
 			if(empty($id)) switch($task)
 			{
@@ -700,7 +700,7 @@ function arsBuildRouteIni(&$query)
 					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
 					$id = $params->get('category','components');
 					break;
-				
+
 				case 'ini':
 				case 'stream':
 					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
@@ -709,7 +709,7 @@ function arsBuildRouteIni(&$query)
 			}
 		}
 	}
-	
+
 	$db = JFactory::getDBO();
 	$dbquery = $db->getQuery(true)
 		->select(array(
@@ -721,10 +721,10 @@ function arsBuildRouteIni(&$query)
 	$stream = $db->loadObject();
 
 	if(empty($stream)) die();
-	
+
 	if(empty($Itemid))
 	{
-		// Try to find an Itemid with the same properties				
+		// Try to find an Itemid with the same properties
 		$otherMenuItem = ArsRouterHelper::findMenu(array('view'=>'updates','layout'=>'ini', 'option' => 'com_ars'),array('streamid'=>$local_id));
 		if(!empty($otherMenuItem)) {
 			// Exact match
@@ -758,7 +758,7 @@ function arsParseRoute(&$segments)
 	if($ext == '.raw') $format = 'raw';
 	if($ext == '.xml') $format = 'xml';
 	if($ext == '.ini') $format = 'ini';
-	
+
 	switch($format)
 	{
 		case 'feed':
@@ -893,7 +893,7 @@ function arsParseRouteHtml(&$segments)
 					->where($db->qn('r').'.'.$db->qn('alias').' = '.$db->q($relalias))
 					->where($db->qn('c').'.'.$db->qn('alias').' = '.$db->q($catalias))
 				;
-				
+
 				$db->setQuery($dbquery, 0, 1);
 				$rel = $db->loadObject();
 
@@ -921,7 +921,7 @@ function arsParseRouteHtml(&$segments)
 		$view = $menu->query['view'];
 		$catalias = null;
 		$relalias = null;
-		
+
 		if( empty($view) || ($view == 'browses') || ($view == 'browses') )
 		{
 			switch(count($segments))
@@ -990,7 +990,7 @@ function arsParseRouteHtml(&$segments)
 					->where($db->qn('r').'.'.$db->qn('alias').' = '.$db->q($relalias))
 					->where($db->qn('c').'.'.$db->qn('alias').' = '.$db->q($catalias))
 				;
-			
+
 			$db->setQuery($dbquery, 0, 1);
 			$rel = $db->loadObject();
 
@@ -1007,12 +1007,12 @@ function arsParseRouteHtml(&$segments)
 		elseif( $catalias && is_null($relalias) )
 		{
 			$db = JFactory::getDBO();
-			
+
 			$dbquery = $db->getQuery(true)
 				->select('*')
 				->from($db->qn('#__ars_categories'))
 				->where($db->qn('alias').' = '.$db->q($catalias));
-			
+
 			$db->setQuery($dbquery, 0, 1);
 			$cat = $db->loadObject();
 
@@ -1030,7 +1030,7 @@ function arsParseRouteHtml(&$segments)
 		{
 			$params = is_object($menu->params) ? $menu->params : new JRegistry($menu->params);
 			$catid = $params->get('catid',0);
-			
+
 			$dbquery = $db->getQuery(true)
 				->select(array(
 					$db->qn('r').'.*',
@@ -1048,7 +1048,7 @@ function arsParseRouteHtml(&$segments)
 				->where($db->qn('r').'.'.$db->qn('alias').' = '.$db->q($relalias))
 				->where($db->qn('c').'.'.$db->qn('id').' = '.$db->q($catid))
 			;
-				
+
 			$db->setQuery($dbquery, 0, 1);
 			$rel = $db->loadObject();
 
@@ -1086,7 +1086,7 @@ function arsParseRouteRaw(&$segments)
 
 		// Load the release
 		$db = JFactory::getDBO();
-		
+
 		$dbquery = $db->getQuery(true)
 			->select(array(
 				$db->qn('i').'.*',
@@ -1114,7 +1114,7 @@ function arsParseRouteRaw(&$segments)
 			->where($db->qn('r').'.'.$db->qn('alias').' = '.$db->q($relalias))
 			->where($db->qn('c').'.'.$db->qn('alias').' = '.$db->q($catalias))
 		;
-		
+
 		$db->setQuery($dbquery, 0, 1);
 		$item = $db->loadObject();
 
@@ -1160,7 +1160,7 @@ function arsParseRouteRaw(&$segments)
 		}
 
 		$db = JFactory::getDBO();
-		
+
 		$dbquery = $db->getQuery(true)
 			->select(array(
 				$db->qn('i').'.*',
@@ -1223,7 +1223,7 @@ function arsParseRouteXml(&$segments)
 	$query = array();
 	$query['view'] = 'update';
 	$query['format'] = 'xml';
-	
+
 	$menus = JMenu::getInstance('site');
 	$menuitem = $menus->getActive();
 
@@ -1252,7 +1252,7 @@ function arsParseRouteXml(&$segments)
 					$task = 'all';
 				}
 			}
-			
+
 			// make sure we can grab the ID specified in menu item options
 			if(empty($id)) switch($task)
 			{
@@ -1260,14 +1260,14 @@ function arsParseRouteXml(&$segments)
 					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
 					$id = $params->get('category','components');
 					break;
-				
+
 				case 'ini':
 				case 'stream':
 					$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
 					$id = $params->get('streamid',0);
 					break;
 			}
-			
+
 			if( ($option == 'com_ars') && ($view == 'update'))
 			{
 				switch($task)
@@ -1277,21 +1277,21 @@ function arsParseRouteXml(&$segments)
 						$query['id'] = $id;
 						return $query;
 						break;
-						
+
 					case 'category':
 						array_unshift($segments, $id);
 						array_unshift($segments, 'updates');
 						break;
-						
+
 					case 'all':
 					case 'ini':
 						array_unshift($segments, 'updates');
 						break;
 				}
 			}
-		}		
+		}
 	}
-	
+
 	$check = array_shift($segments);
 	if($check != 'updates') die();
 
@@ -1314,7 +1314,7 @@ function arsParseRouteXml(&$segments)
 			->select('*')
 			->from($db->qn('#__ars_updatestreams'))
 			->where($db->qn('alias').' = '.$db->q($stream))
-			->where($db->qn('type').' = '.$db->q('$cat'));
+			->where($db->qn('type').' = '.$db->q($cat));
 		$db->setQuery($dbquery, 0, 1);
 		$item = $db->loadObject();
 		if(empty($item)) die();
@@ -1381,7 +1381,7 @@ class ArsRouterHelper
 
 		$menus = JMenu::getInstance('site');
 		$menuitem = $menus->getActive();
-		
+
 		// First check the current menu item (fastest shortcut!)
 		if(is_object($menuitem)) {
 			if(self::checkMenu($menuitem, $qoptions, $params)) {
@@ -1397,12 +1397,12 @@ class ArsRouterHelper
 				$possible_items[] = $item;
 			}
 		}
-		
+
 		// If no potential item exists, return null
 		if(empty($possible_items)) {
 			return null;
 		}
-		
+
 		// Filter by language, if required
 		$app = JFactory::getApplication();
 		$langCode = '*';
@@ -1419,7 +1419,7 @@ class ArsRouterHelper
 		} else {
 			$langCode = JRequest::getCmd('language', '*');
 		}
-		
+
 		if($langCode == '*') {
 			// No language filtering required, return the first item
 			return array_shift($possible_items);
@@ -1453,7 +1453,7 @@ class ArsRouterHelper
 			if(!isset($query[$key])) return false;
 			if($query[$key] != $value) return false;
 		}
-		
+
 		if(isset($qoptions['language']))
 		{
 			if (($menu->language != $qoptions['language']) && ($menu->language != '*'))
