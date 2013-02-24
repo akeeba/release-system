@@ -17,10 +17,10 @@ class ArsControllerUpdate extends FOFController
 		$id = FOFInput::getInt('id', null, $this->input);
 
 		// Check for menu items bearing layout instead of task
-		if((empty($task) || ($task == 'read')) && !empty($layout)) {
+		if((empty($task) || ($task == 'read') || ($task == 'add')) && !empty($layout)) {
 			$task = $layout;
 		}
-		
+
 		// Check for default task
 		if(empty($task) || ($task == 'read') || ($task == 'add')) {
 			if($viewType == 'xml') {
@@ -33,18 +33,22 @@ class ArsControllerUpdate extends FOFController
 				$task = 'ini';
 				$viewType = 'ini';
 			}
+		} elseif ($task == 'ini') {
+			$viewType = 'ini';
+		} else {
+			$viewType = 'xml';
 		}
-		
+
 		switch($task) {
 			case 'ini':
 				$viewType = 'ini';
 				break;
-				
+
 			default:
 				$viewType = 'xml';
 				break;
 		}
-		
+
 		switch($viewType) {
 			case 'xml':
 				switch($task) {
@@ -99,7 +103,7 @@ class ArsControllerUpdate extends FOFController
 			// Do we have a menu item parameter?
 			$app = JFactory::getApplication();
 			$params = $app->getPageParameters('com_ars');
-			$id = $params->get('streamid', 0);			
+			$id = $params->get('streamid', 0);
 		}
 		$model = $this->getThisModel();
 		$model->getItems($id);
@@ -115,7 +119,7 @@ class ArsControllerUpdate extends FOFController
 			// Do we have a menu item parameter?
 			$app = JFactory::getApplication();
 			$params = $app->getPageParameters('com_ars');
-			$id = $params->get('streamid', 0);			
+			$id = $params->get('streamid', 0);
 		}
 		$model = $this->getThisModel();
 		$model->getItems($id);
