@@ -1,3 +1,7 @@
+Version 2.1.1
+================================================================================
+# [HIGH] Validation by Download ID was no longer working
+
 Version 2.1.0
 ================================================================================
 ~ Reverting router changes. They actually seem to break menu items.

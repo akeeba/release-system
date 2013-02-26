@@ -35,7 +35,7 @@ class ArsHelperFilter
 			// Do we have a dlid in the query?
 			$dlid = JRequest::getCmd('dlid',null);
 			if(strlen($dlid) > 32) $dlid = substr($dlid,0,32);
-			
+
 			$credentials = array();
 			$credentials['username'] = JRequest::getVar('username', '', 'get', 'username');
 			$credentials['password'] = JRequest::getString('password', '', 'get', JREQUEST_ALLOWRAW);
@@ -141,7 +141,7 @@ class ArsHelperFilter
 
 		return $list;
 	}
-	
+
 	static public function reformatDownloadID($dlid)
 	{
 		// Check if the Download ID is empty or consists of only whitespace
@@ -149,20 +149,20 @@ class ArsHelperFilter
 		{
 			return false;
 		}
-		
+
 		$dlid = trim($dlid);
-		
+
 		if (empty($dlid))
 		{
 			return false;
 		}
-		
+
 		// Is the Download ID too short?
 		if (strlen($dlid) < 32)
 		{
 			return false;
 		}
-		
+
 		// Do we have a userid:downloadid format?
 		$user_id = null;
 		if (strstr($dlid, ':') !== false)
@@ -182,35 +182,35 @@ class ArsHelperFilter
 				return false;
 			}
 		}
-		
+
 		// Trim the Download ID
 		if (strlen($dlid) > 32)
 		{
 			if(strlen($dlid) > 32) $dlid = substr($dlid,0,32);
 		}
-		
+
 		return (is_null($user_id) ? '' : $user_id.':') . $dlid;
 	}
-	
+
 	/**
 	 * Gets the user associated with a specific Download ID
-	 * 
+	 *
 	 * @param   string  $dlid  The Download ID to check
-	 * 
+	 *
 	 * @return  array  The user record of the corresponding user and the Download ID
-	 * 
+	 *
 	 * @throws Exception An exception is thrown if the Download ID is invalid or empty
 	 */
 	static public function getUserFromDownloadID($dlid)
 	{
 		// Reformat the Download ID
 		$dlid = self::reformatDownloadID($dlid);
-		
+
 		if ($dlid === false)
 		{
 			throw new Exception('Invalid Download ID', 403);
 		}
-		
+
 		// Do we have a userid:downloadid format?
 		$user_id = null;
 		if (strstr($dlid, ':') !== false)
@@ -219,7 +219,7 @@ class ArsHelperFilter
 			$user_id = (int)$parts[0];
 			$dlid = $parts[1];
 		}
-		
+
 		if (is_null($user_id))
 		{
 			$db = JFactory::getDbo();
@@ -229,6 +229,7 @@ class ArsHelperFilter
 				))
 				->from($db->qn('#__users'))
 				->where('md5(concat('.$db->qn('id').','.$db->qn('username').','.$db->qn('password').')) = '.$db->q($dlid));
+			$db->setQuery($query);
 			$user_id = $db->loadResult();
 		}
 		else
@@ -240,13 +241,14 @@ class ArsHelperFilter
 				))->from($db->qn('#__ars_dlidlabels'))
 				->where($db->qn('user_id').' = '.$db->q($user_id))
 				->where($db->qn('enabled').' = '.$db->q(1));
+			$db->setQuery($query);
 			$labels = $db->loadColumn();
-			
+
 			if (empty($labels))
 			{
 				throw new Exception('Invalid Download ID', 403);
 			}
-			
+
 			$query = $db->getQuery(true)
 				->select(array(
 					'md5(concat('.$db->qn('id').','.$db->qn('username').','.$db->qn('password').')) AS '.$db->qn('dlid')
@@ -254,7 +256,7 @@ class ArsHelperFilter
 				->from($db->qn('#__users'))
 				->where($db->qn('id').' = '.$db->q($user_id));
 			$masterDlid = $db->loadResult();
-			
+
 			$found = false;
 			foreach($labels as $label)
 			{
@@ -265,25 +267,25 @@ class ArsHelperFilter
 					break;
 				}
 			}
-			
+
 			if (!$found)
 			{
 				throw new Exception('Invalid Download ID', 403);
 			}
 		}
-		
+
 		return JFactory::getUser($user_id);
 	}
-	
+
 	static public function myDownloadID()
 	{
 		$user = JFactory::getUser();
-		
+
 		if ($user->guest)
 		{
 			return '';
 		}
-		
+
 		return md5($user->id . $user->username . $user->password);
 	}
 }
