@@ -17,27 +17,27 @@ class ArsControllerRelease extends FOFController
 		}
 		parent::__construct($config);
 	}
-	
+
 	public function execute($task) {
 		if(FOFInput::getCmd('format','html',$this->input) == 'html') {
 			if(!in_array($task, array('browse','read'))) {
 				$task = 'read';
 			}
 		}
-		
+
 		parent::execute($task);
 	}
-	
+
 	function onBeforeRead() {
 		$limitstart = FOFInput::getInt('limitstart', -1, $this->input);
 		if($limitstart >= 0) {
 			FOFInput::setVar('start', $limitstart, $this->input);
 		}
-		
+
 		if(FOFInput::getCmd('format','html',$this->input) != 'html') {
 			return true;
 		}
-		
+
 		$id = FOFInput::getInt('id', 0, $this->input);
 
 		// Get the page parameters
@@ -74,7 +74,20 @@ class ArsControllerRelease extends FOFController
 			}
 			return false;
 		}
-		
+
 		return true;
+	}
+
+	protected function _csrfProtection()
+	{
+		$format = $this->input->get('format', 'html');
+		$loggedin = !JFactory::getUser()->guest;
+
+		if(($format == 'json') && $loggedin)
+		{
+			return true;
+		}
+
+		return parent::_csrfProtection();
 	}
 }

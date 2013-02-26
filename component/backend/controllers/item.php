@@ -16,15 +16,15 @@ class ArsControllerItem extends FOFController
 		if (!$user->authorise('core.create', 'com_ars')) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
+
 		$model = $this->getThisModel();
 		$model->setIDsFromRequest();
 		$ids = $model->getIds();
-		
+
 		if(!empty($ids)) foreach($ids as $id) {
 			$model->setId($id);
 			$item = $model->getItem();
-			
+
 			if($item->id == $id)
 			{
 				$item->id = 0;
@@ -58,5 +58,18 @@ class ArsControllerItem extends FOFController
 			$this->setRedirect($url);
 		}
 		$this->redirect();
+	}
+
+	protected function _csrfProtection()
+	{
+		$format = $this->input->get('format', 'html');
+		$loggedin = !JFactory::getUser()->guest;
+
+		if(($format == 'json') && $loggedin)
+		{
+			return true;
+		}
+
+		return parent::_csrfProtection();
 	}
 }

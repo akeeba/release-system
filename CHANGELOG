@@ -1,6 +1,7 @@
 Version 2.1.1
 ================================================================================
 # [HIGH] Validation by Download ID was no longer working
+# [HIGH] The remote JSON API wouldn't work
 
 Version 2.1.0
 ================================================================================
