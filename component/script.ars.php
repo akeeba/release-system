@@ -178,6 +178,7 @@ class Com_ArsInstallerScript
 			$this->_bugfixDBFunctionReturnedNoError();
 		} else {
 			$this->_bugfixCantBuildAdminMenus();
+			$this->_fixBrokenSQLUpdates($parent);
 			$this->_fixSchemaVersion();
 		}
 
@@ -1051,5 +1052,119 @@ class Com_ArsInstallerScript
 			);
 			$db->insertObject('#__schemas', $o);
 		}
+	}
+
+	/**
+	 * Let's say that a user tries to install a component and it somehow fails
+	 * in a non-graceful manner, e.g. a server timeout error, going over the
+	 * quota etc. In this case the component's administrator directory is
+	 * created and not removed (because the installer died an untimely death).
+	 * When the user retries installing the component JInstaller sees that and
+	 * thinks it's an update. This causes it to neither run the installation SQL
+	 * file (because it's not supposed to run on extension update) nor the
+	 * update files (because there is no schema version defined). As a result
+	 * the files are installed, the database tables are not, the component is
+	 * broken and I have to explain to non-technical users how to edit their
+	 * database with phpMyAdmin.
+	 *
+	 * This method detects this stupid situation and attempts to execute the
+	 * installation file instead.
+	 */
+	private function _fixBrokenSQLUpdates($parent)
+	{
+		// Get the extension ID
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true);
+		$query->select('extension_id')
+			->from('#__extensions')
+			->where($db->qn('element').' = '.$db->q($this->_akeeba_extension));
+		$db->setQuery($query);
+		$eid = $db->loadResult();
+
+		// Get the schema version
+		$query = $db->getQuery(true);
+		$query->select('version_id')
+			->from('#__schemas')
+			->where('extension_id = ' . $eid);
+		$db->setQuery($query);
+		$version = $db->loadResult();
+
+		// If there is a schema version it's not a false update
+		if ($version)
+		{
+			return;
+		}
+
+		// Execute the installation SQL file. Since I don't have access to
+		// the manifest, I will improvise (again!)
+		$dbDriver = strtolower($db->name);
+
+		if ($dbDriver == 'mysqli')
+		{
+			$dbDriver = 'mysql';
+		}
+		elseif($dbDriver == 'sqlsrv')
+		{
+			$dbDriver = 'sqlazure';
+		}
+
+		// Get the name of the sql file to process
+		$sqlfile = $parent->getParent()->getPath('extension_root') . '/sql/install/' . $dbDriver . '/install.sql';
+		if (file_exists($sqlfile))
+		{
+			$buffer = file_get_contents($sqlfile);
+			if ($buffer === false)
+			{
+				return;
+			}
+
+			$queries = JInstallerHelper::splitSql($buffer);
+
+			if (count($queries) == 0)
+			{
+				// No queries to process
+				return;
+			}
+
+			// Process each query in the $queries array (split out of sql file).
+			foreach ($queries as $query)
+			{
+				$query = trim($query);
+
+				if ($query != '' && $query{0} != '#')
+				{
+					$db->setQuery($query);
+
+					if (!$db->execute())
+					{
+						JError::raiseWarning(1, JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
+
+						return false;
+					}
+				}
+			}
+		}
+
+		// Update #__schemas to the latest version. Again, since I don't have
+		// access to the manifest I have to improvise...
+		$path = $parent->getParent()->getPath('extension_root') . '/sql/update/' . $dbDriver;
+		$files = str_replace('.sql', '', JFolder::files($path, '\.sql$'));
+		if(count($files) > 0)
+		{
+			usort($files, 'version_compare');
+			$version = array_pop($files);
+		}
+		else
+		{
+			$version = '0.0.1-2007-08-15';
+		}
+
+		$query = $db->getQuery(true);
+		$query->insert($db->quoteName('#__schemas'));
+		$query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
+		$query->values($eid . ', ' . $db->quote($version));
+		$db->setQuery($query);
+		$db->execute();
 	}
 }
