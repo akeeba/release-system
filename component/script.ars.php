@@ -155,12 +155,12 @@ class Com_ArsInstallerScript
 		} else {
 			$version = '5.0.0'; // all bets are off!
 		}
-		if(!version_compare(JVERSION, '2.5.0', 'ge')) {
-			echo "<p>You need Joomla! 2.5 or later to install this component</p>";
+		if(!version_compare(JVERSION, '2.5.6', 'ge')) {
+			echo "<p>You need Joomla! 2.5.6 or later to install this component</p>";
 			return false;
 		}
-		if(!version_compare($version, '5.3.0', 'ge')) {
-			echo "<p>You need PHP 5.3 or later to install this component</p>";
+		if(!version_compare($version, '5.3.1', 'ge')) {
+			echo "<p>You need PHP 5.3.1 or later to install this component</p>";
 			return false;
 		}
 
@@ -169,6 +169,7 @@ class Com_ArsInstallerScript
 			$this->_bugfixDBFunctionReturnedNoError();
 		} else {
 			$this->_bugfixCantBuildAdminMenus();
+			$this->_fixSchemaVersion();
 		}
 
 		return true;
@@ -1000,6 +1001,46 @@ class Com_ArsInstallerScript
 			$db->query();
 		} catch (Exception $exc) {
 			// If the query fails, don't sweat about it
+		}
+	}
+
+	/**
+	 * When you are upgrading from an old version of the component or when your
+	 * site is upgraded from Joomla! 1.5 there is no "schema version" for our
+	 * component's tables. As a result Joomla! doesn't run the database queries
+	 * and you get a broken installation.
+	 *
+	 * This method detects this situation, forces a fake schema version "0.0.1"
+	 * and lets the crufty mess Joomla!'s extensions installer is to bloody work
+	 * as anyone would have expected it to do!
+	 */
+	private function _fixSchemaVersion()
+	{
+		// Get the extension ID
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true);
+		$query->select('extension_id')
+			->from('#__extensions')
+			->where($db->qn('element').' = '.$db->q($this->_akeeba_extension));
+		$db->setQuery($query);
+		$eid = $db->loadResult();
+
+		$query = $db->getQuery(true);
+		$query->select('version_id')
+			->from('#__schemas')
+			->where('extension_id = ' . $eid);
+		$db->setQuery($query);
+		$version = $db->loadResult();
+
+		if (!$version)
+		{
+			// No schema version found. Fix it.
+			$o = (object)array(
+				'version_id'	=> '0.0.1-2007-08-15',
+				'extension_id'	=> $eid,
+			);
+			$db->insertObject('#__schemas', $o);
 		}
 	}
 }

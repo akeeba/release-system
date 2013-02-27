@@ -1,3 +1,8 @@
+Version 2.1.2
+================================================================================
+# [HIGH] The component's menu item was removed if the installation couldn't proceed (too low PHP or Joomla! version)
+# [HIGH] Joomla! doesn't run the database upgrade scripts when upgrading from a very old version or when the #__schemas entry is somehow missing
+
 Version 2.1.1
 ================================================================================
 # [HIGH] Validation by Download ID was no longer working
