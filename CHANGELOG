@@ -4,6 +4,7 @@ Version 2.1.2
 # [HIGH] Joomla! doesn't run the database upgrade scripts when upgrading from a very old version or when the #__schemas entry is somehow missing
 # [HIGH] After a failed installation, even if the subsequent installation is reported successful Joomla! does not install the database tables causing a broken installation
 # [MEDIUM] The reason why the installation was aborted is not shown due to a Joomla! bug; worked around
+# [LOW] Menu items to update streams don't work under Joomla! 3
 
 Version 2.1.1
 ================================================================================

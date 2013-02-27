@@ -10,4 +10,12 @@
 			<field name="streamid" type="sql" default="0" label="LBL_ITEMS_UPDATESTREAM" description="" query="SELECT `id`, `name` FROM `#__ars_updatestreams`" key_field="id" value_field="name" />
 		</fieldset>
 	</fields>
+	<fields name="request">
+		<fieldset name="request">
+			<field name="format"
+				type="hidden"
+				default="xml"
+			/>
+		</fieldset>
+	</fields>
 </metadata>
