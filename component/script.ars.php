@@ -156,11 +156,20 @@ class Com_ArsInstallerScript
 			$version = '5.0.0'; // all bets are off!
 		}
 		if(!version_compare(JVERSION, '2.5.6', 'ge')) {
-			echo "<p>You need Joomla! 2.5.6 or later to install this component</p>";
+			$msg = "<p>You need Joomla! 2.5.6 or later to install this component</p>";
+			JError::raiseWarning(100, $msg);
 			return false;
 		}
 		if(!version_compare($version, '5.3.1', 'ge')) {
-			echo "<p>You need PHP 5.3.1 or later to install this component</p>";
+			$msg = "<p>You need PHP 5.3.1 or later to install this component</p>";
+			if(version_compare(JVERSION, '3.0', 'gt'))
+			{
+				JLog::add($msg, JLog::WARNING, 'jerror');
+			}
+			else
+			{
+				JError::raiseWarning(100, $msg);
+			}
 			return false;
 		}
 
