@@ -45,7 +45,7 @@ class ArsTableCategory extends FOFTable
 
 		// If the alias is missing, auto-create a new one
 		if(!$this->alias) {
-			jimport('joomla.filter.input');
+			JLoader::import('joomla.filter.input');
 			$alias = str_replace(' ', '-', strtolower($this->title));
 			$this->alias = (string) preg_replace( '/[^A-Z0-9_-]/i', '', $alias );
 		}
@@ -77,7 +77,7 @@ class ArsTableCategory extends FOFTable
 		}
 
 		// Check directory
-		jimport('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.folder');
 		
 		$this->directory = rtrim($this->directory,'/');
 		if($this->directory == 's3:') {
@@ -130,7 +130,7 @@ class ArsTableCategory extends FOFTable
 			$this->access = $baseAccess + 1;
 		}
 
-		jimport('joomla.utilities.date');
+		JLoader::import('joomla.utilities.date');
 		$user = JFactory::getUser();
 		$date = new JDate();
 		if(!$this->created_by && empty($this->id))

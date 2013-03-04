@@ -9,13 +9,13 @@ defined('_JEXEC') or die();
 
 $Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 
-jimport('joomla.utilities.date');
+JLoader::import('joomla.utilities.date');
 
 $released = new JDate($item->created);
 $release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);
 
 if(version_compare(JVERSION, '3.0', 'lt')) {
-	jimport('joomla.html.pane');
+	JLoader::import('joomla.html.pane');
 	$tabs	= JPane::getInstance('tabs');
 }
 

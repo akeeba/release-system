@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-jimport('joomla.application.component.model');
+JLoader::import('joomla.application.component.model');
 
 class ArsModelBleedingedge extends FOFModel
 {
@@ -48,7 +48,7 @@ class ArsModelBleedingedge extends FOFModel
 				return;
 			}
 		} else {
-			jimport('joomla.filesystem.folder');
+			JLoader::import('joomla.filesystem.folder');
 			if(!JFolder::exists($folder)) {
 				$folder = JPATH_ROOT.'/'.$folder;
 				if(!JFolder::exists($folder)) return;
@@ -91,7 +91,7 @@ class ArsModelBleedingedge extends FOFModel
 		$potentialPrefix = strtolower($potentialPrefix);
 		$useS3 = ($potentialPrefix == 's3://');
 		
-		jimport('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.folder');
 
 		$known_folders = array();
 
@@ -132,7 +132,7 @@ class ArsModelBleedingedge extends FOFModel
 			$first_release = null;
 		}
 
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 		$first_changelog = array();
 		if(!empty($first_release))
 		{
@@ -212,7 +212,7 @@ class ArsModelBleedingedge extends FOFModel
 					$this_changelog = '';
 				}
 
-				jimport('joomla.utilities.date');
+				JLoader::import('joomla.utilities.date');
 				$jNow = new JDate();
 				$data = array(
 					'id'				=> 0,
@@ -232,7 +232,7 @@ class ArsModelBleedingedge extends FOFModel
 				// event of ars plugins so that they have the chance to modify
 				// this information.
 				// -- Load plugins
-				jimport('joomla.plugin.helper');
+				JLoader::import('joomla.plugin.helper');
 				JPluginHelper::importPlugin('ars');
 				// -- Setup information data
 				$infoData = array(
@@ -353,7 +353,7 @@ class ArsModelBleedingedge extends FOFModel
 
 			if(in_array($file, $known_items)) continue;
 			
-			jimport('joomla.utilities.date');
+			JLoader::import('joomla.utilities.date');
 			$jNow = new JDate();
 			$data = array(
 				'id'				=> 0,
@@ -373,7 +373,7 @@ class ArsModelBleedingedge extends FOFModel
 			// event of ars plugins so that they have the chance to modify
 			// this information.
 			// -- Load plugins
-			jimport('joomla.plugin.helper');
+			JLoader::import('joomla.plugin.helper');
 			JPluginHelper::importPlugin('ars');
 			// -- Setup information data
 			$infoData = array(
@@ -412,7 +412,7 @@ class ArsModelBleedingedge extends FOFModel
 		$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
 		$notes = '';
 
-		jimport('joomla.application.component.helper');
+		JLoader::import('joomla.application.component.helper');
 		$params = JComponentHelper::getParams('com_ars');
 		
 		$generate_changelog = $params->get('begenchangelog', 1);

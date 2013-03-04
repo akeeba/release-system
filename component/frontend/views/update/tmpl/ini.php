@@ -31,7 +31,7 @@ if( !empty($this->items) ):
 			$downloadURL = $item->url;
 			break;
 	}
-	jimport('joomla.utilities.date');
+	JLoader::import('joomla.utilities.date');
 	$date = new JDate($item->created);
 
 	// Process supported environments

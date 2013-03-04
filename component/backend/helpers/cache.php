@@ -32,8 +32,8 @@ class ArsHelperCache
 		
 		// Load the registry
 		$this->hasCache = true;
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.file');
 		if(JFolder::exists(dirname($this->cachepath))) {
 			if(JFile::exists($this->cachepath)) {
 				$this->lastUpdate = @filemtime($this->cachepath);

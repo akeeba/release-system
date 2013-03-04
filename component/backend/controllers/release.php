@@ -46,7 +46,7 @@ class ArsControllerRelease extends FOFController
 			->release($id)
 			->getItemList();
 		
-		jimport('joomla.utilities.date');
+		JLoader::import('joomla.utilities.date');
 		$date = new JDate();
 		
 		if(!empty($temp)) foreach($temp as $item)

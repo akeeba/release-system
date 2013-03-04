@@ -31,7 +31,7 @@ class ArsTableVgroup extends FOFTable
 			return false;
 		}
 
-		jimport('joomla.utilities.date');
+		JLoader::import('joomla.utilities.date');
 		$user = JFactory::getUser();
 		$date = new JDate();
 		if(!$this->created_by && empty($this->id)) {

@@ -56,7 +56,7 @@ class ArsModelUploads extends FOFModel
 						$folder = '';
 					}
 				} else {
-					jimport('joomla.filesystem.folder');
+					JLoader::import('joomla.filesystem.folder');
 					if(!JFolder::exists($folder))
 					{
 						$folder = JPATH_ROOT.'/'.$folder;
@@ -143,7 +143,7 @@ class ArsModelUploads extends FOFModel
 				}
 			}
 		} else {
-			jimport('joomla.filesystem.folder');
+			JLoader::import('joomla.filesystem.folder');
 			$temp = JFolder::files($folder);
 			if(!empty($temp)) foreach($temp as $file) {
 				$files[] = array(
@@ -180,7 +180,7 @@ class ArsModelUploads extends FOFModel
 				}
 			}
 		} else {
-			jimport('joomla.filesystem.folder');
+			JLoader::import('joomla.filesystem.folder');
 			$folders = JFolder::folders($folder);
 		}
 		
@@ -227,7 +227,7 @@ class ArsModelUploads extends FOFModel
 		}
 		
 		if(!$useS3) {
-			jimport('joomla.filesystem.file');
+			JLoader::import('joomla.filesystem.file');
 			if(!JFile::exists($filepath)) return false;
 		}
 		

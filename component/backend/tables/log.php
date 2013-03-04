@@ -48,7 +48,7 @@ class ArsTableLog extends FOFTable
 
 		if(empty($this->accessed_on) || ($this->accessed_on == '0000-00-00 00:00:00'))
 		{
-			jimport('joomla.utilities.date');
+			JLoader::import('joomla.utilities.date');
 			$date = new JDate();
 			$this->accessed_on = $date->toSql();
 		}

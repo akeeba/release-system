@@ -7,11 +7,11 @@
 
 defined('_JEXEC') or die();
 
-jimport('joomla.utilities.date');
+JLoader::import('joomla.utilities.date');
 
 $this->item->hit();
 
-jimport('joomla.filesystem.date');
+JLoader::import('joomla.filesystem.date');
 $released = new JDate($this->item->created);
 $tabs = array();
 

@@ -45,7 +45,7 @@ class ArsTableUpdatestream extends FOFTable
 
 		// If the alias is missing, auto-create a new one
 		if(!$this->alias) {
-			jimport('joomla.filter.input');
+			JLoader::import('joomla.filter.input');
 			$alias = str_replace(' ', '-', strtolower($this->name));
 			$this->alias = (string) preg_replace( '/[^A-Z0-9_-]/i', '', $alias );
 		}
@@ -89,7 +89,7 @@ class ArsTableUpdatestream extends FOFTable
 			return false;
 		}
 
-		jimport('joomla.utilities.date');
+		JLoader::import('joomla.utilities.date');
 		$user = JFactory::getUser();
 		$date = new JDate();
 		if(!$this->created_by && empty($this->id))

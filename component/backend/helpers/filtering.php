@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die();
 
-jimport('joomla.application.component.model');
+JLoader::import('joomla.application.component.model');
 
 /**
  * Composite integration with AMBRA Subscriptions and Akeeba Subscriptions.
@@ -31,11 +31,11 @@ class ArsHelperFiltering
 		static $hasAkeebaSubs = null;
 
 		if(is_null($hasAkeebaSubs)) {
-			jimport('joomla.filesystem.folder');
+			JLoader::import('joomla.filesystem.folder');
 			$hasAkeebaSubs = JFolder::exists(JPATH_ROOT.'/components/com_akeebasubs');
 			
 			if($hasAkeebaSubs) {
-				jimport('joomla.application.component.helper');
+				JLoader::import('joomla.application.component.helper');
 				$hasAkeebaSubs = JComponentHelper::getComponent( 'com_akeebasubs', true )->enabled;
 			}
 		}
@@ -104,8 +104,8 @@ class ArsHelperFiltering
 		if(is_null($theList)) {
 			$theList = array();
 			
-			jimport('joomla.filesystem.folder');
-			jimport('joomla.filesystem.file');
+			JLoader::import('joomla.filesystem.folder');
+			JLoader::import('joomla.filesystem.file');
 			
 			$nooku = false;
 			$rawList = FOFModel::getTmpInstance('Levels','AkeebasubsModel')
@@ -164,11 +164,11 @@ class ArsHelperFiltering
 	{
 		if(!self::hasAkeebaSubs()) return array();
 		
-		jimport('joomla.utilities.date');
+		JLoader::import('joomla.utilities.date');
 		$jNow = new JDate();
 		
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.file');
 		$rawList = FOFModel::getTmpInstance('Subscriptions','AkeebasubsModel',array('table'=>'subscriptions','input'=>array('option'=>'com_akeebasubs')))
 			->enabled(1)
 			->user_id($user_id)

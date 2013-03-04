@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-jimport('joomla.utilities.date');
+JLoader::import('joomla.utilities.date');
 
 $this->loadHelper('select');
 

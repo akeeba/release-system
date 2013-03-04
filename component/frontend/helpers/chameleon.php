@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-jimport('joomla.application.module.helper');
+JLoader::import('joomla.application.module.helper');
 
 /**
  * Chameleon skinning for Joomla!
@@ -79,7 +79,7 @@ class ArsHelperChameleon
 		
 		if(is_null($params))
 		{
-			jimport('joomla.application.component');
+			JLoader::import('joomla.application.component');
 			$component = JComponentHelper::getComponent('com_ars');
 			$params = ($component->params instanceof JRegistry) ? $component->params : new JRegistry($component->params);
 		}
@@ -141,7 +141,7 @@ class ArsHelperChameleon
 		
 		if(is_null($params))
 		{
-			jimport('joomla.application.component');
+			JLoader::import('joomla.application.component');
 			$component = JComponentHelper::getComponent('com_ars');
 			$params = ($component->params instanceof JRegistry) ? $component->params : new JRegistry($component->params);
 		}

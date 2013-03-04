@@ -48,7 +48,7 @@ class ArsHelperFilter
 			} elseif( !empty($credentials['username']) && !empty($credentials['password']) ) {
 				// AUTHENTICATE AGAINST USERNAME/PASSWORD PAIR IN QUERY
 
-				jimport( 'joomla.user.authentication');
+				JLoader::import( 'joomla.user.authentication');
 				$app = JFactory::getApplication();
 				$options = array('remember' => false);
 				$authenticate = JAuthentication::getInstance();
@@ -57,7 +57,7 @@ class ArsHelperFilter
 					JPluginHelper::importPlugin('user');
 					$results = $app->triggerEvent('onLoginUser', array((array)$response, $options));
 					if(version_compare(JVERSION,'1.6.0','ge')) {
-						jimport('joomla.user.helper');
+						JLoader::import('joomla.user.helper');
 						$userid = JUserHelper::getUserId($response->username);
 						$user = JFactory::getUser($userid);
 					} else {

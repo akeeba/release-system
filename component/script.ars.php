@@ -7,8 +7,8 @@
  */
 defined('_JEXEC') or die();
 
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
+JLoader::import('joomla.filesystem.folder');
+JLoader::import('joomla.filesystem.file');
 
 class Com_ArsInstallerScript
 {
@@ -237,8 +237,8 @@ class Com_ArsInstallerScript
 
 		$src = $parent->getParent()->getPath('source');
 
-		jimport("joomla.filesystem.file");
-		jimport("joomla.filesystem.folder");
+		JLoader::import("joomla.filesystem.file");
+		JLoader::import("joomla.filesystem.folder");
 
 		foreach($this->akeebaCliScripts as $script) {
 			if(JFile::exists(JPATH_ROOT.'/cli/'.$script)) {
@@ -685,7 +685,7 @@ class Com_ArsInstallerScript
 	 */
 	private function _uninstallSubextensions($parent)
 	{
-		jimport('joomla.installer.installer');
+		JLoader::import('joomla.installer.installer');
 
 		$db = JFactory::getDBO();
 
@@ -759,7 +759,7 @@ class Com_ArsInstallerScript
 	private function _removeObsoleteFilesAndFolders($akeebaRemoveFiles)
 	{
 		// Remove files
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 		if(!empty($akeebaRemoveFiles['files'])) foreach($akeebaRemoveFiles['files'] as $file) {
 			$f = JPATH_ROOT.'/'.$file;
 			if(!JFile::exists($f)) continue;
@@ -767,7 +767,7 @@ class Com_ArsInstallerScript
 		}
 
 		// Remove folders
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 		if(!empty($akeebaRemoveFiles['folders'])) foreach($akeebaRemoveFiles['folders'] as $folder) {
 			$f = JPATH_ROOT.'/'.$folder;
 			if(!JFolder::exists($f)) continue;
@@ -780,9 +780,9 @@ class Com_ArsInstallerScript
 		$src = $parent->getParent()->getPath('source');
 
 		// Install the FOF framework
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-		jimport('joomla.utilities.date');
+		JLoader::import('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.file');
+		JLoader::import('joomla.utilities.date');
 		$source = $src.'/fof';
 		if(!defined('JPATH_LIBRARIES')) {
 			$target = JPATH_ROOT.'/libraries/fof';
@@ -867,9 +867,9 @@ class Com_ArsInstallerScript
 		$src = $parent->getParent()->getPath('source');
 
 		// Install the FOF framework
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.filesystem.file');
-		jimport('joomla.utilities.date');
+		JLoader::import('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.file');
+		JLoader::import('joomla.utilities.date');
 		$source = $src.'/strapper';
 		$target = JPATH_ROOT.'/media/akeeba_strapper';
 

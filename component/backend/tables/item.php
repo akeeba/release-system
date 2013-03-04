@@ -207,7 +207,7 @@ class ArsTableItem extends FOFTable
 			return false;
 		}
 
-		jimport('joomla.filter.filterinput');
+		JLoader::import('joomla.filter.filterinput');
 		$filter = JFilterInput::getInstance(null, null, 1, 1);
 
 		// Filter the description using a safe HTML filter
@@ -224,7 +224,7 @@ class ArsTableItem extends FOFTable
 			$this->access = 2;
 		}
 
-		jimport('joomla.utilities.date');
+		JLoader::import('joomla.utilities.date');
 		$user = JFactory::getUser();
 		$date = new JDate();
 		if(!$this->created_by && empty($this->id))
@@ -319,7 +319,7 @@ class ArsTableItem extends FOFTable
 							$url = $s3->getAuthenticatedURL('', rtrim(substr($folder,5),'/').'/'.ltrim($filename,'/'));
 						}
 					} else {
-						jimport('joomla.filesystem.folder');
+						JLoader::import('joomla.filesystem.folder');
 						if(!JFolder::exists($folder)) {
 							$folder = JPATH_ROOT.'/'.$folder;
 							if(!JFolder::exists($folder)) $folder = null;
@@ -363,7 +363,7 @@ class ArsTableItem extends FOFTable
 
 					if($data !== false)
 					{
-						jimport('joomla.filesystem.file');
+						JLoader::import('joomla.filesystem.file');
 						$result = JFile::write($target, $data);
 					}
 					curl_close($process);
@@ -371,7 +371,7 @@ class ArsTableItem extends FOFTable
 				else
 				{
 					// Use Joomla!'s download helper
-					jimport('joomla.installer.helper');
+					JLoader::import('joomla.installer.helper');
 					JInstallerHelper::downloadPackage($url, $target);
 				}
 
@@ -379,7 +379,7 @@ class ArsTableItem extends FOFTable
 			}
 
 			if(!empty($filename)) {
-				jimport('joomla.filesystem.file');
+				JLoader::import('joomla.filesystem.file');
 				if(!JFile::exists($filename)) {
 					$filename = null;
 				}

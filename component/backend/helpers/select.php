@@ -350,7 +350,7 @@ class ArsHelperSelect
 				}
 				if(empty($directory)) $directory = '/';
 			} else {
-				jimport('joomla.filesystem.folder');
+				JLoader::import('joomla.filesystem.folder');
 				if(!JFolder::exists($directory))
 				{
 					$directory = JPATH_ROOT.'/'.$directory;
@@ -477,7 +477,7 @@ class ArsHelperSelect
 	
 	public static function languages($selected = null, $id = 'language', $attribs = array(), $show_select = false )
 	{
-		jimport('joomla.language.helper');
+		JLoader::import('joomla.language.helper');
 		$languages = JLanguageHelper::getLanguages('lang_code');
 		$options = array();
 		if($show_select) {
@@ -497,7 +497,7 @@ class ArsHelperSelect
 		static $langs = array();
 		
 		if(empty($langs)) {
-			jimport('joomla.language.helper');
+			JLoader::import('joomla.language.helper');
 			$languages = JLanguageHelper::getLanguages('lang_code');
 			
 			$langs['*'] = JText::_('JALL_LANGUAGE');
@@ -555,7 +555,7 @@ class ArsHelperSelect
 	
 	public static function environmenticons( $selected = null, $id = 'icon', $attribs = array() )
 	{
-		jimport('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.folder');
 		$directory	= JPATH_ROOT . '/media/com_ars/environments';
 		$options[]	= JHTML::_('select.option','','- '.JText::_( 'LBL_ITEMS_FILENAME_SELECT' ) . ' -');
 		

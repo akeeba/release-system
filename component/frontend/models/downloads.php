@@ -96,8 +96,8 @@ class ArsModelDownloads extends FOFModel
 			$db->setQuery($query);
 			$item = $db->loadObject();
 
-			jimport('joomla.filesystem.folder');
-			jimport('joomla.filesystem.file');
+			JLoader::import('joomla.filesystem.folder');
+			JLoader::import('joomla.filesystem.file');
 
 			$folder = $item->cat_directory;
 			
@@ -152,7 +152,7 @@ class ArsModelDownloads extends FOFModel
             }
             
             // Import ARS plugins
-            jimport('joomla.plugin.helper');
+            JLoader::import('joomla.plugin.helper');
             JPluginHelper::importPlugin('ars');
             
             // Call any plugins to post-process the download file parameters

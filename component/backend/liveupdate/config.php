@@ -19,12 +19,12 @@ class LiveUpdateConfig extends LiveUpdateAbstractConfig
 	var $_versionStrategy		= 'different';
 	
 	public function __construct() {
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 		$isPro = defined('ARS_PRO') ? (ARS_PRO == 1) : false;
 		
 		// Load the component parameters, not using JComponentHelper to avoid conflicts ;)
-		jimport('joomla.html.parameter');
-		jimport('joomla.application.component.helper');
+		JLoader::import('joomla.html.parameter');
+		JLoader::import('joomla.application.component.helper');
 		$db = JFactory::getDbo();
 		$sql = $db->getQuery(true)
 			->select($db->quoteName('params'))

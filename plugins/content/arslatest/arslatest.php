@@ -9,7 +9,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-jimport('joomla.plugin.plugin');
+JLoader::import('joomla.plugin.plugin');
 
 // PHP version check
 if(defined('PHP_VERSION')) {
@@ -44,7 +44,7 @@ if (!function_exists('fnmatch')) {
 
 
 // Do not run if Akeeba Subscriptions is not enabled
-jimport('joomla.application.component.helper');
+JLoader::import('joomla.application.component.helper');
 if(!JComponentHelper::isEnabled('com_ars', true)) return;
 
 class plgContentArslatest extends JPlugin

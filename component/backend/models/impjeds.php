@@ -173,19 +173,19 @@ class ArsModelFRS
 
 	private function cacheExists($url)
 	{
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 		return JFile::exists( $this->getCacheFilename($url) );
 	}
 
 	private function readCache($url)
 	{
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 		return JFile::read( $this->getCacheFilename($url) );
 	}
 
 	private function writeCache($url, $data)
 	{
-		jimport('joomla.filesystem.file');
+		JLoader::import('joomla.filesystem.file');
 		return JFile::write( $this->getCacheFilename($url), $data );
 	}
 

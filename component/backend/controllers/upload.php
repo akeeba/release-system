@@ -88,7 +88,7 @@ class ArsControllerUpload extends FOFController
 		}		
 		
 		// Set FTP credentials, if given
-		jimport('joomla.client.helper');
+		JLoader::import('joomla.client.helper');
 		JClientHelper::setCredentialsFromRequest('ftp');
 		
 		// Make the filename safe
@@ -242,7 +242,7 @@ class ArsControllerUpload extends FOFController
 			$s3 = ArsHelperAmazons3::getInstance();
 			$status = $s3->putObject('', '', $newFolder);
 		} else {
-			jimport('joomla.filesystem.folder');
+			JLoader::import('joomla.filesystem.folder');
 			
 			$newFolder = $parent.'/'.JFolder::makeSafe($file);
 			$status = JFolder::create($newFolder);

@@ -65,7 +65,7 @@ class ArsViewCpanels extends FOFViewHtml
 		$cache->save();
 		
 		// Get chart area width
-		jimport('joomla.application.component.helper');
+		JLoader::import('joomla.application.component.helper');
 		$params = JComponentHelper::getParams('com_ars');
 		$width = $params->get('graphswidth', 8);
 		if($width < 2) {
