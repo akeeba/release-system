@@ -10,7 +10,7 @@ defined('_JEXEC') or die();
 $tabs = array();
 
 $base_folder = rtrim(JURI::base(), '/');
-if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
+if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
 
 ?>
 <?php if($this->pparams->get('show_page_heading', 1)): ?>
@@ -40,9 +40,9 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 			@ob_start();
 			echo $this->loadAnyTemplate('site:com_ars/category/release', array('item' => $item));
 			$contents = ob_get_clean();
-			$Itemid = FOFInput::getInt('Itemid', 0, $this->input);
+			$Itemid = $this->input->getInt('Itemid', 0);
 			$release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);
-			
+
 			$title = "<img src=\"".$base_folder."/media/com_ars/icons/status_".$item->maturity.".png\" width=\"16\" height=\"16\" align=\"left\" />".
 				"&nbsp;	<a href=\"".$release_url."\"><span class=\"ars-release-title-version\">".
 				$this->escape($item->version)."</span><span class=\"ars-release-title-maturity\">(".
@@ -67,7 +67,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 			<?php echo $this->pagination->getPagesCounter(); ?>
 		</p>
 		<?php endif; ?>
-		
+
 		<?php echo $this->pagination->getPagesLinks(); ?>
 	</div>
 

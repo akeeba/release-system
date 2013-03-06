@@ -46,8 +46,8 @@ class ArsControllerItem extends FOFController
 		}
 
 		// redirect
-		$option = FOFInput::getCmd('option','com_ars',$this->input);
-		$view = FOFInput::getCmd('view','category',$this->input);
+		$option = $this->input->getCmd('option','com_ars');
+		$view = $this->input->getCmd('view','category');
 		$url = 'index.php?option='.$option.'&view='.$view;
 		if(!$status)
 		{

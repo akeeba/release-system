@@ -19,7 +19,7 @@ class ArsControllerRelease extends FOFController
 	}
 
 	public function execute($task) {
-		if(FOFInput::getCmd('format','html',$this->input) == 'html') {
+		if($this->input->getCmd('format','html') == 'html') {
 			if(!in_array($task, array('browse','read'))) {
 				$task = 'read';
 			}
@@ -29,16 +29,16 @@ class ArsControllerRelease extends FOFController
 	}
 
 	function onBeforeRead() {
-		$limitstart = FOFInput::getInt('limitstart', -1, $this->input);
+		$limitstart = $this->input->getInt('limitstart', -1);
 		if($limitstart >= 0) {
-			FOFInput::setVar('start', $limitstart, $this->input);
+			$this->input->set('start', $limitstart);
 		}
 
-		if(FOFInput::getCmd('format','html',$this->input) != 'html') {
+		if($this->input->getCmd('format','html') != 'html') {
 			return true;
 		}
 
-		$id = FOFInput::getInt('id', 0, $this->input);
+		$id = $this->input->getInt('id', 0);
 
 		// Get the page parameters
 		$app = JFactory::getApplication();

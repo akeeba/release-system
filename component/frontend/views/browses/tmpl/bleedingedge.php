@@ -10,7 +10,7 @@ defined('_JEXEC') or die();
 $this->loadHelper('chameleon');
 $this->loadHelper('router');
 
-$Itemid = FOFInput::getInt('Itemid', 0, $this->input);
+$Itemid = $this->input->getInt('Itemid', 0);
 ?>
 <?php if($this->params->get('show_page_heading', 1)): ?>
 	<h2 class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_heading')); ?></h2>

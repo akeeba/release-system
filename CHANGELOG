@@ -1,3 +1,7 @@
+Version 2.1.3
+================================================================================
+# [HIGH] Internal server error on ancient versions of PHP 5.3 with broken late static binding implementations
+
 Version 2.1.2
 ================================================================================
 # [HIGH] The component's menu item was removed if the installation couldn't proceed (too low PHP or Joomla! version)

@@ -8,17 +8,17 @@
 defined('_JEXEC') or die();
 
 /**
- * This file is only necessary for the backend dispatcher not to load 
+ * This file is only necessary for the backend dispatcher not to load
  */
 class ArsDispatcher extends FOFDispatcher
 {
 	public $defaultView = 'browse';
-	
+
 	private $allowedViews = array(
 		'browses','categories','downloads','latests','releases','updates',
 		'items','dlidlabels'
 	);
-	
+
 	public function onBeforeDispatch() {
 		$result = parent::onBeforeDispatch();
 		if($result) {
@@ -27,18 +27,18 @@ class ArsDispatcher extends FOFDispatcher
 			AkeebaStrapper::bootstrap();
 			AkeebaStrapper::jQueryUI();
 			AkeebaStrapper::addCSSfile('media://com_ars/css/backend.css');
-			
+
 			// Default to the "browses" view
-			$view = FOFInput::getCmd('view',$this->defaultView, $this->input);
+			$view = $this->input->getCmd('view',$this->defaultView);
 			if(empty($view) || ($view == 'cpanel')) {
 				$view = 'browses';
 			}
-			
+
 			// Set the view, if it's allowed
-			FOFInput::setVar('view',$view,$this->input);
+			$this->input->set('view',$view);
 			if(!in_array(FOFInflector::pluralize($view), $this->allowedViews)) $result = false;
-			
-			if( (FOFInput::getCmd('format','html',$this->input) == 'html') &&
+
+			if( ($this->input->getCmd('format','html') == 'html') &&
 				(FOFInflector::pluralize($view) == 'items') ) {
 				$result = false;
 			} elseif(FOFInflector::pluralize($view) == 'items') {
@@ -49,7 +49,7 @@ class ArsDispatcher extends FOFDispatcher
 				}
 			}
 		}
-		
+
 		return $result;
 	}
 }

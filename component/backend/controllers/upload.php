@@ -22,21 +22,21 @@ class ArsControllerUpload extends FOFController
 		if (!$user->authorise('core.manage', 'com_ars')) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
-		if(!FOFInput::getVar(JFactory::getSession()->getFormToken(), false, $this->input))
+
+		if(!$this->input->get(JFactory::getSession()->getFormToken(), false, 'none', 2))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
 
-		$catid	= FOFInput::getInt('id', 0, $this->input);
-		$folder	= FOFInput::getString('folder', '', $this->input);
-		
+		$catid	= $this->input->getInt('id', 0);
+		$folder	= $this->input->getString('folder', '');
+
 		$this->getThisModel()
 			->category((int)$catid)
 			->folder($folder);
 
-		$this->layout = FOFInput::getCmd('layout', 'default');
-		
+		$this->layout = $this->input->getCmd('layout', 'default');
+
 		$this->display();
 	}
 
@@ -49,30 +49,30 @@ class ArsControllerUpload extends FOFController
 		if (!$user->authorise('core.create', 'com_ars')) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
-		if(!FOFInput::getVar(JFactory::getSession()->getFormToken(), false, $this->input))
+
+		if(!$this->input->get(JFactory::getSession()->getFormToken(), false, 'none', 2))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
-		
+
 		// Get the user
 		$user		= JFactory::getUser();
 
 		// Get some data from the request
-		$catid		= FOFInput::getInt('id', 0, $this->input);
-		$folder		= FOFInput::getString('folder', '', $this->input);
+		$catid		= $this->input->getInt('id', 0);
+		$folder		= $this->input->getString('folder', '');
 		$file		= FOFInput::getVar('Filedata', '', $_FILES, 'array');
-		
+
 		// Get output directory
 		$this->getThisModel()
 			->category((int)$catid)
 			->folder($folder);
 		$outdir = $this->getThisModel()->getCategoryFolder();
-		
+
 		$potentialPrefix = substr($outdir,0,5);
 		$potentialPrefix = strtolower($potentialPrefix);
 		$useS3 = $potentialPrefix == 's3://';
-		
+
 		if($useS3) {
 			// When using S3, we are uploading to the temporary directory so that
 			// we can then upload to S3 and remove from our server.
@@ -80,26 +80,26 @@ class ArsControllerUpload extends FOFController
 			$s3dir = $outdir;
 			$outdir = $jconfig->get('tmp_path','');
 		}
-		
+
 		if(empty($outdir) || !JFolder::exists($outdir))
 		{
 			JError::raiseError(500, 'Output directory not found');
 			return;
-		}		
-		
+		}
+
 		// Set FTP credentials, if given
 		JLoader::import('joomla.client.helper');
 		JClientHelper::setCredentialsFromRequest('ftp');
-		
+
 		// Make the filename safe
 		$file['name']	= JFile::makeSafe($file['name']);
-		
+
 		if (isset($file['name']))
 		{
 			// The request is valid
 			$err = null;
 			if(!class_exists('MediaHelper')) {
-				require_once(JPATH_ADMINISTRATOR.'/components/com_media/helpers/media.php');	
+				require_once(JPATH_ADMINISTRATOR.'/components/com_media/helpers/media.php');
 			}
 			if (!MediaHelper::canUpload($file, $err))
 			{
@@ -109,7 +109,7 @@ class ArsControllerUpload extends FOFController
 				JError::raiseNotice(100, JText::_($err));
 				return false;
 			}
-			
+
 			$filepath = JPath::clean($outdir.'/'.strtolower($file['name']));
 
 			if (JFile::exists($filepath))
@@ -117,7 +117,7 @@ class ArsControllerUpload extends FOFController
 				// File exists; delete before upload
 				JFile::delete($filepath);
 			}
-			
+
 			// ACL check for Joomla! 1.6.x
 			if (!$user->authorise('core.create', 'com_media'))
 			{
@@ -138,13 +138,13 @@ class ArsControllerUpload extends FOFController
 			$this->setRedirect('index.php', JText::_('MSG_UPLOAD_INVALID_REQUEST'), 'error');
 			return false;
 		}
-		
+
 		if($useS3) {
 			$s3 = ArsHelperAmazons3::getInstance();
-			
+
 			$s3targetdir = trim(substr($s3dir,5),'/');
 			if(!empty($s3targetdir)) $s3targetdir .= '/';
-			
+
 			$input = $s3->inputFile($filepath);
 			$success = $s3->putObject($input, '', $s3targetdir.$file['name']);
 			if(!@unlink($filepath)) {
@@ -175,15 +175,15 @@ class ArsControllerUpload extends FOFController
 		if (!$user->authorise('core.delete', 'com_ars')) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
-		if(!FOFInput::getVar(JFactory::getSession()->getFormToken(), false, $this->input))
+
+		if(!$this->input->get(JFactory::getSession()->getFormToken(), false, 'none', 2))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
 
-		$catid	= FOFInput::getInt('id', 0, $this->input);
-		$folder	= FOFInput::getString('folder', '', $this->input);
-		$file	= FOFInput::getString('file', '', $this->input);
+		$catid	= $this->input->getInt('id', 0);
+		$folder	= $this->input->getString('folder', '');
+		$file	= $this->input->getString('file', '');
 
 		$status = $this->getThisModel()
 			->category((int)$catid)
@@ -194,7 +194,7 @@ class ArsControllerUpload extends FOFController
 		$url = 'index.php?option=com_ars&view=upload&task=category&id='.(int)$catid
 			.'&folder='.urlencode(JRequest::getString('folder'))
 			.'&'.JFactory::getSession()->getFormToken(true).'=1';
-		
+
 		if($status) {
 			$this->setRedirect($url, JText::_('MSG_FILE_DELETED'));
 		} else {
@@ -211,15 +211,15 @@ class ArsControllerUpload extends FOFController
 		if (!$user->authorise('core.create', 'com_ars')) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
-		if(!FOFInput::getVar(JFactory::getSession()->getFormToken(), false, $this->input))
+
+		if(!$this->input->get(JFactory::getSession()->getFormToken(), false, 'none', 2))
 		{
 			JError::raiseError('403', JText::_('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
 
-		$catid	= FOFInput::getInt('id', 0, $this->input);
-		$folder	= FOFInput::getString('folder', '', $this->input);
-		$file	= FOFInput::getString('file', '', $this->input);
+		$catid	= $this->input->getInt('id', 0);
+		$folder	= $this->input->getString('folder', '');
+		$file	= $this->input->getString('file', '');
 
 		$parent = $this->getThisModel()
 			->category((int)$catid)
@@ -230,7 +230,7 @@ class ArsControllerUpload extends FOFController
 		$potentialPrefix = substr($parent, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
 		$useS3 = $potentialPrefix == 's3://';
-		
+
 		if($useS3) {
 			if(substr($parent,0,5) == 's3://') {
 				$trimmedParent = substr($parent,5);
@@ -243,7 +243,7 @@ class ArsControllerUpload extends FOFController
 			$status = $s3->putObject('', '', $newFolder);
 		} else {
 			JLoader::import('joomla.filesystem.folder');
-			
+
 			$newFolder = $parent.'/'.JFolder::makeSafe($file);
 			$status = JFolder::create($newFolder);
 		}

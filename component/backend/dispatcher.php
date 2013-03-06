@@ -10,20 +10,20 @@ defined('_JEXEC') or die();
 class ArsDispatcher extends FOFDispatcher
 {
 	public $defaultView = 'cpanels';
-	
+
 	public function onBeforeDispatch() {
 		$result = parent::onBeforeDispatch();
 		if(!$result) {
 			return $result;
 		}
-		
+
 		$liveupdate_path = JPATH_ADMINISTRATOR.'/components/'.$this->component.'/liveupdate';
 		// Live Update translation
 		$jlang = JFactory::getLanguage();
 		$jlang->load('liveupdate', $liveupdate_path, 'en-GB', true);
 		$jlang->load('liveupdate', $liveupdate_path, $jlang->getDefault(), true);
 		$jlang->load('liveupdate', $liveupdate_path, null, true);
-		
+
 		// Load Akeeba Strapper
 		include_once JPATH_ROOT.'/media/akeeba_strapper/strapper.php';
 		AkeebaStrapper::bootstrap();
@@ -33,17 +33,17 @@ class ArsDispatcher extends FOFDispatcher
 
 		return true;
 	}
-	
+
 	public function dispatch() {
 		// Handle Live Update requests
 		if(!class_exists('LiveUpdate')) {
 			require_once JPATH_ADMINISTRATOR.'/components/com_ars/liveupdate/liveupdate.php';
-			if((FOFInput::getCmd('view','',$this->input) == 'liveupdate')) {
+			if(($this->input->getCmd('view','') == 'liveupdate')) {
 				LiveUpdate::handleRequest();
 				return true;
 			}
 		}
-		
+
 		parent::dispatch();
 	}
 }

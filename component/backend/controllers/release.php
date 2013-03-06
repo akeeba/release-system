@@ -16,11 +16,11 @@ class ArsControllerRelease extends FOFController
 		if (!$user->authorise('core.create', 'com_ars')) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
+
 		$model = $this->getThisModel();
 		$model->setIDsFromRequest();
 		$id = $model->getId();
-		
+
 		$item = $model->getItem();
 		$key = $item->getKeyName();
 		if($item->$key == $id)
@@ -40,15 +40,15 @@ class ArsControllerRelease extends FOFController
 		}
 		$status = $model->save($item);
 		$newRelease = $model->getSavedTable();
-		
+
 		// Get a list of contained items
 		$temp = FOFModel::getTmpInstance('Items','ArsModel')
 			->release($id)
 			->getItemList();
-		
+
 		JLoader::import('joomla.utilities.date');
 		$date = new JDate();
-		
+
 		if(!empty($temp)) foreach($temp as $item)
 		{
 			$item->id = 0;
@@ -71,8 +71,8 @@ class ArsControllerRelease extends FOFController
 		}
 
 		// redirect
-		$option = FOFInput::getCmd('option','com_ars',$this->input);
-		$view = FOFInput::getCmd('view','category',$this->input);
+		$option = $this->input->getCmd('option','com_ars');
+		$view = $this->input->getCmd('view','category');
 		$url = 'index.php?option='.$option.'&view='.$view;
 		if(!$status)
 		{

@@ -11,9 +11,9 @@ defined('_JEXEC') or die();
 $model = $this->getModel();
 
 $base_folder = rtrim(JURI::base(), '/');
-if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
+if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
 
-$function	= FOFInput::getCmd('function', 'arsSelectItem', $this->input);
+$function	= $this->input->getCmd('function', 'arsSelectItem');
 
 $this->loadHelper('select');
 

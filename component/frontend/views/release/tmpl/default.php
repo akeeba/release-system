@@ -16,13 +16,13 @@ $released = new JDate($this->item->created);
 $tabs = array();
 
 $base_folder = rtrim(JURI::base(), '/');
-if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
+if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
 
 ?>
 <?php if($this->cparams->get('show_page_heading', 1)): ?>
 	<h2 class="componentheading<?php echo $this->escape($this->cparams->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->cparams->get('page_heading')); ?></h2>
 <?php endif; ?>
-	
+
 <div class="ars-list-release">
 <?php
 $item = $this->item;
@@ -47,23 +47,23 @@ echo JModuleHelper::renderModule($module, $params);
 	</div>
 <?php else: ?>
 	<?php
-		$Itemid = FOFInput::getInt('Itemid', 0, $this->input);
+		$Itemid = $this->input->getInt('Itemid', 0);
 		$Itemid = empty($Itemid) ? "" : "&Itemid=$Itemid";
 		foreach($this->items as $item)
 		{
 			$download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid);
-			$title = "<a href=\"$download_url\">".$this->escape($item->title)."</a>";			
+			$title = "<a href=\"$download_url\">".$this->escape($item->title)."</a>";
 			$params = ArsHelperChameleon::getParams('item');
 			@ob_start();
 			echo $this->loadAnyTemplate('site:com_ars/release/item', array('item' => $item));
 			$contents = ob_get_clean();
 			$module = ArsHelperChameleon::getModule($title, $contents, $params);
-			echo JModuleHelper::renderModule($module, $params);			
+			echo JModuleHelper::renderModule($module, $params);
 		}
 	?>
 <?php endif; ?>
 </div>
-	
+
 <form id="ars-pagination" action="<?php echo JURI::getInstance()->toString() ?>" method="post">
 	<input type="hidden" name="option" value="com_ars" />
 	<input type="hidden" name="view" value="release" />
@@ -77,7 +77,7 @@ echo JModuleHelper::renderModule($module, $params);
 			<?php echo $this->pagination->getPagesCounter(); ?>
 		</p>
 		<?php endif; ?>
-		
+
 		<?php echo $this->pagination->getPagesLinks(); ?>
 	</div>
 

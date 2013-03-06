@@ -9,7 +9,7 @@ defined('_JEXEC') or die();
 
 JHtml::_('behavior.tooltip');
 
-$Itemid = FOFInput::getInt('Itemid', 0, $this->input);
+$Itemid = $this->input->getInt('Itemid', 0);
 $Itemid = empty($Itemid) ? "" : "&Itemid=$Itemid";
 $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid);
 
@@ -84,7 +84,7 @@ if($this->directlink) {
 			$link = str_replace('<a ','<a rel="nofollow"', $link);
 			echo $link;
 		?>
-		
+
 		<?php if($directlink): ?>
 		<?php
 			$itemTitle = JText::_('COM_ARS_LBL_ITEM_DIRECTLINK');

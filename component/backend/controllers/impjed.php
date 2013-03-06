@@ -19,8 +19,8 @@ class ArsControllerImpjed extends FOFController
 		if (!$user->authorise('core.create', 'com_ars')) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
-		$project = FOFInput::getCmd('project', '', $this->input);
+
+		$project = $this->input->getCmd('project', '');
 
 		if(empty($project))
 		{
@@ -45,9 +45,9 @@ class ArsControllerImpjed extends FOFController
 		if (!$user->authorise('core.create', 'com_ars')) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
-		$project = FOFInput::getCmd('project', '', $this->input);
-		$package = FOFInput::getCmd('package', '', $this->input);
+
+		$project = $this->input->getCmd('project', '');
+		$package = $this->input->getCmd('package', '');
 
 		if(empty($project) || empty($package))
 		{
@@ -72,10 +72,10 @@ class ArsControllerImpjed extends FOFController
 		if (!$user->authorise('core.create', 'com_ars')) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
-		$project = FOFInput::getCmd('project', '', $this->input);
-		$package = FOFInput::getCmd('package', '', $this->input);
-		$release = FOFInput::getCmd('release', '', $this->input);
+
+		$project = $this->input->getCmd('project', '');
+		$package = $this->input->getCmd('package', '');
+		$release = $this->input->getCmd('release', '');
 
 		if(empty($project) || empty($package) || empty($release))
 		{
@@ -100,9 +100,9 @@ class ArsControllerImpjed extends FOFController
 		if (!$user->authorise('core.create', 'com_ars')) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
-		$release = FOFInput::getInt('release', 0, $this->input);
-		$url = FOFInput::getString('url', '', $this->input);
+
+		$release = $this->input->getInt('release', 0);
+		$url = $this->input->getString('url', '');
 
 		if(empty($url) || empty($release))
 		{

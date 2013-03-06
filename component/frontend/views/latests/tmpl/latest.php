@@ -10,7 +10,7 @@ defined('_JEXEC') or die();
 $this->loadHelper('chameleon');
 $this->loadHelper('router');
 
-$Itemid = FOFInput::getInt('Itemid', 0, $this->input);
+$Itemid = $this->input->getInt('Itemid', 0);
 ?>
 <?php if($this->cparams->get('show_page_heading', 1)): ?>
 	<h2 class="componentheading<?php echo $this->escape($this->cparams->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->cparams->get('page_heading')); ?></h2>
@@ -34,7 +34,7 @@ $Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 					echo $this->loadAnyTemplate('site:com_ars/latests/category', array('Itemid' => $Itemid, 'cat' => $cat, 'id' => $id));
 					$contents = ob_get_clean();
 					$module = ArsHelperChameleon::getModule($cat->title, $contents, $params);
-					echo JModuleHelper::renderModule($module, $params);					
+					echo JModuleHelper::renderModule($module, $params);
 				}
 		endforeach;
 	?>
@@ -71,7 +71,7 @@ $Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 					echo $this->loadAnyTemplate('site:com_ars/latests/category', array('Itemid' => $Itemid, 'cat' => $cat, 'id' => $id));
 					$contents = ob_get_clean();
 					$module = ArsHelperChameleon::getModule($cat->title, $contents, $params);
-					echo JModuleHelper::renderModule($module, $params);					
+					echo JModuleHelper::renderModule($module, $params);
 				}
 		endforeach;
 	?>
@@ -106,7 +106,7 @@ $Itemid = FOFInput::getInt('Itemid', 0, $this->input);
 					echo $this->loadAnyTemplate('site:com_ars/latests/category', array('Itemid' => $Itemid, 'cat' => $cat, 'id' => $id));
 					$contents = ob_get_clean();
 					$module = ArsHelperChameleon::getModule($cat->title, $contents, $params);
-					echo JModuleHelper::renderModule($module, $params);					
+					echo JModuleHelper::renderModule($module, $params);
 				}
 		endforeach;
 	?>

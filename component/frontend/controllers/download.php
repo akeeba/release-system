@@ -11,13 +11,13 @@ class ArsControllerDownload extends FOFController
 {
 	public function execute($task) {
 		$task = 'download';
-		
+
 		parent::execute($task);
 	}
-	
+
 	public function download($cachable = false, $urlparams = false)
 	{
-		$id = FOFInput::getInt('id', null, $this->input);
+		$id = $this->input->getInt('id', null);
 
 		// Get the page parameters
 		$app = JFactory::getApplication();
@@ -46,7 +46,7 @@ class ArsControllerDownload extends FOFController
 		$log->save(array('authorized' => 1));
 
 		$model->doDownload();
-		
+
 		// No need to return anything; doDownload() calls the exit() method of the application object
 	}
 }

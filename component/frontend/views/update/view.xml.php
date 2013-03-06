@@ -11,7 +11,7 @@ class ArsViewUpdate extends FOFViewHtml
 {
 	function onDisplay($tpl = null) {
 		$this->loadHelper('router');
-		
+
 		$task = $this->getModel()->getState('task', 'all');
 		$document = JFactory::getDocument();
 		$document->setMimeEncoding('text/xml');
@@ -28,7 +28,7 @@ class ArsViewUpdate extends FOFViewHtml
 				break;
 
 			case 'category':
-				$category = FOFInput::getCmd('id', '', $this->input);
+				$category = $this->input->getCmd('id', '');
 				$model = $this->getModel();
 				$items = $model->items;
 				$this->assign('category',		$category);

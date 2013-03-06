@@ -16,16 +16,16 @@ class ArsControllerAutodesc extends FOFController
 		if (!$user->authorise('core.create', 'com_ars')) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
-		
+
 		$model = $this->getThisModel();
 		$model->setIDsFromRequest();
 		$ids = $model->getIds();
-		
+
 		$status = true;
 		if(!empty($ids)) foreach($ids as $id) {
 			$model->setId($id);
 			$item = $model->getItem();
-			
+
 			if($item->id == $id)
 			{
 				$item->title = 'Copy of '.$item->title;
@@ -36,8 +36,8 @@ class ArsControllerAutodesc extends FOFController
 		}
 
 		// redirect
-		$option = FOFInput::getCmd('option','com_ars',$this->input);
-		$view = FOFInput::getCmd('view','autodescs',$this->input);
+		$option = $this->input->getCmd('option','com_ars');
+		$view = $this->input->getCmd('view','autodescs');
 		$url = 'index.php?option='.$option.'&view='.$view.'&task=browse';
 		if(!$status)
 		{

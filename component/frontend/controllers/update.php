@@ -12,9 +12,9 @@ class ArsControllerUpdate extends FOFController
 	public function execute($task) {
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		$task = FOFInput::getCmd('task', '', $this->input);
-		$layout = FOFInput::getCmd('layout', '', $this->input);
-		$id = FOFInput::getInt('id', null, $this->input);
+		$task = $this->input->getCmd('task', '');
+		$layout = $this->input->getCmd('layout', '');
+		$id = $this->input->getInt('id', null);
 
 		// Check for menu items bearing layout instead of task
 		if((empty($task) || ($task == 'read') || ($task == 'add')) && !empty($layout)) {
@@ -81,7 +81,7 @@ class ArsControllerUpdate extends FOFController
 
 	public function category()
 	{
-		$cat = FOFInput::getCmd('id', '', $this->input);
+		$cat = $this->input->getCmd('id', '');
 		if(empty($cat)) {
 			// Do we have a menu item parameter?
 			$app = JFactory::getApplication();
@@ -98,7 +98,7 @@ class ArsControllerUpdate extends FOFController
 
 	public function stream()
 	{
-		$id = FOFInput::getInt('id', 0, $this->input);
+		$id = $this->input->getInt('id', 0);
 		if($id == 0) {
 			// Do we have a menu item parameter?
 			$app = JFactory::getApplication();
@@ -114,7 +114,7 @@ class ArsControllerUpdate extends FOFController
 
 	public function ini()
 	{
-		$id = FOFInput::getInt('id', 0, $this->input);
+		$id = $this->input->getInt('id', 0);
 		if($id == 0) {
 			// Do we have a menu item parameter?
 			$app = JFactory::getApplication();

@@ -14,9 +14,9 @@ class ArsControllerAjax extends FOFController
 	{
 		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/select.php';
 
-		$item_id = FOFInput::getInt('item_id', 0, $this->input);
-		$release_id = FOFInput::getInt('release_id', 0, $this->input);
-		$selected = FOFInput::getString('selected', '', $this->input);
+		$item_id = $this->input->getInt('item_id', 0);
+		$release_id = $this->input->getInt('release_id', 0);
+		$selected = $this->input->getString('selected', '');
 
 		$result = ArsHelperSelect::getfiles($selected, $release_id, $item_id, 'filename', array('onchange'=>'onFileChange();'));
 		@ob_end_clean;

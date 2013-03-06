@@ -15,7 +15,7 @@ class ArsModelBrowses extends FOFModel
 		$config['table'] = 'category';
 		parent::__construct($config);
 	}
-	
+
 	/**
 	 * Get a listing of all Categories
 	 * @return array
@@ -25,7 +25,7 @@ class ArsModelBrowses extends FOFModel
 		// Get state variables
 		$grouping = $this->getState('grouping','normal');
 		$orderby = $this->getState('orderby', 'order');
-		
+
 		$start = 0;
 		$limit = 0;
 
@@ -50,11 +50,11 @@ class ArsModelBrowses extends FOFModel
 					// Get default site language
 					$lg = JFactory::getLanguage();
 					$catModel->setState('language', $lg->getTag());
-				}else{                                                                                                                 
-					$catModel->setState('language', FOFInput::getCmd('language', '*', $this->input));
+				}else{
+					$catModel->setState('language', $this->input->getCmd('language', '*'));
 				}
 			} else {
-				$catModel->setState('language', FOFInput::getCmd('language', '', $this->input));
+				$catModel->setState('language', $this->input->getCmd('language', ''));
 			}
 		}
 
@@ -109,7 +109,7 @@ class ArsModelBrowses extends FOFModel
 
 		return $list;
 	}
-	
+
 	/**
 	 * Loads and returns a category definition
 	 * @param int $id The Category ID to load
@@ -118,10 +118,10 @@ class ArsModelBrowses extends FOFModel
 	public function getCategory($id = 0)
 	{
 		$this->setState('category_id', $id);
-		
+
 		$cat = FOFModel::getTmpInstance('Categories','ArsModel')
 			->getItem($id);
-		
+
 		// Is it published?
 		if(!$cat->published) {
 			return null;
@@ -133,11 +133,11 @@ class ArsModelBrowses extends FOFModel
 			return null;
 		}
 
-		$this->item = $cat;		
-		
+		$this->item = $cat;
+
 		return $cat;
 	}
-	
+
 	/**
 	 * Get a list of all releases in a given category
 	 * @param int $cat_id The category ID
@@ -162,7 +162,7 @@ class ArsModelBrowses extends FOFModel
 			->limit($limit)
 			->published(1)
 			->category($cat_id);
-		
+
 		$app = JFactory::getApplication();
 		if($app->getLanguageFilter()) {
 			$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
@@ -171,11 +171,11 @@ class ArsModelBrowses extends FOFModel
 				// Get default site language
 				$lg = JFactory::getLanguage();
 				$model->setState('language', $lg->getTag());
-			}else{                                                                                                                 
-				$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
+			}else{
+				$model->setState('language', $this->input->getCmd('language', '*'));
 			}
 		} else {
-			$model->setState('language', FOFInput::getCmd('language', '', $this->input));
+			$model->setState('language', $this->input->getCmd('language', ''));
 		}
 
 		// Apply ordering
@@ -214,7 +214,7 @@ class ArsModelBrowses extends FOFModel
 		return $list;
 	}
 
-	
+
 	/**
 	 * Loads and returns a release definition
 	 * @param int $id The Release ID to load
@@ -272,11 +272,11 @@ class ArsModelBrowses extends FOFModel
 				// Get default site language
 				$lg = JFactory::getLanguage();
 				$model->setState('language', $lg->getTag());
-			}else{                                                                                                                 
-				$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
+			}else{
+				$model->setState('language', $this->input->getCmd('language', '*'));
 			}
 		} else {
-			$model->setState('language', FOFInput::getCmd('language', '', $this->input));
+			$model->setState('language', $this->input->getCmd('language', ''));
 		}
 
 		// Apply ordering
@@ -314,7 +314,7 @@ class ArsModelBrowses extends FOFModel
 
 		return $list;
 	}
-	
+
 	public function processFeedData($orderby = 'order')
 	{
 		$this->itemList = $this->getCategories();
@@ -372,13 +372,13 @@ class ArsModelBrowses extends FOFModel
 						// Get default site language
 						$lg = JFactory::getLanguage();
 						$model->setState('language', $lg->getTag());
-					}else{                                                                                                                 
-						$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
+					}else{
+						$model->setState('language', $this->input->getCmd('language', '*'));
 					}
 				} else {
-					$model->setState('language', FOFInput::getCmd('language', '', $this->input));
+					$model->setState('language', $this->input->getCmd('language', ''));
 				}
-				
+
 				$releases = $model->getItemList();
 
 				if(empty($releases)) {
@@ -403,7 +403,7 @@ class ArsModelBrowses extends FOFModel
 		{
 			$params = $app->getPageParameters('com_ars');
 		}
-		
+
 		$this->processFeedData($params->get('rel_orderby', 'order'));
 
 		if(!count($this->itemList)) return;
@@ -448,18 +448,18 @@ class ArsModelBrowses extends FOFModel
 						break;
 
 				}
-				
+
 				$model->setState('published',		1);
 				$model->setState('release',			$cat->release->id);
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			0);
-                
+
 				$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
 				if ($hasLanguageFilter)
 				{
 					$hasLanguageFilter = $app->getLanguageFilter();
 				}
-				
+
 				if($hasLanguageFilter) {
 					$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 					$lang_filter_params = new JRegistry($lang_filter_plugin->params);
@@ -467,13 +467,13 @@ class ArsModelBrowses extends FOFModel
 						// Get default site language
 						$lg = JFactory::getLanguage();
 						$model->setState('language', $lg->getTag());
-					}else{                                                                                                                 
-						$model->setState('language', FOFInput::getCmd('language', '*', $this->input));
+					}else{
+						$model->setState('language', $this->input->getCmd('language', '*'));
 					}
 				} else {
-					$model->setState('language', FOFInput::getCmd('language', '', $this->input));
+					$model->setState('language', $this->input->getCmd('language', ''));
 				}
-				
+
 				$rawlist = $model->getItemList();
 				$cat->release->files = ArsHelperFilter::filterList($rawlist);
 			}

@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-$Itemid = FOFInput::getInt('Itemid', 0, $this->input);
+$Itemid = $this->input->getInt('Itemid', 0);
 
 JLoader::import('joomla.utilities.date');
 
