@@ -34,13 +34,13 @@ $released = new JDate($cat->release->created);
 			foreach($cat->release->files as $item)
 			{
 				$i = 1 - $i;
-				echo $this->loadAnyTemplate('site:com_ars/latests/item', array('Itemid' => $Itemid, 'item' => $item));
+				echo $this->loadAnyTemplate('site:com_ars/latests/item', array('Itemid' => $Itemid, 'item' => $item, 'i' => $i));
 			}
 		?>
 		</ul>
 	</div>
 	<div class="ars-category-readon">
-		<?php 
+		<?php
 		$title = JText::_('LBL_CATEGORY_VIEW');
 		$url = AKRouter::_('index.php?option=com_ars&view=category&id='.$cat->id.'&Itemid='.$Itemid);
 		echo ArsHelperChameleon::getReadOn($title, $url);

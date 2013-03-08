@@ -1,6 +1,7 @@
 Version 2.1.3
 ================================================================================
 # [HIGH] Internal server error on ancient versions of PHP 5.3 with broken late static binding implementations
+# [LOW] Notice in the Latest Releases page
 
 Version 2.1.2
 ================================================================================
