@@ -10,7 +10,34 @@ defined('_JEXEC') or die();
 class ArsControllerRelease extends FOFController
 {
 	public function __construct($config = array()) {
-		if(FOFInput::getCmd('format','html',$config['input']) == 'html') {
+		if (array_key_exists('input', $config))
+		{
+			$input = $config['input'];
+		}
+		else
+		{
+			$input = null;
+		}
+
+		if (array_key_exists('input_options', $config))
+		{
+			$input_options = $config['input_options'];
+		}
+		else
+		{
+			$input_options = array();
+		}
+
+		if ($input instanceof FOFInput)
+		{
+			$this->input = $input;
+		}
+		else
+		{
+			$this->input = new FOFInput($input, $input_options);
+		}
+
+		if($this->input->getCmd('format','html',$config['input']) == 'html') {
 			$config['modelName'] = 'ArsModelBrowses';
 		} elseif(!JFactory::getUser()->authorise('com.manage', 'com_ars')) {
 			JError::raiseError(403, 'Forbidden');
