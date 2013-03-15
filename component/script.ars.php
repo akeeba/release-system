@@ -266,7 +266,7 @@ class Com_ArsInstallerScript
 	You can download translation files <a href="http://cdn.akeebabackup.com/language/ars/index.html">directly from our CDN page</a>.
 </div>
 
-<table class="adminlist">
+<table class="adminlist table table-striped" width="100%">
 	<thead>
 		<tr>
 			<th class="title" colspan="2">Extension</th>
@@ -341,7 +341,7 @@ class Com_ArsInstallerScript
 ?>
 <?php $rows = 0;?>
 <h2>Akeeba Release System uninstallation status</h2>
-<table class="adminlist">
+<table class="adminlist table table-striped" width="100%">
 	<thead>
 		<tr>
 			<th class="title" colspan="2"><?php echo JText::_('Extension'); ?></th>
