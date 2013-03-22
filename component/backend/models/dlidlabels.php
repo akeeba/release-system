@@ -12,7 +12,7 @@ class ArsModelDlidlabels extends FOFModel
 	public function buildQuery($overrideLimits = false)
 	{
 		$query = parent::buildQuery($overrideLimits);
-		
+
 		$fltUsername		= $this->getState('username', null, 'string');
 		if($fltUsername) {
 			$db = JFactory::getDbo();

@@ -21,7 +21,7 @@ $this->loadHelper('filter');
 		<span class="icon-white icon-plus-sign"></span>
 		<?php echo JText::_('JNew') ?>
 	</button>
-	<button class="btn btn-danger" onclick="Joomla.submitbutton('delete'); return false;">
+	<button class="btn btn-danger" onclick="Joomla.submitbutton('remove'); return false;">
 		<span class="icon-white icon-minus-sign"></span>
 		<?php echo JText::_('JACTION_DELETE') ?>
 	</button>
