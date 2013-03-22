@@ -827,6 +827,29 @@ function arsParseRouteHtml(&$segments)
 	$menus = JMenu::getInstance('site');
 	$menu = $menus->getActive();
 
+	if (!is_null($menu) && count($segments))
+	{
+		// We have a sub(-sub-sub)menu item
+		$found = true;
+		while ($found && count($segments))
+		{
+			$parent = $menu->id;
+			$lastSegment = array_shift($segments);
+
+			$m = $menus->getItems(array('parent_id', 'alias'), array($parent, $lastSegment), true);
+			if (is_object($m))
+			{
+				$found = true;
+				$menu = $m;
+			}
+			else
+			{
+				$found = false;
+				array_unshift($segments, $lastSegment);
+			}
+		}
+	}
+
 	if(is_null($menu))
 	{
 		// No menu. The segments are browse_layout/category_alias/release_alias
@@ -963,6 +986,12 @@ function arsParseRouteHtml(&$segments)
 		}
 		else
 		{
+			if (in_array($view, array('dlidlabels', 'dlidlabel')))
+			{
+				$query['view'] = $view;
+				return $query;
+			}
+
 			// Degenerate case :(
 			if(count($segments) == 2) return arsParseRouteRaw($segments);
 
