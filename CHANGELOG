@@ -2,6 +2,7 @@ Version 2.1.4
 ================================================================================
 # [HIGH] Some servers throw a fatal error in the Categories controller
 # [HIGH] Several bugs in the add-on download IDs feature
+# [MEDIUM] Issues with multilingual sites
 # [LOW] Add-on Download IDs not working when put in submenus of another ARS menu item due to Joomla! routing issues
 
 Version 2.1.3

@@ -51,10 +51,10 @@ class ArsModelBrowses extends FOFModel
 					$lg = JFactory::getLanguage();
 					$catModel->setState('language', $lg->getTag());
 				}else{
-					$catModel->setState('language', $this->input->getCmd('language', '*'));
+					$catModel->setState('language', JFactory::getApplication()->input->getCmd('language', '*'));
 				}
 			} else {
-				$catModel->setState('language', $this->input->getCmd('language', ''));
+				$catModel->setState('language', JFactory::getApplication()->input->getCmd('language', ''));
 			}
 		}
 
@@ -172,10 +172,10 @@ class ArsModelBrowses extends FOFModel
 				$lg = JFactory::getLanguage();
 				$model->setState('language', $lg->getTag());
 			}else{
-				$model->setState('language', $this->input->getCmd('language', '*'));
+				$model->setState('language', JFactory::getApplication()->input->getCmd('language', '*'));
 			}
 		} else {
-			$model->setState('language', $this->input->getCmd('language', ''));
+			$model->setState('language', JFactory::getApplication()->input->getCmd('language', ''));
 		}
 
 		// Apply ordering
@@ -273,10 +273,10 @@ class ArsModelBrowses extends FOFModel
 				$lg = JFactory::getLanguage();
 				$model->setState('language', $lg->getTag());
 			}else{
-				$model->setState('language', $this->input->getCmd('language', '*'));
+				$model->setState('language', JFactory::getApplication()->input->getCmd('language', '*'));
 			}
 		} else {
-			$model->setState('language', $this->input->getCmd('language', ''));
+			$model->setState('language', JFactory::getApplication()->input->getCmd('language', ''));
 		}
 
 		// Apply ordering
@@ -373,10 +373,10 @@ class ArsModelBrowses extends FOFModel
 						$lg = JFactory::getLanguage();
 						$model->setState('language', $lg->getTag());
 					}else{
-						$model->setState('language', $this->input->getCmd('language', '*'));
+						$model->setState('language', JFactory::getApplication()->input->getCmd('language', '*'));
 					}
 				} else {
-					$model->setState('language', $this->input->getCmd('language', ''));
+					$model->setState('language', JFactory::getApplication()->input->getCmd('language', ''));
 				}
 
 				$releases = $model->getItemList();
@@ -468,10 +468,10 @@ class ArsModelBrowses extends FOFModel
 						$lg = JFactory::getLanguage();
 						$model->setState('language', $lg->getTag());
 					}else{
-						$model->setState('language', $this->input->getCmd('language', '*'));
+						$model->setState('language', JFactory::getApplication()->input->getCmd('language', '*'));
 					}
 				} else {
-					$model->setState('language', $this->input->getCmd('language', ''));
+					$model->setState('language', JFactory::getApplication()->input->getCmd('language', ''));
 				}
 
 				$rawlist = $model->getItemList();
