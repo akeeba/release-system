@@ -7,10 +7,6 @@
 
 defined('_JEXEC') or die();
 
-if(!$this->published) {
-	die();
-}
-
 $rootURL = rtrim(JURI::base(),'/');
 $subpathURL = JURI::base(true);
 if(!empty($subpathURL) && ($subpathURL != '/')) {
@@ -76,14 +72,14 @@ foreach($this->items as $item):
 	} else {
 		$format = 'UNSUPPORTED';
 	}
-	
+
 	$item->environments = @json_decode($item->environments);
-	
+
 	if(!empty($item->environments) && is_array($item->environments)) {
 		static $envs = array();
-		
+
 		$platforms = array();
-		
+
 		if(!class_exists('ArsModelEnvironments')) {
 			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/environments.php';
 		}
@@ -93,7 +89,7 @@ foreach($this->items as $item):
 				$model->setId( $eid );
 				$envs[$eid] = $model->getItem();
 			}
-			
+
 			$platforms[] = $envs[$eid]->xmltitle;
 		}
 	} else {
