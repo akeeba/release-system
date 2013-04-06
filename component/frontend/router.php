@@ -61,10 +61,12 @@ function arsBuildRouteHtml(&$query)
 		return $segments;
 	}
 
+	/**
 	if(in_array($query['view'], array('dlidlabels', 'dlidlabel')))
 	{
 		return $segments;
 	}
+	**/
 
 	$menus = JMenu::getInstance('site');
 
@@ -78,6 +80,52 @@ function arsBuildRouteHtml(&$query)
 	$qoptions = array( 'option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id, 'language' => $language );
 	switch($view)
 	{
+		case 'dlidlabel':
+		case 'dlidlabels':
+			if($Itemid) {
+				$menu = $menus->getItem($Itemid);
+				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'browses';
+				// No, we have to find another root
+				if( ($mView != 'dlidlabel') && ($mView != 'dlidlabels') ) $Itemid = null;
+			}
+
+			if(empty($Itemid))
+			{
+				$menu = ArsRouterHelper::findMenu($qoptions);
+				$Itemid = empty($menu) ? null : $menu->id;
+			}
+
+			if(empty($Itemid))
+			{
+				$query['option'] = 'com_ars';
+				$query['view'] = $view;
+				if (!empty($language))
+				{
+					$query['language'] = $language;
+				}
+			}
+			else
+			{
+				// Joomla! will let the menu item naming work its magic
+				$query['Itemid'] = $Itemid;
+			}
+			break;
+
+			if (!empty($task))
+			{
+				$query['task'] = $task;
+			}
+			if (!empty($layout))
+			{
+				$query['layout'] = $layout;
+			}
+			if (!empty($id))
+			{
+				$query['id'] = $id;
+			}
+
+			break;
+
 		case 'browses':
 			// Is it a browser menu?
 			if($Itemid) {

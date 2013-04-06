@@ -33,6 +33,20 @@ class ArsControllerDlidlabels extends FOFController
 		parent::execute($task);
 	}
 
+	protected function onBeforeBrowse()
+	{
+		$result = parent::onBeforeBrowse();
+
+		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+
+		if ($result && !$isAdmin && !$isCLI)
+		{
+			$result = !JFactory::getUser()->guest;
+		}
+
+		return $result;
+	}
+
 	protected function onBeforeAdd()
 	{
 		$result = parent::onBeforeAdd();
@@ -114,7 +128,7 @@ class ArsControllerDlidlabels extends FOFController
 
 	protected function onBeforeCancel()
 	{
-		return true;
+		return !JFactory::getUser()->guest;
 	}
 
 	protected function onBeforeSave() {
