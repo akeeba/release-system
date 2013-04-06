@@ -114,28 +114,7 @@ class ArsControllerDlidlabels extends FOFController
 
 	protected function onBeforeCancel()
 	{
-		$result = parent::onBeforeCancel();
-
-
-		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
-
-		if (($result !== false) && !$isAdmin && !$isCLI)
-		{
-			$model = $this->getThisModel();
-			if(!$model->getId())
-			{
-				$model->setIDsFromRequest();
-			}
-
-			$item = $model->getItem();
-			if ($item->user_id != JFactory::getUser()->id)
-			{
-				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
-				return false;
-			}
-		}
-
-		return ($result !== false);
+		return true;
 	}
 
 	protected function onBeforeSave() {
