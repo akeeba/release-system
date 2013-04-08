@@ -13,7 +13,7 @@
  * at http://undesigned.org.za/2007/10/22/amazon-s3-php-class under a
  * BSD-like license. I have merely removed the parts which weren't useful
  * to ARS and changed the naming.
- * 
+ *
  * Note for this version: I have added multipart uploads, a feature which
  * wasn't included in the original version of the S3.php. As a result, this
  * file no longer reflects the original author's work and should not be
@@ -53,7 +53,7 @@ class ArsHelperAmazons3 extends JObject
 	public static function &getInstance($accessKey = null, $secretKey = null, $useSSL = true)
 	{
 		static $instance = null;
-		
+
 		if(!is_object($instance)) {
 			$component = JComponentHelper::getComponent('com_ars');
 			if(!($component->params instanceof JRegistry)) {
@@ -61,7 +61,7 @@ class ArsHelperAmazons3 extends JObject
 			} else {
 				$params = $component->params;
 			}
-			
+
 			if(empty($accessKey) && empty($secretKey)) {
 				if(version_compare(JVERSION, '3.0', 'ge')) {
 					$accessKey	= $params->get('s3access','');
@@ -73,7 +73,7 @@ class ArsHelperAmazons3 extends JObject
 					$useSSL		= $params->getValue('s3ssl',true);
 				}
 			}
-			
+
 			$instance = new ArsHelperAmazons3($accessKey, $secretKey, $useSSL);
 			if(version_compare(JVERSION, '3.0', 'ge')) {
 				self::$__default_bucket = $params->get('s3bucket', '');
@@ -85,10 +85,10 @@ class ArsHelperAmazons3 extends JObject
 				self::$__default_time = $params->getValue('s3time', 900);
 			}
 		}
-		
+
 		return $instance;
 	}
-	
+
 	/**
 	* Constructor - if you're not using the class statically
 	*
@@ -128,7 +128,7 @@ class ArsHelperAmazons3 extends JObject
 			$o->setError(__CLASS__.'::inputFile(): Unable to open input file: '.$file);
 			return false;
 		}
-		
+
 		return array('file' => $file, 'size' => filesize($file),
 		'md5sum' => $md5sum !== false ? (is_string($md5sum) ? $md5sum :
 		base64_encode(md5_file($file, true))) : '');
@@ -172,7 +172,7 @@ class ArsHelperAmazons3 extends JObject
 		$rest = new ArsHelperS3Request('PUT', $bucket, $uri);
 
 		if(is_null($acl)) $acl = self::$__default_acl;
-		
+
 		if (is_string($input)) $input = array(
 			'data' => $input, 'size' => strlen($input),
 			'md5sum' => base64_encode(md5($input, true))
@@ -232,7 +232,7 @@ class ArsHelperAmazons3 extends JObject
 		}
 		return true;
 	}
-	
+
 	/**
 	* Start a multipart upload of an object
 	*
@@ -251,7 +251,7 @@ class ArsHelperAmazons3 extends JObject
 		$rest->setParameter('uploads','');
 
 		if(is_null($acl)) $acl = self::$__default_acl;
-		
+
 		if (is_string($input)) $input = array(
 			'data' => $input, 'size' => strlen($input),
 			'md5sum' => base64_encode(md5($input, true))
@@ -280,7 +280,7 @@ class ArsHelperAmazons3 extends JObject
 		$rest->setAmzHeader('x-amz-acl', $acl);
 		foreach ($metaHeaders as $h => $v) $rest->setAmzHeader('x-amz-meta-'.$h, $v);
 		$rest->getResponse();
-		
+
 		if ($rest->response->error === false && $rest->response->code !== 200)
 			$rest->response->error = array('code' => $rest->response->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->response->error !== false) {
@@ -288,12 +288,12 @@ class ArsHelperAmazons3 extends JObject
 			$o->setError(sprintf(__CLASS__."::startMultipart(): [%s] %s", $rest->response->error['code'], $rest->response->error['message']));
 			return false;
 		}
-		
+
 		$body = $rest->response->body;
 		if(!is_object($body)) $body = simplexml_load_string($body);
 		return (string)$body->UploadId;
 	}
-	
+
 	/**
 	* Uploads a part of a multipart object upload
 	*
@@ -309,33 +309,33 @@ class ArsHelperAmazons3 extends JObject
 		if ($input === false) {
 			$o = self::getInstance();
 			$o->setError(__CLASS__."::uploadMultipart(): No input specified");
-			return false;	
+			return false;
 		}
 		if(empty($bucket)) $bucket = self::$__default_bucket;
-		
+
 		if(is_null($acl)) $acl = self::$__default_acl;
-		
+
 		if (is_string($input)) $input = array(
 			'data' => $input, 'size' => strlen($input),
 			'md5sum' => base64_encode(md5($input, true))
 		);
-		
+
 		// We need a valid UploadID and PartNumber
 		if(!array_key_exists('UploadID', $input)) {
 			$o = self::getInstance();
 			$o->setError(__CLASS__."::uploadMultipart(): No UploadID specified");
-			return false;	
+			return false;
 		}
 		if(!array_key_exists('PartNumber', $input)) {
 			$o = self::getInstance();
 			$o->setError(__CLASS__."::uploadMultipart(): No PartNumber specified");
-			return false;	
+			return false;
 		}
-		
+
 		$UploadID = $input['UploadID'];
 		$UploadID = urlencode($UploadID);
 		$PartNumber = (int)$input['PartNumber'];
-		
+
 		$rest = new ArsHelperS3Request('PUT', $bucket, $uri, 's3.amazonaws.com');
 		$rest->setParameter('partNumber',$PartNumber);
 		$rest->setParameter('uploadId',$UploadID);
@@ -359,7 +359,7 @@ class ArsHelperAmazons3 extends JObject
 				$totalSize = strlen($input['data']);
 			}
 		}
-		
+
 		// No Content-Type for multipart uploads
 		if(array_key_exists('type', $input)) unset($input['type']);
 
@@ -368,23 +368,23 @@ class ArsHelperAmazons3 extends JObject
 		if($partOffset > $totalSize) {
 			return 0; // This is to signify that we ran out of parts ;)
 		}
-		
+
 		// How many parts are there?
 		$totalParts = floor($totalSize / 5242880);
 		if($totalParts * 5242880 < $totalSize) $totalParts++;
-		
+
 		// Calculate Content-Length
 		if($PartNumber == $totalParts) {
 			$rest->size = $totalSize - ($PartNumber - 1) * 5242880;
 		} else {
 			$rest->size = 5242880;
 		}
-		
+
 		if (isset($input['file'])) {
 			// Create a temp file with the bytes we want to upload
-			$fp = @fopen($input['file'], 'rb');			
+			$fp = @fopen($input['file'], 'rb');
 			$result = fseek($fp, ($PartNumber - 1) * 5242880);
-			
+
 			$rest->fp = $fp; // I have to set the ArsHelperS3Request's file pointer, NOT the file structure's, as the request object is already initialized
 			$rest->data = false;
 		} elseif (isset($input['data'])) {
@@ -392,7 +392,7 @@ class ArsHelperAmazons3 extends JObject
 			$rest->fp = false;
 			$rest->data = substr($input['data'], ($PartNumber - 1) * 5242880, $rest->size);
 		}
-		
+
 		// Custom request headers (Content-Type, Content-Disposition, Content-Encoding)
 		if (is_array($requestHeaders))
 			foreach ($requestHeaders as $h => $v) $rest->setHeader($h, $v);
@@ -404,18 +404,18 @@ class ArsHelperAmazons3 extends JObject
 			$rest->getResponse();
 		} else {
 			if($rest->size < 0) {
-				$rest->response->error = array('code' => 0, 'message' => 'Missing file size parameter');	
+				$rest->response->error = array('code' => 0, 'message' => 'Missing file size parameter');
 			} else {
 				$rest->response->error = array('code' => 0, 'message' => 'No data file pointer specified');
 			}
 		}
 
 		@fclose($fp);
-		
+
 		if ($rest->response->error === false && $rest->response->code !== 200)
 			$rest->response->error = array('code' => $rest->response->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->response->error !== false) {
-			// Sometimes we get a broken pipe error which is bullshit; it's just a response with 0 size
+			// Sometimes we get a broken pipe error which is bogus; it's just a response with 0 size
 			if( ($rest->response->error['code'] == 55) && ($rest->response->code == 200) && is_array($rest->response->headers) ) {
 				// This is not an error. AAAAARGH!
 				return $rest->response->headers['hash'];
@@ -425,11 +425,11 @@ class ArsHelperAmazons3 extends JObject
 				return false;
 			}
 		}
-				
+
 		// Return the ETag header
 		return $rest->response->headers['hash'];
 	}
-	
+
 	/**
 	 * Finalizes the multi-part upload. The $input array should contain two keys, etags an array of ETags of the uploaded
 	 * parts and UploadID the multipart upload ID.
@@ -442,18 +442,18 @@ class ArsHelperAmazons3 extends JObject
 		if(!array_key_exists('etags',$input)) {
 			$o = self::getInstance();
 			$o->setError(__CLASS__."::finalizeMultipart(): No ETags array specified");
-			return false;	
+			return false;
 		}
 		if(empty($bucket)) $bucket = self::$__default_bucket;
 		if(!array_key_exists('UploadID', $input)) {
 			$o = self::getInstance();
 			$o->setError(__CLASS__."::finalizeMultipart(): No UploadID specified");
-			return false;	
+			return false;
 		}
-		
+
 		$etags = $input['etags'];
 		$UploadID = $input['UploadID'];
-		
+
 		// Create the message
 		$message ="<CompleteMultipartUpload>\n";
 		$part = 0;
@@ -462,22 +462,22 @@ class ArsHelperAmazons3 extends JObject
 			$message .= "\t<Part>\n\t\t<PartNumber>$part</PartNumber>\n\t\t<ETag>\"$etag\"</ETag>\n\t</Part>\n";
 		}
 		$message .= "</CompleteMultipartUpload>";
-		
+
 		// Get a request query
 		$rest = new ArsHelperS3Request('POST', $bucket, $uri);
 		$rest->setParameter('uploadId', $UploadID);
-		
+
 		// Set content length
 		$rest->size = strlen($message);
-		
+
 		// Set content
 		$rest->data = $message;
 		$rest->fp = false;
-		
+
 		// Do post
 		$rest->setHeader('Content-Type', 'application/xml'); // Even though the Amazon API doc doesn't mention it, it's required... :(
 		$rest->getResponse();
-		
+
 		if ($rest->response->error === false && $rest->response->code !== 200)
 			$rest->response->error = array('code' => $rest->response->code, 'message' => 'Unexpected HTTP status');
 		if ($rest->response->error !== false) {
@@ -490,7 +490,7 @@ class ArsHelperAmazons3 extends JObject
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -555,7 +555,7 @@ class ArsHelperAmazons3 extends JObject
 		}
 		return true;
 	}
-	
+
 	/**
 	* Get a list of buckets
 	*
@@ -590,7 +590,7 @@ class ArsHelperAmazons3 extends JObject
 
 		return $results;
 	}
-	
+
 	/*
 	* Get contents for a bucket
 	*
@@ -675,7 +675,7 @@ class ArsHelperAmazons3 extends JObject
 
 		return $results;
 	}
-	
+
 	/**
 	* Get a query string authenticated URL
 	*
@@ -695,7 +695,7 @@ class ArsHelperAmazons3 extends JObject
 		$hostBucket ? $bucket : $bucket.'.s3.amazonaws.com', $uri, self::$__accessKey, $expires,
 		urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$uri}")));
 	}
-	
+
 	/**
 	* Get MIME type for file
 	*
@@ -793,7 +793,7 @@ final class ArsHelperS3Request {
 		$this->verb = $verb;
 		$this->bucket = $bucket;
 		$this->uri = $uri !== '' ? '/'.str_replace('%2F', '/', rawurlencode($uri)) : '/';
-		
+
 		if ($this->bucket !== '') {
 			$this->headers['Host'] = $this->bucket.'.'.$defaultHost;
 			$this->resource = '/'.$this->bucket.$this->uri;
@@ -909,7 +909,7 @@ final class ArsHelperS3Request {
 			$stringToSign = $this->verb."\n".$this->headers['Content-MD5']."\n".
 			$this->headers['Content-Type']."\n".$this->headers['Date'].$amz."\n".$this->resource;
 		}
-		
+
 		$headers[] = 'Authorization: ' . ArsHelperAmazons3::__getSignature($stringToSign);
 
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
