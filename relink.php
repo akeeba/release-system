@@ -20,6 +20,19 @@ function isLink($path)
 
 function symlink_dir($from, $to)
 {
+	if(is_dir($to))
+	{
+		if(AKEEBA_RELINK_WINDOWS)
+		{
+			$cmd = 'rmdir /s /q "'.$to.'"';
+		}
+		else
+		{
+			$cmd = 'rm -rf "'.$to.'"';
+		}
+		exec($cmd);
+	}
+
 	if(defined('AKEEBA_RELINK_WINDOWS')) {
 		$cmd = 'mklink /D "'.$to.'" "'.$from.'"';
 		exec($cmd);
@@ -30,6 +43,19 @@ function symlink_dir($from, $to)
 
 function symlink_file($from, $to)
 {
+	if(file_exists($to))
+	{
+		if(AKEEBA_RELINK_WINDOWS)
+		{
+			$cmd = 'del /f /q "'.$to.'"';
+		}
+		else
+		{
+			$cmd = 'rm -f "'.$to.'"';
+		}
+		exec($cmd);
+	}
+
 	if(defined('AKEEBA_RELINK_WINDOWS')) {
 		$cmd = 'mklink "'.$to.'" "'.$from.'"';
 		exec($cmd);
@@ -40,6 +66,19 @@ function symlink_file($from, $to)
 
 function hardlink_file($from, $to)
 {
+	if(file_exists($to))
+	{
+		if(AKEEBA_RELINK_WINDOWS)
+		{
+			$cmd = 'del /f /q "'.$to.'"';
+		}
+		else
+		{
+			$cmd = 'rm -f "'.$to.'"';
+		}
+		exec($cmd);
+	}
+
 	if(defined('AKEEBA_RELINK_WINDOWS')) {
 		$cmd = 'mklink /H "'.$to.'" "'.$from.'"';
 		exec($cmd);
@@ -56,30 +95,30 @@ function realpath2($path)
 		return str_replace('\\', '/', $path);
 	}
  }
- 
+
 class AkeebaRelink
 {
 	/** @var string The path to the sources */
 	private $_root = null;
-	
+
 	/** @var string The path to the site's root */
 	private $_siteRoot = null;
-	
+
 	/** @var string The version of the Joomla! site we're linking to */
 	private $_joomlaVersion = '1.5';
-	
+
 	/** @var array Information about the modules */
 	private $_modules = array();
-	
+
 	/** @var array Information about the plugins */
 	private $_plugins = array();
-	
+
 	/** @var array Information about the component */
 	private $_component = array();
-	
+
 	/**
 	 * Public constructor. Initialises the class with the user-supplied information.
-	 * @param array $config 
+	 * @param array $config
 	 */
 	public function __construct($config = array())
 	{
@@ -89,19 +128,19 @@ class AkeebaRelink
 		if(!array_key_exists('site', $config)) {
 			$config['site'] = '/Users/nicholas/Sites/jbeta';
 		}
-		
+
 		$this->_root = $config['root'];
 		$this->_siteRoot = $config['site'];
-		
+
 		// Detect the site's version
 		$this->_detectJoomlaVersion();
-		
+
 		// Load information about the bundled extensions
 		$this->_scanComponent();
 		$this->_fetchModules();
 		$this->_fetchPlugins();
 	}
-	
+
 	/**
 	 * Detect the exact version of a Joomla! site
 	 */
@@ -109,11 +148,11 @@ class AkeebaRelink
 	{
 		define('_JEXEC', 1);
 		define('JPATH_BASE', $this->_siteRoot);
-		
+
 		$file15 = $this->_siteRoot.'/libraries/joomla/version.php';
 		$file16 = $this->_siteRoot.'/includes/version.php';
 		$file25 = $this->_siteRoot.'/libraries/cms/version/version.php';
-		
+
 		if(@file_exists($file15)) {
 			require_once $file15;
 		} elseif(@file_exists($file16)) {
@@ -121,11 +160,11 @@ class AkeebaRelink
 		} elseif(@file_exists($file25)) {
 			require_once $file25;
 		}
-		
+
 		$v = new JVersion();
 		$this->_joomlaVersion = $v->getShortVersion();
 	}
-	
+
 	/**
 	 * Gets the information for all included modules
 	 */
@@ -143,7 +182,7 @@ class AkeebaRelink
 				$scanPath
 			);
 		}
-		
+
 		// Iterate directories
 		$this->_modules = array();
 		foreach($paths as $path) {
@@ -151,18 +190,18 @@ class AkeebaRelink
 			foreach(new DirectoryIterator($path) as $fileInfo) {
 				if($fileInfo->isDot()) continue;
 				if(!$fileInfo->isDir()) continue;
-				
+
 				$modPath = $path.'/'.$fileInfo->getFilename();
 				$info = $this->_scanModule($modPath);
-				
+
 				if(!is_array($info)) continue;
 				if(!array_key_exists('module', $info)) continue;
-				
+
 				$this->_modules[] = $info;
 			}
 		}
 	}
-	
+
 	/**
 	 * Gets the information for all included plugins
 	 */
@@ -175,7 +214,7 @@ class AkeebaRelink
 			foreach(new DirectoryIterator($scanPath) as $fileInfo) {
 				if($fileInfo->isDot()) continue;
 				if(!$fileInfo->isDir()) continue;
-				
+
 				$paths[] = $scanPath.'/'.$fileInfo->getFilename();
 			}
 		} else {
@@ -183,7 +222,7 @@ class AkeebaRelink
 				$scanPath
 			);
 		}
-		
+
 		// Iterate directories
 		$this->_plugins = array();
 		foreach($paths as $path) {
@@ -191,21 +230,21 @@ class AkeebaRelink
 			foreach(new DirectoryIterator($path) as $fileInfo) {
 				if($fileInfo->isDot()) continue;
 				if(!$fileInfo->isDir()) continue;
-				
+
 				$plgPath = $path.'/'.$fileInfo->getFilename();
 				$info = $this->_scanPlugin($plgPath);
-				
+
 				if(!is_array($info)) continue;
 				if(!array_key_exists('plugin', $info)) continue;
-				
+
 				$this->_plugins[] = $info;
 			}
 		}
 	}
-	
+
 	/**
 	 * Scans a module directory to fetch the extension information
-	 * 
+	 *
 	 * @param string $path
 	 * @return array
 	 */
@@ -217,10 +256,10 @@ class AkeebaRelink
 			if(!$fileInfo->isFile()) continue;
 			$fname = $fileInfo->getFilename();
 			if(substr($fname, -4) != '.xml') continue;
-			
+
 			$xmlDoc = new DOMDocument;
 			$xmlDoc->load($path.'/'.$fname, LIBXML_NOBLANKS | LIBXML_NOCDATA | LIBXML_NOENT | LIBXML_NONET);
-			
+
 			$rootNodes = $xmlDoc->getElementsByTagname('install');
 			$altRootNodes = $xmlDoc->getElementsByTagname('extension');
 			if($altRootNodes->length >= 1) {
@@ -231,7 +270,7 @@ class AkeebaRelink
 				unset($xmlDoc);
 				continue;
 			}
-			
+
 			$root = $rootNodes->item(0);
 			if(!$root->hasAttributes()) {
 				unset($xmlDoc);
@@ -241,7 +280,7 @@ class AkeebaRelink
 				unset($xmlDoc);
 				continue;
 			}
-			
+
 			$module = '';
 			$files = $xmlDoc->getElementsByTagName('files')->item(0)->childNodes;
 			foreach($files as $file) {
@@ -249,7 +288,7 @@ class AkeebaRelink
 					$module = $file->getAttribute('module');
 				}
 			}
-			
+
 			if($xmlDoc->getElementsByTagName('languages')->length < 1) {
 				$langFolder = null;
 				$langFiles = array();
@@ -264,12 +303,12 @@ class AkeebaRelink
 					$langFiles[$tag][] = $lfPath;
 				}
 			}
-			
+
 			if(empty($module)) {
 				unset($xmlDoc);
 				continue;
 			}
-			
+
 			$ret = array(
 				'module'	=> $module,
 				'path'		=> $path,
@@ -277,15 +316,15 @@ class AkeebaRelink
 				'langPath'	=> $langFolder,
 				'langFiles'	=> $langFiles,
 			);
-			
+
 			unset($xmlDoc);
 			return $ret;
 		}
 	}
-	
+
 	/**
 	 * Scans a plugin directory to fetch the extension information
-	 * 
+	 *
 	 * @param string $path
 	 * @return array
 	 */
@@ -297,10 +336,10 @@ class AkeebaRelink
 			if(!$fileInfo->isFile()) continue;
 			$fname = $fileInfo->getFilename();
 			if(substr($fname, -4) != '.xml') continue;
-			
+
 			$xmlDoc = new DOMDocument;
 			$xmlDoc->load($path.'/'.$fname, LIBXML_NOBLANKS | LIBXML_NOCDATA | LIBXML_NOENT | LIBXML_NONET);
-			
+
 			$rootNodes = $xmlDoc->getElementsByTagname('install');
 			$altRootNodes = $xmlDoc->getElementsByTagname('extension');
 			if($altRootNodes->length >= 1) {
@@ -311,7 +350,7 @@ class AkeebaRelink
 				unset($xmlDoc);
 				continue;
 			}
-			
+
 			$root = $rootNodes->item(0);
 			if(!$root->hasAttributes()) {
 				unset($xmlDoc);
@@ -321,9 +360,9 @@ class AkeebaRelink
 				unset($xmlDoc);
 				continue;
 			}
-			
+
 			$folder = $root->getAttribute('group');
-			
+
 			$plugin = '';
 			$files = $xmlDoc->getElementsByTagName('files')->item(0)->childNodes;
 			foreach($files as $file) {
@@ -331,7 +370,7 @@ class AkeebaRelink
 					$plugin = $file->getAttribute('plugin');
 				}
 			}
-			
+
 			if($xmlDoc->getElementsByTagName('languages')->length < 1) {
 				$langFolder = null;
 				$langFiles = array();
@@ -346,12 +385,12 @@ class AkeebaRelink
 					$langFiles[$tag][] = $lfPath;
 				}
 			}
-			
+
 			if(empty($plugin)) {
 				unset($xmlDoc);
 				continue;
 			}
-			
+
 			$ret = array(
 				'plugin'	=> $plugin,
 				'folder'	=> $folder,
@@ -359,7 +398,7 @@ class AkeebaRelink
 				'langPath'	=> $langFolder,
 				'langFiles'	=> $langFiles,
 			);
-			
+
 			unset($xmlDoc);
 			return $ret;
 		}
@@ -367,22 +406,22 @@ class AkeebaRelink
 
 	/**
 	 * Scan the component directory and get some useful info
-	 * @return type 
+	 * @return type
 	 */
 	private function _scanComponent()
 	{
 		$path = $this->_root.'/component';
-		
+
 		// Find the XML files
 		foreach(new DirectoryIterator($path) as $fileInfo) {
 			if($fileInfo->isDot()) continue;
 			if(!$fileInfo->isFile()) continue;
 			$fname = $fileInfo->getFilename();
 			if(substr($fname, -4) != '.xml') continue;
-			
+
 			$xmlDoc = new DOMDocument;
 			$xmlDoc->load($path.'/'.$fname, LIBXML_NOBLANKS | LIBXML_NOCDATA | LIBXML_NOENT | LIBXML_NONET);
-			
+
 			$rootNodes = $xmlDoc->getElementsByTagname('install');
 			$altRootNodes = $xmlDoc->getElementsByTagname('extension');
 			if($altRootNodes->length >= 1) {
@@ -393,7 +432,7 @@ class AkeebaRelink
 				unset($xmlDoc);
 				continue;
 			}
-			
+
 			$root = $rootNodes->item(0);
 			if(!$root->hasAttributes()) {
 				unset($xmlDoc);
@@ -403,11 +442,11 @@ class AkeebaRelink
 				unset($xmlDoc);
 				continue;
 			}
-			
+
 			// Get the component name
 			$component = strtolower($xmlDoc->getElementsByTagName('name')->item(0)->textContent);
 			if(substr($component,0,4) != 'com_') $component = 'com_'.$component;
-			
+
 			// Get the <files> tags for front and back-end
 			$siteFolder = $path;
 			$allFilesTags = $xmlDoc->getElementsByTagName('files');
@@ -424,20 +463,20 @@ class AkeebaRelink
 			// Get the site and admin folders
 			if($siteFilesTag->hasAttribute('folder')) $siteFolder = $path.'/'.$siteFilesTag->getAttribute('folder');
 			if($adminFilesTag->hasAttribute('folder')) $adminFolder = $path.'/'.$adminFilesTag->getAttribute('folder');
-			
+
 			// Get the media folder
 			$mediaFolder = null;
 			$allMediaTags = $xmlDoc->getElementsByTagName('media');
 			if($allMediaTags->length >= 1) {
 				$mediaFolder = $path.'/'.$allMediaTags->item(0)->getAttribute('folder');
 			}
-			
+
 			// Do we have a CLI folder
 			$cliFolder = $path.'/cli';
 			if(!is_dir($cliFolder)) {
 				$cliFolder = '';
 			}
-			
+
 			// Get the <languages> tags for front and back-end
 			$langFolderSite = $path;
 			$langFolderAdmin = $path;
@@ -452,11 +491,11 @@ class AkeebaRelink
 				$siteLanguagesTag = $allLanguagesTags->item(1);
 				$adminLanguagesTag = $allLanguagesTags->item(0);
 			}
-			
+
 			// Get the site and admin language folders
 			if($siteLanguagesTag->hasAttribute('folder')) $langFolderSite = $path.'/'.$siteLanguagesTag->getAttribute('folder');
 			if($adminLanguagesTag->hasAttribute('folder')) $langFolderAdmin = $path.'/'.$adminLanguagesTag->getAttribute('folder');
-			
+
 			// Get the frontend languages
 			$langFilesSite = array();
 			if($siteLanguagesTag->hasChildNodes()) foreach($siteLanguagesTag->childNodes as $langFile)
@@ -465,7 +504,7 @@ class AkeebaRelink
 				$tag = $langFile->getAttribute('tag');
 				$langFilesSite[$tag][] = $langFolderSite.'/'.$langFile->textContent;
 			}
-			
+
 			// Get the backend languages
 			$langFilesAdmin = array();
 			if($adminLanguagesTag->hasChildNodes()) foreach($adminLanguagesTag->childNodes as $langFile)
@@ -474,12 +513,12 @@ class AkeebaRelink
 				$tag = $langFile->getAttribute('tag');
 				$langFilesAdmin[$tag][] = $langFolderAdmin.'/'.$langFile->textContent;
 			}
-			
+
 			if(empty($component)) {
 				unset($xmlDoc);
 				continue;
 			}
-			
+
 			$this->_component = array(
 				'component'		=> $component,
 				'siteFolder'	=> $siteFolder,
@@ -496,7 +535,7 @@ class AkeebaRelink
 			return;
 		}
 	}
-	
+
 	/**
 	 * Maps the folders and files for the component
 	 * @return array
@@ -523,12 +562,12 @@ class AkeebaRelink
 				if(!$fileInfo->isFile()) continue;
 				$fname = $fileInfo->getFileName();
 				if(substr($fname, -4) != '.php') continue;
-				
+
 				$files[$this->_component['cliFolder'].'/'.$fname] =
 					$this->_siteRoot.'/cli/'.$fname;
 			}
 		}
-		
+
 		// Front-end language files
 		$basePath = $this->_siteRoot.'/language/';
 		if(!empty($this->_component['siteLangFiles'])) {
@@ -539,7 +578,7 @@ class AkeebaRelink
 				}
 			}
 		}
-		
+
 		// Back-end language files
 		$basePath = $this->_siteRoot.'/administrator/language/';
 		if(!empty($this->_component['adminLangFiles'])) {
@@ -550,24 +589,24 @@ class AkeebaRelink
 				}
 			}
 		}
-		
+
 		return array(
 			'dirs'	=> $dirs,
 			'files'	=> $files,
 		);
 	}
-	
+
 	private function _mapModule($module)
 	{
 		$files = array();
 		$dirs = array();
-		
+
 		$basePath = $this->_siteRoot.'/';
 		if($module['client'] != 'site') $basePath .= 'administrator/';
 		$basePath .= 'modules/'.$module['module'];
-		
+
 		$dirs[$module['path']] = $basePath;
-		
+
 		// Language files
 		if($module['client'] != 'site') {
 			$basePath = $this->_siteRoot.'/administrator/language/';
@@ -582,18 +621,18 @@ class AkeebaRelink
 				}
 			}
 		}
-		
+
 		return array(
 			'dirs'	=> $dirs,
 			'files'	=> $files,
 		);
 	}
-	
+
 	private function _mapPlugin($plugin)
 	{
 		$files = array();
 		$dirs = array();
-		
+
 		if(version_compare($this->_joomlaVersion, '1.6.0', 'ge')) {
 			// Joomla! 1.6 or later -- just link one folder
 			$basePath = $this->_siteRoot.'/plugins/'.$plugin['folder'].'/'.$plugin['plugin'];
@@ -621,30 +660,30 @@ class AkeebaRelink
 				}
 			}
 		}
-		
+
 		return array(
 			'dirs'	=> $dirs,
 			'files'	=> $files,
 		);
 	}
-	
+
 	/**
 	 * Unlinks the component
 	 */
 	public function unlinkComponent()
 	{
 		echo "Unlinking component ".$this->_component['component']."\n";
-		
+
 		$map = $this->_mapComponent();
 		extract($map);
-		
+
 		$dirs = array_values($dirs);
 		$files = array_values($files);
-		
+
 		$this->_unlinkDirectories($dirs);
 		if(!empty($files)) $this->_unlinkFiles($files);
 	}
-	
+
 	/**
 	 * Unlinks the modules
 	 */
@@ -654,10 +693,10 @@ class AkeebaRelink
 		foreach($this->_modules as $module)
 		{
 			echo "Unlinking module ".$module['module'].' ('.$module['client'].")\n";
-			
+
 			$map = $this->_mapModule($module);
 			extract($map);
-		
+
 			$dirs = array_values($dirs);
 			$files = array_values($files);
 
@@ -665,7 +704,7 @@ class AkeebaRelink
 			if(!empty($files)) $this->_unlinkFiles($files);
 		}
 	}
-	
+
 	/**
 	 * Unlinks the plugins
 	 */
@@ -675,10 +714,10 @@ class AkeebaRelink
 		foreach($this->_plugins as $plugin)
 		{
 			echo "Unlinking plugin ".$plugin['plugin'].' ('.$plugin['folder'].")\n";
-			
+
 			$map = $this->_mapPlugin($plugin);
 			extract($map);
-		
+
 			$dirs = array_values($dirs);
 			$files = array_values($files);
 
@@ -686,28 +725,28 @@ class AkeebaRelink
 			if(!empty($files)) $this->_unlinkFiles($files);
 		}
 	}
-	
+
 	/**
 	 * Relinks the component
 	 */
 	public function linkComponent()
 	{
 		echo "Linking component ".$this->_component['component']."\n";
-		
+
 		$map = $this->_mapComponent();
 		extract($map);
-		
+
 		foreach($dirs as $from => $to)
 		{
 			symlink_dir(realpath2($from), realpath2($to));
 		}
-		
+
 		foreach($files as $from => $to)
 		{
 			symlink_file(realpath2($from), realpath2($to));
 		}
 	}
-	
+
 	/**
 	 * Relinks the modules
 	 */
@@ -717,22 +756,22 @@ class AkeebaRelink
 		foreach($this->_modules as $module)
 		{
 			echo "Linking module ".$module['module'].' ('.$module['client'].")\n";
-			
+
 			$map = $this->_mapModule($module);
 			extract($map);
-		
+
 			foreach($dirs as $from => $to)
 			{
 				symlink_dir(realpath2($from), realpath2($to));
 			}
-			
+
 			foreach($files as $from => $to)
 			{
 				symlink_file(realpath2($from), realpath2($to));
 			}
 		}
 	}
-	
+
 	/**
 	 * Relinks the plugins
 	 */
@@ -742,26 +781,26 @@ class AkeebaRelink
 		foreach($this->_plugins as $plugin)
 		{
 			echo "Linking plugin ".$plugin['plugin'].' ('.$plugin['folder'].")\n";
-			
+
 			$map = $this->_mapPlugin($plugin);
 			extract($map);
-			
+
 			foreach($dirs as $from => $to)
 			{
 				symlink_dir(realpath2($from), realpath2($to));
 			}
-			
+
 			foreach($files as $from => $to)
 			{
 				symlink_file(realpath2($from), realpath2($to));
 			}
 		}
 	}
-	
+
 	/**
 	 * Remove a list of directories
 	 * @param array $dirs
-	 * @return boolean 
+	 * @return boolean
 	 */
 	private function _unlinkDirectories($dirs)
 	{
@@ -777,11 +816,11 @@ class AkeebaRelink
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * Remove a list of files
 	 * @param array $files
-	 * @return boolean 
+	 * @return boolean
 	 */
 	private function _unlinkFiles($files)
 	{
@@ -795,7 +834,7 @@ class AkeebaRelink
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * Recursively delete a directory
 	 * @param string $dir
@@ -808,7 +847,7 @@ class AkeebaRelink
 		if(isLink($dir)) {
 			return @unlink(realpath2($dir));
 		}
-		
+
 		$handle = opendir($dir);
 		while( false != ($item = readdir($handle))) {
 			if( !in_array($item, array('.','..')) ) {
