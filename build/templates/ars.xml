@@ -93,6 +93,7 @@
 			<filename>ars.php</filename>
 			<filename>config.xml</filename>
 			<filename>dispatcher.php</filename>
+			<filename>fof.xml</filename>
 			<filename>index.html</filename>
 			<filename>toolbar.php</filename>
 		</files>
