@@ -84,7 +84,7 @@ class ArsControllerUpload extends FOFController
 		if(empty($outdir) || !JFolder::exists($outdir))
 		{
 			JError::raiseError(500, 'Output directory not found');
-			return;
+			return true;
 		}
 
 		// Set FTP credentials, if given
