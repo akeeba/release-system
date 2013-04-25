@@ -37,7 +37,7 @@ class ArsControllerRelease extends FOFController
 			$this->input = new FOFInput($input, $input_options);
 		}
 
-		if($this->input->getCmd('format','html',$config['input']) == 'html') {
+		if($this->input->getCmd('format','html') == 'html') {
 			$config['modelName'] = 'ArsModelBrowses';
 		} elseif(!JFactory::getUser()->authorise('com.manage', 'com_ars')) {
 			JError::raiseError(403, 'Forbidden');
