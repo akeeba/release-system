@@ -23,7 +23,6 @@ if (!empty($dlid))
 	$dlid = ArsHelperFilter::reformatDownloadID($dlid);
 }
 if ($dlid !== false) {
-	if(strlen($dlid) > 32) $dlid = substr($dlid,0,32);
 	$dlid = '&dlid='.$dlid;
 } else {
 	$dlid = '';
@@ -45,7 +44,7 @@ $streamTypeMap = array(
 ?><?php echo $tag; ?>
 <!-- Update stream generated automatically by Akeeba Release System -->
 <extensionset category="<?php echo ucfirst($this->category)?>" name="<?php echo ucfirst($this->category)?>" description="<?php echo JText::_('LBL_UPDATETYPES_'.strtoupper($this->category)); ?>">
-<?php if(!empty($this->items)) foreach($this->items as $item): 
+<?php if(!empty($this->items)) foreach($this->items as $item):
 $url = $rootURL.AKRouter::_('index.php?option=com_ars&view=update&format=xml&task=stream&id='.$item->id.$dlid);
 $url=str_replace('&', '&amp;', $url);
 if(substr($url,-4) != '.xml') $url .= (strpos($url, '?') ? '&amp;' : '?').'dummy=extension.xml';

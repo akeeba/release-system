@@ -24,10 +24,11 @@ class FOFFormFieldDlid extends FOFFormFieldText
 			))
 			->from($db->qn('#__users'))
 			->where($db->qn('id').' = '.$db->q($this->item->user_id));
+		$db->setQuery($query);
 		$masterDlid = $db->loadResult();
-		
+
 		$this->value = $this->item->user_id . ':' . md5($this->item->user_id . $this->item->label . $masterDlid);
-		
+
 		return parent::getRepeatable();
 	}
 }

@@ -31,7 +31,6 @@ if (!empty($dlid))
 	$dlid = ArsHelperFilter::reformatDownloadID($dlid);
 }
 if ($dlid !== false) {
-	if(strlen($dlid) > 32) $dlid = substr($dlid,0,32);
 	$dlid = '&dlid='.$dlid;
 } else {
 	$dlid = '';

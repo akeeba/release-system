@@ -33,8 +33,7 @@ class ArsHelperFilter
 		if(is_null($user_access) || is_null($myGroups))
 		{
 			// Do we have a dlid in the query?
-			$dlid = JRequest::getCmd('dlid',null);
-			if(strlen($dlid) > 32) $dlid = substr($dlid,0,32);
+			$dlid = JRequest::getString('dlid',null);
 
 			$credentials = array();
 			$credentials['username'] = JRequest::getVar('username', '', 'get', 'username');
@@ -255,10 +254,11 @@ class ArsHelperFilter
 				))
 				->from($db->qn('#__users'))
 				->where($db->qn('id').' = '.$db->q($user_id));
+			$db->setQuery($query);
 			$masterDlid = $db->loadResult();
 
 			$found = false;
-			foreach($labels as $label)
+			foreach($labels as $k => $label)
 			{
 				$check = md5($user_id . $label . $masterDlid);
 				if ($check == $dlid)
