@@ -20,13 +20,13 @@ class ArsTableItem extends FOFTable
 {
 	/**
 	 * Instantiate the table object
-	 * 
+	 *
 	 * @param JDatabase $db The Joomla! database object
 	 */
 	function __construct( $table, $key, &$db )
 	{
 		parent::__construct( '#__ars_items', 'id', $db );
-		
+
 		$this->_columnAlias = array(
 			'enabled'		=> 'published',
 			'slug'			=> 'alias',
@@ -35,15 +35,15 @@ class ArsTableItem extends FOFTable
 			'locked_on'		=> 'checked_out_time',
 			'locked_by'		=> 'checked_out',
 		);
-		
+
 		$this->access = 1;
-		
+
 		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
 	}
 
 	/**
 	 * Checks the record for validity
-	 * 
+	 *
 	 * @return int True if the record is valid
 	 */
 	function check()
@@ -66,8 +66,6 @@ class ArsTableItem extends FOFTable
 			$query->where('NOT('.$db->qn('id').'='.$db->q($this->id).')');
 		}
 		$db->setQuery($query);
-		$info = $db->loadAssocList('title');
-
 		$info = $db->loadAssocList();
 		$titles = array(); $aliases = array();
 		foreach($info as $infoitem)
@@ -104,7 +102,7 @@ class ArsTableItem extends FOFTable
 				}
 			}
 		}
-		
+
 		// Added environment ID
 		if(!empty($this->environments) && is_array($this->environments)) {
 			// Filter out empty environments
@@ -119,7 +117,7 @@ class ArsTableItem extends FOFTable
 		} else {
 			$this->environments = json_encode( $this->environments );
 		}
-		
+
 		// Check if a title exists
 		if(!$this->title) {
 			// No, try the automatic rule-based title
@@ -324,14 +322,14 @@ class ArsTableItem extends FOFTable
 							$folder = JPATH_ROOT.'/'.$folder;
 							if(!JFolder::exists($folder)) $folder = null;
 						}
-						
+
 						if(!empty($folder)) {
 							$filename = $folder.'/'.$filename;
 						}
 					}
 				}
 			}
-			
+
 			if (!isset($url))
 			{
 				$url = null;
@@ -410,13 +408,13 @@ class ArsTableItem extends FOFTable
 
 		return true;
 	}
-	
+
 	/**
 	 * Fires after loading a record, automatically unserialises the environments
 	 * field (by default it's JSON-encoded)
-	 * 
+	 *
 	 * @param object $result The loaded row
-	 * 
+	 *
 	 * @return bool
 	 */
 	protected function onAfterLoad(&$result) {
