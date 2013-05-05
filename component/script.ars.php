@@ -1036,6 +1036,11 @@ class Com_ArsInstallerScript
 		$db->setQuery($query);
 		$eid = $db->loadResult();
 
+		if (!$eid)
+		{
+			return;
+		}
+
 		$query = $db->getQuery(true);
 		$query->select('version_id')
 			->from('#__schemas')
@@ -1081,6 +1086,11 @@ class Com_ArsInstallerScript
 			->where($db->qn('element').' = '.$db->q($this->_akeeba_extension));
 		$db->setQuery($query);
 		$eid = $db->loadResult();
+
+		if (!$eid)
+		{
+			return;
+		}
 
 		// Get the schema version
 		$query = $db->getQuery(true);
