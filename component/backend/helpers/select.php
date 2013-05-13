@@ -162,6 +162,8 @@ class ArsHelperSelect
 
 	public static function akeebasubsgroups($selected = null, $name = 'groups', $attribs = array())
 	{
+		$html = '';
+
 		if(!is_array($selected))
 		{
 			if(empty($selected)) {
@@ -192,8 +194,6 @@ class ArsHelperSelect
 				$attribs = array_merge($default_attribs, $attribs);
 				$html = self::genericlist($options, $name.'[]', $attribs, $selected, $name);
 			}
-		} else {
-			$html = '';
 		}
 
 		return $html;
