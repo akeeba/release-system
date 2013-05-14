@@ -23,12 +23,12 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="id" value="<?php echo $this->item->id ?>" />
 	<input type="hidden" name="<?php echo JFactory::getSession()->getFormToken();?>" value="1" />
-	
+
 <div class="row-fluid">
-	
+
 	<div class="span6">
 		<h3><?php echo JText::_('COM_ARS_CATEGORY_BASIC_LABEL'); ?></h3>
-		
+
 		<div class="control-group">
 			<label for="title" class="control-label"><?php echo JText::_('COM_ARS_CATEGORIES_FIELD_TITLE'); ?></label>
 			<div class="controls">
@@ -69,7 +69,10 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<label for="access" class="control-label"><?php echo JText::_('JFIELD_ACCESS_LABEL'); ?></label>
 			<div class="controls">
 				<?php if(version_compare(JVERSION, '3.0', 'gt')): ?>
-				<?php echo JHTML::_('access.level', 'access', $this->item->access); ?>
+				<?php
+					$options = array(JHtml::_('select.option', '', JText::_('COM_ARS_COMMON_SHOW_ALL_LEVELS')));
+					echo JHTML::_('access.level', 'access', $this->item->access, '', $options);
+				?>
 				<?php else: ?>
 				<?php echo JHTML::_('list.accesslevel', $this->item); ?>
 				<?php endif; ?>
@@ -90,7 +93,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			</div>
 		</div>
 		<?php endif; ?>
-		
+
 		<div class="control-group">
 			<label for="language" class="control-label"><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?></label>
 			<div class="controls">
@@ -98,10 +101,10 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="span6">
-		<h3><?php echo JText::_('COM_ARS_CATEGORY_DESCRIPTION_LABEL'); ?></h3>	
-	
+		<h3><?php echo JText::_('COM_ARS_CATEGORY_DESCRIPTION_LABEL'); ?></h3>
+
 		<?php echo $editor->display( 'description',  $this->item->description, '97%', '350', '60', '20', array() ) ; ?>
 	</div>
 </form>

@@ -34,9 +34,9 @@ if($this->item->id == 0) {
 </div>
 
 <div class="row-fluid">
-	
+
 	<div class="span6">
-		
+
 		<div class="control-group">
 			<label for="release_id" class="control-label"><?php echo JText::_('LBL_ITEMS_RELEASE'); ?></label>
 			<div class="controls">
@@ -73,7 +73,7 @@ if($this->item->id == 0) {
 				<input type="text" name="url" id="url" value="<?php echo $this->item->url ?>" onblur="onLinkBlur();">
 			</div>
 		</div>
-		
+
 		<div class="control-group">
 			<label for="filesize" class="control-label"><?php echo JText::_('LBL_ITEMS_FILESIZE'); ?></label>
 			<div class="controls">
@@ -110,7 +110,10 @@ if($this->item->id == 0) {
 			<label for="access" class="control-label"><?php echo JText::_('JFIELD_ACCESS_LABEL'); ?></label>
 			<div class="controls">
 				<?php if(version_compare(JVERSION, '3.0', 'gt')): ?>
-				<?php echo JHTML::_('access.level', 'access', $this->item->access); ?>
+				<?php
+					$options = array(JHtml::_('select.option', '', JText::_('COM_ARS_COMMON_SHOW_ALL_LEVELS')));
+					echo JHTML::_('access.level', 'access', $this->item->access, '', $options);
+				?>
 				<?php else: ?>
 				<?php echo JHTML::_('list.accesslevel', $this->item); ?>
 				<?php endif; ?>
@@ -153,10 +156,10 @@ if($this->item->id == 0) {
 </div>
 <div class="row-fluid">
 	<div class="span12">
-		
+
 		<h3><?php echo JText::_('LBL_ARS_ITEMS_DESCRIPTION'); ?></h3>
 		<?php echo $editor->display( 'description',  $this->item->description, '97%', '480', '60', '20', array() ) ; ?>
-		
+
 	</div>
 </div>
 </form>

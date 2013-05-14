@@ -1,3 +1,7 @@
+Version 2.1.5
+================================================================================
+# [LOW] Misleading default text provided by the Joomla! core in the access level selection drop-down in Joomla! 3.0
+
 Version 2.1.4
 ================================================================================
 # [HIGH] Some servers throw a fatal error in the Categories controller
