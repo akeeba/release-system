@@ -1,14 +1,4 @@
 /**
- * Setup (required for Joomla! 3)
- */
-if(typeof(akeeba) == 'undefined') {
-	var akeeba = {};
-}
-if(typeof(akeeba.jQuery) == 'undefined') {
-	akeeba.jQuery = jQuery.noConflict();
-}
-
-/**
  * Licence: MIT and GPL version 2.0 licenses. This means that you can 
  * choose the license that best suits your project and use it accordingly. 
  *
@@ -83,7 +73,9 @@ if(typeof(akeeba.jQuery) == 'undefined') {
 							
 							var pX = h1*gd[i][0] + h3*gd[i+1][0] + h2*TiX + h4*Ti1X;
 							var pY = h1*gd[i][1] + h3*gd[i+1][1] + h2*TiY + h4*Ti1Y;
+							if(pY < 1) pY = 1; // Fix for overshoot > 100%
 							var p = [pX, pY];
+							
 							newGD.push(p);
 						}
 					}
