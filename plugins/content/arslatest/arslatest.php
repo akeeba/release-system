@@ -51,16 +51,16 @@ class plgContentArslatest extends JPlugin
 {
 	/** @var bool Is this category prepared? */
 	private $prepared = false;
-	
+
 	/** @var array Category titles to category IDs */
 	private $categoryTitles = array();
-	
+
 	/** @var array The latest release per category, including files */
 	private $categoryLatest = array();
-	
+
 	/**
 	 * Content preparation plugin hook
-	 * 
+	 *
 	 * @param srting $context
 	 * @param object $row
 	 * @param array $params
@@ -69,7 +69,7 @@ class plgContentArslatest extends JPlugin
 	public function onContentPrepare($context, &$row, &$params, $limitstart = 0)
 	{
 		$text = is_object($row) ? $row->text : $row;
-		
+
 		if ( JString::strpos( $row->text, 'arslatest' ) !== false ) {
 			if(!$this->prepared) {
 				// Deferred initialisation to the very last possible minute
@@ -78,21 +78,21 @@ class plgContentArslatest extends JPlugin
 			$regex = "#{arslatest(.*?)}#s";
 			$text = preg_replace_callback( $regex, array($this, 'process'), $text );
 		}
-		
+
 		if(is_object($row)) {
 			$row->text = $text;
 		} else {
 			$row = $text;
 		}
 	}
-	
+
 	/**
 	 * preg_match callback to process each match
 	 */
 	private function process($match)
 	{
 		$ret = '';
-		
+
 		list($op, $content, $pattern) = $this->analyzeString($match[1]);
 		switch(strtolower($op)) {
 			case 'release':
@@ -105,10 +105,10 @@ class plgContentArslatest extends JPlugin
 				$ret = $this->parseItemLink($content, $pattern);
 				break;
 		}
-		
+
 		return $ret;
 	}
-	
+
 	/**
 	 * Inisialises the arrays.
 	 */
@@ -119,26 +119,26 @@ class plgContentArslatest extends JPlugin
 			->orderby('order');
 		$model->processLatest();
 		$cats = $model->itemList;
-		
+
 		if(!empty($cats)) foreach($cats['all'] as $cat) {
 			$cat->title = trim(strtoupper($cat->title));
 			$this->categoryTitles[$cat->title] = $cat->id;
 			$this->categoryLatest[$cat->id] = $cat->release;
 		}
-		
+
 		$this->prepared = true;
 	}
-	
+
 	private function analyzeString($string)
 	{
 		$op = '';
 		$content = '';
 		$pattern = '';
-		
+
 		$string = trim($string);
 		$string = strtoupper($string);
 		$parts = explode(' ', $string, 2);
-		
+
 		if(count($parts) == 2) {
 			$op = trim($parts[0]);
 			if(in_array($op, array('RELEASE','RELEASE_LINK'))) {
@@ -159,61 +159,65 @@ class plgContentArslatest extends JPlugin
 				$op = '';
 			}
 		}
-		
+
 		if(empty($op)) $content = '';
 		if(empty($content)) $op = '';
 		if(empty($content)) $pattern = '';
-		
+
 		return array($op, $content, $pattern);
 	}
-	
+
 	private function getLatestRelease($content)
 	{
 		$release = null;
-		
-		if(!array_key_exists($content, $this->categoryTitles)) {
-			return $release;
+
+		if(array_key_exists($content, $this->categoryTitles))
+		{
+			$catid = $this->categoryTitles[$content];
 		}
-		
-		$catid = $this->categoryTitles[$content];
-		
+		else
+		{
+			// guessing it is a category id
+			$catid = (int) $content;
+		}
+
 		if(!array_key_exists($catid, $this->categoryLatest)) {
 			return $release;
 		}
-		
+
 		$release = $this->categoryLatest[$catid];
-		
+
 		if(empty($release)) {
 			$release = null;
 		}
-		
+
 		return $release;
 	}
-	
+
 	private function parseRelease($content)
 	{
 		$release = $this->getLatestRelease($content);
 		if(empty($release)) return '';
-		
+
 		return $release->version;
 	}
-	
+
 	private function parseReleaseLink($content)
 	{
 		$release = $this->getLatestRelease($content);
 		if(empty($release)) return '';
-		
+
 		$releaseid = $release->id;
 		$link = JRoute::_('index.php?option=com_ars&view=release&id='.$releaseid);
-		
+
 		return $link;
 	}
-	
+
 	private function parseItemLink($content, $pattern)
 	{
 		$release = $this->getLatestRelease($content);
 		if(empty($release)) return '';
-		
+
 		$item = null;
 		foreach($release->files as $file)
 		{
@@ -230,9 +234,9 @@ class plgContentArslatest extends JPlugin
 		}
 
 		if(empty($item)) return '';
-		
+
 		$link = JRoute::_('index.php?option=com_ars&view=download&id='.$item->id);
-		
+
 		return $link;
 	}
 }
