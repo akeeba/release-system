@@ -1120,7 +1120,7 @@ class Com_ArsInstallerScript
 		}
 
 		// Get the name of the sql file to process
-		$sqlfile = $parent->getParent()->getPath('extension_root') . '/sql/install/' . $dbDriver . '/install.sql';
+		$sqlfile = $parent->getParent()->getPath('source') . '/backend/sql/install/' . $dbDriver . '/install.sql';
 		if (file_exists($sqlfile))
 		{
 			$buffer = file_get_contents($sqlfile);
@@ -1158,7 +1158,7 @@ class Com_ArsInstallerScript
 
 		// Update #__schemas to the latest version. Again, since I don't have
 		// access to the manifest I have to improvise...
-		$path = $parent->getParent()->getPath('extension_root') . '/sql/update/' . $dbDriver;
+		$path = $parent->getParent()->getPath('source') . '/backend/sql/update/' . $dbDriver;
 		$files = str_replace('.sql', '', JFolder::files($path, '\.sql$'));
 		if(count($files) > 0)
 		{
