@@ -2580,16 +2580,16 @@ version {arslatest <emphasis role="bold">release</emphasis> <replaceable>Categor
           for a file whose names begins with com_foobar and ends in .zip in
           the Foobar category you would have to do:</para>
 
-          <programlisting>{arslatest item_link "com_foobar*.zip" Foobar}</programlisting>
+          <programlisting>{arslatest item_link 'com_foobar*.zip' Foobar}</programlisting>
 
           <para>Please note that this is the URL, not a link! If you want to
           use it as a link you will need something like this:</para>
 
-          <para><programlisting>&lt;a href="{arslatest item_link "com_foobar*.zip" Foobar}"&gt;Download latest version&lt;/a&gt;</programlisting>or
+          <para><programlisting>&lt;a href="{arslatest item_link 'com_foobar*.zip' Foobar}"&gt;Download latest version&lt;/a&gt;</programlisting>or
           combine it with the version number syntax to have something even
           more useful:</para>
 
-          <para><programlisting>&lt;a href="{arslatest item_link "com_foobar*.zip" Foobar}"&gt;Download
+          <para><programlisting>&lt;a href="{arslatest item_link 'com_foobar*.zip' Foobar}"&gt;Download
 Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
         </section>
       </section>

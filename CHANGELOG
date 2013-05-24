@@ -1,5 +1,6 @@
 Version 2.1.5
 ================================================================================
+# [LOW] ARS Latest Release plugin: the double quote is no longer a valid character in Joomla!, changed to single quote
 # [LOW] Misleading default text provided by the Joomla! core in the access level selection drop-down in Joomla! 3.0
 # [LOW] Using a category ID was impossible in the ARS latest release content plugin
 # [LOW] Pre-installation script would run the wrong SQL files on upgrade (normally not causing a problem, but still it's not the intended behaviour)

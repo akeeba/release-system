@@ -145,15 +145,15 @@ class plgContentArslatest extends JPlugin
 				$content = trim($parts[1]);
 			} elseif($op == 'ITEM_LINK') {
 				$content = trim($parts[1]);
-				$firstdq = strpos($content, '"');
-				if($firstdq !== false) {
-					$seconddq = strpos($content, '"', $firstdq + 1);
+				$firstquote = strpos($content, "'");
+				if($firstquote !== false) {
+					$secondquote = strpos($content, "'", $firstquote + 1);
 				} else {
-					$seconddq == false;
+					$secondquote == false;
 				}
-				if($seconddq !== false) {
-					$pattern = trim(substr($content, 0, $seconddq),'"');
-					$content = trim(substr($content, $seconddq + 1));
+				if($secondquote !== false) {
+					$pattern = trim(substr($content, 0, $secondquote),"'");
+					$content = trim(substr($content, $secondquote + 1));
 				}
 			} else {
 				$op = '';
