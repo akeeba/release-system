@@ -149,7 +149,7 @@ class plgContentArslatest extends JPlugin
 				if($firstquote !== false) {
 					$secondquote = strpos($content, "'", $firstquote + 1);
 				} else {
-					$secondquote == false;
+					$secondquote = false;
 				}
 				if($secondquote !== false) {
 					$pattern = trim(substr($content, 0, $secondquote),"'");
