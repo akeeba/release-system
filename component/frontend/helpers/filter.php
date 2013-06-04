@@ -106,12 +106,7 @@ class ArsHelperFilter
 		foreach($source as $s)
 		{
 			// Filter by access level
-			if(!is_array($user_access)) {
-				// Joomla! 1.5
-				if($s->access > $user_access) continue;
-			} else {
-				if( $s->access > 0 && !in_array((int)$s->access, $user_access) ) continue;
-			}
+			if( $s->access > 0 && !in_array((int)$s->access, $user_access) ) continue;
 
 			// Filter by subscription group
 			if(!empty($s->groups))

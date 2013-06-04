@@ -145,6 +145,13 @@ class ArsModelBrowses extends FOFModel
 	 */
 	public function getReleases($cat_id = 0)
 	{
+		// Does this category pass the filtering?
+		$category = $this->getCategory($cat_id);
+		if (empty($category))
+		{
+			return null;
+		}
+
 		// Get state variables
 		$orderby = $this->getState('rel_orderby', 'order');
 
@@ -232,6 +239,12 @@ class ArsModelBrowses extends FOFModel
 			return null;
 		}
 
+		// Does the category pass the level / subscriptions filter?
+		$category = FOFModel::getTmpInstance('Categories', 'ArsModel')
+			->getItem($item->category_id);
+		$dummy = ArsHelperFilter::filterList( array($category) );
+		if(!count($dummy)) return null;
+
 		// Does it pass the access level / subscriptions filter?
 		$dummy = ArsHelperFilter::filterList( array($item) );
 		if(!count($dummy)) return null;
@@ -247,6 +260,13 @@ class ArsModelBrowses extends FOFModel
 	 */
 	public function getItems($rel_id = 0)
 	{
+		// Does the release pass the filtering? It automatically checks the category access as well.
+		$release = $this->getRelease($rel_id);
+		if (empty($release))
+		{
+			return null;
+		}
+
 		// Get state variables
 		$orderby = $this->getState('items_orderby', 'order');
 

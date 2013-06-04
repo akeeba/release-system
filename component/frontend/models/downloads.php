@@ -11,11 +11,11 @@ class ArsModelDownloads extends FOFModel
 {
 	public function __construct($config = array()) {
 		parent::__construct($config);
-		
+
 		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
 		require_once JPATH_SITE.'/components/com_ars/helpers/filter.php';
 	}
-	
+
 	/**
 	 * Loads and returns an item definition
 	 * @param int $id The Item ID to load
@@ -23,6 +23,7 @@ class ArsModelDownloads extends FOFModel
 	 */
 	public function &getItem($id = null)
 	{
+		// Initialise
 		$this->item = null;
 
 		$item = FOFModel::getTmpInstance('Items','ArsModel')
@@ -30,6 +31,16 @@ class ArsModelDownloads extends FOFModel
 
 		// Is it published?
 		if(!$item->published) {
+			return null;
+		}
+
+		// Get an instance of the browse model
+		$browseModel = FOFModel::getTmpInstance('Browses', 'ArsModel');
+
+		// Check the release (and, automatically, the category) access
+		$release = $browseModel->getRelease($item->release_id);
+		if (empty($release))
+		{
 			return null;
 		}
 
@@ -56,7 +67,7 @@ class ArsModelDownloads extends FOFModel
 		else
 		{
 			$db = $this->getDBO();
-			
+
 			$innerQuery = $db->getQuery(true)
 				->select(array(
 					$db->qn('r').'.'.'*',
@@ -73,7 +84,7 @@ class ArsModelDownloads extends FOFModel
 					$db->qn('c').'.'.$db->qn('id').' = '.$db->qn('r').'.'.$db->qn('category_id')
 				.')')
 			;
-			
+
 			$query = $db->getQuery(true)
 				->select(array(
 					$db->qn('i').'.'.'*',
@@ -92,7 +103,7 @@ class ArsModelDownloads extends FOFModel
 						$db->qn('r').'.'.$db->qn('id').' = '.$db->qn('i').'.'.$db->qn('release_id').')')
 				->where($db->qn('i').'.'.$db->qn('id').' = '.$db->q($this->item->id))
 			;
-			
+
 			$db->setQuery($query);
 			$item = $db->loadObject();
 
@@ -100,23 +111,23 @@ class ArsModelDownloads extends FOFModel
 			JLoader::import('joomla.filesystem.file');
 
 			$folder = $item->cat_directory;
-			
+
 			$potentialPrefix = substr($folder, 0, 5);
 			$potentialPrefix = strtolower($potentialPrefix);
 			$useS3 = $potentialPrefix == 's3://';
-			
+
 			if($useS3) {
 				$filename = substr($folder,5).'/'.$item->filename;
 				$s3 = ArsHelperAmazons3::getInstance();
 				$url = $s3->getAuthenticatedURL('', $filename);
-				
+
 				if(@ob_get_length () !== FALSE) {
 					@ob_end_clean();
 				}
 				header('Location: '.$url);
 				JFactory::getApplication()->close();
 			}
-			
+
 			if(!JFolder::exists($folder)) {
 				$folder = JPATH_ROOT.'/'.$folder;
 				if(!JFolder::exists($folder)) {
@@ -150,11 +161,11 @@ class ArsModelDownloads extends FOFModel
             else {
             	$header_file = $basename;
             }
-            
+
             // Import ARS plugins
             JLoader::import('joomla.plugin.helper');
             JPluginHelper::importPlugin('ars');
-            
+
             // Call any plugins to post-process the download file parameters
             $object = array(
             	'rawentry'		=> $item,
@@ -216,7 +227,7 @@ class ArsModelDownloads extends FOFModel
 			} else {
 				$range = '';
 			}
-			
+
 			if($range) {
 				//figure out download piece from range (if set)
 				list($seek_start, $seek_end) = explode('-', $range, 2);
@@ -225,7 +236,7 @@ class ArsModelDownloads extends FOFModel
 				//also check for invalid ranges.
 				$seek_end = (empty($seek_end)) ? ($size - 1) : min(abs(intval($seek_end)),($filesize - 1));
 				$seek_start = (empty($seek_start) || $seek_end < abs(intval($seek_start))) ? 0 : max(abs(intval($seek_start)),0);
-				
+
 				$isResumable = true;
 			}
 
@@ -235,7 +246,7 @@ class ArsModelDownloads extends FOFModel
 	   		$handle = @fopen($filename, 'rb');
 	   		if($handle !== false)
 	   		{
-			
+
 				if($isResumable) {
 					//Only send partial content header if downloading a piece of the file (IE workaround)
 					if ($seek_start > 0 || $seek_end < ($filesize - 1)) {
@@ -246,7 +257,7 @@ class ArsModelDownloads extends FOFModel
 					$totalLength = $seek_end - $seek_start + 1;
 					header('Content-Range: bytes '.$seek_start.'-'.$seek_end.'/'.$size);
 					header('Content-Length: '.$totalLength);
-					
+
 					// Seek to start
 					fseek($handle, $seek_start);
 				} else {
@@ -278,7 +289,7 @@ class ArsModelDownloads extends FOFModel
 				if($filesize > 0) header('Content-Length: '.(int)$filesize);
 	   			@readfile($filename);
 	   		}
-	   		
+
             // Call any plugins to post-process the file download
             $object = array(
             	'rawentry'		=> $item,
@@ -298,9 +309,9 @@ class ArsModelDownloads extends FOFModel
             		echo $r;
             	}
             }
-	   		
+
 		}
-		
+
 		JFactory::getApplication()->close();
 	}
 
