@@ -42,7 +42,7 @@ class ArsControllerCategory extends FOFController
 		} elseif(!JFactory::getUser()->authorise('com.manage', 'com_ars')) {
 			JError::raiseError(403, 'Forbidden');
 		}
-		
+
 		parent::__construct($config);
 	}
 
@@ -99,6 +99,7 @@ class ArsControllerCategory extends FOFController
 			$noAccessURL = JComponentHelper::getParams('com_ars')->get('no_access_url', '');
 			if(!empty($noAccessURL)) {
 				$this->setRedirect($noAccessURL);
+				return;
 			}
 			return false;
 		}

@@ -98,6 +98,7 @@ class ArsControllerRelease extends FOFController
 			$noAccessURL = JComponentHelper::getParams('com_ars')->get('no_access_url', '');
 			if(!empty($noAccessURL)) {
 				$this->setRedirect($noAccessURL);
+				return;
 			}
 			return false;
 		}
