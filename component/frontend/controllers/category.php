@@ -98,8 +98,7 @@ class ArsControllerCategory extends FOFController
 		} else {
 			$noAccessURL = JComponentHelper::getParams('com_ars')->get('no_access_url', '');
 			if(!empty($noAccessURL)) {
-				$this->setRedirect($noAccessURL);
-				return;
+				JFactory::getApplication()->redirect($noAccessURL);
 			}
 			return false;
 		}
