@@ -52,7 +52,7 @@ class ArsHelperFilter
 				$options = array('remember' => false);
 				$authenticate = JAuthentication::getInstance();
 				$response	  = $authenticate->authenticate($credentials, $options);
-				if ($response->status == JAUTHENTICATE_STATUS_SUCCESS) {
+				if ($response->status == JAuthentication::STATUS_SUCCESS) {
 					JPluginHelper::importPlugin('user');
 					$results = $app->triggerEvent('onLoginUser', array((array)$response, $options));
 					if(version_compare(JVERSION,'1.6.0','ge')) {
