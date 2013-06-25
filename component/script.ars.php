@@ -45,6 +45,11 @@ class Com_ArsInstallerScript
 	/** @var array Obsolete files and folders to remove */
 	private $akeebaRemoveFiles = array(
 		'files'	=> array(
+			'cache/com_ars.updates.php',
+			'cache/com_ars.updates.ini',
+			'administrator/cache/com_ars.updates.php',
+			'administrator/cache/com_ars.updates.ini',
+
 			'administrator/components/com_ars/install.sql',
 			'administrator/components/com_ars/uninstall.sql',
 			'administrator/components/com_ars/controllers/categories.php',
@@ -180,6 +185,7 @@ class Com_ArsInstallerScript
 			$this->_bugfixCantBuildAdminMenus();
 			$this->_fixBrokenSQLUpdates($parent);
 			$this->_fixSchemaVersion();
+			$this->_resetLiveUpdate();
 		}
 
 		return true;
@@ -1175,6 +1181,46 @@ class Com_ArsInstallerScript
 		$query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
 		$query->values($eid . ', ' . $db->quote($version));
 		$db->setQuery($query);
+		$db->execute();
+	}
+
+	/**
+	 * Deletes the Live Update information, forcing its reload during the first
+	 * run of the component. This makes sure that the Live Update doesn't show
+	 * an update available right after installing the component.
+	 */
+	private function _resetLiveUpdate()
+	{
+		// Load the component parameters, not using JComponentHelper to avoid conflicts ;)
+		JLoader::import('joomla.html.parameter');
+		JLoader::import('joomla.application.component.helper');
+		$db = JFactory::getDbo();
+		$sql = $db->getQuery(true)
+			->select($db->qn('params'))
+			->from($db->qn('#__extensions'))
+			->where($db->qn('type').' = '.$db->q('component'))
+			->where($db->qn('element').' = '.$db->q($this->_akeeba_extension));
+		$db->setQuery($sql);
+		$rawparams = $db->loadResult();
+		$params = new JRegistry();
+		if(version_compare(JVERSION, '3.0', 'ge')) {
+			$params->loadString($rawparams, 'JSON');
+		} else {
+			$params->loadJSON($rawparams);
+		}
+
+		// Reset the liveupdate key
+		$params->set('liveupdate', null);
+
+		// Save the modified component parameters
+		$data = $params->toString();
+		$sql = $db->getQuery(true)
+			->update($db->qn('#__extensions'))
+			->set($db->qn('params').' = '.$db->q($data))
+			->where($db->qn('type').' = '.$db->q('component'))
+			->where($db->qn('element').' = '.$db->q($this->_akeeba_extension));
+
+		$db->setQuery($sql);
 		$db->execute();
 	}
 }
