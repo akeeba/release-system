@@ -410,6 +410,9 @@ class ArsModelBleedingedge extends FOFModel
 	private function coloriseChangelog(&$this_changelog, $first_changelog = array())
 	{
 		$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
+		if(empty($this_changelog)) {
+			return '';
+		}
 		$notes = '';
 
 		JLoader::import('joomla.application.component.helper');
