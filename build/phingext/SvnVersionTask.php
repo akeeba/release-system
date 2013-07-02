@@ -2,6 +2,9 @@
 require_once 'phing/Task.php';
 require_once 'phing/tasks/ext/svn/SvnBaseTask.php';
 
+// Required for Zend Server 6 on Mac OS X
+putenv("DYLD_LIBRARY_PATH=''");
+
 /**
  * SVN latest tree version to Phing property
  * @version $Id: SvnVersionTask.php 690 2011-06-02 19:58:58Z nikosdion $
@@ -37,7 +40,7 @@ class SvnVersionTask extends SvnBaseTask
     {
         $this->workingCopy = $wc;
     }
-    
+
     /**
      * The main entry point
      *
@@ -46,7 +49,7 @@ class SvnVersionTask extends SvnBaseTask
     function main()
     {
 		$this->setup('info');
-		
+
 
 		exec('svnversion '.escapeshellarg($this->workingCopy), $out);
 		if( strpos($out[0],':') === false )
@@ -58,7 +61,7 @@ class SvnVersionTask extends SvnBaseTask
 			$parts = explode(':', $out[0]);
 			$version = intval($parts[1]);
 		}
-		
+
 		if( $version > 0 )
 		{
 			$this->project->setProperty($this->getPropertyName(), $version);
@@ -66,9 +69,9 @@ class SvnVersionTask extends SvnBaseTask
 		else
 		{
 			$this->_use_gitsvn();
-		}            
+		}
     }
-	
+
 	function _use_gitsvn()
 	{
 		$path = realpath($this->workingCopy);
@@ -80,21 +83,21 @@ class SvnVersionTask extends SvnBaseTask
 		} else {
 			exec('pushd '.escapeshellarg($path).' > /dev/null; git svn info; popd > /dev/null', $out);
 		}
-		
+
 
 		if(empty($out)) {
 			throw new BuildException("Failed to parse the output of 'git svn info'.");
 			return;
 		}
-		
+
 		$version = 0;
 		foreach($out as $line) {
 			$parts = explode(':', $line, 2);
 			if($parts[0] != 'Revision') continue;
-			
+
 			$version = intval($parts[1]);
 		}
-		
+
 		if( $version > 0 )
 		{
 			$this->project->setProperty($this->getPropertyName(), $version);
