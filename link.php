@@ -14,12 +14,17 @@ $symlink_folders = array(
 	# Component translation
 	'translations/component/backend/en-GB'		=> 'component/language/backend/en-GB',
 	'translations/component/frontend/en-GB'		=> 'component/language/frontend/en-GB',
+
 	# Live Update
 	'../liveupdate/code/assets'					=> 'component/backend/liveupdate/assets',
 	'../liveupdate/code/classes'				=> 'component/backend/liveupdate/classes',
 	'../liveupdate/code/language'				=> 'component/backend/liveupdate/language',
+
 	# FOF
 	'../fof/fof'								=> 'component/fof',
+
+	# Akeeba Strapper
+	'../fof/strapper' => 'component/strapper',
 );
 
 define('IS_WINDOWS', substr(PHP_OS, 0, 3) == 'WIN');
