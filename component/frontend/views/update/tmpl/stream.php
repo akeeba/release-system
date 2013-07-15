@@ -188,11 +188,4 @@ else
 	endforeach;
 endforeach;
 ?>
-
-<debug>
-<![CDATA[
-<?php print_r(JFactory::getDbo()->getLog()) ?>
-]]>
-</debug>
-
 </updates><?php die(); ?>
