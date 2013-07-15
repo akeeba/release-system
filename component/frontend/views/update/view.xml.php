@@ -39,9 +39,9 @@ class ArsViewUpdate extends FOFViewHtml
 			case 'stream':
 				$model 		= $this->getModel();
 				$items		= $model->items;
-				$published	= $model->published;
+				//$published	= $model->published;
 				$this->assign('items',			$items);
-				$this->assign('published', 		$published);
+				//$this->assign('published', 		$published);
 				$this->setLayout('stream');
 				break;
 		}

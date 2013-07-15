@@ -1,3 +1,7 @@
+Version 2.1.6
+================================================================================
+~ Query optimisation for generating XML update streams
+
 Version 2.1.5
 ================================================================================
 # [HIGH] Access control of items wouldn't take account the access of the release and category
