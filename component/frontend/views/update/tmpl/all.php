@@ -32,7 +32,7 @@ if ($dlid !== false) {
 @ob_end_clean();
 @header('Content-type: application/xml');
 ?><?php echo $tag; ?>
-<!-- Update stream generated automatically by Akeeba Release System -->
+<!-- Update stream generated automatically by Akeeba Release System on <?=gmdate('Y-m-d H:i:s')?> -->
 <extensionset name="<?php echo $this->updates_name ?>" description="<?php echo $this->updates_desc ?>">
 <?php foreach($categories as $category):
 $url=$rootURL.AKRouter::_('index.php?option=com_ars&view=update&format=xml&task=category&id='.$category.$dlid);
@@ -40,4 +40,3 @@ $url=str_replace('&', '&amp;', $url);
 if(substr($url,-4) != '.xml') $url .= (strpos($url, '?') ? '&amp;' : '?').'dummy=extension.xml';
 ?><category name="<?php echo ucfirst($category)?>" description="<?php echo JText::_('LBL_UPDATETYPES_'.strtoupper($category)); ?>" category="<?php echo $category ?>" ref="<?php echo $url ?>" />
 <?php endforeach ?>
-</extensionset><?php JFactory::getApplication()->close(); ?>

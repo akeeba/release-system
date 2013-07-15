@@ -42,7 +42,7 @@ $streamTypeMap = array(
 @header('Content-type: application/xml');
 
 ?><?php echo $tag; ?>
-<!-- Update stream generated automatically by Akeeba Release System -->
+<!-- Update stream generated automatically by Akeeba Release System on <?=gmdate('Y-m-d H:i:s')?> -->
 <extensionset category="<?php echo ucfirst($this->category)?>" name="<?php echo ucfirst($this->category)?>" description="<?php echo JText::_('LBL_UPDATETYPES_'.strtoupper($this->category)); ?>">
 <?php if(!empty($this->items)) foreach($this->items as $item):
 $url = $rootURL.AKRouter::_('index.php?option=com_ars&view=update&format=xml&task=stream&id='.$item->id.$dlid);
@@ -51,4 +51,3 @@ if(substr($url,-4) != '.xml') $url .= (strpos($url, '?') ? '&amp;' : '?').'dummy
 ?>	<extension name="<?php echo $item->name ?>" element="<?php echo $item->element ?>" type="<?php echo $streamTypeMap[$item->type] ?>" version="<?php echo $item->version?>" detailsurl="<?php echo $url ?>" />
 <?php endforeach ?>
 </extensionset>
-<?php JFactory::getApplication()->close(); ?>

@@ -38,9 +38,9 @@ if( !empty($this->items) ):
 	$item->environments = @json_decode($item->environments);
 	if(!empty($item->environments) && is_array($item->environments)) {
 		static $envs = array();
-		
+
 		$platforms = array();
-		
+
 		if(!class_exists('ArsModelEnvironments')) {
 			require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/environments.php';
 		}
@@ -49,15 +49,15 @@ if( !empty($this->items) ):
 				$envs[$eid] = FOFModel::getTmpInstance('Environments','ArsModel')
 					->getItem($eid);
 			}
-			
+
 			$platforms[] = $envs[$eid]->xmltitle;
 		}
 	} else {
 		$platforms = array('joomla/2.5');
 	}
-	
+
 	$platformKeys = array();
-	
+
 	foreach($platforms as $platform) {
 		$platformParts = explode('/',$platform, 2);
 		switch(count($platformParts)) {
@@ -72,9 +72,10 @@ if( !empty($this->items) ):
 		}
 		$platformKeys[] = $platformName.'/'.$platformVersion;
 	}
-	
+
 @ob_end_clean();
 ?>; Live Update provision file
+; Generated on <?=gmdate('Y-m-d H:i:s')?> GMT
 software="<?php echo $item->cat_title ?>"
 version="<?php echo $item->version; ?>"
 link="<?php echo $downloadURL; ?>"
@@ -88,4 +89,3 @@ platforms="<?php echo implode(',', $platformKeys) ?>"
 ; Live Update provision file
 ; No updates are available!
 <?php endif; ?>
-<?php JFactory::getApplication()->close(); ?>

@@ -76,7 +76,16 @@ class ArsControllerUpdate extends FOFController
 
 	public function all()
 	{
-		$this->display(true);
+		$registeredURLParams = array(
+			'option'		=> 'CMD',
+			'view'			=> 'CMD',
+			'task'			=> 'CMD',
+			'format'		=> 'CMD',
+			'layout'		=> 'CMD',
+			'id'			=> 'INT',
+			'dlid'			=> 'STRING',
+		);
+		$this->display(true, $registeredURLParams);
 	}
 
 	public function category()
@@ -93,7 +102,17 @@ class ArsControllerUpdate extends FOFController
 		}
 		$model = $this->getThisModel();
 		$x = $model->getCategoryItems($cat);
-		$this->display(true);
+
+		$registeredURLParams = array(
+			'option'		=> 'CMD',
+			'view'			=> 'CMD',
+			'task'			=> 'CMD',
+			'format'		=> 'CMD',
+			'layout'		=> 'CMD',
+			'id'			=> 'INT',
+			'dlid'			=> 'STRING',
+		);
+		$this->display(true, $registeredURLParams);
 	}
 
 	public function stream()
@@ -109,7 +128,16 @@ class ArsControllerUpdate extends FOFController
 		$model->getItems($id);
 		$model->getPublished($id);
 
-		$this->display(true);
+		$registeredURLParams = array(
+			'option'		=> 'CMD',
+			'view'			=> 'CMD',
+			'task'			=> 'CMD',
+			'format'		=> 'CMD',
+			'layout'		=> 'CMD',
+			'id'			=> 'INT',
+			'dlid'			=> 'STRING',
+		);
+		$this->display(true, $registeredURLParams);
 	}
 
 	public function ini()
@@ -125,6 +153,15 @@ class ArsControllerUpdate extends FOFController
 		$model->getItems($id);
 		$model->getPublished($id);
 
-		$this->display(true);
+		$registeredURLParams = array(
+			'option'		=> 'CMD',
+			'view'			=> 'CMD',
+			'task'			=> 'CMD',
+			'format'		=> 'CMD',
+			'layout'		=> 'CMD',
+			'id'			=> 'INT',
+			'dlid'			=> 'STRING',
+		);
+		$this->display(true, $registeredURLParams);
 	}
 }

@@ -1,6 +1,7 @@
 Version 2.1.6
 ================================================================================
 ~ Query optimisation for generating XML update streams
+# [MEDIUM] Caching didn't actually work with any ARS view, most annoyingly not working with update views
 
 Version 2.1.5
 ================================================================================

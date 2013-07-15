@@ -55,7 +55,7 @@ else
 @header('X-Akeeba-Expire-After: 300');
 
 ?><?php echo $tag; ?>
-<!-- Update stream generated automatically by Akeeba Release System -->
+<!-- Update stream generated automatically by Akeeba Release System on <?=gmdate('Y-m-d H:i:s')?> GMT -->
 <updates>
 	<?php
 	foreach ($this->items as $item):
@@ -188,4 +188,4 @@ else
 	endforeach;
 endforeach;
 ?>
-</updates><?php die(); ?>
+</updates>
