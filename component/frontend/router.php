@@ -11,6 +11,12 @@ defined('_JEXEC') or die();
 
 include_once JPATH_LIBRARIES.'/fof/include.php';
 
+class ComArsRouter
+{
+    public static $routeRaw = true;
+    public static $routeHtml = true;
+}
+
 function arsBuildRoute(&$query)
 {
 	$format = isset($query['format']) ? $query['format'] : 'html';
@@ -21,7 +27,14 @@ function arsBuildRoute(&$query)
 	switch($format)
 	{
 		case 'html':
-			$segments = arsBuildRouteHtml($query);
+                        if (ComArsRouter::$routeHtml)
+                        {
+                            $segments = arsBuildRouteHtml($query);
+                        }
+                        else
+                        {
+                            $segments = array();
+                        }
 			break;
 		case 'feed':
 			$segments = arsBuildRouteFeed($query);
@@ -34,7 +47,14 @@ function arsBuildRoute(&$query)
 			break;
 		case 'raw':
 		default:
-			$segments = arsBuildRouteRaw($query);
+                        if (ComArsRouter::$routeRaw)
+                        {
+                            $segments = arsBuildRouteRaw($query);
+                        }
+                        else
+                        {
+                            $segments = array();
+                        }
 			break;
 	}
 

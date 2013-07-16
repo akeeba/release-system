@@ -54,6 +54,10 @@ else
 // output for 5 minutes.
 @header('X-Akeeba-Expire-After: 300');
 
+include_once JPATH_SITE . '/components/com_ars/router.php';
+ComArsRouter::$routeRaw = false;
+ComArsRouter::$routeHtml = false;
+
 ?><?php echo $tag; ?>
 <!-- Update stream generated automatically by Akeeba Release System on <?=gmdate('Y-m-d H:i:s')?> GMT -->
 <updates>
@@ -105,6 +109,11 @@ else
 		{
 			$format = 'UNSUPPORTED';
 		}
+                
+                if ($format != 'UNSUPPORTED')
+                {
+                    $downloadURL .= '&amp;dummy=my.' . $format;
+                }
 
 		$item->environments = @json_decode($item->environments);
 
@@ -182,7 +191,10 @@ else
 	endforeach;
 endforeach;
 ?>
-<?php if(defined('JDEBUG') && JDEBUG && true): ?>
+<?php
+// Just some debugging info I'm using while tuning the performance of this page
+if(defined('JDEBUG') && JDEBUG && false):
+?>
 <debug>
     <dbqueries>
         <?php foreach(JFactory::getDbo()->getLog() as $i => $query): ?>
