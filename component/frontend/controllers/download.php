@@ -25,6 +25,9 @@ class ArsControllerDownload extends FOFController
 
 		// Get the model
 		$model = $this->getThisModel();
+		
+		// Log in a user if I have to
+		$model->loginUser();
 
 		// Get the log table
 		$log = FOFModel::getTmpInstance('Logs','ArsModel')->getTable();

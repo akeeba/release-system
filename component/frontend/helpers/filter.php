@@ -16,7 +16,6 @@ class ArsHelperFilter
 	 */
 	static public function filterList($source)
 	{
-		static $user_access = null;
 		static $myGroups = null;
 
 		// Initialise filtered list
@@ -30,84 +29,19 @@ class ArsHelperFilter
 		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/filtering.php';
 
 		// Cache user access and groups
-		if(is_null($user_access) || is_null($myGroups))
+		if(is_null($myGroups))
 		{
-			// Do we have a dlid in the query?
-			$dlid = JRequest::getString('dlid',null);
-
-			$credentials = array();
-			$credentials['username'] = JRequest::getVar('username', '', 'get', 'username');
-			$credentials['password'] = JRequest::getString('password', '', 'get', JREQUEST_ALLOWRAW);
-			if(!empty($dlid)) {
-				try {
-					$user = self::getUserFromDownloadID($dlid);
-				} catch (Exception $exc) {
-					$user = JFactory::getUser();
-				}
-			} elseif( !empty($credentials['username']) && !empty($credentials['password']) ) {
-				// AUTHENTICATE AGAINST USERNAME/PASSWORD PAIR IN QUERY
-
-				JLoader::import( 'joomla.user.authentication');
-				$app = JFactory::getApplication();
-				$options = array('remember' => false);
-				$authenticate = JAuthentication::getInstance();
-				$response	  = $authenticate->authenticate($credentials, $options);
-				if ($response->status == JAuthentication::STATUS_SUCCESS) {
-					JPluginHelper::importPlugin('user');
-					$results = $app->triggerEvent('onLoginUser', array((array)$response, $options));
-					if(version_compare(JVERSION,'1.6.0','ge')) {
-						JLoader::import('joomla.user.helper');
-						$userid = JUserHelper::getUserId($response->username);
-						$user = JFactory::getUser($userid);
-					} else {
-						$user = JFactory::getUser();
-					}
-					$parameters['username']	= $user->get('username');
-					$parameters['id']		= $user->get('id');
-				} else {
-					$user = JFactory::getUser();
-				}
-			} else {
-				// USE ALREADY LOGGED IN USER (OR GUEST ACCOUNT)
-				$user = JFactory::getUser();
-			}
-
-			// Get user info
-			if(version_compare(JVERSION,'1.6.0','ge')) {
-				$user_access = $user->getAuthorisedViewLevels();
-			} else {
-				$user_access = 0;
-				switch($user->gid) {
-					case 18:
-						$user_access = 1;
-						break;
-					case 19:
-					case 20:
-					case 21:
-						$user_access = 2;
-						break;
-					case 23:
-					case 24:
-					case 25:
-						$user_access = 3;
-						break;
-				}
-			}
-
 			// Get subscription groups of current user
 			if(!ArsHelperFiltering::hasSubscriptionsExtension()) {
 				$mygroups = array();
 			} else {
-				$mygroups = ArsHelperFiltering::getUserGroups($user->id);
+				$mygroups = ArsHelperFiltering::getUserGroups(JFactory::getUser()->id);
 			}
 		}
 
 		// Do the real filtering
 		foreach($source as $s)
 		{
-			// Filter by access level
-			if( $s->access > 0 && !in_array((int)$s->access, $user_access) ) continue;
-
 			// Filter by subscription group
 			if(!empty($s->groups))
 			{

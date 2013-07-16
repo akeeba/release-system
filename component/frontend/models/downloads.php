@@ -9,6 +9,9 @@ defined('_JEXEC') or die();
 
 class ArsModelDownloads extends FOFModel
 {
+	/** @var   boolean  True if we have logged in a user */
+	protected $haveLoggedInAUser = false;
+	
 	public function __construct($config = array()) {
 		parent::__construct($config);
 
@@ -26,33 +29,30 @@ class ArsModelDownloads extends FOFModel
 		// Initialise
 		$this->item = null;
 
-		$item = FOFModel::getTmpInstance('Items','ArsModel')
-			->getItem($id);
+		$items = FOFModel::getTmpInstance('Items','ArsModel')
+			//->access_user(JFactory::getUser()->id)
+			->published(1)
+			->setId($id)
+			->getItemList();
 
-		// Is it published?
-		if(!$item->published) {
-			return null;
-		}
-
-		// Get an instance of the browse model
-		$browseModel = FOFModel::getTmpInstance('Browses', 'ArsModel');
-
-		// Check the release (and, automatically, the category) access
-		$release = $browseModel->getRelease($item->release_id);
-		if (empty($release))
+		if (empty($items))
 		{
 			return null;
 		}
-
+		
 		// Does it pass the access level / subscriptions filter?
-		$dummy = ArsHelperFilter::filterList( array($item) );
+		$dummy = ArsHelperFilter::filterList( $items );
 		if(!count($dummy)) {
 			$null = null;
 			return $null;
 		}
 
+		$item = FOFModel::getTmpInstance('Items','ArsModel')->getTable();
+		$item->bind(array_pop($items));
+
 		$this->item = $item;
-		return $item;
+		
+		return $this->item;
 	}
 
 	public function doDownload()
@@ -125,6 +125,7 @@ class ArsModelDownloads extends FOFModel
 					@ob_end_clean();
 				}
 				header('Location: '.$url);
+				$this->logoutUser();
 				JFactory::getApplication()->close();
 			}
 
@@ -132,6 +133,7 @@ class ArsModelDownloads extends FOFModel
 				$folder = JPATH_ROOT.'/'.$folder;
 				if(!JFolder::exists($folder)) {
 					header('HTTP/1.0 404 Not Found');
+					$this->logoutUser();
 					exit(0);
 				}
 			}
@@ -139,6 +141,7 @@ class ArsModelDownloads extends FOFModel
 			$filename = $folder.'/'.$item->filename;
 			if(!JFile::exists($filename)) {
 				header('HTTP/1.0 404 Not Found');
+				$this->logoutUser();
 				exit(0);
 			}
 
@@ -312,6 +315,7 @@ class ArsModelDownloads extends FOFModel
 
 		}
 
+		$this->logoutUser();
 		JFactory::getApplication()->close();
 	}
 
@@ -328,5 +332,137 @@ class ArsModelDownloads extends FOFModel
 			return ($matches[1]);
 		}
 		return 'application/octet-stream'; // no match at all
+	}
+
+	/**
+	 * Log in a user if necessary
+	 * 
+	 * @return  boolean  True if a user was logged in
+	 */
+	public function loginUser()
+	{
+		// No need to log in a user if the user is already logged in
+		if (!JFactory::getUser()->guest)
+		{
+			return false;
+		}
+		
+		// This helper contains some useful dlid functions and stuff...
+		require_once JPATH_SITE . '/components/com_ars/helpers/filter.php';
+
+		// This is Joomla!'s login and user helpers
+		JPluginHelper::importPlugin('user');
+		JLoader::import('joomla.user.helper');
+
+		// Get the query parameters
+		$dlid						= JRequest::getString('dlid',null);
+		$credentials				= array();
+		$credentials['username']	= JRequest::getVar('username', '', 'get', 'username');
+		$credentials['password']	= JRequest::getString('password', '', 'get', JREQUEST_ALLOWRAW);
+
+		// Initialise
+		$user_id = 0;
+
+		// First attempt to log in by download ID
+		if (!empty($dlid)) {
+			try
+			{
+				$user_id = ArsHelperFilter::getUserFromDownloadID($dlid)->id;
+			}
+			catch (Exception $exc)
+			{
+				$user_id = 0;
+			}
+		}
+
+		// If the dlid failed, used he legacy username/password pair
+		if (($user_id === 0) && !empty($credentials['username']) && !empty($credentials['password']) )
+		{
+			JLoader::import( 'joomla.user.authentication');
+			$app = JFactory::getApplication();
+			$options = array('remember' => false);
+			$authenticate = JAuthentication::getInstance();
+			$response	  = $authenticate->authenticate($credentials, $options);
+
+			if ($response->status == JAuthentication::STATUS_SUCCESS)
+			{
+				$user_id = JUserHelper::getUserId($response->username);
+			}
+		}
+
+		// Log in the user
+		if ($user_id !== 0)
+		{
+			// Mark the user login so we can log him out later on
+			$this->haveLoggedInAUser = true;
+
+			// This line returns an empty JUser object
+			$newUserObject = new JUser();
+			// This line FORCE RELOADS the user record.
+			$newUserObject->load($userid);
+
+			// Mark the user as logged in
+			$newUserObject->block = 0;
+			$newUserObject->set('guest', 0);
+
+			// Register the needed session variables
+			$session->set('user', $newUserObject);
+
+			$db = JFactory::getDBO();
+
+			// Check to see the the session already exists.
+			$app = JFactory::getApplication();
+			$app->checkSession();
+
+			// Update the user related fields for the Joomla sessions table.
+			$query = $db->getQuery(true)
+				->update($db->qn('#__session'))
+				->set(array(
+					$db->qn('guest').' = ' . $db->q($newUserObject->get('guest')),
+					$db->qn('username').' = ' . $db->q($newUserObject->get('username')),
+					$db->qn('userid').' = ' . (int) $newUserObject->get('id')
+				))->where($db->qn('session_id').' = '.$db->q($session->getId()));
+			$db->setQuery($query);
+			$db->execute();
+
+			// Hit the user last visit field
+			$newUserObject->setLastVisit();
+		}
+		
+		return $this->haveLoggedInAUser;
+	}
+	
+	/**
+	 * Log out the user who was logged in with the loginUser() method above
+	 * 
+	 * @return  boolean  True if a user was logged out
+	 */
+	public function logoutUser()
+	{
+		if (!$this->haveLoggedInAUser)
+		{
+			return false;
+		}
+		
+		$my 		= JFactory::getUser();
+		$session 	= JFactory::getSession();
+		$app 		= JFactory::getApplication();
+
+		// Hit the user last visit field
+		$my->setLastVisit();
+
+		// Destroy the php session for this user
+		$session->destroy();
+
+		// Force logout all users with that userid
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true)
+			->delete($db->qn('#__session'))
+			->where($db->qn('userid').' = '.(int) $my->id)
+			->where($db->qn('client_id').' = '.(int) $app->getClientId());
+		$db->setQuery($query);
+		$db->execute();
+		
+		return $this->haveLoggedInAUser;
 	}
 }

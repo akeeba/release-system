@@ -34,6 +34,7 @@ class ArsModelBrowses extends FOFModel
 			->limitstart($start)
 			->limit($limit)
 			->published(1)
+			->access_user(JFactory::getUser()->id)
 			->type('');
 
 		if(version_compare(JVERSION, '1.6.0', 'ge')) {
@@ -120,6 +121,7 @@ class ArsModelBrowses extends FOFModel
 		$this->setState('category_id', $id);
 
 		$cat = FOFModel::getTmpInstance('Categories','ArsModel')
+			->access_user(JFactory::getUser()->id)
 			->getItem($id);
 
 		// Is it published?
@@ -168,6 +170,7 @@ class ArsModelBrowses extends FOFModel
 			->limitstart($start)
 			->limit($limit)
 			->published(1)
+			->access_user(JFactory::getUser()->id)
 			->category($cat_id);
 
 		$app = JFactory::getApplication();
@@ -232,6 +235,7 @@ class ArsModelBrowses extends FOFModel
 		$this->item = null;
 
 		$item = FOFModel::getTmpInstance('Releases','ArsModel')
+			->access_user(JFactory::getUser()->id)
 			->getItem($id);
 
 		// Is it published?
@@ -241,6 +245,7 @@ class ArsModelBrowses extends FOFModel
 
 		// Does the category pass the level / subscriptions filter?
 		$category = FOFModel::getTmpInstance('Categories', 'ArsModel')
+			->access_user(JFactory::getUser()->id)
 			->getItem($item->category_id);
 		$dummy = ArsHelperFilter::filterList( array($category) );
 		if(!count($dummy)) return null;
@@ -283,6 +288,7 @@ class ArsModelBrowses extends FOFModel
 			->limitstart($start)
 			->limit($limit)
 			->published(1)
+			->access_user(JFactory::getUser()->id)
 			->release($rel_id);
 		$app = JFactory::getApplication();
 		if($app->getLanguageFilter()) {
@@ -348,6 +354,7 @@ class ArsModelBrowses extends FOFModel
 				$model = FOFModel::getTmpInstance('Releases','ArsModel')
 					->category($cat->id)
 					->published(1)
+					->access_user(JFactory::getUser()->id)
 					->limitstart(0)
 					->limit(1);
 				switch($orderby)
@@ -473,6 +480,8 @@ class ArsModelBrowses extends FOFModel
 				$model->setState('release',			$cat->release->id);
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			0);
+				
+				$model->access_user(JFactory::getUser()->id);
 
 				$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
 				if ($hasLanguageFilter)
