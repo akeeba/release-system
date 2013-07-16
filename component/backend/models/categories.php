@@ -49,6 +49,14 @@ class ArsModelCategories extends FOFModel
 			$query->where($db->qn('access').' = '.$db->q($fltAccess));
 		}
 		
+		$fltAccessUser	= $this->getState('access_user', null, 'int');
+		if(!is_null($fltAccessUser))
+		{
+			$access_levels = JFactory::getUser($fltAccessUser)->getAuthorisedViewLevels();
+			$access_levels = array_map(array(JFactory::getDbo(), 'quote'), $access_levels);
+			$query->where($db->qn('access').' IN (' . implode(',', $access_levels) . ')');
+		}
+		
 		$fltPublished	= $this->getState('published', null, 'cmd');
 		if($fltPublished != '') {
 			$query->where($db->qn('published').' = '.$db->q($fltPublished));

@@ -51,6 +51,22 @@ class ArsModelItems extends FOFModel
 			$query->where($db->qn('release_id').' = '.$db->q($fltRelease));
 		}
 		
+		$fltAccess		= $this->getState('access', null, 'cmd');
+		if($fltAccess) {
+			$query->where($db->qn('i.access').' = '.$db->q($fltAccess));
+		}
+		
+		$fltAccessUser	= $this->getState('access_user', null, 'int');
+		if(!is_null($fltAccessUser))
+		{
+			$access_levels = JFactory::getUser($fltAccessUser)->getAuthorisedViewLevels();
+			$access_levels = array_map(array(JFactory::getDbo(), 'quote'), $access_levels);
+			
+			$query->where($db->qn('c.access').' IN (' . implode(',', $access_levels) . ')');
+			$query->where($db->qn('r.access').' IN (' . implode(',', $access_levels) . ')');
+			$query->where($db->qn('i.access').' IN (' . implode(',', $access_levels) . ')');
+		}
+		
 		$fltPublished	= $this->getState('published', null, 'cmd');
 		if($fltPublished != '') {
 			$query->where($db->qn('i').'.'.$db->qn('published').' = '.$db->q($fltPublished));
