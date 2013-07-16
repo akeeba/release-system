@@ -110,26 +110,20 @@ else
 
 		if (!empty($item->environments) && is_array($item->environments))
 		{
-			static $envs = array();
-
 			$platforms = array();
-
-			if (!class_exists('ArsModelEnvironments'))
-			{
-				require_once JPATH_COMPONENT_ADMINISTRATOR . '/models/environments.php';
-			}
 
 			foreach ($item->environments as $eid)
 			{
-				if (!isset($envs[$eid]))
+				if (isset($this->envs[$eid]))
 				{
-					$model		 = new ArsModelEnvironments(); // Do not use Singleton here!
-					$model->setId($eid);
-					$envs[$eid]	 = $model->getItem();
+                                    $platforms[] = $this->envs[$eid]->xmltitle;
 				}
-
-				$platforms[] = $envs[$eid]->xmltitle;
 			}
+                        
+                        if (empty($platforms))
+                        {
+                            $platforms = array('joomla/2.5');
+                        }
 		}
 		else
 		{
@@ -188,4 +182,18 @@ else
 	endforeach;
 endforeach;
 ?>
+<?php if(defined('JDEBUG') && JDEBUG && true): ?>
+<debug>
+    <dbqueries>
+        <?php foreach(JFactory::getDbo()->getLog() as $i => $query): ?>
+        <query count="<?= $i?>"><![CDATA[<?= $query?>]]></query>
+        <?php endforeach; ?>
+    </dbqueries>
+    <profile>
+        <?php foreach (JProfiler::getInstance('Application')->getBuffer() as $mark): ?>
+        <mark><?= $mark ?></mark>
+        <?php endforeach; ?>
+    </profile>
+</debug>
+<?php endif;?>
 </updates>

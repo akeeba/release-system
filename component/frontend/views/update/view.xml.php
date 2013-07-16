@@ -39,9 +39,21 @@ class ArsViewUpdate extends FOFViewHtml
 			case 'stream':
 				$model 		= $this->getModel();
 				$items		= $model->items;
-				//$published	= $model->published;
+                                
+                                $envmodel	= FOFModel::getTmpInstance('Environments', 'ArsModel');
+                                $rawenvs        = $envmodel->getItemList(true);
+                                $envs           = array();
+                                
+                                if (!empty($rawenvs))
+                                {
+                                    foreach ($rawenvs as $env)
+                                    {
+                                        $envs[$env->id] = $env;
+                                    }
+                                }
+                                
 				$this->assign('items',			$items);
-				//$this->assign('published', 		$published);
+				$this->assign('envs',			$envs);
 				$this->setLayout('stream');
 				break;
 		}
