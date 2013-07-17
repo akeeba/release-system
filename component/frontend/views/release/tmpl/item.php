@@ -105,7 +105,9 @@ if ($this->directlink)
 		<?php if ($directlink): ?>
 		<div class="pull-left">
 			&nbsp;
-			<a rel="nofollow" href="<?php echo htmlentities($directlink_url); ?>">
+			<a rel="nofollow" href="<?php echo htmlentities($directlink_url); ?>"
+			   class="directlink hasTip" title="<?php echo $this->directlink_description ?>"
+			>
 				<?php echo JText::_('COM_ARS_LBL_ITEM_DIRECTLINK') ?>
 			</a>
 		</div>

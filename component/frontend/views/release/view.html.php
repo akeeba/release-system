@@ -79,6 +79,8 @@ class ArsViewRelease extends FOFViewHtml
 			}
 
 			$this->directlink_extensions = $directlink_extensions;
+
+			$this->directlink_description = $pparams->get('directlink_description', JText::_('COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_DEFAULT'));
 		}
 
 		// Add RSS links
