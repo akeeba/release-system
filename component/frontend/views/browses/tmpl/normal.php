@@ -20,15 +20,18 @@ $Itemid = $this->input->getInt('Itemid', 0);
 	<h2><?php echo JText::_('ARS_CATEGORY_NORMAL'); ?></h2>
 
 	<?php if(!empty($this->items['normal'])): ?>
-	<?php foreach($this->vgroups as $vgroupID => $vgroupTitle): ?>
+	<?php foreach($this->vgroups as $vgroupID => $vgroup): ?>
 	<?php $echoedVgroupTitle = false; ?>
 	<?php
 		foreach($this->items['normal'] as $id => $item):
 			if($item->vgroup_id != $vgroupID) continue;
 			if(!$echoedVgroupTitle) {
 				$echoedVgroupTitle = true;
-				if($vgroupTitle):?>
-<h3><?php echo $vgroupTitle; ?></h3>
+				if($vgroup->title):?>
+<h3><?php echo $vgroup->title; ?></h3>
+<?php if ($vgroup->description): ?>
+<?php echo $vgroup->description; ?>
+<?php endif; ?>
 				<?php endif;
 			}
 			$catURL = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
