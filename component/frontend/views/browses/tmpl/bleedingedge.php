@@ -7,47 +7,12 @@
 
 defined('_JEXEC') or die();
 
-$this->loadHelper('chameleon');
-$this->loadHelper('router');
-
-$Itemid = $this->input->getInt('Itemid', 0);
 ?>
-<?php if($this->params->get('show_page_heading', 1)): ?>
-	<h2 class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->params->get('page_heading')); ?></h2>
-<?php endif; ?>
-
-<div id="ars-categories-bleedingedge">
-	<h2><?php echo JText::_('ARS_CATEGORY_BLEEDINGEDGE'); ?></h2>
-
-	<?php if(!empty($this->items['bleedingedge'])): ?>
-	<?php foreach($this->vgroups as $vgroupID => $vgroup): ?>
-	<?php $echoedVgroupTitle = false; ?>
-	<?php
-		foreach($this->items['bleedingedge'] as $id => $item):
-			if($item->vgroup_id != $vgroupID) continue;
-			if(!$echoedVgroupTitle) {
-				$echoedVgroupTitle = true;
-				if($vgroup->title):?>
-<h3><?php echo $vgroup->title; ?></h3>
-<?php if ($vgroup->description): ?>
-<?php echo $vgroup->description; ?>
-<?php endif; ?>
-				<?php endif;
-			}
-			$catURL = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid);
-			$title = "<a href=\"$catURL\">{$item->title}</a>";
-			$params = ArsHelperChameleon::getParams('category', true);
-			@ob_start();
-			echo $this->loadAnyTemplate('site:com_ars/browses/category', array('id'=>$id, 'item'=>$item));
-			$contents = ob_get_clean();
-			$module = ArsHelperChameleon::getModule($title, $contents, $params);
-			echo JModuleHelper::renderModule($module, $params);
-		endforeach;
-		?>
-	<?php endforeach; ?>
-	<?php else: ?>
-	<div class="ars-noitems">
-		<?php echo JText::_('ARS_NO_CATEGORIES'); ?>
+<div class="item-page<?php echo $this->params->get('pageclass_sfx') ?>">
+	<?php if ($this->params->get('show_page_heading') && $params->get('show_title')) : ?>
+	<div class="page-header">
+		<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
 	</div>
-	<?php endif; ?>
+	<?php endif;?>
+	<?php echo $this->loadAnyTemplate('site:com_ars/browses/generic', array('renderSection' => 'bleedingedge', 'title' => 'ARS_CATEGORY_BLEEDINGEDGE')); ?>
 </div>
