@@ -9,7 +9,7 @@ defined('_JEXEC') or die();
 
 ?>
 <div class="item-page<?php echo $this->params->get('pageclass_sfx') ?>">
-	<?php if ($this->params->get('show_page_heading') && $params->get('show_title')) : ?>
+	<?php if ($this->params->get('show_page_heading') && $this->params->get('show_title')) : ?>
 	<div class="page-header">
 		<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
 	</div>
