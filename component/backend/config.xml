@@ -12,34 +12,6 @@
 	</fieldset>
 		
 	<fieldset name="frontend" label="COM_ARS_CONFIG_FRONTEND_HEADER_LABEL" description="COM_ARS_CONFIG_FRONTEND_HEADER_DESC" addformpath="/administrator/components/com_ars/elements">
-		<!--
-		<field name="antileech" type="radio" default="1" label="COM_ARS_CONFIG_ANTILEECH_LABEL" description="COM_ARS_CONFIG_ANTILEECH_DESC">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</field>
-		
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		-->
-		<field name="categorystyle" type="styles" default="rounded" label="COM_ARS_CONFIG_CATEGORY_STYLE_LABEL" description="COM_ARS_CONFIG_CATEGORY_STYLE_DESC"/>
-		<field name="categorysuffix" type="text" default="" label="COM_ARS_CONFIG_CATEGORY_SFX_LABEL" description="COM_ARS_CONFIG_CATEGORY_SFX_DESC"/>
-
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="releasestyle" type="styles" default="rounded" label="COM_ARS_CONFIG_RELEASE_STYLE_LABEL" description="COM_ARS_CONFIG_RELEASE_STYLE_DESC"/>
-		<field name="releasesuffix" type="text" default="" label="COM_ARS_CONFIG_RELEASE_SFX_LABEL" description="COM_ARS_CONFIG_RELEASE_SFX_DESC"/>
-
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="itemstyle" type="styles" default="rounded" label="COM_ARS_CONFIG_ITEM_STYLE_LABEL" description="COM_ARS_CONFIG_CATEGORY_STYLE_DESC"/>
-		<field name="itemsuffix" type="text" default="" label="COM_ARS_CONFIG_ITEM_SFX_LABEL" description="COM_ARS_CONFIG_ITEM_SFX_DESC"/>
-		
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="besuffix" type="text" default="" label="COM_ARS_CONFIG_BE_SFX_LABEL" description="COM_ARS_CONFIG_BE_SFX_DESC"/>
-
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="readontemplate" type="text" default="[a href=&quot;%s&quot; class=&quot;readon&quot;]%s[/a]" label="COM_ARS_CONFIG_READON_LABEL" description="COM_ARS_CONFIG_READON_DESC" size="50" filter="raw"/>
-		
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="directlinktemplate" type="text" default="[a href=&quot;%s&quot; class=&quot;directlink hasTip&quot; title=&quot;%s&quot;]%s[/a]" label="COM_ARS_CONFIG_DIRECTLINKTEMPLATE_LABEL" description="COM_ARS_CONFIG_DIRECTLINKTEMPLATE_DESC" size="50" filter="raw"/>		
-		
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="begenchangelog" type="radio" default="1"
 			label="COM_ARS_CONFIG_BEGENCHANGELOG_LABEL"
@@ -47,6 +19,7 @@
 			<option value="0">JNo</option>
 			<option value="1">JYes</option>
 		</field>
+
 		<field name="becolorisechangelog" type="radio" default="1"
 			label="COM_ARS_CONFIG_BECOLORISECHANGELOG_LABEL"
 			description="COM_ARS_CONFIG_BECOLORISECHANGELOG_DESC">
