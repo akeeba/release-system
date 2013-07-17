@@ -9,36 +9,20 @@ defined('_JEXEC') or die();
 
 JLoader::import('joomla.utilities.date');
 
+FOFTemplateUtils::addCSS('media://com_ars/css/frontend.css');
+
 $this->item->hit();
-
-JLoader::import('joomla.filesystem.date');
 $released = new JDate($this->item->created);
-$tabs = array();
-
-$base_folder = rtrim(JURI::base(), '/');
-if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
-
 ?>
-<?php if($this->cparams->get('show_page_heading', 1)): ?>
-	<h2 class="componentheading<?php echo $this->escape($this->cparams->get('pageclass_sfx')); ?>"><?php echo $this->escape($this->cparams->get('page_heading')); ?></h2>
-<?php endif; ?>
 
-<div class="ars-list-release">
-<?php
-$item = $this->item;
-$item->id = 0;
-$params = ArsHelperChameleon::getParams('release');
-@ob_start();
-echo $this->loadAnyTemplate('site:com_ars/category/release', array('item' => $item));
-$contents = ob_get_clean();
-$title = "<img src=\"".$base_folder."/media/com_ars/icons/status_".$item->maturity.".png\" width=\"16\" height=\"16\" align=\"left\" />".
-	"&nbsp;<span class=\"ars-release-title-version\">".
-	$this->escape($item->version)."</span><span class=\"ars-release-title-maturity\">(".
-	JText::_('COM_ARS_RELEASES_MATURITY_'.  strtoupper($item->maturity)).")</span>";
-$module = ArsHelperChameleon::getModule($title, $contents, $params);
-echo JModuleHelper::renderModule($module, $params);
-?>
-</div>
+<div class="item-page<?php echo $this->pparams->get('pageclass_sfx') ?>">
+	<?php if ($this->pparams->get('show_page_heading') && $this->pparams->get('show_title')) : ?>
+	<div class="page-header">
+		<h1> <?php echo $this->escape($this->pparams->get('page_heading')); ?> </h1>
+	</div>
+	<?php endif;?>
+
+	<?php echo $this->loadAnyTemplate('site:com_ars/category/release', array('item' => $this->item, 'Itemid' => $this->Itemid, 'no_link' => true)); ?>
 
 <div class="ars-releases">
 <?php if(!count($this->items)) : ?>
@@ -47,18 +31,9 @@ echo JModuleHelper::renderModule($module, $params);
 	</div>
 <?php else: ?>
 	<?php
-		$Itemid = $this->input->getInt('Itemid', 0);
-		$Itemid = empty($Itemid) ? "" : "&Itemid=$Itemid";
 		foreach($this->items as $item)
 		{
-			$download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid);
-			$title = "<a href=\"$download_url\">".$this->escape($item->title)."</a>";
-			$params = ArsHelperChameleon::getParams('item');
-			@ob_start();
-			echo $this->loadAnyTemplate('site:com_ars/release/item', array('item' => $item));
-			$contents = ob_get_clean();
-			$module = ArsHelperChameleon::getModule($title, $contents, $params);
-			echo JModuleHelper::renderModule($module, $params);
+			echo $this->loadAnyTemplate('site:com_ars/release/item', array('item' => $item, 'Itemid' => $this->Itemid));
 		}
 	?>
 <?php endif; ?>
@@ -69,10 +44,10 @@ echo JModuleHelper::renderModule($module, $params);
 	<input type="hidden" name="view" value="release" />
 	<input type="hidden" name="id" value="<?php echo $this->release_id ?>" />
 
-<?php if ($this->cparams->get('show_pagination') && ($this->pagination->get('pages.total') > 1)) : ?>
+<?php if ($this->pparams->get('show_pagination') && ($this->pagination->get('pages.total') > 1)) : ?>
 	<div class="pagination">
 
-		<?php if ($this->cparams->get('show_pagination_results')) : ?>
+		<?php if ($this->pparams->get('show_pagination_results')) : ?>
 		<p class="counter">
 			<?php echo $this->pagination->getPagesCounter(); ?>
 		</p>
@@ -88,12 +63,6 @@ echo JModuleHelper::renderModule($module, $params);
 </form>
 
 
-<script type="text/javascript">
-(function($){
-	$(document).ready(function(){
-<?php foreach($tabs as $tabid): ?>
-	$("#<?php echo $tabid ?>").tabs();
-<?php endforeach; ?>
-	});
-})(akeeba.jQuery);
-</script>
+
+
+</div>

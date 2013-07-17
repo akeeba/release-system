@@ -52,8 +52,6 @@ switch ($item->maturity)
 		</a>
 	</h4>
 
-
-
 	<?php if(!isset($no_link)): ?>
 
 	<dl class="dl-horizontal ars-release-properties">

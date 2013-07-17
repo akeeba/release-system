@@ -9,77 +9,82 @@ defined('_JEXEC') or die();
 
 class ArsViewRelease extends FOFViewHtml
 {
-	public function onAdd($tpl = null) {
+	public function onAdd($tpl = null)
+	{
 		return $this->onRead();
 	}
-	
-	public function onEdit($tpl = null) {
+
+	public function onEdit($tpl = null)
+	{
 		return $this->onRead();
 	}
-	
+
 	function onRead($tpl = null)
 	{
 		// Load helpers
 		$this->loadHelper('breadcrumbs');
-		$this->loadHelper('chameleon');
 		$this->loadHelper('html');
 		$this->loadHelper('router');
+		$this->loadHelper('title');
 
+		// Load the model
 		$model = $this->getModel();
 
 		// Get component parameters
 		$app = JFactory::getApplication();
-		$params = $app->getPageParameters('com_ars');
-		
+		$pparams = $app->getPageParameters('com_ars');
+
 		// Set page title and meta
 		$cat = FOFModel::getTmpInstance('Categories', 'ArsModel')
-			->setId($model->category_id)->getItem();
-		$this->loadHelper('title');
-		$title = ArsHelperTitle::setTitleAndMeta($params, $cat->title.' '.$model->item->version);
-		
-		// Load CSS
-		FOFTemplateUtils::addCSS('media://com_ars/css/frontend.css');
-		
+			->setId($model->category_id)
+			->getItem();
+
+		$title = ArsHelperTitle::setTitleAndMeta($pparams, $cat->title.' '.$model->item->version);
+
 		// Add a breadcrumb if necessary
 		$catModel = FOFModel::getTmpInstance('Categories','ArsModel');
 		$category = $catModel->getItem($model->item->category_id);
 
 		$repoType = $category->type;
-		
+
 		ArsHelperBreadcrumbs::addRepositoryRoot($repoType);
 		ArsHelperBreadcrumbs::addCategory($category->id, $category->title);
 		ArsHelperBreadcrumbs::addRelease($model->item->id, $model->item->version);
 
-		$this->assignRef( 'category',	$category );
-		
+
 		// Pass on a user and a Download ID
 		$user = JFactory::getUser();
 		$dlid = $user->guest ? '' : md5($user->id . $user->username . $user->password);
-		$directlink = $params->get('show_directlink', 1) && !$user->guest;
+		$directlink = $pparams->get('show_directlink', 1) && !$user->guest;
 
-		$this->assignRef( 'user',		$user );
-		$this->assignRef( 'dlid',		$dlid );
-		$this->assign   ( 'directlink',	$directlink );
-		
 		// Pass on Direct Link-related stuff
-		if($directlink) {
-			$directlink_extensions = explode(',',$params->get('directlink_extensions', 'zip,tar,tar.gz'));
-			if(empty($directlink_extensions)) {
+		if($directlink)
+		{
+			$directlink_extensions = explode(',',$pparams->get('directlink_extensions', 'zip,tar,tar.gz'));
+
+			if(empty($directlink_extensions))
+			{
 				$directlink_extensions = array();
-			} else {
+			}
+			else
+			{
 				$temp = array();
-				foreach($directlink_extensions as $ext) {
+
+				foreach($directlink_extensions as $ext)
+				{
 					$temp[] = '.' . trim($ext);
 				}
+
 				$directlink_extensions = $temp;
 			}
-			
-			$this->assign   ( 'directlink_extensions',	$directlink_extensions );
+
+			$this->directlink_extensions = $directlink_extensions;
 		}
 
 		// Add RSS links
-		$show_feed = $params->get('show_feed_link');
-		if($show_feed)
+		$show_feed = $pparams->get('show_feed_link');
+
+		if ($show_feed)
 		{
 			$feed = 'index.php?option=com_ars&view=category&id='.$category->id.'&format=feed';
 			$rss = array(
@@ -97,26 +102,33 @@ class ArsViewRelease extends FOFViewHtml
 			$document->addHeadLink(JRoute::_($feed.'&type=atom'), 'alternate',
 				'rel', $atom);
 		}
-		
+
 		// Cleanup for display
 		$items	= $model->itemList;
-		
-		foreach ( $items as $item ) {
+
+		foreach ( $items as $item )
+		{
 			$item->environments = ArsHelperHtml::getEnvironments( $item->environments );
 		}
-		
-		$model->itemList = $items;
-		
-		$this->assignRef('cparams', $params);
-		$this->assignRef('item', $model->item);
-		$this->assign('items', $model->itemList);
-		$this->assignRef('pagination', $model->items_pagination);
-		$this->assign('release_id', $model->item->id);
-		
-		if($this->getLayout() == 'item') {
+
+		$model->itemList	= $items;
+
+		$this->category		= $category;
+		$this->user			= $user;
+		$this->dlid			= $dlid;
+		$this->directlink	= $directlink;
+		$this->pparams		= $pparams;
+		$this->item			= $model->item;
+		$this->items		= $model->itemList;
+		$this->pagination	= $model->items_pagination;
+		$this->release_id	= $model->item->id;
+		$this->Itemid		= $this->input->getInt('Itemid', null);
+
+		if($this->getLayout() == 'item')
+		{
 			$this->setLayout('default');
 		}
-		
+
 		return true;
 	}
 }

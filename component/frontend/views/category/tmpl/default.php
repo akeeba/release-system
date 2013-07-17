@@ -56,6 +56,4 @@ defined('_JEXEC') or die();
 <?php endif; ?>
 </form>
 
-
-
 </div>
