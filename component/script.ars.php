@@ -130,10 +130,6 @@ class Com_ArsInstallerScript
 
 			// Files from older versions
 			'administrator/components/com_ars/views/vgroup/tmpl/form.php',
-
-			'components/com_ars/views/browses/tmpl/category.php',
-			'components/com_ars/views/browses/tmpl/category.xml',
-
 		),
 		'folders' => array(
 			'administrator/components/com_ars/language',

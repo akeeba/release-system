@@ -38,26 +38,7 @@ defined('_JEXEC') or die();
 		<?php endif; ?>
 
 		<?php foreach($this->items[$renderSection] as $id => $item): ?>
-		<div class="ars-category-<?php echo $id ?> well">
-			<h4 class="<?php echo $item->type == 'bleedingedge' ? 'warning' : '' ?>">
-				<a href="<?php echo htmlentities(AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid=' . $this->Itemid)) ?>">
-					<?php echo $this->escape($item->title) ?>
-				</a>
-			</h4>
-
-			<div class="ars-browse-category">
-				<div class="ars-category-description">
-					<?php echo ArsHelperHtml::preProcessMessage($item->description, 'com_ars.category_description') ?>
-				</div>
-				<?php if($item->id): ?>
-				<p class="readmore">
-					<a href="<?php echo htmlentities(AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$this->Itemid)); ?>">
-						<?php echo JText::_('LBL_CATEGORY_VIEW') ?>
-					</a>
-				</p>
-				<?php endif; ?>
-			</div>
-		</div>
+		<?php echo $this->loadAnyTemplate('site:com_ars/browses/category', array('id' => $id, 'item' => $item, 'Itemid' => $this->Itemid)); ?>
 		<?php endforeach; ?>
 	</div>
 	<?php endforeach; ?>
