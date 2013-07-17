@@ -11,17 +11,20 @@ $Itemid_query = empty($Itemid) ? "" : "&Itemid=$Itemid";
 $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid_query);
 
 ?>
-<li class="ars-latest-items ars-row<?php echo $i ?>">
-	<span class="ars-latest-items-title">
-		<?php echo $this->escape($item->title) ?>
-	</span>
-	<span class="ars-latest-items-filename">
+<tr>
+	<td>
 		<a href="<?php echo $download_url ?>" rel="nofollow">
-		<?php echo $this->escape($item->alias) ?>
+			<?php echo $this->escape($item->title) ?>
 		</a>
-	</span>
-	<span class="ars-latest-items-downloaded">
+	</td>
+	<td width="20%">
+		<a href="<?php echo $download_url ?>" rel="nofollow" class="btn btn-small">
+			<span class="icon icon-download"></span>
+			<?php echo JText::_('LBL_ITEM_DOWNLOAD') ?>
+		</a>
+	</td>
+	<td width="15%" class="small">
 		<?php echo JText::_('LBL_ITEMS_HITS') ?>
 		<?php echo JText::sprintf( ($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits) ?>
-	</span>
-</li>
+	</td>
+</tr>
