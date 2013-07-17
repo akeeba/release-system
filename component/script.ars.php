@@ -128,6 +128,9 @@ class Com_ArsInstallerScript
 			'libraries/fof/view.json.php',
 			'libraries/fof/view.php',
 
+			// Files from older versions
+			'administrator/components/com_ars/views/vgroup/tmpl/form.php',
+
 		),
 		'folders' => array(
 			'administrator/components/com_ars/language',

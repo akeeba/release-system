@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	cssfiles="media://com_ars/css/backend.css"
+>
+	<fieldset name="basic_configuration">
+		<field
+			name="title"
+			type="text"
+			label="LBL_VGROUPS_TITLE"
+			required="true"
+			class="input-xxlarge"
+		/>
+
+		<field
+			name="published"
+			type="published"
+			label="JPUBLISHED"
+			required="true"
+		 />
+
+		<field name="description" type="editor"
+			label="LBL_VGROUPS_DESCRIPTION"
+			required="false"
+			filter="JComponentHelper::filterText"
+			buttons="true"
+		/>
+	</fieldset>
+</form>
