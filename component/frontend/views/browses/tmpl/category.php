@@ -19,7 +19,7 @@ defined('_JEXEC') or die();
 		<div class="ars-category-description">
 			<?php echo ArsHelperHtml::preProcessMessage($item->description, 'com_ars.category_description') ?>
 		</div>
-		<?php if($item->id): ?>
+		<?php if(!isset($no_link)): ?>
 		<p class="readmore">
 			<a href="<?php echo htmlentities(AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid)); ?>">
 				<?php echo JText::_('LBL_CATEGORY_VIEW') ?>
