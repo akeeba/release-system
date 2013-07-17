@@ -1,5 +1,6 @@
-Version 2.1.6
+Version 2.2.0
 ================================================================================
++ #99 Visual Groups now have an optional description
 ~ Overall performance boost in the front-end
 # [MEDIUM] Caching didn't actually work with any ARS view, most annoyingly not working with update views
 # [LOW] Pagination issue in the front-end when mixing items of different access levels

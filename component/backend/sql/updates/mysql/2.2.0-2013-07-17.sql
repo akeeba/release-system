@@ -1,0 +1,1 @@
+ALTER TABLE `#__ars_vgroups` ADD COLUMN `description` mediumtext AFTER `title`;

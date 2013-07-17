@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `#__ars_vgroups` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `title` varchar(255) NOT NULL,
+    `description` mediumtext,
     `created` datetime NOT NULL,
     `created_by` int(11) NOT NULL DEFAULT '0',
     `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
