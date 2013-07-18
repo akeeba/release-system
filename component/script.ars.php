@@ -218,6 +218,17 @@ class Com_ArsInstallerScript
 
 		// Kill update site
 		$this->_killUpdateSite();
+
+		// Clear FOF's cache
+		if (!defined('FOF_INCLUDED'))
+		{
+			@include_once JPATH_LIBRARIES . '/fof/include.php';
+
+			if (defined('FOF_INCLUDED'))
+			{
+				FOFPlatform::getInstance()->clearCache();
+			}
+		}
 	}
 
 	/**
