@@ -47,7 +47,7 @@
 
         <itemizedlist>
           <listitem>
-            <para>Joomla! 1.5 and 1.6 ready.</para>
+            <para>Joomla! 2.5 and 3.x ready.</para>
           </listitem>
 
           <listitem>
@@ -58,8 +58,7 @@
           </listitem>
 
           <listitem>
-            <para>Chameleon skinning; the front-end automatically matches its
-            output to your template, using module chrome.</para>
+            <para>Bootstrap styling.</para>
           </listitem>
 
           <listitem>
@@ -73,17 +72,13 @@
           </listitem>
 
           <listitem>
-            <para>Excellent performance; before its first public beta it has
-            already served one million downloads with a rate of 200,000
-            downloads per day. Smart caching will use Joomla!'s caching
-            options to intelligently cache your public download pages, saving
-            tons of resources on busy sites.</para>
+            <para>Excellent performance, now better than ever.</para>
           </listitem>
 
           <listitem>
-            <para>Integration with AMBRA.Subscriptions and Joomla! 1.6 Access
-            Levels for limiting access to downloads only to specific
-            subscribers.</para>
+            <para>Integration with Akeeba Subscriptions, PayPlans and Joomla!
+            access control (user groups &amp; viewing access levels) for
+            limiting access to downloads only to specific subscribers.</para>
           </listitem>
 
           <listitem>
@@ -120,8 +115,8 @@
             languages or automatic creation of <emphasis role="bold">Joomla!
             1.6 or later XML extension update streams</emphasis>. That's
             right! As soon as you publish a new version, all your clients
-            using Joomla! 1.6 or later will be able to automatically upgrade
-            to it. No extra file creation necessary.</para>
+            using a modern version of Joomla! will be able to automatically
+            upgrade to it. No extra file creation necessary.</para>
           </listitem>
 
           <listitem>
@@ -167,11 +162,6 @@
           </listitem>
 
           <listitem>
-            <para>Full integration of Amazon S3, including a file manager for
-            all of your Amazon S3-stored files, right out of the box!</para>
-          </listitem>
-
-          <listitem>
             <para>GPL v3 software. We value your Freedom of choice and
             transparency in our code.</para>
           </listitem>
@@ -180,8 +170,7 @@
         <important>
           <para>While we provide the component free of charge, we do not
           provide support for free. If you're interested in receiving support
-          for ARS please consider an AkeebaBackup.com subscription to the
-          "SUPPORT" or "AKEEBADELUXE" levels.</para>
+          for ARS please consider an AkeebaBackup.com subscription.</para>
         </important>
 
         <note>
@@ -1294,28 +1283,29 @@ deny from all</programlisting>
               <term>XML format</term>
 
               <listitem>
-                <para>Joomla! 1.6 comes with an extension update manager. In
-                order for it to work, it requires developers to supply update
-                information in a custom XML format. There are actually three
-                type of XML files Joomla! 1.6 understands. The "extensionset"
-                document serves as the master update stream. It contains links
-                to one or more repositories, one for each extension type
-                Joomla! 1.6 understands, i.e. components, plugins, modules,
-                libraries, packages, templates and files. The second form of
-                an "extensionset" document is the master index of extensions
-                of a specific type (called "category") known to this server,
-                e.g. a list of components. Each item on that list points to an
-                "updates" XML document. This third and final XML format
-                contains the history of an extension. It tells us the version
-                history, details about the extension, links to an information
-                page and, most importantly, tells us where to download the
-                extension from.</para>
+                <para>Joomla! 1.6 and later comes with an extension update
+                manager. In order for it to work, it requires developers to
+                supply update information in a custom XML format. There are
+                actually three type of XML files Joomla! 1.6 and later
+                understands. The "extensionset" document serves as the master
+                update stream. It contains links to one or more repositories,
+                one for each extension type Joomla! 1.6 and later understands,
+                i.e. components, plugins, modules, libraries, packages,
+                templates and files. The second form of an "extensionset"
+                document is the master index of extensions of a specific type
+                (called "category") known to this server, e.g. a list of
+                components. Each item on that list points to an "updates" XML
+                document. This third and final XML format contains the history
+                of an extension. It tells us the version history, details
+                about the extension, links to an information page and, most
+                importantly, tells us where to download the extension
+                from.</para>
 
                 <para>This is an overly complex system and maintaining such
                 files manually can be a drag. ARS handles all three types of
                 documents for you, automatically. In order to add updates
-                support to your Joomla! 1.6 extension, all you have to do is
-                to add the following lines just before the closing
+                support to your Joomla! 1.6 and later extension, all you have
+                to do is to add the following lines just before the closing
                 &lt;/install&gt; tag in your extension's manifest XML
                 file:</para>
 
@@ -1342,7 +1332,7 @@ deny from all</programlisting>
                   e.g.
                   <uri>http://www.example.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=1&amp;dummy=extension.xml</uri>
                   for the example above. ARS will do that automatically for
-                  you when generating the Master Joomla! 1.6 XML Update
+                  you when generating the Master Joomla! XML Update
                   stream.</para>
                 </important>
 
@@ -1374,9 +1364,9 @@ deny from all</programlisting>
           Panel.</para>
 
           <para>On the very top of the page you will find a link to your
-          master Joomla! 1.6 update stream (the first type of "extensionset"
-          XML document). You can use that link in your Joomla! 1.6 extensions'
-          XML files.</para>
+          master Joomla! 1.6 and later update stream (the first type of
+          "extensionset" XML document). You can use that link in your Joomla!
+          1.6 and later extensions' XML files.</para>
 
           <para>The grid below is a standard Joomla! administrator table.
           Clicking on a stream name allows you to edit it. The most important
@@ -1386,9 +1376,9 @@ deny from all</programlisting>
           necessary for Live Update to work. More information on including
           Live Update in your components can be found in a later section of
           this documentation. The XML link will take you to the Joomla! 1.6
-          XML "update" document for that stream. This is the XML file you
-          should in extension manifest files, inside the CDATA section
-          mentioned above.</para>
+          and later XML "update" document for that stream. This is the XML
+          file you should in extension manifest files, inside the CDATA
+          section mentioned above.</para>
 
           <bridgehead>Editing or adding an update stream</bridgehead>
 
@@ -2179,103 +2169,6 @@ date="2010-10-10"</programlisting>
       <section xml:id="make-it-look-beautiful">
         <title>Making it look beautiful (component options)</title>
 
-        <bridgehead>Chameleon</bridgehead>
-
-        <para>ARS is using a Chameleon skinning engine. This term was coined
-        by Stian Didriksen to name the technique he is using in the NinjaBoard
-        forum component. In short, Chameleon skinning uses your template's
-        module chrome to theme your pages. Instead of providing a truckload of
-        CSS classes and a long CSS file you need to override to make the
-        component fit your site's template, the individual parts of the page,
-        e.g. category items in the repository view, are rendered as Joomla!
-        modules. Spending 5 minutes to fine-tune the module rendering
-        parameters allows you to easily and optimally integrate the visual
-        presentation of ARS to match your template. The component
-        intelligently "changes" its "colors" to match its surroundings, much
-        like a chameleon.</para>
-
-        <para>In order to configure the Chameleon skinning engine, go to the
-        component's Control Panel page and click on the
-        <guibutton>Options</guibutton> (Joomla! 1.6) button in the toolbar.
-        You can see the following options for the Category boxes:</para>
-
-        <variablelist>
-          <varlistentry>
-            <term>Category module style</term>
-
-            <listitem>
-              <para>There is a text entry allowing you to enter the module
-              "chrome" (rendering type) for modules installed on your Joomla!
-              site. Make sure you enter one supported by your template. If
-              unsure please ask your template developer or use
-              "rounded".</para>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term>Category Modulestyle Sfx</term>
-
-            <listitem>
-              <para>This is the class suffix to append to the module. Many
-              template providers supply different module styles using one or
-              more "suffixes". Type in the list of suffixes you want in this
-              box.</para>
-
-              <tip>
-                <para>You may need to leave a leading space before typing
-                suffixes, depending on your template. If, after typing in the
-                suffix(es), you see no visual change please leave a leading
-                space. Multiple suffixes are separated by spaces.</para>
-              </tip>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-
-        <para>There are also equivalent options for the Releases and Items
-        boxes.</para>
-
-        <para>There is also one item called <guilabel>Bleeding Edge
-        Suffix</guilabel>. These suffixes will be applied to category boxes
-        for categories of the BleedingEdge type. In other words, a category
-        box for a BleedingEdge-type category will have both the Category
-        Modulestyle Sfx and Bleeding Edge Suffix contents appended to its CSS
-        class name. This allows you to style Bleeding Edge categories
-        differently than normal categories should you choose to do so.</para>
-
-        <para>The last item is called the <guilabel>Link template</guilabel>
-        and defines how links to categories, releases and items will be
-        rendered. By default it is <code>&lt;a href="%s"
-        class="readon"&gt;%s&lt;/a&gt;</code> which is the generic way to
-        render a "read on" link in Joomla!. Different templates use a slightly
-        different HTML syntax for the "read on" links. You can type in the
-        HTML you want. The first %s occurrence will be replaced with the URL
-        of the link, whereas the second %s occurrence will be replaced with
-        the item's title.</para>
-
-        <warning>
-          <para>Joomla! 1.6 doesn't allow you to use HTML in this field. The
-          only workaround is to substitute the lower-than and greater-than
-          characters with square brackets. So, in Joomla! 1.6, the default
-          link template should be written as <code>[a href="%s"
-          class="readon"]%s[/a]</code>. ARS will intelligently figure out what
-          you meant and convert it back to valid HTML.</para>
-        </warning>
-
-        <para>If your template doesn't have adequate module styles, ARS will
-        look like crap. However, there is an easy workaround! Just select the
-        "rounded" style on all module styles and use unique suffixes for each
-        kind of module type, e.g. " ars-category" for the category module
-        suffix, " ars-release" for the category release module suffix and so
-        on. This allows you to use standard CSS in your template to skin ARS
-        to your liking, effectively working around the limitations of the
-        Chameleon engine on templates lacking good support for module
-        styles.</para>
-
-        <para>AkeebaBackup.com strongly recommends using templates from
-        respected template clubs producing feature-rich templates, such as
-        RocketTheme, if you want optimal presentation results with minimal
-        fuss.</para>
-
         <bridgehead>Bleeding Edge options</bridgehead>
 
         <para>By default, releases in Bleeding Edge categories automatically
@@ -2397,21 +2290,6 @@ date="2010-10-10"</programlisting>
             <listitem>
               <para>When it's enabled a "Direct Link" link will be shown next
               to the regular download link of each item.</para>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term>Direct Link template</term>
-
-            <listitem>
-              <para>It defines how the Direct Link links of each item will be
-              rendered. By default it is <code>&lt;a href="%s" class="readon"
-              title="%s"&gt;%s&lt;/a&gt;</code> which is the generic way to
-              render a "read on" link in Joomla!. Different templates use a
-              slightly different HTML syntax for the "read on" links. You can
-              type in the HTML you want. The first %s occurrence will be
-              replaced with the URL of the link, whereas the second %s
-              occurrence will be replaced with the item's title.</para>
             </listitem>
           </varlistentry>
 
