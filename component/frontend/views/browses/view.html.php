@@ -79,6 +79,13 @@ class ArsViewBrowses extends FOFViewHtml
 				);
 			}
 		}
+		else
+		{
+			foreach ($this->items as $renderSection => $items)
+			{
+				$defaultVgroup->numitems[$renderSection] = count($items);
+			}
+		}
 
 		$vgroups = array_merge(array($defaultVgroup), $vgroups);
 

@@ -37,7 +37,7 @@ class ArsViewLatests extends FOFViewHtml
 		$defaultVgroup = (object)array(
 			'title'			=> '',
 			'description'	=> '',
-			'numitems'		=> array(),
+			'numitems'		=> array()
 		);
 
 		if (!empty($raw))
@@ -84,6 +84,13 @@ class ArsViewLatests extends FOFViewHtml
 					'description'	=> $r->description,
 					'numitems'		=> $noOfItems,
 				);
+			}
+		}
+		else
+		{
+			foreach ($this->items as $renderSection => $items)
+			{
+				$defaultVgroup->numitems[$renderSection] = count($items);
 			}
 		}
 
