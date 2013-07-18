@@ -11,7 +11,7 @@ class ArsModelDownloads extends FOFModel
 {
 	/** @var   boolean  True if we have logged in a user */
 	protected $haveLoggedInAUser = false;
-	
+
 	public function __construct($config = array()) {
 		parent::__construct($config);
 
@@ -39,7 +39,7 @@ class ArsModelDownloads extends FOFModel
 		{
 			return null;
 		}
-		
+
 		// Does it pass the access level / subscriptions filter?
 		$dummy = ArsHelperFilter::filterList( $items );
 		if(!count($dummy)) {
@@ -51,8 +51,8 @@ class ArsModelDownloads extends FOFModel
 		$item->bind(array_pop($items));
 
 		$this->item = $item;
-		
-		return $this->item;
+
+		return $item;
 	}
 
 	public function doDownload()
@@ -336,7 +336,7 @@ class ArsModelDownloads extends FOFModel
 
 	/**
 	 * Log in a user if necessary
-	 * 
+	 *
 	 * @return  boolean  True if a user was logged in
 	 */
 	public function loginUser()
@@ -346,7 +346,7 @@ class ArsModelDownloads extends FOFModel
 		{
 			return false;
 		}
-		
+
 		// This helper contains some useful dlid functions and stuff...
 		require_once JPATH_SITE . '/components/com_ars/helpers/filter.php';
 
@@ -428,13 +428,13 @@ class ArsModelDownloads extends FOFModel
 			// Hit the user last visit field
 			$newUserObject->setLastVisit();
 		}
-		
+
 		return $this->haveLoggedInAUser;
 	}
-	
+
 	/**
 	 * Log out the user who was logged in with the loginUser() method above
-	 * 
+	 *
 	 * @return  boolean  True if a user was logged out
 	 */
 	public function logoutUser()
@@ -443,7 +443,7 @@ class ArsModelDownloads extends FOFModel
 		{
 			return false;
 		}
-		
+
 		$my 		= JFactory::getUser();
 		$session 	= JFactory::getSession();
 		$app 		= JFactory::getApplication();
@@ -462,7 +462,7 @@ class ArsModelDownloads extends FOFModel
 			->where($db->qn('client_id').' = '.(int) $app->getClientId());
 		$db->setQuery($query);
 		$db->execute();
-		
+
 		return $this->haveLoggedInAUser;
 	}
 }
