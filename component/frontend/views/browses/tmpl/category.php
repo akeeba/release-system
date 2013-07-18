@@ -7,10 +7,12 @@
 
 defined('_JEXEC') or die();
 
+$category_url = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid=' . $Itemid);
+
 ?>
 <div class="ars-category-<?php echo $id ?> well">
 	<h4 class="<?php echo $item->type == 'bleedingedge' ? 'warning' : '' ?>">
-		<a href="<?php echo htmlentities(AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid=' . $Itemid)) ?>">
+		<a href="<?php echo htmlentities($category_url) ?>">
 			<?php echo $this->escape($item->title) ?>
 		</a>
 	</h4>
@@ -21,7 +23,7 @@ defined('_JEXEC') or die();
 		</div>
 		<?php if(!isset($no_link)): ?>
 		<p class="readmore">
-			<a href="<?php echo htmlentities(AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid='.$Itemid)); ?>">
+			<a href="<?php echo htmlentities($category_url); ?>">
 				<?php echo JText::_('LBL_CATEGORY_VIEW') ?>
 			</a>
 		</p>
