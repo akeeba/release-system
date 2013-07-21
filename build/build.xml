@@ -3,9 +3,9 @@
 	Joomla! Akeeba Release System build file for Phing
 	written by Nicholas K. Dionysopoulos
 	
-	Run "phing svn" from the build directory to build everything except the docs
+	Run "phing git" from the build directory to build everything except the docs
 -->
-<project name="AkeebaReleaseSystem" description="Akeeba Release System" default="svn" >
+<project name="AkeebaReleaseSystem" description="Akeeba Release System" default="git" >
 	<property file="./build.properties" />
 	<!-- Default properties, set only if not already assigned in the build.properties file -->
 	<property name="dirs.root" value=".." />
@@ -14,7 +14,7 @@
 	<property name="dirs.modules" value="../modules" />
 	<property name="dirs.plugins" value="../plugins" />
 	<property name="dirs.release" value="../release" />
-	<property name="version" value="svn" />
+	<property name="version" value="git" />
 	
 	<property name="dirs.bin" value="bin" />
 	<property name="dirs.bin.libxml" value="${dirs.bin}/libxml" />
@@ -24,7 +24,7 @@
 	<property name="dirs.documentation" value="../documentation" />	
 
 	<taskdef name="zipme" classname="phingext.ZipmeTask" />
-	<taskdef name="svnversion" classname="phingext.SvnVersionTask" />
+	<taskdef name="gitversion" classname="phingext.GitVersionTask" />
 
 	<!--
 	====================================================================================================
@@ -51,12 +51,12 @@
 	====================================================================================================
 	-->
 	
-	<target name="svn" description="Makes everything except the documentation"
+	<target name="git" description="Makes everything except the documentation"
 		depends="new-release,setup-properties,component-package">
 	</target>
 	
 	<target name="all" description="Makes everything"
-		depends="svn,documentation,lang">
+		depends="git,documentation,lang">
 	</target>
 
 	<target name="documentation" description="Creates the documentation packages"
@@ -69,6 +69,7 @@
 			<fileset dir="${dirs.release}">
 				<include name="**" />
 				<exclude name=".svn/**" />
+				<exclude name=".git/**" />
 			</fileset>
 		</delete>
 		<mkdir dir="${dirs.release}" />
@@ -82,10 +83,10 @@
 
 		<!-- Initialize the version if it's not set -->
 		<if>
-			<equals arg1="${version}" arg2="svn" />
+			<equals arg1="${version}" arg2="git" />
 			<then>
-				<svnversion workingcopy="${dirs.root}" propertyname="svn.lastrevision" />
-				<property name="version" value="svn${svn.lastrevision}" override="true" />
+				<gitversion workingcopy="${dirs.root}" propertyname="git.lastrevision" />
+				<property name="version" value="rev${git.lastrevision}" override="true" />
 			</then>
 		</if>
 	</target>
@@ -172,8 +173,8 @@
 		<delete file="${dirs.root}/release.json" quiet="yes" />
 	</target>
 
-	<target name="ftpdeploy" depends="svn">
-		<svnversion workingcopy="${dirs.root}" propertyname="svn.lastrevision" />
+	<target name="ftpdeploy" depends="git">
+		<gitversion workingcopy="${dirs.root}" propertyname="git.lastrevision" />
 		<!-- Core release -->
 		<echo>Uploading ARS nightly build</echo>
 		<ftpdeploy
@@ -181,7 +182,7 @@
 			port="${ftp.port}"
 			username="${ftp.username}"
 			password="${ftp.password}"
-			dir="${ftp.dir}/ars/svn${svn.lastrevision}"
+			dir="${ftp.dir}/ars/rev${git.lastrevision}"
 			mode="${ftp.mode}"
 			passive="true"
 			level="debug">
