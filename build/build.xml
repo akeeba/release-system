@@ -143,7 +143,16 @@
 	-->
 
 	<target name="lang" description="Generate and upload language files">
-		<exec command="php ./buildlang.php" dir="buildlang" passthru="true" />
+		<exec command="php ./buildlang.php ${application.startdir}/build.properties ${application.startdir}/.. ${version}" dir="buildlang" passthru="true" />
+	</target>
+	
+	<target name="link" description="Internal linker">
+		<exec command="php ../buildfiles/tools/link.php ${application.startdir}/.." dir="${application.startdir}/.." passthru="true" />
+		<exec command="php ../buildfiles/tools/langlink.php ${application.startdir}/.." dir="${application.startdir}/.." passthru="true" />
+	</target>
+	
+	<target name="relink" description="Project relinker">
+		<exec command="php ../buildfiles/tools/relink.php ${site} ${application.startdir}/.." dir="${application.startdir}/.." passthru="true" />
 	</target>
 
 	<target name="release" depends="setup-properties" description="Upload the release to AkeebaBackup.com">
