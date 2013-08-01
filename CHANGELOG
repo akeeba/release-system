@@ -4,6 +4,7 @@ Version 2.2.0
 ~ Overall performance boost in the front-end
 # [MEDIUM] Caching didn't actually work with any ARS view, most annoyingly not working with update views
 # [LOW] Pagination issue in the front-end when mixing items of different access levels
+# [LOW] Short open tag leads to stats graph not working on some servers
 
 Version 2.1.5
 ================================================================================

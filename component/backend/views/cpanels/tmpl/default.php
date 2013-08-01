@@ -28,7 +28,7 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
 		<h3><?php echo JText::_('COM_ARS_CPANEL_DLSTATSMONTHLY_LABEL')?></h3>
 		<div id="mdrChart"></div>
-		
+
 		<h3><?php echo JText::_('COM_ARS_CPANEL_DLSTATSDETAILS_LABEL')?></h3>
 		<table border="0" width="100%" class="table table-striped">
 			<tr>
@@ -44,7 +44,7 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 				<td><?php echo number_format($this->dlweek,0) ?></td>
 			</tr>
 		</table>
-		
+
 		<div style="clear: both;">&nbsp;</div>
 		<h3><?php echo JText::_('COM_ARS_CPANEL_POPULAR_WEEK_LABEL')?></h3>
 
@@ -66,14 +66,14 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 			</div>
 			<?php endforeach; ?>
 		<?php endif; ?>
-		
+
 	</div>
 
 	<div id="cpanel" class="span<?php echo 12 - $this->graphswidth ?>">
 	<?php foreach($groups as $group): ?>
 		<?php if(array_key_exists($group, $this->icondefs)): ?>
 		<?php if(!count($this->icondefs[$group])) continue; ?>
-		
+
 		<h3><?php echo JText::_('LBL_ARS_CPANEL_'.  strtoupper($group)); ?></h3>
 		<?php foreach($this->icondefs[$group] as $icon): ?>
 		<div class="icon">
@@ -90,10 +90,10 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 		<p><?php echo LiveUpdate::getIcon(); ?></p>
 		<?php endif; ?>
 		<div class="ak_clr_left"></div>
-		
+
 		<?php endif; ?>
 	<?php endforeach; ?>
-	
+
 	</div>
 </div>
 
@@ -106,7 +106,7 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 	<?php echo JText::_('COM_ARS_CPANEL_LICENSE_LABEL'); ?><br/>
 	<strong>
 	If you use Akeeba Release System, please post a rating and a review at the
-	<a href="http://extensions.joomla.org/extensions/directory-a-documentation/downloads/16825">Joomla! Extensions Directory</a>. 
+	<a href="http://extensions.joomla.org/extensions/directory-a-documentation/downloads/16825">Joomla! Extensions Directory</a>.
 	</strong>
 	</p>
 </div>
@@ -132,9 +132,9 @@ akeeba.jQuery(document).ready(function($){
 	$.jqplot.config.enablePlugins = true;
 	var dlPoints = [];
 	<?php foreach ($this->mdreport as $mdDate => $mdDls): ?>
-	dlPoints.push(['<?echo $mdDate?>', parseInt('<?php echo $mdDls?>' * 100) * 1 / 100]);
+	dlPoints.push(['<?php echo $mdDate?>', parseInt('<?php echo $mdDls?>' * 100) * 1 / 100]);
 	<?php endforeach; ?>
-		
+
 	plot1 = $.jqplot('mdrChart', [dlPoints], {
 		show: true,
 		axes:{
@@ -144,7 +144,7 @@ akeeba.jQuery(document).ready(function($){
 			},
 			yaxis:{min: 0,tickOptions:{formatString:'%u'}}
 		},
-		series:[ 
+		series:[
 			{
 				lineWidth:3,
 				markerOptions:{
@@ -158,7 +158,7 @@ akeeba.jQuery(document).ready(function($){
 		highlighter: {sizeAdjust: 7.5},
 		axesDefaults:{useSeriesColor: true}
 	});
-	
+
 	/**
 	$('#mdrChart').gchart('destroy').
 		gchart({
@@ -169,7 +169,7 @@ akeeba.jQuery(document).ready(function($){
 			series: [$.gchart.series('DL',[<?php echo $mdrSerie1 ?>],'blue', <?php echo $mdrMin?>, <?php echo $mdrMax?>)],
 			axes: [
 				$.gchart.axis('left', <?php echo $mdrMin?>, <?php echo $mdrMax?>)
-			] 
+			]
 		});
 	/**/
 });
