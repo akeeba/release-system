@@ -38,6 +38,7 @@ defined('_JEXEC') or die();
 		<?php endif; ?>
 
 		<?php foreach($this->items[$renderSection] as $id => $item): ?>
+		<?php if($item->vgroup_id != $vgroupID) continue;?>
 		<?php echo $this->loadAnyTemplate('site:com_ars/browses/category', array('id' => $id, 'item' => $item, 'Itemid' => $this->Itemid)); ?>
 		<?php endforeach; ?>
 	</div>
