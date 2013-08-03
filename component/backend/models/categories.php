@@ -36,7 +36,7 @@ class ArsModelCategories extends FOFModel
 		
 		$fltVgroup		= $this->getState('vgroup', null, 'int');
 		if($fltVgroup) {
-			$query->where($db->qn('vgroup_id').' = '.$db->q($fltAlias));
+			$query->where($db->qn('vgroup_id').' = '.$db->q($fltVgroup));
 		}
 		
 		$fltType		= $this->getState('type', null, 'cmd');
