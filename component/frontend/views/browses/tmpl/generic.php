@@ -21,24 +21,24 @@ defined('_JEXEC') or die();
 		<?php echo JText::_('ARS_NO_CATEGORIES'); ?>
 	</p>
 	<?php else:?>
-	<?php foreach($this->vgroups as $vgroupID => $vgroup): ?>
+	<?php foreach($this->vgroups as $vgroup): ?>
 	<?php if ($vgroup->numitems[$renderSection] == 0) {
 		continue;
 	} ?>
-	<div class="ars-vgroup-<?php $vgroupID ?>">
+	<div class="ars-vgroup-<?php $vgroup->id ?>">
 		<?php if($vgroup->title): ?>
-		<h3 class="ars-vgroup-<?php $vgroupID ?>-title">
+		<h3 class="ars-vgroup-<?php $vgroup->id ?>-title">
 			<?php echo $vgroup->title; ?>
 		</h3>
 		<?php if ($vgroup->description): ?>
-		<div class="ars-vgroup-<?php $vgroupID ?>-description">
+		<div class="ars-vgroup-<?php $vgroup->id ?>-description">
 			<?php echo $vgroup->description; ?>
 		</div>
 		<?php endif; ?>
 		<?php endif; ?>
 
 		<?php foreach($this->items[$renderSection] as $id => $item): ?>
-		<?php if($item->vgroup_id != $vgroupID) continue;?>
+		<?php if($item->vgroup_id != $vgroup->id) continue;?>
 		<?php echo $this->loadAnyTemplate('site:com_ars/browses/category', array('id' => $id, 'item' => $item, 'Itemid' => $this->Itemid)); ?>
 		<?php endforeach; ?>
 	</div>

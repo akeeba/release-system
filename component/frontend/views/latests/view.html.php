@@ -35,6 +35,7 @@ class ArsViewLatests extends FOFViewHtml
 		$groupedItems = 0;
 
 		$defaultVgroup = (object)array(
+			'id'			=> '',
 			'title'			=> '',
 			'description'	=> '',
 			'numitems'		=> array()
@@ -80,6 +81,7 @@ class ArsViewLatests extends FOFViewHtml
 				}
 
 				$vgroups[$r->id] = (object)array(
+					'id'			=> $r->id,
 					'title'			=> $r->title,
 					'description'	=> $r->description,
 					'numitems'		=> $noOfItems,
