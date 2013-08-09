@@ -43,6 +43,8 @@ class ArsControllerRelease extends FOFController
 			JError::raiseError(403, 'Forbidden');
 		}
 		parent::__construct($config);
+        
+        $this->cacheableTasks = array();
 	}
 
 	public function execute($task) {

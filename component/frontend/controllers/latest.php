@@ -11,7 +11,10 @@ class ArsControllerLatest extends FOFController
 {
 	public function __construct($config = array()) {
 		$config['modelName'] = 'ArsModelBrowses';
-		parent::__construct($config);
+		
+        parent::__construct($config);
+        
+        $this->cacheableTasks = array();
 	}
 	
 	public function execute($task) {

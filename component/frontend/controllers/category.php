@@ -44,6 +44,8 @@ class ArsControllerCategory extends FOFController
 		}
 
 		parent::__construct($config);
+        
+        $this->cacheableTasks = array();
 	}
 
 	public function execute($task) {

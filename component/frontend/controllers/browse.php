@@ -15,6 +15,8 @@ class ArsControllerBrowse extends FOFController
 		// Do not remove these two lines. Required to handle fallback to repo view on invalid URLs.
 		$config['view'] = 'browses';
 		$dummy = $this->getThisView($config);
+        
+        $this->cacheableTasks = array();
 	}
 	
 	public function execute($task) {

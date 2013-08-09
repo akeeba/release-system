@@ -9,6 +9,13 @@ defined('_JEXEC') or die();
 
 class ArsControllerDownload extends FOFController
 {
+    public function __construct($config = array())
+    {
+		parent::__construct($config);
+        
+        $this->cacheableTasks = array();
+	}
+    
 	public function execute($task) {
 		$task = 'download';
 
