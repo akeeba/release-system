@@ -34,7 +34,7 @@ class ArsViewBrowses extends FOFViewHtml
 		$groupedItems = 0;
 
 		$defaultVgroup = (object)array(
-			'id'			=> '',
+			'id'			=> 0,
 			'title'			=> '',
 			'description'	=> '',
 			'numitems'		=> array(),
