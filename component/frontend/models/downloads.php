@@ -237,7 +237,7 @@ class ArsModelDownloads extends FOFModel
 
 				//set start and end based on range (if set), else set defaults
 				//also check for invalid ranges.
-				$seek_end = (empty($seek_end)) ? ($size - 1) : min(abs(intval($seek_end)),($filesize - 1));
+				$seek_end = (empty($seek_end)) ? ($filesize - 1) : min(abs(intval($seek_end)),($filesize - 1));
 				$seek_start = (empty($seek_start) || $seek_end < abs(intval($seek_start))) ? 0 : max(abs(intval($seek_start)),0);
 
 				$isResumable = true;
@@ -258,7 +258,7 @@ class ArsModelDownloads extends FOFModel
 
 					// Necessary headers
 					$totalLength = $seek_end - $seek_start + 1;
-					header('Content-Range: bytes '.$seek_start.'-'.$seek_end.'/'.$size);
+					header('Content-Range: bytes '.$seek_start.'-'.$seek_end.'/'.$filesize);
 					header('Content-Length: '.$totalLength);
 
 					// Seek to start
