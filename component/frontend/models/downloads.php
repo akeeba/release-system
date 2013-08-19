@@ -399,13 +399,14 @@ class ArsModelDownloads extends FOFModel
 			// This line returns an empty JUser object
 			$newUserObject = new JUser();
 			// This line FORCE RELOADS the user record.
-			$newUserObject->load($userid);
+			$newUserObject->load($user_id);
 
 			// Mark the user as logged in
 			$newUserObject->block = 0;
 			$newUserObject->set('guest', 0);
 
 			// Register the needed session variables
+			$session = JFactory::getSession();
 			$session->set('user', $newUserObject);
 
 			$db = JFactory::getDBO();
