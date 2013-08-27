@@ -181,9 +181,12 @@ class Com_ArsInstallerScript
 		}
 
 		// Bugfix for "Can not build admin menus"
-		if(in_array($type, array('install','discover_install'))) {
+		if(in_array($type, array('install')))
+		{
 			$this->_bugfixDBFunctionReturnedNoError();
-		} else {
+		}
+		elseif ($type != 'discover_install')
+		{
 			$this->_bugfixCantBuildAdminMenus();
 			$this->_fixBrokenSQLUpdates($parent);
 			$this->_fixSchemaVersion();
