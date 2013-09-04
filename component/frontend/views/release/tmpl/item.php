@@ -43,12 +43,14 @@ if ($this->directlink)
 	</h4>
 
 	<dl class="dl-horizontal ars-release-properties">
+		<?php if($this->pparams->get('show_downloads', 1)): ?>
 		<dt>
 			<?php echo JText::_('LBL_ITEMS_HITS') ?>:
 		</dt>
 		<dd>
 			<?php echo JText::sprintf( ($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits) ?>
 		</dd>
+		<?php endif;?>
 
 		<?php if(!empty($item->filesize) && $this->pparams->get('show_filesize',1)): ?>
 		<dt>

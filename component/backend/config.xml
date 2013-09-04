@@ -10,7 +10,7 @@
 			description="COM_ARS_CONFIG_UPDATES_DESC_DESC"
 		/>
 	</fieldset>
-		
+
 	<fieldset name="frontend" label="COM_ARS_CONFIG_FRONTEND_HEADER_LABEL" description="COM_ARS_CONFIG_FRONTEND_HEADER_DESC" addformpath="/administrator/components/com_ars/elements">
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="begenchangelog" type="radio" default="1"
@@ -29,6 +29,12 @@
 
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="no_access_url" type="text" default="" label="COM_ARS_CONFIG_FE_NOACCESSURL_LABEL" description="COM_ARS_CONFIG_FE_NOACCESSURL_DESC" size="50" />
+        <field name="show_downloads" type="radio" default="1"
+               label="COM_ARS_CONFIG_SHOW_DOWNLOADS_LABEL"
+               description="COM_ARS_CONFIG_SHOW_DOWNLOADS_DESC">
+            <option value="0">JNo</option>
+            <option value="1">JYes</option>
+        </field>
 		<field name="show_filesize" type="radio" default="1"
 			label="COM_ARS_CONFIG_SHOW_FILESIZE_LABEL"
 			description="COM_ARS_CONFIG_SHOW_FILESIZE_DESC">
@@ -78,7 +84,7 @@
 			<option value="10">10</option>
 		</field>
 	</fieldset>
-	
+
 	<fieldset
 		name="s3integration"
 		label="COM_ARS_CONFIG_S3INTEGRATION_HEADER_LABEL"
@@ -98,7 +104,7 @@
 		</field>
 		<field name="s3time" type="list" default="900"
 			label="COM_ARS_CONFIG_S3_TIME_LABEL" desc="COM_ARS_CONFIG_S3_TIME_DESC">
-			<option value="60">COM_ARS_CONFIG_S3_TIME_1MINUTE</option>	
+			<option value="60">COM_ARS_CONFIG_S3_TIME_1MINUTE</option>
 			<option value="900">COM_ARS_CONFIG_S3_TIME_15MINUTES</option>
 			<option value="3600">COM_ARS_CONFIG_S3_TIME_1HOUR</option>
 			<option value="21600">COM_ARS_CONFIG_S3_TIME_6HOURS</option>
@@ -127,7 +133,7 @@
 		</field>
 		<field name="liveupdate" type="hidden" default="" label="" description="" />
 	</fieldset>
-	
+
 	<fieldset
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"
@@ -142,5 +148,5 @@
 			filter="rules"
 			component="com_ars"
 			section="component" />
-	</fieldset>	
+	</fieldset>
 </config>
