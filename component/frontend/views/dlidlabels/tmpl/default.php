@@ -12,6 +12,12 @@ JHtml::_('behavior.framework');
 $this->loadHelper('filter');
 ?>
 
+<?php if ($this->params->get('show_page_heading')) : ?>
+	<div class="page-header">
+		<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+	</div>
+<?php endif;?>
+
 <div class="alert alert-info">
 	<?php echo JText::sprintf('COM_ARS_DLIDLABELS_MASTERDLID', ArsHelperFilter::myDownloadID()); ?>
 </div>

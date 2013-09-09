@@ -12,7 +12,7 @@ class ArsModelLogs extends FOFModel
 	public function buildQuery($overrideLimits = false)
 	{
 		$db = $this->getDbo();
-		
+
 		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('l').'.*',
@@ -30,12 +30,12 @@ class ArsModelLogs extends FOFModel
 				$db->qn('u').'.'.$db->qn('email')
 			))
 			->from($db->qn('#__ars_log').' AS '.$db->qn('l'))
-			->join('INNER', $db->qn('#__ars_items').' AS '.$db->qn('i').' ON('.$db->qn('i').'.'.$db->qn('id').' = '.$db->qn('l').'.'.$db->qn('item_id').')')
-			->join('INNER', $db->qn('#__ars_releases').' AS '.$db->qn('r').' ON('.$db->qn('r').'.'.$db->qn('id').' = '.$db->qn('i').'.'.$db->qn('release_id').')')
-			->join('INNER', $db->qn('#__ars_categories').' AS '.$db->qn('c').' ON('.$db->qn('c').'.'.$db->qn('id').' = '.$db->qn('r').'.'.$db->qn('category_id').')')
-			->join('LEFT', $db->qn('#__users').' AS '.$db->qn('u').' ON('.$db->qn('u').'.'.$db->qn('id').' = '.$db->qn('user_id').')')
+			->join('LEFT OUTER', $db->qn('#__ars_items').' AS '.$db->qn('i').' ON('.$db->qn('i').'.'.$db->qn('id').' = '.$db->qn('l').'.'.$db->qn('item_id').')')
+			->join('LEFT OUTER', $db->qn('#__ars_releases').' AS '.$db->qn('r').' ON('.$db->qn('r').'.'.$db->qn('id').' = '.$db->qn('i').'.'.$db->qn('release_id').')')
+			->join('LEFT OUTER', $db->qn('#__ars_categories').' AS '.$db->qn('c').' ON('.$db->qn('c').'.'.$db->qn('id').' = '.$db->qn('r').'.'.$db->qn('category_id').')')
+			->join('LEFT OUTER', $db->qn('#__users').' AS '.$db->qn('u').' ON('.$db->qn('u').'.'.$db->qn('id').' = '.$db->qn('user_id').')')
 			;
-		
+
 		$fltItemText	= $this->getState('itemtext', null, 'string');
 		$fltUserText	= $this->getState('usertext', null, 'string');
 		$fltReferer		= $this->getState('referer', null, 'string');
@@ -44,13 +44,13 @@ class ArsModelLogs extends FOFModel
 		$fltAuthorized	= $this->getState('authorized', null, 'cmd');
 		$fltCategory	= $this->getState('category', null, 'int');
 		$fltVersion		= $this->getState('version', null, 'int');
-		
+
 		if(!is_null($fltAuthorized) && ($fltAuthorized != '')) {
 			$fltAuthorized = (int)$fltAuthorized;
 		} else {
 			$fltAuthorized = null;
 		}
-		
+
 		if($fltItemText) {
 			// This extra query approach is required for performance on very large log tables (multiple millions of rows)
 			$itemIDs = $this->getItems($fltItemText);
@@ -99,10 +99,10 @@ class ArsModelLogs extends FOFModel
 				$ids = $db->loadResultArray();
 			}
 			$clause = '('.implode(", ", $ids).')';
-			
+
 			$query->where($db->qn('item_id').' IN '.$clause);
 		}
-		
+
 		if($fltVersion) {
 			$query_outer = $db->getQuery(true)
 				->select($db->qn('id'))
@@ -115,10 +115,10 @@ class ArsModelLogs extends FOFModel
 				$ids = $db->loadResultArray();
 			}
 			$clause = '('.implode(", ", $ids).')';
-			
+
 			$query->where($db->qn('item_id').' IN '.$clause);
 		}
-		
+
 		$order = $this->getState('filter_order', 'id', 'cmd');
 		if(!in_array($order, array_keys($this->getTable()->getData()))) $order = 'id';
 		$dir = $this->getState('filter_order_Dir', 'DESC', 'cmd');
@@ -126,15 +126,15 @@ class ArsModelLogs extends FOFModel
 
 		return $query;
 	}
-	
+
 	public function buildCountQuery() {
 		$db = $this->getDbo();
-		
+
 		$query = $db->getQuery(true)
 			->select('COUNT(*)')
 			->from($db->qn('#__ars_log').' AS '.$db->qn('l'))
 			;
-		
+
 		$fltItemText	= $this->getState('itemtext', null, 'string');
 		$fltUserText	= $this->getState('usertext', null, 'string');
 		$fltReferer		= $this->getState('referer', null, 'string');
@@ -143,13 +143,13 @@ class ArsModelLogs extends FOFModel
 		$fltAuthorized	= $this->getState('authorized', null, 'cmd');
 		$fltCategory	= $this->getState('category', null, 'int');
 		$fltVersion		= $this->getState('version', null, 'int');
-		
+
 		if(!is_null($fltAuthorized) && ($fltAuthorized != '')) {
 			$fltAuthorized = (int)$fltAuthorized;
 		} else {
 			$fltAuthorized = null;
 		}
-		
+
 		if($fltItemText) {
 			// This extra query approach is required for performance on very large log tables (multiple millions of rows)
 			$itemIDs = $this->getItems($fltItemText);
@@ -198,10 +198,10 @@ class ArsModelLogs extends FOFModel
 				$ids = $db->loadResultArray();
 			}
 			$clause = '('.implode(", ", $ids).')';
-			
+
 			$query->where($db->qn('item_id').' IN '.$clause);
 		}
-		
+
 		if($fltVersion) {
 			$query_outer = $db->getQuery(true)
 				->select($db->qn('id'))
@@ -214,10 +214,10 @@ class ArsModelLogs extends FOFModel
 				$ids = $db->loadResultArray();
 			}
 			$clause = '('.implode(", ", $ids).')';
-			
+
 			$query->where($db->qn('item_id').' IN '.$clause);
 		}
-		
+
 		$order = $this->getState('filter_order', 'id', 'cmd');
 		if(!in_array($order, array_keys($this->getTable()->getData()))) $order = 'id';
 		$dir = $this->getState('filter_order_Dir', 'DESC', 'cmd');
@@ -225,7 +225,7 @@ class ArsModelLogs extends FOFModel
 
 		return $query;
 	}
-	
+
 	/**
 	 * Returns the user IDs whose username, email address or real name contains the $frag string
 	 * @param string $frag
@@ -234,7 +234,7 @@ class ArsModelLogs extends FOFModel
 	private function getUsers($frag)
 	{
 		$db = $this->getDBO();
-		
+
 		$qfrag = $db->q("%".$frag."%");
 		$query = $db->getQuery(true)
 			->select($db->qn('id'))
@@ -250,7 +250,7 @@ class ArsModelLogs extends FOFModel
 			return $db->loadResultArray();
 		}
 	}
-	
+
 	/**
 	 * Gets a list of download item IDs whose title contains the $frag string
 	 * @param string $frag
@@ -264,12 +264,12 @@ class ArsModelLogs extends FOFModel
 			->select($db->qn('id'))
 			->from($db->qn('#__ars_items'))
 			->where($db->qn('title').' LIKE '.$qfrag);
-		
+
 		$db->setQuery($query);
 		if(version_compare(JVERSION, '3.0', 'ge')) {
 			return $db->loadColumn();
 		} else {
 			return $db->loadResultArray();
 		}
-	}	
+	}
 }

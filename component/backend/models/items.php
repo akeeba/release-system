@@ -12,7 +12,7 @@ class ArsModelItems extends FOFModel
 	public function buildQuery($overrideLimits = false)
 	{
 		$db = $this->getDbo();
-		
+
 		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('i').'.*',
@@ -39,49 +39,54 @@ class ArsModelItems extends FOFModel
 			->join('INNER', $db->qn('#__ars_categories').' AS '.$db->qn('c').' ON('.
 				$db->qn('c').'.'.$db->qn('id').' = '.$db->qn('r').'.'.$db->qn('category_id').')')
 			;
-		
-		
+
+
 		$fltCategory	= $this->getState('category', null, 'int');
 		if($fltCategory > 0) {
 			$query->where($db->qn('r').'.'.$db->qn('category_id').' = '.$db->q($fltCategory));
 		}
-		
+
+		$fltItemId	= $this->getState('item_id', null, 'int');
+		if($fltItemId > 0) {
+			$query->where($db->qn('i').'.'.$db->qn('id').' = '.$db->q($fltItemId));
+		}
+
 		$fltRelease		= $this->getState('release', null, 'int');
 		if($fltRelease > 0) {
 			$query->where($db->qn('release_id').' = '.$db->q($fltRelease));
 		}
-		
+
 		$fltAccess		= $this->getState('access', null, 'cmd');
 		if($fltAccess) {
 			$query->where($db->qn('i.access').' = '.$db->q($fltAccess));
 		}
-		
+
 		$fltAccessUser	= $this->getState('access_user', null, 'int');
 		if(!is_null($fltAccessUser))
 		{
 			$access_levels = JFactory::getUser($fltAccessUser)->getAuthorisedViewLevels();
 			$access_levels = array_map(array(JFactory::getDbo(), 'quote'), $access_levels);
-			
+
 			$query->where($db->qn('c.access').' IN (' . implode(',', $access_levels) . ')');
 			$query->where($db->qn('r.access').' IN (' . implode(',', $access_levels) . ')');
 			$query->where($db->qn('i.access').' IN (' . implode(',', $access_levels) . ')');
 		}
-		
+
 		$fltPublished	= $this->getState('published', null, 'cmd');
 		if($fltPublished != '') {
 			$query->where($db->qn('i').'.'.$db->qn('published').' = '.$db->q($fltPublished));
 		}
-		
+
 		$fltFilename	= $this->getState('filename', null, 'string');
 		if($fltFilename != '') {
 			$query->where($db->qn('i').'.'.$db->qn('filename').' = '.$db->q($fltFilename));
 		}
-		
+
 		$fltUrl			= $this->getState('url', null, 'string');
 		if($fltUrl != '') {
 			$query->where($db->qn('i').'.'.$db->qn('url').' = '.$db->q($fltUrl));
 		}
-		
+
 		$fltLanguage	= $this->getState('language', null, 'cmd');
 		$fltLanguage2	= $this->getState('language2', null, 'string');
 		if(($fltLanguage != '*') && ($fltLanguage != '')) {
@@ -93,7 +98,7 @@ class ArsModelItems extends FOFModel
 			$query->where($db->qn('r').'.'.$db->qn('language').' = '.$db->q($fltLanguage2));
 			$query->where($db->qn('c').'.'.$db->qn('language').' = '.$db->q($fltLanguage2));
 		}
-		
+
 		$order = $this->getState('filter_order', 'ordering', 'cmd');
 		if(!in_array($order, array_keys($this->getTable()->getData()))) $order = 'id';
 		$dir = $this->getState('filter_order_Dir', 'ASC', 'cmd');
@@ -101,14 +106,14 @@ class ArsModelItems extends FOFModel
 
 		return $query;
 	}
-	
+
 	function getReorderWhere()
 	{
 		$where = array();
 		$fltCategory	= $this->getState('category', null, 'int');
 		$fltRelease		= $this->getState('release', null, 'int');
 		$fltPublished	= $this->getState('published', null, 'cmd');
-		
+
 		$db = $this->getDBO();
 		if($fltCategory) {
 			$where[] = $db->qn('category_id').' = '.$db->q($fltCategory);

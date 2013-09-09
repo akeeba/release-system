@@ -59,6 +59,14 @@ class ArsModelBrowses extends FOFModel
 			}
 		}
 
+		// Apply Visual Group filtering
+		$params = $app->getPageParameters('com_ars');
+		$vgroup = $params->get('vgroupid', '');
+
+		if($vgroup) {
+			$catModel->setState('vgroup', $vgroup);
+		}
+
 		// Apply ordering
 		switch($orderby)
 		{

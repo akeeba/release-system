@@ -32,7 +32,7 @@ class ArsModelDownloads extends FOFModel
 		$items = FOFModel::getTmpInstance('Items','ArsModel')
 			//->access_user(JFactory::getUser()->id)
 			->published(1)
-			->setId($id)
+			->item_id($id)
 			->getItemList();
 
 		if (empty($items))
@@ -237,7 +237,7 @@ class ArsModelDownloads extends FOFModel
 
 				//set start and end based on range (if set), else set defaults
 				//also check for invalid ranges.
-				$seek_end = (empty($seek_end)) ? ($size - 1) : min(abs(intval($seek_end)),($filesize - 1));
+				$seek_end = (empty($seek_end)) ? ($filesize - 1) : min(abs(intval($seek_end)),($filesize - 1));
 				$seek_start = (empty($seek_start) || $seek_end < abs(intval($seek_start))) ? 0 : max(abs(intval($seek_start)),0);
 
 				$isResumable = true;
@@ -258,7 +258,7 @@ class ArsModelDownloads extends FOFModel
 
 					// Necessary headers
 					$totalLength = $seek_end - $seek_start + 1;
-					header('Content-Range: bytes '.$seek_start.'-'.$seek_end.'/'.$size);
+					header('Content-Range: bytes '.$seek_start.'-'.$seek_end.'/'.$filesize);
 					header('Content-Length: '.$totalLength);
 
 					// Seek to start
@@ -399,13 +399,14 @@ class ArsModelDownloads extends FOFModel
 			// This line returns an empty JUser object
 			$newUserObject = new JUser();
 			// This line FORCE RELOADS the user record.
-			$newUserObject->load($userid);
+			$newUserObject->load($user_id);
 
 			// Mark the user as logged in
 			$newUserObject->block = 0;
 			$newUserObject->set('guest', 0);
 
 			// Register the needed session variables
+			$session = JFactory::getSession();
 			$session->set('user', $newUserObject);
 
 			$db = JFactory::getDBO();

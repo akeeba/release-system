@@ -44,6 +44,8 @@ class ArsControllerCategory extends FOFController
 		}
 
 		parent::__construct($config);
+
+        $this->cacheableTasks = array();
 	}
 
 	public function execute($task) {
@@ -54,6 +56,13 @@ class ArsControllerCategory extends FOFController
 		}
 
 		parent::execute($task);
+	}
+
+	public function read()
+	{
+		$this->display(in_array('read', $this->cacheableTasks));
+
+		return true;
 	}
 
 	function onBeforeRead()
