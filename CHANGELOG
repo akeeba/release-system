@@ -1,5 +1,6 @@
 Version 2.2.0
 ================================================================================
++ The front-end interface was rewritten to make use of Bootstrap, like all of our software
 + #99 Visual Groups now have an optional description
 ~ Overall performance boost in the front-end
 # [MEDIUM] Caching worked erratically
