@@ -59,4 +59,23 @@ class ArsDispatcher extends FOFDispatcher
 		parent::dispatch();
 	}
 
+	/**
+	 * Executes right after the dispatcher runs the controller.
+	 *
+	 * @return  boolean  Return false to abort
+	 */
+	public function onAfterDispatch()
+	{
+		// @TODO Remove this method; it's only provisionally here as a bugfix
+
+		// If we have to log out the user, please do so now
+
+		if ($this->fofAuth_LogoutOnReturn && $this->_fofAuth_isLoggedIn)
+		{
+			FOFPlatform::getInstance()->logoutUser();
+		}
+
+		return true;
+	}
+
 }
