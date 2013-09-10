@@ -1,3 +1,7 @@
+Version 2.2.1
+================================================================================
+! Access Levels not respected during download
+
 Version 2.2.0
 ================================================================================
 + The front-end interface was rewritten to make use of Bootstrap, like all of our software

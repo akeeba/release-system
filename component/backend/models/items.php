@@ -67,6 +67,8 @@ class ArsModelItems extends FOFModel
 			$access_levels = JFactory::getUser($fltAccessUser)->getAuthorisedViewLevels();
 			$access_levels = array_map(array(JFactory::getDbo(), 'quote'), $access_levels);
 
+			$access_levels = array_unique($access_levels);
+
 			$query->where($db->qn('c.access').' IN (' . implode(',', $access_levels) . ')');
 			$query->where($db->qn('r.access').' IN (' . implode(',', $access_levels) . ')');
 			$query->where($db->qn('i.access').' IN (' . implode(',', $access_levels) . ')');

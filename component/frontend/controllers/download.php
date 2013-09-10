@@ -12,10 +12,10 @@ class ArsControllerDownload extends FOFController
     public function __construct($config = array())
     {
 		parent::__construct($config);
-        
+
         $this->cacheableTasks = array();
 	}
-    
+
 	public function execute($task) {
 		$task = 'download';
 
@@ -32,7 +32,7 @@ class ArsControllerDownload extends FOFController
 
 		// Get the model
 		$model = $this->getThisModel();
-		
+
 		// Log in a user if I have to
 		$model->loginUser();
 
