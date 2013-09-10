@@ -1,6 +1,7 @@
 Version 2.2.1
 ================================================================================
 ! Access Levels not respected during download
+! An annoying –but harmless– fatal error was shown on upgrade from older versions
 
 Version 2.2.0
 ================================================================================
