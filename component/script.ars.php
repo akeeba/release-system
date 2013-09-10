@@ -230,7 +230,11 @@ class Com_ArsInstallerScript
 
 		if (defined('FOF_INCLUDED'))
 		{
-			FOFPlatform::getInstance()->clearCache();
+			$platform = FOFPlatform::getInstance();
+			if (method_exists($platform, 'clearCache'))
+			{
+				FOFPlatform::getInstance()->clearCache();
+			}
 		}
 	}
 
