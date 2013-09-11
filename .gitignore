@@ -1,6 +1,7 @@
 /*.sh
 /*.txt
 /.buildpath
+/.idea
 /.project
 /.settings
 /.tx/
