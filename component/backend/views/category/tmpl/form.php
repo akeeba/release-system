@@ -78,6 +78,12 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<?php endif; ?>
 			</div>
 		</div>
+		<div class="control-group">
+			<label for="show_unauth_links" class="control-label"><?php echo JText::_('COM_ARS_COMMON_SHOW_UNAUTH_LINKS'); ?></label>
+			<div class="controls">
+				<?php echo JHTML::_('select.booleanlist', 'show_unauth_links', null, $this->item->show_unauth_links); ?>
+			</div>
+		</div>
 		<?php if(ArsHelperFiltering::hasAkeebaSubs()): ?>
 		<div class="control-group">
 			<label for="groups" class="control-label"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_AKEEBA_LABEL'); ?></label>

@@ -64,16 +64,16 @@ if($this->item->id == 0) {
 				<input type="text" name="hits" id="hits" value="<?php echo $this->item->hits ?>">
 			</div>
 		</div>
-
-	</div>
-	<div class="span6">
-
 		<div class="control-group">
 			<label for="published" class="control-label"><?php echo JText::_('JPUBLISHED'); ?></label>
 			<div class="controls">
 				<?php echo JHTML::_('select.booleanlist', 'published', null, $this->item->published); ?>
 			</div>
 		</div>
+	</div>
+	
+	<div class="span6">
+
 		<div class="control-group">
 			<label for="access" class="control-label"><?php echo JText::_('JFIELD_ACCESS_LABEL'); ?></label>
 			<div class="controls">
@@ -85,6 +85,12 @@ if($this->item->id == 0) {
 				<?php else: ?>
 				<?php echo JHTML::_('list.accesslevel', $this->item); ?>
 				<?php endif; ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<label for="show_unauth_links" class="control-label"><?php echo JText::_('COM_ARS_COMMON_SHOW_UNAUTH_LINKS'); ?></label>
+			<div class="controls">
+				<?php echo JHTML::_('select.booleanlist', 'show_unauth_links', null, $this->item->show_unauth_links); ?>
 			</div>
 		</div>
 		<?php if(ArsHelperFiltering::hasAkeebaSubs()): ?>
