@@ -1,3 +1,8 @@
+Version 2.2.1
+================================================================================
+! Access Levels not respected during download
+! An annoying –but harmless– fatal error was shown on upgrade from older versions
+
 Version 2.2.0
 ================================================================================
 + The front-end interface was rewritten to make use of Bootstrap, like all of our software

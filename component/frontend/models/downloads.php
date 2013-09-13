@@ -30,7 +30,7 @@ class ArsModelDownloads extends FOFModel
 		$this->item = null;
 
 		$items = FOFModel::getTmpInstance('Items','ArsModel')
-			//->access_user(JFactory::getUser()->id)
+			->access_user(JFactory::getUser()->id)
 			->published(1)
 			->item_id($id)
 			->getItemList();

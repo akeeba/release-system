@@ -58,5 +58,4 @@ class ArsDispatcher extends FOFDispatcher
 
 		parent::dispatch();
 	}
-
 }
