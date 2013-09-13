@@ -24,6 +24,8 @@ class ArsModelItems extends FOFModel
 				$db->qn('r').'.'.$db->qn('access').' AS '.$db->qn('rel_access'),
 				$db->qn('r').'.'.$db->qn('published').' AS '.$db->qn('rel_published'),
 				$db->qn('r').'.'.$db->qn('language').' AS '.$db->qn('rel_language'),
+				$db->qn('r').'.'.$db->qn('show_unauth_links').' AS '.$db->qn('rel_show_unauth'),
+
 				$db->qn('c').'.'.$db->qn('title').' AS '.$db->qn('cat_title'),
 				$db->qn('c').'.'.$db->qn('alias').' AS '.$db->qn('cat_alias'),
 				$db->qn('c').'.'.$db->qn('type').' AS '.$db->qn('cat_type'),
@@ -32,6 +34,7 @@ class ArsModelItems extends FOFModel
 				$db->qn('c').'.'.$db->qn('access').' AS '.$db->qn('cat_access'),
 				$db->qn('c').'.'.$db->qn('published').' AS '.$db->qn('cat_published'),
 				$db->qn('c').'.'.$db->qn('language').' AS '.$db->qn('cat_language'),
+				$db->qn('c').'.'.$db->qn('show_unauth_links').' AS '.$db->qn('cat_show_unauth'),
 			))
 			->from($db->quoteName('#__ars_items').' AS '.$db->qn('i'))
 			->join('INNER', $db->qn('#__ars_releases').' AS '.$db->qn('r').' ON('.
@@ -71,7 +74,10 @@ class ArsModelItems extends FOFModel
 
 			$query->where($db->qn('c.access').' IN (' . implode(',', $access_levels) . ')');
 			$query->where($db->qn('r.access').' IN (' . implode(',', $access_levels) . ')');
-			$query->where($db->qn('i.access').' IN (' . implode(',', $access_levels) . ')');
+
+			// Davide 2013.09.13
+			// If I want to display items to unauthorized users, I have not to filter them by access
+			// $query->where($db->qn('i.access').' IN (' . implode(',', $access_levels) . ')');
 		}
 
 		$fltPublished	= $this->getState('published', null, 'cmd');

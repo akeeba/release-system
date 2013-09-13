@@ -7,12 +7,26 @@
 
 defined('_JEXEC') or die();
 
+// Incoming var injected by loadAnyTemplate
+if(!isset($userAccess)) $userAccess = array();
+
 JHtml::_('behavior.tooltip');
 
 $Itemid = empty($Itemid) ? "" : "&Itemid=$Itemid";
 $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid);
 
 $directlink = false;
+
+// Should I display the link to unauthorized user?
+if(!($item->cat_show_unauth && $item->rel_show_unauth && $item->show_unauth_links))
+{
+	// Ok check fail, let's see if I am inside an access view
+	if(!in_array($item->access, $userAccess))
+	{
+		// Nope! Go away!
+		return;
+	}
+}
 
 if ($this->directlink)
 {

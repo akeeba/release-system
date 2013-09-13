@@ -12,7 +12,9 @@ JLoader::import('joomla.utilities.date');
 FOFTemplateUtils::addCSS('media://com_ars/css/frontend.css');
 
 $this->item->hit();
-$released = new JDate($this->item->created);
+$results    = false;
+$released   = new JDate($this->item->created);
+$userAccess = JFactory::getUser()->getAuthorisedViewLevels();
 ?>
 
 <div class="item-page<?php echo $this->pparams->get('pageclass_sfx') ?>">
@@ -33,7 +35,23 @@ $released = new JDate($this->item->created);
 	<?php
 		foreach($this->items as $item)
 		{
-			echo $this->loadAnyTemplate('site:com_ars/release/item', array('item' => $item, 'Itemid' => $this->Itemid));
+			$output = $this->loadAnyTemplate('site:com_ars/release/item', array('item'   => $item,
+			                                                                    'Itemid' => $this->Itemid,
+																		        'userAccess' => $userAccess));
+			if($output)
+			{
+				$results = true;
+			}
+			echo $output;
+		}
+
+		if(!$results)
+		{
+	?>
+		<div class="ars-noitems">
+			<?php echo JText::_('ARS_NO_ITEMS'); ?>
+		</div>
+	<?php
 		}
 	?>
 <?php endif; ?>
