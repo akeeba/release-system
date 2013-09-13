@@ -69,13 +69,14 @@ switch ($item->maturity)
 			<?php echo JHTML::_('date',$released, JText::_('DATE_FORMAT_LC2')) ?>
 		</dd>
 
+		<?php if($this->pparams->get('show_downloads', 1)): ?>
 		<dt>
 			<?php echo JText::_('LBL_RELEASES_HITS') ?>:
 		</dt>
 		<dd>
 			<?php echo JText::sprintf( ($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits) ?>
 		</dd>
-
+		<?php endif; ?>
 	</dl>
 
 	<?php if(version_compare(JVERSION, '3.0', 'lt')): ?>
