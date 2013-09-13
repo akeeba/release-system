@@ -15,8 +15,6 @@ $this->item->hit();
 $results    = false;
 $released   = new JDate($this->item->created);
 $userAccess = JFactory::getUser()->getAuthorisedViewLevels();
-$showlink['category'] = $this->category->show_unauth_links;
-$showlink['release']  = $this->item->show_unauth_links;
 ?>
 
 <div class="item-page<?php echo $this->pparams->get('pageclass_sfx') ?>">
@@ -39,8 +37,7 @@ $showlink['release']  = $this->item->show_unauth_links;
 		{
 			$output = $this->loadAnyTemplate('site:com_ars/release/item', array('item'   => $item,
 			                                                                    'Itemid' => $this->Itemid,
-																		        'user_access' => $userAccess,
-																				'showlink' => $showlink));
+																		        'user_access' => $userAccess));
 			if($output)
 			{
 				$results = true;

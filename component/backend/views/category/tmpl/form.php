@@ -84,6 +84,12 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<?php echo JHTML::_('select.booleanlist', 'show_unauth_links', null, $this->item->show_unauth_links); ?>
 			</div>
 		</div>
+		<div class="control-group">
+			<label for="redirect_unauth" class="control-label"><?php echo JText::_('COM_ARS_COMMON_REDIRECT_UNAUTH'); ?></label>
+			<div class="controls">
+				<input type="text" name="redirect_unauth" id="redirect_unauth" value="<?php echo $this->item->redirect_unauth ?>">
+			</div>
+		</div>
 		<?php if(ArsHelperFiltering::hasAkeebaSubs()): ?>
 		<div class="control-group">
 			<label for="groups" class="control-label"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_AKEEBA_LABEL'); ?></label>

@@ -51,6 +51,50 @@ class ArsControllerDownload extends FOFController
 			$log->save(array('authorized' => 0));
 			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
 		}
+		elseif($item === -1 && $id)
+		{
+			$redirect = '';
+
+			// I have to redirect the user, let's search where
+			$tmpItem = FOFModel::getTmpInstance('Items', 'ArsModel')->getTable();
+			$tmpItem->load($id);
+
+			if($tmpItem->redirect_unauth)
+			{
+				$redirect = $tmpItem->redirect_unauth;
+			}
+			else
+			{
+				$release = FOFModel::getTmpInstance('Releases', 'ArsModel')->getTable();
+				$release->load($tmpItem->release_id);
+
+				// Do I have a redirect set on the release?
+				if($release->redirect_unauth)
+				{
+					$redirect = $release->redirect_unauth;
+				}
+				else
+				{
+					$category = FOFModel::getTmpInstance('Categories', 'ArsModel')->getTable();
+					$category->load($release->category_id);
+
+					if($category->redirect_unauth)
+					{
+						$redirect = $category->redirect_unauth;
+					}
+				}
+			}
+
+			// Do I have a redirect set? If not, throw an error
+			if($redirect)
+			{
+				JFactory::getApplication()->redirect($redirect);
+			}
+			{
+				$log->save(array('authorized' => 0));
+				return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
+			}
+		}
 
 		$item->hit();
 		$log->save(array('authorized' => 1));
