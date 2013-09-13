@@ -69,7 +69,10 @@ class ArsModelItems extends FOFModel
 
 			$query->where($db->qn('c.access').' IN (' . implode(',', $access_levels) . ')');
 			$query->where($db->qn('r.access').' IN (' . implode(',', $access_levels) . ')');
-			$query->where($db->qn('i.access').' IN (' . implode(',', $access_levels) . ')');
+
+			// Davide 2013.09.13
+			// If I want to display items to unauthorized users, I have not to filter them by access
+			// $query->where($db->qn('i.access').' IN (' . implode(',', $access_levels) . ')');
 		}
 
 		$fltPublished	= $this->getState('published', null, 'cmd');

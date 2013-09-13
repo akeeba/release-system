@@ -71,7 +71,7 @@ if($this->item->id == 0) {
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="span6">
 
 		<div class="control-group">
