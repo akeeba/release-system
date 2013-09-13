@@ -24,7 +24,9 @@ $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&i
 		</a>
 	</td>
 	<td width="15%" class="small">
-		<?php echo JText::_('LBL_ITEMS_HITS') ?>
-		<?php echo JText::sprintf( ($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits) ?>
+		<?php if($this->cparams->get('show_downloads', 1)): ?>
+			<?php echo JText::_('LBL_ITEMS_HITS') ?>
+			<?php echo JText::sprintf( ($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits) ?>
+		<?php endif; ?>
 	</td>
 </tr>
