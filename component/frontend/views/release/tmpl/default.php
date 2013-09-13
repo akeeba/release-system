@@ -37,7 +37,7 @@ $userAccess = JFactory::getUser()->getAuthorisedViewLevels();
 		{
 			$output = $this->loadAnyTemplate('site:com_ars/release/item', array('item'   => $item,
 			                                                                    'Itemid' => $this->Itemid,
-																		        'user_access' => $userAccess));
+																		        'userAccess' => $userAccess));
 			if($output)
 			{
 				$results = true;
