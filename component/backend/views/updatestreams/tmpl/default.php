@@ -103,6 +103,8 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 				<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&format=ini&id=<?php echo (int)$item->id ?>" target="_blank">INI</a>
 				&bull;
 				<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=stream&format=xml&id=<?php echo (int)$item->id ?>" target="_blank">XML</a>
+				&bull;
+				<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=download&format=raw&id=<?php echo (int)$item->id ?>" target="_blank">D/L</a>
 			</td>
 			<td>
 				<?php echo JHTML::_('grid.published', $item, $i); ?>
