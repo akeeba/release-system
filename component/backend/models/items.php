@@ -67,8 +67,17 @@ class ArsModelItems extends FOFModel
 		$fltAccessUser	= $this->getState('access_user', null, 'int');
 		if(!is_null($fltAccessUser))
 		{
-			$access_levels = JFactory::getUser($fltAccessUser)->getAuthorisedViewLevels();
-			$access_levels = array_map(array(JFactory::getDbo(), 'quote'), $access_levels);
+			$user = JFactory::getUser($fltAccessUser);
+
+			if (!is_object($user) || !($user instanceof JUser))
+			{
+				$access_levels = array();
+			}
+			else
+			{
+				$access_levels = JFactory::getUser($fltAccessUser)->getAuthorisedViewLevels();
+				$access_levels = array_map(array(JFactory::getDbo(), 'quote'), $access_levels);
+			}
 
 			$access_levels = array_unique($access_levels);
 
