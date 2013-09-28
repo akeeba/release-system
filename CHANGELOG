@@ -2,6 +2,7 @@ Version 2.2.2
 ================================================================================
 + Option to show unauthorised links
 + Download update stream URL: download the latest item made available in an update stream
+# [LOW] "Failed to delete temp.dat" message when downloading a remote file failed during item creation
 
 Version 2.2.1
 ================================================================================
