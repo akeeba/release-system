@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+JHtml::_('behavior.multiselect');
+
 $model = $this->getModel();
 
 $base_folder = rtrim(JURI::base(), '/');

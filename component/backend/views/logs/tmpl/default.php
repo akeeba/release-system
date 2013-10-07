@@ -9,6 +9,8 @@ defined('_JEXEC') or die();
 
 JLoader::import('joomla.utilities.date');
 
+JHtml::_('behavior.multiselect');
+
 $this->loadHelper('select');
 
 FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
