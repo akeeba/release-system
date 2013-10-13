@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-if(!function_exists('geoip_load_shared_mem')) {
-	
+if(!function_exists('geoip_load_shared_mem') && !function_exists('geoip_open')) {
+
 	define("GEOIP_COUNTRY_BEGIN", 16776960);
 	define("GEOIP_STATE_BEGIN_REV0", 16700000);
 	define("GEOIP_STATE_BEGIN_REV1", 16000000);
@@ -54,7 +54,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	define("GEOIP_DIALUP_SPEED", 1);
 	define("GEOIP_CABLEDSL_SPEED", 2);
 	define("GEOIP_CORPORATE_SPEED", 3);
-	
+
 	class GeoIP {
 	    var $flags;
 	    var $filehandle;
@@ -205,7 +205,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	"Anonymous Proxy","Satellite Provider","Other",
 	"Aland Islands","Guernsey","Isle of Man","Jersey","Saint Barthelemy","Saint Martin"
 	);
-	
+
 	    var $GEOIP_CONTINENT_CODES = array(
 	"--", "AS", "EU", "EU", "AS", "AS", "SA", "SA", "EU", "AS",
 	"SA", "AF", "AN", "SA", "OC", "EU", "OC", "SA", "AS", "EU",
@@ -233,10 +233,10 @@ if(!function_exists('geoip_load_shared_mem')) {
 	"SA", "SA", "SA", "AS", "OC", "OC", "OC", "AS", "AF", "EU",
 	"AF", "AF", "EU", "AF", "--", "--", "--", "EU", "EU", "EU",
 	"EU", "SA", "SA" );
-	
+
 	}
 	function geoip_load_shared_mem ($file) {
-	
+
 	  $fp = fopen($file, "rb");
 	  if (!$fp) {
 	    print "error opening $file: $php_errormsg\n";
@@ -252,7 +252,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  shmop_write ($shmid, fread($fp, $size), 0);
 	  shmop_close ($shmid);
 	}
-	
+
 	function _setup_segments($gi){
 	  $gi->databaseType = GEOIP_COUNTRY_EDITION;
 	  $gi->record_length = STANDARD_RECORD_LENGTH;
@@ -264,7 +264,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	        if ($delim == (chr(255).chr(255).chr(255))) {
 	            $gi->databaseType = ord(@shmop_read ($gi->shmid, $offset, 1));
 	            $offset++;
-	
+
 	            if ($gi->databaseType == GEOIP_REGION_EDITION_REV0){
 	                $gi->databaseSegments = GEOIP_STATE_BEGIN_REV0;
 	            } else if ($gi->databaseType == GEOIP_REGION_EDITION_REV1){
@@ -335,7 +335,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  }
 	  return $gi;
 	}
-	
+
 	function geoip_open($filename, $flags) {
 	  $gi = new GeoIP;
 	  $gi->flags = $flags;
@@ -348,19 +348,19 @@ if(!function_exists('geoip_load_shared_mem')) {
 	        $gi->memory_buffer = fread($gi->filehandle, $s_array['size']);
 	    }
 	  }
-	
+
 	  $gi = _setup_segments($gi);
 	  return $gi;
 	}
-	
+
 	function geoip_close($gi) {
 	  if ($gi->flags & GEOIP_SHARED_MEMORY) {
 	    return true;
 	  }
-	
+
 	  return fclose($gi->filehandle);
 	}
-	
+
 	function geoip_country_id_by_name($gi, $name) {
 	  $addr = gethostbyname($name);
 	  if (!$addr || $addr == $name) {
@@ -368,7 +368,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  }
 	  return geoip_country_id_by_addr($gi, $addr);
 	}
-	
+
 	function geoip_country_code_by_name($gi, $name) {
 	  $country_id = geoip_country_id_by_name($gi,$name);
 	  if ($country_id !== false) {
@@ -376,7 +376,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  }
 	  return false;
 	}
-	
+
 	function geoip_country_name_by_name($gi, $name) {
 	  $country_id = geoip_country_id_by_name($gi,$name);
 	  if ($country_id !== false) {
@@ -384,12 +384,12 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  }
 	  return false;
 	}
-	
+
 	function geoip_country_id_by_addr($gi, $addr) {
 	  $ipnum = ip2long($addr);
 	  return _geoip_seek_country($gi, $ipnum) - GEOIP_COUNTRY_BEGIN;
 	}
-	
+
 	function geoip_country_code_by_addr($gi, $addr) {
 	  if ($gi->databaseType == GEOIP_CITY_EDITION_REV1) {
 	    $record = geoip_record_by_addr($gi,$addr);
@@ -404,7 +404,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  }
 	  return false;
 	}
-	
+
 	function geoip_country_name_by_addr($gi, $addr) {
 	  if ($gi->databaseType == GEOIP_CITY_EDITION_REV1) {
 	    $record = geoip_record_by_addr($gi,$addr);
@@ -417,7 +417,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  }
 	  return false;
 	}
-	
+
 	function _geoip_seek_country($gi, $ipnum) {
 	  $offset = 0;
 	  for ($depth = 31; $depth >= 0; --$depth) {
@@ -426,11 +426,11 @@ if(!function_exists('geoip_load_shared_mem')) {
 	      // mbstring.func_overload and mbstring.internal_encoding
 	      $enc = mb_internal_encoding();
 	       mb_internal_encoding('ISO-8859-1');
-	
+
 	      $buf = substr($gi->memory_buffer,
 	                            2 * $gi->record_length * $offset,
 	                            2 * $gi->record_length);
-	
+
 	      mb_internal_encoding($enc);
 	    } elseif ($gi->flags & GEOIP_SHARED_MEMORY) {
 	      $buf = @shmop_read ($gi->shmid,
@@ -462,7 +462,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  trigger_error("error traversing database - perhaps it is corrupt?", E_USER_ERROR);
 	  return false;
 	}
-	
+
 	function _get_org($gi,$ipnum){
 	  $seek_org = _geoip_seek_country($gi,$ipnum);
 	  if ($seek_org == $gi->databaseSegments) {
@@ -483,7 +483,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  mb_internal_encoding($enc);
 	  return $org_buf;
 	}
-	
+
 	function geoip_org_by_addr ($gi,$addr) {
 	  if ($addr == NULL) {
 	    return 0;
@@ -491,7 +491,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  $ipnum = ip2long($addr);
 	  return _get_org($gi, $ipnum);
 	}
-	
+
 	function _get_region($gi,$ipnum){
 	  if ($gi->databaseType == GEOIP_REGION_EDITION_REV0){
 	    $seek_region = _geoip_seek_country($gi,$ipnum) - GEOIP_STATE_BEGIN_REV0;
@@ -522,7 +522,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  return array ($country_code,$region);
 	  }
 	}
-	
+
 	function geoip_region_by_addr ($gi,$addr) {
 	  if ($addr == NULL) {
 	    return 0;
@@ -530,7 +530,7 @@ if(!function_exists('geoip_load_shared_mem')) {
 	  $ipnum = ip2long($addr);
 	  return _get_region($gi, $ipnum);
 	}
-	
+
 	function getdnsattributes ($l,$ip){
 	  $r = new Net_DNS_Resolver();
 	  $r->nameservers = array("ws1.maxmind.com");
