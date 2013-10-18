@@ -104,7 +104,7 @@ switch ($item->maturity)
 	<?php endif; ?>
 
 	<p class="readmore">
-		<a href="<?php echo htmlentities($release_url); ?>">
+		<a href="<?php echo htmlentities($release_url); ?>" class="btn btn-primary">
 			<?php echo JText::_('LBL_RELEASE_VIEWITEMS') ?>
 		</a>
 	</p>
