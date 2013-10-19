@@ -113,7 +113,7 @@ if ($this->directlink)
 	<div>
 		<div class="pull-left">
 			<p class="readmore">
-				<a href="<?php echo htmlentities($download_url); ?>">
+				<a href="<?php echo htmlentities($download_url); ?>" class="btn btn-primary">
 					<?php echo JText::_('LBL_ITEM_DOWNLOAD') ?>
 				</a>
 			</p>
