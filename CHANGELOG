@@ -1,6 +1,7 @@
 Version 2.2.3
 ================================================================================
 ~ Try very hard not to load GeoIP if another extension loads it before us (we can't guarantee that crappy code in other extensions will not cause a site crash; we can only make sure OUR code doesn't cause such a crash)
+~ Improved back-end display in Joomla! 3
 
 Version 2.2.2
 ================================================================================
