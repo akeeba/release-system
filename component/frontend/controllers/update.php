@@ -250,8 +250,8 @@ class ArsControllerUpdate extends FOFController
 		$log = FOFModel::getTmpInstance('Logs','ArsModel')->getTable();
 
 		// Get the item lists
-		if($dlitem->id > 0) {
-			$item = $dl_model->getItem($dlitem->id);
+		if($dlitem->item_id > 0) {
+			$item = $dl_model->getItem($dlitem->item_id);
 		} else {
 			$item = null;
 		}
