@@ -36,7 +36,7 @@ class ArsViewRelease extends FOFViewHtml
 
 		// Set page title and meta
 		$cat = FOFModel::getTmpInstance('Categories', 'ArsModel')
-			->setId($model->category_id)
+			->setId($model->item->category_id)
 			->getItem();
 
 		$title = ArsHelperTitle::setTitleAndMeta($pparams, $cat->title.' '.$model->item->version);
