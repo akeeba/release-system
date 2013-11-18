@@ -2469,6 +2469,79 @@ version {arslatest <emphasis role="bold">release</emphasis> <replaceable>Categor
 
           <para><programlisting>&lt;a href="{arslatest item_link 'com_foobar*.zip' Foobar}"&gt;Download
 Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
+
+          <bridgehead>Creating links to specific items by means of the update
+          stream ID</bridgehead>
+
+          <para>Syntax:</para>
+
+          <programlisting>{arslatest <emphasis role="bold">stream_link</emphasis> <replaceable>Stream ID</replaceable>}</programlisting>
+
+          <para>where Stream ID is the numeric ID of an update stream, as
+          shown in the leftmost column of the Update Streams page.</para>
+
+          <para>Please note that this is the URL, not a link! If you want to
+          use it as a link you will need something like this:</para>
+
+          <para><programlisting>&lt;a href="{arslatest stream_link 123}"&gt;Download latest version&lt;/a&gt;</programlisting>or
+          combine it with the version number syntax to have something even
+          more useful:</para>
+
+          <para><programlisting>&lt;a href="{arslatest stream_link 123}"&gt;Download
+Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
+
+          <bridgehead>Creating links for the Install from Web
+          feature</bridgehead>
+
+          <important>
+            <para>The <guilabel>System - Akeeba Release System integration
+            with Install from Web</guilabel> plugin must be published for this
+            feature to work.</para>
+          </important>
+
+          <para>This is used to provide integration with the Install from Web
+          feature introduced in Joomla! 3.2. When a user clicks the Install or
+          Buy &amp; Install button in the "Install from Web" page on their
+          site, the Joomla! Extensions Directory page will send your site the
+          JED extension ID and a link to the user's site. Our plugin will
+          generate a link that takes your user back to their site, with the
+          installation URL for the latest version already filled in for them.
+          Please note that you MUST have enabled the system plugin mentioned
+          in the box above, otherwise this feature WILL NOT WORK AT
+          ALL!</para>
+
+          <para>Syntax:</para>
+
+          <programlisting>{arslatest <emphasis role="bold">installfromweb</emphasis> <replaceable>Stream ID</replaceable>}</programlisting>
+
+          <para>where Stream ID is the numeric ID of an update stream, as
+          shown in the leftmost column of the Update Streams page. The Stream
+          ID is not used if a JED extension ID has already been provided, i.e.
+          the user is using the Install from Web feature. If, however, the
+          user has not used the Install from Web feature the Stream ID above
+          generates a download URL identical to the one of the stream_link
+          syntax above.</para>
+
+          <para>Yes, we understand this is confusing. You know what is more
+          confusing? Trying to figure out how the Install from Web feature
+          works based on useless documentation and convoluted code, but we
+          digress.</para>
+
+          <para>Please note that this is the URL, not a link! If you want to
+          use it as a link you will need something like this:</para>
+
+          <para><programlisting>&lt;a href="{arslatest installfromweb 123}"&gt;Install or download latest version&lt;/a&gt;</programlisting>or
+          combine it with the version number syntax to have something even
+          more useful:</para>
+
+          <para><programlisting>&lt;a href="{arslatest installfromweb 123}"&gt;Install or download
+Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
+
+          <tip>
+            <para>You can use this feature in your successful login /
+            subscription message page to let the user install / download your
+            software.</para>
+          </tip>
         </section>
       </section>
 
