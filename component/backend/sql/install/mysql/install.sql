@@ -125,6 +125,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_updatestreams` (
 	`packname` VARCHAR(255),
 	`client_id` int(1) NOT NULL DEFAULT '1',
 	`folder` varchar(255) DEFAULT '',
+	`jedid` bigint(20) NOT NULL,
 	`created` datetime NOT NULL,
 	`created_by` int(11) NOT NULL DEFAULT '0',
 	`modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -133,7 +134,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_updatestreams` (
 	`checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 	`published` int(11) NOT NULL DEFAULT '1',
 	PRIMARY KEY `id` (`id`),
-	KEY `#__ars_updatestreams_published` (`published`)
+	KEY `#__ars_updatestreams_published` (`published`),
+	KEY `#__ars_updatestreams_jedid` (`jedid`)
 ) DEFAULT CHARACTER SET utf8;
 
 CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc` (
