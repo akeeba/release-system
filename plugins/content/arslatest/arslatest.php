@@ -268,7 +268,7 @@ class plgContentArslatest extends JPlugin
 	{
 		$session = JFactory::getSession();
 		$installat = $session->get('installat', null, 'arsjed');
-		$installapp = (int)$session->get('installapp', null, 'arsjed');
+		$installapp = (int)($session->get('installapp', null, 'arsjed'));
 
 		// Find the stream ID based on the $installapp key
 		$db = JFactory::getDbo();

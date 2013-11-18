@@ -36,7 +36,7 @@ if(!defined('FOF_INCLUDED') || !class_exists('FOFLess', true))
 JLoader::import('joomla.application.component.helper');
 if(!JComponentHelper::isEnabled('com_ars', true)) return;
 
-class plgContentArsjed extends JPlugin
+class plgSystemArsjed extends JPlugin
 {
 	public function onAfterInitialise()
 	{
