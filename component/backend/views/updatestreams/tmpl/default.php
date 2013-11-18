@@ -100,6 +100,7 @@ $sortFields = array(
 <table class="adminlist table table-striped">
 	<thead>
 		<tr>
+			<th width="16"></th>
 			<th width="20">
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 			</th>
@@ -121,6 +122,7 @@ $sortFields = array(
 		</tr>
 		<tr>
 			<td></td>
+			<td></td>
 			<td>
 				<?php echo ArsHelperSelect::updatetypes($this->getModel()->getState('type'), 'type', array('onchange'=>'this.form.submit();','class'=>'input-medium')) ?>
 			</td>
@@ -134,7 +136,7 @@ $sortFields = array(
 	</thead>
 	<tfoot>
 		<tr>
-			<td colspan="6">
+			<td colspan="20">
 				<?php if($this->pagination->total > 0) echo $this->pagination->getListFooter() ?>
 			</td>
 		</tr>
@@ -148,6 +150,9 @@ $sortFields = array(
 			$m = 1 - $m;
 		?>
 		<tr class="row<?php echo $m?>">
+			<td>
+				<?php echo $item->id; ?>
+			</td>
 			<td>
 				<?php echo JHTML::_('grid.id', $i, $item->id); ?>
 			</td>
