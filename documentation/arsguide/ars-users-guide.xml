@@ -1371,14 +1371,24 @@ deny from all</programlisting>
           <para>The grid below is a standard Joomla! administrator table.
           Clicking on a stream name allows you to edit it. The most important
           column is the <guilabel>Links</guilabel> column. It provides direct
-          links to the publicly accessible formats of your update stream. The
-          INI link will take you to the INI format update stream, which is
-          necessary for Live Update to work. More information on including
-          Live Update in your components can be found in a later section of
-          this documentation. The XML link will take you to the Joomla! 1.6
-          and later XML "update" document for that stream. This is the XML
-          file you should in extension manifest files, inside the CDATA
-          section mentioned above.</para>
+          links to the publicly accessible formats of your update
+          stream.</para>
+
+          <para>The INI link will take you to the INI format update stream,
+          which is necessary for Live Update to work. More information on
+          including Live Update in your components can be found in a later
+          section of this documentation.</para>
+
+          <para>The XML link will take you to the Joomla! 1.6 and later XML
+          "update" document for that stream. This is the XML file you should
+          in extension manifest files, inside the CDATA section mentioned
+          above.</para>
+
+          <para>The D/L link is a special link which you can use in the
+          Joomla! Extension Directory or anywhere you want to provide a direct
+          link to the latest version of the item in the update stream. This
+          URL will start the download if the latest version of the item
+          specified in this update stream.</para>
 
           <bridgehead>Editing or adding an update stream</bridgehead>
 
@@ -1507,6 +1517,21 @@ deny from all</programlisting>
                 <para>This is only required for XML update streams. If you are
                 only interested in providing INI update streams, e.g. for
                 desktop software, simply ignore this option.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>JED Extension ID</term>
+
+              <listitem>
+                <para>This is optional and only needs to be entered for
+                extensions listed in the Joomla! Extensions Directory (JED).
+                This is the numeric ID of your extension as listed in the JED.
+                This is used for the Install from Web feature integration. For
+                more information please take a look at the Content - Akeeba
+                Release System Latest Version plugin which contains the
+                plumbing to actually provide the URLs you need to use for the
+                (quite convoluted) Install from Web feature.</para>
               </listitem>
             </varlistentry>
 
