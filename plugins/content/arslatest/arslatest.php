@@ -259,7 +259,35 @@ class plgContentArslatest extends JPlugin
 
 	private function parseStreamLink($content)
 	{
+		static $dlid = '';
+
+		$user = JFactory::getUser();
+
+		if(empty($dlid) && !$user->guest)
+		{
+			$db = JFactory::getDBO();
+
+			$query = $db->getQuery(true)
+				->select('MD5(CONCAT('.$db->qn('id').','.$db->qn('username').','.$db->qn('password').')) AS '.$db->qn('dlid'))
+				->from($db->qn('#__users'))
+				->where($db->qn('id').' = '.$db->q($user->id));
+			$db->setQuery($query, 0, 1);
+			$dlid = $db->loadResult();
+		}
+
 		$link = JRoute::_('index.php?option=com_ars&view=update&task=download&format=raw&id=' . (int)$content, false);
+
+		if (!empty($dlid))
+		{
+			if (strstr($link, '?') !== false)
+			{
+				$link .= '?dlid=' . $dlid;
+			}
+			else
+			{
+				$link .= '&dlid=' . $dlid;
+			}
+		}
 
 		return $link;
 	}
