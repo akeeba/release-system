@@ -521,7 +521,7 @@ class ArsTableItem extends FOFTable
 				}
 			}
 
-			if (!empty($filename) && is_file($filename))
+			if (!empty($filename) && is_file($filename) && ($this->type == 'link'))
 			{
 				if (!@unlink($filename))
 				{
