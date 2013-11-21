@@ -497,27 +497,36 @@ class ArsTableItem extends FOFTable
 			{
 				if (function_exists('hash_file'))
 				{
-					$this->md5	 = hash_file('md5', $filename);
-					$this->sha1	 = hash_file('sha1', $filename);
+					if (empty($this->md5))
+					{
+						$this->md5	 = hash_file('md5', $filename);
+					}
+					if (empty($this->sha1))
+					{
+						$this->sha1	 = hash_file('sha1', $filename);
+					}
 				}
 				else
 				{
-					if (function_exists('md5_file'))
+					if (function_exists('md5_file') && empty($this->md5))
 					{
 						$this->md5 = md5_file($filename);
 					}
 
-					if (function_exists('sha1_file'))
+					if (function_exists('sha1_file') && empty($this->sha1))
 					{
 						$this->sha1 = sha1_file($filename);
 					}
 				}
 
-				$filesize		 = @filesize($filename);
-
-				if ($filesize !== false)
+				if (empty($this->filesize))
 				{
-					$this->filesize	 = $filesize;
+					$filesize		 = @filesize($filename);
+
+					if ($filesize !== false)
+					{
+						$this->filesize	 = $filesize;
+					}
 				}
 			}
 
