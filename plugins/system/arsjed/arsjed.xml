@@ -13,7 +13,7 @@
 		<filename plugin="arsjed">arsjed.php</filename>
 	</files>
 	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.plg_content_arsjed.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_content_arsjed.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_arsjed.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_arsjed.sys.ini</language>
 	</languages>
 </extension>
