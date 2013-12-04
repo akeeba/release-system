@@ -1,5 +1,6 @@
 Version 2.3.2
 ================================================================================
+# [HIGH] The Install from Web integration is broken
 # [LOW] MD5 and SHA1 sums are calculated even if they are filled in but the file size is not specified
 
 Version 2.3.1

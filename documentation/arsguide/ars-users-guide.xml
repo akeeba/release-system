@@ -40,10 +40,11 @@
         System</application></title>
 
         <para>Akeeba Release System (or ARS for short) is a download manager
-        component quite different than its competition. It is primarily geared
-        towards developers who want to disseminate their software products to
-        their clients, but can also be used as a generic downloads manager.
-        Its key features are:</para>
+        component quite different than its competition. It is designed for
+        developers who want to disseminate their software products to their
+        clients. Even though it can be abused as a generic downloads manager
+        we do not recommend this approach and will not provide any kind of
+        support for this use case. Its key features are:</para>
 
         <itemizedlist>
           <listitem>
@@ -402,14 +403,14 @@
         separation is only logical. If you wish to do so, you can display both
         sub-repositories as a single repository.</para>
 
-        <para>The repository follows the standard convention of Joomla! 1.0
-        and 1.5 article categorization. Each repository can have one or more
-        "categories". Each category can have one or more "releases". Each
-        release can have one or more "items". The "categories" are the top
-        organization level of your data. Usually you have to create one
-        category per software you want to publish. If you are not interested
-        in publishing software, create one category per general file type.
-        Think of them as article Sections.</para>
+        <para>The repository follows the standard convention of
+        categorization. Each repository can have one or more "categories".
+        Each category can have one or more "releases". Each release can have
+        one or more "items". The "categories" are the top organization level
+        of your data. Usually you have to create one category per software you
+        want to publish. If you are not interested in publishing software,
+        create one category per general file type. Think of them as article
+        Sections.</para>
 
         <para>Each category has one more "releases". Think of a release as a
         group of files belonging to the same chronological order. Each release
@@ -438,48 +439,6 @@
         <para>In order to allow your visitors to browse the entirety of your
         repository, you will have to create a menu item to the full
         repository.</para>
-
-        <bridgehead>Practical example: Community site</bridgehead>
-
-        <para>In this case, you will be using ARS as a generic download
-        system, much like DOCman or PhocaDownloads. Do the following mind
-        mapping:</para>
-
-        <itemizedlist>
-          <listitem>
-            <para>Section - ARS Category</para>
-          </listitem>
-
-          <listitem>
-            <para>Category - ARS Release</para>
-          </listitem>
-
-          <listitem>
-            <para>File - ARS Item</para>
-          </listitem>
-        </itemizedlist>
-
-        <para>Now, let's say you want to publish your weekly newsletter in PDF
-        format. Create an ARS category item named "Newsletter". For each new
-        issue, create an ARS release named after the date of publication, e.g.
-        "January 2011", "February 2011" and so on inside the "Newsletter"
-        category. Finally, create a single ARS item per issue so that your
-        visitors can download the PDF file of your newsletter.</para>
-
-        <para>In order to reduce the number of clicks required by your
-        visitors to get to the desired download, just create a menu item to
-        the specific Category you created. There's no need to create a link to
-        the full repository.</para>
-
-        <bridgehead>Practical example: A personal site / blog</bridgehead>
-
-        <para>This is the most peculiar download repository setup. Usually,
-        such users only need to publish a bunch of files and track download
-        stats. The easy way to do that is to create an ARS category (the name
-        is indifferent), an ARS release under it (use something descriptive of
-        your site) and just publish items in that single release. In order to
-        save your visitors some clicks, you can create a menu item directly to
-        this sole release, so that nothing but your files gets listed.</para>
       </section>
 
       <section xml:id="basic-features">
