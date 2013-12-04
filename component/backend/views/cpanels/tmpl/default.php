@@ -23,6 +23,31 @@ FOFTemplateUtils::addJS('media://com_ars/js/jqplot.highlighter.min.js');
 FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
 ?>
+<?php if (!$this->hasplugin): ?>
+	<div class="well">
+		<h3><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINSTATUS') ?></h3>
+
+		<p><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINMISSING') ?></p>
+
+		<a class="btn btn-primary" href="https://www.akeebabackup.com/download/akgeoip.html" target="_blank">
+			<span class="icon icon-white icon-download-alt"></span>
+			<?php echo JText::_('COM_ARS_GEOBLOCK_LBL_DOWNLOADGEOIPPLUGIN') ?>
+		</a>
+	</div>
+<?php else: ?>
+	<div class="well well-small">
+		<h3><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINEXISTS') ?></h3>
+
+		<p><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINCANUPDATE') ?></p>
+
+		<a class="btn btn-small" href="index.php?option=com_admintools&view=cpanel&task=updategeoip">
+			<span class="icon icon-retweet"></span>
+			<?php echo JText::_('COM_ARS_GEOBLOCK_LBL_UPDATEGEOIPDATABASE') ?>
+		</a>
+	</div>
+<?php endif; ?>
+
+
 <div class="row-fluid">
 	<div id="cpanel" class="span<?php echo $this->graphswidth ?>">
 

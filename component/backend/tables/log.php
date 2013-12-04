@@ -17,6 +17,8 @@ class ArsTableLog extends FOFTable
 	function __construct( $table, $key, &$db )
 	{
 		parent::__construct( '#__ars_log', 'id', $db );
+
+		@include_once __DIR__ . '/../helpers/ip.php';
 		
 		$this->_columnAlias = array(
 			'enabled'		=> 'published',
@@ -62,13 +64,18 @@ class ArsTableLog extends FOFTable
 
 		if(empty($this->ip))
 		{
-			if(isset($_SERVER['REMOTE_ADDR']))
+			if (class_exists('ArsHelperIp'));
 			{
-				$this->ip = $_SERVER['REMOTE_ADDR'];
-				require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/geoip.php';
-				$gi = geoip_open(JPATH_ADMINISTRATOR.'/components/com_ars/assets/geoip/GeoIP.dat',GEOIP_STANDARD);
-				$this->country = geoip_country_code_by_addr($gi, $this->ip);
-				geoip_close($gi);
+				$this->ip = ArsHelperIp::getUserIP();
+
+				@include_once JPATH_PLUGINS . '/system/akgeoip/lib/akgeoip.php';
+				@include_once JPATH_PLUGINS . '/system/akgeoip/lib/vendor/autoload.php';
+
+				if (class_exists('AkeebaGeoipProvider'))
+				{
+					$geoip = new AkeebaGeoipProvider;
+					$this->country = $geoip->getCountryCode($this->ip);
+				}
 			}
 		}
 

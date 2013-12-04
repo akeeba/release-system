@@ -13,8 +13,33 @@ defined('_JEXEC') or die();
  */
 class ArsControllerCpanel extends FOFController
 {
-	public function execute($task) {
-		$task = 'browse';
+	public function execute($task)
+	{
+		if (!in_array($task, array('updategeoip')))
+		{
+			$task = 'browse';
+		}
+
+		$this->task = 'browse';
+
 		parent::execute($task);
+	}
+
+	public function updategeoip()
+	{
+		$geoip = new AkeebaGeoipProvider();
+		$result = $geoip->updateDatabase();
+
+		$url = 'index.php?option=com_admintools';
+
+		if ($result === true)
+		{
+			$msg = JText::_('COM_ARS_GEOBLOCK_MSG_DOWNLOADEDGEOIPDATABASE');
+			$this->setRedirect($url, $msg);
+		}
+		else
+		{
+			$this->setRedirect($url, $result, 'error');
+		}
 	}
 }

@@ -25,7 +25,7 @@ class ArsViewCpanels extends FOFViewHtml
 		$model = $this->getModel();
 
 		// -- Icon definitions
-		$this->assign('icondefs',			$model->getIconDefinitions() );
+		$this->icondefs = $model->getIconDefinitions();
 		
 		require_once(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/cache.php');
 		$cache = new ArsHelperCache();
@@ -35,7 +35,7 @@ class ArsViewCpanels extends FOFViewHtml
 			$popularweek = json_encode($model->getWeekPopular());
 			$cache->setValue('popularweek', $popularweek);
 		}
-		$this->assign('popularweek',		json_decode($popularweek) );
+		$this->popularweek = json_decode($popularweek);
 		
 		// -- # of downloads
 		$dldetails = $cache->getValue('dldetails');
@@ -50,9 +50,9 @@ class ArsViewCpanels extends FOFViewHtml
 		}
 		$dldetails = json_decode($dldetails, true);
 		
-		$this->assign('dlmonth',			$dldetails['dlmonth'] );
-		$this->assign('dlweek',				$dldetails['dlweek'] );
-		$this->assign('dlever',				$dldetails['dlever'] );
+		$this->dlmonth = $dldetails['dlmonth'];
+		$this->dlweek = $dldetails['dlweek'];
+		$this->dlever = $dldetails['dlever'];
 
 		// -- Monthly-Daily downloads report
 		$mdreport = $cache->getValue('mdreport');
@@ -60,7 +60,7 @@ class ArsViewCpanels extends FOFViewHtml
 			$mdreport = json_encode($model->getMonthlyStats());
 			$cache->setvalue('mdreport', $mdreport);
 		}
-		$this->assign('mdreport',			json_decode($mdreport, true));
+		$this->mdreport = json_decode($mdreport, true);
 		
 		$cache->save();
 		
@@ -73,7 +73,9 @@ class ArsViewCpanels extends FOFViewHtml
 		} elseif($width > 10) {
 			$width = 10;
 		}
-		$this->assign('graphswidth',		$width);
+		$this->graphswidth = $width;
+
+		$this->hasplugin = 				$model->hasGeoIPPlugin();
 
 		return true;
 	}
