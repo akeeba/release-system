@@ -27,14 +27,14 @@ function arsBuildRoute(&$query)
 	switch($format)
 	{
 		case 'html':
-                        if (ComArsRouter::$routeHtml)
-                        {
-                            $segments = arsBuildRouteHtml($query);
-                        }
-                        else
-                        {
-                            $segments = array();
-                        }
+			if (ComArsRouter::$routeHtml)
+			{
+				$segments = arsBuildRouteHtml($query);
+			}
+			else
+			{
+				$segments = array();
+			}
 			break;
 		case 'feed':
 			$segments = arsBuildRouteFeed($query);
@@ -129,7 +129,6 @@ function arsBuildRouteHtml(&$query)
 				// Joomla! will let the menu item naming work its magic
 				$query['Itemid'] = $Itemid;
 			}
-			break;
 
 			if (!empty($task))
 			{
