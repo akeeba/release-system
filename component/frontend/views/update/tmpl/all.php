@@ -40,3 +40,4 @@ $url=str_replace('&', '&amp;', $url);
 if(substr($url,-4) != '.xml') $url .= (strpos($url, '?') ? '&amp;' : '?').'dummy=extension.xml';
 ?><category name="<?php echo ucfirst($category)?>" description="<?php echo JText::_('LBL_UPDATETYPES_'.strtoupper($category)); ?>" category="<?php echo $category ?>" ref="<?php echo $url ?>" />
 <?php endforeach ?>
+</extensionset>
