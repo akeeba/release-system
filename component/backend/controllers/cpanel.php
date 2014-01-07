@@ -27,6 +27,11 @@ class ArsControllerCpanel extends FOFController
 
 	public function updategeoip()
 	{
+		if ($this->csrfProtection)
+		{
+			$this->_csrfProtection();
+		}
+
 		$geoip = new AkeebaGeoipProvider();
 		$result = $geoip->updateDatabase();
 

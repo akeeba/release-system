@@ -40,7 +40,7 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
 		<p><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINCANUPDATE') ?></p>
 
-		<a class="btn btn-small" href="index.php?option=com_ars&view=cpanel&task=updategeoip">
+		<a class="btn btn-small" href="index.php?option=com_ars&view=cpanel&task=updategeoip&<?php echo JFactory::getSession()->getFormToken(); ?>=1">
 			<span class="icon icon-retweet"></span>
 			<?php echo JText::_('COM_ARS_GEOBLOCK_LBL_UPDATEGEOIPDATABASE') ?>
 		</a>
