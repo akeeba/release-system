@@ -34,7 +34,7 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 			<?php echo JText::_('COM_ARS_GEOBLOCK_LBL_DOWNLOADGEOIPPLUGIN') ?>
 		</a>
 	</div>
-<?php else: ?>
+<?php elseif ($this->pluginNeedsUpdate): ?>
 	<div class="well well-small">
 		<h3><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINEXISTS') ?></h3>
 

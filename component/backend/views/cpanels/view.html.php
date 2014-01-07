@@ -76,6 +76,7 @@ class ArsViewCpanels extends FOFViewHtml
 		$this->graphswidth = $width;
 
 		$this->hasplugin = 				$model->hasGeoIPPlugin();
+		$this->pluginNeedsUpdate =		$model->dbNeedsUpdate();
 
 		return true;
 	}
