@@ -30,7 +30,7 @@ class ArsControllerCpanel extends FOFController
 		$geoip = new AkeebaGeoipProvider();
 		$result = $geoip->updateDatabase();
 
-		$url = 'index.php?option=com_admintools';
+		$url = 'index.php?option=com_ars';
 
 		if ($result === true)
 		{
