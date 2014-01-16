@@ -73,7 +73,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			</div>
 		</div>
 		<div class="control-group">
-			<label for="folder" class="control-label"><?php echo JText::_('LBL_UPDATES_JEDID'); ?></label>
+			<label for="jedid" class="control-label"><?php echo JText::_('LBL_UPDATES_JEDID'); ?></label>
 			<div class="controls">
 				<input type="text" name="jedid" id="jedid" value="<?php echo $this->item->jedid ?>" >
 			</div>
