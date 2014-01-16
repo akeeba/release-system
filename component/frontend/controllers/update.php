@@ -268,11 +268,14 @@ class ArsControllerUpdate extends FOFController
 		}
 
 		$item->hit();
-		$log->save(array('authorized' => 1));
+		$log->save(array(
+			'item_id' => $dlitem->item_id,
+			'authorized' => 1
+			)
+		);
 
 		$dl_model->doDownload();
 
 		// No need to return anything; doDownload() calls the exit() method of the application object
 	}
-
 }

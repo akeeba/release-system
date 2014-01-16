@@ -97,7 +97,11 @@ class ArsControllerDownload extends FOFController
 		}
 
 		$item->hit();
-		$log->save(array('authorized' => 1));
+		$log->save(array(
+			'item_id' => $id,
+			'authorized' => 1
+			)
+		);
 
 		$model->doDownload();
 
