@@ -277,7 +277,8 @@ class ArsModelCpanels extends FOFModel
 			->from($db->qn('#__extensions'))
 			->where($db->qn('type') . ' = ' . $db->q('plugin'))
 			->where($db->qn('folder') . ' = ' . $db->q('system'))
-			->where($db->qn('element') . ' = ' . $db->q('akgeoip'));
+			->where($db->qn('element') . ' = ' . $db->q('akgeoip'))
+			->where($db->qn('enabled') . ' = 1');
 		$db->setQuery($query);
 		$result = $db->loadResult();
 
