@@ -164,23 +164,40 @@ class ArsModelCpanels extends FOFModel
 				break;
 
 			case 'year':
-				$date = "makedate(year(current_timestamp), 1) AND makedate(year(current_timestamp), 1) + interval 1 year - interval 1 day";
+                $year_start = new JDate(date('Y-01-01'));
+                $year_end   = new JDate(date('Y-12-31'));
+
+				$date = $db->q($year_start->toSql())." AND ".$db->q($year_end->toSql());
 				break;
 			
 			case 'lastmonth':
-				$date = "LAST_DAY(CURRENT_TIMESTAMP) - INTERVAL 2 MONTH + INTERVAL 1 DAY AND LAST_DAY(CURRENT_TIMESTAMP) - INTERVAL 1 MONTH";
+                $month_start = new JDate(strtotime("first day of last month"));
+                $month_end   = new JDate(strtotime("last day of last month"));
+
+				$date = $db->q($month_start->toSql())." AND ".$db->q($month_end->toSql());
 				break;
 
 			case 'month':
-				$date = "LAST_DAY(CURRENT_TIMESTAMP) - INTERVAL 1 MONTH + INTERVAL 1 DAY AND LAST_DAY(CURRENT_TIMESTAMP)";
+                $month_start = new JDate(date('Y-m-01'));
+                $month_end   = new JDate(date('Y-m-t'));
+
+				$date = $db->q($month_start->toSql()). "AND ".$db->q($month_end->toSql());
 				break;
 
 			case 'week':
-				$date = "DATE(CURRENT_TIMESTAMP) - INTERVAL (DAYOFWEEK(CURRENT_TIMESTAMP) - 1) DAY AND DATE(CURRENT_TIMESTAMP) - INTERVAL (DAYOFWEEK(CURRENT_TIMESTAMP) - 7) DAY";
+                $week_start = new JDate(strtotime('Sunday last week'));
+                $week_end   = new JDate(strtotime('Monday this week'));
+
+
+                //$date = "DATE(CURRENT_TIMESTAMP) - INTERVAL (DAYOFWEEK(CURRENT_TIMESTAMP) - 1) DAY AND DATE(CURRENT_TIMESTAMP) - INTERVAL (DAYOFWEEK(CURRENT_TIMESTAMP) - 7) DAY";
+				$date = $db->q($week_start->toSql())." AND ".$db->q($week_end->toSql());
 				break;
 
 			case 'day':
-				$date = "DATE(CURRENT_TIMESTAMP) AND DATE(CURRENT_TIMESTAMP) + INTERVAL 24 HOUR - INTERVAL 1 SECOND";
+                $day_start = new JDate(date('Y-m-d').' 00:00:00');
+                $day_end   = new JDate(date('Y-m-d').' 23:59:59');
+
+				$date = $db->q($day_start->toSql())." AND ".$db->q($day_end->toSql());
 				break;
 		}
 
@@ -207,7 +224,20 @@ class ArsModelCpanels extends FOFModel
 	public function getChartData()
 	{
 		$db	= $this->getDBO();
-		
+
+        $now = new JDate();
+
+        // I need to do this since if I'm on March 30th and I go back of a month I would got February 30th
+        // that will we shifted to March 2nd. This is not a bug (!!!) it's the expected behavior of PHP (!!!!!!!)
+        if (date('d') > date('d', strtotime('last day of -1 month')))
+        {
+            $last_month = new JDate(date('Y-m-d', strtotime('last day of -1 month')));
+        }
+        else
+        {
+            $last_month = new JDate(date('Y-m-d', strtotime('-1 month')));
+        }
+
 		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('country'),
@@ -215,7 +245,7 @@ class ArsModelCpanels extends FOFModel
 			))
 			->from($db->qn('#__ars_log'))
 			->where($db->qn('country').' <> '.$db->q(''))
-			->where($db->qn('accessed_on').' BETWEEN CURRENT_TIMESTAMP - INTERVAL 1 MONTH AND CURRENT_TIMESTAMP')
+			->where($db->qn('accessed_on').' BETWEEN '.$db->q($last_month->toSql()).' AND '.$db->q($now->toSql()))
 			->group($db->qn('country'))
 			;
 		$db->setQuery($query);
@@ -234,17 +264,39 @@ class ArsModelCpanels extends FOFModel
 	public function getMonthlyStats()
 	{
 		$db = $this->getDBO();
-		
+
+        $now = new JDate();
+
+        // I need to do this since if I'm on March 30th and I go back of a month I would got February 30th
+        // that will we shifted to March 2nd. This is not a bug (!!!) it's the expected behavior of PHP (!!!!!!!)
+        if (date('d') > date('d', strtotime('last day of -1 month')))
+        {
+            $last_month = new JDate(date('Y-m-d', strtotime('last day of -1 month')));
+        }
+        else
+        {
+            $last_month = new JDate(date('Y-m-d', strtotime('-1 month')));
+        }
+
 		$query = $db->getQuery(true)
 			->select(array(
 				'DATE('.$db->qn('accessed_on').') AS '.$db->qn('day'),
 				'COUNT(*) AS '.$db->qn('dl')
 			))
 			->from($db->qn('#__ars_log'))
-			->where($db->qn('accessed_on').' BETWEEN CURRENT_TIMESTAMP - INTERVAL 1 MONTH AND CURRENT_TIMESTAMP')
-			->group('DAYOFYEAR('.$db->qn('accessed_on').')')
+            ->where($db->qn('accessed_on').' BETWEEN '.$db->q($last_month->toSql()).' AND '.$db->q($now->toSql()))
 			->order($db->qn('accessed_on').' ASC')
-		;
+        ;
+
+        if($db->name == 'postgresql')
+        {
+            $query->group('EXTRACT(DOY FROM TIMESTAMP accessed_on)');
+        }
+        else
+        {
+            $query->group('DAYOFYEAR('.$db->qn('accessed_on').')');
+        }
+
 		$db->setQuery($query);
 		
 		$data = $db->loadAssocList('day');
