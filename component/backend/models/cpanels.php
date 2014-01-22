@@ -87,7 +87,7 @@ class ArsModelCpanels extends FOFModel
 		
 		$noTimeLimits = (is_null($from) || is_null($to));
 		if(!$noTimeLimits) { 
-			$query->where($db->qn('l').'.'.$db->qn('accessed_on').' BETWEEN '.$from.' AND '.$to);
+			$query->where($db->qn('l').'.'.$db->qn('accessed_on').' BETWEEN '.$db->q($from).' AND '.$db->q($to));
 		}
 
 		$db->setQuery($query, 0, $itemCount);
@@ -142,7 +142,9 @@ class ArsModelCpanels extends FOFModel
 	 */
 	public function getWeekPopular($itemCount = 5)
 	{
-		return $this->getPopular($itemCount,'CURRENT_TIMESTAMP - INTERVAL 7 DAY','CURRENT_TIMESTAMP');
+        $now     = new JDate();
+        $weekago = new JDate(strtotime('-7 days'));
+		return $this->getPopular($itemCount, $weekago->toSql(), $now->toSql());
 	}
 
 	/**
