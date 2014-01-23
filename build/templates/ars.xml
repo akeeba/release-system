@@ -37,6 +37,9 @@
 			<file driver="mysql">sql/install/mysql/install.sql</file>
 			<file charset="utf8" driver="mysqli">sql/install/mysql/install.sql</file>
 			<file driver="mysqli">sql/install/mysql/install.sql</file>
+
+      <file driver="postgresql">sql/install/postgresql/install.sql</file>
+      <file driver="postgresql" charset="utf8">sql/install/postgresql/install.sql</file>
 		</sql>
 	</install>
 
@@ -47,6 +50,9 @@
 			<file driver="mysql">sql/install/mysql/uninstall.sql</file>
 			<file charset="utf8" driver="mysqli">sql/install/mysql/uninstall.sql</file>
 			<file driver="mysqli">sql/install/mysql/uninstall.sql</file>
+
+      <file driver="postgresql">sql/install/postgresql/uninstall.sql</file>
+      <file driver="postgresql" charset="utf8">sql/install/postgresql/uninstall.sql</file>
 		</sql>
 	</uninstall>
 	
