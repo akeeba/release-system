@@ -7,13 +7,17 @@
 
 defined('_JEXEC') or die();
 
+$app = JFactory::getApplication();
+$menus = $app->getMenu();
+$menu = $menus->getActive();
+
 ?>
 <div class="item-page<?php echo $this->cparams->get('pageclass_sfx') ?>">
 
 <?php if ($this->cparams->get('show_page_heading', 1)): ?>
 	<div class="page-header">
 		<h1>
-			<?php echo $this->escape($this->cparams->get('page_heading')); ?>
+			<?php echo $this->escape($this->cparams->get('page_heading', $menu->title)); ?>
 		</h1>
 	</div>
 <?php elseif (!$this->cparams->get('show_page_heading', 1)): ?>

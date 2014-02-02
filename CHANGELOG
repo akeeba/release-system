@@ -4,6 +4,7 @@ Version 2.3.3
 ~ Only show a reminder to update the GeoIP database if it's older than two weeks
 # [MEDIUM] Wrong link for GeoIP update
 # [MEDIUM] Download link in update stream always appends &dummy=my.zip (thanks Francesco & Hayden)
+# [LOW] Fixed page headings
 
 Version 2.3.2
 ================================================================================

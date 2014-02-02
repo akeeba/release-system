@@ -15,13 +15,18 @@ $this->item->hit();
 $results    = false;
 $released   = new JDate($this->item->created);
 $userAccess = JFactory::getUser()->getAuthorisedViewLevels();
-?>
 
+$app = JFactory::getApplication();
+$menus = $app->getMenu();
+$menu = $menus->getActive();
+$pageHeading = $this->pparams->get('page_heading', $menu->title) . ' ' . $this->item->version;
+
+?>
 <div class="item-page<?php echo $this->pparams->get('pageclass_sfx') ?>">
-	<?php if ($this->pparams->get('show_page_heading') && $this->pparams->get('show_title')) : ?>
-	<div class="page-header">
-		<h1> <?php echo $this->escape($this->pparams->get('page_heading')); ?> </h1>
-	</div>
+	<?php if ($this->pparams->get('show_page_heading')) : ?>
+		<div class="page-header">
+			<h1><?php echo $this->escape($pageHeading); ?></h1>
+		</div>
 	<?php endif;?>
 
 	<?php echo $this->loadAnyTemplate('site:com_ars/category/release', array('item' => $this->item, 'Itemid' => $this->Itemid, 'no_link' => true)); ?>
