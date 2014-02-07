@@ -275,7 +275,7 @@ class plgContentArslatest extends JPlugin
 			$dlid = $db->loadResult();
 		}
 
-		$link = JURI::base(false) . JRoute::_('index.php?option=com_ars&view=update&task=download&format=raw&id=' . (int)$content, false);
+		$link = JRoute::_('index.php?option=com_ars&view=update&task=download&format=raw&id=' . (int)$content, false);
 
 		if (!empty($dlid))
 		{
