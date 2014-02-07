@@ -5,6 +5,7 @@ Version 2.3.3
 # [MEDIUM] Wrong link for GeoIP update
 # [MEDIUM] Download link in update stream always appends &dummy=my.zip (thanks Francesco & Hayden)
 # [LOW] Fixed page headings
+# [LOW] gh-25 Foxed ordering under Joomla! 3.x
 
 Version 2.3.2
 ================================================================================
