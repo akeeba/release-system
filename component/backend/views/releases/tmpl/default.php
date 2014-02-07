@@ -43,7 +43,7 @@ $sortFields = array(
 			table = document.getElementById("sortTable");
 			direction = document.getElementById("directionTable");
 			order = table.options[table.selectedIndex].value;
-			if (order != '$order')
+			if (order != '<?php echo $this->lists->order ?>')
 			{
 				dirn = 'asc';
 			}
