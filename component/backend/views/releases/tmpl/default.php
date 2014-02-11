@@ -103,6 +103,9 @@ $sortFields = array(
 			<?php if($hasAjaxOrderingSupport !== false): ?>
 			<th width="20px">
 				<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'ordering', $this->lists->order_Dir, $this->lists->order, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+				<a href="javascript:saveorder(<?php echo count($this->items) - 1 ?>, 'saveorder')" rel="tooltip"
+				   class="btn btn-micro pull-right" title="<?php echo JText::_('JLIB_HTML_SAVE_ORDER') ?>">
+					<span class="icon-ok"></span>
 			</th>
 			<?php endif; ?>
 			<th width="20">
@@ -192,16 +195,18 @@ $sortFields = array(
 			<td class="order nowrap center hidden-phone">
 			<?php if ($this->perms->editstate) :
 				$disableClassName = '';
+				$disabled         = '';
 				$disabledLabel	  = '';
 				if (!$hasAjaxOrderingSupport['saveOrder']) :
 					$disabledLabel    = JText::_('JORDERINGDISABLED');
+					$disabled         = 'disabled="disabled"';
 					$disableClassName = 'inactive tip-top';
 				endif; ?>
 				<span class="sortable-handler <?php echo $disableClassName?>" title="<?php echo $disabledLabel?>" rel="tooltip">
 					<i class="icon-menu"></i>
 				</span>
-				<input type="text" style="display:none"  name="order[]" size="5"
-					value="<?php echo $item->ordering;?>" class="input-mini text-area-order " />
+				<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>"
+					   class="input-mini text-area-order" <?php echo $disabled?> />
 			<?php else : ?>
 				<span class="sortable-handler inactive" >
 					<i class="icon-menu"></i>
