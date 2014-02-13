@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="sh404sefextplugins" method="upgrade">
+	<name>sh404sef - Akeeba Release System</name>
+  <author>Nicholas K. Dionysopoulos / AkeebaBackup.com</author>
+	<creationDate>February 2014</creationDate>
+  <copyright>Copyright (C) 2011-2014 Nicholas K. Dionysopoulos / AkeebaBackup.com. All rights reserved.</copyright>
+  <license>GNU General Public License version 3 or later</license>
+  <authorEmail>nicholas@dionysopoulos.me</authorEmail>
+  <authorUrl>www.akeebabackup.com</authorUrl>
+  <version>1.0</version>
+	<description>Provide support for sef urls and meta data in sh404SEF</description>
+
+	<files>
+		<filename plugin="com_ars">com_ars.php</filename>
+		<folder plugin="com_ars">ars</folder>
+	</files>
+</extension>
