@@ -1,5 +1,6 @@
 Version 2.3.3
 ================================================================================
++ Added sh404SEF plugin to create SEF url with that component
 ~ CSRF protection for GeoIP update
 ~ Only show a reminder to update the GeoIP database if it's older than two weeks
 ~ AJAX ordering now shows the ordering in a textbox, to faciliate ordering without much frustration in Joomla! 3
