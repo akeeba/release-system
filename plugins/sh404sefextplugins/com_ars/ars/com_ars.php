@@ -109,6 +109,8 @@ shRemoveFromGETVarsList('option');
 shRemoveFromGETVarsList('lang');
 shRemoveFromGETVarsList('view');
 shRemoveFromGETVarsList('id');
+shRemoveFromGETVarsList('layout');
+shRemoveFromGETVarsList('format');
 if( isset($Itemid) ) shRemoveFromGETVarsList('Itemid');
 
 // make sure we don't error out on accessing undefined variables
