@@ -60,7 +60,7 @@ class  Sh404sefExtpluginCom_ars extends Sh404sefClassBaseextplugin {
    */     
   protected function _findSefPluginPath( $nonSefVars = array()) {
 
-    $this->_sefPluginPath =  JPATH_ROOT . DS. 'plugins'.DS.'sh404sefextplugins'.DS.'ars'.DS.'com_ars.php';
+    $this->_sefPluginPath =  JPATH_ROOT . '/plugins/sh404sefextplugins/com_ars/ars/com_ars.php';
 
   }
 
