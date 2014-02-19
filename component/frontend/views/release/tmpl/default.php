@@ -9,8 +9,6 @@ defined('_JEXEC') or die();
 
 JLoader::import('joomla.utilities.date');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/frontend.css');
-
 $this->item->hit();
 $results    = false;
 $released   = new JDate($this->item->created);
