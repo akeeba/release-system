@@ -10,6 +10,7 @@ Version 2.3.3
 # [LOW] gh-25 Fixed ordering under Joomla! 3.x
 # [LOW] ARS Latest Release plugin: fixed broken link (stream_link and installfromweb)
 # [LOW] RSS feeds broken for Category and Release view in some circumstances
+# [LOW] frontend.css was not always loaded in the front-end
 
 Version 2.3.2
 ================================================================================

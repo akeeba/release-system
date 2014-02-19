@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form
-	cssfiles="media://com_ars/css/frontend.css"
->
+<form>
 	<fieldset name="basic_configuration"
 		label="COM_ARS_TITLE_DLIDLABELS_EDIT"
 	>

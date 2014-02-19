@@ -34,6 +34,7 @@ class ArsDispatcher extends FOFDispatcher
 			include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
 			AkeebaStrapper::bootstrap();
 			AkeebaStrapper::jQueryUI();
+			AkeebaStrapper::addCSSfile('media://com_ars/css/frontend.css');
 
 			// Default to the "browses" view
 			$view = $this->input->getCmd('view', $this->defaultView);
