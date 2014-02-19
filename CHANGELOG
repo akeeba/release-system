@@ -9,6 +9,7 @@ Version 2.3.3
 # [LOW] Fixed page headings
 # [LOW] gh-25 Fixed ordering under Joomla! 3.x
 # [LOW] ARS Latest Release plugin: fixed broken link (stream_link and installfromweb)
+# [LOW] RSS feeds broken for Category and Release view in some circumstances
 
 Version 2.3.2
 ================================================================================

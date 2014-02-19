@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 defined('_JEXEC') or die();
 
@@ -54,7 +54,7 @@ class ArsControllerRelease extends FOFController
 
 	public function execute($task)
 	{
-		if ($this->input->getCmd('format', 'html') == 'html')
+		if (in_array($this->input->getCmd('format', 'html'), array('html', 'feed')))
 		{
 			if (!in_array($task, array('browse', 'read')))
 			{
@@ -89,16 +89,15 @@ class ArsControllerRelease extends FOFController
 		$id = $this->input->getInt('id', 0);
 
 		// Get the page parameters
-		$app	 = JFactory::getApplication();
-		$params	 = $app->getPageParameters('com_ars');
+		$app = JFactory::getApplication();
+		$params = $app->getPageParameters('com_ars');
 
 		// Push the page params to the model
 		$this->getThisModel()
 			->grouping($params->get('grouping', 'normal'))
 			->orderby($params->get('orderby', 'order'))
 			->rel_orderby($params->get('rel_orderby', 'order'))
-			->items_orderby($params->get('items_orderby', 'order'))
-		;
+			->items_orderby($params->get('items_orderby', 'order'));
 
 		// Get the category ID
 		if (empty($id))
@@ -119,7 +118,7 @@ class ArsControllerRelease extends FOFController
 		{
 			$bemodel = FOFModel::getAnInstance('Bleedingedge', 'ArsModel');
 			$bemodel->checkFiles($release);
-			$items	 = $this->getThisModel()->getItems($id);
+			$items = $this->getThisModel()->getItems($id);
 		}
 		else
 		{
@@ -128,6 +127,7 @@ class ArsControllerRelease extends FOFController
 			{
 				JFactory::getApplication()->redirect($noAccessURL);
 			}
+
 			return false;
 		}
 
@@ -136,8 +136,8 @@ class ArsControllerRelease extends FOFController
 
 	protected function _csrfProtection()
 	{
-		$format		 = $this->input->get('format', 'html');
-		$loggedin	 = !JFactory::getUser()->guest;
+		$format = $this->input->get('format', 'html');
+		$loggedin = !JFactory::getUser()->guest;
 
 		if (($format == 'json') && $loggedin)
 		{
