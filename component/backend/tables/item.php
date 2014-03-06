@@ -562,4 +562,21 @@ class ArsTableItem extends FOFTable
 		return $result;
 	}
 
+    protected function onBeforeStore($updateNulls)
+    {
+        // I'm going to save a new record, let's shift all old record by 1 and put this as the first one
+        if(!$this->id)
+        {
+            $this->ordering = 1;
+
+            $db = JFactory::getDbo();
+
+            $query = $db->getQuery(true)
+                ->update($db->qn('#__ars_items'))
+                ->set($db->qn('ordering').' = '.$db->qn('ordering').' + '.$db->q(1));
+            $db->setQuery($query)->execute();
+        }
+
+        return parent::onBeforeStore($updateNulls);
+    }
 }
