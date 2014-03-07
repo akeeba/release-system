@@ -620,7 +620,7 @@
         Manager</guimenuitem>, click on <guilabel>Uninstall</guilabel>, select
         Akeeba Release System and click on <guibutton>Uninstall</guibutton>.
         This will completely remove Akeeba Release System including all
-        plugins, modules and ticket information.</para>
+        plugins and modules.</para>
       </section>
     </chapter>
 
