@@ -155,7 +155,7 @@ ComArsRouter::$routeHtml = false;
 			}
 			?>
 			<update>
-				<name><?php echo $item->alias ?></name>
+				<name><?php echo $item->name ?></name>
 				<description><?php echo $item->name ?></description>
 				<element><?php echo $item->element ?></element>
 				<type><?php echo $streamTypeMap[$item->type]; ?></type>

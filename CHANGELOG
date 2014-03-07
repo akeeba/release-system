@@ -13,6 +13,7 @@ Version 2.3.3
 # [LOW] ARS Latest Release plugin: fixed broken link (stream_link and installfromweb)
 # [LOW] RSS feeds broken for Category and Release view in some circumstances
 # [LOW] frontend.css was not always loaded in the front-end
+# [LOW] Update XML <name> tag should have the name of the extension, not the URL alias
 
 Version 2.3.2
 ================================================================================
