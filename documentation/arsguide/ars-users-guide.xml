@@ -120,10 +120,10 @@
             <para>Update streams. Offer updates to your software in two
             formats: INI files easily usable by any and all programming
             languages or automatic creation of <emphasis role="bold">Joomla!
-            1.6 or later XML extension update streams</emphasis>. That's
-            right! As soon as you publish a new version, all your clients
-            using a modern version of Joomla! will be able to automatically
-            upgrade to it. No extra file creation necessary.</para>
+            XML extension update streams</emphasis>. That's right! As soon as
+            you publish a new version, all your clients using a modern version
+            of Joomla! will be able to automatically upgrade to it. No extra
+            file creation necessary.</para>
           </listitem>
 
           <listitem>
@@ -238,52 +238,165 @@
         xlink:href="http://help.joomla.org/content/view/1476/235/"
         xmlns:xlink="http://www.w3.org/1999/xlink">official help page</link>.
         Throughout this chapter we assume that you are familiar with these
-        instructions and we will not duplicate them.</para>
+        instructions and we will try not to duplicate them.</para>
+
+        <note>
+          <para>The language (translation) files are NOT installed
+          automatically. You can download and install them from our <link
+          xlink:href="http://cdn.akeebabackup.com/language/ars/index.html"
+          xmlns:xlink="http://www.w3.org/1999/xlink">language download
+          page</link>. Do note that you will have to install both the
+          component and the language packages for the component to
+          work.</para>
+
+          <para>As noted on that page, Akeeba Ltd only produces the English
+          and Greek language files. All other languages are contributed by
+          third parties. If you spot an error please do not contact Akeeba
+          Ltd; we will be unable to help you. Instead, please go to the <link
+          xlink:href="https://www.transifex.com/projects/p/ars/"
+          xmlns:xlink="http://www.w3.org/1999/xlink">translation project
+          page</link> to find the contact information of the translator.
+          Abandoned languages will show the maintainer being our staff member
+          "nikosdion". In this case you're out of luck; if you want to fix the
+          language package you will need to volunteer to take over the
+          translation project for that language.</para>
+        </note>
 
         <section>
-          <title>Getting the installation packages</title>
+          <title>Installing or manually updating the backup component and
+          language files</title>
 
-          <para>You can download the latest installation packages by visiting
-          our site at <link xlink:href="http://www.akeebabackup.com"
-          xmlns:xlink="http://www.w3.org/1999/xlink">http://www.akeebabackup.com</link>.
-          Just click on the Download, Official Releases menu item on the top
-          menu of our site. Then click on Akeeba Release System. The releases
-          are listed with the newest release always on top, using ARS itself
-          to present them! Click on it to view the files. Click on the "Akeeba
-          Release System" item to download the ZIP installation
-          package.</para>
+          <para>Just like with most Joomla! extensions there are two ways to
+          install or manually update Akeeba Release System on your
+          site:</para>
 
-          <note>
-            <para>Do not forget to download the documentation PDF file or read
-            it online. As we do not provide support free of charge this is
-            your best bet in solving your problems if you do not have a
-            SUPPORT or AKEEBAPRO subscription.</para>
-          </note>
+          <itemizedlist>
+            <listitem>
+              <para>Upload and install. That's the typical extension
+              installation method for Joomla! extensions. It rarely
+              fails.</para>
+            </listitem>
 
-          <para>The installation package can be installed on both Joomla! 1.5
-          and Joomla! 1.6 sites. It can also be used to upgrade Akeeba Release
-          System; just install it <emphasis>without</emphasis> uninstalling
-          the previous release.</para>
+            <listitem>
+              <para>Manual installation. This is the hardest, but virtually
+              fail-safe, installation method.</para>
+            </listitem>
+          </itemizedlist>
 
-          <para>In any case, do not extract the ZIP files yet!</para>
-        </section>
+          <para>Please note that installing and updating Akeeba Release System
+          (and almost all Joomla! extensions) is actually the same thing. If
+          you want to update Akeeba Release System please remember that you
+          <emphasis role="bold">MUST NOT</emphasis> uninstall it before
+          installing the new version! When you uninstall Akeeba Release System
+          you will lose all your settings. This is definitely something you do
+          not want to happen! Instead, simply install the new version on top
+          of the old one. Joomla! will figure out that you are doing an update
+          and will treat it as such, automatically.</para>
 
-        <section>
-          <title>Installing the component</title>
+          <tip>
+            <para>If you find that after installing or updating Akeeba Release
+            System it is missing some features or doesn't work, please try
+            installing the same version a second time, without uninstalling
+            the component. The reason is that very few times the Joomla!
+            extensions installer infrastructure gets confused and fails to
+            copy some files or entire folders. By repeating the installation
+            you force it to copy the missing files and folders, solving the
+            problem.</para>
+          </tip>
 
-          <para>Log in to your site's administrator section. Click on the
-          <guimenu>Extensions</guimenu>,
-          <guimenuitem>Install/Uninstall</guimenuitem> (Joomla! 1.5) or
-          <guimenu>Extensions</guimenu>, <guimenuitem>Manage</guimenuitem>
-          (Joomla! 1.6 users) link on the top menu. In this page, locate the
-          <guibutton>Browse</guibutton> button in the <guilabel>Upload Package
-          File</guilabel> area. Locate the installation ZIP file you had
-          previously downloaded and select it. Back to the page, click on the
-          <guibutton>Upload File &amp; Install</guibutton> button. After a
-          short while, <trademark>Joomla!</trademark> will tell you that the
-          component has been installed.</para>
+          <section xml:id="installing-upload">
+            <title>Upload and install.</title>
 
-          <section>
+            <para>You can download the latest installation packages our site's
+            <link xlink:href="https://www.akeebabackup.com/download/ars.html"
+            xmlns:xlink="http://www.w3.org/1999/xlink">download page for
+            Akeeba Release System</link>. Please note that the latest version
+            is always on top. If you have an older version of Joomla! or PHP
+            please consult our <link
+            xlink:href="https://www.akeebabackup.com/compatibility.html"
+            xmlns:xlink="http://www.w3.org/1999/xlink">Compatibility
+            page</link> to find the version of Akeeba Release System
+            compatible with your Joomla! and PHP versions. In either case
+            click on the version you want to download and install.</para>
+
+            <para>Click on the Akeeba Release System item to download the ZIP
+            installation package.</para>
+
+            <para>All Akeeba Release System installation packages contain the
+            component and all of its associated extensions. Installing it will
+            install all of these items automatically. It can also be used to
+            upgrade Akeeba Release System; just install it
+            <emphasis>without</emphasis> uninstalling the previous
+            release.</para>
+
+            <para>In any case, do not extract the ZIP files yet!</para>
+
+            <warning>
+              <para><emphasis role="bold">Attention Mac OS X users</emphasis>!
+              Safari, the default web server provided to you by Apple, is
+              automatically extracting the ZIP file into a directory and
+              removes the ZIP file. In order to install the extension through
+              Joomla!'s extensions installer you must select that directory,
+              right-click on it and select Compress to get a ZIP file of its
+              contents. This behaviour was changed in Mac OS X Mountain Lion,
+              but people upgrading from older versions of Mac OS X (Mac OS X
+              Lion and earlier) will witness the old, automatic ZIP
+              extraction, behaviour.</para>
+            </warning>
+
+            <para>Log in to your site's administrator section. Click on
+            <guimenu>Extensions</guimenu>, <guimenuitem>Manage</guimenuitem>
+            link on the top menu. If you are on Joomla! 3.x please click on
+            the <guilabel>Upload Package File</guilabel> tab. Locate the
+            <guibutton>Browse</guibutton> button next to the <guilabel>Package
+            File</guilabel> (Joomla! 2.5, 3.0 and 3.1) or <guilabel>Extension
+            package file</guilabel> (Joomla! 3.2 and later) field. Locate the
+            installation ZIP file you had previously downloaded and select it.
+            Back to the page, click on the <guibutton>Upload &amp;
+            Install</guibutton> button. After a short while,
+            <trademark>Joomla!</trademark> will tell you that the component
+            has been installed.</para>
+
+            <warning>
+              <para>Akeeba Release System is a big extension (over 2Mb for the
+              Professional release). Some servers do not allow you to upload
+              files that big. If this is the case you can try the <link
+              linkend="installation-manual">Manual installation</link> or ask
+              your host to follow <link
+              xlink:href="https://www.akeebabackup.com/documentation/troubleshooter/abinstallation.html"
+              xmlns:xlink="http://www.w3.org/1999/xlink">our installation
+              troubleshooting instructions</link> under "You get an error
+              about the package not being uploaded to the server".</para>
+
+              <para>If you have WAMPServer (or any other prepackaged local
+              server), please note that its default configuration does not
+              allow files over 2Mb to be uploaded. To work around that you
+              will need to modify your php.ini and restart the server. On
+              WAMPserver left-click on the WAMP icon (the green W), click on
+              <guimenu>PHP</guimenu>, <guimenuitem>php.ini</guimenuitem>. Find
+              the line beginning with <code>upload_max_filesize</code>. Change
+              it so that it reads:</para>
+
+              <programlisting>upload_max_filesize = 6M</programlisting>
+
+              <para>Save this file. Now, left-click on the WAMP icon, click on
+              <guimenu>Apache</guimenu>, <guisubmenu>Service</guisubmenu>,
+              <guimenuitem>Restart Service</guimenuitem> and you can now
+              install the component. Editing the <filename>php.ini</filename>
+              file should also work on all other servers, local and live
+              alike.</para>
+            </warning>
+
+            <para>If the installation did not work, please take a look at
+            <link
+            xlink:href="https://www.akeebabackup.com/documentation/troubleshooter/abinstallation.html"
+            xmlns:xlink="http://www.w3.org/1999/xlink">our installation
+            troubleshooting instructions</link> or try the <link
+            linkend="installation-manual">manual installation</link> described
+            below.</para>
+          </section>
+
+          <section xml:id="installation-manual">
             <title>Manual installation</title>
 
             <para>Sometimes <trademark>Joomla!</trademark> is unable to
@@ -291,10 +404,33 @@
             server. In this case, you can follow a manual installation
             procedure.</para>
 
-            <para>First, you have to extract the installation ZIP file in a
-            subdirectory named <filename>akeeba</filename> on your local PC.
-            Then, upload the entire subdirectory inside your site's temporary
-            directory. At this point, there should be a subdirectory named
+            <para>You can download the latest installation packages our site's
+            <link xlink:href="https://www.akeebabackup.com/download/ars.html"
+            xmlns:xlink="http://www.w3.org/1999/xlink">download page for
+            Akeeba Release System</link>. Please note that the latest version
+            is always on top. If you have an older version of Joomla! or PHP
+            please consult our <link
+            xlink:href="https://www.akeebabackup.com/compatibility.html"
+            xmlns:xlink="http://www.w3.org/1999/xlink">Compatibility
+            page</link> to find the version of Akeeba Release System
+            compatible with your Joomla! and PHP versions. In either case
+            click on the version you want to download and install.</para>
+
+            <para>Click on the Akeeba Release System item to download the ZIP
+            installation package.</para>
+
+            <para>All Akeeba Release System installation packages contain the
+            component and all of its associated extensions. Installing it will
+            install all of these items automatically. It can also be used to
+            upgrade Akeeba Release System; just install it
+            <emphasis>without</emphasis> uninstalling the previous
+            release.</para>
+
+            <para>Before doing anything else, you have to extract the
+            installation ZIP file in a subdirectory named
+            <filename>akeeba</filename> on your local PC. Then, upload the
+            entire subdirectory inside your site's temporary directory. At
+            this point, there should be a subdirectory named
             <filename>akeeba</filename> inside your site's temporary directory
             which contains all of the ZIP package's files.</para>
 
@@ -312,26 +448,28 @@
             temporary directory back to the default location and making it
             writable.</para>
 
-            <para>Assuming that you are past this uploading step, click on the
-            <guimenu>Extensions</guimenu>,
-            <guimenuitem>Install/Uninstall</guimenuitem> (Joomla! 1.5) or
+            <para>Assuming that you are past this uploading step, click on
             <guimenu>Extensions</guimenu>, <guimenuitem>Manage</guimenuitem>
-            (Joomla! 1.6 users) link on the top menu. In this page, locate the
-            <guibutton>Install Directory</guibutton> edit box in the
-            <guilabel>Install from Directory</guilabel> area. It is already
+            link on the top menu. If you are on Joomla! 3.x please click on
+            the <guilabel>Install from Directory</guilabel> tab. Locate the
+            <guibutton>Install Directory</guibutton> edit box. It is already
             filled in with the absolute path to your temporary directory, for
             example <filename>/var/www/joomla/tmp</filename>. Please append
-            <filename>/akeeba</filename> to it. As per our example, it should
-            look something like
-            <filename>/var/www/joomla/tmp/akeeba</filename>. Then, click on
-            the <guibutton>Install</guibutton> button.</para>
+            <filename>/akeeba</filename> to it. In our example, it should look
+            something like <filename>/var/www/joomla/tmp/akeeba</filename>.
+            Then, click on the <guibutton>Install</guibutton> button.</para>
 
             <para>If you still can't install Akeeba Release System and you are
             receiving messages regarding unwritable directories, inability to
             move files or other similar file system related error messages,
-            please do not ask us for support. These errors stem from your site
-            set up and can best be resolved by asking for help in the <link
-            xlink:href="http://forum.joomla.org"
+            please consult <link
+            xlink:href="https://www.akeebabackup.com/documentation/troubleshooter/abinstallation.html"
+            xmlns:xlink="http://www.w3.org/1999/xlink">our installation
+            troubleshooting instructions</link>. If these instructions do not
+            help please do not request support from us; we are unlikely to be
+            able to help you. These errors come from your site set up and can
+            best be resolved by asking your host for assistance or by asking
+            other users in the <link xlink:href="http://forum.joomla.org"
             xmlns:xlink="http://www.w3.org/1999/xlink">official
             <trademark>Joomla!</trademark> forums</link>.</para>
           </section>
@@ -339,40 +477,150 @@
       </section>
 
       <section xml:id="update">
-        <title>Updating to the latest version</title>
+        <title>Automatic updates</title>
 
         <bridgehead>Checking for the latest version and upgrading</bridgehead>
 
-        <para>You can easily check for the latest published version of the ARS
-        component by visiting <link os=""
+        <para>You can easily check for the latest published version of the
+        Akeeba Backup component by visiting <link os=""
         xlink:href="http://www.akeebabackup.com/latest"
         xmlns:xlink="http://www.w3.org/1999/xlink">http://www.akeebabackup.com/latest</link>.
-        The page lists the version and release date of the latest ARS release.
-        You can check it against the data which appear on the bottom of your
-        ARS Control Panel. If your release is out of date, simply click on the
-        Download link to download the install package of the latest release to
-        your PC.</para>
+        The page lists the version and release date of the latest Akeeba
+        Release System release. You can check it against the data which appear
+        on the right-hand pane of your Akeeba Release System Control Panel. If
+        your release is out of date, simply click on the Download link to
+        download the install package of the latest release to your PC.</para>
 
-        <para>Updating <application>ARS</application> to the latest version is
-        by no means different than installing the component. You do not have
-        to uninstall the previous version; in fact, you are discouraged from
-        doing so. Simply follow the installation instructions so as to install
-        the latest <application>A</application>RS version over the existing
-        <application>ARS</application> installation. That's all! All your
-        settings are preserved.</para>
+        <bridgehead>Updating automatically with the Joomla! extensions update
+        feature</bridgehead>
 
-        <bridgehead>Live update</bridgehead>
+        <para>Akeeba Release System can be updated just like any other Joomla!
+        extension, using the Joomla! extensions update feature. Joomla! is
+        responsible for finding the updates, downloading them and installing
+        them on your server. You can access the extensions update feature in
+        two different ways:</para>
 
-        <para>There is also an alternate update path, if your server supports
-        it. It is called the "Live Update" feature. Whenever you visit the ARS
-        Control Panel, it will automatically check for the existence of an
-        updated version and it will notify you. You can see the notification
-        button on the bottom of the left-hand section of the Control Panel
-        page. Clicking on the notification allows you to perform a live update
-        without further interaction. Do note that if your server is protected
-        by a firewall you'll have to enable port 80 and 443 TCP traffic to
-        www.akeebabackup.com and joomlacode.org for this feature to work
-        properly.</para>
+        <itemizedlist>
+          <listitem>
+            <para>From the icon your Joomla! administrator control panel page.
+            On Joomla! 3 you will find the icon in the left-hand sidebar,
+            under the <guilabel>Maintenance</guilabel> header. It has an icon
+            which looks like an empty star. On Joomla! 2.5 you will find it in
+            the main area of the control panel page, under <guilabel>Quick
+            Icons</guilabel>. When there are updates found for any of your
+            extensions you will see the <guilabel>Updates are
+            available</guilabel> message. Clicking on it will get you to the
+            Update page of Joomla! Extensions Manager.</para>
+          </listitem>
+
+          <listitem>
+            <para>From the top menu of your Joomla! administrator click on
+            <guimenu>Extensions</guimenu>, <guimenuitem>Extensions
+            Manager</guimenuitem>. From that page click on the
+            <guilabel>Update</guilabel> tab found in the left-hand sidebar on
+            Joomla! 3 and the top navigation bar in Joomla! 2.5. Clicking on
+            it will get you to the Update page of Joomla! Extensions
+            Manager.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>If you do not see the updates try clicking on the
+        <guibutton>Find Updates</guibutton> button in the toolbar. If you do
+        not see the updates still you may want to wait up to 24 hours before
+        retrying. This has to do with the way the update CDN works and how
+        Joomla! caches the update information. Unfortunately we can't do
+        anything about it, especially in Joomla! 3 (there is no way to
+        forcibly clean the updates cache).</para>
+
+        <para>If there is an update available for Akeeba Release System tick
+        the box to the left of its row and then click on the
+        <guibutton>Update</guibutton> button in the toolbar. Joomla! will now
+        download and install the update.</para>
+
+        <para>If Joomla! cannot download the package, please use one of the
+        manual update methods described below. If, however you get an error
+        about copying files, folder not found or a cryptic "-1" error please
+        follow <link
+        xlink:href="https://www.akeebabackup.com/documentation/troubleshooter/abinstallation.html"
+        xmlns:xlink="http://www.w3.org/1999/xlink">our installation
+        troubleshooting instructions</link>.</para>
+
+        <bridgehead>Updating manually</bridgehead>
+
+        <para>As noted in the <link linkend="installing">installation
+        section</link>, installing and updating Akeeba Release System is
+        actually the same thing. If the automatic update using Joomla!'s
+        extensions update feature does not work, please install the update
+        manually following the instructions in the <link
+        linkend="installing">installation section of this
+        documentation</link>.</para>
+
+        <important>
+          <para>When installing an update manually you MUST NOT uninstall your
+          existing version of Akeeba Release System. Uninstalling Akeeba
+          Release System will always remove all your settings. You definitely
+          not want that to happen!</para>
+        </important>
+
+        <bridgehead>Live update (versions 1.0 up to and including
+        2.3.2)</bridgehead>
+
+        <note>
+          <para>This method was removed in Akeeba Release System 2.3.3</para>
+        </note>
+
+        <para>On older versions of Akeeba Release System there is a different
+        update method, if your server supports it. It is called the "Live
+        Update" feature. Whenever you visit the Akeeba Release System Control
+        Panel, it will automatically check for the existence of an updated
+        version and it will notify you. Clicking on the notification allows
+        you to perform a live update without further interaction. Do note that
+        if your server is protected by a firewall you'll have to enable port
+        80 and 443 TCP traffic to www.akeebabackup.com and
+        cdn.akeebabackup.com for this feature to work properly.</para>
+      </section>
+
+      <section xml:id="requesting-support">
+        <title>Requesting support and reporting bugs</title>
+
+        <para>Since July 7th, 2011, support is provided only to subscribers.
+        If you already have an active subscription which gives you access to
+        the support for Akeeba Release System you can request support for it
+        through our site. You will need to log in to our site and go to
+        Support, Akeeba Release System and click on the <guibutton>New
+        Ticket</guibutton> button. If you can't see the button please use the
+        Contact Us page to let us know of the ticket system problem and
+        remember to tell us your username.</para>
+
+        <para>If you want to report a bug, please use the Contact Us page of
+        our site. You don't need to be a subscriber to report a bug. Please
+        note that unsolicited support requests sent through the Contact Us
+        page will not be addressed. If you believe you are reporting a bug
+        please indicate so in the contact form.</para>
+
+        <important>
+          <para>Support cannot be provided over Twitter, Facebook, email,
+          Skype, telephone, the official Joomla! forum, our Contact Us page or
+          any other method except the Support section on our site. We also
+          cannot take bug reports over any other medium except the Contact Us
+          page and the Support section on our site. Support is not provided to
+          non-subscribers; if you are using the Core version you can request
+          support from other users in the official Joomla! forum or any other
+          Joomla!-related forum in your country/region. We have to impose
+          those restrictions in support to ensure a high level of service and
+          quality. Thank you for your understanding.</para>
+        </important>
+      </section>
+
+      <section xml:id="uninstallation">
+        <title>Uninstallation</title>
+
+        <para>You can uninstall the component just like any other Joomla!
+        component. In your site's back-end, just go to <guimenuitem>Extensions
+        Manager</guimenuitem>, click on <guilabel>Uninstall</guilabel>, select
+        Akeeba Release System and click on <guibutton>Uninstall</guibutton>.
+        This will completely remove Akeeba Release System including all
+        plugins, modules and ticket information.</para>
       </section>
     </chapter>
 
