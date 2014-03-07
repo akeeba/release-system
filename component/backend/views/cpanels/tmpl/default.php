@@ -111,9 +111,6 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 		</div>
 		<?php endforeach; ?>
 
-		<?php if($group == 'basic'): ?>
-		<p><?php echo LiveUpdate::getIcon(); ?></p>
-		<?php endif; ?>
 		<div class="ak_clr_left"></div>
 
 		<?php endif; ?>
