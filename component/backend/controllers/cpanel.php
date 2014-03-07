@@ -47,4 +47,14 @@ class ArsControllerCpanel extends FOFController
 			$this->setRedirect($url, $result, 'error');
 		}
 	}
+
+	protected function onBeforeBrowse()
+	{
+		/** @var ArsModelCpanels $model */
+		$model = $this->getThisModel();
+		// Refresh the update site
+		$model->refreshUpdateSite();
+
+		return parent::onBeforeBrowse();
+	}
 }

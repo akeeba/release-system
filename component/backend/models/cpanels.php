@@ -375,4 +375,86 @@ class ArsModelCpanels extends FOFModel
 
 		return $needsUpdate;
 	}
+
+	/**
+	 * Refreshes the Joomla! update sites for this extension as needed
+	 *
+	 * @return  void
+	 */
+	public function refreshUpdateSite()
+	{
+		// Create the update site definition we want to store to the database
+		$update_site = array(
+			'name'		=> 'Akeeba Release System',
+			'type'		=> 'extension',
+			'location'	=> 'http://cdn.akeebabackup.com/updates/ars.xml',
+			'enabled'	=> 1,
+			'last_check_timestamp'	=> 0,
+			'extra_query'	=> null
+		);
+
+		$db = $this->getDbo();
+
+		// Get the extension ID to ourselves
+		$query = $db->getQuery(true)
+			->select($db->qn('extension_id'))
+			->from($db->qn('#__extensions'))
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->where($db->qn('element') . ' = ' . $db->q('com_ars'));
+		$db->setQuery($query);
+
+		$extension_id = $db->loadResult();
+
+		if (empty($extension_id))
+		{
+			return;
+		}
+
+		// Get the update sites for our extension
+		$query = $db->getQuery(true)
+			->select($db->qn('update_site_id'))
+			->from($db->qn('#__update_sites_extensions'))
+			->where($db->qn('extension_id') . ' = ' . $db->q($extension_id));
+		$db->setQuery($query);
+
+		$updateSiteIDs = $db->loadColumn(0);
+
+		if (!count($updateSiteIDs))
+		{
+			// No update sites defined. Create a new one.
+			$newSite = (object)$update_site;
+			$db->insertObject('#__update_sites', $newSite);
+
+			$id = $db->insertid();
+
+			$updateSiteExtension = (object)array(
+				'update_site_id'	=> $id,
+				'extension_id'		=> $extension_id,
+			);
+			$db->insertObject('#__update_sites_extensions', $updateSiteExtension);
+		}
+		else
+		{
+			// Loop through all update sites
+			foreach ($updateSiteIDs as $id)
+			{
+				$query = $db->getQuery(true)
+					->select('*')
+					->from($db->qn('#__update_sites'))
+					->where($db->qn('update_site_id') . ' = ' . $db->q($id));
+				$db->setQuery($query);
+				$aSite = $db->loadObject();
+
+				// Does the name and location match?
+				if (($aSite->name == $update_site['name']) && ($aSite->location == $update_site['location']))
+				{
+					continue;
+				}
+
+				$update_site['update_site_id'] = $id;
+				$newSite = (object)$update_site;
+				$db->updateObject('#__update_sites', $newSite, 'update_site_id', true);
+			}
+		}
+	}
 }

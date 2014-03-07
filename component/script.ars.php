@@ -196,7 +196,6 @@ class Com_ArsInstallerScript
 			$this->_bugfixCantBuildAdminMenus();
 			$this->_fixBrokenSQLUpdates($parent);
 			$this->_fixSchemaVersion();
-			$this->_resetLiveUpdate();
 		}
 
 		return true;
@@ -224,9 +223,6 @@ class Com_ArsInstallerScript
 
 		// Show the post-installation page
 		$this->_renderPostInstallation($status, $fofStatus, $straperStatus, $parent);
-
-		// Kill update site
-		$this->_killUpdateSite();
 
 		// Clear FOF's cache
 		if (!defined('FOF_INCLUDED'))
@@ -1013,74 +1009,6 @@ class Com_ArsInstallerScript
 	}
 
 	/**
-	 * Remove the update site specification from Joomla! – we no longer support
-	 * that misbehaving crap, thank you very much...
-	 */
-	private function _killUpdateSite()
-	{
-		// Get some info on all the stuff we've gotta delete
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select(array(
-				$db->qn('s').'.'.$db->qn('update_site_id'),
-				$db->qn('e').'.'.$db->qn('extension_id'),
-				$db->qn('e').'.'.$db->qn('element'),
-				$db->qn('s').'.'.$db->qn('location'),
-			))
-			->from($db->qn('#__update_sites').' AS '.$db->qn('s'))
-			->join('INNER',$db->qn('#__update_sites_extensions').' AS '.$db->qn('se').' ON('.
-				$db->qn('se').'.'.$db->qn('update_site_id').' = '.
-				$db->qn('s').'.'.$db->qn('update_site_id')
-				.')')
-			->join('INNER',$db->qn('#__extensions').' AS '.$db->qn('e').' ON('.
-				$db->qn('e').'.'.$db->qn('extension_id').' = '.
-				$db->qn('se').'.'.$db->qn('extension_id')
-				.')')
-			->where($db->qn('s').'.'.$db->qn('type').' = '.$db->q('extension'))
-			->where($db->qn('e').'.'.$db->qn('type').' = '.$db->q('component'))
-			->where($db->qn('e').'.'.$db->qn('element').' = '.$db->q($this->_akeeba_extension))
-		;
-		$db->setQuery($query);
-		$oResult = $db->loadObject();
-
-		// If no record is found, do nothing. We've already killed the monster!
-		if(is_null($oResult)) return;
-
-		// Delete the #__update_sites record
-		$query = $db->getQuery(true)
-			->delete($db->qn('#__update_sites'))
-			->where($db->qn('update_site_id').' = '.$db->q($oResult->update_site_id));
-		$db->setQuery($query);
-		try {
-			$db->execute();
-		} catch (Exception $exc) {
-			// If the query fails, don't sweat about it
-		}
-
-		// Delete the #__update_sites_extensions record
-		$query = $db->getQuery(true)
-			->delete($db->qn('#__update_sites_extensions'))
-			->where($db->qn('update_site_id').' = '.$db->q($oResult->update_site_id));
-		$db->setQuery($query);
-		try {
-			$db->execute();
-		} catch (Exception $exc) {
-			// If the query fails, don't sweat about it
-		}
-
-		// Delete the #__updates records
-		$query = $db->getQuery(true)
-			->delete($db->qn('#__updates'))
-			->where($db->qn('update_site_id').' = '.$db->q($oResult->update_site_id));
-		$db->setQuery($query);
-		try {
-			$db->execute();
-		} catch (Exception $exc) {
-			// If the query fails, don't sweat about it
-		}
-	}
-
-	/**
 	 * When you are upgrading from an old version of the component or when your
 	 * site is upgraded from Joomla! 1.5 there is no "schema version" for our
 	 * component's tables. As a result Joomla! doesn't run the database queries
@@ -1241,46 +1169,6 @@ class Com_ArsInstallerScript
 		$query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
 		$query->values($eid . ', ' . $db->quote($version));
 		$db->setQuery($query);
-		$db->execute();
-	}
-
-	/**
-	 * Deletes the Live Update information, forcing its reload during the first
-	 * run of the component. This makes sure that the Live Update doesn't show
-	 * an update available right after installing the component.
-	 */
-	private function _resetLiveUpdate()
-	{
-		// Load the component parameters, not using JComponentHelper to avoid conflicts ;)
-		JLoader::import('joomla.html.parameter');
-		JLoader::import('joomla.application.component.helper');
-		$db = JFactory::getDbo();
-		$sql = $db->getQuery(true)
-			->select($db->qn('params'))
-			->from($db->qn('#__extensions'))
-			->where($db->qn('type').' = '.$db->q('component'))
-			->where($db->qn('element').' = '.$db->q($this->_akeeba_extension));
-		$db->setQuery($sql);
-		$rawparams = $db->loadResult();
-		$params = new JRegistry();
-		if(version_compare(JVERSION, '3.0', 'ge')) {
-			$params->loadString($rawparams, 'JSON');
-		} else {
-			$params->loadJSON($rawparams);
-		}
-
-		// Reset the liveupdate key
-		$params->set('liveupdate', null);
-
-		// Save the modified component parameters
-		$data = $params->toString();
-		$sql = $db->getQuery(true)
-			->update($db->qn('#__extensions'))
-			->set($db->qn('params').' = '.$db->q($data))
-			->where($db->qn('type').' = '.$db->q('component'))
-			->where($db->qn('element').' = '.$db->q($this->_akeeba_extension));
-
-		$db->setQuery($sql);
 		$db->execute();
 	}
 }

@@ -88,7 +88,6 @@
 			<folder>elements</folder>
 			<folder>fields</folder>
 			<folder>helpers</folder>
-			<folder>liveupdate</folder>
 			<folder>models</folder>
 			<folder>sql</folder>
 			<folder>tables</folder>
@@ -113,7 +112,12 @@
 	<!-- Installation / uninstallation script file -->
 	<scriptfile>script.ars.php</scriptfile>
 
-	<!-- Akeeba Backup System Restore Points integration -->
+    <!-- Update servers -->
+    <updateservers>
+        <server type="extension" priority="1" name="Akeeba Release System">http://cdn.akeebabackup.com/updates/ars.xml</server>
+    </updateservers>
+
+    <!-- Akeeba Backup System Restore Points integration -->
 	<restorepoint>
 		<customdirs>
 			<dir>modules/mod_arsdlid</dir>

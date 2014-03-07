@@ -5,6 +5,7 @@ Version 2.3.3
 ~ CSRF protection for GeoIP update
 ~ Only show a reminder to update the GeoIP database if it's older than two weeks
 ~ AJAX ordering now shows the ordering in a textbox, to faciliate ordering without much frustration in Joomla! 3
+~ Now using the built-in Joomla! extensions updater instead of Live Update to deliver updates
 # [MEDIUM] Wrong link for GeoIP update
 # [MEDIUM] Download link in update stream always appends &dummy=my.zip (thanks Francesco & Hayden)
 # [LOW] Fixed page headings
