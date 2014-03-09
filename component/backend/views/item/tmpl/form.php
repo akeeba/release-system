@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -117,6 +117,18 @@ if($this->item->id == 0) {
 				<?php else: ?>
 				<?php echo JHTML::_('list.accesslevel', $this->item); ?>
 				<?php endif; ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<label for="show_unauth_links" class="control-label"><?php echo JText::_('COM_ARS_COMMON_SHOW_UNAUTH_LINKS'); ?></label>
+			<div class="controls">
+				<?php echo JHTML::_('select.booleanlist', 'show_unauth_links', null, $this->item->show_unauth_links); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<label for="redirect_unauth" class="control-label"><?php echo JText::_('COM_ARS_COMMON_REDIRECT_UNAUTH'); ?></label>
+			<div class="controls">
+				<input type="text" name="redirect_unauth" id="redirect_unauth" value="<?php echo $this->item->redirect_unauth ?>">
 			</div>
 		</div>
 		<?php if(ArsHelperFiltering::hasAkeebaSubs()): ?>

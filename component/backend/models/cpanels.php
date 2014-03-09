@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -87,7 +87,7 @@ class ArsModelCpanels extends FOFModel
 		
 		$noTimeLimits = (is_null($from) || is_null($to));
 		if(!$noTimeLimits) { 
-			$query->where($db->qn('l').'.'.$db->qn('accessed_on').' BETWEEN '.$from.' AND '.$to);
+			$query->where($db->qn('l').'.'.$db->qn('accessed_on').' BETWEEN '.$db->q($from).' AND '.$db->q($to));
 		}
 
 		$db->setQuery($query, 0, $itemCount);
@@ -142,7 +142,9 @@ class ArsModelCpanels extends FOFModel
 	 */
 	public function getWeekPopular($itemCount = 5)
 	{
-		return $this->getPopular($itemCount,'CURRENT_TIMESTAMP - INTERVAL 7 DAY','CURRENT_TIMESTAMP');
+        $now     = new JDate();
+        $weekago = new JDate(strtotime('-7 days'));
+		return $this->getPopular($itemCount, $weekago->toSql(), $now->toSql());
 	}
 
 	/**
@@ -162,23 +164,40 @@ class ArsModelCpanels extends FOFModel
 				break;
 
 			case 'year':
-				$date = "makedate(year(current_timestamp), 1) AND makedate(year(current_timestamp), 1) + interval 1 year - interval 1 day";
+                $year_start = new JDate(date('Y-01-01'));
+                $year_end   = new JDate(date('Y-12-31'));
+
+				$date = $db->q($year_start->toSql())." AND ".$db->q($year_end->toSql());
 				break;
 			
 			case 'lastmonth':
-				$date = "LAST_DAY(CURRENT_TIMESTAMP) - INTERVAL 2 MONTH + INTERVAL 1 DAY AND LAST_DAY(CURRENT_TIMESTAMP) - INTERVAL 1 MONTH";
+                $month_start = new JDate(strtotime("first day of last month"));
+                $month_end   = new JDate(strtotime("last day of last month"));
+
+				$date = $db->q($month_start->toSql())." AND ".$db->q($month_end->toSql());
 				break;
 
 			case 'month':
-				$date = "LAST_DAY(CURRENT_TIMESTAMP) - INTERVAL 1 MONTH + INTERVAL 1 DAY AND LAST_DAY(CURRENT_TIMESTAMP)";
+                $month_start = new JDate(date('Y-m-01'));
+                $month_end   = new JDate(date('Y-m-t'));
+
+				$date = $db->q($month_start->toSql()). "AND ".$db->q($month_end->toSql());
 				break;
 
 			case 'week':
-				$date = "DATE(CURRENT_TIMESTAMP) - INTERVAL (DAYOFWEEK(CURRENT_TIMESTAMP) - 1) DAY AND DATE(CURRENT_TIMESTAMP) - INTERVAL (DAYOFWEEK(CURRENT_TIMESTAMP) - 7) DAY";
+                $week_start = new JDate(strtotime('Sunday last week'));
+                $week_end   = new JDate(strtotime('Monday this week'));
+
+
+                //$date = "DATE(CURRENT_TIMESTAMP) - INTERVAL (DAYOFWEEK(CURRENT_TIMESTAMP) - 1) DAY AND DATE(CURRENT_TIMESTAMP) - INTERVAL (DAYOFWEEK(CURRENT_TIMESTAMP) - 7) DAY";
+				$date = $db->q($week_start->toSql())." AND ".$db->q($week_end->toSql());
 				break;
 
 			case 'day':
-				$date = "DATE(CURRENT_TIMESTAMP) AND DATE(CURRENT_TIMESTAMP) + INTERVAL 24 HOUR - INTERVAL 1 SECOND";
+                $day_start = new JDate(date('Y-m-d').' 00:00:00');
+                $day_end   = new JDate(date('Y-m-d').' 23:59:59');
+
+				$date = $db->q($day_start->toSql())." AND ".$db->q($day_end->toSql());
 				break;
 		}
 
@@ -205,7 +224,20 @@ class ArsModelCpanels extends FOFModel
 	public function getChartData()
 	{
 		$db	= $this->getDBO();
-		
+
+        $now = new JDate();
+
+        // I need to do this since if I'm on March 30th and I go back of a month I would got February 30th
+        // that will we shifted to March 2nd. This is not a bug (!!!) it's the expected behavior of PHP (!!!!!!!)
+        if (date('d') > date('d', strtotime('last day of -1 month')))
+        {
+            $last_month = new JDate(date('Y-m-d', strtotime('last day of -1 month')));
+        }
+        else
+        {
+            $last_month = new JDate(date('Y-m-d', strtotime('-1 month')));
+        }
+
 		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('country'),
@@ -213,7 +245,7 @@ class ArsModelCpanels extends FOFModel
 			))
 			->from($db->qn('#__ars_log'))
 			->where($db->qn('country').' <> '.$db->q(''))
-			->where($db->qn('accessed_on').' BETWEEN CURRENT_TIMESTAMP - INTERVAL 1 MONTH AND CURRENT_TIMESTAMP')
+			->where($db->qn('accessed_on').' BETWEEN '.$db->q($last_month->toSql()).' AND '.$db->q($now->toSql()))
 			->group($db->qn('country'))
 			;
 		$db->setQuery($query);
@@ -232,17 +264,39 @@ class ArsModelCpanels extends FOFModel
 	public function getMonthlyStats()
 	{
 		$db = $this->getDBO();
-		
+
+        $now = new JDate();
+
+        // I need to do this since if I'm on March 30th and I go back of a month I would got February 30th
+        // that will we shifted to March 2nd. This is not a bug (!!!) it's the expected behavior of PHP (!!!!!!!)
+        if (date('d') > date('d', strtotime('last day of -1 month')))
+        {
+            $last_month = new JDate(date('Y-m-d', strtotime('last day of -1 month')));
+        }
+        else
+        {
+            $last_month = new JDate(date('Y-m-d', strtotime('-1 month')));
+        }
+
 		$query = $db->getQuery(true)
 			->select(array(
 				'DATE('.$db->qn('accessed_on').') AS '.$db->qn('day'),
 				'COUNT(*) AS '.$db->qn('dl')
 			))
 			->from($db->qn('#__ars_log'))
-			->where($db->qn('accessed_on').' BETWEEN CURRENT_TIMESTAMP - INTERVAL 1 MONTH AND CURRENT_TIMESTAMP')
-			->group('DAYOFYEAR('.$db->qn('accessed_on').')')
+            ->where($db->qn('accessed_on').' BETWEEN '.$db->q($last_month->toSql()).' AND '.$db->q($now->toSql()))
 			->order($db->qn('accessed_on').' ASC')
-		;
+        ;
+
+        if($db->name == 'postgresql')
+        {
+            $query->group('EXTRACT(DOY FROM TIMESTAMP accessed_on)');
+        }
+        else
+        {
+            $query->group('DAYOFYEAR('.$db->qn('accessed_on').')');
+        }
+
 		$db->setQuery($query);
 		
 		$data = $db->loadAssocList('day');
@@ -261,5 +315,146 @@ class ArsModelCpanels extends FOFModel
 		}
 		
 		return $ret;
+	}
+
+	/**
+	 * Do we have the Akeeba GeoIP provider plugin installed?
+	 *
+	 * @return  boolean  False = not installed, True = installed
+	 */
+	public function hasGeoIPPlugin()
+	{
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true)
+			->select('COUNT(*)')
+			->from($db->qn('#__extensions'))
+			->where($db->qn('type') . ' = ' . $db->q('plugin'))
+			->where($db->qn('folder') . ' = ' . $db->q('system'))
+			->where($db->qn('element') . ' = ' . $db->q('akgeoip'))
+			->where($db->qn('enabled') . ' = 1');
+		$db->setQuery($query);
+		$result = $db->loadResult();
+
+		return ($result != 0);
+	}
+
+	/**
+	 * Does the GeoIP database need update?
+	 *
+	 * @param   integer  $maxAge  The maximum age of the db in days (default: 15)
+	 *
+	 * @return  boolean
+	 */
+	public function dbNeedsUpdate($maxAge = 15)
+	{
+		$needsUpdate = false;
+
+		if (!$this->hasGeoIPPlugin())
+		{
+			return $needsUpdate;
+		}
+
+		// Get the modification time of the database file
+		$filePath = JPATH_ROOT . '/plugins/system/akgeoip/db/GeoLite2-Country.mmdb';
+		$modTime = @filemtime($filePath);
+
+		// This is now
+		$now = time();
+
+		// Minimum time difference we want (15 days) in seconds
+		if ($maxAge <= 0)
+		{
+			$maxAge = 15;
+		}
+
+		$threshold = $maxAge * 24 * 3600;
+
+		// Do we need an update?
+		$needsUpdate = ($now - $modTime) > $threshold;
+
+		return $needsUpdate;
+	}
+
+	/**
+	 * Refreshes the Joomla! update sites for this extension as needed
+	 *
+	 * @return  void
+	 */
+	public function refreshUpdateSite()
+	{
+		// Create the update site definition we want to store to the database
+		$update_site = array(
+			'name'		=> 'Akeeba Release System',
+			'type'		=> 'extension',
+			'location'	=> 'http://cdn.akeebabackup.com/updates/ars.xml',
+			'enabled'	=> 1,
+			'last_check_timestamp'	=> 0,
+			'extra_query'	=> null
+		);
+
+		$db = $this->getDbo();
+
+		// Get the extension ID to ourselves
+		$query = $db->getQuery(true)
+			->select($db->qn('extension_id'))
+			->from($db->qn('#__extensions'))
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->where($db->qn('element') . ' = ' . $db->q('com_ars'));
+		$db->setQuery($query);
+
+		$extension_id = $db->loadResult();
+
+		if (empty($extension_id))
+		{
+			return;
+		}
+
+		// Get the update sites for our extension
+		$query = $db->getQuery(true)
+			->select($db->qn('update_site_id'))
+			->from($db->qn('#__update_sites_extensions'))
+			->where($db->qn('extension_id') . ' = ' . $db->q($extension_id));
+		$db->setQuery($query);
+
+		$updateSiteIDs = $db->loadColumn(0);
+
+		if (!count($updateSiteIDs))
+		{
+			// No update sites defined. Create a new one.
+			$newSite = (object)$update_site;
+			$db->insertObject('#__update_sites', $newSite);
+
+			$id = $db->insertid();
+
+			$updateSiteExtension = (object)array(
+				'update_site_id'	=> $id,
+				'extension_id'		=> $extension_id,
+			);
+			$db->insertObject('#__update_sites_extensions', $updateSiteExtension);
+		}
+		else
+		{
+			// Loop through all update sites
+			foreach ($updateSiteIDs as $id)
+			{
+				$query = $db->getQuery(true)
+					->select('*')
+					->from($db->qn('#__update_sites'))
+					->where($db->qn('update_site_id') . ' = ' . $db->q($id));
+				$db->setQuery($query);
+				$aSite = $db->loadObject();
+
+				// Does the name and location match?
+				if (($aSite->name == $update_site['name']) && ($aSite->location == $update_site['location']))
+				{
+					continue;
+				}
+
+				$update_site['update_site_id'] = $id;
+				$newSite = (object)$update_site;
+				$db->updateObject('#__update_sites', $newSite, 'update_site_id', true);
+			}
+		}
 	}
 }

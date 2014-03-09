@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -68,6 +68,44 @@ ComArsRouter::$routeHtml = false;
 			case 'file':
 				$downloadURL = $rootURL . AKRouter::_('index.php?option=com_ars&view=download&id=' . $item->item_id . $dlid);
 				$basename	 = basename($item->filename);
+
+				if (substr(strtolower($basename), -4) == '.zip')
+				{
+					$format = 'zip';
+				}
+				elseif (substr(strtolower($basename), -4) == '.tgz')
+				{
+					$format = 'tgz';
+				}
+				elseif (substr(strtolower($basename), -7) == '.tar.gz')
+				{
+					$format = 'tgz';
+				}
+				elseif (substr(strtolower($basename), -4) == '.tar')
+				{
+					$format = 'tar';
+				}
+				elseif (substr(strtolower($basename), -8) == '.tar.bz2')
+				{
+					$format = 'tbz2';
+				}
+				elseif (substr(strtolower($basename), -4) == '.tbz')
+				{
+					$format = 'tbz2';
+				}
+				elseif (substr(strtolower($basename), -5) == '.tbz2')
+				{
+					$format = 'tbz2';
+				}
+				else
+				{
+					$format = 'UNSUPPORTED';
+				}
+
+				if ($format != 'UNSUPPORTED')
+				{
+					$downloadURL .= '&amp;dummy=my.' . $format;
+				}
 				break;
 
 			case 'link':
@@ -76,44 +114,6 @@ ComArsRouter::$routeHtml = false;
 				$basename	 = basename($item->url);
 				break;
 		}
-
-		if (substr(strtolower($basename), -4) == '.zip')
-		{
-			$format = 'zip';
-		}
-		elseif (substr(strtolower($basename), -4) == '.tgz')
-		{
-			$format = 'tgz';
-		}
-		elseif (substr(strtolower($basename), -7) == '.tar.gz')
-		{
-			$format = 'tgz';
-		}
-		elseif (substr(strtolower($basename), -4) == '.tar')
-		{
-			$format = 'tar';
-		}
-		elseif (substr(strtolower($basename), -8) == '.tar.bz2')
-		{
-			$format = 'tbz2';
-		}
-		elseif (substr(strtolower($basename), -4) == '.tbz')
-		{
-			$format = 'tbz2';
-		}
-		elseif (substr(strtolower($basename), -5) == '.tbz2')
-		{
-			$format = 'tbz2';
-		}
-		else
-		{
-			$format = 'UNSUPPORTED';
-		}
-                
-                if ($format != 'UNSUPPORTED')
-                {
-                    $downloadURL .= '&amp;dummy=my.' . $format;
-                }
 
 		$item->environments = @json_decode($item->environments);
 
@@ -155,7 +155,7 @@ ComArsRouter::$routeHtml = false;
 			}
 			?>
 			<update>
-				<name><?php echo $item->alias ?></name>
+				<name><?php echo $item->name ?></name>
 				<description><?php echo $item->name ?></description>
 				<element><?php echo $item->element ?></element>
 				<type><?php echo $streamTypeMap[$item->type]; ?></type>

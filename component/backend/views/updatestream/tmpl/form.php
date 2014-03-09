@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -70,6 +70,12 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			<label for="folder" class="control-label"><?php echo JText::_('LBL_UPDATES_FOLDER'); ?></label>
 			<div class="controls">
 				<input type="text" name="folder" id="folder" value="<?php echo $this->item->folder ?>" >
+			</div>
+		</div>
+		<div class="control-group">
+			<label for="jedid" class="control-label"><?php echo JText::_('LBL_UPDATES_JEDID'); ?></label>
+			<div class="controls">
+				<input type="text" name="jedid" id="jedid" value="<?php echo $this->item->jedid ?>" >
 			</div>
 		</div>
 		<div class="control-group">

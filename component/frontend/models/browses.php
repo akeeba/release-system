@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -60,8 +60,18 @@ class ArsModelBrowses extends FOFModel
 		}
 
 		// Apply Visual Group filtering
-		$params = $app->getPageParameters('com_ars');
-		$vgroup = $params->get('vgroupid', '');
+		if ($app->isAdmin())
+		{
+			// It is possible that we are called in the back-end, due to Finder
+			// trying to index the article we created/modified
+			$params = JRegistry::getInstance('com_ars');
+			$vgroup = 0;
+		}
+		else
+		{
+			$params = $app->getPageParameters('com_ars');
+			$vgroup = $params->get('vgroupid', '');
+		}
 
 		if($vgroup) {
 			$catModel->setState('vgroup', $vgroup);

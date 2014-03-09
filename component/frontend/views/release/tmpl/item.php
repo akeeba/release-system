@@ -1,11 +1,14 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
+
+// Incoming var injected by loadAnyTemplate
+if(!isset($userAccess)) $userAccess = array();
 
 JHtml::_('behavior.tooltip');
 
@@ -13,6 +16,17 @@ $Itemid = empty($Itemid) ? "" : "&Itemid=$Itemid";
 $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid);
 
 $directlink = false;
+
+// Should I display the link to unauthorized user?
+if(!($item->cat_show_unauth && $item->rel_show_unauth && $item->show_unauth_links))
+{
+	// Ok check fail, let's see if I am inside an access view
+	if(!in_array($item->access, $userAccess))
+	{
+		// Nope! Go away!
+		return;
+	}
+}
 
 if ($this->directlink)
 {
@@ -43,12 +57,14 @@ if ($this->directlink)
 	</h4>
 
 	<dl class="dl-horizontal ars-release-properties">
+		<?php if($this->pparams->get('show_downloads', 1)): ?>
 		<dt>
 			<?php echo JText::_('LBL_ITEMS_HITS') ?>:
 		</dt>
 		<dd>
 			<?php echo JText::sprintf( ($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits) ?>
 		</dd>
+		<?php endif;?>
 
 		<?php if(!empty($item->filesize) && $this->pparams->get('show_filesize',1)): ?>
 		<dt>
@@ -97,7 +113,7 @@ if ($this->directlink)
 	<div>
 		<div class="pull-left">
 			<p class="readmore">
-				<a href="<?php echo htmlentities($download_url); ?>">
+				<a href="<?php echo htmlentities($download_url); ?>" class="btn btn-primary">
 					<?php echo JText::_('LBL_ITEM_DOWNLOAD') ?>
 				</a>
 			</p>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -69,13 +69,14 @@ switch ($item->maturity)
 			<?php echo JHTML::_('date',$released, JText::_('DATE_FORMAT_LC2')) ?>
 		</dd>
 
+		<?php if($this->pparams->get('show_downloads', 1)): ?>
 		<dt>
 			<?php echo JText::_('LBL_RELEASES_HITS') ?>:
 		</dt>
 		<dd>
 			<?php echo JText::sprintf( ($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits) ?>
 		</dd>
-
+		<?php endif; ?>
 	</dl>
 
 	<?php if(version_compare(JVERSION, '3.0', 'lt')): ?>
@@ -103,7 +104,7 @@ switch ($item->maturity)
 	<?php endif; ?>
 
 	<p class="readmore">
-		<a href="<?php echo htmlentities($release_url); ?>">
+		<a href="<?php echo htmlentities($release_url); ?>" class="btn btn-primary">
 			<?php echo JText::_('LBL_RELEASE_VIEWITEMS') ?>
 		</a>
 	</p>

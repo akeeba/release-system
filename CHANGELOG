@@ -1,3 +1,41 @@
+Version 2.3.3
+================================================================================
++ Added sh404SEF plugin to create SEF url with that component
++ Automatic ordering of new releases and items towards the top to make it easier to reorder then using Joomla! 3's very buggy drag'n'drop reordering feature
+~ CSRF protection for GeoIP update
+~ Only show a reminder to update the GeoIP database if it's older than two weeks
+~ AJAX ordering now shows the ordering in a textbox, to faciliate ordering without much frustration in Joomla! 3
+~ Now using the built-in Joomla! extensions updater instead of Live Update to deliver updates
+# [MEDIUM] Wrong link for GeoIP update
+# [MEDIUM] Download link in update stream always appends &dummy=my.zip (thanks Francesco & Hayden)
+# [LOW] Fixed page headings
+# [LOW] gh-25 Fixed ordering under Joomla! 3.x
+# [LOW] ARS Latest Release plugin: fixed broken link (stream_link and installfromweb)
+# [LOW] RSS feeds broken for Category and Release view in some circumstances
+# [LOW] frontend.css was not always loaded in the front-end
+# [LOW] Update XML <name> tag should have the name of the extension, not the URL alias
+
+Version 2.3.2
+================================================================================
+~ Now using a separate plugin for GeoIP features
+# [HIGH] The Install from Web integration is broken
+# [HIGH] The master XML update stream didn't have a closing tag
+# [LOW] MD5 and SHA1 sums are calculated even if they are filled in but the file size is not specified
+# [LOW] Sometimes the edit URL of an add-on download ID in the front-end was wrong
+
+Version 2.3.1
+================================================================================
+# [HIGH] The Install from Web integration plugin would not get installed with the component
+
+Version 2.3.0
+================================================================================
++ Option to show unauthorised links
++ Download update stream URL: download the latest item made available in an update stream
++ Support for the Install from Web feature in Joomla! 3.2
+~ Try very hard not to load GeoIP if another extension loads it before us (we can't guarantee that crappy code in other extensions will not cause a site crash; we can only make sure OUR code doesn't cause such a crash)
+~ Improved back-end display in Joomla! 3
+# [LOW] "Failed to delete temp.dat" message when downloading a remote file failed during item creation
+
 Version 2.2.1
 ================================================================================
 ! Access Levels not respected during download

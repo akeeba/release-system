@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -28,6 +28,7 @@ class ArsModelDownloads extends FOFModel
 	{
 		// Initialise
 		$this->item = null;
+		$null       = null;
 
 		$items = FOFModel::getTmpInstance('Items','ArsModel')
 			->access_user(JFactory::getUser()->id)
@@ -37,13 +38,27 @@ class ArsModelDownloads extends FOFModel
 
 		if (empty($items))
 		{
-			return null;
+			return $null;
+		}
+
+		// If the user is a guest and I wanted to show it to him, tell the controller to fire the redirect
+		if(JFactory::getUser()->guest && $items[0]->show_unauth_links && $items[0]->cat_show_unauth && $items[0]->rel_show_unauth)
+		{
+			$return = -1;
+			return $return;
+		}
+
+		// Additional check on item access level. I removed that from the model to allow
+		// item listing to unauthorized users
+		if(!in_array($items[0]->access, JFactory::getUser()->getAuthorisedViewLevels()))
+		{
+			return $null;
 		}
 
 		// Does it pass the access level / subscriptions filter?
 		$dummy = ArsHelperFilter::filterList( $items );
-		if(!count($dummy)) {
-			$null = null;
+		if(!count($dummy))
+		{
 			return $null;
 		}
 

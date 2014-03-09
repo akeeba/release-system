@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -36,7 +36,7 @@ class ArsViewRelease extends FOFViewHtml
 
 		// Set page title and meta
 		$cat = FOFModel::getTmpInstance('Categories', 'ArsModel')
-			->setId($model->category_id)
+			->setId($model->item->category_id)
 			->getItem();
 
 		$title = ArsHelperTitle::setTitleAndMeta($pparams, $cat->title.' '.$model->item->version);

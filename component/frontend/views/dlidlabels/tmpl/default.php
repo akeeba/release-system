@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -10,11 +10,15 @@ defined('_JEXEC') or die();
 JHtml::_('behavior.framework');
 
 $this->loadHelper('filter');
-?>
 
+$app = JFactory::getApplication();
+$menus = $app->getMenu();
+$menu = $menus->getActive();
+
+?>
 <?php if ($this->params->get('show_page_heading')) : ?>
 	<div class="page-header">
-		<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+		<h1><?php echo $this->escape($this->params->get('page_heading', $menu->title)); ?></h1>
 	</div>
 <?php endif;?>
 

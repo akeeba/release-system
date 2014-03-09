@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -160,4 +160,22 @@ class ArsTableRelease extends FOFTable
 
 		return true;
 	}
+
+    protected function onBeforeStore($updateNulls)
+    {
+        // I'm going to save a new record, let's shift all old record by 1 and put this as the first one
+        if(!$this->id)
+        {
+            $this->ordering = 1;
+
+            $db = JFactory::getDbo();
+
+            $query = $db->getQuery(true)
+                        ->update($db->qn('#__ars_releases'))
+                        ->set($db->qn('ordering').' = '.$db->qn('ordering').' + '.$db->q(1));
+            $db->setQuery($query)->execute();
+        }
+
+        return parent::onBeforeStore($updateNulls);
+    }
 }

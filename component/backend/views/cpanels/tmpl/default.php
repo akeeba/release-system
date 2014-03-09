@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -23,6 +23,31 @@ FOFTemplateUtils::addJS('media://com_ars/js/jqplot.highlighter.min.js');
 FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
 ?>
+<?php if (!$this->hasplugin): ?>
+	<div class="well">
+		<h3><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINSTATUS') ?></h3>
+
+		<p><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINMISSING') ?></p>
+
+		<a class="btn btn-primary" href="https://www.akeebabackup.com/download/akgeoip.html" target="_blank">
+			<span class="icon icon-white icon-download-alt"></span>
+			<?php echo JText::_('COM_ARS_GEOBLOCK_LBL_DOWNLOADGEOIPPLUGIN') ?>
+		</a>
+	</div>
+<?php elseif ($this->pluginNeedsUpdate): ?>
+	<div class="well well-small">
+		<h3><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINEXISTS') ?></h3>
+
+		<p><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINCANUPDATE') ?></p>
+
+		<a class="btn btn-small" href="index.php?option=com_ars&view=cpanel&task=updategeoip&<?php echo JFactory::getSession()->getFormToken(); ?>=1">
+			<span class="icon icon-retweet"></span>
+			<?php echo JText::_('COM_ARS_GEOBLOCK_LBL_UPDATEGEOIPDATABASE') ?>
+		</a>
+	</div>
+<?php endif; ?>
+
+
 <div class="row-fluid">
 	<div id="cpanel" class="span<?php echo $this->graphswidth ?>">
 
@@ -86,9 +111,6 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 		</div>
 		<?php endforeach; ?>
 
-		<?php if($group == 'basic'): ?>
-		<p><?php echo LiveUpdate::getIcon(); ?></p>
-		<?php endif; ?>
 		<div class="ak_clr_left"></div>
 
 		<?php endif; ?>

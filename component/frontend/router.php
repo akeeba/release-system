@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  * @version $Id$
  */
@@ -27,14 +27,14 @@ function arsBuildRoute(&$query)
 	switch($format)
 	{
 		case 'html':
-                        if (ComArsRouter::$routeHtml)
-                        {
-                            $segments = arsBuildRouteHtml($query);
-                        }
-                        else
-                        {
-                            $segments = array();
-                        }
+			if (ComArsRouter::$routeHtml)
+			{
+				$segments = arsBuildRouteHtml($query);
+			}
+			else
+			{
+				$segments = array();
+			}
 			break;
 		case 'feed':
 			$segments = arsBuildRouteFeed($query);
@@ -129,7 +129,6 @@ function arsBuildRouteHtml(&$query)
 				// Joomla! will let the menu item naming work its magic
 				$query['Itemid'] = $Itemid;
 			}
-			break;
 
 			if (!empty($task))
 			{

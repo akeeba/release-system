@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
 <extension type="component" version="1.5.0" method="upgrade">
 	<name>Ars</name>
 	<creationDate>##DATE##</creationDate>
@@ -37,6 +36,9 @@
 			<file driver="mysql">sql/install/mysql/install.sql</file>
 			<file charset="utf8" driver="mysqli">sql/install/mysql/install.sql</file>
 			<file driver="mysqli">sql/install/mysql/install.sql</file>
+
+      <file driver="postgresql">sql/install/postgresql/install.sql</file>
+      <file driver="postgresql" charset="utf8">sql/install/postgresql/install.sql</file>
 		</sql>
 	</install>
 
@@ -47,6 +49,9 @@
 			<file driver="mysql">sql/install/mysql/uninstall.sql</file>
 			<file charset="utf8" driver="mysqli">sql/install/mysql/uninstall.sql</file>
 			<file driver="mysqli">sql/install/mysql/uninstall.sql</file>
+
+      <file driver="postgresql">sql/install/postgresql/uninstall.sql</file>
+      <file driver="postgresql" charset="utf8">sql/install/postgresql/uninstall.sql</file>
 		</sql>
 	</uninstall>
 	
@@ -83,7 +88,6 @@
 			<folder>elements</folder>
 			<folder>fields</folder>
 			<folder>helpers</folder>
-			<folder>liveupdate</folder>
 			<folder>models</folder>
 			<folder>sql</folder>
 			<folder>tables</folder>
@@ -108,7 +112,12 @@
 	<!-- Installation / uninstallation script file -->
 	<scriptfile>script.ars.php</scriptfile>
 
-	<!-- Akeeba Backup System Restore Points integration -->
+    <!-- Update servers -->
+    <updateservers>
+        <server type="extension" priority="1" name="Akeeba Release System">http://cdn.akeebabackup.com/updates/ars.xml</server>
+    </updateservers>
+
+    <!-- Akeeba Backup System Restore Points integration -->
 	<restorepoint>
 		<customdirs>
 			<dir>modules/mod_arsdlid</dir>

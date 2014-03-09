@@ -2,7 +2,7 @@
 /**
  * @package AkeebaReleaseSystem
  * @subpackage plugins.arsdlid
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -104,6 +104,23 @@ class plgContentArslatest extends JPlugin
 			case 'item_link':
 				$ret = $this->parseItemLink($content, $pattern);
 				break;
+			case 'stream_link':
+				$ret = $this->parseStreamLink($content);
+				break;
+			case 'installfromweb':
+				$session = JFactory::getSession();
+				$installat = $session->get('installat', null, 'arsjed');
+				$installapp = $session->get('installapp', null, 'arsjed');
+
+				if (!empty($installapp) && !empty($installat))
+				{
+					$ret = $this->parseIFWLink();
+				}
+				else
+				{
+					$ret = $this->parseStreamLink($content);
+				}
+				break;
 		}
 
 		return $ret;
@@ -141,7 +158,7 @@ class plgContentArslatest extends JPlugin
 
 		if(count($parts) == 2) {
 			$op = trim($parts[0]);
-			if(in_array($op, array('RELEASE','RELEASE_LINK'))) {
+			if(in_array($op, array('RELEASE','RELEASE_LINK', 'STREAMLINK', 'INSTALLFROMWEB'))) {
 				$content = trim($parts[1]);
 			} elseif($op == 'ITEM_LINK') {
 				$content = trim($parts[1]);
@@ -236,6 +253,63 @@ class plgContentArslatest extends JPlugin
 		if(empty($item)) return '';
 
 		$link = JRoute::_('index.php?option=com_ars&view=download&id='.$item->id);
+
+		return $link;
+	}
+
+	private function parseStreamLink($content)
+	{
+		static $dlid = '';
+
+		$user = JFactory::getUser();
+
+		if(empty($dlid) && !$user->guest)
+		{
+			$db = JFactory::getDBO();
+
+			$query = $db->getQuery(true)
+				->select('MD5(CONCAT('.$db->qn('id').','.$db->qn('username').','.$db->qn('password').')) AS '.$db->qn('dlid'))
+				->from($db->qn('#__users'))
+				->where($db->qn('id').' = '.$db->q($user->id));
+			$db->setQuery($query, 0, 1);
+			$dlid = $db->loadResult();
+		}
+
+		$link = JRoute::_('index.php?option=com_ars&view=update&task=download&format=raw&id=' . (int)$content, false);
+
+		if (!empty($dlid))
+		{
+			if (strstr($link, '?') === false)
+			{
+				$link .= '?dlid=' . $dlid;
+			}
+			else
+			{
+				$link .= '&dlid=' . $dlid;
+			}
+		}
+
+		return $link;
+	}
+
+	private function parseIFWLink()
+	{
+		$session = JFactory::getSession();
+		$installat = $session->get('installat', null, 'arsjed');
+		$installapp = (int)($session->get('installapp', null, 'arsjed'));
+
+		// Find the stream ID based on the $installapp key
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select($db->qn('id'))
+			->from('#__ars_updatestreams')
+			->where($db->qn('jedid') . '=' . $db->q($installapp));
+		$db->setQuery($query);
+		$streamId = $db->loadResult();
+
+		$downloadLink = $this->parseStreamLink($streamId);
+
+		$link = $installat . '&installfrom=' . base64_encode($downloadLink);
 
 		return $link;
 	}

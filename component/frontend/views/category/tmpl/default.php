@@ -1,19 +1,22 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
 
-?>
+$app = JFactory::getApplication();
+$menus = $app->getMenu();
+$menu = $menus->getActive();
 
+?>
 <div class="item-page<?php echo $this->pparams->get('pageclass_sfx') ?>">
-	<?php if ($this->pparams->get('show_page_heading') && $this->pparams->get('show_title')) : ?>
-	<div class="page-header">
-		<h1> <?php echo $this->escape($this->pparams->get('page_heading')); ?> </h1>
-	</div>
+	<?php if ($this->pparams->get('show_page_heading')) : ?>
+		<div class="page-header">
+			<h1><?php echo $this->escape($this->pparams->get('page_heading', $menu->title)); ?></h1>
+		</div>
 	<?php endif;?>
 
 	<?php echo $this->loadAnyTemplate('site:com_ars/browses/category', array('id' => $this->item->id, 'item' => $this->item, 'Itemid' => $this->Itemid, 'no_link' => true)); ?>

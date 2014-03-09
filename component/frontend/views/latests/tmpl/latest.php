@@ -1,11 +1,15 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
+
+$app = JFactory::getApplication();
+$menus = $app->getMenu();
+$menu = $menus->getActive();
 
 ?>
 <div class="item-page<?php echo $this->cparams->get('pageclass_sfx') ?>">
@@ -13,7 +17,7 @@ defined('_JEXEC') or die();
 <?php if ($this->cparams->get('show_page_heading', 1)): ?>
 	<div class="page-header">
 		<h1>
-			<?php echo $this->escape($this->cparams->get('page_heading')); ?>
+			<?php echo $this->escape($this->cparams->get('page_heading', $menu->title)); ?>
 		</h1>
 	</div>
 <?php elseif (!$this->cparams->get('show_page_heading', 1)): ?>

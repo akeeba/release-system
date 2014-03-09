@@ -1,7 +1,7 @@
 <?php
 /**
  * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
  * @license GNU General Public License version 3, or later
  */
 
@@ -23,7 +23,7 @@ $category_url = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->
 		</div>
 		<?php if(!isset($no_link)): ?>
 		<p class="readmore">
-			<a href="<?php echo htmlentities($category_url); ?>">
+			<a href="<?php echo htmlentities($category_url); ?>" class="btn btn-primary">
 				<?php echo JText::_('LBL_CATEGORY_VIEW') ?>
 			</a>
 		</p>
