@@ -1,5 +1,7 @@
-Version 2.3.2
+Version 2.3.4
 ================================================================================
++ Show update information in the component's control panel page
++ Allow the user to forcibly reload the update information from the component's control panel page
 # [MEDIUM] Blank page or 400 error message after updating from 2.3.2 or lower using Live Update
 
 Version 2.3.3

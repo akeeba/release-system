@@ -23,6 +23,24 @@ FOFTemplateUtils::addJS('media://com_ars/js/jqplot.highlighter.min.js');
 FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
 ?>
+<?php if ($this->updateInfo->hasUpdate): ?>
+	<div class="alert alert-warning">
+		<h3>
+			<span class="icon icon-exclamation-sign glyphicon glyphicon-exclamation-sign"></span>
+			<?php echo JText::sprintf('COM_ARS_CPANEL_MSG_UPDATEFOUND', $this->updateInfo->version); ?>
+		</h3>
+		<p>
+			<a href="index.php?option=com_installer&view=update" class="btn btn-primary">
+				<?php echo JText::sprintf('COM_ARS_CPANEL_MSG_UPDATENOW', $this->updateInfo->version); ?>
+			</a>
+			<a href="<?php echo $this->updateInfo->infoURL ?>" target="_blank" class="btn btn-small btn-info">
+				<?php echo JText::_('COM_ARS_CPANEL_MSG_MOREINFO'); ?>
+			</a>
+		</p>
+	</div>
+<?php endif; ?>
+
+
 <?php if (!$this->hasplugin): ?>
 	<div class="well">
 		<h3><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINSTATUS') ?></h3>
@@ -91,6 +109,17 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 			</div>
 			<?php endforeach; ?>
 		<?php endif; ?>
+
+		<div style="clear: both;">&nbsp;</div>
+		<h3><?php echo JText::_('COM_ARS_CPANEL_VERSIONINFO_LABEL')?></h3>
+		<p>
+			Akeeba Release System <?php echo $this->currentVersion ?>
+
+			<a href="index.php?option=com_ars&view=update&task=force" class="btn btn-inverse btn-small">
+				<?php echo JText::_('COM_ARS_CPANEL_MSG_RELOADUPDATE'); ?>
+			</a>
+
+		</p>
 
 	</div>
 

@@ -78,6 +78,11 @@ class ArsViewCpanels extends FOFViewHtml
 		$this->hasplugin = 				$model->hasGeoIPPlugin();
 		$this->pluginNeedsUpdate =		$model->dbNeedsUpdate();
 
+		/** @var ArsModelUpdates $updateModel */
+		$updateModel = FOFModel::getTmpInstance('Updates', 'ArsModel');
+		$this->updateInfo = (object)$updateModel->getUpdates();
+		$this->currentVersion = $updateModel->getVersion();
+
 		return true;
 	}
 }
