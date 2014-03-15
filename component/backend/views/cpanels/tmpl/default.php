@@ -25,12 +25,14 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 ?>
 <?php if ($this->updateInfo->hasUpdate): ?>
 	<div class="alert alert-warning">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
 		<h3>
 			<span class="icon icon-exclamation-sign glyphicon glyphicon-exclamation-sign"></span>
-			<?php echo JText::sprintf('COM_ARS_CPANEL_MSG_UPDATEFOUND', $this->updateInfo->version); ?>
+			<?php echo JText::sprintf('COM_ARS_CPANEL_MSG_UPDATEFOUND'); ?>
 		</h3>
 		<p>
 			<a href="index.php?option=com_installer&view=update" class="btn btn-primary">
+				<i class="icon-upload icon-white"></i>
 				<?php echo JText::sprintf('COM_ARS_CPANEL_MSG_UPDATENOW', $this->updateInfo->version); ?>
 			</a>
 			<a href="<?php echo $this->updateInfo->infoURL ?>" target="_blank" class="btn btn-small btn-info">
