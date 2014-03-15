@@ -22,15 +22,29 @@ FOFTemplateUtils::addJS('media://com_ars/js/jqplot.hermite.js');
 FOFTemplateUtils::addJS('media://com_ars/js/jqplot.highlighter.min.js');
 FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
+// Version label
+if ($this->updateInfo->hasUpdate)
+{
+	// Has updates
+	$versionLabel = 'important';
+}
+else
+{
+	// Up-to-date
+	$versionLabel = 'success';
+}
+
 ?>
 <?php if ($this->updateInfo->hasUpdate): ?>
 	<div class="alert alert-warning">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
 		<h3>
 			<span class="icon icon-exclamation-sign glyphicon glyphicon-exclamation-sign"></span>
-			<?php echo JText::sprintf('COM_ARS_CPANEL_MSG_UPDATEFOUND', $this->updateInfo->version); ?>
+			<?php echo JText::sprintf('COM_ARS_CPANEL_MSG_UPDATEFOUND'); ?>
 		</h3>
 		<p>
 			<a href="index.php?option=com_installer&view=update" class="btn btn-primary">
+				<i class="icon-upload icon-white"></i>
 				<?php echo JText::sprintf('COM_ARS_CPANEL_MSG_UPDATENOW', $this->updateInfo->version); ?>
 			</a>
 			<a href="<?php echo $this->updateInfo->infoURL ?>" target="_blank" class="btn btn-small btn-info">
@@ -113,14 +127,9 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 		<div style="clear: both;">&nbsp;</div>
 		<h3><?php echo JText::_('COM_ARS_CPANEL_VERSIONINFO_LABEL')?></h3>
 		<p>
-			Akeeba Release System <?php echo $this->currentVersion ?>
-
-			<a href="index.php?option=com_ars&view=update&task=force" class="btn btn-inverse btn-small">
-				<?php echo JText::_('COM_ARS_CPANEL_MSG_RELOADUPDATE'); ?>
-			</a>
-
+			Akeeba Release System
+			<span class="label label-<?php echo $versionLabel; ?>"><?php echo $this->currentVersion ?></span>
 		</p>
-
 	</div>
 
 	<div id="cpanel" class="span<?php echo 12 - $this->graphswidth ?>">
