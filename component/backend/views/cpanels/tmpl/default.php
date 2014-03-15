@@ -116,13 +116,7 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 		<h3><?php echo JText::_('COM_ARS_CPANEL_VERSIONINFO_LABEL')?></h3>
 		<p>
 			Akeeba Release System <?php echo $this->currentVersion ?>
-
-			<a href="index.php?option=com_ars&view=update&task=force" class="btn btn-inverse btn-small">
-				<?php echo JText::_('COM_ARS_CPANEL_MSG_RELOADUPDATE'); ?>
-			</a>
-
 		</p>
-
 	</div>
 
 	<div id="cpanel" class="span<?php echo 12 - $this->graphswidth ?>">

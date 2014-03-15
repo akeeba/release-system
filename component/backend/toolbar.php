@@ -29,6 +29,20 @@ class ArsToolbar extends FOFToolbar
 		JToolBarHelper::back('COM_ARS_TITLE_CPANELS', 'index.php?option=com_ars');
 	}
 
+	public function onCpanelsBrowse()
+	{
+		// Set toolbar title and render submenu
+		JToolBarHelper::title(JText::_( $this->input->getCmd('option','com_foobar')), str_replace('com_', '', $this->input->getCmd('option','com_foobar')));
+		$this->renderSubmenu();
+
+		// Find Updates button
+		$bar = JToolBar::getInstance('toolbar');
+		$url = 'index.php?option=com_ars&view=update&task=force';
+		$bar->appendButton('Link', 'refresh', JText::_('COM_ARS_TOOLBAR_FINDUPDATES'), $url, true);
+
+		JToolBarHelper::preferences('com_ars');
+	}
+
 	public function onImpjeds()
 	{
 		JToolBarHelper::title(JText::_( $this->input->getCmd('option','com_foobar')).' &ndash; <small>'.JText::_('COM_ARS_TITLE_IMPJEDS').'</small>', str_replace('com_', '', $this->input->getCmd('option','com_foobar')));
