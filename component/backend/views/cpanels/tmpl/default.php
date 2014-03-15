@@ -22,6 +22,18 @@ FOFTemplateUtils::addJS('media://com_ars/js/jqplot.hermite.js');
 FOFTemplateUtils::addJS('media://com_ars/js/jqplot.highlighter.min.js');
 FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
+// Version label
+if ($this->updateInfo->hasUpdate)
+{
+	// Has updates
+	$versionLabel = 'important';
+}
+else
+{
+	// Up-to-date
+	$versionLabel = 'success';
+}
+
 ?>
 <?php if ($this->updateInfo->hasUpdate): ?>
 	<div class="alert alert-warning">
@@ -115,7 +127,8 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 		<div style="clear: both;">&nbsp;</div>
 		<h3><?php echo JText::_('COM_ARS_CPANEL_VERSIONINFO_LABEL')?></h3>
 		<p>
-			Akeeba Release System <?php echo $this->currentVersion ?>
+			Akeeba Release System
+			<span class="label label-<?php echo $versionLabel; ?>"><?php echo $this->currentVersion ?></span>
 		</p>
 	</div>
 
