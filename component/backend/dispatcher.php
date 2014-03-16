@@ -26,15 +26,6 @@ class ArsDispatcher extends FOFDispatcher
 			return $result;
 		}
 
-		$view = FOFInflector::singularize($this->input->getCmd('view',$this->defaultView));
-
-		if ($view == 'liveupdate')
-		{
-			$url = JUri::base() . 'index.php?option=com_ars';
-			JFactory::getApplication()->redirect($url);
-			return;
-		}
-
 		// Load Akeeba Strapper
 		include_once JPATH_ROOT . '/media/akeeba_strapper/strapper.php';
 		AkeebaStrapper::bootstrap();

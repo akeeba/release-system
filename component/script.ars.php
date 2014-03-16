@@ -151,6 +151,12 @@ class Com_ArsInstallerScript
 	private $akeebaCliScripts = array(
 	);
 
+	/**
+	 * Did the previous version had Akeeba Live Update?
+	 *
+	 * @var 	boolean
+	 */
+	private $hadLiveUpdate;
 
 	/**
 	 * Joomla! pre-flight event
@@ -198,6 +204,8 @@ class Com_ArsInstallerScript
 			$this->_fixSchemaVersion();
 		}
 
+		$this->hadLiveUpdate = file_exists(JPATH_ADMINISTRATOR . '/components/' . $this->_akeeba_extension . '/liveupdate');
+
 		return true;
 	}
 
@@ -238,6 +246,8 @@ class Com_ArsInstallerScript
 				FOFPlatform::getInstance()->clearCache();
 			}
 		}
+
+		$this->_fixLiveUpdateMigration();
 	}
 
 	/**
@@ -1170,5 +1180,25 @@ class Com_ArsInstallerScript
 		$query->values($eid . ', ' . $db->quote($version));
 		$db->setQuery($query);
 		$db->execute();
+	}
+
+	/**
+	 * Fixes Live Update to Joomla! core updater migration error.
+	 *
+	 * Fixes a (harmless) fatal error which occurs when updating with Akeeba Live Update
+	 * and Akeeba Live Update is not included any more in the installation package. For
+	 * us this happens with the switch to the Joomla! core updater.
+	 */
+	private function _fixLiveUpdateMigration()
+	{
+		$component = $this->_akeeba_extension;
+
+		// Only need to apply the fix if Live Update has previously been installed and is not included any more
+		if ($this->hadLiveUpdate && !file_exists(JPATH_ADMINISTRATOR . '/components/' . $component . '/liveupdate'))
+		{
+			$app = JFactory::getApplication();
+			$app->enqueueMessage('Component updated successfully.');
+			$app->redirect("index.php?option=$component");
+		}
 	}
 }
