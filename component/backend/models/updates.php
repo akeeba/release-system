@@ -75,7 +75,8 @@ class ArsModelUpdates extends FOFModel
 	{
 		$db = $this->getDbo();
 
-		// If we are forcing the reload, set the last update timestamp to 0 in order to force a reload
+		// If we are forcing the reload, set the last_check_timestamp to 0
+		// and remove cached component update info in order to force a reload
 		if ($force)
 		{
 			// Find the update site ID
@@ -90,6 +91,13 @@ class ArsModelUpdates extends FOFModel
 			$query = $db->getQuery(true)
 				->update($db->qn('#__update_sites'))
 				->set($db->qn('last_check_timestamp') . ' = ' . $db->q('0'))
+				->where($db->qn('update_site_id') . ' = ' . $db->q($updateSiteId));
+			$db->setQuery($query);
+			$db->execute();
+
+			// Remove cached component update info from #__updates
+			$query = $db->getQuery(true)
+				->delete($db->qn('#__updates'))
 				->where($db->qn('update_site_id') . ' = ' . $db->q($updateSiteId));
 			$db->setQuery($query);
 			$db->execute();
