@@ -432,6 +432,10 @@ class ArsModelCpanels extends FOFModel
 				'extension_id'		=> $extension_id,
 			);
 			$db->insertObject('#__update_sites_extensions', $updateSiteExtension);
+
+			// Refresh update site
+			$uModel = FOFModel::getAnInstance('Updates', 'ArsModel');
+			$uModel->getUpdates(true);
 		}
 		else
 		{
