@@ -155,28 +155,18 @@ class ArsModelUpdates extends FOFModel
 			'extra_query'	=> null
 		);
 
-		$db = $this->getDbo();
-
-		// Get the extension ID to ourselves
-		$query = $db->getQuery(true)
-			->select($db->qn('extension_id'))
-			->from($db->qn('#__extensions'))
-			->where($db->qn('type') . ' = ' . $db->q('component'))
-			->where($db->qn('element') . ' = ' . $db->q('com_ars'));
-		$db->setQuery($query);
-
-		$extension_id = $db->loadResult();
-
-		if (empty($extension_id))
+		if (empty($this->extension_id))
 		{
 			return;
 		}
+
+		$db = $this->getDbo();
 
 		// Get the update sites for our extension
 		$query = $db->getQuery(true)
 			->select($db->qn('update_site_id'))
 			->from($db->qn('#__update_sites_extensions'))
-			->where($db->qn('extension_id') . ' = ' . $db->q($extension_id));
+			->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
 		$db->setQuery($query);
 
 		$updateSiteIDs = $db->loadColumn(0);
@@ -191,7 +181,7 @@ class ArsModelUpdates extends FOFModel
 
 			$updateSiteExtension = (object)array(
 				'update_site_id'	=> $id,
-				'extension_id'		=> $extension_id,
+				'extension_id'		=> $this->extension_id,
 			);
 			$db->insertObject('#__update_sites_extensions', $updateSiteExtension);
 
