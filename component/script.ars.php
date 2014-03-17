@@ -238,6 +238,9 @@ class Com_ArsInstallerScript
 				FOFPlatform::getInstance()->clearCache();
 			}
 		}
+
+		// Refresh our update sites
+		$this->_refreshUpdateSites();
 	}
 
 	/**
@@ -1170,5 +1173,19 @@ class Com_ArsInstallerScript
 		$query->values($eid . ', ' . $db->quote($version));
 		$db->setQuery($query);
 		$db->execute();
+	}
+
+	/**
+	 * Refreshes existing update sites of the component. This makes sure that available
+	 * updates are shown right after installing the component.
+	 *
+	 * Important! This method uses ComponentnameModelUpdates->getUpdates() from the
+	 * installed component.
+	 */
+	private function _refreshUpdateSites()
+	{
+		$prefix = ucfirst(str_replace('com_', '', $this->_akeeba_extension)) . 'Model';
+		$uModel = FOFModel::getAnInstance('Updates', $prefix);
+		$uModel->getUpdates(true);
 	}
 }

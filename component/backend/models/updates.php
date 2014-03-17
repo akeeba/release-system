@@ -35,13 +35,12 @@ class ArsModelUpdates extends FOFModel
 		$this->updater = JUpdater::getInstance();
 
 		// Find the extension ID
-		$component = $this->input->getCmd('option', '');
 		$db = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__extensions'))
 			->where($db->qn('type') . ' = ' . $db->q('component'))
-			->where($db->qn('element') . ' = ' . $db->q($component));
+			->where($db->qn('element') . ' = ' . $db->q('com_ars'));
 		$db->setQuery($query);
 		$extension = $db->loadObject();
 
