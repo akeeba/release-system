@@ -90,26 +90,26 @@ class ArsModelUpdates extends FOFModel
 		// and remove cached component update info in order to force a reload
 		if ($force)
 		{
-			// Find the update site ID
-			$query = $db->getQuery(true)
-				->select($db->qn('update_site_id'))
-				->from($db->qn('#__update_sites_extensions'))
-				->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
-			$db->setQuery($query);
-			$updateSiteId = $db->loadResult();
+			// Find the update site Ids
+			$updateSiteIds = $this->getUpdateSiteIds();
+
+			if (empty($updateSiteIds))
+			{
+				return $updateResponse;
+			}
 
 			// Set the last_check_timestamp to 0
 			$query = $db->getQuery(true)
 				->update($db->qn('#__update_sites'))
 				->set($db->qn('last_check_timestamp') . ' = ' . $db->q('0'))
-				->where($db->qn('update_site_id') . ' = ' . $db->q($updateSiteId));
+				->where($db->qn('update_site_id') .' IN ('.implode(', ', $updateSiteIds).')');
 			$db->setQuery($query);
 			$db->execute();
 
 			// Remove cached component update info from #__updates
 			$query = $db->getQuery(true)
 				->delete($db->qn('#__updates'))
-				->where($db->qn('update_site_id') . ' = ' . $db->q($updateSiteId));
+				->where($db->qn('update_site_id') .' IN ('.implode(', ', $updateSiteIds).')');
 			$db->setQuery($query);
 			$db->execute();
 		}
@@ -164,19 +164,13 @@ class ArsModelUpdates extends FOFModel
 			'extra_query'	=> null
 		);
 
+		$getUpdates = false;
 		$db = $this->getDbo();
 
 		// Get the update sites for our extension
-		$query = $db->getQuery(true)
-			->select($db->qn('update_site_id'))
-			->from($db->qn('#__update_sites_extensions'))
-			->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
-		$db->setQuery($query);
-		$updateSiteIDs = $db->loadColumn(0);
+		$updateSiteIds = $this->getUpdateSiteIds();
 
-		$getUpdates = false;
-
-		if (!count($updateSiteIDs))
+		if (!count($updateSiteIds))
 		{
 			// No update sites defined. Create a new one.
 			$newSite = (object)$update_site;
@@ -195,7 +189,7 @@ class ArsModelUpdates extends FOFModel
 		else
 		{
 			// Loop through all update sites
-			foreach ($updateSiteIDs as $id)
+			foreach ($updateSiteIds as $id)
 			{
 				$query = $db->getQuery(true)
 					->select('*')
@@ -223,6 +217,25 @@ class ArsModelUpdates extends FOFModel
 		{
 			$this->getUpdates(true);
 		}
+	}
+
+	/**
+	 * Gets the update site Ids for our extension.
+	 *
+	 * @return 	mixed	An array of Ids or null if the query failed.
+	 */
+	private function getUpdateSiteIds()
+	{
+		// Get the update sites for our extension
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->qn('update_site_id'))
+			->from($db->qn('#__update_sites_extensions'))
+			->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
+		$db->setQuery($query);
+		$updateSiteIds = $db->loadColumn(0);
+
+		return $updateSiteIds;
 	}
 
 	/**
