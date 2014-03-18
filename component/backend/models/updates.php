@@ -72,6 +72,18 @@ class ArsModelUpdates extends FOFModel
 	 */
 	public function getUpdates($force = false)
 	{
+		// Default response (no update)
+		$updateResponse = array(
+			'hasUpdate'		=> false,
+			'version'		=> '',
+			'infoURL'		=> ''
+		);
+
+		if (empty($this->extension_id))
+		{
+			return $updateResponse;
+		}
+
 		$db = $this->getDbo();
 
 		// If we are forcing the reload, set the last_check_timestamp to 0
@@ -108,13 +120,6 @@ class ArsModelUpdates extends FOFModel
 
 		// Load any updates from the network into the #__updates table
 		$this->updater->findUpdates($this->extension_id, $timeout);
-
-		// Default response (no update)
-		$updateResponse = array(
-			'hasUpdate'		=> false,
-			'version'		=> '',
-			'infoURL'		=> ''
-		);
 
 		// Get the update record from the database
 		$query = $db->getQuery(true)
