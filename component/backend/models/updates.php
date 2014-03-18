@@ -144,6 +144,11 @@ class ArsModelUpdates extends FOFModel
 	 */
 	public function refreshUpdateSites()
 	{
+		if (empty($this->extension_id))
+		{
+			return;
+		}
+
 		// Create the update site definition we want to store to the database
 		$update_site = array(
 			'name'		=> 'Akeeba Release System',
@@ -154,11 +159,6 @@ class ArsModelUpdates extends FOFModel
 			'extra_query'	=> null
 		);
 
-		if (empty($this->extension_id))
-		{
-			return;
-		}
-
 		$db = $this->getDbo();
 
 		// Get the update sites for our extension
@@ -167,8 +167,9 @@ class ArsModelUpdates extends FOFModel
 			->from($db->qn('#__update_sites_extensions'))
 			->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
 		$db->setQuery($query);
-
 		$updateSiteIDs = $db->loadColumn(0);
+
+		$getUpdates = false;
 
 		if (!count($updateSiteIDs))
 		{
@@ -184,8 +185,7 @@ class ArsModelUpdates extends FOFModel
 			);
 			$db->insertObject('#__update_sites_extensions', $updateSiteExtension);
 
-			// Reload the update information
-			$this->getUpdates(true);
+			$getUpdates = true;
 		}
 		else
 		{
@@ -208,7 +208,15 @@ class ArsModelUpdates extends FOFModel
 				$update_site['update_site_id'] = $id;
 				$newSite = (object)$update_site;
 				$db->updateObject('#__update_sites', $newSite, 'update_site_id', true);
+
+				$getUpdates = true;
 			}
+		}
+
+		// Reload the update information
+		if ($getUpdates)
+		{
+			$this->getUpdates(true);
 		}
 	}
 
