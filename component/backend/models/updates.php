@@ -224,7 +224,7 @@ class ArsModelUpdates extends FOFModel
 	 *
 	 * @return 	mixed	An array of Ids or null if the query failed.
 	 */
-	private function getUpdateSiteIds()
+	public function getUpdateSiteIds()
 	{
 		// Get the update sites for our extension
 		$db = $this->getDbo();
