@@ -14,8 +14,8 @@ $symlink_folders = array(
 	'../buildfiles/tools'						=> 'build/tools',
 
 	# Component translation
-	'translations/component/backend/en-GB'		=> 'component/language/backend/en-GB',
-	'translations/component/frontend/en-GB'		=> 'component/language/frontend/en-GB',
+	'translations/component/backend/en-GB'		=> 'component/backend/language/en-GB',
+	'translations/component/frontend/en-GB'		=> 'component/frontend/language/en-GB',
 
 	# FOF
 	'../fof/fof'								=> 'component/fof',
