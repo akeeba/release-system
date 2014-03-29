@@ -44,7 +44,7 @@
 			<field name="show_pagination" type="list" default="2" label="ARS_BROWSE_REPOSITORY_PAGINATION_LBL" description="ARS_BROWSE_REPOSITORY_PAGINATION_DESC">
 					<option value="0">JHide</option>
 					<option value="1">JShow</option>
-					<option value="2">JAuto</option>
+					<option value="2">JGlobal_Auto</option>
 			</field>
 			<field name="show_pagination_results" type="radio" default="1" label="ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_LBL" description="ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_DESC">
 					<option value="0">JHide</option>
