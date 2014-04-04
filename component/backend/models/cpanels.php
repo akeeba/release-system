@@ -401,25 +401,21 @@ class ArsModelCpanels extends FOFModel
 			->from($db->qn('#__extensions'))
 			->where($db->qn('type') . ' = ' . $db->q('component'))
 			->where($db->qn('element') . ' = ' . $db->q('com_ars'));
-		$db->setQuery($query);
-
+ 		$db->setQuery($query);
 		$extension_id = $db->loadResult();
 
 		if (empty($extension_id))
 		{
 			return;
-		}
+ 		}
+
+		$getUpdates = false;
 
 		// Get the update sites for our extension
-		$query = $db->getQuery(true)
-			->select($db->qn('update_site_id'))
-			->from($db->qn('#__update_sites_extensions'))
-			->where($db->qn('extension_id') . ' = ' . $db->q($extension_id));
-		$db->setQuery($query);
+		$uModel = FOFModel::getAnInstance('Updates', 'ArsModel');
+		$updateSiteIds = $uModel->getUpdateSiteIds();
 
-		$updateSiteIDs = $db->loadColumn(0);
-
-		if (!count($updateSiteIDs))
+		if (!count($updateSiteIds))
 		{
 			// No update sites defined. Create a new one.
 			$newSite = (object)$update_site;
@@ -432,11 +428,13 @@ class ArsModelCpanels extends FOFModel
 				'extension_id'		=> $extension_id,
 			);
 			$db->insertObject('#__update_sites_extensions', $updateSiteExtension);
+
+			$getUpdates = true;
 		}
 		else
 		{
 			// Loop through all update sites
-			foreach ($updateSiteIDs as $id)
+			foreach ($updateSiteIds as $id)
 			{
 				$query = $db->getQuery(true)
 					->select('*')
@@ -454,7 +452,15 @@ class ArsModelCpanels extends FOFModel
 				$update_site['update_site_id'] = $id;
 				$newSite = (object)$update_site;
 				$db->updateObject('#__update_sites', $newSite, 'update_site_id', true);
+
+				$getUpdates = true;
 			}
+		}
+
+		// Reload the update information
+		if ($getUpdates)
+		{
+			$uModel->getUpdates(true);
 		}
 	}
 }

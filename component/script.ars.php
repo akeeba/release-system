@@ -238,6 +238,9 @@ class Com_ArsInstallerScript
 				FOFPlatform::getInstance()->clearCache();
 			}
 		}
+
+		// Refresh our update site
+		$this->_refreshUpdateSite();
 	}
 
 	/**
@@ -247,11 +250,46 @@ class Com_ArsInstallerScript
 	 */
 	function uninstall($parent)
 	{
+		// Uninstall update sites
+		$this->_uninstallUpdateSites();
+
 		// Uninstall subextensions
 		$status = $this->_uninstallSubextensions($parent);
 
 		// Show the post-uninstallation page
 		$this->_renderPostUninstallation($status, $parent);
+	}
+
+	/**
+	 * Uninstalls update sites.
+	 */
+	private function _uninstallUpdateSites()
+	{
+		$prefix = ucfirst(str_replace('com_', '', $this->_akeeba_extension)) . 'Model';
+		$uModel = FOFModel::getAnInstance('Updates', $prefix);
+		$updateSiteIds = $uModel->getUpdateSiteIds();
+
+		if (empty($updateSiteIds))
+		{
+			return;
+		}
+
+		$db = JFactory::getDbo();
+
+		$tables = array(
+			'#__update_sites',
+			'#__updates',
+			'#__update_sites_extensions',
+		);
+
+		foreach ($tables as $table)
+		{
+			$query = $db->getQuery(true)
+				->delete($db->qn($table))
+				->where($db->qn('update_site_id') .' IN ('.implode(', ', $updateSiteIds).')');
+			$db->setQuery($query);
+			$db->execute();
+		}
 	}
 
 	/**
@@ -1170,5 +1208,19 @@ class Com_ArsInstallerScript
 		$query->values($eid . ', ' . $db->quote($version));
 		$db->setQuery($query);
 		$db->execute();
+	}
+
+	/**
+	 * Refreshes existing update sites of the component. This makes sure that available
+	 * updates are shown right after installing the component.
+	 *
+	 * Important! This method uses ComponentnameModelUpdates->getUpdates() from the
+	 * installed component.
+	 */
+	private function _refreshUpdateSite()
+	{
+		$prefix = ucfirst(str_replace('com_', '', $this->_akeeba_extension)) . 'Model';
+		$uModel = FOFModel::getAnInstance('Updates', $prefix);
+		$uModel->getUpdates(true);
 	}
 }

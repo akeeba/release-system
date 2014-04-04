@@ -35,13 +35,12 @@ class ArsModelUpdates extends FOFModel
 		$this->updater = JUpdater::getInstance();
 
 		// Find the extension ID
-		$component = $this->input->getCmd('option', '');
 		$db = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__extensions'))
 			->where($db->qn('type') . ' = ' . $db->q('component'))
-			->where($db->qn('element') . ' = ' . $db->q($component));
+			->where($db->qn('element') . ' = ' . $db->q('com_ars'));
 		$db->setQuery($query);
 		$extension = $db->loadObject();
 
@@ -73,32 +72,44 @@ class ArsModelUpdates extends FOFModel
 	 */
 	public function getUpdates($force = false)
 	{
+		// Default response (no update)
+		$updateResponse = array(
+			'hasUpdate'		=> false,
+			'version'		=> '',
+			'infoURL'		=> ''
+		);
+
+		if (empty($this->extension_id))
+		{
+			return $updateResponse;
+		}
+
 		$db = $this->getDbo();
 
 		// If we are forcing the reload, set the last_check_timestamp to 0
 		// and remove cached component update info in order to force a reload
 		if ($force)
 		{
-			// Find the update site ID
-			$query = $db->getQuery(true)
-				->select($db->qn('update_site_id'))
-				->from($db->qn('#__update_sites_extensions'))
-				->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
-			$db->setQuery($query);
-			$updateSiteId = $db->loadResult();
+			// Find the update site Ids
+			$updateSiteIds = $this->getUpdateSiteIds();
+
+			if (empty($updateSiteIds))
+			{
+				return $updateResponse;
+			}
 
 			// Set the last_check_timestamp to 0
 			$query = $db->getQuery(true)
 				->update($db->qn('#__update_sites'))
 				->set($db->qn('last_check_timestamp') . ' = ' . $db->q('0'))
-				->where($db->qn('update_site_id') . ' = ' . $db->q($updateSiteId));
+				->where($db->qn('update_site_id') .' IN ('.implode(', ', $updateSiteIds).')');
 			$db->setQuery($query);
 			$db->execute();
 
 			// Remove cached component update info from #__updates
 			$query = $db->getQuery(true)
 				->delete($db->qn('#__updates'))
-				->where($db->qn('update_site_id') . ' = ' . $db->q($updateSiteId));
+				->where($db->qn('update_site_id') .' IN ('.implode(', ', $updateSiteIds).')');
 			$db->setQuery($query);
 			$db->execute();
 		}
@@ -109,13 +120,6 @@ class ArsModelUpdates extends FOFModel
 
 		// Load any updates from the network into the #__updates table
 		$this->updater->findUpdates($this->extension_id, $timeout);
-
-		// Default response (no update)
-		$updateResponse = array(
-			'hasUpdate'		=> false,
-			'version'		=> '',
-			'infoURL'		=> ''
-		);
 
 		// Get the update record from the database
 		$query = $db->getQuery(true)
@@ -136,6 +140,25 @@ class ArsModelUpdates extends FOFModel
 		}
 
 		return $updateResponse;
+	}
+
+	/**
+	 * Gets the update site Ids for our extension.
+	 *
+	 * @return 	mixed	An array of Ids or null if the query failed.
+	 */
+	public function getUpdateSiteIds()
+	{
+		// Get the update sites for our extension
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->qn('update_site_id'))
+			->from($db->qn('#__update_sites_extensions'))
+			->where($db->qn('extension_id') . ' = ' . $db->q($this->extension_id));
+		$db->setQuery($query);
+		$updateSiteIds = $db->loadColumn(0);
+
+		return $updateSiteIds;
 	}
 
 	/**
