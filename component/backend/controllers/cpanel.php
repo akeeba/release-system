@@ -50,9 +50,8 @@ class ArsControllerCpanel extends FOFController
 
 	protected function onBeforeBrowse()
 	{
-		// Refresh our update sites
-		$uModel = FOFModel::getAnInstance('Updates', 'ArsModel');
-		$uModel->refreshUpdateSites();
+		$model = $this->getThisModel();
+		$model->refreshUpdateSite();
 
 		return parent::onBeforeBrowse();
 	}

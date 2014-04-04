@@ -239,8 +239,8 @@ class Com_ArsInstallerScript
 			}
 		}
 
-		// Refresh our update sites
-		$this->_refreshUpdateSites();
+		// Refresh our update site
+		$this->_refreshUpdateSite();
 	}
 
 	/**
@@ -1217,7 +1217,7 @@ class Com_ArsInstallerScript
 	 * Important! This method uses ComponentnameModelUpdates->getUpdates() from the
 	 * installed component.
 	 */
-	private function _refreshUpdateSites()
+	private function _refreshUpdateSite()
 	{
 		$prefix = ucfirst(str_replace('com_', '', $this->_akeeba_extension)) . 'Model';
 		$uModel = FOFModel::getAnInstance('Updates', $prefix);
