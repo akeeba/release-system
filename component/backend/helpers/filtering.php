@@ -132,32 +132,39 @@ class ArsHelperFiltering
 	 */
 	static function getUserGroups($user_id = null)
 	{
+		static $userGroups = array();
+
 		if(!self::hasSubscriptionsExtension()) return array();
-		
+
 		if(is_null($user_id))
 		{
 			$user = JFactory::getUser();
 			$user_id = $user->id;
 		}
-		
-		switch(self::getExtensionType()) {
-			case 'akeeba':
-				return self::getAkeebaUserGroups($user_id);
-				break;
-				
-			case 'ambra':
-				return self::getAMBRAUserGroups($user_id);
-				break;
-				
-			case 'payplans':
-				$status = PayplansStatus::SUBSCRIPTION_ACTIVE;
-				return PayplansApi::getUser($user_id)->getSubscriptions($status);
-				break;  
 
-			default:
-				return array();
-				break;
+		if (!array_key_exists($user_id, $userGroups))
+		{
+			switch(self::getExtensionType()) {
+				case 'akeeba':
+					$userGroups[$user_id] = self::getAkeebaUserGroups($user_id);
+					break;
+
+				case 'ambra':
+					$userGroups[$user_id] = self::getAMBRAUserGroups($user_id);
+					break;
+
+				case 'payplans':
+					$status = PayplansStatus::SUBSCRIPTION_ACTIVE;
+					$userGroups[$user_id] = PayplansApi::getUser($user_id)->getSubscriptions($status);
+					break;
+
+				default:
+					return array();
+					break;
+			}
 		}
+
+		return $userGroups[$user_id];
 	}
 	
 	static function getAkeebaUserGroups($user_id = null)
