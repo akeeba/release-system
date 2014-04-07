@@ -393,6 +393,11 @@ class ArsModelCpanels extends FOFModel
 			'extra_query'	=> null
 		);
 
+		if (version_compare(JVERSION, '3.2.1', 'lt'))
+		{
+			unset($update_site['extra_query']);
+		}
+
 		$db = $this->getDbo();
 
 		// Get the extension ID to ourselves
@@ -456,5 +461,26 @@ class ArsModelCpanels extends FOFModel
 				$db->updateObject('#__update_sites', $newSite, 'update_site_id', true);
 			}
 		}
+	}
+
+	/**
+	 * Checks the database for missing / outdated tables using the $dbChecks
+	 * data and runs the appropriate SQL scripts if necessary.
+	 *
+	 * @return ArsModelCpanels
+	 */
+	public function checkAndFixDatabase()
+	{
+		// Install or update database
+		$dbFilePath = JPATH_ADMINISTRATOR . '/components/com_ars/sql';
+		if (!class_exists('AkeebaDatabaseInstaller'))
+		{
+			require_once $dbFilePath . '/dbinstaller.php';
+		}
+		$dbInstaller = new AkeebaDatabaseInstaller(JFactory::getDbo());
+		$dbInstaller->setXmlDirectory($dbFilePath . '/xml');
+		$dbInstaller->updateSchema();
+
+		return $this;
 	}
 }

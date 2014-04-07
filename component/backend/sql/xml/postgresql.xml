@@ -1,4 +1,20 @@
-CREATE TABLE IF NOT EXISTS "#__ars_vgroups" (
+<?xml version="1.0" encoding="UTF-8"?>
+<schema>
+    <!-- Metadata -->
+    <meta>
+        <!-- Supported driver types -->
+        <drivers>
+            <driver>postgres</driver>
+            <driver>postgresql</driver>
+        </drivers>
+    </meta>
+
+    <!-- SQL commands to run on installation and update -->
+    <sql>
+        <action table="#__ars_vgroups" canfail="0">
+            <condition type="missing" value="" />
+            <query><![CDATA[
+CREATE TABLE "#__ars_vgroups" (
     "id" serial NOT NULL,
     "title" varchar(255) NOT NULL,
     "description" text,
@@ -12,8 +28,13 @@ CREATE TABLE IF NOT EXISTS "#__ars_vgroups" (
     "published" int NOT NULL DEFAULT '1',
     PRIMARY KEY ("id")
 );
+            ]]></query>
+        </action>
 
-CREATE TABLE IF NOT EXISTS "#__ars_categories" (
+        <action table="#__ars_categories" canfail="0">
+            <condition type="missing" value="" />
+            <query><![CDATA[
+CREATE TABLE "#__ars_categories" (
     "id" serial NOT NULL,
     "title" varchar(255) NOT NULL,
     "alias" varchar(255) NOT NULL,
@@ -36,10 +57,20 @@ CREATE TABLE IF NOT EXISTS "#__ars_categories" (
 	"language" char(7) NOT NULL DEFAULT '*',
     PRIMARY KEY ("id")
 );
+            ]]></query>
+        </action>
 
+        <action table="#__ars_categories" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
 CREATE INDEX "#__ars_categories_published" ON "#__ars_categories" ("published");
+            ]]></query>
+        </action>
 
-CREATE TABLE IF NOT EXISTS "#__ars_releases" (
+        <action table="#__ars_releases" canfail="0">
+            <condition type="missing" value="" />
+            <query><![CDATA[
+CREATE TABLE "#__ars_releases" (
     "id" serial NOT NULL,
     "category_id" bigint NOT NULL,
     "version" VARCHAR(255) NOT NULL,
@@ -63,11 +94,27 @@ CREATE TABLE IF NOT EXISTS "#__ars_releases" (
 	  "language" char(7) NOT NULL DEFAULT '*',
 	  PRIMARY KEY ("id")
 );
+            ]]></query>
+        </action>
 
+        <action table="#__ars_releases" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
 CREATE INDEX "#__ars_releases_category_id" ON "#__ars_releases" ("category_id");
-CREATE INDEX "#__ars_releases_published" ON "#__ars_releases" ("published");
+            ]]></query>
+        </action>
 
-CREATE TABLE IF NOT EXISTS "#__ars_items" (
+        <action table="#__ars_releases" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
+CREATE INDEX "#__ars_releases_published" ON "#__ars_releases" ("published");
+            ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="0">
+            <condition type="missing" value="" />
+            <query><![CDATA[
+CREATE TABLE "#__ars_items" (
     "id" serial NOT NULL,
     "release_id" bigint NOT NULL,
     "title" VARCHAR(255) NOT NULL,
@@ -97,12 +144,34 @@ CREATE TABLE IF NOT EXISTS "#__ars_items" (
     "environments" varchar(255) DEFAULT NULL,
 	PRIMARY KEY ("id")
 );
+            ]]></query>
+        </action>
 
+        <action table="#__ars_items" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
 CREATE INDEX "#__ars_items_release_id" ON "#__ars_items" ("release_id");
-CREATE INDEX "#__ars_items_updatestream" ON "#__ars_items" ("updatestream");
-CREATE INDEX "#__ars_items_published" ON "#__ars_items" ("published");
+            ]]></query>
+        </action>
 
-CREATE TABLE IF NOT EXISTS "#__ars_log" (
+        <action table="#__ars_items" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
+CREATE INDEX "#__ars_items_updatestream" ON "#__ars_items" ("updatestream");
+            ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
+CREATE INDEX "#__ars_items_published" ON "#__ars_items" ("published");
+            ]]></query>
+        </action>
+
+        <action table="#__ars_log" canfail="0">
+            <condition type="missing" value="" />
+            <query><![CDATA[
+CREATE TABLE "#__ars_log" (
     "id" serial NOT NULL,
     "user_id" bigint NOT NULL,
     "item_id" bigint NOT NULL,
@@ -113,13 +182,41 @@ CREATE TABLE IF NOT EXISTS "#__ars_log" (
     "authorized" smallint NOT NULL DEFAULT '1',
 	PRIMARY KEY ("id")
 );
+            ]]></query>
+        </action>
 
+        <action table="#__ars_log" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
 CREATE INDEX "ars_log_accessed" ON "#__ars_log" ("accessed_on");
-CREATE INDEX "ars_log_authorized" ON "#__ars_log" ("authorized");
-CREATE INDEX "ars_log_itemid" ON "#__ars_log" ("item_id");
-CREATE INDEX "ars_log_userid" ON "#__ars_log" ("user_id");
+            ]]></query>
+        </action>
 
-CREATE TABLE IF NOT EXISTS "#__ars_updatestreams" (
+        <action table="#__ars_log" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
+CREATE INDEX "ars_log_authorized" ON "#__ars_log" ("authorized");
+            ]]></query>
+        </action>
+
+        <action table="#__ars_log" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
+CREATE INDEX "ars_log_itemid" ON "#__ars_log" ("item_id");
+            ]]></query>
+        </action>
+
+        <action table="#__ars_log" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
+CREATE INDEX "ars_log_userid" ON "#__ars_log" ("user_id");
+            ]]></query>
+        </action>
+
+        <action table="#__ars_updatestreams" canfail="0">
+            <condition type="missing" value="" />
+            <query><![CDATA[
+CREATE TABLE "#__ars_updatestreams" (
 	"id" serial NOT NULL,
 	"name" VARCHAR(255) NOT NULL,
 	"alias" VARCHAR(255) NOT NULL,
@@ -139,11 +236,27 @@ CREATE TABLE IF NOT EXISTS "#__ars_updatestreams" (
 	"published" int NOT NULL DEFAULT '1',
 	PRIMARY KEY ("id")
 );
+            ]]></query>
+        </action>
 
+        <action table="#__ars_updatestreams" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
 CREATE INDEX "#__ars_updatestreams_published" ON "#__ars_updatestreams" ("published");
-CREATE INDEX "#__ars_updatestreams_jedid" ON "#__ars_updatestreams" ("jedid");
+            ]]></query>
+        </action>
 
-CREATE TABLE IF NOT EXISTS "#__ars_autoitemdesc" (
+        <action table="#__ars_updatestreams" canfail="1">
+            <condition type="true" />
+            <query><![CDATA[
+CREATE INDEX "#__ars_updatestreams_jedid" ON "#__ars_updatestreams" ("jedid");
+            ]]></query>
+        </action>
+
+        <action table="#__ars_autoitemdesc" canfail="0">
+            <condition type="missing" value="" />
+            <query><![CDATA[
+CREATE TABLE "#__ars_autoitemdesc" (
 	"id" serial NOT NULL,
 	"category" bigint NOT NULL,
 	"packname" varchar(255) DEFAULT NULL,
@@ -153,16 +266,26 @@ CREATE TABLE IF NOT EXISTS "#__ars_autoitemdesc" (
 	"published" int NOT NULL DEFAULT '1',
 	PRIMARY KEY ("id")
 );
+            ]]></query>
+        </action>
 
-CREATE TABLE IF NOT EXISTS "#__ars_environments" (
+        <action table="#__ars_environments" canfail="0">
+            <condition type="missing" value="" />
+            <query><![CDATA[
+CREATE TABLE "#__ars_environments" (
   "id" serial NOT NULL,
   "title" varchar(100) NOT NULL DEFAULT '',
   "xmltitle" varchar(20) NOT NULL DEFAULT '1.0',
   "icon" varchar(255) DEFAULT NULL,
   PRIMARY KEY ("id")
 );
+            ]]></query>
+        </action>
 
-CREATE TABLE IF NOT EXISTS "#__ars_dlidlabels" (
+        <action table="#__ars_dlidlabels" canfail="0">
+            <condition type="missing" value="" />
+            <query><![CDATA[
+CREATE TABLE "#__ars_dlidlabels" (
   "ars_dlidlabel_id" serial NOT NULL,
   "user_id" bigint NOT NULL,
   "label" varchar(255) NOT NULL DEFAULT '',
@@ -173,3 +296,7 @@ CREATE TABLE IF NOT EXISTS "#__ars_dlidlabels" (
   "modified_on" timestamp without time zone NOT NULL DEFAULT '1970-01-01 00:00:00',
   PRIMARY KEY ("ars_dlidlabel_id")
 );
+            ]]></query>
+        </action>
+    </sql>
+</schema>

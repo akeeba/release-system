@@ -52,6 +52,8 @@ class ArsControllerCpanel extends FOFController
 	{
 		/** @var ArsModelCpanels $model */
 		$model = $this->getThisModel();
+		// Update the database schema if necessary
+		$model->checkAndFixDatabase();
 		// Refresh the update site
 		$model->refreshUpdateSite();
 
