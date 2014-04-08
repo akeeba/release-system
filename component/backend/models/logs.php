@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelLogs extends FOFModel
+class ArsModelLogs extends F0FModel
 {
 	public function buildQuery($overrideLimits = false)
 	{

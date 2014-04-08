@@ -13,14 +13,14 @@ $icons_root = JURI::base().'components/com_ars/assets/images/';
 
 $groups = array('basic','tools','update');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
-FOFTemplateUtils::addJS('media://com_ars/js/gui-helpers.js');
-FOFTemplateUtils::addJS('media://com_ars/js/jquery.jqplot.min.js');
-FOFTemplateUtils::addJS('media://com_ars/js/jqplot.dateAxisRenderer.min.js');
-FOFTemplateUtils::addJS('media://com_ars/js/jqplot.hermite.js');
-FOFTemplateUtils::addJS('media://com_ars/js/jqplot.highlighter.min.js');
-FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
+F0FTemplateUtils::addJS('media://com_ars/js/gui-helpers.js');
+F0FTemplateUtils::addJS('media://com_ars/js/jquery.jqplot.min.js');
+F0FTemplateUtils::addJS('media://com_ars/js/jqplot.dateAxisRenderer.min.js');
+F0FTemplateUtils::addJS('media://com_ars/js/jqplot.hermite.js');
+F0FTemplateUtils::addJS('media://com_ars/js/jqplot.highlighter.min.js');
+F0FTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
 ?>
 <?php if ($this->updateInfo->hasUpdate): ?>

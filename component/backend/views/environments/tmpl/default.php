@@ -16,11 +16,11 @@ if (version_compare(JVERSION, '3.0', 'gt'))
 }
 
 $base_folder = rtrim(JURI::base(), '/');
-if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
+if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 $sortFields = array(
 	'id'			=> JText::_('JGRID_HEADING_ID'),
@@ -146,6 +146,6 @@ $sortFields = array(
 </table>
 
 </form>
-	
+
 </div>
 </div>

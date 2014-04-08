@@ -7,11 +7,11 @@
 
 defined('_JEXEC') or die();
 
-class ArsTableLog extends FOFTable
+class ArsTableLog extends F0FTable
 {
 	/**
 	 * Instantiate the table object
-	 * 
+	 *
 	 * @param JDatabase $db The Joomla! database object
 	 */
 	function __construct( $table, $key, &$db )
@@ -19,7 +19,7 @@ class ArsTableLog extends FOFTable
 		parent::__construct( '#__ars_log', 'id', $db );
 
 		@include_once __DIR__ . '/../helpers/ip.php';
-		
+
 		$this->_columnAlias = array(
 			'enabled'		=> 'published',
 			'slug'			=> 'alias',
@@ -32,7 +32,7 @@ class ArsTableLog extends FOFTable
 
 	/**
 	 * Checks the record for validity
-	 * 
+	 *
 	 * @return int True if the record is valid
 	 */
 	function check()

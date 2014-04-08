@@ -11,7 +11,7 @@ defined('_JEXEC') or die();
  * The Control Panel controller class
  *
  */
-class ArsControllerCpanel extends FOFController
+class ArsControllerCpanel extends F0FController
 {
 	public function execute($task)
 	{

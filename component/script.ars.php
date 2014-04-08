@@ -235,17 +235,17 @@ class Com_ArsInstallerScript
 		$this->_renderPostInstallation($status, $fofStatus, $straperStatus, $parent);
 
 		// Clear FOF's cache
-		if (!defined('FOF_INCLUDED'))
+		if (!defined('F0F_INCLUDED'))
 		{
-			@include_once JPATH_LIBRARIES . '/fof/include.php';
+			@include_once JPATH_LIBRARIES . '/f0f/include.php';
 		}
 
-		if (defined('FOF_INCLUDED'))
+		if (defined('F0F_INCLUDED'))
 		{
-			$platform = FOFPlatform::getInstance();
+			$platform = F0FPlatform::getInstance();
 			if (method_exists($platform, 'clearCache'))
 			{
-				FOFPlatform::getInstance()->clearCache();
+				F0FPlatform::getInstance()->clearCache();
 			}
 		}
 	}
@@ -835,11 +835,11 @@ class Com_ArsInstallerScript
 
 		if (!defined('JPATH_LIBRARIES'))
 		{
-			$target = JPATH_ROOT . '/libraries/fof';
+			$target = JPATH_ROOT . '/libraries/f0f';
 		}
 		else
 		{
-			$target = JPATH_LIBRARIES . '/fof';
+			$target = JPATH_LIBRARIES . '/f0f';
 		}
 
 		$haveToInstallFOF = false;
@@ -878,12 +878,6 @@ class Com_ArsInstallerScript
 			);
 
 			$haveToInstallFOF = $fofVersion['package']['date']->toUNIX() > $fofVersion['installed']['date']->toUNIX();
-
-			// Do not install FOF on Joomla! 3.2.0 beta 1 or later
-			if (version_compare(JVERSION, '3.1.999', 'gt'))
-			{
-				$haveToInstallFOF = false;
-			}
 		}
 
 		$installedFOF = false;

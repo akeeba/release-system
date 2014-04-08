@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsViewRelease extends FOFViewHtml
+class ArsViewRelease extends F0FViewHtml
 {
 	public function onAdd($tpl = null)
 	{
@@ -35,14 +35,14 @@ class ArsViewRelease extends FOFViewHtml
 		$pparams = $app->getPageParameters('com_ars');
 
 		// Set page title and meta
-		$cat = FOFModel::getTmpInstance('Categories', 'ArsModel')
+		$cat = F0FModel::getTmpInstance('Categories', 'ArsModel')
 			->setId($model->item->category_id)
 			->getItem();
 
 		$title = ArsHelperTitle::setTitleAndMeta($pparams, $cat->title.' '.$model->item->version);
 
 		// Add a breadcrumb if necessary
-		$catModel = FOFModel::getTmpInstance('Categories','ArsModel');
+		$catModel = F0FModel::getTmpInstance('Categories','ArsModel');
 		$category = $catModel->getItem($model->item->category_id);
 
 		$repoType = $category->type;

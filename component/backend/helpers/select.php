@@ -113,7 +113,7 @@ class ArsHelperSelect
 			}
 			$attribs = $temp;
 		}
-		
+
 		return JHTML::_('select.genericlist', $list, $name, $attribs, 'value', 'text', $selected, $idTag);
 	}
 
@@ -172,16 +172,16 @@ class ArsHelperSelect
 				$selected = explode(',',$selected);
 			}
 		}
-		
+
 		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/filtering.php';
 		$hasAkeebaSubs = ArsHelperFiltering::hasAkeebaSubs();
-		
+
 		if($hasAkeebaSubs) {
 			$groups = ArsHelperFiltering::getAkeebaGroups();
-	
+
 			$options = array();
 			$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL').' -');
-	
+
 			if(count($groups))
 			{
 				foreach($groups as $group) {
@@ -198,7 +198,7 @@ class ArsHelperSelect
 
 		return $html;
 	}
-	
+
 	public static function payplansgroups($selected = null, $name = 'groups', $attribs = array())
 	{
 		if(!is_array($selected))
@@ -209,16 +209,16 @@ class ArsHelperSelect
 				$selected = explode(',',$selected);
 			}
 		}
-		
+
 		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/filtering.php';
 		$hasPayPlans = defined('PAYPLANS_LOADED');
-		
+
 		if($hasPayPlans) {
 			$groups = PayplansApi::getPlans();
-	
+
 			$options = array();
 			$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL').' -');
-	
+
 			if(count($groups))
 			{
 				foreach($groups as $group) {
@@ -240,7 +240,7 @@ class ArsHelperSelect
 
 	public static function categories($selected = null, $id = 'category', $attribs = array())
 	{
-		$items = FOFModel::getTmpInstance('Categories','ArsModel')
+		$items = F0FModel::getTmpInstance('Categories','ArsModel')
 			->nobeunpub(1)
 			->getItemList(true);
 
@@ -257,7 +257,7 @@ class ArsHelperSelect
 	{
 		$options = array();
 		$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_RELEASES_MATURITY_SELECT').' -');
-		
+
 		$maturities = array('alpha','beta','rc','stable');
 		foreach($maturities as $maturity) $options[] = JHTML::_('select.option',$maturity,JText::_('COM_ARS_RELEASES_MATURITY_'.strtoupper($maturity)));
 
@@ -266,7 +266,7 @@ class ArsHelperSelect
 
 	public static function releases($selected = null, $id = 'release', $attribs = array(), $category_id = null)
 	{
-		$model = FOFModel::getTmpInstance('Releases','ArsModel');
+		$model = F0FModel::getTmpInstance('Releases','ArsModel');
 		if(!empty($category_id)) $model->setState('category', $category_id);
 		if(empty($category_id)) $model->setState('nobeunpub', 1);
 		$items = $model->getItemList(true);
@@ -317,7 +317,7 @@ class ArsHelperSelect
 	public static function getFiles($selected = null, $release_id = 0, $item_id = 0, $id = 'type', $attribs = array())
 	{
 		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
-		
+
 		$options = array();
 		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_ITEMS_FILENAME_SELECT').' -');
 
@@ -326,20 +326,20 @@ class ArsHelperSelect
 		if(!empty($release_id))
 		{
 			// Get the release
-			$release = FOFModel::getTmpInstance('Releases','ArsModel')
+			$release = F0FModel::getTmpInstance('Releases','ArsModel')
 				->getItem((int)$release_id);
-			
+
 			// Get the category
-			$category = FOFModel::getTmpInstance('Categories','ArsModel')
+			$category = F0FModel::getTmpInstance('Categories','ArsModel')
 				->getItem((int)$release->category_id);
 
 			// Get which directory to use
 			$directory = $category->directory;
-			
+
 			$potentialPrefix = substr($directory, 0, 5);
 			$potentialPrefix = strtolower($potentialPrefix);
 			$useS3 = ($potentialPrefix == 's3://');
-			
+
 			if($useS3) {
 				$directory = substr($directory, 5);
 				if($directory === false) $directory = '';
@@ -365,7 +365,7 @@ class ArsHelperSelect
 		$files = array();
 		if(!empty($directory))
 		{
-			$items = FOFModel::getTmpInstance('Items','ArsModel')
+			$items = F0FModel::getTmpInstance('Items','ArsModel')
 				->category($release->category_id)
 				->release('false')
 				->getItemList(true);
@@ -380,14 +380,14 @@ class ArsHelperSelect
 						break;
 					}
 				}
-				
+
 				// Remove already used filenames except the currently selected filename
 				reset($items);
 				foreach($items as $item) {
 					if(($item->filename != $currentFilename) && !empty($item->filename)) {
 						$files[] = $item->filename;
 					}
-				}				
+				}
 				$files = array_unique($files);
 			}
 		}
@@ -422,7 +422,7 @@ class ArsHelperSelect
 		{
 			$options[] = JHTML::_('select.option', $file, $file);
 		}
-			
+
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
@@ -441,7 +441,7 @@ class ArsHelperSelect
 
 	public static function updatestreams($selected = null, $id = 'updatestream', $attribs = array())
 	{
-		$items = FOFModel::getTmpInstance('Updatestreams','ArsModel')
+		$items = F0FModel::getTmpInstance('Updatestreams','ArsModel')
 			->getItemList(true);
 
 		$options = array();
@@ -452,11 +452,11 @@ class ArsHelperSelect
 		}
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
-	
+
 	/**
 	 * Renders the name of an access level group in Joomla! 1.6
 	 * @param $access_level_id int The numeric access level
-	 */	
+	 */
 	public static function renderaccess($access_level_id)
 	{
 		static $levelMap = null;
@@ -467,14 +467,14 @@ class ArsHelperSelect
 			$db->setQuery($query);
 			$levelMap = $db->loadAssocList('id','title');
 		}
-		
+
 		if(array_key_exists($access_level_id, $levelMap)) {
 			return $levelMap[$access_level_id];
 		} else {
 			return 'UNKNOWN '.$access_level_id;
 		}
 	}
-	
+
 	public static function languages($selected = null, $id = 'language', $attribs = array(), $show_select = false )
 	{
 		JLoader::import('joomla.language.helper');
@@ -488,34 +488,34 @@ class ArsHelperSelect
 		{
 			$options[] = JHTML::_('select.option',$key,$lang->title);
 		}
-		
+
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
-	
+
 	public static function renderlanguage($langCode)
 	{
 		static $langs = array();
-		
+
 		if(empty($langs)) {
 			JLoader::import('joomla.language.helper');
 			$languages = JLanguageHelper::getLanguages('lang_code');
-			
+
 			$langs['*'] = JText::_('JALL_LANGUAGE');
 			if(!empty($languages)) foreach($languages as $key => $lang) {
 				$langs[$key] = $lang->title;
 			}
 		}
-		
+
 		if(array_key_exists($langCode, $langs)) {
 			return $langs[$langCode];
 		} else {
 			return $langCode;
 		}
 	}
-	
+
 	public static function vgroups($selected = null, $id = 'vgroup', $attribs = array() )
 	{
-		$items = FOFModel::getTmpInstance('Vgroups','ArsModel')
+		$items = F0FModel::getTmpInstance('Vgroups','ArsModel')
 			->getItemList(true);
 
 		$options = array();
@@ -526,7 +526,7 @@ class ArsHelperSelect
 		}
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
-	
+
 	public static function clientid($selected = null, $id = 'clientid', $attribs = array() )
 	{
 		$options = array();
@@ -535,74 +535,74 @@ class ArsHelperSelect
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
-	
-	
+
+
 	public static function environmenticon( $id, $attribs = array() )
 	{
 		static $items = array();
-		
+
 		if (!isset($items[$id])) {
-			$items[$id] = clone FOFModel::getTmpInstance('Environments','ArsModel')
+			$items[$id] = clone F0FModel::getTmpInstance('Environments','ArsModel')
 				->getItem($id);
 		}
-		
+
 		$base_folder = rtrim(JURI::base(), '/');
-		if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
+		if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
 
 		return JHtml::image( $base_folder.'/media/com_ars/environments/' . $items[$id]->icon, $items[$id]->title, $attribs );
 	}
-	
-	
+
+
 	public static function environmenticons( $selected = null, $id = 'icon', $attribs = array() )
 	{
 		JLoader::import('joomla.filesystem.folder');
 		$directory	= JPATH_ROOT . '/media/com_ars/environments';
 		$options[]	= JHTML::_('select.option','','- '.JText::_( 'LBL_ITEMS_FILENAME_SELECT' ) . ' -');
-		
+
 		$files	= JFolder :: files( $directory );
-		
+
 		if (! empty( $files ) ) {
 			foreach ( $files as $file ) {
 				$options[] = JHTML::_('select.option', $file, $file);
 			}
 		}
-		
+
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
-	
-	
+
+
 	public static function environments( $selected = null, $id = 'environments', $attribs = array() )
 	{
-		$items = FOFModel::getTmpInstance('Environments','ArsModel')
+		$items = F0FModel::getTmpInstance('Environments','ArsModel')
 				->getItemList(true);
-		
+
 		$options	= array();
 		$options[]	= JHTML::_('select.option','','- '.JText::_( 'LBL_ITEMS_ENVIRONMENT_SELECT' ) . ' -');
-		
+
 		if (! empty( $items ) ) {
 			foreach ( $items as $item ) {
 				$options[] = JHTML::_('select.option',$item->id,$item->title );
 			}
 		}
-		
+
 		$attribs['multiple'] = 'yes';
 		return self::genericlist($options, $id.'[]', $attribs, $selected, $id);
 	}
-	
+
 	public static function getVisualGroupName($vgroup_id)
 	{
 		$vgroups = null;
-		
+
 		if(is_null($vgroups)) {
-			$items = FOFModel::getTmpInstance('Vgroups','ArsModel')
+			$items = F0FModel::getTmpInstance('Vgroups','ArsModel')
 				->published(1)
 				->getItemList(true);
-			
+
 			if(count($items)) foreach($items as $item) {
 				$vgroups[$item->id] = $item->title;
 			}
 		}
-		
+
 		if(array_key_exists($vgroup_id, $vgroups)) {
 			return $vgroups[$vgroup_id];
 		} else {
