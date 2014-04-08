@@ -123,10 +123,23 @@ $sortFields = array(
 		<tr>
 			<td></td>
 			<td></td>
+			<td class="form-inline">
+				<input type="text" name="name" id="name_search"
+					   value="<?php echo $this->escape($this->getModel()->getState('name'));?>"
+					   class="input-medium" onchange="document.adminForm.submit();"
+					   placeholder="<?php echo JText::_('LBL_UPDATES_NAME') ?>" />
+				<nobr>
+					<button class="btn btn-mini" onclick="this.form.submit();">
+						<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>
+					</button>
+					<button class="btn btn-mini" onclick="document.adminForm.name.value='';this.form.submit();">
+						<?php echo JText::_('JSEARCH_RESET'); ?>
+					</button>
+				</nobr>
+			</td>
 			<td>
 				<?php echo ArsHelperSelect::updatetypes($this->getModel()->getState('type'), 'type', array('onchange'=>'this.form.submit();','class'=>'input-medium')) ?>
 			</td>
-			<td></td>
 			<td></td>
 			<td></td>
 			<td>
