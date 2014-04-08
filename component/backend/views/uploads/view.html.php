@@ -8,11 +8,11 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-class ArsViewUploads extends FOFViewHtml
+class ArsViewUploads extends F0FViewHtml
 {
 	public function __construct($config = array()) {
 		parent::__construct($config);
-		
+
 		$user = JFactory::getUser();
 		$perms = (object)array(
 			'create'	=> $user->authorise('core.create', 'com_ars'),
@@ -20,24 +20,24 @@ class ArsViewUploads extends FOFViewHtml
 			'editstate'	=> $user->authorise('core.edit.state', 'com_ars'),
 			'delete'	=> $user->authorise('core.delete', 'com_ars'),
 		);
-		
+
 		$this->perms = $perms;
 	}
-	
+
 	protected function onAdd($tpl = null) {
 		return $this->onDisplay($tpl);
 	}
-	
+
 	protected function onDisplay($tpl = null) {
 		$this->assign('category',0);
 		$this->assign('folder','');
-		
+
 		return true;
 	}
-	
+
 	protected function onCategory(&$tpl) {
 		$tpl = 'upload';
-		
+
 		$model = $this->getModel();
 		$files = $model->getFiles();
 		$folders = $model->getFolders();
@@ -57,7 +57,7 @@ class ArsViewUploads extends FOFViewHtml
 		$this->assign('folder',$folder);
 		$this->assign('parent',$parent);
 		$this->assign('mediaconfig', $config);
-		
+
 		if(function_exists('ini_get')) {
 			$safe_mode = ini_get('safe_mode');
 		} else {
@@ -71,11 +71,11 @@ class ArsViewUploads extends FOFViewHtml
 		}
 		$isWritable = @is_writable($temp) && !$safe_mode;
 		$this->assign('chunking', !$isWritable);
-		
+
 		$document = JFactory::getDocument();
 		$document->addScript('http://code.google.com/intl/en/apis/gears/gears_init.js');
 		$document->addScript('http://bp.yahooapis.com/2.4.21/browserplus-min.js');
-		
+
 		return true;
 	}
 }

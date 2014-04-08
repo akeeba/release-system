@@ -12,13 +12,13 @@ defined('_JEXEC') or die();
  * Akeeba Release System Control Panel view class
  *
  */
-class ArsViewCpanels extends FOFViewHtml
+class ArsViewCpanels extends F0FViewHtml
 {
 	protected function onAdd($tpl = null)
 	{
 		return $this->onDisplay($tpl);
 	}
-	
+
 	protected function onDisplay($tpl = null)
 	{
 		// Load the model
@@ -26,17 +26,17 @@ class ArsViewCpanels extends FOFViewHtml
 
 		// -- Icon definitions
 		$this->icondefs = $model->getIconDefinitions();
-		
+
 		require_once(JPATH_COMPONENT_ADMINISTRATOR.'/helpers/cache.php');
 		$cache = new ArsHelperCache();
-		
+
 		$popularweek = $cache->getValue('popularweek');
 		if(empty($popularweek)) {
 			$popularweek = json_encode($model->getWeekPopular());
 			$cache->setValue('popularweek', $popularweek);
 		}
 		$this->popularweek = json_decode($popularweek);
-		
+
 		// -- # of downloads
 		$dldetails = $cache->getValue('dldetails');
 		if(empty($dldetails)) {
@@ -44,12 +44,12 @@ class ArsViewCpanels extends FOFViewHtml
 			$dldetails['dlmonth']		= $model->getNumDownloads('month');
 			$dldetails['dlweek']		= $model->getNumDownloads('week');
 			$dldetails['dlever']		= $model->getNumDownloads('alltime');
-			
+
 			$dldetails = json_encode($dldetails);
 			$cache->setValue('dldetails', $dldetails);
 		}
 		$dldetails = json_decode($dldetails, true);
-		
+
 		$this->dlmonth = $dldetails['dlmonth'];
 		$this->dlweek = $dldetails['dlweek'];
 		$this->dlever = $dldetails['dlever'];
@@ -61,9 +61,9 @@ class ArsViewCpanels extends FOFViewHtml
 			$cache->setvalue('mdreport', $mdreport);
 		}
 		$this->mdreport = json_decode($mdreport, true);
-		
+
 		$cache->save();
-		
+
 		// Get chart area width
 		JLoader::import('joomla.application.component.helper');
 		$params = JComponentHelper::getParams('com_ars');
@@ -79,7 +79,7 @@ class ArsViewCpanels extends FOFViewHtml
 		$this->pluginNeedsUpdate =		$model->dbNeedsUpdate();
 
 		/** @var ArsModelUpdates $updateModel */
-		$updateModel = FOFModel::getTmpInstance('Updates', 'ArsModel');
+		$updateModel = F0FModel::getTmpInstance('Updates', 'ArsModel');
 		$this->updateInfo = (object)$updateModel->getUpdates();
 		$this->currentVersion = $updateModel->getVersion();
 

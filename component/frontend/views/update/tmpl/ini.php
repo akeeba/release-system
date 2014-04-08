@@ -46,7 +46,7 @@ if( !empty($this->items) ):
 		}
 		foreach($item->environments as $eid) {
 			if (! isset( $envs[$eid] ) ) {
-				$envs[$eid] = FOFModel::getTmpInstance('Environments','ArsModel')
+				$envs[$eid] = F0FModel::getTmpInstance('Environments','ArsModel')
 					->getItem($eid);
 			}
 

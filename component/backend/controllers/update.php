@@ -11,7 +11,7 @@ defined('_JEXEC') or die();
 /**
  * The updates provisioning Controller
  */
-class ArsControllerUpdate extends FOFController
+class ArsControllerUpdate extends F0FController
 {
 	public function execute($task)
 	{

@@ -14,18 +14,18 @@ $suffix = '&'.$session->getName() .'='. $session->getId();
 require_once dirname(__FILE__).'/default.php';
 $i = 1;
 
-FOFTemplateUtils::addJS('media://com_ars/js/qui-helpers.js');
-FOFTemplateUtils::addCSS('media://com_ars/theme/jquery-ui.css');
+F0FTemplateUtils::addJS('media://com_ars/js/qui-helpers.js');
+F0FTemplateUtils::addCSS('media://com_ars/theme/jquery-ui.css');
 
 require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 
 ?>
 
 <div class="row-fluid">
-	
+
 	<div class="span6">
 		<h3><?php echo JText::_('LBL_FOLDERS_LIST'); ?></h3>
-		
+
 		<div id="folderslist">
 			<div id="mkfolder" style="clear: both; border: none;">
 				<input type="text" size="20" value="" id="newfolder" style="margin: 0;" />
@@ -48,7 +48,7 @@ require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 			</div>
 			<?php endforeach; ?>
 		<?php endif; ?>
-		</div>		
+		</div>
 	</div>
 
 	<div class="span6">
@@ -80,7 +80,7 @@ require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 </div>
 
 <div style="clear: both;">&nbsp;</div>
-		
+
 <div class="row-fluid">
 <div class="span12">
 
@@ -118,7 +118,7 @@ require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 </form>
 
 </div>
-</div>	
+</div>
 
 <script type="text/javascript">
 // Convert divs to queue widgets when the DOM is ready

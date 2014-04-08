@@ -7,17 +7,17 @@
 
 defined('_JEXEC') or die();
 
-class ArsTableAutodesc extends FOFTable
+class ArsTableAutodesc extends F0FTable
 {
 	/**
 	 * Instantiate the table object
-	 * 
+	 *
 	 * @param JDatabase $db The Joomla! database object
 	 */
 	function __construct( $table, $key, &$db )
 	{
 		parent::__construct( '#__ars_autoitemdesc', 'id', $db );
-		
+
 		$this->_columnAlias = array(
 			'enabled'		=> 'published',
 			'slug'			=> 'alias',
@@ -30,7 +30,7 @@ class ArsTableAutodesc extends FOFTable
 
 	/**
 	 * Checks the record for validity
-	 * 
+	 *
 	 * @return int True if the record is valid
 	 */
 	function check()
@@ -59,19 +59,19 @@ class ArsTableAutodesc extends FOFTable
 		{
 			$this->published = 0;
 		}
-		
+
 		// Added environment ID
-		$this->environments = json_encode( $this->environments );		
+		$this->environments = json_encode( $this->environments );
 
 		return true;
 	}
-	
+
 	/**
 	 * Fires after loading a record, automatically unserialises the environments
 	 * field (by default it's JSON-encoded)
-	 * 
+	 *
 	 * @param object $result The loaded row
-	 * 
+	 *
 	 * @return bool
 	 */
 	protected function onAfterLoad(&$result) {

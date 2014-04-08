@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsViewUpdate extends FOFViewHtml
+class ArsViewUpdate extends F0FViewHtml
 {
 	function onDisplay($tpl = null) {
 		$this->loadHelper('router');
@@ -39,11 +39,11 @@ class ArsViewUpdate extends FOFViewHtml
 			case 'stream':
 				$model 		= $this->getModel();
 				$items		= $model->items;
-                                
-                                $envmodel	= FOFModel::getTmpInstance('Environments', 'ArsModel');
+
+                                $envmodel	= F0FModel::getTmpInstance('Environments', 'ArsModel');
                                 $rawenvs        = $envmodel->getItemList(true);
                                 $envs           = array();
-                                
+
                                 if (!empty($rawenvs))
                                 {
                                     foreach ($rawenvs as $env)
@@ -51,7 +51,7 @@ class ArsViewUpdate extends FOFViewHtml
                                         $envs[$env->id] = $env;
                                     }
                                 }
-                                
+
 				$this->assign('items',			$items);
 				$this->assign('envs',			$envs);
 				$this->setLayout('stream');

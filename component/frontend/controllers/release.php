@@ -7,7 +7,7 @@
  */
 defined('_JEXEC') or die();
 
-class ArsControllerRelease extends FOFController
+class ArsControllerRelease extends F0FController
 {
 
 	public function __construct($config = array())
@@ -30,13 +30,13 @@ class ArsControllerRelease extends FOFController
 			$input_options = array();
 		}
 
-		if ($input instanceof FOFInput)
+		if ($input instanceof F0FInput)
 		{
 			$this->input = $input;
 		}
 		else
 		{
-			$this->input = new FOFInput($input, $input_options);
+			$this->input = new F0FInput($input, $input_options);
 		}
 
 		if ($this->input->getCmd('format', 'html') == 'html')
@@ -116,7 +116,7 @@ class ArsControllerRelease extends FOFController
 
 		if ($release instanceof ArsTableRelease)
 		{
-			$bemodel = FOFModel::getAnInstance('Bleedingedge', 'ArsModel');
+			$bemodel = F0FModel::getAnInstance('Bleedingedge', 'ArsModel');
 			$bemodel->checkFiles($release);
 			$items = $this->getThisModel()->getItems($id);
 		}

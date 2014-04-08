@@ -7,28 +7,28 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelEnvironments extends FOFModel
+class ArsModelEnvironments extends F0FModel
 {
 	public function buildQuery($overrideLimits = false)
 	{
 		$db = $this->getDbo();
-		
+
 		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__ars_environments'));
-		
+
 		$fltSearch		= $this->getState('search', null, 'string');
 		if($fltSearch) {
 			$fltSearch = "%$fltSearch%";
 			$query->where($db->qn('title').' LIKE '.$db->q($fltSearch));
 		}
-		
+
 		$fltXML			= $this->getState('xmltitle', null, 'string');
 		if($fltXML) {
 			$fltXML = "%$fltXML%";
 			$query->where($db->qn('xmltitle').' LIKE '.$db->q($fltXML));
 		}
-		
+
 		$order = $this->getState('filter_order', 'id', 'cmd');
 		if(!in_array($order, array_keys($this->getTable()->getData()))) $order = 'id';
 		$dir = $this->getState('filter_order_Dir', 'DESC', 'cmd');

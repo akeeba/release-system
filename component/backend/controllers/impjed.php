@@ -8,7 +8,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-class ArsControllerImpjed extends FOFController
+class ArsControllerImpjed extends F0FController
 {
 	/**
 	 * Get all the packages packages of a JoomlaCode FRS repository

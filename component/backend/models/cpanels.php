@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelCpanels extends FOFModel
+class ArsModelCpanels extends F0FModel
 {
 	/**
 	 * Get an array of icon definitions for the Control Panel
@@ -64,7 +64,7 @@ class ArsModelCpanels extends FOFModel
 			'task'	=> $task
 		);
 	}
-	
+
 	/**
 	 * Gets popular items within a time frame
 	 * @param int $itemCount How many records to retrieve ("Top X")
@@ -74,7 +74,7 @@ class ArsModelCpanels extends FOFModel
 	private function getPopular($itemCount = 5, $from = null, $to = null)
 	{
 		$db = $this->getDBO();
-		
+
 		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('l').'.'.$db->qn('item_id'),
@@ -83,18 +83,18 @@ class ArsModelCpanels extends FOFModel
 			->where($db->qn('l').'.'.$db->qn('authorized').' = '.$db->q(1))
 			->group($db->qn('item_id'))
 			->order($db->qn('dl').' DESC');
-		
-		
+
+
 		$noTimeLimits = (is_null($from) || is_null($to));
-		if(!$noTimeLimits) { 
+		if(!$noTimeLimits) {
 			$query->where($db->qn('l').'.'.$db->qn('accessed_on').' BETWEEN '.$db->q($from).' AND '.$db->q($to));
 		}
 
 		$db->setQuery($query, 0, $itemCount);
 		$items = $db->loadAssocList('item_id');
-		
+
 		if(empty($items)) return null;
-		
+
 		$idLimit = implode(',', array_keys($items));
 
 		$query = $db->getQuery(true)
@@ -114,7 +114,7 @@ class ArsModelCpanels extends FOFModel
 		;
 		$db->setQuery($query);
 		$infoList = $db->loadAssocList('item_id');
-		
+
 		$ret = array();
 		foreach($items as $item)
 		{
@@ -123,12 +123,12 @@ class ArsModelCpanels extends FOFModel
 				$ret[] = (object)array_merge($info, $item);
 			}
 		}
-		
+
 		return $ret;
-  
+
 	}
 
-	
+
 	/**
 	 * Returns the most popular items of all times
 	 */
@@ -153,7 +153,7 @@ class ArsModelCpanels extends FOFModel
 	public function getNumDownloads($interval)
 	{
 		$db = $this->getDbo();
-		
+
 		$interval = strtolower($interval);
 		$alltime = false;
 		switch($interval)
@@ -169,7 +169,7 @@ class ArsModelCpanels extends FOFModel
 
 				$date = $db->q($year_start->toSql())." AND ".$db->q($year_end->toSql());
 				break;
-			
+
 			case 'lastmonth':
                 $month_start = new JDate(strtotime("first day of last month"));
                 $month_end   = new JDate(strtotime("last day of last month"));
@@ -217,7 +217,7 @@ class ArsModelCpanels extends FOFModel
 		return $db->loadResult();
 	}
 
-	
+
 	/**
 	 * Returns downloads per country to seed the map
 	 */
@@ -257,7 +257,7 @@ class ArsModelCpanels extends FOFModel
 		}
 		return $ret;
 	}
-	
+
 	/**
 	 * Returns the data for the monthly-daily report of downloads
 	 */
@@ -298,10 +298,10 @@ class ArsModelCpanels extends FOFModel
         }
 
 		$db->setQuery($query);
-		
+
 		$data = $db->loadAssocList('day');
 		if(is_null($data)) $data = array();
-		
+
 		$nowParts = getdate();
 		$today = mktime(0,0,0,$nowParts['mon'],$nowParts['mday'],$nowParts['year']);
 		$ret = array();
@@ -313,7 +313,7 @@ class ArsModelCpanels extends FOFModel
 				$ret[$thisDay] = 0;
 			}
 		}
-		
+
 		return $ret;
 	}
 

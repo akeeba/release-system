@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelDownloads extends FOFModel
+class ArsModelDownloads extends F0FModel
 {
 	/** @var   boolean  True if we have logged in a user */
 	protected $haveLoggedInAUser = false;
@@ -30,7 +30,7 @@ class ArsModelDownloads extends FOFModel
 		$this->item = null;
 		$null       = null;
 
-		$items = FOFModel::getTmpInstance('Items','ArsModel')
+		$items = F0FModel::getTmpInstance('Items','ArsModel')
 			->access_user(JFactory::getUser()->id)
 			->published(1)
 			->item_id($id)
@@ -62,7 +62,7 @@ class ArsModelDownloads extends FOFModel
 			return $null;
 		}
 
-		$item = FOFModel::getTmpInstance('Items','ArsModel')->getTable();
+		$item = F0FModel::getTmpInstance('Items','ArsModel')->getTable();
 		$item->bind(array_pop($items));
 
 		$this->item = $item;

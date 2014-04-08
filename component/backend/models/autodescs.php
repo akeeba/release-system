@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelAutodescs extends FOFModel
+class ArsModelAutodescs extends F0FModel
 {
 	public function buildQuery($overrideLimits = false)
 	{
