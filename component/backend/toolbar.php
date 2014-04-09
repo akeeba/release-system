@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsToolbar extends FOFToolbar
+class ArsToolbar extends F0FToolbar
 {
 	protected function getMyViews()
 	{

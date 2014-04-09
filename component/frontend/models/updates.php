@@ -7,19 +7,19 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelUpdates extends FOFModel
+class ArsModelUpdates extends F0FModel
 {
 	public $items;
-	
+
 	public function __construct($config = array()) {
 		$config['table'] = 'updatestream';
 		parent::__construct($config);
 	}
-	
+
 	public function getCategoryItems($category)
 	{
 		$db = $this->getDBO();
-		
+
 		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('u').'.*',
@@ -53,10 +53,10 @@ class ArsModelUpdates extends FOFModel
 			))
 		;
 		$db->setQuery($query);
-		
+
 		$temp = $db->loadObjectList();
 		$this->items = array();
-		
+
 		// Loop results, keep only the first row with the same 'id' column
 		if(!empty($temp)) {
 			$processed = array();
@@ -73,7 +73,7 @@ class ArsModelUpdates extends FOFModel
 	public function getItems($id)
 	{
 		$db = $this->getDBO();
-		
+
 		$query = $db->getQuery(true)
 			->select(array(
 				$db->qn('u').'.*',
@@ -116,11 +116,11 @@ class ArsModelUpdates extends FOFModel
 	public function getPublished($id)
 	{
 		$db = $this->getDBO();
-		
+
 		$query = $db->getQuery(true)
 			->select($db->qn('published'))
 			->from($db->qn('#__ars_updatestreams'))
-			->where($db->qn('id').' = '.$db->q($id));			
+			->where($db->qn('id').' = '.$db->q($id));
 		$db->setQuery($query);
 		$this->published = $db->loadResult();
 	}

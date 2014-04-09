@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelDlidlabels extends FOFModel
+class ArsModelDlidlabels extends F0FModel
 {
 	public function buildQuery($overrideLimits = false)
 	{

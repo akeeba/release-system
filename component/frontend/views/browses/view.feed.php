@@ -7,11 +7,11 @@
 
 defined('_JEXEC') or die();
 
-class ArsViewBrowses extends FOFView
-{	
+class ArsViewBrowses extends F0FView
+{
 	function  display($tpl = null) {
 		$this->loadHelper('router');
-		
+
 		$document = JFactory::getDocument();
 		$document->setLink(JRoute::_('index.php?option=com_ars&view=categories'));
 
@@ -36,15 +36,15 @@ class ArsViewBrowses extends FOFView
 				} else {
 					$item->description = '';
 				}
-				
+
 				if(!empty($cat->release->notes)) {
 					$item->description .= $cat->release->notes;
 				}
-				
+
 				$item->link = $this->escape(JURI::base().AKRouter::_('index.php?option=com_ars&view=release&id='.$cat->release->id));
 				$item->pubDate = date('r');
 
-				$document->addItem($item);				
+				$document->addItem($item);
 			}
 		}
 	}

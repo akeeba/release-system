@@ -9,15 +9,15 @@ defined('_JEXEC') or die();
 
 JLoader::import('joomla.application.component.model');
 
-class ArsModelBleedingedge extends FOFModel
+class ArsModelBleedingedge extends F0FModel
 {
 	private $category_id;
 	private $category;
 	private $folder = null;
-	
+
 	public function __construct($config = array()) {
 		parent::__construct($config);
-		
+
 		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
 	}
 
@@ -31,13 +31,13 @@ class ArsModelBleedingedge extends FOFModel
 		elseif( is_numeric($cat) )
 		{
 			$this->category_id = (int)$cat;
-			$this->category = FOFModel::getTmpInstance('Categories','ArsModel')
+			$this->category = F0FModel::getTmpInstance('Categories','ArsModel')
 				->getItem($this->category_id);
 		}
 
 		// Store folder
 		$folder = $this->category->directory;
-		
+
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
 		if($potentialPrefix == 's3://') {
@@ -79,7 +79,7 @@ class ArsModelBleedingedge extends FOFModel
 			$this->setCategory($a_category);
 		}
 
-		$allReleases = FOFModel::getTmpInstance('Releases','ArsModel')
+		$allReleases = F0FModel::getTmpInstance('Releases','ArsModel')
 			->category($this->category->id)
 			->order('created')
 			->dir('desc')
@@ -90,7 +90,7 @@ class ArsModelBleedingedge extends FOFModel
 		$potentialPrefix = substr($this->category->directory, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
 		$useS3 = ($potentialPrefix == 's3://');
-		
+
 		JLoader::import('joomla.filesystem.folder');
 
 		$known_folders = array();
@@ -100,8 +100,8 @@ class ArsModelBleedingedge extends FOFModel
 		{
 			foreach($allReleases as $release)
 			{
-				$folder = $this->folder.'/'.$release->version;
-				$known_folders[] = $release->version;
+				$folder = $this->folder.'/'.$release->alias;
+				$known_folders[] = $release->alias;
 
 				if(!$release->published) continue;
 
@@ -114,11 +114,11 @@ class ArsModelBleedingedge extends FOFModel
 				} else {
 					$exists = JFolder::exists($folder);
 				}
-				
+
 				if(!$exists) {
 					$release->published = 0;
-					
-					$tmp = FOFModel::getTmpInstance('Releases','ArsModel')
+
+					$tmp = F0FModel::getTmpInstance('Releases','ArsModel')
 						->getTable()
 						->save($release);
 				} else {
@@ -137,7 +137,7 @@ class ArsModelBleedingedge extends FOFModel
 		if(!empty($first_release))
 		{
 			$changelog = $this->folder.'/'.$first_release->alias.'/CHANGELOG';
-			
+
 			$hasChangelog = false;
 			if($useS3) {
 				$s3 = ArsHelperAmazons3::getInstance();
@@ -152,7 +152,7 @@ class ArsModelBleedingedge extends FOFModel
 					$first_changelog = JFile::read($changelog);
 				}
 			}
-			
+
 			if($hasChangelog) {
 				if(!empty($first_changelog)) {
 					$first_changelog = explode("\n", str_replace("\r\n", "\n", $first_changelog));
@@ -187,7 +187,7 @@ class ArsModelBleedingedge extends FOFModel
 				$notes = '';
 
 				$changelog = $this->folder.'/'.$folder.'/'.'CHANGELOG';
-				
+
 				$hasChangelog = false;
 				if($useS3) {
 					$s3 = ArsHelperAmazons3::getInstance();
@@ -202,7 +202,7 @@ class ArsModelBleedingedge extends FOFModel
 						$this_changelog = JFile::read($changelog);
 					}
 				}
-				
+
 				if($hasChangelog)
 				{
 					if(!empty($this_changelog)) {
@@ -230,7 +230,7 @@ class ArsModelBleedingedge extends FOFModel
 					'published'			=> 1,
 					'created'			=> $jNow->toSql(),
 				);
-				
+
 				// Before saving the release, call the onNewARSBleedingEdgeRelease()
 				// event of ars plugins so that they have the chance to modify
 				// this information.
@@ -260,7 +260,7 @@ class ArsModelBleedingedge extends FOFModel
 					}
 				}
 				// -- Create the BE release
-				$table = FOFModel::getTmpInstance('Releases','ArsModel')
+				$table = F0FModel::getTmpInstance('Releases','ArsModel')
 						->getTable();
 				$table->save($data,'category_id');
 				$this->checkFiles($table);
@@ -276,8 +276,8 @@ class ArsModelBleedingedge extends FOFModel
 		}
 		if($this->category->type != 'bleedingedge') return;
 
-		$folder = $this->folder.'/'.$release->version;
-		
+		$folder = $this->folder.'/'.$release->alias;
+
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
 		$useS3 = ($potentialPrefix == 's3://');
@@ -300,19 +300,19 @@ class ArsModelBleedingedge extends FOFModel
 					$this_changelog = JFile::read($changelog);
 				}
 			}
-			
+
 			if($hasChangelog)
 			{
 				$notes = $this->coloriseChangelog($this_changelog, $first_changelog);
 				$release->notes = $notes;
 
-				$table = FOFModel::getTmpInstance('Releases','ArsModel')
+				$table = F0FModel::getTmpInstance('Releases','ArsModel')
 						->getTable()
 						->save($release,'category_id');
 			}
 		}
 
-		$allItems = FOFModel::getTmpInstance('Items','ArsModel')
+		$allItems = F0FModel::getTmpInstance('Items','ArsModel')
 			->release($release->id)
 			->limitstart(0)
 			->getItemList(true);
@@ -340,11 +340,11 @@ class ArsModelBleedingedge extends FOFModel
 			$known_items[] = basename($item->filename);
 			//if(!JFile::exists($this->folder.'/'.$item->filename) && !JFile::exists(JPATH_ROOT.'/'.$this->folder.'/'.$item->filename))
 			if($item->published && !in_array(basename($item->filename), $files)) {
-				$table = FOFModel::getTmpInstance('Items','ArsModel')->getTable();
+				$table = F0FModel::getTmpInstance('Items','ArsModel')->getTable();
 				$item->published = 0;
 				$table->save($item);
 			} if(!$item->published && in_array(basename($item->filename), $files)) {
-				$table = FOFModel::getTmpInstance('Items','ArsModel')->getTable();
+				$table = F0FModel::getTmpInstance('Items','ArsModel')->getTable();
 				$item->published = 1;
 				$table->save($item);
 			}
@@ -355,7 +355,7 @@ class ArsModelBleedingedge extends FOFModel
 			if( basename($file) == 'CHANGELOG' ) continue;
 
 			if(in_array($file, $known_items)) continue;
-			
+
 			JLoader::import('joomla.utilities.date');
 			$jNow = new JDate();
 			$data = array(
@@ -363,7 +363,7 @@ class ArsModelBleedingedge extends FOFModel
 				'release_id'		=> $release->id,
 				'description'		=> '',
 				'type'				=> 'file',
-				'filename'			=> $release->version.'/'.$file,
+				'filename'			=> $release->alias.'/'.$file,
 				'url'				=> '',
 				'groups'			=> $release->groups,
 				'hits'				=> '0',
@@ -371,7 +371,7 @@ class ArsModelBleedingedge extends FOFModel
 				'created'			=> $jNow->toSql(),
 				'access'			=> '1'
 			);
-			
+
 			// Before saving the item, call the onNewARSBleedingEdgeItem()
 			// event of ars plugins so that they have the chance to modify
 			// this information.
@@ -397,12 +397,12 @@ class ArsModelBleedingedge extends FOFModel
 					$data = array_merge($data, $response);
 				}
 			}
-			
+
 			if(isset($data['ignore'])) {
 				if($data['ignore']) continue;
 			}
-			
-			$table = clone FOFModel::getTmpInstance('Items','ArsModel')->getTable();
+
+			$table = clone F0FModel::getTmpInstance('Items','ArsModel')->getTable();
 			$table->reset();
 			$result = $table->save($data);
 		}
@@ -420,16 +420,16 @@ class ArsModelBleedingedge extends FOFModel
 
 		JLoader::import('joomla.application.component.helper');
 		$params = JComponentHelper::getParams('com_ars');
-		
+
 		$generate_changelog = $params->get('begenchangelog', 1);
 		$colorise_changelog = $params->get('becolorisechangelog', 1);
-		
+
 		if($generate_changelog) {
 			if($colorise_changelog) {
 				$notes = '<h3>'.$changelog_header.'</h3>';
 			}
 			$notes .= '<ul>';
-			
+
 			foreach($this_changelog as $line)
 			{
 				if(in_array($line, $first_changelog)) continue;
@@ -441,10 +441,10 @@ class ArsModelBleedingedge extends FOFModel
 			}
 			$notes .= '</ul>';
 		}
-		
+
 		return $notes;
 	}
-	
+
 	private function colorise($line)
 	{
 		$line = trim($line);
@@ -479,14 +479,14 @@ class ArsModelBleedingedge extends FOFModel
 
 		return "<span class=\"ars-devrelease-changelog-$style\">$line</span>";
 	}
-	
+
 	private function _listS3Contents($path = null)
 	{
 		static $lastDirectory = null;
 		static $lastListing = array();
-		
+
 		$directory = substr($path, 5);
-		
+
 		if($lastDirectory != $directory) {
 			if($directory == '/') {
 				$directory = null;

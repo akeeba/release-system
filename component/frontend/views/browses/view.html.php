@@ -6,7 +6,7 @@
  */
 defined('_JEXEC') or die();
 
-class ArsViewBrowses extends FOFViewHtml
+class ArsViewBrowses extends F0FViewHtml
 {
 	public function onAdd($tpl = null)
 	{
@@ -26,7 +26,7 @@ class ArsViewBrowses extends FOFViewHtml
 		$this->items		= $model->getCategories();
 
 		// Load visual group definitions
-		$raw = FOFModel::getTmpInstance('Vgroups','ArsModel')
+		$raw = F0FModel::getTmpInstance('Vgroups','ArsModel')
 			->frontend(1)
 			->getItemList(true);
 

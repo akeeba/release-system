@@ -10,7 +10,7 @@ defined('_JEXEC') or die();
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 ?>
 
 <div class="row-fluid">
@@ -25,7 +25,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="<?php echo JFactory::getSession()->getFormToken();?>" value="1" />
 
 		<h3><?php echo JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL');?></h3>
-		
+
 		<?php echo ArsHelperSelect::categories($this->category, 'id', array('onchange'=>'document.forms.adminForm.submit()','class' => 'input-medium')) ?>
 		<input type="submit" class="btn btn-mini" value="<?php echo JText::_('JSEARCH_FILTER_SUBMIT') ?>" />
 		<?php if(!empty($this->folder)): ?>
@@ -34,7 +34,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		<?php echo JText::_('LBL_SUBFOLDER_NAME') ?>
 		<span id="subfoldername"><?php echo $this->escape($this->folder); ?></span>
 		<?php endif; ?>
-	
+
 </form>
 
 </div>

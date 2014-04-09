@@ -17,7 +17,7 @@ if (version_compare(JVERSION, '3.0', 'gt'))
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 $sortFields = array(
 	'id'			=> JText::_('JGRID_HEADING_ID'),

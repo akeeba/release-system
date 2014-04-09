@@ -9,7 +9,7 @@ defined('_JEXEC') or die();
 
 require_once JPATH_SITE.'/components/com_ars/helpers/filter.php';
 
-class ArsModelBrowses extends FOFModel
+class ArsModelBrowses extends F0FModel
 {
 	public function __construct($config = array()) {
 		$config['table'] = 'category';
@@ -30,7 +30,7 @@ class ArsModelBrowses extends FOFModel
 		$limit = 0;
 
 		// Get all published categories
-		$catModel = FOFModel::getTmpInstance('Categories','ArsModel')
+		$catModel = F0FModel::getTmpInstance('Categories','ArsModel')
 			->limitstart($start)
 			->limit($limit)
 			->published(1)
@@ -138,7 +138,7 @@ class ArsModelBrowses extends FOFModel
 	{
 		$this->setState('category_id', $id);
 
-		$cat = FOFModel::getTmpInstance('Categories','ArsModel')
+		$cat = F0FModel::getTmpInstance('Categories','ArsModel')
 			->access_user(JFactory::getUser()->id)
 			->getItem($id);
 
@@ -184,7 +184,7 @@ class ArsModelBrowses extends FOFModel
 		}
 
 		// Get all published releases
-		$model = FOFModel::getTmpInstance('Releases','ArsModel')
+		$model = F0FModel::getTmpInstance('Releases','ArsModel')
 			->limitstart($start)
 			->limit($limit)
 			->published(1)
@@ -252,7 +252,7 @@ class ArsModelBrowses extends FOFModel
 	{
 		$this->item = null;
 
-		$item = FOFModel::getTmpInstance('Releases','ArsModel')
+		$item = F0FModel::getTmpInstance('Releases','ArsModel')
 			->access_user(JFactory::getUser()->id)
 			->getItem($id);
 
@@ -262,7 +262,7 @@ class ArsModelBrowses extends FOFModel
 		}
 
 		// Does the category pass the level / subscriptions filter?
-		$category = FOFModel::getTmpInstance('Categories', 'ArsModel')
+		$category = F0FModel::getTmpInstance('Categories', 'ArsModel')
 			->access_user(JFactory::getUser()->id)
 			->getItem($item->category_id);
 		$dummy = ArsHelperFilter::filterList( array($category) );
@@ -302,7 +302,7 @@ class ArsModelBrowses extends FOFModel
 		}
 
 		// Get all published releases
-		$model = FOFModel::getTmpInstance('Items','ArsModel')
+		$model = F0FModel::getTmpInstance('Items','ArsModel')
 			->limitstart($start)
 			->limit($limit)
 			->published(1)
@@ -369,7 +369,7 @@ class ArsModelBrowses extends FOFModel
 		{
 			if(!empty($section)) foreach($section as $cat)
 			{
-				$model = FOFModel::getTmpInstance('Releases','ArsModel')
+				$model = F0FModel::getTmpInstance('Releases','ArsModel')
 					->category($cat->id)
 					->published(1)
 					->access_user(JFactory::getUser()->id)
@@ -462,7 +462,7 @@ class ArsModelBrowses extends FOFModel
 					continue;
 				}
 
-				$model = FOFModel::getTmpInstance('Items','ArsModel');
+				$model = F0FModel::getTmpInstance('Items','ArsModel');
 
 				$orderby = $params->get('items_orderby',	'order');
 				switch($orderby)
@@ -498,7 +498,7 @@ class ArsModelBrowses extends FOFModel
 				$model->setState('release',			$cat->release->id);
 				$model->setState('limitstart',		0);
 				$model->setState('limit',			0);
-				
+
 				$model->access_user(JFactory::getUser()->id);
 
 				$hasLanguageFilter = method_exists($app, 'getLanguageFilter');

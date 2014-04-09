@@ -15,8 +15,8 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addJS('media://com_ars/js/gui-helpers.js');
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addJS('media://com_ars/js/gui-helpers.js');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 ?>
 
@@ -35,7 +35,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	</div>
 
 	<h3><?php echo JText::_('LBL_IMPJED_JCSETUP') ?></h3>
-	
+
 	<div class="form form-horizontal">
 		<div id="setup-project" class="control-group">
 			<label for="jcproject" class="control-label"><?php echo JText::_('LBL_IMPJED_JCPROJECT_TITLE'); ?></label>
@@ -66,7 +66,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 </div>
 </div>
-	
+
 <script type="text/javascript">
 (function($){
 	$(document).ready(function(){
@@ -81,7 +81,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			$('#jcrelease_chzn').remove();
 			$('#jcrelease').css('display', 'inline');
 		}
-		
+
 		// Hide details
 		$('#setup-package').hide();
 		$('#setup-release').hide();
@@ -114,7 +114,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			doAjax({
 				'task': 'jcpackages',
 				'project': $('#jcproject').val()
-			}, function(data){				
+			}, function(data){
 				$('#jcpackage').html('');
 				$.each(data,function(i, pack){
 					$(document.createElement('option'))

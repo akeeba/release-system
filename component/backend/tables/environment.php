@@ -7,17 +7,17 @@
 
 defined('_JEXEC') or die();
 
-class ArsTableEnvironment extends FOFTable
+class ArsTableEnvironment extends F0FTable
 {
 	/**
 	 * Instantiate the table object
-	 * 
+	 *
 	 * @param JDatabase $db The Joomla! database object
 	 */
 	function __construct( $table, $key, &$db )
 	{
 		parent::__construct( '#__ars_environments', 'id', $db );
-		
+
 		$this->_columnAlias = array(
 			'enabled'		=> 'published',
 			'slug'			=> 'alias',

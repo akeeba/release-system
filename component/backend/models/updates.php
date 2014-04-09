@@ -11,7 +11,7 @@ defined('_JEXEC') or die();
 /**
  * The updates provisioning Model
  */
-class ArsModelUpdates extends FOFModel
+class ArsModelUpdates extends F0FModel
 {
 	/** @var JUpdater The Joomla! updater object */
 	protected $updater = null;

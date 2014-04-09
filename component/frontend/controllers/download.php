@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsControllerDownload extends FOFController
+class ArsControllerDownload extends F0FController
 {
     public function __construct($config = array())
     {
@@ -37,7 +37,7 @@ class ArsControllerDownload extends FOFController
 		$model->loginUser();
 
 		// Get the log table
-		$log = FOFModel::getTmpInstance('Logs','ArsModel')->getTable();
+		$log = F0FModel::getTmpInstance('Logs','ArsModel')->getTable();
 
 		// Get the item lists
 		if($id > 0) {
@@ -56,7 +56,7 @@ class ArsControllerDownload extends FOFController
 			$redirect = '';
 
 			// I have to redirect the user, let's search where
-			$tmpItem = FOFModel::getTmpInstance('Items', 'ArsModel')->getTable();
+			$tmpItem = F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
 			$tmpItem->load($id);
 
 			if($tmpItem->redirect_unauth)
@@ -65,7 +65,7 @@ class ArsControllerDownload extends FOFController
 			}
 			else
 			{
-				$release = FOFModel::getTmpInstance('Releases', 'ArsModel')->getTable();
+				$release = F0FModel::getTmpInstance('Releases', 'ArsModel')->getTable();
 				$release->load($tmpItem->release_id);
 
 				// Do I have a redirect set on the release?
@@ -75,7 +75,7 @@ class ArsControllerDownload extends FOFController
 				}
 				else
 				{
-					$category = FOFModel::getTmpInstance('Categories', 'ArsModel')->getTable();
+					$category = F0FModel::getTmpInstance('Categories', 'ArsModel')->getTable();
 					$category->load($release->category_id);
 
 					if($category->redirect_unauth)

@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsControllerDlidlabels extends FOFController
+class ArsControllerDlidlabels extends F0FController
 {
 	/**
 	 * Executes a controller task. Overriden to make sure non-logged-in users
@@ -18,7 +18,7 @@ class ArsControllerDlidlabels extends FOFController
 	 * @throws  Exception
 	 */
 	public function execute($task) {
-		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
 
 		if (!$isAdmin && !$isCLI)
 		{
@@ -37,7 +37,7 @@ class ArsControllerDlidlabels extends FOFController
 	{
 		$result = parent::onBeforeBrowse();
 
-		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
 
 		if ($result && !$isAdmin && !$isCLI)
 		{
@@ -51,7 +51,7 @@ class ArsControllerDlidlabels extends FOFController
 	{
 		$result = parent::onBeforeAdd();
 
-		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
 
 		if (!$isAdmin && !$isCLI)
 		{
@@ -73,7 +73,7 @@ class ArsControllerDlidlabels extends FOFController
 	protected function onBeforeEdit() {
 		$result = parent::onBeforeEdit();
 
-		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
 
 		if (($result !== false) && !$isAdmin && !$isCLI)
 		{
@@ -105,7 +105,7 @@ class ArsControllerDlidlabels extends FOFController
 	 */
 	protected function onBeforeRead()
 	{
-		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
 
 		if (!$isAdmin && !$isCLI)
 		{
@@ -134,7 +134,7 @@ class ArsControllerDlidlabels extends FOFController
 	protected function onBeforeSave() {
 		$result = parent::onBeforeSave();
 
-		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
 
 		if (($result !== false) && !$isAdmin && !$isCLI)
 		{
@@ -163,7 +163,7 @@ class ArsControllerDlidlabels extends FOFController
 	{
 		$result = parent::onBeforePublish();
 
-		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
 
 		if (!$isAdmin && !$isCLI)
 		{
@@ -190,7 +190,7 @@ class ArsControllerDlidlabels extends FOFController
 	{
 		$result = parent::onBeforeUnpublish();
 
-		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
 
 		if (!$isAdmin && !$isCLI)
 		{
@@ -217,7 +217,7 @@ class ArsControllerDlidlabels extends FOFController
 	{
 		$result = parent::onBeforeRemove();
 
-		list($isCLI, $isAdmin) = FOFDispatcher::isCliAdmin();
+		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
 
 		if (!$isAdmin && !$isCLI)
 		{

@@ -7,17 +7,17 @@
 
 defined('_JEXEC') or die();
 
-class ArsTableRelease extends FOFTable
+class ArsTableRelease extends F0FTable
 {
 	/**
 	 * Instantiate the table object
-	 * 
+	 *
 	 * @param JDatabase $db The Joomla! database object
 	 */
 	function __construct( $table, $key, &$db )
 	{
 		parent::__construct( '#__ars_releases', 'id', $db );
-		
+
 		$this->_columnAlias = array(
 			'enabled'		=> 'published',
 			'slug'			=> 'alias',
@@ -26,7 +26,7 @@ class ArsTableRelease extends FOFTable
 			'locked_on'		=> 'checked_out_time',
 			'locked_by'		=> 'checked_out',
 		);
-		
+
 		$this->access = 1;
 		$this->maturity = 'alpha';
 		$this->language = '*';
@@ -34,7 +34,7 @@ class ArsTableRelease extends FOFTable
 
 	/**
 	 * Checks the record for validity
-	 * 
+	 *
 	 * @return int True if the record is valid
 	 */
 	function check()
@@ -126,7 +126,7 @@ class ArsTableRelease extends FOFTable
 		}
 
 		// Fix the groups
-		if(is_array($this->groups)) $this->groups = implode(',', $this->groups);		
+		if(is_array($this->groups)) $this->groups = implode(',', $this->groups);
 		// Set the access to registered if there are subscriptions defined
 		if(!empty($this->groups) && ($this->access == 1))
 		{

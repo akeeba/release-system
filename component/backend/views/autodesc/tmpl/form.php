@@ -11,7 +11,7 @@ $editor = JFactory::getEditor();
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 ?>
 
@@ -23,7 +23,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="<?php echo JFactory::getSession()->getFormToken();?>" value="1" />
 
 <div class="row-fluid">
-	
+
 	<div class="span6">
 		<h3><?php echo JText::_('LBL_ARS_AUTODESC_BASIC'); ?></h3>
 
@@ -64,6 +64,6 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 		<h3><?php echo JText::_('LBL_AUTODESC_DESCRIPTION'); ?></h3>
 		<?php echo $editor->display( 'description',  $this->item->description, '97%', '350', '60', '20', array() ) ; ?>
 	</div>
-	
+
 </div>
 </form>

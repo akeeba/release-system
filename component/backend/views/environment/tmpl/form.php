@@ -11,7 +11,7 @@ $editor = JFactory::getEditor();
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 ?>
 
 <form name="adminForm" id="adminForm" action="index.php" method="post" class="form form-horizontal">
@@ -20,12 +20,12 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="id" value="<?php echo $this->item->id ?>" />
 	<input type="hidden" name="<?php echo JFactory::getSession()->getFormToken();?>" value="1" />
-	
+
 <div class="row-fluid">
-	
+
 	<div class="span12">
 		<h3><?php echo JText::_('COM_ARS_CATEGORY_BASIC_LABEL'); ?></h3>
-		
+
 		<div class="control-group">
 			<label for="title" class="control-label"><?php echo JText::_('LBL_ENVIRONMENT_TITLE'); ?></label>
 			<div class="controls">
@@ -45,6 +45,6 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 			</div>
 		</div>
 	</div>
-	
+
 </div>
 </form>

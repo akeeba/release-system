@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelUpdatestreams extends FOFModel
+class ArsModelUpdatestreams extends F0FModel
 {
 	public function buildQuery($overrideLimits = false)
 	{

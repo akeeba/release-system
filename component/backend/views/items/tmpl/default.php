@@ -22,7 +22,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 $hasAjaxOrderingSupport = $this->hasAjaxOrderingSupport();
 
@@ -61,7 +61,7 @@ $sortFields = array(
 
 <div class="row-fluid">
 <div class="span12">
-		
+
 <form name="adminForm" id="adminForm" action="index.php" method="post">
 	<input type="hidden" name="option" id="option" value="com_ars" />
 	<input type="hidden" name="view" id="view" value="items" />
@@ -194,7 +194,7 @@ $sortFields = array(
 
 			$checkedout = ($item->checked_out != 0);
 			$ordering = $this->lists->order == 'ordering';
-			
+
 			if(!is_array($item->environments)) {
 				$item->environments= json_decode($item->environments);
 			}

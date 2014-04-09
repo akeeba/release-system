@@ -7,12 +7,12 @@
 
 defined('_JEXEC') or die();
 
-class ArsTableVgroup extends FOFTable
+class ArsTableVgroup extends F0FTable
 {
 	function __construct( $table, $key, &$db )
 	{
-		parent::__construct( '#__ars_vgroups', 'id', $db );		
-		
+		parent::__construct( '#__ars_vgroups', 'id', $db );
+
 		$this->_columnAlias = array(
 			'enabled'		=> 'published',
 			'slug'			=> 'alias',
@@ -53,12 +53,12 @@ class ArsTableVgroup extends FOFTable
 		return true;
 	}
 
-	
+
 	/**
 	 * Checks if we are allowed to delete this record
-	 * 
+	 *
 	 * @param int $oid The numeric ID of the vgroup to delete
-	 * 
+	 *
 	 * @return bool True if allowed to delete
 	 */
 	function onBeforeDelete( $oid=null )
