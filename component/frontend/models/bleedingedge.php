@@ -214,11 +214,14 @@ class ArsModelBleedingedge extends F0FModel
 
 				JLoader::import('joomla.utilities.date');
 				$jNow = new JDate();
+
+				$alias = str_replace(array(' ', '.'), '-', $folder);
+
 				$data = array(
 					'id'				=> 0,
 					'category_id'		=> $this->category_id,
 					'version'			=> $folder,
-					'alias'				=> $folder,
+					'alias'				=> $alias,
 					'maturity'			=> 'alpha',
 					'description'		=> '',
 					'notes'				=> $notes,
