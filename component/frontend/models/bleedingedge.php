@@ -100,8 +100,8 @@ class ArsModelBleedingedge extends F0FModel
 		{
 			foreach($allReleases as $release)
 			{
-				$folder = $this->folder.'/'.$release->alias;
-				$known_folders[] = $release->alias;
+				$folder = $this->folder.'/'.$release->version;
+				$known_folders[] = $release->version;
 
 				if(!$release->published) continue;
 
@@ -214,11 +214,14 @@ class ArsModelBleedingedge extends F0FModel
 
 				JLoader::import('joomla.utilities.date');
 				$jNow = new JDate();
+
+				$alias = str_replace(array(' ', '.'), '-', $folder);
+
 				$data = array(
 					'id'				=> 0,
 					'category_id'		=> $this->category_id,
 					'version'			=> $folder,
-					'alias'				=> $folder,
+					'alias'				=> $alias,
 					'maturity'			=> 'alpha',
 					'description'		=> '',
 					'notes'				=> $notes,
@@ -273,7 +276,7 @@ class ArsModelBleedingedge extends F0FModel
 		}
 		if($this->category->type != 'bleedingedge') return;
 
-		$folder = $this->folder.'/'.$release->alias;
+		$folder = $this->folder.'/'.$release->version;
 
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
@@ -360,7 +363,7 @@ class ArsModelBleedingedge extends F0FModel
 				'release_id'		=> $release->id,
 				'description'		=> '',
 				'type'				=> 'file',
-				'filename'			=> $release->alias.'/'.$file,
+				'filename'			=> $release->version.'/'.$file,
 				'url'				=> '',
 				'groups'			=> $release->groups,
 				'hits'				=> '0',
