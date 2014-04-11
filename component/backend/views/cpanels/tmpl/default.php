@@ -23,23 +23,7 @@ F0FTemplateUtils::addJS('media://com_ars/js/jqplot.highlighter.min.js');
 F0FTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
 ?>
-<?php if ($this->updateInfo->hasUpdate): ?>
-	<div class="alert alert-warning">
-		<h3>
-			<span class="icon icon-exclamation-sign glyphicon glyphicon-exclamation-sign"></span>
-			<?php echo JText::sprintf('COM_ARS_CPANEL_MSG_UPDATEFOUND', $this->updateInfo->version); ?>
-		</h3>
-		<p>
-			<a href="index.php?option=com_installer&view=update" class="btn btn-primary">
-				<?php echo JText::sprintf('COM_ARS_CPANEL_MSG_UPDATENOW', $this->updateInfo->version); ?>
-			</a>
-			<a href="<?php echo $this->updateInfo->infoURL ?>" target="_blank" class="btn btn-small btn-info">
-				<?php echo JText::_('COM_ARS_CPANEL_MSG_MOREINFO'); ?>
-			</a>
-		</p>
-	</div>
-<?php endif; ?>
-
+<div id="updateNotice"></div>
 
 <?php if (!$this->hasplugin): ?>
 	<div class="well">
@@ -210,18 +194,14 @@ akeeba.jQuery(document).ready(function($){
 		axesDefaults:{useSeriesColor: true}
 	});
 
-	/**
-	$('#mdrChart').gchart('destroy').
-		gchart({
-			usePost: false,
-			type: 'line',
-			legend: null,
-			dataLabels: {},
-			series: [$.gchart.series('DL',[<?php echo $mdrSerie1 ?>],'blue', <?php echo $mdrMin?>, <?php echo $mdrMax?>)],
-			axes: [
-				$.gchart.axis('left', <?php echo $mdrMin?>, <?php echo $mdrMax?>)
-			]
-		});
-	/**/
+	$.ajax('index.php?option=com_ars&view=cpanel&task=updateinfo&tmpl=component', {
+		success: function(data, textStatus, jqXHR)
+		{
+			if (data.length)
+			{
+				$('#updateNotice').html(data);
+			}
+		}
+	});
 });
 </script>

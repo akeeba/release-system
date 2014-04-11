@@ -80,7 +80,6 @@ class ArsViewCpanels extends F0FViewHtml
 
 		/** @var ArsModelUpdates $updateModel */
 		$updateModel = F0FModel::getTmpInstance('Updates', 'ArsModel');
-		$this->updateInfo = (object)$updateModel->getUpdates();
 		$this->currentVersion = $updateModel->getVersion();
 
 		return true;
