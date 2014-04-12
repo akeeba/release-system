@@ -99,6 +99,8 @@ ENDRESULT;
 		}
 
 		echo $result;
-		jexit();
+
+		// Cut the execution short
+		JFactory::getApplication()->close();
 	}
 }
