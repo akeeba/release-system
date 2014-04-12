@@ -99,6 +99,6 @@ ENDRESULT;
 		}
 
 		echo $result;
+		jexit();
 	}
-
 }
