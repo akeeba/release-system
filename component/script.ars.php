@@ -181,14 +181,27 @@ class Com_ArsInstallerScript
 	 */
 	function postflight( $type, $parent )
 	{
-		// Install or update database
-		$dbFilePath = JPATH_ADMINISTRATOR . '/components/' . $this->_akeeba_extension . '/sql';
-		if (!class_exists('AkeebaDatabaseInstaller'))
+		// Load FOF if not already loaded
+		if (!defined('F0F_INCLUDED'))
 		{
-			require_once $dbFilePath . '/dbinstaller.php';
+			$paths = array(
+				(defined('JPATH_LIBRARIES') ? JPATH_LIBRARIES : JPATH_ROOT . '/libraries') . '/f0f/include.php',
+				$parent->getParent()->getPath('source') . '/fof/include.php',
+			);
+
+			foreach ($paths as $filePath)
+			{
+				if (!defined('F0F_INCLUDED') && file_exists($filePath))
+				{
+					@include_once $filePath;
+				}
+			}
 		}
-		$dbInstaller = new AkeebaDatabaseInstaller(JFactory::getDbo());
-		$dbInstaller->setXmlDirectory($dbFilePath . '/xml');
+
+		// Install or update database
+		$dbInstaller = new F0FDatabaseInstaller(array(
+			'dbinstaller_directory' => JPATH_ADMINISTRATOR . '/components/' . $this->_akeeba_extension . '/sql/xml'
+		));
 		$dbInstaller->updateSchema();
 
 		// Install subextensions
@@ -230,14 +243,27 @@ class Com_ArsInstallerScript
 	 */
 	function uninstall($parent)
 	{
-		// Remove the database tables
-		$dbFilePath = JPATH_ADMINISTRATOR . '/components/' . $this->_akeeba_extension . '/sql';
-		if (!class_exists('AkeebaDatabaseInstaller'))
+		// Load FOF if not already loaded
+		if (!defined('F0F_INCLUDED'))
 		{
-			require_once $dbFilePath . '/dbinstaller.php';
+			$paths = array(
+				(defined('JPATH_LIBRARIES') ? JPATH_LIBRARIES : JPATH_ROOT . '/libraries') . '/f0f/include.php',
+				$parent->getParent()->getPath('source') . '/fof/include.php',
+			);
+
+			foreach ($paths as $filePath)
+			{
+				if (!defined('F0F_INCLUDED') && file_exists($filePath))
+				{
+					@include_once $filePath;
+				}
+			}
 		}
-		$dbInstaller = new AkeebaDatabaseInstaller(JFactory::getDbo());
-		$dbInstaller->setXmlDirectory($dbFilePath . '/xml');
+
+		// Install or update database
+		$dbInstaller = new F0FDatabaseInstaller(array(
+			'dbinstaller_directory' => JPATH_ADMINISTRATOR . '/components/' . $this->_akeeba_extension . '/sql/xml'
+		));
 		$dbInstaller->removeSchema();
 
 		// Uninstall subextensions
