@@ -385,13 +385,9 @@ class ArsModelCpanels extends F0FModel
 	public function checkAndFixDatabase()
 	{
 		// Install or update database
-		$dbFilePath = JPATH_ADMINISTRATOR . '/components/com_ars/sql';
-		if (!class_exists('AkeebaDatabaseInstaller'))
-		{
-			require_once $dbFilePath . '/dbinstaller.php';
-		}
-		$dbInstaller = new AkeebaDatabaseInstaller(JFactory::getDbo());
-		$dbInstaller->setXmlDirectory($dbFilePath . '/xml');
+		$dbInstaller = new F0FDatabaseInstaller(array(
+			'dbinstaller_directory'	=> JPATH_ADMINISTRATOR . '/components/com_ars/sql/xml'
+		));
 		$dbInstaller->updateSchema();
 
 		return $this;
