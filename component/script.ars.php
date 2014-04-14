@@ -11,8 +11,8 @@ defined('_JEXEC') or die();
 if (!defined('F0F_INCLUDED'))
 {
 	$paths = array(
-		(defined('JPATH_LIBRARIES') ? JPATH_LIBRARIES : JPATH_ROOT . '/libraries') . '/f0f/include.php',
 		__DIR__ . '/fof/include.php',
+		(defined('JPATH_LIBRARIES') ? JPATH_LIBRARIES : JPATH_ROOT . '/libraries') . '/f0f/include.php',
 	);
 
 	foreach ($paths as $filePath)
