@@ -24,6 +24,24 @@ if (!defined('F0F_INCLUDED'))
 	}
 }
 
+// Pre-load the installer script class from our own copy of FOF
+if (!class_exists('F0FUtilsInstallscript', false))
+{
+	@include_once __DIR__ . '/fof/utils/installscript/installscript.php';
+}
+
+// Pre-load the database schema installer class from our own copy of FOF
+if (!class_exists('F0FDatabaseInstaller', false))
+{
+	@include_once __DIR__ . '/fof/database/installer.php';
+}
+
+// Pre-load the update utility class from our own copy of FOF
+if (!class_exists('F0FUtilsUpdate', false))
+{
+	@include_once __DIR__ . '/fof/utils/update/update.php';
+}
+
 class Com_ArsInstallerScript extends F0FUtilsInstallscript
 {
 	/**
