@@ -83,6 +83,22 @@
 			<option value="9">9</option>
 			<option value="10">10</option>
 		</field>
+
+    <field name="banscrapers_num" type="text" default="0" filter="int"
+           label="COM_ARS_CONFIG_BACKEND_BANSCRAPERS_NUM_LABEL"
+            description="COM_ARS_CONFIG_BACKEND_BANSCRAPERS_NUM_DESC"/>
+
+    <field name="banscrapers_numtime" type="text" default="0" filter="int"
+           label="COM_ARS_CONFIG_BACKEND_BANSCRAPERS_NUMTIME_LABEL"
+           description="COM_ARS_CONFIG_BACKEND_BANSCRAPERS_NUMTIME_DESC" />
+
+    <field name="banscrapers_typetime" type="list" default="min"
+           label="COM_ARS_CONFIG_BACKEND_BANSCRAPERS_TIME_LABEL"
+           description="COM_ARS_CONFIG_BACKEND_BANSCRAPERS_TIME_DESC">
+      <option value="min">COM_ARS_CONFIG_MINUTES</option>
+      <option value="hour">COM_ARS_CONFIG_HOURS</option>
+      <option value="day">COM_ARS_CONFIG_DAYS</option>
+      </field>
 	</fieldset>
 
 	<fieldset
