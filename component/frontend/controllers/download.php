@@ -27,8 +27,8 @@ class ArsControllerDownload extends F0FController
 		$id = $this->input->getInt('id', null);
 
 		// Get the page parameters
-		$app = JFactory::getApplication();
-		$params = $app->getPageParameters('com_ars');
+		$app    = JFactory::getApplication();
+        $params = JComponentHelper::getParams('com_ars');
 
 		// Get the model
 		$model = $this->getThisModel();
@@ -49,6 +49,18 @@ class ArsControllerDownload extends F0FController
 		if(is_null($item))
 		{
 			$log->save(array('authorized' => 0));
+
+            if($params->get('banUnauth', 0))
+            {
+                // Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
+                $app->triggerEvent('onAdminToolsThirdpartyException', array(
+                        'ARSscraper',
+                        JText::_('COM_ARS_BLOCKED_MESSAGE'),
+                        array('Item : '.$id)),
+                    true
+                );
+            }
+
 			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
 		}
 		elseif($item === -1 && $id)
@@ -92,6 +104,18 @@ class ArsControllerDownload extends F0FController
 			}
 			{
 				$log->save(array('authorized' => 0));
+
+                if($params->get('banUnauth', 0))
+                {
+                    // Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
+                    $app->triggerEvent('onAdminToolsThirdpartyException', array(
+                            'ARSscraper',
+                            JText::_('COM_ARS_BLOCKED_MESSAGE'),
+                            array('Item : '.$id)),
+                        true
+                    );
+                }
+
 				return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
 			}
 		}
