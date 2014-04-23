@@ -8,6 +8,7 @@ Version 2.3.4
 ~ Significant performance improvement in the Latest Releases content plugin when using Akeeba Subscriptions
 # [MEDIUM] Blank page or 400 error message after updating from 2.3.2 or lower using Live Update
 # [MEDIUM] Bleeding edge releases with dots/spaces in the folder gave a 404 error
+# [MEDIUM] Updating the GeoIP database throw a fatal error when the GeoIP library has not been loaded
 # [LOW] Searching by title in Automatic Item Descriptions leads to a SQL error
 
 Version 2.3.3

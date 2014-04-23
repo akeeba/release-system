@@ -32,6 +32,18 @@ class ArsControllerCpanel extends F0FController
 			$this->_csrfProtection();
 		}
 
+		// Load the GeoIP library if it's not already loaded
+		if (!class_exists('AkeebaGeoipProvider'))
+		{
+			if (@file_exists(JPATH_PLUGINS . '/system/akgeoip/lib/akgeoip.php'))
+			{
+				if (@include_once JPATH_PLUGINS . '/system/akgeoip/lib/vendor/autoload.php')
+				{
+					@include_once JPATH_PLUGINS . '/system/akgeoip/lib/akgeoip.php';
+				}
+			}
+		}
+
 		$geoip = new AkeebaGeoipProvider();
 		$result = $geoip->updateDatabase();
 
