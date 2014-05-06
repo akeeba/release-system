@@ -176,6 +176,15 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 		)
 	);
 
+    /**
+     * A list of scripts to be copied to the "cli" directory of the site
+     *
+     * @var   array
+     */
+    protected $cliScriptFiles = array(
+        'ars-update.php'
+    );
+
 
 	/**
 	 * Renders the post-installation message
