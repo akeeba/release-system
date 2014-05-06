@@ -17,7 +17,7 @@ $function	= $this->input->getCmd('function', 'arsSelectItem');
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 ?>
 <form name="adminForm" id="adminForm" action="index.php" method="post">

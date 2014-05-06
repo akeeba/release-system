@@ -8,9 +8,9 @@
 
 defined('_JEXEC') or die();
 
-if(!defined('FOF_INCLUDED')) {
-	include_once JPATH_LIBRARIES.'/fof/include.php';
-	if(!defined('FOF_INCLUDED') || !class_exists('FOFForm', true))
+if(!defined('F0F_INCLUDED')) {
+	include_once JPATH_LIBRARIES.'/f0f/include.php';
+	if(!defined('F0F_INCLUDED') || !class_exists('F0FForm', true))
 	{
 		JError::raiseError ('500', 'Your Akeeba Release System installation is broken; please re-install. Alternatively, extract the installation archive and copy the fof directory inside your site\'s libraries directory.');
 	}
@@ -37,32 +37,32 @@ if(!class_exists('MydownloadsModel')) {
 		public function getItems($streams)
 		{
 			$items = array();
-			
-			$model = FOFModel::getTmpInstance('Updates','ArsModel');
-			$dlmodel = FOFModel::getTmpInstance('Downloads','ArsModel');
-			
+
+			$model = F0FModel::getTmpInstance('Updates','ArsModel');
+			$dlmodel = F0FModel::getTmpInstance('Downloads','ArsModel');
+
 			foreach($streams as $stream_id) {
 				$model->getItems($stream_id);
 				$temp = $model->items;
 				if(empty($temp)) continue;
-				
+
 				$i = array_shift($temp);
-				
+
 				// Is the user authorized to download this item?
 				$iFull = $dlmodel->getItem($i->item_id);
 				if(is_null($iFull)) continue;
-	
+
 				// Add this item
 				$newItem = array(
 					'id'			=> $i->item_id,
-					'release_id'	=> $i->release_id, 
+					'release_id'	=> $i->release_id,
 					'name'			=> $i->name,
 					'version'		=> $i->version,
 					'maturity'		=> $i->maturity
 				);
 				$items[] = (object)$newItem;
 			}
-			
+
 			return $items;
 		}
 	}

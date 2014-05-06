@@ -9,7 +9,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-include_once JPATH_LIBRARIES.'/fof/include.php';
+include_once JPATH_LIBRARIES.'/f0f/include.php';
 
 class ComArsRouter
 {
@@ -200,7 +200,7 @@ function arsBuildRouteHtml(&$query)
 
 
 			// Get category alias
-			$catModel = FOFModel::getTmpInstance('Categories','ArsModel');
+			$catModel = F0FModel::getTmpInstance('Categories','ArsModel');
 			$catalias = $catModel->getItem($id)->alias;
 
 			if(empty($Itemid))
@@ -247,11 +247,11 @@ function arsBuildRouteHtml(&$query)
 
 		case 'release':
 			// Get release info
-			$relModel = FOFModel::getTmpInstance('Releases','ArsModel');
+			$relModel = F0FModel::getTmpInstance('Releases','ArsModel');
 			$release = $relModel->getItem($id);
 
 			// Get category alias
-			$catModel = FOFModel::getTmpInstance('Categories','ArsModel');
+			$catModel = F0FModel::getTmpInstance('Categories','ArsModel');
 			$catalias = $catModel->getItem($release->category_id)->alias;
 
 			// Do we have a "category" menu?
@@ -393,7 +393,7 @@ function arsBuildRouteFeed(&$query)
 					$options = array('view'=>'browses', 'option' => 'com_ars');
 					$menu = ArsRouterHelper::findMenu($options);
 
-					$model = FOFModel::getTmpInstance('Categories','ArsModel');
+					$model = F0FModel::getTmpInstance('Categories','ArsModel');
 					$category = $model->getItem($id);
 
 					if(!empty($menu))
@@ -434,15 +434,15 @@ function arsBuildRouteRaw(&$query)
 	$menus = JMenu::getInstance('site');
 
 	// Get download item info
-	$dlModel = FOFModel::getTmpInstance('Items','ArsModel');
+	$dlModel = F0FModel::getTmpInstance('Items','ArsModel');
 	$download = $dlModel->getItem($id);
 
 	// Get release info
-	$relModel = FOFModel::getTmpInstance('Releases','ArsModel');
+	$relModel = F0FModel::getTmpInstance('Releases','ArsModel');
 	$release = $relModel->getItem($download->release_id);
 
 	// Get category alias
-	$catModel = FOFModel::getTmpInstance('Categories','ArsModel');
+	$catModel = F0FModel::getTmpInstance('Categories','ArsModel');
 	$catalias = $catModel->getItem($release->category_id)->alias;
 
 	if($Itemid)

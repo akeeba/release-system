@@ -7,17 +7,17 @@
 
 defined('_JEXEC') or die();
 
-class ArsTableCategory extends FOFTable
+class ArsTableCategory extends F0FTable
 {
 	/**
 	 * Instantiate the table object
-	 * 
+	 *
 	 * @param JDatabase $db The Joomla! database object
 	 */
 	function __construct( $table, $key, &$db )
 	{
 		parent::__construct( '#__ars_categories', 'id', $db );
-		
+
 		$this->_columnAlias = array(
 			'enabled'		=> 'published',
 			'slug'			=> 'alias',
@@ -26,13 +26,13 @@ class ArsTableCategory extends FOFTable
 			'locked_on'		=> 'checked_out_time',
 			'locked_by'		=> 'checked_out',
 		);
-		
+
 		$this->access = 1;
 	}
 
 	/**
 	 * Checks the record for validity
-	 * 
+	 *
 	 * @return int True if the record is valid
 	 */
 	function check()
@@ -78,7 +78,7 @@ class ArsTableCategory extends FOFTable
 
 		// Check directory
 		JLoader::import('joomla.filesystem.folder');
-		
+
 		$this->directory = rtrim($this->directory,'/');
 		if($this->directory == 's3:') {
 			$this->directory = 's3://';
@@ -154,9 +154,9 @@ class ArsTableCategory extends FOFTable
 
 	/**
 	 * Checks if we are allowed to delete this record
-	 * 
+	 *
 	 * @param int $oid The numeric ID of the category to delete
-	 * 
+	 *
 	 * @return bool True if allowed to delete
 	 */
 	function onBeforeDelete( $oid=null )

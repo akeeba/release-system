@@ -7,7 +7,7 @@
  */
 defined('_JEXEC') or die();
 
-class ArsControllerUpdate extends FOFController
+class ArsControllerUpdate extends F0FController
 {
 
 	public function execute($task)
@@ -241,13 +241,13 @@ class ArsControllerUpdate extends FOFController
 		$dlitem = array_shift($items);
 
 		// Get the download model
-		$dl_model = FOFModel::getTmpInstance('Downloads', 'ArsModel');
+		$dl_model = F0FModel::getTmpInstance('Downloads', 'ArsModel');
 
 		// Log in a user if I have to
 		$dl_model->loginUser();
 
 		// Get the log table
-		$log = FOFModel::getTmpInstance('Logs','ArsModel')->getTable();
+		$log = F0FModel::getTmpInstance('Logs','ArsModel')->getTable();
 
 		// Get the item lists
 		if($dlitem->item_id > 0) {

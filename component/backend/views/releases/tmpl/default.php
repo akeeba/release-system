@@ -20,7 +20,7 @@ if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($ba
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 $hasAjaxOrderingSupport = $this->hasAjaxOrderingSupport();
 
@@ -177,7 +177,7 @@ $sortFields = array(
 
 			foreach($this->items as $item):
 			$m = 1 - $m;
-			
+
 			$checkedout = ($item->checked_out != 0);
 			$ordering = $this->lists->order == 'ordering';
 
@@ -242,7 +242,7 @@ $sortFields = array(
 				<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 			</td>
 			<?php endif; ?>
-			
+
 			<td>
 				<img src="<?php echo $icon ?>" width="16" height="16" align="left" />
 				<span class="ars-access">

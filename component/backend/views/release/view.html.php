@@ -7,6 +7,6 @@
 
 defined('_JEXEC') or die();
 
-class ArsViewRelease extends FOFViewHtml
+class ArsViewRelease extends F0FViewHtml
 {
 }

@@ -8,7 +8,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-class ArsControllerAjax extends FOFController
+class ArsControllerAjax extends F0FController
 {
 	function getfiles()
 	{

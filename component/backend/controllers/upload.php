@@ -11,7 +11,7 @@ defined('_JEXEC') or die();
 // Load the Amazon S3 helper
 require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
 
-class ArsControllerUpload extends FOFController
+class ArsControllerUpload extends F0FController
 {
 	/**
 	 * Displays the files inside a category and allows uploading new files
@@ -61,7 +61,7 @@ class ArsControllerUpload extends FOFController
 		// Get some data from the request
 		$catid		= $this->input->getInt('id', 0);
 		$folder		= $this->input->getString('folder', '');
-		$file		= FOFInput::getVar('Filedata', '', $_FILES, 'array');
+		$file		= F0FInput::getVar('Filedata', '', $_FILES, 'array');
 
 		// Get output directory
 		$this->getThisModel()

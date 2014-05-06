@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelImpjeds extends FOFModel
+class ArsModelImpjeds extends F0FModel
 {
 	/**
 	 * Returns a list of packages in a JoomlaCode FRS repository
@@ -54,7 +54,7 @@ class ArsModelImpjeds extends FOFModel
 	 */
 	function getArsCategories()
 	{
-		return FOFModel::getTmpInstance('Categories','ArsModel')->getItemList(true);
+		return F0FModel::getTmpInstance('Categories','ArsModel')->getItemList(true);
 	}
 
 	/**
@@ -64,7 +64,7 @@ class ArsModelImpjeds extends FOFModel
 	 */
 	function getArsReleases($catid)
 	{
-		return FOFModel::getTmpInstance('Releases','ArsModel')
+		return F0FModel::getTmpInstance('Releases','ArsModel')
 			->published('')
 			->category($catid)
 			->getItemList(true);
@@ -79,7 +79,7 @@ class ArsModelImpjeds extends FOFModel
 	function createArsRelease($catid, $releaseName)
 	{
 		// Try to find an existing release by the same name (version)
-		$existing = FOFModel::getTmpInstance('Releases','ArsModel')
+		$existing = F0FModel::getTmpInstance('Releases','ArsModel')
 			->published('')
 			->category($catid)
 			->version($releaseName)
@@ -99,7 +99,7 @@ class ArsModelImpjeds extends FOFModel
 				'category_id'	=> $catid,
 				'maturity'		=> 'alpha'
 			);
-			$model = FOFModel::getTmpInstance('Releases','ArsModel');
+			$model = F0FModel::getTmpInstance('Releases','ArsModel');
 			$model->save($data);
 			$newItem = $model->getSavedTable();
 			return $newItem->id;
@@ -116,7 +116,7 @@ class ArsModelImpjeds extends FOFModel
 	function createArsFile($releaseId, $remoteName)
 	{
 		// Look for an existing item
-		$existing = FOFModel::getTmpInstance('Items','ArsModel')
+		$existing = F0FModel::getTmpInstance('Items','ArsModel')
 			->published('')
 			->release($releaseId)
 			->url($remoteName)
@@ -135,7 +135,7 @@ class ArsModelImpjeds extends FOFModel
 				'type'			=> 'link',
 				'url'			=> $remoteName
 			);
-			$model = FOFModel::getTmpInstance('Items','ArsModel');
+			$model = F0FModel::getTmpInstance('Items','ArsModel');
 			$status = $model->save($data);
 			if(!$status) return $model->getError();
 			$newItem = $model->getSavedTable();

@@ -29,41 +29,6 @@
 		<language tag="en-GB">en-GB/en-GB.com_ars.ini</language>
 	</languages>
 
-	<!-- SQL query files to execute on installation -->
-	<install>
-		<sql>
-			<file charset="utf8" driver="mysql">sql/install/mysql/install.sql</file>
-			<file driver="mysql">sql/install/mysql/install.sql</file>
-			<file charset="utf8" driver="mysqli">sql/install/mysql/install.sql</file>
-			<file driver="mysqli">sql/install/mysql/install.sql</file>
-
-      <file driver="postgresql">sql/install/postgresql/install.sql</file>
-      <file driver="postgresql" charset="utf8">sql/install/postgresql/install.sql</file>
-		</sql>
-	</install>
-
-	<!-- SQL query files to execute on uninstallation -->
-	<uninstall>
-		<sql>
-			<file charset="utf8" driver="mysql">sql/install/mysql/uninstall.sql</file>
-			<file driver="mysql">sql/install/mysql/uninstall.sql</file>
-			<file charset="utf8" driver="mysqli">sql/install/mysql/uninstall.sql</file>
-			<file driver="mysqli">sql/install/mysql/uninstall.sql</file>
-
-      <file driver="postgresql">sql/install/postgresql/uninstall.sql</file>
-      <file driver="postgresql" charset="utf8">sql/install/postgresql/uninstall.sql</file>
-		</sql>
-	</uninstall>
-	
-	<!-- SQL files to run on update -->
-	<update>
-		<schemas>
-			<schemapath type="mysql">sql/updates/mysql</schemapath>
-			<schemapath type="sqlsrv">sql/updates/sqlsrv</schemapath>
-			<schemapath type="sqlazure">sql/updates/sqlazure</schemapath>
-		</schemas>
-	</update>
-	
 	<!-- Media files -->
 	<media destination="com_ars" folder="media">
 		<folder>css</folder>

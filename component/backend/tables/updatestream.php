@@ -7,17 +7,17 @@
 
 defined('_JEXEC') or die();
 
-class ArsTableUpdatestream extends FOFTable
+class ArsTableUpdatestream extends F0FTable
 {
 	/**
 	 * Instantiate the table object
-	 * 
+	 *
 	 * @param JDatabase $db The Joomla! database object
 	 */
 	function __construct( $table, $key, &$db )
 	{
 		parent::__construct( '#__ars_updatestreams', 'id', $db );
-		
+
 		$this->_columnAlias = array(
 			'enabled'		=> 'published',
 			'slug'			=> 'alias',
@@ -26,13 +26,13 @@ class ArsTableUpdatestream extends FOFTable
 			'locked_on'		=> 'checked_out_time',
 			'locked_by'		=> 'checked_out',
 		);
-		
+
 		$this->type = 'components';
 	}
 
 	/**
 	 * Checks the record for validity
-	 * 
+	 *
 	 * @return int True if the record is valid
 	 */
 	function check()

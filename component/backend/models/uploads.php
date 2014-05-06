@@ -7,24 +7,24 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelUploads extends FOFModel
+class ArsModelUploads extends F0FModel
 {
 	public function __construct($config = array()) {
 		parent::__construct($config);
-		
+
 		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
 	}
-	
+
 	public function &getCategories()
 	{
-		return FOFModel::getTmpInstance('Categories','ArsModel')
+		return F0FModel::getTmpInstance('Categories','ArsModel')
 				->getItemList(true);
 	}
 
 	/**
 	 * Gets the folder of the current category, whose ID is set in the
 	 * 'category' state variable
-	 * 
+	 *
 	 * @staticvar string $folder
 	 * @return string The folder path, or an empty string if it's not found
 	 */
@@ -34,18 +34,18 @@ class ArsModelUploads extends FOFModel
 		if(empty($folder))
 		{
 			$category_id = $this->getState('category',0);
-			$category = FOFModel::getTmpInstance('Categories','ArsModel')
+			$category = F0FModel::getTmpInstance('Categories','ArsModel')
 					->getItem((int)$category_id);
 
 			if(empty($category)) {
 				$folder = '';
 			} else {
 				$folder = $category->directory;
-				
+
 				$potentialPrefix = substr($folder, 0, 5);
 				$potentialPrefix = strtolower($potentialPrefix);
 				$useS3 = $potentialPrefix == 's3://';
-				
+
 				if($useS3) {
 					$check = substr($folder, 5);
 					if($check === false) $check = '';
@@ -69,7 +69,7 @@ class ArsModelUploads extends FOFModel
 			}
 
 			if(empty($folder)) return $folder;
-			
+
 			$subfolder = $this->getState('folder','');
 			if(!empty($subfolder))
 			{
@@ -80,7 +80,7 @@ class ArsModelUploads extends FOFModel
 					}
 					$subfolder = trim($subfolder,'/');
 					$folder = $folder.(empty($subfolder) ? '' : '/'.$subfolder);
-					
+
 					$pieces = explode('/', $subfolder);
 					$debris = array_pop($pieces);
 					$parent = implode('/', $pieces);
@@ -125,7 +125,7 @@ class ArsModelUploads extends FOFModel
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
 		$useS3 = $potentialPrefix == 's3://';
-		
+
 		if($useS3) {
 			$everything = $this->_listS3Contents($folder);
 			$folder = trim(substr($folder,5),'/');
@@ -152,7 +152,7 @@ class ArsModelUploads extends FOFModel
 				);
 			}
 		}
-		
+
 		return $files;
 	}
 
@@ -161,11 +161,11 @@ class ArsModelUploads extends FOFModel
 		$folders = array();
 		$folder = $this->getCategoryFolder();
 		if(empty($folder)) return $folders;
-		
+
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
 		$useS3 = $potentialPrefix == 's3://';
-		
+
 		if($useS3) {
 			$everything = $this->_listS3Contents($folder);
 			$folder = trim(substr($folder,5),'/');
@@ -183,18 +183,18 @@ class ArsModelUploads extends FOFModel
 			JLoader::import('joomla.filesystem.folder');
 			$folders = JFolder::folders($folder);
 		}
-		
+
 		return $folders;
 	}
-	
+
 	private function _listS3Contents($path = null)
 	{
 		static $lastDirectory = null;
 		static $lasListing = array();
-		
+
 		$directory = substr($path, 5);
 		if($directory === false) $directory = '/';
-		
+
 		if($lastDirectory != $directory) {
 			if($directory == '/') {
 				$directory = null;
@@ -213,7 +213,7 @@ class ArsModelUploads extends FOFModel
 		$file = $this->getState('file','');
 		if(empty($file)) return '';
 
-		
+
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
 		$useS3 = $potentialPrefix == 's3://';
@@ -225,23 +225,23 @@ class ArsModelUploads extends FOFModel
 		} else {
 			$filepath = $folder.'/'.$file;
 		}
-		
+
 		if(!$useS3) {
 			JLoader::import('joomla.filesystem.file');
 			if(!JFile::exists($filepath)) return false;
 		}
-		
-		$files = FOFModel::getTmpInstance('Items','ArsModel')
+
+		$files = F0FModel::getTmpInstance('Items','ArsModel')
 			->category($this->getState('category',0))
 			->filename($this->getState('file',''))
 			->getItemList();
-		
+
 		if(!empty($files))
 		{
 			// Unpublish entries
 			foreach($files as $entry)
 			{
-				$item = FOFModel::getTmpInstance('Items','ArsModel')
+				$item = F0FModel::getTmpInstance('Items','ArsModel')
 					->getItem($entry->id);
 				$item->save(array(
 					'published'		=> 0

@@ -7,21 +7,21 @@
 
 defined('_JEXEC') or die();
 
-class ArsViewUpdate extends FOFViewHtml
+class ArsViewUpdate extends F0FViewHtml
 {
 	protected function onIni($tpl = null) {
 		$this->loadHelper('router');
-		
+
 		$task = JRequest::getCmd('task', '');
-		
+
 		$model 		= $this->getModel();
 		$items 		= $model->items;
 		$published  = $model->published;
 		$this->assign('items', $items);
 		$this->assign('published', $published);
-		
+
 		$this->setLayout($this->getModel()->getState('task'));
-		
+
 		// Set the content type to text/plain
 		@header('Content-type: text/plain');
 

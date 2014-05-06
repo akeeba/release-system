@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelDownloads extends FOFModel
+class ArsModelDownloads extends F0FModel
 {
 	/** @var   boolean  True if we have logged in a user */
 	protected $haveLoggedInAUser = false;
@@ -30,7 +30,7 @@ class ArsModelDownloads extends FOFModel
 		$this->item = null;
 		$null       = null;
 
-		$items = FOFModel::getTmpInstance('Items','ArsModel')
+		$items = F0FModel::getTmpInstance('Items','ArsModel')
 			->access_user(JFactory::getUser()->id)
 			->published(1)
 			->item_id($id)
@@ -62,7 +62,7 @@ class ArsModelDownloads extends FOFModel
 			return $null;
 		}
 
-		$item = FOFModel::getTmpInstance('Items','ArsModel')->getTable();
+		$item = F0FModel::getTmpInstance('Items','ArsModel')->getTable();
 		$item->bind(array_pop($items));
 
 		$this->item = $item;
@@ -481,4 +481,89 @@ class ArsModelDownloads extends FOFModel
 
 		return $this->haveLoggedInAUser;
 	}
+
+    /**
+     * Looking at previous log entries, do I have to block the user? He could have done too many requests
+     * (authorized or not), so I'll have to block him
+     *
+     * @param   null|int $id
+     *
+     * @return  bool    Did I block the user (IP)?
+     */
+    public function blockUser($id)
+    {
+        require_once JPATH_ROOT.'/administrator/components/com_ars/helpers/ip.php';
+        JLoader::import('joomla.utilities.date');
+
+        // Check for repeat offenses
+        $db      = JFactory::getDBO();
+        $params  = JComponentHelper::getParams('com_ars');
+        $jNow    = new JDate();
+
+        $ip           = ArsHelperIp::getUserIP();
+        $ip = '41.218.209.24';
+
+        $downloads    = $params->get('banscrapers_num', 20);
+        $numfreq      = $params->get('banscrapers_numtime', 1);
+        $frequency    = $params->get('banscrapers_typetime', 'hour');
+        $mindatestamp = 0;
+
+        // Site owner disabled this feature, let's stop here
+        if(!$downloads || !$numfreq)
+        {
+            return false;
+        }
+
+        switch ($frequency)
+        {
+            case 'minute':
+                $numfreq *= 60;
+                break;
+
+            case 'hour':
+                $numfreq *= 3600;
+                break;
+
+            case 'day':
+                $numfreq *= 86400;
+                break;
+            // As default we are using the hour preset
+            default :
+                $numfreq *= 3600;
+                break;
+        }
+
+        if ($mindatestamp == 0)
+        {
+            $mindatestamp = $jNow->toUnix() - $numfreq;
+        }
+
+        $jMinDate = new JDate($mindatestamp);
+        $minDate = $jMinDate->toSql();
+
+        $sql = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->qn('#__ars_log'))
+            ->where($db->qn('accessed_on') . ' >= ' . $db->q($minDate))
+            ->where($db->qn('ip') . ' = ' . $db->q($ip))
+            ->where($db->qn('item_id').' = '.$id);
+
+        $db->setQuery($sql);
+        try
+        {
+            $numOffenses = $db->loadResult();
+        }
+        catch (Exception $e)
+        {
+            $numOffenses = 0;
+        }
+
+        // Downloads are under the limit, nothing to do here
+        if ($numOffenses < $downloads)
+        {
+            return false;
+        }
+
+        return true;
+    }
 }

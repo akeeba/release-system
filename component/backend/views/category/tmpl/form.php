@@ -13,7 +13,7 @@ $editor = JFactory::getEditor();
 $this->loadHelper('select');
 $this->loadHelper('filtering');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 ?>
 

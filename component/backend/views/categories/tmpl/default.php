@@ -16,11 +16,11 @@ if (version_compare(JVERSION, '3.0', 'gt'))
 }
 
 $base_folder = rtrim(JURI::base(), '/');
-if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');        
+if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 $hasAjaxOrderingSupport = $this->hasAjaxOrderingSupport();
 
@@ -153,7 +153,7 @@ $sortFields = array(
 				<button class="btn btn-mini" onclick="document.adminForm.title.value='';this.form.submit();">
 					<?php echo JText::_('JSEARCH_RESET'); ?>
 				</button>
-				</nobr>	
+				</nobr>
 			</td>
 			<td>
 				<?php echo ArsHelperSelect::vgroups($this->getModel()->getState('vgroup'), 'vgroup', array('onchange'=>'this.form.submit();','class' => 'input-medium')); ?>
@@ -254,7 +254,7 @@ $sortFields = array(
 			<td>
 				<img src="<?php echo $icon ?>" width="16" height="16" align="left" />
 				<span class="ars-access">
-				&nbsp; 
+				&nbsp;
 				<?php echo ArsHelperSelect::renderaccess($item->access); ?>
 				</span>
 			</td>
@@ -276,6 +276,6 @@ $sortFields = array(
 </table>
 
 </form>
-	
+
 </div>
 </div>
