@@ -270,7 +270,7 @@ class ArsUpdate extends JApplicationCli
         $this->out("Akeeba Release System Updater CLI");
         $this->out("Copyright (C) 2011-$year Nicholas K. Dionysopoulos");
         $this->out(str_repeat('-', 79));
-        $this->out("Admin Tools is Free Software, distributed under the terms of the GNU General");
+        $this->out("Akeeba Release System is Free Software, distributed under the terms of the GNU General");
         $this->out("Public License version 3 or, at your option, any later version.");
         $this->out("This program comes with ABSOLUTELY NO WARRANTY as per sections 15 & 16 of the");
         $this->out("license. See http://www.gnu.org/licenses/gpl-3.0.html for details.");
