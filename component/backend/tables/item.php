@@ -145,7 +145,10 @@ class ArsTableItem extends F0FTable
 		}
 		else
 		{
-			$this->environments = json_encode($this->environments);
+			if (is_array($this->environments))
+			{
+				$this->environments = json_encode($this->environments);
+			}
 		}
 
 		// Check if a title exists
