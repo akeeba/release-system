@@ -1,3 +1,7 @@
+Version 2.3.5
+================================================================================
+# [LOW] The Bleeding Edge maturity plugin was broken after applying "Bleeding edge releases with dots/spaces in the folder gave a 404 error"
+
 Version 2.3.4
 ================================================================================
 + Show update information in the component's control panel page
