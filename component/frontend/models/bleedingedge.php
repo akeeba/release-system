@@ -117,15 +117,33 @@ class ArsModelBleedingedge extends F0FModel
 		{
 			foreach ($allReleases as $release)
 			{
-				$folder = $this->folder . '/' . $release->version;
-				$known_folders[] = $release->version;
-
 				if (!$release->published)
 				{
 					continue;
 				}
 
+				if ($useS3)
+				{
+					$folder = $this->folder . '/' . $release->version;
+					$known_folders[] = $release->version;
+				}
+				else
+				{
+					$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
+
+					if ($folderName === false)
+					{
+						continue;
+					}
+					else
+					{
+						$known_folders[] = $folderName;
+						$folder = $this->folder . '/' . $folderName;
+					}
+				}
+
 				$exists = false;
+
 				if ($useS3)
 				{
 					$check = substr($folder, 5);
@@ -336,11 +354,34 @@ class ArsModelBleedingedge extends F0FModel
 		}
 		if ($this->category->type != 'bleedingedge') return;
 
-		$folder = $this->folder . '/' . $release->version;
-
-		$potentialPrefix = substr($folder, 0, 5);
+		$potentialPrefix = substr($this->folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
 		$useS3 = ($potentialPrefix == 's3://');
+
+		// Safe fallback
+		$folderName = $release->version;
+
+		if ($useS3)
+		{
+			// On S3 it's always the version-as-folder, otherwise it'd take FOREVER to scan S3
+			$folder = $this->folder . '/' . $release->version;
+			$known_folders[] = $release->version;
+		}
+		else
+		{
+			$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
+
+			if ($folderName === false)
+			{
+				// Normally this shouldn't happen!
+				return;
+			}
+			else
+			{
+				$known_folders[] = $folderName;
+				$folder = $this->folder . '/' . $folderName;
+			}
+		}
 
 		// Do we have a changelog?
 		if (empty($release->notes))
@@ -410,13 +451,14 @@ class ArsModelBleedingedge extends F0FModel
 		if (!empty($allItems)) foreach ($allItems as $item)
 		{
 			$known_items[] = basename($item->filename);
-			//if(!JFile::exists($this->folder.'/'.$item->filename) && !JFile::exists(JPATH_ROOT.'/'.$this->folder.'/'.$item->filename))
+
 			if ($item->published && !in_array(basename($item->filename), $files))
 			{
 				$table = F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
 				$item->published = 0;
 				$table->save($item);
 			}
+
 			if (!$item->published && in_array(basename($item->filename), $files))
 			{
 				$table = F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
@@ -438,7 +480,7 @@ class ArsModelBleedingedge extends F0FModel
 				'release_id'  => $release->id,
 				'description' => '',
 				'type'        => 'file',
-				'filename'    => $release->version . '/' . $file,
+				'filename'    => $folderName . '/' . $file,
 				'url'         => '',
 				'groups'      => $release->groups,
 				'hits'        => '0',
@@ -588,5 +630,32 @@ class ArsModelBleedingedge extends F0FModel
 		}
 
 		return $lastListing;
+	}
+
+	private function getReleaseFolder($folder, $version, $alias, $maturity)
+	{
+		$maturityLower = strtolower($maturity);
+		$maturityUpper = strtoupper($maturity);
+
+		$candidates = array(
+			$alias,
+			$version,
+			$version . '_' . $maturityLower,
+			$alias . '_' . $maturityLower,
+			$version . '_' . $maturityUpper,
+			$alias . '_' . $maturityUpper,
+		);
+
+		foreach ($candidates as $candidate)
+		{
+			$folderCheck = $folder . '/' . $candidate;
+
+			if (JFolder::exists($folderCheck))
+			{
+				return $candidate;
+			}
+		}
+
+		return false;
 	}
 }
