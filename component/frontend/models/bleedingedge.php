@@ -100,8 +100,8 @@ class ArsModelBleedingedge extends F0FModel
 		{
 			foreach($allReleases as $release)
 			{
-				$folder = $this->folder.'/'.$release->version;
-				$known_folders[] = $release->version;
+				$folder = $this->folder.'/'.$release->alias;
+				$known_folders[] = $release->alias;
 
 				if(!$release->published) continue;
 
@@ -276,7 +276,7 @@ class ArsModelBleedingedge extends F0FModel
 		}
 		if($this->category->type != 'bleedingedge') return;
 
-		$folder = $this->folder.'/'.$release->version;
+		$folder = $this->folder.'/'.$release->alias;
 
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
@@ -363,7 +363,7 @@ class ArsModelBleedingedge extends F0FModel
 				'release_id'		=> $release->id,
 				'description'		=> '',
 				'type'				=> 'file',
-				'filename'			=> $release->version.'/'.$file,
+				'filename'			=> $release->alias.'/'.$file,
 				'url'				=> '',
 				'groups'			=> $release->groups,
 				'hits'				=> '0',
