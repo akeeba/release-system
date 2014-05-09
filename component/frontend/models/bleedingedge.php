@@ -269,7 +269,7 @@ class ArsModelBleedingedge extends F0FModel
 					JLoader::import('joomla.utilities.date');
 					$jNow = new JDate();
 
-					$alias = str_replace(array(' ', '.'), '-', $folder);
+					$alias = F0FStringUtils::toSlug($folder);
 
 					$data = array(
 						'id'          => 0,
