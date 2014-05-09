@@ -303,6 +303,7 @@ class ArsModelBleedingedge extends F0FModel
 
 			if($hasChangelog)
 			{
+				$first_changelog = array();
 				$notes = $this->coloriseChangelog($this_changelog, $first_changelog);
 				$release->notes = $notes;
 
@@ -425,9 +426,12 @@ class ArsModelBleedingedge extends F0FModel
 		$colorise_changelog = $params->get('becolorisechangelog', 1);
 
 		if($generate_changelog) {
+			/**
 			if($colorise_changelog) {
 				$notes = '<h3>'.$changelog_header.'</h3>';
 			}
+			/**/
+
 			$notes .= '<ul>';
 
 			foreach($this_changelog as $line)
