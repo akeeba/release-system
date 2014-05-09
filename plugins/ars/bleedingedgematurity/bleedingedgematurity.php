@@ -47,11 +47,11 @@ class plgArsBleedingedgematurity extends JPlugin
 	 */
 	public function onNewARSBleedingEdgeRelease($info, $data)
 	{
-		$folderName = strtoupper($info['folder']);
+		$folderName = $info['folder'];
 		$parts = explode('_',$folderName);
 		
 		if(count($parts) < 2) return false;
-		$stability = array_pop($parts);
+		$stability = strtoupper(array_pop($parts));
 		
 		switch($stability) {
 			case 'ALPHA':
@@ -74,7 +74,7 @@ class plgArsBleedingedgematurity extends JPlugin
 				return false;
 		}
 		
-		$version = strtolower(implode('_', $parts));
+		$version = implode('_', $parts);
 		$data['version'] = $version;
 		
 		return $data;

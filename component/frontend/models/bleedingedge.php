@@ -100,22 +100,16 @@ class ArsModelBleedingedge extends F0FModel
 		{
 			foreach($allReleases as $release)
 			{
-				$folder = $this->folder.'/'.$release->alias;
-				$known_folders[] = $release->alias;
+				$releaseFolder = $this->getReleaseFolder($release);
+
+				if ($releaseFolder !== false)
+				{
+					$known_folders[] = $releaseFolder;
+				}
 
 				if(!$release->published) continue;
 
-				$exists = false;
-				if($useS3) {
-					$check = substr($folder, 5);
-					$s3 = ArsHelperAmazons3::getInstance();
-					$items = $s3->getBucket('', $check.'/');
-					$exists = !empty($items);
-				} else {
-					$exists = JFolder::exists($folder);
-				}
-
-				if(!$exists) {
+				if(!$releaseFolder) {
 					$release->published = 0;
 
 					$tmp = F0FModel::getTmpInstance('Releases','ArsModel')
@@ -268,6 +262,61 @@ class ArsModelBleedingedge extends F0FModel
 		}
 	}
 
+	/**
+	 * Gets the release folder.
+	 *
+	 * This is required for compatibility with FOLDER_MATURITY of plgArsBleedingedgematurity.
+	 *
+	 * @param 	object	$release	The release.
+	 *
+	 * @return 	bool|string			The release folder if found, or false otherwise.
+	 */
+	private function getReleaseFolder($release)
+	{
+		JLoader::import('joomla.filesystem.folder');
+
+		$releaseFolder = false;
+
+		$folders = array(
+			$release->version,
+			$release->version . '_' . strtoupper($release->maturity)
+		);
+
+		foreach ($folders as $folder)
+		{
+			$potentialPrefix = substr($folder, 0, 5);
+			$potentialPrefix = strtolower($potentialPrefix);
+			$useS3 = ($potentialPrefix == 's3://');
+
+			if ($useS3)
+			{
+				$folder = substr($folder, 5);
+				$s3 = ArsHelperAmazons3::getInstance();
+
+				$items = $s3->getBucket('', $folder . '/');
+				$exists = !empty($items);
+
+				if ($exists)
+				{
+					$releaseFolder = $folder;
+
+					break;
+				}
+			}
+			else
+			{
+				if (JFolder::exists($this->folder . '/' . $folder))
+				{
+					$releaseFolder = $folder;
+
+					break;
+				}
+			}
+		}
+
+		return $releaseFolder;
+	}
+
 	public function checkFiles($release)
 	{
 		if(empty($this->folder))
@@ -276,7 +325,8 @@ class ArsModelBleedingedge extends F0FModel
 		}
 		if($this->category->type != 'bleedingedge') return;
 
-		$folder = $this->folder.'/'.$release->alias;
+		$releaseFolder = $this->getReleaseFolder($release);
+		$folder = $this->folder . '/' . $releaseFolder;
 
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
@@ -356,6 +406,8 @@ class ArsModelBleedingedge extends F0FModel
 
 			if(in_array($file, $known_items)) continue;
 
+			$releaseFolder = $this->getReleaseFolder($release);
+
 			JLoader::import('joomla.utilities.date');
 			$jNow = new JDate();
 			$data = array(
@@ -363,7 +415,7 @@ class ArsModelBleedingedge extends F0FModel
 				'release_id'		=> $release->id,
 				'description'		=> '',
 				'type'				=> 'file',
-				'filename'			=> $release->alias.'/'.$file,
+				'filename'			=> $releaseFolder . '/' . $file,
 				'url'				=> '',
 				'groups'			=> $release->groups,
 				'hits'				=> '0',
