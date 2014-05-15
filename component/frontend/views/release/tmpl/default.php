@@ -9,6 +9,12 @@ defined('_JEXEC') or die();
 
 JLoader::import('joomla.utilities.date');
 
+$format = $this->input->get('format', 'html');
+if (!property_exists($this, 'item') || !is_object($this->item) || !($item instanceof F0FTable))
+{
+	return;
+}
+
 $this->item->hit();
 $results    = false;
 $released   = new JDate($this->item->created);
