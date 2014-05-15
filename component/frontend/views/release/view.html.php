@@ -121,6 +121,12 @@ class ArsViewRelease extends F0FViewHtml
 		$this->directlink	= $directlink;
 		$this->pparams		= $pparams;
 		$this->item			= $model->item;
+
+		if (is_object($model->item) && method_exists($model->item, 'hit'))
+		{
+			$model->item->hit();
+		}
+
 		$this->items		= $model->itemList;
 		$this->pagination	= $model->items_pagination;
 		$this->release_id	= $model->item->id;
