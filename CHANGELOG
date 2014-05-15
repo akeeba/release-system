@@ -1,6 +1,7 @@
 Version 2.3.5
 ================================================================================
 # [LOW] The Bleeding Edge maturity plugin was broken after applying "Bleeding edge releases with dots/spaces in the folder gave a 404 error"
+# [LOW] Release Maker may return an error 500 when saving / updating a release
 
 Version 2.3.4
 ================================================================================
