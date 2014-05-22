@@ -340,7 +340,6 @@ class ArsModelBleedingedge extends F0FModel
 					$table = F0FModel::getTmpInstance('Releases', 'ArsModel')
 						->getTable();
 					$table->save($data, 'category_id');
-					$this->checkFiles($table);
 				}
 			}
 		}
