@@ -114,6 +114,7 @@ class ArsControllerCategory extends F0FController
 
 		if ($category instanceof ArsTableCategory)
 		{
+			/** @var ArsModelBleedingedge $bemodel */
 			$bemodel = F0FModel::getAnInstance('Bleedingedge', 'ArsModel');
 			$bemodel->scanCategory($category);
 			$releases = $this->getThisModel()->getReleases($id);

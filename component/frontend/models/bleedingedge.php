@@ -15,6 +15,11 @@ class ArsModelBleedingedge extends F0FModel
 	private $category;
 	private $folder = null;
 
+	/**
+	 * Public constructor. Preloads the Amazon S3 handling class.
+	 *
+	 * @param array $config
+	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
@@ -22,8 +27,20 @@ class ArsModelBleedingedge extends F0FModel
 		require_once JPATH_ADMINISTRATOR . '/components/com_ars/helpers/amazons3.php';
 	}
 
-	public function setCategory($cat)
+	/**
+	 * Sets the category we are operating on
+	 *
+	 * @param ArsTableCategory|integer $cat A category table or a numeric category ID
+	 *
+	 * @return void
+	 */
+	protected function setCategory($cat)
 	{
+		// Initialise
+		$this->category = null;
+		$this->category_id = null;
+		$this->folder = null;
+
 		if ($cat instanceof ArsTableCategory)
 		{
 			$this->category = $cat;
@@ -39,13 +56,17 @@ class ArsModelBleedingedge extends F0FModel
 		// Store folder
 		$folder = $this->category->directory;
 
+		// Check for categories stored in Amazon S3
 		$potentialPrefix = substr($folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
+
 		if ($potentialPrefix == 's3://')
 		{
+			// If it is stored on S3 make sure there are files stored with the given directory prefix
 			$check = substr($folder, 5);
 			$s3 = ArsHelperAmazons3::getInstance();
 			$items = $s3->getBucket('', $check . '/');
+
 			if (empty($items))
 			{
 				return;
@@ -53,28 +74,42 @@ class ArsModelBleedingedge extends F0FModel
 		}
 		else
 		{
+			// If it is stored locally, make sure the folder exists
 			JLoader::import('joomla.filesystem.folder');
+
 			if (!JFolder::exists($folder))
 			{
 				$folder = JPATH_ROOT . '/' . $folder;
+
 				if (!JFolder::exists($folder))
 				{
 					return;
 				}
 			}
 		}
+
 		$this->folder = $folder;
 	}
 
-	public function scanCategory($a_category = null)
+	/**
+	 * Scan a bleeding edge category
+	 *
+	 * @param ArsTableCategory $a_category The category to scan (category table or numeric category ID)
+	 *
+	 * @return void
+	 */
+	public function scanCategory(ArsTableCategory $a_category)
 	{
-		if (!empty($a_category))
-		{
-			$this->setCategory($a_category);
-		}
+		$this->setCategory($a_category);
 
 		// Can't proceed without a category
 		if (empty($this->category))
+		{
+			return;
+		}
+
+		// Can't proceed without a folder
+		if (empty($this->folder))
 		{
 			return;
 		}
@@ -85,17 +120,7 @@ class ArsModelBleedingedge extends F0FModel
 			return;
 		}
 
-		// Check for releases
-		$this->checkReleases();
-	}
-
-	private function checkReleases($a_category = null)
-	{
-		if (!empty($a_category))
-		{
-			$this->setCategory($a_category);
-		}
-
+		// Get all releases in the category
 		$allReleases = F0FModel::getTmpInstance('Releases', 'ArsModel')
 			->category($this->category->id)
 			->order('created')
@@ -104,6 +129,7 @@ class ArsModelBleedingedge extends F0FModel
 			->limit(0)
 			->getItemList(true);
 
+		// Check for possible use of Amazon S3
 		$potentialPrefix = substr($this->category->directory, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
 		$useS3 = ($potentialPrefix == 's3://');
@@ -122,6 +148,8 @@ class ArsModelBleedingedge extends F0FModel
 					continue;
 				}
 
+				$mustScanFolder = true;
+
 				if ($useS3)
 				{
 					$folder = $this->folder . '/' . $release->version;
@@ -133,7 +161,7 @@ class ArsModelBleedingedge extends F0FModel
 
 					if ($folderName === false)
 					{
-						continue;
+						$mustScanFolder = false;
 					}
 					else
 					{
@@ -144,16 +172,19 @@ class ArsModelBleedingedge extends F0FModel
 
 				$exists = false;
 
-				if ($useS3)
+				if ($mustScanFolder)
 				{
-					$check = substr($folder, 5);
-					$s3 = ArsHelperAmazons3::getInstance();
-					$items = $s3->getBucket('', $check . '/');
-					$exists = !empty($items);
-				}
-				else
-				{
-					$exists = JFolder::exists($folder);
+					if ($useS3)
+					{
+						$check = substr($folder, 5);
+						$s3 = ArsHelperAmazons3::getInstance();
+						$items = $s3->getBucket('', $check . '/');
+						$exists = !empty($items);
+					}
+					else
+					{
+						$exists = JFolder::exists($folder);
+					}
 				}
 
 				if (!$exists)
@@ -161,12 +192,16 @@ class ArsModelBleedingedge extends F0FModel
 					$release->published = 0;
 
 					$tmp = F0FModel::getTmpInstance('Releases', 'ArsModel')
-						->getTable()
-						->save($release);
+						->getTable();
+					$tmp->load($release->id);
+					$tmp->save($release);
 				}
 				else
 				{
-					$this->checkFiles($release);
+					$tmpRelease = F0FModel::getTmpInstance('Releases', 'ArsModel')
+						->getTable();
+					$tmpRelease->bind($release);
+					$this->checkFiles($tmpRelease);
 				}
 			}
 			$first_release = array_shift($allReleases);
@@ -178,16 +213,19 @@ class ArsModelBleedingedge extends F0FModel
 
 		JLoader::import('joomla.filesystem.file');
 		$first_changelog = array();
+
 		if (!empty($first_release))
 		{
 			$changelog = $this->folder . '/' . $first_release->alias . '/CHANGELOG';
 
 			$hasChangelog = false;
+
 			if ($useS3)
 			{
 				$s3 = ArsHelperAmazons3::getInstance();
 				$response = $s3->getObject('', substr($changelog, 5));
 				$hasChangelog = $response !== false;
+
 				if ($hasChangelog)
 				{
 					$first_changelog = $response->body;
@@ -221,6 +259,7 @@ class ArsModelBleedingedge extends F0FModel
 			$allFolders = array();
 			$everything = $this->_listS3Contents($this->folder);
 			$dirLength = strlen($this->folder) - 5;
+
 			if (count($everything))
 			{
 				foreach ($everything as $path => $info)
@@ -231,6 +270,7 @@ class ArsModelBleedingedge extends F0FModel
 						{
 							$path = substr($path, $dirLength);
 						}
+
 						$path = trim($path, '/');
 						$allFolders[] = $path;
 					}
@@ -241,6 +281,7 @@ class ArsModelBleedingedge extends F0FModel
 		{
 			$allFolders = JFolder::folders($this->folder);
 		}
+
 		if (!empty($allFolders))
 		{
 			foreach ($allFolders as $folder)
@@ -253,6 +294,7 @@ class ArsModelBleedingedge extends F0FModel
 					$changelog = $this->folder . '/' . $folder . '/' . 'CHANGELOG';
 
 					$hasChangelog = false;
+
 					if ($useS3)
 					{
 						$s3 = ArsHelperAmazons3::getInstance();
@@ -306,9 +348,11 @@ class ArsModelBleedingedge extends F0FModel
 					// Before saving the release, call the onNewARSBleedingEdgeRelease()
 					// event of ars plugins so that they have the chance to modify
 					// this information.
+
 					// -- Load plugins
 					JLoader::import('joomla.plugin.helper');
 					JPluginHelper::importPlugin('ars');
+
 					// -- Setup information data
 					$infoData = array(
 						'folder'          => $folder,
@@ -319,12 +363,14 @@ class ArsModelBleedingedge extends F0FModel
 						'changelog'       => $this_changelog,
 						'first_changelog' => $first_changelog
 					);
+
 					// -- Trigger the plugin event
 					$app = JFactory::getApplication();
 					$jResponse = $app->triggerEvent('onNewARSBleedingEdgeRelease', array(
 						$infoData,
 						$data
 					));
+
 					// -- Merge response
 					if (is_array($jResponse))
 					{
@@ -336,22 +382,49 @@ class ArsModelBleedingedge extends F0FModel
 							}
 						}
 					}
+
 					// -- Create the BE release
 					$table = F0FModel::getTmpInstance('Releases', 'ArsModel')
 						->getTable();
-					$table->save($data, 'category_id');
+					if ($table->save($data, 'category_id'))
+					{
+						$this->checkFiles($table);
+					}
 				}
 			}
 		}
 	}
 
-	public function checkFiles($release)
+	public function checkFiles(ArsTableRelease $release)
 	{
-		if (empty($this->folder))
+		if (!$release->id)
+		{
+			throw new Exception('NO FUCKING WAY');
+		}
+
+		// Make sure we are give a release which exists
+		if (empty($release->category_id))
+		{
+			return;
+		}
+
+		// Set the category from the release if the model's category doesn't match
+		if (($this->category_id != $release->category_id) || empty($this->folder))
 		{
 			$this->setCategory($release->category_id);
 		}
-		if ($this->category->type != 'bleedingedge') return;
+
+		// Make sure the category was indeed set
+		if (empty($this->category) || empty($this->category_id) || empty($this->folder))
+		{
+			return;
+		}
+
+		// Make sure it is a Bleeding Edge category
+		if ($this->category->type != 'bleedingedge')
+		{
+			return;
+		}
 
 		$potentialPrefix = substr($this->folder, 0, 5);
 		$potentialPrefix = strtolower($potentialPrefix);
@@ -424,21 +497,25 @@ class ArsModelBleedingedge extends F0FModel
 			->getItemList(true);
 
 		$known_items = array();
+
 		if ($useS3)
 		{
 			$files = array();
 			$everything = $this->_listS3Contents($folder);
 			$dirLength = strlen($folder) - 5;
-			if (count($everything)) foreach ($everything as $path => $info)
+			if (count($everything))
 			{
-				if (array_key_exists('size', $info) && (substr($path, -1) != '/'))
+				foreach ($everything as $path => $info)
 				{
-					if (substr($path, 0, $dirLength) == substr($folder, 5))
+					if (array_key_exists('size', $info) && (substr($path, -1) != '/'))
 					{
-						$path = substr($path, $dirLength);
+						if (substr($path, 0, $dirLength) == substr($folder, 5))
+						{
+							$path = substr($path, $dirLength);
+						}
+						$path = trim($path, '/');
+						$files[] = $path;
 					}
-					$path = trim($path, '/');
-					$files[] = $path;
 				}
 			}
 		}
@@ -447,83 +524,101 @@ class ArsModelBleedingedge extends F0FModel
 			$files = JFolder::files($folder);
 		}
 
-		if (!empty($allItems)) foreach ($allItems as $item)
+		if (!empty($allItems))
 		{
-			$known_items[] = basename($item->filename);
-
-			if ($item->published && !in_array(basename($item->filename), $files))
+			foreach ($allItems as $item)
 			{
-				$table = F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
-				$item->published = 0;
-				$table->save($item);
-			}
+				$known_items[] = basename($item->filename);
 
-			if (!$item->published && in_array(basename($item->filename), $files))
-			{
-				$table = F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
-				$item->published = 1;
-				$table->save($item);
+				if ($item->published && !in_array(basename($item->filename), $files))
+				{
+					$table = clone F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
+					$table->load($item->id);
+					$table->save(array('published' => 0));
+				}
+
+				if (!$item->published && in_array(basename($item->filename), $files))
+				{
+					$table = F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
+					$table->load($item->id);
+					$table->save(array('published' => 1));
+				}
 			}
 		}
 
-		if (!empty($files)) foreach ($files as $file)
+		if (!empty($files))
 		{
-			if (basename($file) == 'CHANGELOG') continue;
-
-			if (in_array($file, $known_items)) continue;
-
-			JLoader::import('joomla.utilities.date');
-			$jNow = new JDate();
-			$data = array(
-				'id'          => 0,
-				'release_id'  => $release->id,
-				'description' => '',
-				'type'        => 'file',
-				'filename'    => $folderName . '/' . $file,
-				'url'         => '',
-				'groups'      => $release->groups,
-				'hits'        => '0',
-				'published'   => '1',
-				'created'     => $jNow->toSql(),
-				'access'      => '1'
-			);
-
-			// Before saving the item, call the onNewARSBleedingEdgeItem()
-			// event of ars plugins so that they have the chance to modify
-			// this information.
-			// -- Load plugins
-			JLoader::import('joomla.plugin.helper');
-			JPluginHelper::importPlugin('ars');
-			// -- Setup information data
-			$infoData = array(
-				'folder'     => $folder,
-				'file'       => $file,
-				'release_id' => $release->id,
-				'release'    => $release
-			);
-			// -- Trigger the plugin event
-			$app = JFactory::getApplication();
-			$jResponse = $app->triggerEvent('onNewARSBleedingEdgeItem', array(
-				$infoData,
-				$data
-			));
-			// -- Merge response
-			if (is_array($jResponse)) foreach ($jResponse as $response)
+			foreach ($files as $file)
 			{
-				if (is_array($response))
+				if (basename($file) == 'CHANGELOG')
 				{
-					$data = array_merge($data, $response);
+					continue;
 				}
-			}
 
-			if (isset($data['ignore']))
-			{
-				if ($data['ignore']) continue;
-			}
+				if (in_array($file, $known_items))
+				{
+					continue;
+				}
 
-			$table = clone F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
-			$table->reset();
-			$result = $table->save($data);
+				JLoader::import('joomla.utilities.date');
+				$jNow = new JDate();
+				$data = array(
+					'id'          => 0,
+					'release_id'  => $release->id,
+					'description' => '',
+					'type'        => 'file',
+					'filename'    => $folderName . '/' . $file,
+					'url'         => '',
+					'groups'      => $release->groups,
+					'hits'        => '0',
+					'published'   => '1',
+					'created'     => $jNow->toSql(),
+					'access'      => '1'
+				);
+
+				// Before saving the item, call the onNewARSBleedingEdgeItem()
+				// event of ars plugins so that they have the chance to modify
+				// this information.
+				// -- Load plugins
+				JLoader::import('joomla.plugin.helper');
+				JPluginHelper::importPlugin('ars');
+				// -- Setup information data
+				$infoData = array(
+					'folder'     => $folder,
+					'file'       => $file,
+					'release_id' => $release->id,
+					'release'    => $release
+				);
+				// -- Trigger the plugin event
+				$app = JFactory::getApplication();
+				$jResponse = $app->triggerEvent('onNewARSBleedingEdgeItem', array(
+					$infoData,
+					$data
+				));
+				// -- Merge response
+				if (is_array($jResponse))
+				{
+					foreach ($jResponse as $response)
+					{
+						if (is_array($response))
+						{
+							$data = array_merge($data, $response);
+						}
+					}
+				}
+
+				if (isset($data['ignore']))
+				{
+					if ($data['ignore'])
+					{
+						continue;
+					}
+				}
+
+				$table = clone F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
+				$table->reset();
+				$result = $table->save($data);
+			}
 		}
 
 		if (isset($table)) $table->reorder('`release_id` = ' . $release->id);
@@ -639,10 +734,10 @@ class ArsModelBleedingedge extends F0FModel
 		$candidates = array(
 			$alias,
 			$version,
-			$version . '_' . $maturityLower,
-			$alias . '_' . $maturityLower,
 			$version . '_' . $maturityUpper,
+			$version . '_' . $maturityLower,
 			$alias . '_' . $maturityUpper,
+			$alias . '_' . $maturityLower,
 		);
 
 		foreach ($candidates as $candidate)
