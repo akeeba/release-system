@@ -7,26 +7,26 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelVgroups extends FOFModel
+class ArsModelVgroups extends F0FModel
 {
 	public function buildQuery($overrideLimits = false)
 	{
 		$db = $this->getDbo();
-		
+
 		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__ars_vgroups'));
-		
+
 		$fltTitle	= $this->getState('title', null, 'string');
 		if($fltTitle) {
 			$query->where($db->qn('title').' LIKE '.$db->q("%$fltTitle%"));
 		}
-		
+
 		$fltPublished	= $this->getState('published', null, 'cmd');
 		if($fltPublished != '') {
 			$query->where($db->qn('published').' = '.$db->q($fltPublished));
 		}
-		
+
 		$fltFrontend	= $this->getState('frontend', 0, 'int');
 		if($fltFrontend != 0) {
 			$order = 'ordering';
@@ -36,7 +36,7 @@ class ArsModelVgroups extends FOFModel
 			if(!in_array($order, array_keys($this->getTable()->getData()))) $order = 'id';
 			$dir = $this->getState('filter_order_Dir', 'DESC', 'cmd');
 		}
-		
+
 		$query->order($order.' '.$dir);
 
 		return $query;

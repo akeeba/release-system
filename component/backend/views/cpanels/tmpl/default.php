@@ -13,16 +13,18 @@ $icons_root = JURI::base().'components/com_ars/assets/images/';
 
 $groups = array('basic','tools','update');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
-FOFTemplateUtils::addJS('media://com_ars/js/gui-helpers.js');
-FOFTemplateUtils::addJS('media://com_ars/js/jquery.jqplot.min.js');
-FOFTemplateUtils::addJS('media://com_ars/js/jqplot.dateAxisRenderer.min.js');
-FOFTemplateUtils::addJS('media://com_ars/js/jqplot.hermite.js');
-FOFTemplateUtils::addJS('media://com_ars/js/jqplot.highlighter.min.js');
-FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
+F0FTemplateUtils::addJS('media://com_ars/js/gui-helpers.js');
+F0FTemplateUtils::addJS('media://com_ars/js/jquery.jqplot.min.js');
+F0FTemplateUtils::addJS('media://com_ars/js/jqplot.dateAxisRenderer.min.js');
+F0FTemplateUtils::addJS('media://com_ars/js/jqplot.hermite.js');
+F0FTemplateUtils::addJS('media://com_ars/js/jqplot.highlighter.min.js');
+F0FTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
 ?>
+<div id="updateNotice"></div>
+
 <?php if (!$this->hasplugin): ?>
 	<div class="well">
 		<h3><?php echo JText::_('COM_ARS_GEOBLOCK_LBL_GEOIPPLUGINSTATUS') ?></h3>
@@ -91,6 +93,17 @@ FOFTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 			</div>
 			<?php endforeach; ?>
 		<?php endif; ?>
+
+		<div style="clear: both;">&nbsp;</div>
+		<h3><?php echo JText::_('COM_ARS_CPANEL_VERSIONINFO_LABEL')?></h3>
+		<p>
+			Akeeba Release System <?php echo $this->currentVersion ?>
+
+			<a href="index.php?option=com_ars&view=update&task=force" class="btn btn-inverse btn-small">
+				<?php echo JText::_('COM_ARS_CPANEL_MSG_RELOADUPDATE'); ?>
+			</a>
+
+		</p>
 
 	</div>
 
@@ -181,18 +194,18 @@ akeeba.jQuery(document).ready(function($){
 		axesDefaults:{useSeriesColor: true}
 	});
 
-	/**
-	$('#mdrChart').gchart('destroy').
-		gchart({
-			usePost: false,
-			type: 'line',
-			legend: null,
-			dataLabels: {},
-			series: [$.gchart.series('DL',[<?php echo $mdrSerie1 ?>],'blue', <?php echo $mdrMin?>, <?php echo $mdrMax?>)],
-			axes: [
-				$.gchart.axis('left', <?php echo $mdrMin?>, <?php echo $mdrMax?>)
-			]
-		});
-	/**/
+	$.ajax('index.php?option=com_ars&view=cpanel&task=updateinfo&tmpl=component', {
+		success: function(msg, textStatus, jqXHR)
+		{
+			// Get rid of junk before and after data
+			var match = msg.match(/###([\s\S]*?)###/);
+			data = match[1];
+
+			if (data.length)
+			{
+				$('#updateNotice').html(data);
+			}
+		}
+	});
 });
 </script>

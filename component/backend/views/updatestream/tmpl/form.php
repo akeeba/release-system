@@ -9,7 +9,7 @@ defined('_JEXEC') or die();
 
 $this->loadHelper('select');
 
-FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 ?>
 
 <form name="adminForm" id="adminForm" action="index.php" method="post" class="form form-horizontal">
@@ -20,7 +20,7 @@ FOFTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="<?php echo JFactory::getSession()->getFormToken();?>" value="1" />
 
 <div class="row-fluid">
-	
+
 	<div class="span12">
 		<h3><?php echo JText::_('LBL_ARS_UPDATESTREAMS_BASIC'); ?></h3>
 

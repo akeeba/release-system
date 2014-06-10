@@ -1,3 +1,23 @@
+Version 2.3.5
+================================================================================
+! CLI scripts were not being copied over
+# [HIGH] All items were unpublished when an item was not found in a Bleeding edge category
+# [LOW] The Bleeding Edge maturity plugin was broken after applying "Bleeding edge releases with dots/spaces in the folder gave a 404 error"
+# [LOW] Release Maker may return an error 500 when saving / updating a release
+
+Version 2.3.4
+================================================================================
++ Show update information in the component's control panel page
++ Allow the user to forcibly reload the update information from the component's control panel page
++ Database table installation, uninstallation and update is now handled by our own code instead of the unreliable JInstaller code
++ Automatically repair the database tables in case of an update going wrong
++ Search box in Update Streams allows you to filter streams by name
+~ Significant performance improvement in the Latest Releases content plugin when using Akeeba Subscriptions
+# [MEDIUM] Blank page or 400 error message after updating from 2.3.2 or lower using Live Update
+# [MEDIUM] Bleeding edge releases with dots/spaces in the folder gave a 404 error
+# [MEDIUM] Updating the GeoIP database throw a fatal error when the GeoIP library has not been loaded
+# [LOW] Searching by title in Automatic Item Descriptions leads to a SQL error
+
 Version 2.3.3
 ================================================================================
 + Added sh404SEF plugin to create SEF url with that component

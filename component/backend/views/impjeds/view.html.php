@@ -5,7 +5,7 @@
  * @license GNU General Public License version 3, or later
  */
 
-class ArsViewImpjeds extends FOFViewHtml
+class ArsViewImpjeds extends F0FViewHtml
 {
 	protected function onDisplay($tpl = null) {
 		return true;

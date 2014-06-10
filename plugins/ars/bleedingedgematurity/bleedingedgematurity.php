@@ -52,7 +52,7 @@ class plgArsBleedingedgematurity extends JPlugin
 		
 		if(count($parts) < 2) return false;
 		$stability = array_pop($parts);
-		
+
 		switch($stability) {
 			case 'ALPHA':
 				$data['maturity'] = 'alpha';
@@ -73,8 +73,13 @@ class plgArsBleedingedgematurity extends JPlugin
 			default:
 				return false;
 		}
-		
+
+		// If this line breaks something on yoru site:
 		$version = strtolower(implode('_', $parts));
+		// comment it and uncomment the following line:
+		// $version = strtolower(implode('_', $parts));
+		// and don't ask me to fix anything. I've wasted too much time on this already.
+
 		$data['version'] = $version;
 		
 		return $data;

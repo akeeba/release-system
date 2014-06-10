@@ -9,7 +9,11 @@ defined('_JEXEC') or die();
 
 JLoader::import('joomla.utilities.date');
 
-$this->item->hit();
+if (!property_exists($this, 'item') || !is_object($this->item))
+{
+	return;
+}
+
 $results    = false;
 $released   = new JDate($this->item->created);
 $userAccess = JFactory::getUser()->getAuthorisedViewLevels();

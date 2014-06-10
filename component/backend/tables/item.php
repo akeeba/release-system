@@ -19,7 +19,7 @@ if (!function_exists('fnmatch'))
 
 }
 
-class ArsTableItem extends FOFTable
+class ArsTableItem extends F0FTable
 {
 
 	/**
@@ -145,7 +145,10 @@ class ArsTableItem extends FOFTable
 		}
 		else
 		{
-			$this->environments = json_encode($this->environments);
+			if (is_array($this->environments))
+			{
+				$this->environments = json_encode($this->environments);
+			}
 		}
 
 		// Check if a title exists
@@ -366,12 +369,12 @@ class ArsTableItem extends FOFTable
 				$folder		 = null;
 				$filename	 = $this->filename;
 
-				$release = FOFModel::getTmpInstance('Releases', 'ArsModel')
+				$release = F0FModel::getTmpInstance('Releases', 'ArsModel')
 					->getItem($this->release_id);
 
 				if ($release->id)
 				{
-					$category = FOFModel::getTmpInstance('Categories', 'ArsModel')
+					$category = F0FModel::getTmpInstance('Categories', 'ArsModel')
 						->getItem($release->category_id);
 
 					if ($category->id)

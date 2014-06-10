@@ -10,7 +10,7 @@ defined('_JEXEC') or die();
 /**
  * This file is only necessary for the backend dispatcher not to load
  */
-class ArsDispatcher extends FOFDispatcher
+class ArsDispatcher extends F0FDispatcher
 {
 	public $defaultView = 'browse';
 	private $allowedViews = array(
@@ -45,15 +45,15 @@ class ArsDispatcher extends FOFDispatcher
 
 			// Set the view, if it's allowed
 			$this->input->set('view', $view);
-			if (!in_array(FOFInflector::pluralize($view), $this->allowedViews))
+			if (!in_array(F0FInflector::pluralize($view), $this->allowedViews))
 				$result = false;
 
 			if (($this->input->getCmd('format', 'html') == 'html') &&
-				(FOFInflector::pluralize($view) == 'items'))
+				(F0FInflector::pluralize($view) == 'items'))
 			{
 				$result = false;
 			}
-			elseif (FOFInflector::pluralize($view) == 'items')
+			elseif (F0FInflector::pluralize($view) == 'items')
 			{
 				// Require admin
 				if (!JFactory::getUser()->authorise('core.manage', 'com_ars'))

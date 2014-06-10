@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsModelItems extends FOFModel
+class ArsModelItems extends F0FModel
 {
 	public function buildQuery($overrideLimits = false)
 	{
@@ -136,7 +136,7 @@ class ArsModelItems extends FOFModel
 			$where[] = $db->qn('category_id').' = '.$db->q($fltCategory);
 		}
 		if($fltRelease) {
-			$where[] = $db->qn('release_id').' = '.$db->q($fltCategory);
+			$where[] = $db->qn('release_id').' = '.$db->q($fltRelease);
 		}
 		if($fltPublished != '') {
 			$where[] = $db->qn('published').' = '.$db->q($fltPublished);

@@ -8,7 +8,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-class ArsControllerItem extends FOFController
+class ArsControllerItem extends F0FController
 {
 	public function copy()
 	{

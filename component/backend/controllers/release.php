@@ -8,7 +8,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-class ArsControllerRelease extends FOFController
+class ArsControllerRelease extends F0FController
 {
 	public function copy()
 	{
@@ -42,7 +42,7 @@ class ArsControllerRelease extends FOFController
 		$newRelease = $model->getSavedTable();
 
 		// Get a list of contained items
-		$temp = FOFModel::getTmpInstance('Items','ArsModel')
+		$temp = F0FModel::getTmpInstance('Items','ArsModel')
 			->release($id)
 			->getItemList();
 
@@ -64,7 +64,7 @@ class ArsControllerRelease extends FOFController
 			$item->published = 0;
 			$item->hits = 0;
 
-			$table = FOFModel::getTmpInstance('Items','ArsModel')->getTable();
+			$table = F0FModel::getTmpInstance('Items','ArsModel')->getTable();
 			$table->reset();
 			$newStatus = $table->save($item);
 			$status = $status && $newStatus;

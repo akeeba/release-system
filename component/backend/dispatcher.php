@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsDispatcher extends FOFDispatcher
+class ArsDispatcher extends F0FDispatcher
 {
 	public $defaultView = 'cpanels';
 
@@ -24,6 +24,15 @@ class ArsDispatcher extends FOFDispatcher
 		if (!$result)
 		{
 			return $result;
+		}
+
+		$view = F0FInflector::singularize($this->input->getCmd('view',$this->defaultView));
+
+		if ($view == 'liveupdate')
+		{
+			$url = JUri::base() . 'index.php?option=com_ars';
+			JFactory::getApplication()->redirect($url);
+			return;
 		}
 
 		// Load Akeeba Strapper
