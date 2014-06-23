@@ -3335,6 +3335,280 @@ description ="Enter your Download ID to enable Live Updates" /&gt;</programlisti
         logged after uploading the new database version will be affected by
         the new database version.</para>
       </section>
+
+      <section xml:id="cli-update-script">
+        <title>The CLI update notification and automatic update script</title>
+
+        <note>
+          <para>This feature is only available in the Professional
+          release.</para>
+        </note>
+
+        <para>Since March 2014 all of our software uses Joomla! Extensions
+        Update to determine if there is an extension available and to let you
+        install it. None of our own code is involved in the update
+        provisioning and installation process. However, this means that you
+        need to either log in to your site often to see if there are updates
+        available or subscribe to a third party service which will do that for
+        you. The former is inconvenient when you have multiple sites, the
+        latter is expensive.</para>
+
+        <para>This is where our CLI update script come into the big picture.
+        This script will ask Joomla! to tell it if there is an update
+        available for our component. If there is, it can do either (or both)
+        of these actions:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Send an email notification to the email address you have
+            specified.</para>
+          </listitem>
+
+          <listitem>
+            <para>Ask Joomla! to install the available update
+            automatically.</para>
+          </listitem>
+        </itemizedlist>
+
+        <warning>
+          <para><emphasis role="bold">AUTOMATIC INSTALLATION OF UPDATES IS A
+          VERY BAD IDEA AND CAN LEAD TO YOUR SITE BECOMING
+          INACCESSIBLE!</emphasis> Read below for more information. Akeeba Ltd
+          does not accept any responsibility for any problems, data loss or
+          other side effects which might arise directly or indirectly from the
+          use, misuse or abuse of our software per the license of the
+          software. Since the actual update code is part of Joomla! itself (it
+          is not written by us) we cannot provide bug fixes, making the use of
+          this script exempt from our support policy. IF YOU DECIDE TO USE
+          THIS SCRIPT TO INSTALL UPDATES OF OUR SOFTWARE AUTOMATICALLY YOU ARE
+          DOING SO AT YOUR OWN RISK.</para>
+        </warning>
+
+        <para>Joomla! currently does not provide a way to indicate the
+        stability status (alpha, beta, RC, stable), Joomla! version
+        compatibility and PHP version compatibility status of an available
+        update. This means that in the future you might end up having the
+        automatic update CLI script install a version of our software which is
+        unstable or incompatible with your version of PHP or Joomla!. We
+        strongly recommend you to check the Compatibility page on our site to
+        determine which version is compatible with your site.</para>
+
+        <para>Furthermore, Joomla! does not provide a rollback feature for
+        failed updates. If for any reason the update process (which is handled
+        by Joomla! itself, not our own code, therefore outside our control)
+        fails while it is copying the component's files you will end up with a
+        partially upgrade component. This can lead to functional issues or
+        even inability to access your site.</para>
+
+        <para>Finally, even if you have Akeeba Backup Professional, System
+        Restore Points CAN NOT be taken when installing an update through the
+        CLI update script. If the update fails you are really left with no
+        backup.</para>
+
+        <bridgehead renderas="sect2">Configuring the update
+        script</bridgehead>
+
+        <para>The update script can be configured from the Options page of the
+        component. Please go to the component's main (control panel) page and
+        click on the <guibutton>Options</guibutton> button. On the new page,
+        click on the <guilabel>Live Update</guilabel> tab. You have the
+        following options:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Download ID</term>
+
+            <listitem>
+              <para>If you have the Professional version of our software
+              please enter your Download ID to allow Joomla! to download
+              subscriber-only updates. The Download ID may change over time:
+              it changes whenever the passwords' hashing ("encryption") on our
+              site is enhanced to increase security, when you change/reset
+              your password on our site or when you change your email address
+              on our site. If you cannot install updates to the Professional
+              release please use the My Subscription page on our site to find
+              out your current Download ID and make sure that you have an
+              active subscription.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Auto-update CLI settings</term>
+
+            <listitem>
+              <para>What you want the update CLI to do when Joomla! reports
+              that a new version is available.</para>
+
+              <itemizedlist>
+                <listitem>
+                  <para><guilabel>Notify and update</guilabel>. It will send
+                  you an email to notify you about the available update and
+                  immediately ask Joomla! to install it.</para>
+                </listitem>
+
+                <listitem>
+                  <para><guilabel>Notify only</guilabel>. RECOMMENDED. It will
+                  only send you an email to notify you about the available
+                  update.</para>
+                </listitem>
+
+                <listitem>
+                  <para><guilabel>Update only</guilabel>. Not recommended! It
+                  will only ask Joomla! to install the available update,
+                  without any further notification.</para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Notification frequency</term>
+
+            <listitem>
+              <para>The <emphasis>maximum</emphasis> frequency you will be
+              receiving update notification emails if you use the "Notify and
+              update" or "Notify only" options above. This field only contains
+              a number, by default it's 1. Please look at the next option
+              too.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Notification time</term>
+
+            <listitem>
+              <para>The time period expressed by notification frequency. For
+              example, if you set the notification frequency to 1 and the
+              notification time to "days" you will receive update notification
+              emails for the new version <emphasis>at most</emphasis> once a
+              day.</para>
+
+              <important>
+                <para>These two options only define the
+                <emphasis>maximum</emphasis> update notification frequency.
+                You may receive update emails <emphasis>less
+                frequently</emphasis> than what you have set up. It depends on
+                how often then CLI update script runs and how often Joomla!
+                performs the update check. It is always possible that you will
+                not be notified about an update which has been released in the
+                last two days because Joomla! hasn't yet "seen" it.</para>
+              </important>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Email for update notifications</term>
+
+            <listitem>
+              <para>The email address where update notification emails will be
+              sent. If you do not specify an address no update notification
+              email will be sent. You can only specify a singe email
+              address.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <bridgehead renderas="sect2">Creating a CRON job for the update
+        script</bridgehead>
+
+        <para>You can only use this feature if you have access to the
+        command-line version of PHP. In order to schedule an automatic update,
+        you will have to use the following command line to your host's CRON
+        interface:</para>
+
+        <programlisting><replaceable>/usr/local/bin/php</replaceable> <replaceable>/home/USER/webroot</replaceable>/cli/ars-update.php</programlisting>
+
+        <para>where <replaceable>/usr/local/bin/php</replaceable> is the path
+        to your PHP CLI executable and
+        <replaceable>/home/USER/webroot</replaceable> is the absolute path to
+        your web site's root. You can get this information from your
+        host.</para>
+
+        <para>The update script does not accept any parameters.</para>
+
+        <para>In order to give you an example, we will assume that your PHP
+        CLI binary is located in <filename>/usr/local/bin/php</filename> - a
+        common setting among hosts - and that your web site's root is located
+        at <filename>/home/johndoe/httpdocs</filename> :</para>
+
+        <programlisting>usr/local/bin/php /home/johndoe/httpdocs/cli/ars-update.php</programlisting>
+
+        <para>Special considerations:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Most hosts do not impose a time limit on scripts running
+            from the command-line. If your host does and the limit is less
+            than the required time to send an update notification and/or
+            install the update your site, the update will fail.</para>
+          </listitem>
+
+          <listitem>
+            <para>This script is not meant to run from a web interface. If
+            your host only provides access to the CGI or FastCGI PHP binaries
+            the script may not work with them. The reason is the time
+            constraint explained above.</para>
+          </listitem>
+
+          <listitem>
+            <para>Some servers do not fully support this update method. The
+            usual symptoms will be an update which fails to complete without
+            any further error messages and no indication of something going
+            wrong. In such a case, trying to ryn the update from the back-end
+            of your site will work properly.</para>
+          </listitem>
+        </itemizedlist>
+
+        <bridgehead>Setting up a CRON job on cPanel</bridgehead>
+
+        <para>Go to your cPanel main page and choose the <guibutton>CRON
+        Jobs</guibutton> icon from the <guilabel>Advanced</guilabel> pane. In
+        the <guilabel>Add New CRON Job</guilabel> box on the page which loads,
+        enter the following information:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Common Settings</term>
+
+            <listitem>
+              <para>Choose the frequency of your backup, for example once per
+              day.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Command</term>
+
+            <listitem>
+              <para>Enter your backup command. Usually, you have to use
+              something like:</para>
+
+              <programlisting>/usr/bin/php5-cli /home/<replaceable>myusername</replaceable>/public_html/cli/ars-update.php</programlisting>
+
+              <para>where <replaceable>myusername</replaceable> is your
+              account's user name (most probably the same you use to login to
+              cPanel). Do note the path for the PHP command line executable:
+              <filename>/usr/bin/php5-cli</filename>. This is the default
+              location of the correct executable file for cPanel 11 and later.
+              Your host may use a different path to the executable. If the
+              command never runs, ask them. We can't help you with that; only
+              those who have set up the server know the changes they have made
+              to the default setup.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        <para>Finally, click the <guibutton>Add New Cron Job</guibutton>
+        button to activate the CRON job.</para>
+
+        <bridgehead>Special considerations for HostGator</bridgehead>
+
+        <para>The location of the PHP CLI binary is
+        <filename>/usr/bin/php-cli</filename>. This means that your CRON
+        command line should look like:</para>
+
+        <para><programlisting>/opt/php53/bin/php /home/<replaceable>myusername</replaceable>/public_html/cli/ars-update.php</programlisting></para>
+      </section>
     </chapter>
   </part>
 
