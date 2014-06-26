@@ -130,8 +130,8 @@
             <para>Allows for automatic updates of restricted downloads. You
             can authenticate automatic downloads of restricted access items by
             passing the username and password or a secure Download ID to the
-            URL. This is how we allow you to do 1-click live updates of Akeeba
-            Backup Professional and Admin Tools Professional!</para>
+            URL. This is how we allow you to do 1-click live updates of the
+            Professional versions of our software.</para>
           </listitem>
 
           <listitem>
@@ -2598,12 +2598,11 @@ date="2010-10-10"</programlisting>
           authenticate users?</para>
 
           <para>The answer to that question is the Download ID. The Download
-          ID is an MD5 hash derived from a user's numeric ID, username,
-          encrypted password and email address which uniquely identified the
-          user to ARS. Appending the download URL with the
+          ID is a unique, random hash which uniquely identifies the user to
+          ARS. Appending the download URL with the
           dlid=<replaceable>download_id</replaceable> query string parameter
-          will allow ARS to authenticate the user and, if he has access to the
-          download, proceed with the download.</para>
+          will allow ARS to authenticate the user and, if they have access to
+          the download, proceed with the download.</para>
 
           <para>You need to be able to communicate this Download ID to your
           users. This is where this plugin comes in use. Just enter
@@ -2615,21 +2614,17 @@ date="2010-10-10"</programlisting>
 
           <important>
             <para>Just because a Download ID is displayed for a user it
-            doesn't mean that he has access to any downloads. Think of the
-            Download ID as a combined, abbreviated form of a username and a
-            password.</para>
+            doesn't mean that the user has access to any downloads. Think of
+            the Download ID as a combined, abbreviated form of a username and
+            a password.</para>
           </important>
 
           <warning>
-            <para>The Download ID changes whenever your user changes or resets
-            his password, <emphasis>even if the his password is the same as
-            the old one</emphasis>. This is a consequence of the very correct
-            and secure way Joomla! handles password changes. Whenever a
-            password is changed, Joomla! stores a new encrypted form of the
-            password, based on a new random string, in the database. Since the
-            Download ID algorithm uses the encrypted password as part of its
-            calculation, the Download ID changes when Joomla! changes the
-            stored encrypted password.</para>
+            <para>Since ARS 3 a Download ID can only change when the user
+            clicks on the Reset button in the Download ID page of ARS. On
+            older versions of ARS the Download ID would change whenever your
+            users changed or resets their password, <emphasis>even if the new
+            password is the same as the old one</emphasis>.</para>
           </warning>
         </section>
 
@@ -2782,398 +2777,6 @@ Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
             software.</para>
           </tip>
         </section>
-      </section>
-
-      <section xml:id="live-update">
-        <title>One-click Live Updates for your components</title>
-
-        <para>As part of our Open Source spirit, we are thrilled to announce
-        the availability of <guilabel>Akeeba Live Update</guilabel> (ALU). It
-        is a library licensed under the GNU Lesser General Public License
-        (LGPL) version 3 or, at your own option, any later version. It allows
-        you to enable one-click updates of your components by adding just 20
-        lines of boilerplate PHP code.</para>
-
-        <note>
-          <para>Akeeba Live Update does not require using Akeeba Release
-          System and does not require any third party software to be installed
-          on your user's site. It integrates with your own component, it is
-          distributed with your own component and is just a bunch of files
-          placed in a directory of your own component. It has zero
-          dependencies and works perfectly under Joomla! 1.5 and Joomla!
-          1.6.</para>
-        </note>
-
-        <bridgehead>Including ALU in your component</bridgehead>
-
-        <para>The first thing you need to include in your extension is the ALU
-        library itself. After installing Akeeba Release System, go to your
-        site's <filename>administrator/components/com_ars</filename> directory
-        and copy the <filename>liveupdate</filename> directory to your
-        extension's back-end directory. It's important not to name this
-        directory differently. For example, if you have a component named
-        com_foobar then the library must be installed in
-        <filename>administrator/components/com_foobar/liveupdate</filename>.</para>
-
-        <bridgehead>Configuring ALU</bridgehead>
-
-        <para>ALU needs to know which extension it updates, where to look for
-        updates and where to cache its information. You can do that by editing
-        the
-        <filename>administrator/components/com_foobar/liveupdate/config.php</filename>
-        file. The variables you have to supply are the following:</para>
-
-        <variablelist>
-          <varlistentry>
-            <term>$_extensionName</term>
-
-            <listitem>
-              <para>The folder name of your extension. In our example, that's
-              <filename>com_foobar</filename>. ALU uses this information to
-              automatically locate your extension's XML manifest file so that
-              it can read the version number and release date of the installed
-              copy of your extension to your user's site.</para>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term>$_extensionTitle</term>
-
-            <listitem>
-              <para>The human-readable name of your extension, as presented in
-              the Live Update GUI</para>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term>$_updateURL</term>
-
-            <listitem>
-              <para>The URL to the update stream. Right now, only INI update
-              streams are supported. You can either use ARS on your site to
-              automatically provide the INI file (copy the INI link's target
-              from the Update Streams view), or manually create an INI file
-              with a text editor, place it somewhere publicly accessible and
-              type in that URL in here.</para>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term>$_requiresAuthorization</term>
-
-            <listitem>
-              <para>If you are using ARS to serve the downloads to your
-              extension and you are limiting downloads only to registered
-              users, set this to true to let ALU know that it needs to provide
-              a username/password or a download ID to the updates server
-              before downloading the update file.</para>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term>$_versionStrategy</term>
-
-            <listitem>
-              <para>This lets ALU know how to determine if the component is
-              up-to-date or out-of-date. The following options are
-              available:</para>
-
-              <variablelist>
-                <varlistentry>
-                  <term>different</term>
-
-                  <listitem>
-                    <para>If the version reported by the update server is
-                    different then the currently installed one, ALU decides
-                    that an update is available. Default and enough for most
-                    uses.</para>
-                  </listitem>
-                </varlistentry>
-
-                <varlistentry>
-                  <term>newest</term>
-
-                  <listitem>
-                    <para>The release date reported by the update server and
-                    the one reported by the component are compared. If the
-                    update server's release date is newer, ALU decides there
-                    is an update available.</para>
-                  </listitem>
-                </varlistentry>
-
-                <varlistentry>
-                  <term>vcompare</term>
-
-                  <listitem>
-                    <para>The version number reported by the update server and
-                    the one in the current extension are compared using PHP's
-                    version_compare() in order to determine which is
-                    newer.</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term>$_storageAdapter</term>
-
-            <listitem>
-              <para>It can either be <option>file</option> or
-              <option>component</option>. The File adapter will try to cache
-              the update information in a file named something like
-              <filename>com_foobar.update.ini</filename>. The Component
-              adapter will try to store the (serialized) update information in
-              a component parameter, by default called
-              <option>liveupdate</option>. If you do not provide this option,
-              the File adapter will be used.</para>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term>$_storageConfig</term>
-
-            <listitem>
-              <para>This is an array containing the configuration options of
-              the storage adapter. It is optional.</para>
-
-              <para>For the File adapter the following options are
-              available:</para>
-
-              <variablelist>
-                <varlistentry>
-                  <term>path</term>
-
-                  <listitem>
-                    <para>Where to store the update cache file. By default,
-                    that's JPATH_CACHE, i.e. the
-                    <filename>administrator/cache</filename> directory.</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-
-              <para>An example of setting the configuration is this:</para>
-
-              <programlisting>var $_storageConfig = array('path' =&gt; JPATH_CACHE);</programlisting>
-
-              <para>For the Component adapter you have the following
-              options:</para>
-
-              <variablelist>
-                <varlistentry>
-                  <term>component</term>
-
-                  <listitem>
-                    <para>The component whose parameters will be used for
-                    saving the update information. If it's not supplied, the
-                    currently running component is assumed.</para>
-                  </listitem>
-                </varlistentry>
-
-                <varlistentry>
-                  <term>key</term>
-
-                  <listitem>
-                    <para>The component parameter used for saving the update
-                    information. It has to be a hidden parameter whose name is
-                    the same as the contents of this configuration parameter.
-                    If it is not supplied, <option>liveupdate</option> is
-                    assumed.</para>
-                  </listitem>
-                </varlistentry>
-              </variablelist>
-
-              <para>An example of setting the configuration is this:</para>
-
-              <programlisting>var $_storageConfig = array('component' =&gt; 'com_foobar', 'key' =&gt; 'liveupdate');</programlisting>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-
-        <bridgehead>Letting ALU handle the view=liveupdate
-        requests</bridgehead>
-
-        <para>ALU is designed to be able to handle requests to your
-        component's view=liveupdate URLs. In order to do that, you have to
-        open the main entry point file of your component and append four lines
-        of boilerplate PHP code. For instance, if your component is named
-        com_foobar, open
-        <filename>administrator/components/com_foobar/foobar.php</filename>
-        and paste the following lines right after the <code>defined('_JEXEC')
-        or die();</code> statement.</para>
-
-        <programlisting>require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
-if(JRequest::getCmd('view','') == 'liveupdate') {
-    LiveUpdate::handleRequest();
-    return;
-}</programlisting>
-
-        <para>These lines do the following:</para>
-
-        <orderedlist>
-          <listitem>
-            <para>They load the ALU library.</para>
-          </listitem>
-
-          <listitem>
-            <para>They check if the name of the view is liveupdate. You can
-            use a different view name by editing the right hand side of the
-            conditional check.</para>
-          </listitem>
-
-          <listitem>
-            <para>If the view matches, they hand off the execution to ALU. Do
-            not forget the return statement! If you do, your component's
-            controller will fire after ALU's integrated controller, wrecking
-            havoc.</para>
-          </listitem>
-        </orderedlist>
-
-        <bridgehead>Using ALU to create an update status Control Panel
-        icon</bridgehead>
-
-        <para>ALU has a shorthand function to create an icon div, useful for
-        displaying the update status of your extension in your extension's
-        Control Panel page. All you have to do is paste the following line in
-        your layout file:</para>
-
-        <programlisting>&lt;?php echo LiveUpdate::getIcon(); ?&gt;</programlisting>
-
-        <bridgehead>How ALU updates work</bridgehead>
-
-        <para>The first step is to get your user to visit ALU's main page. If
-        you followed the instructions above to the letter, this is done by
-        redirecting your user to view=liveupdate of your component, e.g.
-        <uri>index.php?option=com_foobar&amp;view=liveupdate</uri>.</para>
-
-        <para>Live Update will then try to fetch the update information. It
-        will first check its cache. If there are no cached data or if they are
-        older than 6 hours, it will re-fetch the information from your server.
-        If an update is found, it will notify the user. It will also notify
-        the user if Live Update is not supported on his server (lack of cURL /
-        URL fopen() wrappers or firewall disallowing connections to your
-        update server) or if ALU determined that the last time it tried to
-        fetch updates it crashed.</para>
-
-        <para>If the user chooses to install a new version, the following will
-        happen:</para>
-
-        <orderedlist>
-          <listitem>
-            <para>ALU checks if the Joomla! FTP Layer is enabled but no
-            username/password is supplied. In that case, it will ask your user
-            to supply the FTP username and password.</para>
-          </listitem>
-
-          <listitem>
-            <para>The update package is fetched from your server and saved to
-            your user's temporary directory. ALU will first try using cURL. If
-            that fails, it will try using URL fopen() wrappers. If writing
-            directly to the file is not possible, ALU will load the package in
-            memory and use JFile::write() to write it to disk. If all else
-            fails, your user will see an error messaging prompting him to
-            enable Joomla!'s FTP layer.</para>
-          </listitem>
-
-          <listitem>
-            <para>The downloaded update package is extracted using Joomla!'s
-            API. If that fails, your user is notified and the process stops. A
-            failed extraction usually means that either your package is broken
-            or your user's server doesn't allow downloading files
-            correctly.</para>
-          </listitem>
-
-          <listitem>
-            <para>The extracted package is installed using Joomla!'s API, but
-            without calling the com_installer component itself. Any
-            post-installation tasks will run normally, so don't worry if you
-            want to run AJAX calls as soon as your extension is
-            installed.</para>
-
-            <para>Without loading a different page, a hidden IFRAME will take
-            care of cleaning up, i.e. remove the update package and its
-            extracted files, just like com_installer would do.</para>
-          </listitem>
-        </orderedlist>
-
-        <para>Since ALU performs these four steps in separate page loads it is
-        much more resilient to server timeouts than Joomla!'s com_installer.
-        More specifically, com_installer tries to run all four steps within
-        the same page load. If your client is using Joomla!'s FTP layer this
-        takes forever and causes a White Screen Of Death due to timeout or
-        memory errors. ALU separates and isolates those steps, avoiding such
-        issues even with extremely large installation packages (in the range
-        of 2-4Mb!). Moreover, it provides intelligent error messages where it
-        can instead of the cryptic com_installer messages, where "Package not
-        found" may mean "I could not download the file"...</para>
-
-        <bridgehead>Allowing your user to upgrade extensions with restricted
-        downloads</bridgehead>
-
-        <para>Some developers want to provide downloads that are not openly
-        accessible to the public. For instance, downloading a file may require
-        registering for a free account and logging in before it is available.
-        Developers distributing their software for a fee have a similar
-        condition to face: they need only their subscribers to be able to
-        download their software. The common ground in all of those cases is
-        that you actually need to log in the user before downloading the
-        file.</para>
-
-        <para>ALU, when consuming the update feed of an ARS installation, can
-        cater for that. How? If you set the $_requiresAuthorization to true,
-        ALU knows that your site requires authorization before downloading a
-        backup archive. In order to achieve that, it will append a
-        username/password pair or a unique per user Download ID to the
-        download URL. Akeeba Release System on your site sees that information
-        and tries to authenticate the user. If the authentication succeeds, it
-        will continue with the download.</para>
-
-        <para>The remaining question is how ALU knows what the
-        username/password pair or the download ID is. The answer is simple.
-        All you have to do is to create component parameters in your
-        component's config.xml file. If you want to use username/password
-        pairs, add the following lines after your &lt;params&gt; tag:</para>
-
-        <programlisting>&lt;param name="username" type="text" default="" size="30"
-label="Username"
-description ="Enter the username to our site in order to enable Live Updates" /&gt;
-&lt;param name="password" type="text" default="" size="30"
-label="Password"
-description ="Enter the password to our site in order to enable Live Updates" /&gt;
-</programlisting>
-
-        <para>If you have a Joomla! 1.6 component replace &lt;param&gt; with
-        &lt;field&gt;. Similarly, in order to use a Download ID use
-        this:</para>
-
-        <programlisting>&lt;param name="downloadid" type="text" default="" size="30"
-label="Download ID"
-description ="Enter your Download ID to enable Live Updates" /&gt;</programlisting>
-
-        <para>Alternatively, you can override the LiveUpdateConfig class'
-        constructor and populate the $_username/$_password or $_downloadID
-        parameters during the class initialization.</para>
-
-        <bridgehead>Do I need to pay anything / install your software on my
-        users' site / sell my soul to the devil to use ALU?</bridgehead>
-
-        <para>No, absolutely not! We provide ALU free of charge and royalty
-        free. It's license (GNU LGPL 3 or later) allows you to use ALU on Open
-        Source and Proprietary components alike. You set up ALU to consume an
-        ARS-provided INI update stream or you can supply your own INI update
-        stream. There are no per-requisites and no strings attached. We have
-        created ALU because we needed it for our own use. We give it away to
-        the world so that all extensions can provide the smooth
-        one-click-and-you're-up-to-date experience that made us famous.</para>
-
-        <para>We kindly ask, however, to not remove the link back to us on the
-        bottom of ALU's pages. While you can legally do that (we can't and
-        won't prevent you from doing so) we consider it professional courtesy
-        to give us credit for our hard work. We also kindly ask you to submit
-        any patches, fixes, additions or observations back to us. ALU is Free
-        Software and as such it is powered by the worldwide Joomla! community.
-        Any and all improvements to ALU have a positive impact to thousands of
-        users.</para>
       </section>
 
       <section xml:id="bleedingedge-repositories">
@@ -3415,23 +3018,6 @@ description ="Enter your Download ID to enable Live Updates" /&gt;</programlisti
         following options:</para>
 
         <variablelist>
-          <varlistentry>
-            <term>Download ID</term>
-
-            <listitem>
-              <para>If you have the Professional version of our software
-              please enter your Download ID to allow Joomla! to download
-              subscriber-only updates. The Download ID may change over time:
-              it changes whenever the passwords' hashing ("encryption") on our
-              site is enhanced to increase security, when you change/reset
-              your password on our site or when you change your email address
-              on our site. If you cannot install updates to the Professional
-              release please use the My Subscription page on our site to find
-              out your current Download ID and make sure that you have an
-              active subscription.</para>
-            </listitem>
-          </varlistentry>
-
           <varlistentry>
             <term>Auto-update CLI settings</term>
 
