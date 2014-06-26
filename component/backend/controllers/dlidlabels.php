@@ -36,6 +36,43 @@ class ArsControllerDlidlabels extends F0FController
 		parent::execute($task);
 	}
 
+	public function reset()
+	{
+		// CSRF prevention
+		if ($this->csrfProtection)
+		{
+			$this->_csrfProtection();
+		}
+
+		$model = $this->getThisModel();
+
+		if (!$model->getId())
+		{
+			$model->setIDsFromRequest();
+		}
+
+		$status = $model->resetDownloadId();
+
+		// Redirect
+		if ($customURL = $this->input->get('returnurl', '', 'string'))
+		{
+			$customURL = base64_decode($customURL);
+		}
+
+		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->component . '&view=' . F0FInflector::pluralize($this->view) . $this->getItemidURLSuffix();
+
+		if (!$status)
+		{
+			$this->setRedirect($url, $model->getError(), 'error');
+		}
+		else
+		{
+			$this->setRedirect($url);
+		}
+
+		return $status;
+	}
+
 	protected function onBeforeBrowse()
 	{
 		$result = parent::onBeforeBrowse();
@@ -108,6 +145,42 @@ class ArsControllerDlidlabels extends F0FController
 		}
 
 		return ($result !== false);
+	}
+
+	/**
+	 * Edit view permissions check. Overriden to make sure a user won't try
+	 * editing another user's add-on Download IDs.
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 */
+	protected function onBeforeReset()
+	{
+		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
+
+		if (!$isAdmin && !$isCLI)
+		{
+			$model = $this->getThisModel();
+
+			if (!$model->getId())
+			{
+				$model->setIDsFromRequest();
+			}
+
+			$item = $model->getItem();
+
+			if ($item->user_id != JFactory::getUser()->id)
+			{
+				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
+				return false;
+			}
+
+			$this->layout = 'form';
+		}
+
+		return true;
 	}
 
 	/**

@@ -8,10 +8,11 @@
 	norows_placeholder="COM_ARS_COMMON_NOITEMS_LABEL"
 >
 	<headerset>
-		<header name="ars_dlidlabel_id" type="rowselect" tdwidth="20" />
+		<header name="ars_dlidlabel_id" type="rowselect" tdwidth="20" sortable="false" />
 		<header name="label" type="field" sortable="true" />
-		<header name="download_id" type="field" sortable="false"/>
+		<header name="dlid" type="field" sortable="true"/>
 		<header name="enabled" type="published" sortable="true" tdwidth="8%" />
+		<header name="reset" type="label" sortable="false" tdwidth="8%" />
 	</headerset>
 
 	<fieldset name="items">
@@ -27,5 +28,7 @@
 		<field name="download_id" type="dlid"/>
 
 		<field name="enabled" type="dlidpublished"/>
+
+        <field name="reset" type="dlidreset"/>
 	</fieldset>
 </form>

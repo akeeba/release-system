@@ -65,4 +65,34 @@ class ArsModelDlidlabels extends F0FModel
 
 		return $result;
 	}
+
+	public function resetDownloadId()
+	{
+		if (is_array($this->id_list) && !empty($this->id_list))
+		{
+			$table = $this->getTable($this->table);
+
+			foreach ($this->id_list as $id)
+			{
+				$table->load($id);
+				$table->dlid = null;
+
+				if (!$table->check())
+				{
+					$this->setError($table->getError());
+
+					return false;
+				}
+
+				if (!$table->store())
+				{
+					$this->setError($table->getError());
+
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
 }

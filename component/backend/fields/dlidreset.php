@@ -14,23 +14,23 @@ defined('_JEXEC') or die();
  *
  * @since       2.0
  */
-class F0FFormFieldDlid extends F0FFormFieldText
+class F0FFormFieldDlidreset extends F0FFormFieldText
 {
 	public function getRepeatable()
 	{
-		$prefix = $this->item->user_id . ':';
+		$this->element['show_link'] = 'true';
 
-		if ($this->item->primary)
+		$token = JFactory::getSession()->getFormToken();
+		$this->element['url'] = JRoute::_('index.php?option=com_ars&view=dlidlabel&task=reset&id=' . $this->item->ars_dlidlabel_id . '&' . $token . '=1');
+
+		if (!$this->element['class'])
 		{
-			$prefix = '';
-			$this->element['class'] = 'label label-inverse';
-		}
-		else
-		{
-			$this->element['class'] = '';
+			$this->element['class'] = 'btn btn-micro btn-warning';
 		}
 
-		$this->value = $prefix . $this->item->dlid;
+		$this->element['format'] = '%s';
+
+		$this->value = '<span class="icon-retweet"></span>';
 
 		return parent::getRepeatable();
 	}
