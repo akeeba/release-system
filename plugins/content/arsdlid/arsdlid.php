@@ -11,6 +11,7 @@ defined('_JEXEC') or die();
 
 class plgContentArsdlid extends JPlugin
 {
+	private static $cache = array();
 
 	public function onContentPrepare($context, &$article, &$params, $limitstart = 0)
 	{
@@ -29,18 +30,21 @@ class plgContentArsdlid extends JPlugin
 	private static function process($match)
 	{
 		$ret = '';
-
 		$user = JFactory::getUser();
+
 		if (!$user->guest)
 		{
-			$db = JFactory::getDBO();
+			if (!isset(self::$cache[$user->id]))
+			{
+				if (!class_exists('ArsHelperFilter'))
+				{
+					@include_once JPATH_SITE . '/components/com_ars/helpers/filter.php';
+				}
 
-			$query = $db->getQuery(true)
-						->select('MD5(CONCAT(' . $db->qn('id') . ',' . $db->qn('username') . ',' . $db->qn('password') . ')) AS ' . $db->qn('dlid'))
-						->from($db->qn('#__users'))
-						->where($db->qn('id') . ' = ' . $db->q($user->id));
-			$db->setQuery($query, 0, 1);
-			$ret = $db->loadResult();
+				self::$cache[$user->id] = class_exists('ArsHelperFilter') ? ArsHelperFilter::myDownloadID() : '';
+			}
+
+			$ret = self::$cache[$user->id];
 		}
 
 		return $ret;

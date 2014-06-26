@@ -326,14 +326,12 @@ class plgContentArslatest extends JPlugin
 
 		if (empty($dlid) && !$user->guest)
 		{
-			$db = JFactory::getDBO();
+			if (!class_exists('ArsHelperFilter'))
+			{
+				@include_once JPATH_SITE . '/components/com_ars/helpers/filter.php';
+			}
 
-			$query = $db->getQuery(true)
-						->select('MD5(CONCAT(' . $db->qn('id') . ',' . $db->qn('username') . ',' . $db->qn('password') . ')) AS ' . $db->qn('dlid'))
-						->from($db->qn('#__users'))
-						->where($db->qn('id') . ' = ' . $db->q($user->id));
-			$db->setQuery($query, 0, 1);
-			$dlid = $db->loadResult();
+			$dlid = class_exists('ArsHelperFilter') ? ArsHelperFilter::myDownloadID() : '';
 		}
 
 		$link = JRoute::_('index.php?option=com_ars&view=update&task=download&format=raw&id=' . (int)$content, false);
