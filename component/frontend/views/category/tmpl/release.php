@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewCategory $this */
+
 JLoader::import('joomla.utilities.date');
 
 $released = new JDate($item->created);

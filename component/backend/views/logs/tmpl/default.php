@@ -7,10 +7,13 @@
 
 defined('_JEXEC') or die();
 
+/** @var F0FViewHtml $this */
+
 JLoader::import('joomla.utilities.date');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
+
 if (version_compare(JVERSION, '3.0', 'gt'))
 {
 	JHtml::_('dropdown.init');
@@ -205,8 +208,9 @@ $sortFields = array(
 		<td colspan="8">
 			<?php if ($this->pagination->total > 0)
 			{
-				echo $this->pagination->getListFooter()
-} ?>
+				echo $this->pagination->getListFooter();
+			}
+			?>
 		</td>
 	</tr>
 	</tfoot>

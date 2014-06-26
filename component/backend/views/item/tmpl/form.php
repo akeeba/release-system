@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var F0FViewHtml $this */
+
 $editor = JFactory::getEditor();
 
 $this->loadHelper('select');

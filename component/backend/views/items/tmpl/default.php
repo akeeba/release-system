@@ -7,8 +7,11 @@
 
 defined('_JEXEC') or die();
 
+/** @var F0FViewHtml $this */
+
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
+
 if (version_compare(JVERSION, '3.0', 'gt'))
 {
 	JHtml::_('dropdown.init');
@@ -18,6 +21,7 @@ if (version_compare(JVERSION, '3.0', 'gt'))
 $model = $this->getModel();
 
 $base_folder = rtrim(JURI::base(), '/');
+
 if (substr($base_folder, -13) == 'administrator')
 {
 	$base_folder = rtrim(substr($base_folder, 0, -13), '/');
@@ -192,7 +196,7 @@ $sortFields = array(
 		<td colspan="20">
 			<?php if ($this->pagination->total > 0)
 			{
-				echo $this->pagination->getListFooter()
+				echo $this->pagination->getListFooter();
 } ?>
 		</td>
 	</tr>

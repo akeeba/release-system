@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewBrowses $this */
+
 $category_url = AKRouter::_('index.php?option=com_ars&view=category&id='.$item->id.'&Itemid=' . $Itemid);
 
 ?>

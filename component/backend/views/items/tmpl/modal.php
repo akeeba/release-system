@@ -8,9 +8,12 @@
 
 defined('_JEXEC') or die();
 
+/** @var F0FViewHtml $this */
+
 $model = $this->getModel();
 
 $base_folder = rtrim(JURI::base(), '/');
+
 if (substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
 
 $function = $this->input->getCmd('function', 'arsSelectItem');

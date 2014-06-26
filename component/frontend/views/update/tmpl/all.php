@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewUpdate $this */
+
 $rootURL = rtrim(JURI::base(),'/');
 $subpathURL = JURI::base(true);
 if(!empty($subpathURL) && ($subpathURL != '/')) {

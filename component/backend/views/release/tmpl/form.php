@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewRelease $this */
+
 JHTML::_('behavior.calendar');
 
 $editor = JFactory::getEditor();

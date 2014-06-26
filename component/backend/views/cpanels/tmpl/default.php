@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
+/** @var ArsViewCpanels $this */
+
 $lang = JFactory::getLanguage();
 $icons_root = JURI::base() . 'components/com_ars/assets/images/';
 

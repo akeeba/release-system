@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
+/** @var ArsViewUploads $this */
+
 $session  = JFactory::getSession();
 $suffix = '&'.$session->getName() .'='. $session->getId();
 

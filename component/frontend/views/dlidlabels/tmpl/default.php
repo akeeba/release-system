@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var F0FViewHtml $this */
+
 JHtml::_('behavior.framework');
 
 $this->loadHelper('filter');

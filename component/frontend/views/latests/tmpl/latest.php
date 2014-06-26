@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewLatests $this */
+
 $app = JFactory::getApplication();
 $menus = $app->getMenu();
 $menu = $menus->getActive();

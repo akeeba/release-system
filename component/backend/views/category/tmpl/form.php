@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewCategory $this */
+
 $editor = JFactory::getEditor();
 
 $this->loadHelper('select');

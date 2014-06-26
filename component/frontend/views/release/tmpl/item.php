@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewRelease $this */
+
 // Incoming var injected by loadAnyTemplate
 if(!isset($userAccess)) $userAccess = array();
 

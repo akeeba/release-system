@@ -7,8 +7,11 @@
 
 defined('_JEXEC') or die();
 
+/** @var F0FViewHtml $this */
+
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
+
 if (version_compare(JVERSION, '3.0', 'gt'))
 {
 	JHtml::_('dropdown.init');

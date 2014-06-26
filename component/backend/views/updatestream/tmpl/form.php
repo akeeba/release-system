@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var F0FViewHtml $this */
+
 $this->loadHelper('select');
 
 F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
