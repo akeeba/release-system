@@ -217,6 +217,7 @@ CREATE TABLE `#__ars_dlidlabels` (
   `ars_dlidlabel_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) unsigned NOT NULL,
   `label` varchar(255) NOT NULL DEFAULT '',
+  `dlid` CHAR(32) NOT NULL,
   `enabled` tinyint(3) NOT NULL DEFAULT '1',
   `created_by` bigint(20) NOT NULL DEFAULT '0',
   `created_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -311,5 +312,20 @@ ALTER TABLE `#__ars_updatestreams` ADD INDEX `#__ars_updatestreams_jedid` (`jedi
             ]]></query>
         </action>
 
+        <action table="#__ars_dlidlabels" canfail="0">
+            <condition type="missing" value="dlid" />
+            <query><![CDATA[
+ALTER TABLE `#__ars_dlidlabels` ADD COLUMN `dlid` CHAR(32) NOT NULL AFTER `label`
+            ]]></query>
+            <query><![CDATA[
+ALTER TABLE `#__ars_dlidlabels` ADD COLUMN `primary` TINYINT(1) NOT NULL DEFAULT 0 AFTER `user_id`
+            ]]></query>
+            <query><![CDATA[
+ALTER TABLE `#__ars_dlidlabels` ADD INDEX `#__ars_dlidlabels_primary` (`primary`)
+            ]]></query>
+            <query><![CDATA[
+ALTER TABLE `#__ars_dlidlabels` ADD INDEX `#__ars_dlidlabels_dlid` (`dlid`)
+            ]]></query>
+        </action>
     </sql>
 </schema>
