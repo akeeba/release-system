@@ -326,6 +326,37 @@ ALTER TABLE `#__ars_dlidlabels` ADD INDEX `#__ars_dlidlabels_primary` (`primary`
             <query><![CDATA[
 ALTER TABLE `#__ars_dlidlabels` ADD INDEX `#__ars_dlidlabels_dlid` (`dlid`)
             ]]></query>
+            <!-- Mark existing download IDs in #__ars_dlidlabels as secondary if nothing is specified -->
+            <query><![CDATA[
+UPDATE #__ars_dlidlabels SET `primary` = 0 WHERE `primary` IS NULL
+            ]]></query>
+            <!-- Insert primary download IDs for everyone without a primary download ID already set -->
+            <query><![CDATA[
+INSERT INTO `#__ars_dlidlabels` (`user_id`, `primary`, `label`, `dlid`, `enabled`)
+SELECT
+	`id` as `user_id`,
+	1 as `primary`,
+	'_MAIN_' as `label`,
+	MD5(CONCAT(`id`, `username`, `password`)) as `dlid`,
+	1 as `enabled`
+FROM `#__users`
+WHERE `id` NOT IN (
+	SELECT DISTINCT `user_id` FROM `#__ars_dlidlabels` WHERE `primary` = 1
+)
+            ]]></query>
+            <!-- Calculate the missing dlid row for already set secondart download IDs -->
+            <query><![CDATA[
+UPDATE
+	`#__ars_dlidlabels` AS `ls`
+LEFT JOIN
+	`#__ars_dlidlabels` AS `p` ON(`p`.`user_id` = `ls`.`user_id`)
+SET
+	`ls`.`dlid` = MD5(CONCAT(`ls`.`user_id`, `ls`.`label`, `p`.`dlid`))
+WHERE
+	`ls`.`primary` = 0
+	AND `ls`.`dlid` = ''
+	AND `p`.`primary` = 1
+            ]]></query>
         </action>
     </sql>
 </schema>
