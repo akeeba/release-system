@@ -1,8 +1,8 @@
 <?php
 /**
- * @package AkeebaBackup
+ * @package   AkeebaBackup
  * @copyright Copyright (c)2009-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  *
  */
 defined('_JEXEC') or die();
@@ -44,6 +44,7 @@ if (!class_exists('F0FUtilsUpdate', false))
 
 class Com_ArsInstallerScript extends F0FUtilsInstallscript
 {
+
 	/**
 	 * The component's name
 	 *
@@ -67,31 +68,30 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 	protected $installation_queue = array(
 		// modules => { (folder) => { (module) => { (position), (published) } }* }*
 		'modules' => array(
-			'admin' => array(
-			),
-			'site' => array(
-				'arsdlid' => array('left', 0),
+			'admin' => array(),
+			'site'  => array(
+				'arsdlid'      => array('left', 0),
 				'arsdownloads' => array('left', 0),
 			)
 		),
 		// plugins => { (folder) => { (element) => (published) }* }*
 		'plugins' => array(
-			'ars' => array(
-				'bleedingedgediff'		=> 0,
-				'bleedingedgematurity'	=> 0,
+			'ars'                => array(
+				'bleedingedgediff'     => 0,
+				'bleedingedgematurity' => 0,
 			),
-			'content' => array(
-				'arsdlid'				=> 0,
-				'arslatest'				=> 1,
+			'content'            => array(
+				'arsdlid'   => 0,
+				'arslatest' => 1,
 			),
-			'editors-xtd' => array(
-				'arslink'				=> 1,
+			'editors-xtd'        => array(
+				'arslink' => 1,
 			),
-            'sh404sefextplugins' => array(
-                'com_ars'               => 1,
-            ),
-			'system' => array(
-				'arsjed'				=> 1,
+			'sh404sefextplugins' => array(
+				'com_ars' => 1,
+			),
+			'system'             => array(
+				'arsjed' => 1,
 			),
 		)
 	);
@@ -103,7 +103,7 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 	 * @var   array
 	 */
 	protected $removeFilesAllVersions = array(
-		'files'	=> array(
+		'files'   => array(
 			'cache/com_ars.updates.php',
 			'cache/com_ars.updates.ini',
 			'administrator/cache/com_ars.updates.php',
@@ -177,39 +177,40 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 		)
 	);
 
-    /**
-     * A list of scripts to be copied to the "cli" directory of the site
-     *
-     * @var   array
-     */
-    protected $cliScriptFiles = array(
-        'ars-update.php'
-    );
-
+	/**
+	 * A list of scripts to be copied to the "cli" directory of the site
+	 *
+	 * @var   array
+	 */
+	protected $cliScriptFiles = array(
+		'ars-update.php'
+	);
 
 	/**
 	 * Renders the post-installation message
 	 */
 	protected function renderPostInstallation($status, $fofInstallationStatus, $strapperInstallationStatus, $parent)
 	{
-?>
-<img src="../media/com_ars/icons/ars_logo_48.png" width="48" height="48" alt="Akeeba Release System" align="right" />
+		?>
+		<img src="../media/com_ars/icons/ars_logo_48.png" width="48" height="48" alt="Akeeba Release System"
+			 align="right"/>
 
-<h2>Welcome to Akeeba Release System!</h2>
+		<h2>Welcome to Akeeba Release System!</h2>
 
-<div style="margin: 1em; font-size: 14pt; background-color: #fffff9; color: black">
-	You can download translation files <a href="http://cdn.akeebabackup.com/language/ars/index.html">directly from our CDN page</a>.
-</div>
+		<div style="margin: 1em; font-size: 14pt; background-color: #fffff9; color: black">
+			You can download translation files <a href="http://cdn.akeebabackup.com/language/ars/index.html">directly
+				from our CDN page</a>.
+		</div>
 
-<?php
+		<?php
 		parent::renderPostInstallation($status, $fofInstallationStatus, $strapperInstallationStatus, $parent);
 	}
 
 	protected function renderPostUninstallation($status, $parent)
 	{
-?>
-<h2>Akeeba Release System uninstallation status</h2>
-<?php
+		?>
+		<h2>Akeeba Release System uninstallation status</h2>
+		<?php
 		parent::renderPostUninstallation($status, $parent);
 	}
 }

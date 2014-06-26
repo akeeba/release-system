@@ -1,8 +1,8 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
@@ -86,10 +86,10 @@ class ArsControllerCpanel extends F0FController
 		if ($updateInfo->hasUpdate)
 		{
 			$strings = array(
-				'header'		=> JText::sprintf('COM_ARS_CPANEL_MSG_UPDATEFOUND', $updateInfo->version),
-				'button'		=> JText::sprintf('COM_ARS_CPANEL_MSG_UPDATENOW', $updateInfo->version),
-				'infourl'		=> $updateInfo->infoURL,
-				'infolbl'		=> JText::_('COM_ARS_CPANEL_MSG_MOREINFO'),
+				'header'  => JText::sprintf('COM_ARS_CPANEL_MSG_UPDATEFOUND', $updateInfo->version),
+				'button'  => JText::sprintf('COM_ARS_CPANEL_MSG_UPDATENOW', $updateInfo->version),
+				'infourl' => $updateInfo->infoURL,
+				'infolbl' => JText::_('COM_ARS_CPANEL_MSG_MOREINFO'),
 			);
 
 			$result = <<<ENDRESULT

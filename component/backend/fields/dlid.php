@@ -16,14 +16,15 @@ defined('_JEXEC') or die();
  */
 class F0FFormFieldDlid extends F0FFormFieldText
 {
-	public function getRepeatable() {
+	public function getRepeatable()
+	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select(array(
-				'md5(concat('.$db->qn('id').','.$db->qn('username').','.$db->qn('password').')) AS '.$db->qn('dlid')
-			))
-			->from($db->qn('#__users'))
-			->where($db->qn('id').' = '.$db->q($this->item->user_id));
+					->select(array(
+						'md5(concat(' . $db->qn('id') . ',' . $db->qn('username') . ',' . $db->qn('password') . ')) AS ' . $db->qn('dlid')
+					))
+					->from($db->qn('#__users'))
+					->where($db->qn('id') . ' = ' . $db->q($this->item->user_id));
 		$db->setQuery($query);
 		$masterDlid = $db->loadResult();
 

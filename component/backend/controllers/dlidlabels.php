@@ -1,8 +1,8 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
@@ -13,11 +13,12 @@ class ArsControllerDlidlabels extends F0FController
 	 * Executes a controller task. Overriden to make sure non-logged-in users
 	 * cannot create add-on Download IDs.
 	 *
-	 * @param   string  $task  The task to execute.
+	 * @param   string $task The task to execute.
 	 *
 	 * @throws  Exception
 	 */
-	public function execute($task) {
+	public function execute($task)
+	{
 		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
 
 		if (!$isAdmin && !$isCLI)
@@ -70,7 +71,8 @@ class ArsControllerDlidlabels extends F0FController
 	 *
 	 * @throws Exception
 	 */
-	protected function onBeforeEdit() {
+	protected function onBeforeEdit()
+	{
 		$result = parent::onBeforeEdit();
 
 		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
@@ -78,7 +80,7 @@ class ArsControllerDlidlabels extends F0FController
 		if (($result !== false) && !$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
@@ -87,6 +89,7 @@ class ArsControllerDlidlabels extends F0FController
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
 				return false;
 			}
 
@@ -110,7 +113,7 @@ class ArsControllerDlidlabels extends F0FController
 		if (!$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
@@ -119,6 +122,7 @@ class ArsControllerDlidlabels extends F0FController
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
 				return false;
 			}
 		}
@@ -131,7 +135,8 @@ class ArsControllerDlidlabels extends F0FController
 		return !JFactory::getUser()->guest;
 	}
 
-	protected function onBeforeSave() {
+	protected function onBeforeSave()
+	{
 		$result = parent::onBeforeSave();
 
 		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
@@ -139,7 +144,7 @@ class ArsControllerDlidlabels extends F0FController
 		if (($result !== false) && !$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
@@ -152,6 +157,7 @@ class ArsControllerDlidlabels extends F0FController
 			elseif ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
 				return false;
 			}
 		}
@@ -168,7 +174,7 @@ class ArsControllerDlidlabels extends F0FController
 		if (!$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
@@ -177,6 +183,7 @@ class ArsControllerDlidlabels extends F0FController
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
 				return false;
 			}
 
@@ -195,7 +202,7 @@ class ArsControllerDlidlabels extends F0FController
 		if (!$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
@@ -204,6 +211,7 @@ class ArsControllerDlidlabels extends F0FController
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
 				return false;
 			}
 
@@ -222,7 +230,7 @@ class ArsControllerDlidlabels extends F0FController
 		if (!$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
@@ -231,6 +239,7 @@ class ArsControllerDlidlabels extends F0FController
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
 				return false;
 			}
 

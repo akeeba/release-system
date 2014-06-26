@@ -1,26 +1,28 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
 
 class ArsControllerBrowse extends F0FController
 {
-	public function __construct($config = array()) {
+	public function __construct($config = array())
+	{
 		parent::__construct($config);
 
 		// Do not remove these two lines. Required to handle fallback to repo view on invalid URLs.
 		$config['view'] = 'browses';
 		$dummy = $this->getThisView($config);
 
-        $this->cacheableTasks = array();
+		$this->cacheableTasks = array();
 	}
 
-	public function execute($task) {
-		if(!in_array( $this->layout, array('normal','bleedingedge','repository') ))
+	public function execute($task)
+	{
+		if (!in_array($this->layout, array('normal', 'bleedingedge', 'repository')))
 		{
 			$this->layout = 'repository';
 		}
@@ -29,18 +31,20 @@ class ArsControllerBrowse extends F0FController
 		parent::execute($task);
 	}
 
-	public function onBeforeBrowse() {
+	public function onBeforeBrowse()
+	{
 		$result = parent::onBeforeBrowse();
-		if($result) {
+		if ($result)
+		{
 			$app = JFactory::getApplication();
 			$params = $app->getPageParameters('com_ars');
 
 			// Push the page params to the model
 			$model = $this->getThisModel()
-				->grouping($params->get('grouping',	'normal'))
-				->orderby($params->get('orderby',	'order'))
-				->limitstart(0)
-				->limit(0);
+						  ->grouping($params->get('grouping', 'normal'))
+						  ->orderby($params->get('orderby', 'order'))
+						  ->limitstart(0)
+						  ->limit(0);
 		}
 
 		return $result;

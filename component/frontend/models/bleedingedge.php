@@ -11,8 +11,11 @@ JLoader::import('joomla.application.component.model');
 
 class ArsModelBleedingedge extends F0FModel
 {
+
 	private $category_id;
+
 	private $category;
+
 	private $folder = null;
 
 	/**
@@ -50,7 +53,7 @@ class ArsModelBleedingedge extends F0FModel
 		{
 			$this->category_id = (int)$cat;
 			$this->category = F0FModel::getTmpInstance('Categories', 'ArsModel')
-				->getItem($this->category_id);
+									  ->getItem($this->category_id);
 		}
 
 		// Store folder
@@ -122,12 +125,12 @@ class ArsModelBleedingedge extends F0FModel
 
 		// Get all releases in the category
 		$allReleases = F0FModel::getTmpInstance('Releases', 'ArsModel')
-			->category($this->category->id)
-			->order('created')
-			->dir('desc')
-			->limitstart(0)
-			->limit(0)
-			->getItemList(true);
+							   ->category($this->category->id)
+							   ->order('created')
+							   ->dir('desc')
+							   ->limitstart(0)
+							   ->limit(0)
+							   ->getItemList(true);
 
 		// Check for possible use of Amazon S3
 		$potentialPrefix = substr($this->category->directory, 0, 5);
@@ -192,14 +195,14 @@ class ArsModelBleedingedge extends F0FModel
 					$release->published = 0;
 
 					$tmp = F0FModel::getTmpInstance('Releases', 'ArsModel')
-						->getTable();
+								   ->getTable();
 					$tmp->load($release->id);
 					$tmp->save($release);
 				}
 				else
 				{
 					$tmpRelease = F0FModel::getTmpInstance('Releases', 'ArsModel')
-						->getTable();
+										  ->getTable();
 					$tmpRelease->bind($release);
 					$this->checkFiles($tmpRelease);
 				}
@@ -385,7 +388,7 @@ class ArsModelBleedingedge extends F0FModel
 
 					// -- Create the BE release
 					$table = F0FModel::getTmpInstance('Releases', 'ArsModel')
-						->getTable();
+									 ->getTable();
 					if ($table->save($data, 'category_id'))
 					{
 						$this->checkFiles($table);
@@ -486,15 +489,15 @@ class ArsModelBleedingedge extends F0FModel
 				$release->notes = $notes;
 
 				$table = F0FModel::getTmpInstance('Releases', 'ArsModel')
-					->getTable()
-					->save($release, 'category_id');
+								 ->getTable()
+								 ->save($release, 'category_id');
 			}
 		}
 
 		$allItems = F0FModel::getTmpInstance('Items', 'ArsModel')
-			->release($release->id)
-			->limitstart(0)
-			->getItemList(true);
+							->release($release->id)
+							->limitstart(0)
+							->getItemList(true);
 
 		$known_items = array();
 
@@ -621,7 +624,10 @@ class ArsModelBleedingedge extends F0FModel
 			}
 		}
 
-		if (isset($table)) $table->reorder('`release_id` = ' . $release->id);
+		if (isset($table))
+		{
+			$table->reorder('`release_id` = ' . $release->id);
+		}
 	}
 
 	private function coloriseChangelog(&$this_changelog, $first_changelog = array())
@@ -651,7 +657,10 @@ class ArsModelBleedingedge extends F0FModel
 
 			foreach ($this_changelog as $line)
 			{
-				if (in_array($line, $first_changelog)) continue;
+				if (in_array($line, $first_changelog))
+				{
+					continue;
+				}
 				if ($colorise_changelog)
 				{
 					$notes .= '<li>' . $this->colorise($line) . "</li>\n";

@@ -93,9 +93,9 @@ class ArsControllerCategory extends F0FController
 
 		// Push the page params to the model
 		$this->getThisModel()
-			->grouping($params->get('grouping', 'normal'))
-			->orderby($params->get('orderby', 'order'))
-			->rel_orderby($params->get('rel_orderby', 'order'));
+			 ->grouping($params->get('grouping', 'normal'))
+			 ->orderby($params->get('orderby', 'order'))
+			 ->rel_orderby($params->get('rel_orderby', 'order'));
 
 		// Get the category ID
 		if (empty($id))

@@ -1,94 +1,95 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
 
 class ArsHelperSelect
 {
+
 	private static $countries = array(
-		'' => '----',
-		'AD' =>'Andorra', 'AE' =>'United Arab Emirates', 'AF' =>'Afghanistan',
-		'AG' =>'Antigua and Barbuda', 'AI' =>'Anguilla', 'AL' =>'Albania',
-		'AM' =>'Armenia', 'AN' =>'Netherlands Antilles', 'AO' =>'Angola',
-		'AQ' =>'Antarctica', 'AR' =>'Argentina', 'AS' =>'American Samoa',
-		'AT' =>'Austria', 'AU' =>'Australia', 'AW' =>'Aruba',
-		'AX' =>'Aland Islands', 'AZ' =>'Azerbaijan', 'BA' =>'Bosnia and Herzegovina',
-		'BB' =>'Barbados', 'BD' =>'Bangladesh',	'BE' =>'Belgium',
-		'BF' =>'Burkina Faso', 'BG' =>'Bulgaria', 'BH' =>'Bahrain',
-		'BI' =>'Burundi', 'BJ' =>'Benin', 'BL' =>'Saint Barthélemy',
-		'BM' =>'Bermuda', 'BN' =>'Brunei Darussalam', 'BO' =>'Bolivia, Plurinational State of',
-		'BR' =>'Brazil', 'BS' =>'Bahamas', 'BT' =>'Bhutan', 'BV' =>'Bouvet Island',
-		'BW' =>'Botswana', 'BY' =>'Belarus', 'BZ' =>'Belize', 'CA' =>'Canada',
-		'CC' =>'Cocos (Keeling) Islands', 'CD' =>'Congo, the Democratic Republic of the',
-		'CF' =>'Central African Republic', 'CG' =>'Congo', 'CH' =>'Switzerland',
-		'CI' =>'Cote d\'Ivoire', 'CK' =>'Cook Islands', 'CL' =>'Chile',
-		'CM' =>'Cameroon', 'CN' =>'China', 'CO' =>'Colombia', 'CR' =>'Costa Rica',
-		'CU' =>'Cuba', 'CV' =>'Cape Verde', 'CX' =>'Christmas Island', 'CY' =>'Cyprus',
-		'CZ' =>'Czech Republic', 'DE' =>'Germany', 'DJ' =>'Djibouti', 'DK' =>'Denmark',
-		'DM' =>'Dominica', 'DO' =>'Dominican Republic', 'DZ' =>'Algeria',
-		'EC' =>'Ecuador', 'EE' =>'Estonia', 'EG' =>'Egypt', 'EH' =>'Western Sahara',
-		'ER' =>'Eritrea', 'ES' =>'Spain', 'ET' =>'Ethiopia', 'FI' =>'Finland',
-		'FJ' =>'Fiji', 'FK' =>'Falkland Islands (Malvinas)', 'FM' =>'Micronesia, Federated States of',
-		'FO' =>'Faroe Islands', 'FR' =>'France', 'GA' =>'Gabon', 'GB' =>'United Kingdom',
-		'GD' =>'Grenada', 'GE' =>'Georgia', 'GF' =>'French Guiana', 'GG' =>'Guernsey',
-		'GH' =>'Ghana', 'GI' =>'Gibraltar', 'GL' =>'Greenland', 'GM' =>'Gambia',
-		'GN' =>'Guinea', 'GP' =>'Guadeloupe', 'GQ' =>'Equatorial Guinea', 'GR' =>'Greece',
-		'GS' =>'South Georgia and the South Sandwich Islands', 'GT' =>'Guatemala',
-		'GU' =>'Guam', 'GW' =>'Guinea-Bissau', 'GY' =>'Guyana', 'HK' =>'Hong Kong',
-		'HM' =>'Heard Island and McDonald Islands', 'HN' =>'Honduras', 'HR' =>'Croatia',
-		'HT' =>'Haiti', 'HU' =>'Hungary', 'ID' =>'Indonesia', 'IE' =>'Ireland',
-		'IL' =>'Israel', 'IM' =>'Isle of Man', 'IN' =>'India', 'IO' =>'British Indian Ocean Territory',
-		'IQ' =>'Iraq', 'IR' =>'Iran, Islamic Republic of', 'IS' =>'Iceland',
-		'IT' =>'Italy', 'JE' =>'Jersey', 'JM' =>'Jamaica', 'JO' =>'Jordan',
-		'JP' =>'Japan', 'KE' =>'Kenya', 'KG' =>'Kyrgyzstan', 'KH' =>'Cambodia',
-		'KI' =>'Kiribati', 'KM' =>'Comoros', 'KN' =>'Saint Kitts and Nevis',
-		'KP' =>'Korea, Democratic People\'s Republic of', 'KR' =>'Korea, Republic of',
-		'KW' =>'Kuwait', 'KY' =>'Cayman Islands', 'KZ' =>'Kazakhstan',
-		'LA' =>'Lao People\'s Democratic Republic', 'LB' =>'Lebanon',
-		'LC' =>'Saint Lucia', 'LI' =>'Liechtenstein', 'LK' =>'Sri Lanka',
-		'LR' =>'Liberia', 'LS' =>'Lesotho', 'LT' =>'Lithuania', 'LU' =>'Luxembourg',
-		'LV' =>'Latvia', 'LY' =>'Libyan Arab Jamahiriya', 'MA' =>'Morocco',
-		'MC' =>'Monaco', 'MD' =>'Moldova, Republic of', 'ME' =>'Montenegro',
-		'MF' =>'Saint Martin (French part)', 'MG' =>'Madagascar', 'MH' =>'Marshall Islands',
-		'MK' =>'Macedonia, the former Yugoslav Republic of', 'ML' =>'Mali',
-		'MM' =>'Myanmar', 'MN' =>'Mongolia', 'MO' =>'Macao', 'MP' =>'Northern Mariana Islands',
-		'MQ' =>'Martinique', 'MR' =>'Mauritania', 'MS' =>'Montserrat', 'MT' =>'Malta',
-		'MU' =>'Mauritius', 'MV' =>'Maldives', 'MW' =>'Malawi', 'MX' =>'Mexico',
-		'MY' =>'Malaysia', 'MZ' =>'Mozambique', 'NA' =>'Namibia', 'NC' =>'New Caledonia',
-		'NE' =>'Niger', 'NF' =>'Norfolk Island', 'NG' =>'Nigeria', 'NI' =>'Nicaragua',
-		'NL' =>'Netherlands', 'NO' =>'Norway', 'NP' =>'Nepal', 'NR' =>'Nauru', 'NU' =>'Niue',
-		'NZ' =>'New Zealand', 'OM' =>'Oman', 'PA' =>'Panama', 'PE' =>'Peru', 'PF' =>'French Polynesia',
-		'PG' =>'Papua New Guinea', 'PH' =>'Philippines', 'PK' =>'Pakistan', 'PL' =>'Poland',
-		'PM' =>'Saint Pierre and Miquelon', 'PN' =>'Pitcairn', 'PR' =>'Puerto Rico',
-		'PS' =>'Palestinian Territory, Occupied', 'PT' =>'Portugal', 'PW' =>'Palau',
-		'PY' =>'Paraguay', 'QA' =>'Qatar', 'RE' =>'Reunion', 'RO' =>'Romania',
-		'RS' =>'Serbia', 'RU' =>'Russian Federation', 'RW' =>'Rwanda', 'SA' =>'Saudi Arabia',
-		'SB' =>'Solomon Islands', 'SC' =>'Seychelles', 'SD' =>'Sudan', 'SE' =>'Sweden',
-		'SG' =>'Singapore', 'SH' =>'Saint Helena, Ascension and Tristan da Cunha',
-		'SI' =>'Slovenia', 'SJ' =>'Svalbard and Jan Mayen', 'SK' =>'Slovakia',
-		'SL' =>'Sierra Leone', 'SM' =>'San Marino', 'SN' =>'Senegal', 'SO' =>'Somalia',
-		'SR' =>'Suriname', 'ST' =>'Sao Tome and Principe', 'SV' =>'El Salvador',
-		'SY' =>'Syrian Arab Republic', 'SZ' =>'Swaziland', 'TC' =>'Turks and Caicos Islands',
-		'TD' =>'Chad', 'TF' =>'French Southern Territories', 'TG' =>'Togo',
-		'TH' =>'Thailand', 'TJ' =>'Tajikistan', 'TK' =>'Tokelau', 'TL' =>'Timor-Leste',
-		'TM' =>'Turkmenistan', 'TN' =>'Tunisia', 'TO' =>'Tonga', 'TR' =>'Turkey',
-		'TT' =>'Trinidad and Tobago', 'TV' =>'Tuvalu', 'TW' =>'Taiwan, Province of China',
-		'TZ' =>'Tanzania, United Republic of', 'UA' =>'Ukraine', 'UG' =>'Uganda',
-		'UM' =>'United States Minor Outlying Islands', 'US' =>'United States',
-		'UY' =>'Uruguay', 'UZ' =>'Uzbekistan', 'VA' =>'Holy See (Vatican City State)',
-		'VC' =>'Saint Vincent and the Grenadines', 'VE' =>'Venezuela, Bolivarian Republic of',
-		'VG' =>'Virgin Islands, British', 'VI' =>'Virgin Islands, U.S.', 'VN' =>'Viet Nam',
-		'VU' =>'Vanuatu', 'WF' =>'Wallis and Futuna', 'WS' =>'Samoa', 'YE' =>'Yemen',
-		'YT' =>'Mayotte', 'ZA' =>'South Africa', 'ZM' =>'Zambia', 'ZW' =>'Zimbabwe'
+		''   => '----',
+		'AD' => 'Andorra', 'AE' => 'United Arab Emirates', 'AF' => 'Afghanistan',
+		'AG' => 'Antigua and Barbuda', 'AI' => 'Anguilla', 'AL' => 'Albania',
+		'AM' => 'Armenia', 'AN' => 'Netherlands Antilles', 'AO' => 'Angola',
+		'AQ' => 'Antarctica', 'AR' => 'Argentina', 'AS' => 'American Samoa',
+		'AT' => 'Austria', 'AU' => 'Australia', 'AW' => 'Aruba',
+		'AX' => 'Aland Islands', 'AZ' => 'Azerbaijan', 'BA' => 'Bosnia and Herzegovina',
+		'BB' => 'Barbados', 'BD' => 'Bangladesh', 'BE' => 'Belgium',
+		'BF' => 'Burkina Faso', 'BG' => 'Bulgaria', 'BH' => 'Bahrain',
+		'BI' => 'Burundi', 'BJ' => 'Benin', 'BL' => 'Saint Barthélemy',
+		'BM' => 'Bermuda', 'BN' => 'Brunei Darussalam', 'BO' => 'Bolivia, Plurinational State of',
+		'BR' => 'Brazil', 'BS' => 'Bahamas', 'BT' => 'Bhutan', 'BV' => 'Bouvet Island',
+		'BW' => 'Botswana', 'BY' => 'Belarus', 'BZ' => 'Belize', 'CA' => 'Canada',
+		'CC' => 'Cocos (Keeling) Islands', 'CD' => 'Congo, the Democratic Republic of the',
+		'CF' => 'Central African Republic', 'CG' => 'Congo', 'CH' => 'Switzerland',
+		'CI' => 'Cote d\'Ivoire', 'CK' => 'Cook Islands', 'CL' => 'Chile',
+		'CM' => 'Cameroon', 'CN' => 'China', 'CO' => 'Colombia', 'CR' => 'Costa Rica',
+		'CU' => 'Cuba', 'CV' => 'Cape Verde', 'CX' => 'Christmas Island', 'CY' => 'Cyprus',
+		'CZ' => 'Czech Republic', 'DE' => 'Germany', 'DJ' => 'Djibouti', 'DK' => 'Denmark',
+		'DM' => 'Dominica', 'DO' => 'Dominican Republic', 'DZ' => 'Algeria',
+		'EC' => 'Ecuador', 'EE' => 'Estonia', 'EG' => 'Egypt', 'EH' => 'Western Sahara',
+		'ER' => 'Eritrea', 'ES' => 'Spain', 'ET' => 'Ethiopia', 'FI' => 'Finland',
+		'FJ' => 'Fiji', 'FK' => 'Falkland Islands (Malvinas)', 'FM' => 'Micronesia, Federated States of',
+		'FO' => 'Faroe Islands', 'FR' => 'France', 'GA' => 'Gabon', 'GB' => 'United Kingdom',
+		'GD' => 'Grenada', 'GE' => 'Georgia', 'GF' => 'French Guiana', 'GG' => 'Guernsey',
+		'GH' => 'Ghana', 'GI' => 'Gibraltar', 'GL' => 'Greenland', 'GM' => 'Gambia',
+		'GN' => 'Guinea', 'GP' => 'Guadeloupe', 'GQ' => 'Equatorial Guinea', 'GR' => 'Greece',
+		'GS' => 'South Georgia and the South Sandwich Islands', 'GT' => 'Guatemala',
+		'GU' => 'Guam', 'GW' => 'Guinea-Bissau', 'GY' => 'Guyana', 'HK' => 'Hong Kong',
+		'HM' => 'Heard Island and McDonald Islands', 'HN' => 'Honduras', 'HR' => 'Croatia',
+		'HT' => 'Haiti', 'HU' => 'Hungary', 'ID' => 'Indonesia', 'IE' => 'Ireland',
+		'IL' => 'Israel', 'IM' => 'Isle of Man', 'IN' => 'India', 'IO' => 'British Indian Ocean Territory',
+		'IQ' => 'Iraq', 'IR' => 'Iran, Islamic Republic of', 'IS' => 'Iceland',
+		'IT' => 'Italy', 'JE' => 'Jersey', 'JM' => 'Jamaica', 'JO' => 'Jordan',
+		'JP' => 'Japan', 'KE' => 'Kenya', 'KG' => 'Kyrgyzstan', 'KH' => 'Cambodia',
+		'KI' => 'Kiribati', 'KM' => 'Comoros', 'KN' => 'Saint Kitts and Nevis',
+		'KP' => 'Korea, Democratic People\'s Republic of', 'KR' => 'Korea, Republic of',
+		'KW' => 'Kuwait', 'KY' => 'Cayman Islands', 'KZ' => 'Kazakhstan',
+		'LA' => 'Lao People\'s Democratic Republic', 'LB' => 'Lebanon',
+		'LC' => 'Saint Lucia', 'LI' => 'Liechtenstein', 'LK' => 'Sri Lanka',
+		'LR' => 'Liberia', 'LS' => 'Lesotho', 'LT' => 'Lithuania', 'LU' => 'Luxembourg',
+		'LV' => 'Latvia', 'LY' => 'Libyan Arab Jamahiriya', 'MA' => 'Morocco',
+		'MC' => 'Monaco', 'MD' => 'Moldova, Republic of', 'ME' => 'Montenegro',
+		'MF' => 'Saint Martin (French part)', 'MG' => 'Madagascar', 'MH' => 'Marshall Islands',
+		'MK' => 'Macedonia, the former Yugoslav Republic of', 'ML' => 'Mali',
+		'MM' => 'Myanmar', 'MN' => 'Mongolia', 'MO' => 'Macao', 'MP' => 'Northern Mariana Islands',
+		'MQ' => 'Martinique', 'MR' => 'Mauritania', 'MS' => 'Montserrat', 'MT' => 'Malta',
+		'MU' => 'Mauritius', 'MV' => 'Maldives', 'MW' => 'Malawi', 'MX' => 'Mexico',
+		'MY' => 'Malaysia', 'MZ' => 'Mozambique', 'NA' => 'Namibia', 'NC' => 'New Caledonia',
+		'NE' => 'Niger', 'NF' => 'Norfolk Island', 'NG' => 'Nigeria', 'NI' => 'Nicaragua',
+		'NL' => 'Netherlands', 'NO' => 'Norway', 'NP' => 'Nepal', 'NR' => 'Nauru', 'NU' => 'Niue',
+		'NZ' => 'New Zealand', 'OM' => 'Oman', 'PA' => 'Panama', 'PE' => 'Peru', 'PF' => 'French Polynesia',
+		'PG' => 'Papua New Guinea', 'PH' => 'Philippines', 'PK' => 'Pakistan', 'PL' => 'Poland',
+		'PM' => 'Saint Pierre and Miquelon', 'PN' => 'Pitcairn', 'PR' => 'Puerto Rico',
+		'PS' => 'Palestinian Territory, Occupied', 'PT' => 'Portugal', 'PW' => 'Palau',
+		'PY' => 'Paraguay', 'QA' => 'Qatar', 'RE' => 'Reunion', 'RO' => 'Romania',
+		'RS' => 'Serbia', 'RU' => 'Russian Federation', 'RW' => 'Rwanda', 'SA' => 'Saudi Arabia',
+		'SB' => 'Solomon Islands', 'SC' => 'Seychelles', 'SD' => 'Sudan', 'SE' => 'Sweden',
+		'SG' => 'Singapore', 'SH' => 'Saint Helena, Ascension and Tristan da Cunha',
+		'SI' => 'Slovenia', 'SJ' => 'Svalbard and Jan Mayen', 'SK' => 'Slovakia',
+		'SL' => 'Sierra Leone', 'SM' => 'San Marino', 'SN' => 'Senegal', 'SO' => 'Somalia',
+		'SR' => 'Suriname', 'ST' => 'Sao Tome and Principe', 'SV' => 'El Salvador',
+		'SY' => 'Syrian Arab Republic', 'SZ' => 'Swaziland', 'TC' => 'Turks and Caicos Islands',
+		'TD' => 'Chad', 'TF' => 'French Southern Territories', 'TG' => 'Togo',
+		'TH' => 'Thailand', 'TJ' => 'Tajikistan', 'TK' => 'Tokelau', 'TL' => 'Timor-Leste',
+		'TM' => 'Turkmenistan', 'TN' => 'Tunisia', 'TO' => 'Tonga', 'TR' => 'Turkey',
+		'TT' => 'Trinidad and Tobago', 'TV' => 'Tuvalu', 'TW' => 'Taiwan, Province of China',
+		'TZ' => 'Tanzania, United Republic of', 'UA' => 'Ukraine', 'UG' => 'Uganda',
+		'UM' => 'United States Minor Outlying Islands', 'US' => 'United States',
+		'UY' => 'Uruguay', 'UZ' => 'Uzbekistan', 'VA' => 'Holy See (Vatican City State)',
+		'VC' => 'Saint Vincent and the Grenadines', 'VE' => 'Venezuela, Bolivarian Republic of',
+		'VG' => 'Virgin Islands, British', 'VI' => 'Virgin Islands, U.S.', 'VN' => 'Viet Nam',
+		'VU' => 'Vanuatu', 'WF' => 'Wallis and Futuna', 'WS' => 'Samoa', 'YE' => 'Yemen',
+		'YT' => 'Mayotte', 'ZA' => 'South Africa', 'ZM' => 'Zambia', 'ZW' => 'Zimbabwe'
 	);
 
 	public static function decodeCountry($cCode)
 	{
-		if(array_key_exists($cCode, self::$countries))
+		if (array_key_exists($cCode, self::$countries))
 		{
 			return self::$countries[$cCode];
 		}
@@ -100,16 +101,16 @@ class ArsHelperSelect
 
 	protected static function genericlist($list, $name, $attribs, $selected, $idTag)
 	{
-		if(empty($attribs))
+		if (empty($attribs))
 		{
 			$attribs = null;
 		}
 		else
 		{
 			$temp = '';
-			foreach($attribs as $key=>$value)
+			foreach ($attribs as $key => $value)
 			{
-				$temp .= $key.' = "'.$value.'"';
+				$temp .= $key . ' = "' . $value . '"';
 			}
 			$attribs = $temp;
 		}
@@ -117,45 +118,46 @@ class ArsHelperSelect
 		return JHTML::_('select.genericlist', $list, $name, $attribs, 'value', 'text', $selected, $idTag);
 	}
 
-	public static function categorytypes($selected = null, $id = 'type', $attribs = array() )
+	public static function categorytypes($selected = null, $id = 'type', $attribs = array())
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_CATEGORIES_TYPE_SELECT').' -');
-		$options[] = JHTML::_('select.option','normal',JText::_('COM_ARS_CATEGORIES_TYPE_NORMAL'));
-		$options[] = JHTML::_('select.option','bleedingedge',JText::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE'));
+		$options[] = JHTML::_('select.option', '', '- ' . JText::_('COM_ARS_CATEGORIES_TYPE_SELECT') . ' -');
+		$options[] = JHTML::_('select.option', 'normal', JText::_('COM_ARS_CATEGORIES_TYPE_NORMAL'));
+		$options[] = JHTML::_('select.option', 'bleedingedge', JText::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
-	public static function booleanlist( $name, $attribs = null, $selected = null )
+	public static function booleanlist($name, $attribs = null, $selected = null)
 	{
 		$options = array(
-			JHTML::_('select.option','','---'),
-			JHTML::_('select.option',  '0', JText::_( 'JNo' ) ),
-			JHTML::_('select.option',  '1', JText::_( 'JYes' ) )
+			JHTML::_('select.option', '', '---'),
+			JHTML::_('select.option', '0', JText::_('JNo')),
+			JHTML::_('select.option', '1', JText::_('JYes'))
 		);
+
 		return self::genericlist($options, $name, $attribs, $selected, $name);
 	}
 
 	public static function countries($selected = null, $id = 'country', $attribs = array())
 	{
 		$options = array(
-			JHTML::_('select.option','','---'),
+			JHTML::_('select.option', '', '---'),
 		);
-		foreach(self::$countries as $code => $name)
+		foreach (self::$countries as $code => $name)
 		{
-			$options[] = JHTML::_('select.option', $code, $name );
+			$options[] = JHTML::_('select.option', $code, $name);
 		}
+
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
-
 
 	public static function published($selected = null, $id = 'enabled', $attribs = array())
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL').' -');
-		$options[] = JHTML::_('select.option',0,JText::_('JUNPUBLISHED'));
-		$options[] = JHTML::_('select.option',1,JText::_('JPUBLISHED'));
+		$options[] = JHTML::_('select.option', '', '- ' . JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL') . ' -');
+		$options[] = JHTML::_('select.option', 0, JText::_('JUNPUBLISHED'));
+		$options[] = JHTML::_('select.option', 1, JText::_('JPUBLISHED'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
@@ -164,35 +166,40 @@ class ArsHelperSelect
 	{
 		$html = '';
 
-		if(!is_array($selected))
+		if (!is_array($selected))
 		{
-			if(empty($selected)) {
+			if (empty($selected))
+			{
 				$selected = array();
-			} else {
-				$selected = explode(',',$selected);
+			}
+			else
+			{
+				$selected = explode(',', $selected);
 			}
 		}
 
-		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/filtering.php';
+		require_once JPATH_ADMINISTRATOR . '/components/com_ars/helpers/filtering.php';
 		$hasAkeebaSubs = ArsHelperFiltering::hasAkeebaSubs();
 
-		if($hasAkeebaSubs) {
+		if ($hasAkeebaSubs)
+		{
 			$groups = ArsHelperFiltering::getAkeebaGroups();
 
 			$options = array();
-			$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL').' -');
+			$options[] = JHTML::_('select.option', '', '- ' . JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL') . ' -');
 
-			if(count($groups))
+			if (count($groups))
 			{
-				foreach($groups as $group) {
+				foreach ($groups as $group)
+				{
 					$options[] = JHTML::_('select.option', $group->id, $group->title);
 				}
 				$default_attribs = array(
-					'multiple'	=> 'multiple',
-					'size'		=> 5
+					'multiple' => 'multiple',
+					'size'     => 5
 				);
 				$attribs = array_merge($default_attribs, $attribs);
-				$html = self::genericlist($options, $name.'[]', $attribs, $selected, $name);
+				$html = self::genericlist($options, $name . '[]', $attribs, $selected, $name);
 			}
 		}
 
@@ -201,37 +208,44 @@ class ArsHelperSelect
 
 	public static function payplansgroups($selected = null, $name = 'groups', $attribs = array())
 	{
-		if(!is_array($selected))
+		if (!is_array($selected))
 		{
-			if(empty($selected)) {
+			if (empty($selected))
+			{
 				$selected = array();
-			} else {
-				$selected = explode(',',$selected);
+			}
+			else
+			{
+				$selected = explode(',', $selected);
 			}
 		}
 
-		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/filtering.php';
+		require_once JPATH_ADMINISTRATOR . '/components/com_ars/helpers/filtering.php';
 		$hasPayPlans = defined('PAYPLANS_LOADED');
 
-		if($hasPayPlans) {
+		if ($hasPayPlans)
+		{
 			$groups = PayplansApi::getPlans();
 
 			$options = array();
-			$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL').' -');
+			$options[] = JHTML::_('select.option', '', '- ' . JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL') . ' -');
 
-			if(count($groups))
+			if (count($groups))
 			{
-				foreach($groups as $group) {
+				foreach ($groups as $group)
+				{
 					$options[] = JHTML::_('select.option', $group->plan_id, $group->title);
 				}
 				$default_attribs = array(
-					'multiple'	=> 'multiple',
-					'size'		=> 5
+					'multiple' => 'multiple',
+					'size'     => 5
 				);
 				$attribs = array_merge($default_attribs, $attribs);
-				$html = self::genericlist($options, $name.'[]', $attribs, $selected, $name);
+				$html = self::genericlist($options, $name . '[]', $attribs, $selected, $name);
 			}
-		} else {
+		}
+		else
+		{
 			$html = '';
 		}
 
@@ -240,65 +254,89 @@ class ArsHelperSelect
 
 	public static function categories($selected = null, $id = 'category', $attribs = array())
 	{
-		$items = F0FModel::getTmpInstance('Categories','ArsModel')
-			->nobeunpub(1)
-			->getItemList(true);
+		$items = F0FModel::getTmpInstance('Categories', 'ArsModel')
+						 ->nobeunpub(1)
+						 ->getItemList(true);
 
 		$options = array();
-		$options[] = JHTML::_('select.option',0,'- '.JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL').' -');
-		if(count($items)) foreach($items as $item)
+		$options[] = JHTML::_('select.option', 0, '- ' . JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -');
+		if (count($items))
 		{
-			$options[] = JHTML::_('select.option',$item->id,$item->title);
+			foreach ($items as $item)
+			{
+				$options[] = JHTML::_('select.option', $item->id, $item->title);
+			}
 		}
+
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
 	public static function maturities($selected = null, $id = 'maturity', $attribs = array())
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option','','- '.JText::_('COM_ARS_RELEASES_MATURITY_SELECT').' -');
+		$options[] = JHTML::_('select.option', '', '- ' . JText::_('COM_ARS_RELEASES_MATURITY_SELECT') . ' -');
 
-		$maturities = array('alpha','beta','rc','stable');
-		foreach($maturities as $maturity) $options[] = JHTML::_('select.option',$maturity,JText::_('COM_ARS_RELEASES_MATURITY_'.strtoupper($maturity)));
+		$maturities = array('alpha', 'beta', 'rc', 'stable');
+		foreach ($maturities as $maturity)
+		{
+			$options[] = JHTML::_('select.option', $maturity, JText::_('COM_ARS_RELEASES_MATURITY_' . strtoupper($maturity)));
+		}
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
 	public static function releases($selected = null, $id = 'release', $attribs = array(), $category_id = null)
 	{
-		$model = F0FModel::getTmpInstance('Releases','ArsModel');
-		if(!empty($category_id)) $model->setState('category', $category_id);
-		if(empty($category_id)) $model->setState('nobeunpub', 1);
+		$model = F0FModel::getTmpInstance('Releases', 'ArsModel');
+		if (!empty($category_id))
+		{
+			$model->setState('category', $category_id);
+		}
+		if (empty($category_id))
+		{
+			$model->setState('nobeunpub', 1);
+		}
 		$items = $model->getItemList(true);
 
 		$options = array();
 
-		if(count($items) && empty($category_id))
+		if (count($items) && empty($category_id))
 		{
 			$cache = array();
-			foreach($items as $item)
+			foreach ($items as $item)
 			{
-				if(!array_key_exists($item->cat_title, $cache)) $cache[$item->cat_title] = array();
+				if (!array_key_exists($item->cat_title, $cache))
+				{
+					$cache[$item->cat_title] = array();
+				}
 				$cache[$item->cat_title][] = (object)array('id' => $item->id, 'version' => $item->version);
 			}
 
-			foreach($cache as $category => $releases)
+			foreach ($cache as $category => $releases)
 			{
-				if(!empty($options)) $options[] = JHTML::_('select.option','</OPTGROUP>');
-				$options[] = JHTML::_('select.option','<OPTGROUP>',$category);
-				foreach($releases as $release)
+				if (!empty($options))
 				{
-					$options[] = JHTML::_('select.option',$release->id,$release->version);
+					$options[] = JHTML::_('select.option', '</OPTGROUP>');
+				}
+				$options[] = JHTML::_('select.option', '<OPTGROUP>', $category);
+				foreach ($releases as $release)
+				{
+					$options[] = JHTML::_('select.option', $release->id, $release->version);
 				}
 			}
 		}
-		elseif(count($items)) foreach($items as $item)
+		elseif (count($items))
 		{
-			if($item->category_id == $category_id)
-				$options[] = JHTML::_('select.option',$item->id,$item->version);
+			foreach ($items as $item)
+			{
+				if ($item->category_id == $category_id)
+				{
+					$options[] = JHTML::_('select.option', $item->id, $item->version);
+				}
+			}
 		}
 
-	   array_unshift($options, JHTML::_('select.option',0,'- '.JText::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL').' -'));
+		array_unshift($options, JHTML::_('select.option', 0, '- ' . JText::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL') . ' -'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
@@ -306,32 +344,35 @@ class ArsHelperSelect
 	public static function itemtypes($selected = null, $id = 'type', $attribs = array())
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_ITEMS_TYPE_SELECT').' -');
+		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_ITEMS_TYPE_SELECT') . ' -');
 
-		$types = array('file','link');
-		foreach($types as $type) $options[] = JHTML::_('select.option',$type,JText::_('LBL_ITEMS_TYPE_'.strtoupper($type)));
+		$types = array('file', 'link');
+		foreach ($types as $type)
+		{
+			$options[] = JHTML::_('select.option', $type, JText::_('LBL_ITEMS_TYPE_' . strtoupper($type)));
+		}
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
 	public static function getFiles($selected = null, $release_id = 0, $item_id = 0, $id = 'type', $attribs = array())
 	{
-		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
+		require_once JPATH_ADMINISTRATOR . '/components/com_ars/helpers/amazons3.php';
 
 		$options = array();
-		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_ITEMS_FILENAME_SELECT').' -');
+		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
 
 		// Try to figure out a directory
 		$directory = null;
-		if(!empty($release_id))
+		if (!empty($release_id))
 		{
 			// Get the release
-			$release = F0FModel::getTmpInstance('Releases','ArsModel')
-				->getItem((int)$release_id);
+			$release = F0FModel::getTmpInstance('Releases', 'ArsModel')
+							   ->getItem((int)$release_id);
 
 			// Get the category
-			$category = F0FModel::getTmpInstance('Categories','ArsModel')
-				->getItem((int)$release->category_id);
+			$category = F0FModel::getTmpInstance('Categories', 'ArsModel')
+								->getItem((int)$release->category_id);
 
 			// Get which directory to use
 			$directory = $category->directory;
@@ -340,21 +381,32 @@ class ArsHelperSelect
 			$potentialPrefix = strtolower($potentialPrefix);
 			$useS3 = ($potentialPrefix == 's3://');
 
-			if($useS3) {
+			if ($useS3)
+			{
 				$directory = substr($directory, 5);
-				if($directory === false) $directory = '';
+				if ($directory === false)
+				{
+					$directory = '';
+				}
 				$s3 = ArsHelperAmazons3::getInstance();
-				$items = $s3->getBucket('', $directory.'/');
-				if(empty($items)) {
+				$items = $s3->getBucket('', $directory . '/');
+				if (empty($items))
+				{
 					$directory = null;
 				}
-				if(empty($directory)) $directory = '/';
-			} else {
-				JLoader::import('joomla.filesystem.folder');
-				if(!JFolder::exists($directory))
+				if (empty($directory))
 				{
-					$directory = JPATH_ROOT.'/'.$directory;
-					if(!JFolder::exists($directory)) {
+					$directory = '/';
+				}
+			}
+			else
+			{
+				JLoader::import('joomla.filesystem.folder');
+				if (!JFolder::exists($directory))
+				{
+					$directory = JPATH_ROOT . '/' . $directory;
+					if (!JFolder::exists($directory))
+					{
 						$directory = null;
 					}
 				}
@@ -363,19 +415,21 @@ class ArsHelperSelect
 
 		// Get a list of files already used in this category (so as not to show them again, he he!)
 		$files = array();
-		if(!empty($directory))
+		if (!empty($directory))
 		{
-			$items = F0FModel::getTmpInstance('Items','ArsModel')
-				->category($release->category_id)
-				->release('false')
-				->getItemList(true);
+			$items = F0FModel::getTmpInstance('Items', 'ArsModel')
+							 ->category($release->category_id)
+							 ->release('false')
+							 ->getItemList(true);
 
-			if(!empty($items))
+			if (!empty($items))
 			{
 				// Walk through the list and find the currently selected filename
 				$currentFilename = '';
-				foreach($items as $item) {
-					if($item->id == $item_id) {
+				foreach ($items as $item)
+				{
+					if ($item->id == $item_id)
+					{
 						$currentFilename = $item->filename;
 						break;
 					}
@@ -383,8 +437,10 @@ class ArsHelperSelect
 
 				// Remove already used filenames except the currently selected filename
 				reset($items);
-				foreach($items as $item) {
-					if(($item->filename != $currentFilename) && !empty($item->filename)) {
+				foreach ($items as $item)
+				{
+					if (($item->filename != $currentFilename) && !empty($item->filename))
+					{
 						$files[] = $item->filename;
 					}
 				}
@@ -394,46 +450,65 @@ class ArsHelperSelect
 
 		// Produce a list of files and remove the items in the $files array
 		$useFiles = array();
-		if(!empty($directory))
+		if (!empty($directory))
 		{
-			if($useS3) {
+			if ($useS3)
+			{
 				$s3 = ArsHelperAmazons3::getInstance();
 				$allFiles = $s3->getBucket('', $directory, null, null, null, true);
-				if(!empty($allFiles)) foreach($allFiles as $aFile => $info) {
-					$aFile = ltrim(substr($aFile, strlen($directory)), '/');
-					if(in_array($aFile, $files)) continue;
-					$useFiles[] = $aFile;
+				if (!empty($allFiles))
+				{
+					foreach ($allFiles as $aFile => $info)
+					{
+						$aFile = ltrim(substr($aFile, strlen($directory)), '/');
+						if (in_array($aFile, $files))
+						{
+							continue;
+						}
+						$useFiles[] = $aFile;
+					}
 				}
-			} else {
+			}
+			else
+			{
 				$allFiles = JFolder::files($directory, '.', 3, true);
 				$root = str_replace('\\', '/', $directory);
-				if(!empty($allFiles)) foreach($allFiles as $aFile)
+				if (!empty($allFiles))
 				{
-					$aFile = str_replace('\\', '/', $aFile);
-					$aFile = ltrim(substr($aFile, strlen($root)), '/');
-					if(in_array($aFile, $files)) continue;
-					$useFiles[] = $aFile;
+					foreach ($allFiles as $aFile)
+					{
+						$aFile = str_replace('\\', '/', $aFile);
+						$aFile = ltrim(substr($aFile, strlen($root)), '/');
+						if (in_array($aFile, $files))
+						{
+							continue;
+						}
+						$useFiles[] = $aFile;
+					}
 				}
 			}
 		}
 
 		$options = array();
-		if(!empty($useFiles)) foreach($useFiles as $file)
+		if (!empty($useFiles))
 		{
-			$options[] = JHTML::_('select.option', $file, $file);
+			foreach ($useFiles as $file)
+			{
+				$options[] = JHTML::_('select.option', $file, $file);
+			}
 		}
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
-	public static function updatetypes($selected = null, $id = 'type', $attribs = array() )
+	public static function updatetypes($selected = null, $id = 'type', $attribs = array())
 	{
-		$types = array('components','libraries','modules','packages','plugins','files','templates');
+		$types = array('components', 'libraries', 'modules', 'packages', 'plugins', 'files', 'templates');
 		$options = array();
-		$options[] = JHTML::_('select.option','','- '.JText::_('LBL_UPDATETYPES_SELECT').' -');
-		foreach($types as $type)
+		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_UPDATETYPES_SELECT') . ' -');
+		foreach ($types as $type)
 		{
-			$options[] = JHTML::_('select.option',$type,JText::_('LBL_UPDATETYPES_'.strtoupper($type)));
+			$options[] = JHTML::_('select.option', $type, JText::_('LBL_UPDATETYPES_' . strtoupper($type)));
 		}
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
@@ -441,52 +516,65 @@ class ArsHelperSelect
 
 	public static function updatestreams($selected = null, $id = 'updatestream', $attribs = array())
 	{
-		$items = F0FModel::getTmpInstance('Updatestreams','ArsModel')
-			->getItemList(true);
+		$items = F0FModel::getTmpInstance('Updatestreams', 'ArsModel')
+						 ->getItemList(true);
 
 		$options = array();
-		$options[] = JHTML::_('select.option',0,'- '.JText::_('LBL_ITEMS_UPDATESTREAM_SELECT').' -');
-		if(count($items)) foreach($items as $item)
+		$options[] = JHTML::_('select.option', 0, '- ' . JText::_('LBL_ITEMS_UPDATESTREAM_SELECT') . ' -');
+		if (count($items))
 		{
-			$options[] = JHTML::_('select.option',$item->id,$item->name.' ('.$item->element.')');
+			foreach ($items as $item)
+			{
+				$options[] = JHTML::_('select.option', $item->id, $item->name . ' (' . $item->element . ')');
+			}
 		}
+
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
 	/**
 	 * Renders the name of an access level group in Joomla! 1.6
+	 *
 	 * @param $access_level_id int The numeric access level
 	 */
 	public static function renderaccess($access_level_id)
 	{
 		static $levelMap = null;
 
-		if(is_null($levelMap)) {
+		if (is_null($levelMap))
+		{
 			$db = JFactory::getDBO();
 			$query = 'SELECT `id`, `title` FROM `#__viewlevels`';
 			$db->setQuery($query);
-			$levelMap = $db->loadAssocList('id','title');
+			$levelMap = $db->loadAssocList('id', 'title');
 		}
 
-		if(array_key_exists($access_level_id, $levelMap)) {
+		if (array_key_exists($access_level_id, $levelMap))
+		{
 			return $levelMap[$access_level_id];
-		} else {
-			return 'UNKNOWN '.$access_level_id;
+		}
+		else
+		{
+			return 'UNKNOWN ' . $access_level_id;
 		}
 	}
 
-	public static function languages($selected = null, $id = 'language', $attribs = array(), $show_select = false )
+	public static function languages($selected = null, $id = 'language', $attribs = array(), $show_select = false)
 	{
 		JLoader::import('joomla.language.helper');
 		$languages = JLanguageHelper::getLanguages('lang_code');
 		$options = array();
-		if($show_select) {
-			$options[] = JHTML::_('select.option','','---');
-		}
-		$options[] = JHTML::_('select.option','*',JText::_('JALL_LANGUAGE'));
-		if(!empty($languages)) foreach($languages as $key => $lang)
+		if ($show_select)
 		{
-			$options[] = JHTML::_('select.option',$key,$lang->title);
+			$options[] = JHTML::_('select.option', '', '---');
+		}
+		$options[] = JHTML::_('select.option', '*', JText::_('JALL_LANGUAGE'));
+		if (!empty($languages))
+		{
+			foreach ($languages as $key => $lang)
+			{
+				$options[] = JHTML::_('select.option', $key, $lang->title);
+			}
 		}
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
@@ -496,73 +584,89 @@ class ArsHelperSelect
 	{
 		static $langs = array();
 
-		if(empty($langs)) {
+		if (empty($langs))
+		{
 			JLoader::import('joomla.language.helper');
 			$languages = JLanguageHelper::getLanguages('lang_code');
 
 			$langs['*'] = JText::_('JALL_LANGUAGE');
-			if(!empty($languages)) foreach($languages as $key => $lang) {
-				$langs[$key] = $lang->title;
+			if (!empty($languages))
+			{
+				foreach ($languages as $key => $lang)
+				{
+					$langs[$key] = $lang->title;
+				}
 			}
 		}
 
-		if(array_key_exists($langCode, $langs)) {
+		if (array_key_exists($langCode, $langs))
+		{
 			return $langs[$langCode];
-		} else {
+		}
+		else
+		{
 			return $langCode;
 		}
 	}
 
-	public static function vgroups($selected = null, $id = 'vgroup', $attribs = array() )
+	public static function vgroups($selected = null, $id = 'vgroup', $attribs = array())
 	{
-		$items = F0FModel::getTmpInstance('Vgroups','ArsModel')
-			->getItemList(true);
+		$items = F0FModel::getTmpInstance('Vgroups', 'ArsModel')
+						 ->getItemList(true);
 
 		$options = array();
-		$options[] = JHTML::_('select.option',0,'- '.JText::_('LBL_VGROUP_SELECT').' -');
-		if(count($items)) foreach($items as $item)
+		$options[] = JHTML::_('select.option', 0, '- ' . JText::_('LBL_VGROUP_SELECT') . ' -');
+		if (count($items))
 		{
-			$options[] = JHTML::_('select.option',$item->id,$item->title);
+			foreach ($items as $item)
+			{
+				$options[] = JHTML::_('select.option', $item->id, $item->title);
+			}
 		}
+
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
-	public static function clientid($selected = null, $id = 'clientid', $attribs = array() )
+	public static function clientid($selected = null, $id = 'clientid', $attribs = array())
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option','1',JText::_('LBL_CLIENTID_BACKEND'));
-		$options[] = JHTML::_('select.option','0',JText::_('LBL_CLIENTID_FRONTEND'));
+		$options[] = JHTML::_('select.option', '1', JText::_('LBL_CLIENTID_BACKEND'));
+		$options[] = JHTML::_('select.option', '0', JText::_('LBL_CLIENTID_FRONTEND'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
-
-	public static function environmenticon( $id, $attribs = array() )
+	public static function environmenticon($id, $attribs = array())
 	{
 		static $items = array();
 
-		if (!isset($items[$id])) {
-			$items[$id] = clone F0FModel::getTmpInstance('Environments','ArsModel')
-				->getItem($id);
+		if (!isset($items[$id]))
+		{
+			$items[$id] = clone F0FModel::getTmpInstance('Environments', 'ArsModel')
+										->getItem($id);
 		}
 
 		$base_folder = rtrim(JURI::base(), '/');
-		if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
+		if (substr($base_folder, -13) == 'administrator')
+		{
+			$base_folder = rtrim(substr($base_folder, 0, -13), '/');
+		}
 
-		return JHtml::image( $base_folder.'/media/com_ars/environments/' . $items[$id]->icon, $items[$id]->title, $attribs );
+		return JHtml::image($base_folder . '/media/com_ars/environments/' . $items[$id]->icon, $items[$id]->title, $attribs);
 	}
 
-
-	public static function environmenticons( $selected = null, $id = 'icon', $attribs = array() )
+	public static function environmenticons($selected = null, $id = 'icon', $attribs = array())
 	{
 		JLoader::import('joomla.filesystem.folder');
-		$directory	= JPATH_ROOT . '/media/com_ars/environments';
-		$options[]	= JHTML::_('select.option','','- '.JText::_( 'LBL_ITEMS_FILENAME_SELECT' ) . ' -');
+		$directory = JPATH_ROOT . '/media/com_ars/environments';
+		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
 
-		$files	= JFolder :: files( $directory );
+		$files = JFolder :: files($directory);
 
-		if (! empty( $files ) ) {
-			foreach ( $files as $file ) {
+		if (!empty($files))
+		{
+			foreach ($files as $file)
+			{
 				$options[] = JHTML::_('select.option', $file, $file);
 			}
 		}
@@ -570,42 +674,52 @@ class ArsHelperSelect
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
-
-	public static function environments( $selected = null, $id = 'environments', $attribs = array() )
+	public static function environments($selected = null, $id = 'environments', $attribs = array())
 	{
-		$items = F0FModel::getTmpInstance('Environments','ArsModel')
-				->getItemList(true);
+		$items = F0FModel::getTmpInstance('Environments', 'ArsModel')
+						 ->getItemList(true);
 
-		$options	= array();
-		$options[]	= JHTML::_('select.option','','- '.JText::_( 'LBL_ITEMS_ENVIRONMENT_SELECT' ) . ' -');
+		$options = array();
+		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_ITEMS_ENVIRONMENT_SELECT') . ' -');
 
-		if (! empty( $items ) ) {
-			foreach ( $items as $item ) {
-				$options[] = JHTML::_('select.option',$item->id,$item->title );
+		if (!empty($items))
+		{
+			foreach ($items as $item)
+			{
+				$options[] = JHTML::_('select.option', $item->id, $item->title);
 			}
 		}
 
 		$attribs['multiple'] = 'yes';
-		return self::genericlist($options, $id.'[]', $attribs, $selected, $id);
+
+		return self::genericlist($options, $id . '[]', $attribs, $selected, $id);
 	}
 
 	public static function getVisualGroupName($vgroup_id)
 	{
 		$vgroups = null;
 
-		if(is_null($vgroups)) {
-			$items = F0FModel::getTmpInstance('Vgroups','ArsModel')
-				->published(1)
-				->getItemList(true);
+		if (is_null($vgroups))
+		{
+			$items = F0FModel::getTmpInstance('Vgroups', 'ArsModel')
+							 ->published(1)
+							 ->getItemList(true);
 
-			if(count($items)) foreach($items as $item) {
-				$vgroups[$item->id] = $item->title;
+			if (count($items))
+			{
+				foreach ($items as $item)
+				{
+					$vgroups[$item->id] = $item->title;
+				}
 			}
 		}
 
-		if(array_key_exists($vgroup_id, $vgroups)) {
+		if (array_key_exists($vgroup_id, $vgroups))
+		{
 			return $vgroups[$vgroup_id];
-		} else {
+		}
+		else
+		{
 			return '';
 		}
 	}

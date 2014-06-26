@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 defined('_JEXEC') or die();
 
@@ -13,10 +13,9 @@ if (!function_exists('fnmatch'))
 	function fnmatch($pattern, $string)
 	{
 		return @preg_match(
-				'/^' . strtr(addcslashes($pattern, '/\\.+^$(){}=!<>|'), array('*'	 => '.*', '?'	 => '.?')) . '$/i', $string
+			'/^' . strtr(addcslashes($pattern, '/\\.+^$(){}=!<>|'), array('*' => '.*', '?' => '.?')) . '$/i', $string
 		);
 	}
-
 }
 
 class ArsTableItem extends F0FTable
@@ -32,12 +31,12 @@ class ArsTableItem extends F0FTable
 		parent::__construct('#__ars_items', 'id', $db);
 
 		$this->_columnAlias = array(
-			'enabled'		 => 'published',
-			'slug'			 => 'alias',
-			'created_on'	 => 'created',
-			'modified_on'	 => 'modified',
-			'locked_on'		 => 'checked_out_time',
-			'locked_by'		 => 'checked_out',
+			'enabled'     => 'published',
+			'slug'        => 'alias',
+			'created_on'  => 'created',
+			'modified_on' => 'modified',
+			'locked_on'   => 'checked_out_time',
+			'locked_by'   => 'checked_out',
 		);
 
 		$this->access = 1;
@@ -56,17 +55,18 @@ class ArsTableItem extends F0FTable
 		if (!$this->release_id)
 		{
 			$this->setError(JText::_('ERR_ITEM_NEEDS_CATEGORY'));
+
 			return false;
 		}
 
 		// Get some useful info
-		$db		 = $this->getDBO();
-		$query	 = $db->getQuery(true)
-			->select(array(
-				$db->qn('title'),
-				$db->qn('alias')
-			))->from($db->qn('#__ars_items'))
-			->where($db->qn('release_id') . ' = ' . $db->q($this->release_id));
+		$db = $this->getDBO();
+		$query = $db->getQuery(true)
+					->select(array(
+						$db->qn('title'),
+						$db->qn('alias')
+					))->from($db->qn('#__ars_items'))
+					->where($db->qn('release_id') . ' = ' . $db->q($this->release_id));
 
 		if ($this->id)
 		{
@@ -74,32 +74,32 @@ class ArsTableItem extends F0FTable
 		}
 
 		$db->setQuery($query);
-		$info	 = $db->loadAssocList();
-		$titles	 = array();
+		$info = $db->loadAssocList();
+		$titles = array();
 		$aliases = array();
 
 		foreach ($info as $infoitem)
 		{
-			$titles[]	 = $infoitem['title'];
-			$aliases[]	 = $infoitem['alias'];
+			$titles[] = $infoitem['title'];
+			$aliases[] = $infoitem['alias'];
 		}
 
 		// Let's get automatic item title/description records
-		$subquery	 = $db->getQuery(true)
-			->select($db->qn('category_id'))
-			->from($db->qn('#__ars_releases'))
-			->where($db->qn('id') . ' = ' . $db->q($this->release_id));
+		$subquery = $db->getQuery(true)
+					   ->select($db->qn('category_id'))
+					   ->from($db->qn('#__ars_releases'))
+					   ->where($db->qn('id') . ' = ' . $db->q($this->release_id));
 
-		$query		 = $db->getQuery(true)
-			->select('*')
-			->from($db->qn('#__ars_autoitemdesc'))
-			->where($db->qn('category') . ' IN (' . $subquery . ')')
-			->where('NOT(' . $db->qn('published') . '=' . $db->q(0) . ')');
+		$query = $db->getQuery(true)
+					->select('*')
+					->from($db->qn('#__ars_autoitemdesc'))
+					->where($db->qn('category') . ' IN (' . $subquery . ')')
+					->where('NOT(' . $db->qn('published') . '=' . $db->q(0) . ')');
 
 		$db->setQuery($query);
 
-		$autoitems	 = $db->loadObjectList();
-		$auto		 = (object) array('title'			 => '', 'description'	 => '', 'environments'	 => '');
+		$autoitems = $db->loadObjectList();
+		$auto = (object)array('title' => '', 'description' => '', 'environments' => '');
 
 		if (!empty($autoitems))
 		{
@@ -196,8 +196,8 @@ class ArsTableItem extends F0FTable
 			return false;
 		}
 
-		$stripDesc	 = strip_tags($this->description);
-		$stripDesc	 = trim($stripDesc);
+		$stripDesc = strip_tags($this->description);
+		$stripDesc = trim($stripDesc);
 
 		if (empty($this->description) || empty($stripDesc))
 		{
@@ -230,10 +230,10 @@ class ArsTableItem extends F0FTable
 			$this->alias = str_replace('.', '-', $source);
 
 			// Create a smart alias
-			$alias		 = strtolower($source);
-			$alias		 = str_replace(' ', '-', $alias);
-			$alias		 = str_replace('.', '-', $alias);
-			$this->alias = (string) preg_replace('/[^A-Z0-9_-]/i', '', $alias);
+			$alias = strtolower($source);
+			$alias = str_replace(' ', '-', $alias);
+			$alias = str_replace('.', '-', $alias);
+			$this->alias = (string)preg_replace('/[^A-Z0-9_-]/i', '', $alias);
 		}
 
 		if (!$this->alias)
@@ -294,18 +294,18 @@ class ArsTableItem extends F0FTable
 		}
 
 		JLoader::import('joomla.utilities.date');
-		$user	 = JFactory::getUser();
-		$date	 = new JDate();
+		$user = JFactory::getUser();
+		$date = new JDate();
 
 		if (!$this->created_by && empty($this->id))
 		{
-			$this->created_by	 = $user->id;
-			$this->created		 = $date->toSql();
+			$this->created_by = $user->id;
+			$this->created = $date->toSql();
 		}
 		else
 		{
-			$this->modified_by	 = $user->id;
-			$this->modified		 = $date->toSql();
+			$this->modified_by = $user->id;
+			$this->modified = $date->toSql();
 		}
 
 		if (is_null($this->published) || ($this->published == ''))
@@ -316,20 +316,20 @@ class ArsTableItem extends F0FTable
 		// Apply an update stream, if possible
 		if (empty($this->updatestream))
 		{
-			$db			 = $this->getDBO();
+			$db = $this->getDBO();
 
-			$subquery	 = $db->getQuery(true)
-				->select($db->qn('category_id'))
-				->from('#__ars_releases')
-				->where($db->qn('id') . ' = ' . $db->q($this->release_id));
+			$subquery = $db->getQuery(true)
+						   ->select($db->qn('category_id'))
+						   ->from('#__ars_releases')
+						   ->where($db->qn('id') . ' = ' . $db->q($this->release_id));
 
-			$query		 = $db->getQuery(true)
-				->select('*')
-				->from($db->qn('#__ars_updatestreams'))
-				->where($db->qn('category') . ' IN (' . $subquery . ')');
+			$query = $db->getQuery(true)
+						->select('*')
+						->from($db->qn('#__ars_updatestreams'))
+						->where($db->qn('category') . ' IN (' . $subquery . ')');
 
 			$db->setQuery($query);
-			$streams	 = $db->loadObjectList();
+			$streams = $db->loadObjectList();
 
 			if (!empty($streams))
 			{
@@ -365,17 +365,17 @@ class ArsTableItem extends F0FTable
 		{
 			if ($this->type == 'file')
 			{
-				$target		 = null;
-				$folder		 = null;
-				$filename	 = $this->filename;
+				$target = null;
+				$folder = null;
+				$filename = $this->filename;
 
 				$release = F0FModel::getTmpInstance('Releases', 'ArsModel')
-					->getItem($this->release_id);
+								   ->getItem($this->release_id);
 
 				if ($release->id)
 				{
 					$category = F0FModel::getTmpInstance('Categories', 'ArsModel')
-						->getItem($release->category_id);
+										->getItem($release->category_id);
 
 					if ($category->id)
 					{
@@ -392,19 +392,20 @@ class ArsTableItem extends F0FTable
 
 					if ($potentialPrefix == 's3://')
 					{
-						$check	 = substr($folder, 5);
-						$s3		 = ArsHelperAmazons3::getInstance();
-						$items	 = $s3->getBucket('', $check);
+						$check = substr($folder, 5);
+						$s3 = ArsHelperAmazons3::getInstance();
+						$items = $s3->getBucket('', $check);
 
 						if (empty($items))
 						{
 							$folder = null;
+
 							return false;
 						}
 						else
 						{
 							// Get a signed URL
-							$s3	 = ArsHelperAmazons3::getInstance();
+							$s3 = ArsHelperAmazons3::getInstance();
 							$url = $s3->getAuthenticatedURL('', rtrim(substr($folder, 5), '/') . '/' . ltrim($filename, '/'));
 						}
 					}
@@ -414,11 +415,11 @@ class ArsTableItem extends F0FTable
 
 						if (!JFolder::exists($folder))
 						{
-							$folder	 = JPATH_ROOT . '/' . $folder;
+							$folder = JPATH_ROOT . '/' . $folder;
 
 							if (!JFolder::exists($folder))
 							{
-								$folder	 = null;
+								$folder = null;
 							}
 						}
 
@@ -439,10 +440,10 @@ class ArsTableItem extends F0FTable
 			{
 				if (is_null($url))
 				{
-					$url	 = $this->url;
+					$url = $this->url;
 				}
 
-				$config	 = JFactory::getConfig();
+				$config = JFactory::getConfig();
 
 				if (version_compare(JVERSION, '3.0', 'ge'))
 				{
@@ -466,7 +467,7 @@ class ArsTableItem extends F0FTable
 					// The @ sign allows the next line to fail if open_basedir is set or if safe mode is enabled
 					@curl_setopt($process, CURLOPT_FOLLOWLOCATION, 1);
 					@curl_setopt($process, CURLOPT_MAXREDIRS, 20);
-					$data	 = curl_exec($process);
+					$data = curl_exec($process);
 
 					if ($data !== false)
 					{
@@ -502,11 +503,11 @@ class ArsTableItem extends F0FTable
 				{
 					if (empty($this->md5))
 					{
-						$this->md5	 = hash_file('md5', $filename);
+						$this->md5 = hash_file('md5', $filename);
 					}
 					if (empty($this->sha1))
 					{
-						$this->sha1	 = hash_file('sha1', $filename);
+						$this->sha1 = hash_file('sha1', $filename);
 					}
 				}
 				else
@@ -524,11 +525,11 @@ class ArsTableItem extends F0FTable
 
 				if (empty($this->filesize))
 				{
-					$filesize		 = @filesize($filename);
+					$filesize = @filesize($filename);
 
 					if ($filesize !== false)
 					{
-						$this->filesize	 = $filesize;
+						$this->filesize = $filesize;
 					}
 				}
 			}
@@ -565,21 +566,21 @@ class ArsTableItem extends F0FTable
 		return $result;
 	}
 
-    protected function onBeforeStore($updateNulls)
-    {
-        // I'm going to save a new record, let's shift all old record by 1 and put this as the first one
-        if(!$this->id)
-        {
-            $this->ordering = 1;
+	protected function onBeforeStore($updateNulls)
+	{
+		// I'm going to save a new record, let's shift all old record by 1 and put this as the first one
+		if (!$this->id)
+		{
+			$this->ordering = 1;
 
-            $db = JFactory::getDbo();
+			$db = JFactory::getDbo();
 
-            $query = $db->getQuery(true)
-                ->update($db->qn('#__ars_items'))
-                ->set($db->qn('ordering').' = '.$db->qn('ordering').' + '.$db->q(1));
-            $db->setQuery($query)->execute();
-        }
+			$query = $db->getQuery(true)
+						->update($db->qn('#__ars_items'))
+						->set($db->qn('ordering') . ' = ' . $db->qn('ordering') . ' + ' . $db->q(1));
+			$db->setQuery($query)->execute();
+		}
 
-        return parent::onBeforeStore($updateNulls);
-    }
+		return parent::onBeforeStore($updateNulls);
+	}
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
@@ -24,26 +24,26 @@ class ArsViewLatests extends F0FViewHtml
 		// Load the items
 		$model = $this->getModel();
 		$model->processLatest();
-		$this->items		= $model->itemList;
+		$this->items = $model->itemList;
 
 		// Load visual group definitions
-		$raw = F0FModel::getTmpInstance('Vgroups','ArsModel')
-			->frontend(1)
-			->getItemList(true);
+		$raw = F0FModel::getTmpInstance('Vgroups', 'ArsModel')
+					   ->frontend(1)
+					   ->getItemList(true);
 
 		$vgroups = array();
 		$groupedItems = 0;
 
 		$defaultVgroup = (object)array(
-			'id'			=> '',
-			'title'			=> '',
-			'description'	=> '',
-			'numitems'		=> array()
+			'id'          => '',
+			'title'       => '',
+			'description' => '',
+			'numitems'    => array()
 		);
 
 		if (!empty($raw))
 		{
-			foreach($raw as $r)
+			foreach ($raw as $r)
 			{
 				// Get the number of items per visual group and render section
 				$noOfItems = array();
@@ -81,10 +81,10 @@ class ArsViewLatests extends F0FViewHtml
 				}
 
 				$vgroups[$r->id] = (object)array(
-					'id'			=> $r->id,
-					'title'			=> $r->title,
-					'description'	=> $r->description,
-					'numitems'		=> $noOfItems,
+					'id'          => $r->id,
+					'title'       => $r->title,
+					'description' => $r->description,
+					'numitems'    => $noOfItems,
 				);
 			}
 		}
@@ -110,31 +110,31 @@ class ArsViewLatests extends F0FViewHtml
 		{
 			$feed = 'index.php?option=com_ars&view=categories&format=feed';
 			$rss = array(
-				'type' => 'application/rss+xml',
-				'title' => $title.' (RSS)'
+				'type'  => 'application/rss+xml',
+				'title' => $title . ' (RSS)'
 			);
 			$atom = array(
-				'type' => 'application/atom+xml',
-				'title' => $title.' (Atom)'
+				'type'  => 'application/atom+xml',
+				'title' => $title . ' (Atom)'
 			);
 			// add the links
 			$document = JFactory::getDocument();
-			$document->addHeadLink(AKRouter::_($feed.'&type=rss'), 'alternate',
+			$document->addHeadLink(AKRouter::_($feed . '&type=rss'), 'alternate',
 				'rel', $rss);
-			$document->addHeadLink(AKRouter::_($feed.'&type=atom'), 'alternate',
+			$document->addHeadLink(AKRouter::_($feed . '&type=atom'), 'alternate',
 				'rel', $atom);
 		}
 
 		// ...ordering
-		$this->lists->set('order',		$model->getState('filter_order', 'id', 'cmd'));
-		$this->lists->set('order_Dir',	$model->getState('filter_order_Dir', 'DESC', 'cmd'));
+		$this->lists->set('order', $model->getState('filter_order', 'id', 'cmd'));
+		$this->lists->set('order_Dir', $model->getState('filter_order_Dir', 'DESC', 'cmd'));
 
 		// Assign data to the view
-		$this->pagination	= $model->getPagination();
-		$this->lists		= $this->lists;
-		$this->vgroups		= $vgroups;
-		$this->cparams		= $params;
-		$this->Itemid		= $this->input->getInt('Itemid', 0);
+		$this->pagination = $model->getPagination();
+		$this->lists = $this->lists;
+		$this->vgroups = $vgroups;
+		$this->cparams = $params;
+		$this->Itemid = $this->input->getInt('Itemid', 0);
 
 		return true;
 	}

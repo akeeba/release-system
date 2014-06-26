@@ -1,22 +1,23 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
 
 class ArsViewUpdate extends F0FViewHtml
 {
-	protected function onIni($tpl = null) {
+	protected function onIni($tpl = null)
+	{
 		$this->loadHelper('router');
 
 		$task = JRequest::getCmd('task', '');
 
-		$model 		= $this->getModel();
-		$items 		= $model->items;
-		$published  = $model->published;
+		$model = $this->getModel();
+		$items = $model->items;
+		$published = $model->published;
 		$this->assign('items', $items);
 		$this->assign('published', $published);
 

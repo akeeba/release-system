@@ -1,61 +1,71 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
 
 class AKRouter
 {
+
 	static $addsSuffix = null;
-	
+
 	static function _($plainURL)
 	{
-		if(is_null(self::$addsSuffix)) {
+		if (is_null(self::$addsSuffix))
+		{
 			self::doesItAddSuffix();
 		}
-		
+
 		$url = JRoute::_($plainURL);
-		
-		if(self::$addsSuffix) {
+
+		if (self::$addsSuffix)
+		{
 			$uri = new JURI($plainURL);
 			$params = $uri->getQuery(true);
-			$format = $uri->getVar('format','html');
+			$format = $uri->getVar('format', 'html');
 			$format = strtolower($format);
-			
-			if(!in_array($format,array('html','raw'))) {
+
+			if (!in_array($format, array('html', 'raw')))
+			{
 				// Save any query parameters
-				if(strstr($url,'?')) {
+				if (strstr($url, '?'))
+				{
 					list($url, $qparams) = explode('?', $url, 2);
-					$qparams = '?'.$qparams;
-				} else {
+					$qparams = '?' . $qparams;
+				}
+				else
+				{
 					$qparams = '';
 				}
 				// Remove the suffix
 				$basename = basename($url);
 				$exploded = explode(".", $basename);
 				$extension = end($exploded);
-				$realbase = basename($url,'.'.$extension);
-				$url = str_replace($basename, $realbase, $url).$qparams;
+				$realbase = basename($url, '.' . $extension);
+				$url = str_replace($basename, $realbase, $url) . $qparams;
 				// Add a format parameter
 				$uri = new JURI($url);
-				$uri->setVar('format',$format);
+				$uri->setVar('format', $format);
 				$url = $uri->toString();
 			}
 		}
-		
+
 		return $url;
 	}
-	
+
 	static function doesItAddSuffix()
 	{
 		$config = JFactory::getConfig();
-		if(version_compare(JVERSION, '3.0', 'ge')) {
-			self::$addsSuffix = $config->get('sef_suffix',0) == 1;
-		} else {
-			self::$addsSuffix = $config->getValue('config.sef_suffix',0) == 1;
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			self::$addsSuffix = $config->get('sef_suffix', 0) == 1;
+		}
+		else
+		{
+			self::$addsSuffix = $config->getValue('config.sef_suffix', 0) == 1;
 		}
 	}
 }

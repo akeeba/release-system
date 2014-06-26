@@ -1,9 +1,9 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package    AkeebaReleaseSystem
  * @subpackage plugins.arslink
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @copyright  Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @license    GNU General Public License version 3, or later
  */
 
 // no direct access
@@ -20,8 +20,10 @@ class plgButtonArslink extends JPlugin
 	 * Constructor
 	 *
 	 * @access      protected
-	 * @param       object  $subject The object to observe
-	 * @param       array   $config  An array that holds the plugin configuration
+	 *
+	 * @param       object $subject The object to observe
+	 * @param       array  $config  An array that holds the plugin configuration
+	 *
 	 * @since       1.5
 	 */
 	public function __construct(& $subject, $config)
@@ -29,7 +31,6 @@ class plgButtonArslink extends JPlugin
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
 	}
-
 
 	/**
 	 * Display the button
@@ -47,13 +48,13 @@ class plgButtonArslink extends JPlugin
 		$js = "
 		function arsSelectItem(id, title) {
 			var tag = '<a href='+'\"index.php?option=com_ars&amp;view=download&amp;id='+id+'\">'+title+'</a>';
-			jInsertEditorText(tag, '".$name."');
+			jInsertEditorText(tag, '" . $name . "');
 			SqueezeBox.close();
 		}";
 
 		$doc = JFactory::getDocument();
 		$doc->addScriptDeclaration($js);
-		
+
 		$app = JFactory::getApplication();
 		$tmpl = $app->getTemplate();
 		$doc->addStyleDeclaration(".button2-left .arsitem {background: url(templates/$tmpl/images/j_button2_readmore.png) 100% 0 no-repeat;}");

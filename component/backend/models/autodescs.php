@@ -14,13 +14,13 @@ class ArsModelAutodescs extends F0FModel
 		$db = $this->getDbo();
 
 		$query = $db->getQuery(true)
-			->select(array(
-				$db->qn('a') . '.*',
-				$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_name'),
-			))
-			->from($db->qn('#__ars_autoitemdesc') . ' AS ' . $db->qn('a'))
-			->join('INNER', $db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . 'ON(' .
-				$db->qn('c') . '.' . $db->qn('id') . ' = ' . $db->qn('a') . '.' . $db->qn('category') . ')');
+					->select(array(
+						$db->qn('a') . '.*',
+						$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_name'),
+					))
+					->from($db->qn('#__ars_autoitemdesc') . ' AS ' . $db->qn('a'))
+					->join('INNER', $db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . 'ON(' .
+						$db->qn('c') . '.' . $db->qn('id') . ' = ' . $db->qn('a') . '.' . $db->qn('category') . ')');
 
 		$fltCategory = $this->getState('category', null, 'int');
 		if ($fltCategory)

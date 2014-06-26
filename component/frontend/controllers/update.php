@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 defined('_JEXEC') or die();
 
@@ -12,11 +12,11 @@ class ArsControllerUpdate extends F0FController
 
 	public function execute($task)
 	{
-		$document	 = JFactory::getDocument();
-		$viewType	 = $document->getType();
-		$task		 = $this->input->getCmd('task', '');
-		$layout		 = $this->input->getCmd('layout', '');
-		$id			 = $this->input->getInt('id', null);
+		$document = JFactory::getDocument();
+		$viewType = $document->getType();
+		$task = $this->input->getCmd('task', '');
+		$layout = $this->input->getCmd('layout', '');
+		$id = $this->input->getInt('id', null);
 
 		// Check for menu items bearing layout instead of task
 		if ((empty($task) || ($task == 'read') || ($task == 'add')) && !empty($layout))
@@ -49,8 +49,8 @@ class ArsControllerUpdate extends F0FController
 			}
 			else
 			{
-				$task		 = 'ini';
-				$viewType	 = 'ini';
+				$task = 'ini';
+				$viewType = 'ini';
 			}
 		}
 		elseif ($task == 'ini')
@@ -116,12 +116,12 @@ class ArsControllerUpdate extends F0FController
 	{
 		$registeredURLParams = array(
 			'option' => 'CMD',
-			'view'	 => 'CMD',
-			'task'	 => 'CMD',
+			'view'   => 'CMD',
+			'task'   => 'CMD',
 			'format' => 'CMD',
 			'layout' => 'CMD',
-			'id'	 => 'INT',
-			'dlid'	 => 'STRING',
+			'id'     => 'INT',
+			'dlid'   => 'STRING',
 		);
 		$this->display(true, $registeredURLParams);
 	}
@@ -132,25 +132,25 @@ class ArsControllerUpdate extends F0FController
 		if (empty($cat))
 		{
 			// Do we have a menu item parameter?
-			$app	 = JFactory::getApplication();
-			$params	 = $app->getPageParameters('com_ars');
-			$cat	 = $params->get('category', 'components');
+			$app = JFactory::getApplication();
+			$params = $app->getPageParameters('com_ars');
+			$cat = $params->get('category', 'components');
 		}
 		if (empty($cat))
 		{
 			return JError::raiseError(500, JText::_('ARS_ERR_NOUPDATESOURCE'));
 		}
-		$model	 = $this->getThisModel();
-		$x		 = $model->getCategoryItems($cat);
+		$model = $this->getThisModel();
+		$x = $model->getCategoryItems($cat);
 
 		$registeredURLParams = array(
 			'option' => 'CMD',
-			'view'	 => 'CMD',
-			'task'	 => 'CMD',
+			'view'   => 'CMD',
+			'task'   => 'CMD',
 			'format' => 'CMD',
 			'layout' => 'CMD',
-			'id'	 => 'INT',
-			'dlid'	 => 'STRING',
+			'id'     => 'INT',
+			'dlid'   => 'STRING',
 		);
 		$this->display(true, $registeredURLParams);
 	}
@@ -161,9 +161,9 @@ class ArsControllerUpdate extends F0FController
 		if ($id == 0)
 		{
 			// Do we have a menu item parameter?
-			$app	 = JFactory::getApplication();
-			$params	 = $app->getPageParameters('com_ars');
-			$id		 = $params->get('streamid', 0);
+			$app = JFactory::getApplication();
+			$params = $app->getPageParameters('com_ars');
+			$id = $params->get('streamid', 0);
 		}
 		$model = $this->getThisModel();
 		$model->getItems($id);
@@ -171,12 +171,12 @@ class ArsControllerUpdate extends F0FController
 
 		$registeredURLParams = array(
 			'option' => 'CMD',
-			'view'	 => 'CMD',
-			'task'	 => 'CMD',
+			'view'   => 'CMD',
+			'task'   => 'CMD',
 			'format' => 'CMD',
 			'layout' => 'CMD',
-			'id'	 => 'INT',
-			'dlid'	 => 'STRING',
+			'id'     => 'INT',
+			'dlid'   => 'STRING',
 		);
 		$this->display(true, $registeredURLParams);
 	}
@@ -187,9 +187,9 @@ class ArsControllerUpdate extends F0FController
 		if ($id == 0)
 		{
 			// Do we have a menu item parameter?
-			$app	 = JFactory::getApplication();
-			$params	 = $app->getPageParameters('com_ars');
-			$id		 = $params->get('streamid', 0);
+			$app = JFactory::getApplication();
+			$params = $app->getPageParameters('com_ars');
+			$id = $params->get('streamid', 0);
 		}
 		$model = $this->getThisModel();
 		$model->getItems($id);
@@ -197,12 +197,12 @@ class ArsControllerUpdate extends F0FController
 
 		$registeredURLParams = array(
 			'option' => 'CMD',
-			'view'	 => 'CMD',
-			'task'	 => 'CMD',
+			'view'   => 'CMD',
+			'task'   => 'CMD',
 			'format' => 'CMD',
 			'layout' => 'CMD',
-			'id'	 => 'INT',
-			'dlid'	 => 'STRING',
+			'id'     => 'INT',
+			'dlid'   => 'STRING',
 		);
 		$this->display(true, $registeredURLParams);
 	}
@@ -214,16 +214,16 @@ class ArsControllerUpdate extends F0FController
 		if ($id == 0)
 		{
 			// Do we have a menu item parameter?
-			$app	 = JFactory::getApplication();
-			$params	 = $app->getPageParameters('com_ars');
-			$id		 = $params->get('streamid', 0);
+			$app = JFactory::getApplication();
+			$params = $app->getPageParameters('com_ars');
+			$id = $params->get('streamid', 0);
 		}
 
 		$model = $this->getThisModel();
 		$model->getItems($id);
 		$model->getPublished($id);
 
-		$items 		= $model->items;
+		$items = $model->items;
 
 		if (!$model->published)
 		{
@@ -247,35 +247,39 @@ class ArsControllerUpdate extends F0FController
 		$dl_model->loginUser();
 
 		// Get the log table
-		$log = F0FModel::getTmpInstance('Logs','ArsModel')->getTable();
+		$log = F0FModel::getTmpInstance('Logs', 'ArsModel')->getTable();
 
 		// Get the item lists
-		if($dlitem->item_id > 0) {
+		if ($dlitem->item_id > 0)
+		{
 			$item = $dl_model->getItem($dlitem->item_id);
-		} else {
+		}
+		else
+		{
 			$item = null;
 		}
 
-		if(is_null($item))
+		if (is_null($item))
 		{
 			$log->save(array('authorized' => 0));
-			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
+
+			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN'));
 		}
-		elseif($item === -1 && $dlitem->id)
+		elseif ($item === -1 && $dlitem->id)
 		{
 			$log->save(array('authorized' => 0));
-			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
+
+			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN'));
 		}
 
 		$item->hit();
 		$log->save(array(
-			'item_id' => $dlitem->item_id,
-			'authorized' => 1
+				'item_id'    => $dlitem->item_id,
+				'authorized' => 1
 			)
 		);
 
 		$dl_model->doDownload();
-
 		// No need to return anything; doDownload() calls the exit() method of the application object
 	}
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 // Protect from unauthorized access
@@ -16,13 +16,14 @@ class ArsControllerImpjed extends F0FController
 	public function jcpackages()
 	{
 		$user = JFactory::getUser();
-		if (!$user->authorise('core.create', 'com_ars')) {
+		if (!$user->authorise('core.create', 'com_ars'))
+		{
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$project = $this->input->getCmd('project', '');
 
-		if(empty($project))
+		if (empty($project))
 		{
 			$data = array();
 		}
@@ -42,14 +43,15 @@ class ArsControllerImpjed extends F0FController
 	public function jcreleases()
 	{
 		$user = JFactory::getUser();
-		if (!$user->authorise('core.create', 'com_ars')) {
+		if (!$user->authorise('core.create', 'com_ars'))
+		{
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$project = $this->input->getCmd('project', '');
 		$package = $this->input->getCmd('package', '');
 
-		if(empty($project) || empty($package))
+		if (empty($project) || empty($package))
 		{
 			$data = array();
 		}
@@ -69,7 +71,8 @@ class ArsControllerImpjed extends F0FController
 	public function jcfiles()
 	{
 		$user = JFactory::getUser();
-		if (!$user->authorise('core.create', 'com_ars')) {
+		if (!$user->authorise('core.create', 'com_ars'))
+		{
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
@@ -77,7 +80,7 @@ class ArsControllerImpjed extends F0FController
 		$package = $this->input->getCmd('package', '');
 		$release = $this->input->getCmd('release', '');
 
-		if(empty($project) || empty($package) || empty($release))
+		if (empty($project) || empty($package) || empty($release))
 		{
 			$data = array();
 		}
@@ -97,14 +100,15 @@ class ArsControllerImpjed extends F0FController
 	public function import()
 	{
 		$user = JFactory::getUser();
-		if (!$user->authorise('core.create', 'com_ars')) {
+		if (!$user->authorise('core.create', 'com_ars'))
+		{
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$release = $this->input->getInt('release', 0);
 		$url = $this->input->getString('url', '');
 
-		if(empty($url) || empty($release))
+		if (empty($url) || empty($release))
 		{
 			$data = false;
 		}
