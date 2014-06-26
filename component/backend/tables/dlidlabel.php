@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-class ArsTableEDlidlabel extends F0FTable
+class ArsTableDlidlabel extends F0FTable
 {
 	public function check() {
 		$result = parent::check();
