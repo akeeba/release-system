@@ -26,6 +26,6 @@
 
 		<field name="download_id" type="dlid"/>
 
-		<field name="enabled" type="published"/>
+		<field name="enabled" type="dlidpublished"/>
 	</fieldset>
 </form>

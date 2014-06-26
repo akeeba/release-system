@@ -14,21 +14,20 @@ defined('_JEXEC') or die();
  *
  * @since       2.0
  */
-class F0FFormFieldDlid extends F0FFormFieldText
+class F0FFormFieldDlidpublished extends F0FFormFieldPublished
 {
 	public function getRepeatable()
 	{
-		$prefix = $this->item->user_id . ':';
+		$html = parent::getRepeatable();
+
+		$html = str_replace('icon-publish', 'icon-ok', $html);
+		$html = str_replace('icon-unpublish', 'icon-remove', $html);
 
 		if ($this->item->primary)
 		{
-			$prefix = '';
-			$this->element['class'] = 'label label-inverse';
+			$html = '<span class="btn btn-micro disabled"><span class="icon-ok"></span></span>';
 		}
 
-
-		$this->value = $prefix . $this->item->dlid;
-
-		return parent::getRepeatable();
+		return $html;
 	}
 }
