@@ -12,9 +12,9 @@ class ArsHelperFilter
 	/**
 	 * Filters a list
 	 *
-	 * @param array $source The source list
+	 * @param   array  $source  The source list
 	 *
-	 * @return array The filtered list
+	 * @return  array  The filtered list
 	 */
 	static public function filterList($source)
 	{
@@ -93,6 +93,14 @@ class ArsHelperFilter
 		return $list;
 	}
 
+	/**
+	 * Formats a string to a valid Download ID format. If the string is not looking like a Download ID it will return
+	 * false to indicate the error.
+	 *
+	 * @param   string  $dlid The string to reformat.
+	 *
+	 * @return  bool|string
+	 */
 	static public function reformatDownloadID($dlid)
 	{
 		// Check if the Download ID is empty or consists of only whitespace
@@ -149,11 +157,11 @@ class ArsHelperFilter
 	/**
 	 * Gets the user associated with a specific Download ID
 	 *
-	 * @param   string $dlid The Download ID to check
+	 * @param   string  $dlid The Download ID to check
 	 *
 	 * @return  array  The user record of the corresponding user and the Download ID
 	 *
-	 * @throws Exception An exception is thrown if the Download ID is invalid or empty
+	 * @throws  Exception  An exception is thrown if the Download ID is invalid or empty
 	 */
 	static public function getUserFromDownloadID($dlid)
 	{
@@ -167,6 +175,10 @@ class ArsHelperFilter
 
 		// Do we have a userid:downloadid format?
 		$user_id = null;
+
+		/** @var ArsModelDlidlabels $model */
+		$model = F0FModel::getTmpInstance('Dlidlabels', 'ArsModel');
+
 		if (strstr($dlid, ':') !== false)
 		{
 			$parts = explode(':', $dlid, 2);
@@ -174,62 +186,33 @@ class ArsHelperFilter
 			$dlid = $parts[1];
 		}
 
-		if (is_null($user_id))
+		$model->primary(1);
+		$model->dlid($dlid);
+
+		if (!is_null($user_id))
 		{
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true)
-						->select(array(
-							$db->qn('id')
-						))
-						->from($db->qn('#__users'))
-						->where('md5(concat(' . $db->qn('id') . ',' . $db->qn('username') . ',' . $db->qn('password') . ')) = ' . $db->q($dlid));
-			$db->setQuery($query);
-			$user_id = $db->loadResult();
-		}
-		else
-		{
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true)
-						->select(array(
-							'label'
-						))->from($db->qn('#__ars_dlidlabels'))
-						->where($db->qn('user_id') . ' = ' . $db->q($user_id))
-						->where($db->qn('enabled') . ' = ' . $db->q(1));
-			$db->setQuery($query);
-			$labels = $db->loadColumn();
-
-			if (empty($labels))
-			{
-				throw new Exception('Invalid Download ID', 403);
-			}
-
-			$query = $db->getQuery(true)
-						->select(array(
-							'md5(concat(' . $db->qn('id') . ',' . $db->qn('username') . ',' . $db->qn('password') . ')) AS ' . $db->qn('dlid')
-						))
-						->from($db->qn('#__users'))
-						->where($db->qn('id') . ' = ' . $db->q($user_id));
-			$db->setQuery($query);
-			$masterDlid = $db->loadResult();
-
-			$found = false;
-			foreach ($labels as $k => $label)
-			{
-				$check = md5($user_id . $label . $masterDlid);
-				if ($check == $dlid)
-				{
-					$found = true;
-					break;
-				}
-			}
-
-			if (!$found)
-			{
-				throw new Exception('Invalid Download ID', 403);
-			}
+			$model->primary(0);
+			$model->user_id($user_id);
 		}
 
-		return JFactory::getUser($user_id);
+		$matchingRecord = $model->getFirstItem(true);
+
+		if (!is_object($matchingRecord) || empty($matchingRecord->dlid))
+		{
+			throw new Exception('Invalid Download ID', 403);
+		}
+
+		if (!is_null($user_id) && ($user_id != $matchingRecord->user_id))
+		{
+			throw new Exception('Invalid Download ID', 403);
+		}
+
+		if ($matchingRecord->dlid != $dlid)
+		{
+			throw new Exception('Invalid Download ID', 403);
+		}
+
+		return JFactory::getUser($matchingRecord->user_id);
 	}
 
 	/**
@@ -254,9 +237,9 @@ class ArsHelperFilter
 		if (!is_object($dlidRecord) || empty($dlidRecord->dlid))
 		{
 			$data = array(
-				'user_id'	=> $user->id,
-				'primary'	=> 1,
-				'enabled'	=> 1,
+				'user_id' => $user->id,
+				'primary' => 1,
+				'enabled' => 1,
 			);
 			$model->save($data);
 			$dlidRecord = $model->getSavedTable();
