@@ -166,6 +166,7 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 			'administrator/components/com_ars/views/vgroup/tmpl/form.php',
 		),
 		'folders' => array(
+			'administrator/components/com_ars/elements',
 			'administrator/components/com_ars/language',
 			'administrator/components/com_ars/views/cpanel',
 			'administrator/components/com_ars/views/impjed',
