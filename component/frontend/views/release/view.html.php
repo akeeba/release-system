@@ -53,7 +53,14 @@ class ArsViewRelease extends F0FViewHtml
 
 		// Pass on a user and a Download ID
 		$user = JFactory::getUser();
-		$dlid = $user->guest ? '' : md5($user->id . $user->username . $user->password);
+
+		if (!class_exists('ArsHelperFilter'))
+		{
+			@include_once JPATH_SITE . '/components/com_ars/helpers/filter.php';
+		}
+
+		$dlid = class_exists('ArsHelperFilter') ? ArsHelperFilter::myDownloadID() : '';
+
 		$directlink = $pparams->get('show_directlink', 1) && !$user->guest;
 
 		// Pass on Direct Link-related stuff
