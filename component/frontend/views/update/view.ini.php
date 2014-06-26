@@ -13,7 +13,7 @@ class ArsViewUpdate extends F0FViewHtml
 	{
 		$this->loadHelper('router');
 
-		$task = JRequest::getCmd('task', '');
+		$task = $this->input->getCmd('task', '');
 
 		$model = $this->getModel();
 		$items = $model->items;

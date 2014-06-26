@@ -47,6 +47,7 @@ class ArsControllerUpload extends F0FController
 	function upload()
 	{
 		$user = JFactory::getUser();
+
 		if (!$user->authorise('core.create', 'com_ars'))
 		{
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
@@ -102,10 +103,12 @@ class ArsControllerUpload extends F0FController
 		{
 			// The request is valid
 			$err = null;
+
 			if (!class_exists('MediaHelper'))
 			{
 				require_once(JPATH_ADMINISTRATOR . '/components/com_media/helpers/media.php');
 			}
+
 			if (!MediaHelper::canUpload($file, $err))
 			{
 				// The file can't be upload
@@ -153,6 +156,7 @@ class ArsControllerUpload extends F0FController
 			$s3 = ArsHelperAmazons3::getInstance();
 
 			$s3targetdir = trim(substr($s3dir, 5), '/');
+
 			if (!empty($s3targetdir))
 			{
 				$s3targetdir .= '/';
@@ -160,14 +164,16 @@ class ArsControllerUpload extends F0FController
 
 			$input = $s3->inputFile($filepath);
 			$success = $s3->putObject($input, '', $s3targetdir . $file['name']);
+
 			if (!@unlink($filepath))
 			{
 				JFile::delete($filepath);
 			}
+
 			if (!$success)
 			{
 				$url = 'index.php?option=com_ars&view=upload&task=category&id=' . (int)$catid
-					. '&folder=' . urlencode(JRequest::getString('folder'))
+					. '&folder=' . urlencode($this->input->getString('folder'))
 					. '&' . JFactory::getSession()->getFormToken(true) . '=1';
 				$this->setRedirect($url, $s3->getError(), 'error');
 
@@ -176,7 +182,7 @@ class ArsControllerUpload extends F0FController
 		}
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id=' . (int)$catid
-			. '&folder=' . urlencode(JRequest::getString('folder'))
+			. '&folder=' . urlencode($this->input->getString('folder'))
 			. '&' . JFactory::getSession()->getFormToken(true) . '=1';
 		$this->setRedirect($url, JText::_('MSG_ALL_FILES_UPLOADED'));
 	}
@@ -208,7 +214,7 @@ class ArsControllerUpload extends F0FController
 					   ->delete();
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id=' . (int)$catid
-			. '&folder=' . urlencode(JRequest::getString('folder'))
+			. '&folder=' . urlencode($this->input->getString('folder'))
 			. '&' . JFactory::getSession()->getFormToken(true) . '=1';
 
 		if ($status)
@@ -275,7 +281,7 @@ class ArsControllerUpload extends F0FController
 		}
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id=' . (int)$catid
-			. '&folder=' . urlencode(JRequest::getString('folder'))
+			. '&folder=' . urlencode($this->input->getString('folder'))
 			. '&' . JFactory::getSession()->getFormToken(true) . '=1';
 		if ($status)
 		{

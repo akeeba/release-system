@@ -17,6 +17,7 @@ class ArsTableDlidlabel extends F0FTable
 		{
 			// Force user_id to be the current user ID in the front-end
 			list($isCli, $isAdmin) = F0FDispatcher::isCliAdmin();
+
 			if (!$isAdmin && !$isCli)
 			{
 				$this->user_id = JFactory::getUser()->id;

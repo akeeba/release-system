@@ -19,7 +19,7 @@ if(!empty($subpathURL) && ($subpathURL != '/')) {
 $categories = array('components','libraries','modules','packages','plugins','files','templates');
 $tag = "<"."?xml version=\"1.0\" encoding=\"utf-8\""."?".">";
 
-$dlid = trim(JRequest::getCmd('dlid',''));
+$dlid = trim($this->input->getCmd('dlid',''));
 if (!empty($dlid))
 {
 	$this->loadHelper('filter');

@@ -45,7 +45,7 @@ class ArsTableLog extends F0FTable
 
 		if (empty($this->item_id))
 		{
-			$this->item_id = JRequest::getInt('id', 0);
+			$this->item_id = $this->input->getInt('id', 0);
 		}
 
 		if (empty($this->accessed_on) || ($this->accessed_on == '0000-00-00 00:00:00'))

@@ -908,7 +908,9 @@ function arsBuildRouteIni(&$query)
 
 function arsParseRoute(&$segments)
 {
-	$format = JRequest::getCmd('format', 'html');
+	$input = JFactory::getApplication()->input;
+
+	$format = $input->getCmd('format', 'html');
 	$url = JURI::getInstance()->toString();
 	$ext = substr(strtolower($url), -4);
 	if ($ext == '.raw')
@@ -1604,6 +1606,8 @@ class ArsRouterHelper
 	 */
 	static public function findMenu($qoptions = array(), $params = null)
 	{
+		$input = JFactory::getApplication()->input;
+
 		// Convert $qoptions to an object
 		if (empty($qoptions) || !is_array($qoptions))
 		{
@@ -1653,12 +1657,12 @@ class ArsRouterHelper
 			}
 			else
 			{
-				$langCode = JRequest::getCmd('language', '*');
+				$langCode = $input->getCmd('language', '*');
 			}
 		}
 		else
 		{
-			$langCode = JRequest::getCmd('language', '*');
+			$langCode = $input->getCmd('language', '*');
 		}
 
 		if ($langCode == '*')

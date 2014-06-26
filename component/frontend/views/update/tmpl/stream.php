@@ -29,7 +29,7 @@ $streamTypeMap = array(
 	'templates'	 => 'template'
 );
 
-$dlid = trim(JRequest::getCmd('dlid', ''));
+$dlid = trim($this->input->getCmd('dlid', ''));
 
 if (!empty($dlid))
 {

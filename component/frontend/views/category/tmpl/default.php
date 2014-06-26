@@ -41,7 +41,7 @@ $menu = $menus->getActive();
 <form id="ars-pagination" action="<?php echo JURI::getInstance()->toString() ?>" method="post">
 	<input type="hidden" name="option" value="com_ars" />
 	<input type="hidden" name="view" value="category" />
-	<input type="hidden" name="id" value="<?php echo JRequest::getInt('id',0) ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->input->getInt('id',0) ?>" />
 
 <?php if ($this->pparams->get('show_pagination') && ($this->pagination->get('pages.total') > 1)) : ?>
 	<div class="pagination">

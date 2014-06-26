@@ -93,7 +93,8 @@ class ArsHelperBreadcrumbs
 
 			if (is_null($Itemid))
 			{
-				$Itemid = JRequest::getInt('Itemid', null);
+				$input = JFactory::getApplication()->input;
+				$Itemid = $input->getInt('Itemid', null);
 				$Itemid = empty($Itemid) ? '' : '&Itemid=' . $Itemid;
 
 				$rootName = $name;
@@ -140,7 +141,8 @@ class ArsHelperBreadcrumbs
 
 			if (is_null($Itemid))
 			{
-				$Itemid = JRequest::getInt('Itemid', null);
+				$input = JFactory::getApplication()->input;
+				$Itemid = $input->getInt('Itemid', null);
 				$Itemid = empty($Itemid) ? '' : '&Itemid=' . $Itemid;
 
 				$rootName = $name;

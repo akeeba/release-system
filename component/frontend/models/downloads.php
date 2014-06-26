@@ -430,10 +430,10 @@ class ArsModelDownloads extends F0FModel
 		JLoader::import('joomla.user.helper');
 
 		// Get the query parameters
-		$dlid = JRequest::getString('dlid', null);
+		$dlid = $this->input->getString('dlid', null);
 		$credentials = array();
-		$credentials['username'] = JRequest::getVar('username', '', 'get', 'username');
-		$credentials['password'] = JRequest::getString('password', '', 'get', JREQUEST_ALLOWRAW);
+		$credentials['username'] = $this->input->getVar('username', '', 'get', 'username');
+		$credentials['password'] = $this->input->getString('password', '', 'get', JREQUEST_ALLOWRAW);
 
 		// Initialise
 		$user_id = 0;

@@ -24,8 +24,8 @@ if ($this->item->id == 0)
 ?>
 
 <form name="adminForm" id="adminForm" action="index.php" method="post" class="form form-horizontal">
-	<input type="hidden" name="option" value="<?php echo JRequest::getCmd('option') ?>"/>
-	<input type="hidden" name="view" value="<?php echo JRequest::getCmd('view') ?>"/>
+	<input type="hidden" name="option" value="<?php echo $this->input->getCmd('option') ?>"/>
+	<input type="hidden" name="view" value="<?php echo $this->input->getCmd('view') ?>"/>
 	<input type="hidden" name="task" value=""/>
 	<input type="hidden" name="id" value="<?php echo $this->item->id ?>"/>
 	<input type="hidden" name="<?php echo JFactory::getSession()->getFormToken(); ?>" value="1"/>
