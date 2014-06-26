@@ -18,17 +18,9 @@ class F0FFormFieldDlid extends F0FFormFieldText
 {
 	public function getRepeatable()
 	{
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true)
-					->select(array(
-						'md5(concat(' . $db->qn('id') . ',' . $db->qn('username') . ',' . $db->qn('password') . ')) AS ' . $db->qn('dlid')
-					))
-					->from($db->qn('#__users'))
-					->where($db->qn('id') . ' = ' . $db->q($this->item->user_id));
-		$db->setQuery($query);
-		$masterDlid = $db->loadResult();
+		$prefix = $this->item->primary ? '' : $this->item->user_id . ':';
 
-		$this->value = $this->item->user_id . ':' . md5($this->item->user_id . $this->item->label . $masterDlid);
+		$this->value = $prefix . $this->item->dlid;
 
 		return parent::getRepeatable();
 	}

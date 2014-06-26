@@ -17,7 +17,7 @@
 	<fieldset name="items">
 		<field name="ars_dlidlabel_id" type="selectrow"/>
 		
-		<field name="label" type="text"
+		<field name="label" type="dlidlabel"
 			show_link="true"
 			url="index.php?option=com_ars&amp;view=dlidlabel&amp;task=edit&amp;id=[ITEM:ID]"
 			empty_replacement="(no title)"

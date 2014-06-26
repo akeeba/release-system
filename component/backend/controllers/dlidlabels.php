@@ -15,6 +15,8 @@ class ArsControllerDlidlabels extends F0FController
 	 *
 	 * @param   string $task The task to execute.
 	 *
+	 * @return  null|bool  False on execution failure
+	 *
 	 * @throws  Exception
 	 */
 	public function execute($task)
@@ -80,15 +82,24 @@ class ArsControllerDlidlabels extends F0FController
 		if (($result !== false) && !$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
+
 			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
 
 			$item = $model->getItem();
+
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
+				return false;
+			}
+
+			if ($item->primary)
+			{
+				throw new Exception(JText::_('COM_ARS_DLIDLABELS_ERR_CANTEDITDEFAULT'), 403);
 
 				return false;
 			}

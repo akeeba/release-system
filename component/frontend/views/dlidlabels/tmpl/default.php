@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die();
 
-/** @var F0FViewHtml $this */
+/** @var F0FViewForm $this */
 
 JHtml::_('behavior.framework');
 
@@ -46,5 +46,12 @@ $menu = $menus->getActive();
 		<?php echo JText::_('JUnPublished') ?>
 	</button>
 </div>
+
+<?php
+	if (!($this instanceof F0FViewForm))
+	{
+		JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_ars&view=dlidlabels'));
+	}
+?>
 
 <?php echo $this->getRenderedForm(); ?>

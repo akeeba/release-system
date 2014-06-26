@@ -12,11 +12,12 @@ class ArsModelDlidlabels extends F0FModel
 	public function buildQuery($overrideLimits = false)
 	{
 		$query = parent::buildQuery($overrideLimits);
+		$db = JFactory::getDbo();
 
 		$fltUsername = $this->getState('username', null, 'string');
+
 		if ($fltUsername)
 		{
-			$db = JFactory::getDbo();
 			$fltUsername = '%' . $fltUsername . '%';
 			$q = $db->getQuery(true)
 					->select(array(
@@ -37,6 +38,31 @@ class ArsModelDlidlabels extends F0FModel
 			}
 		}
 
+		$fltPrimary = $this->getState('primary', null, 'cmd');
+
+		if (is_numeric($fltPrimary))
+		{
+			$query->where($db->qn('primary') . ' = ' . $db->q($fltPrimary));
+		}
+
+		$query->order($db->qn('primary') . ' DESC');
+
 		return $query;
+	}
+
+	protected function onBeforeDelete(&$id, &$table)
+	{
+		$result = parent::onBeforeDelete($id, $table);
+
+		if ($result)
+		{
+			// You cannot delete a primary Download ID
+			if ($table->primary)
+			{
+				return false;
+			}
+		}
+
+		return $result;
 	}
 }

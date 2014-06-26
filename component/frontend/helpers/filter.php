@@ -232,6 +232,11 @@ class ArsHelperFilter
 		return JFactory::getUser($user_id);
 	}
 
+	/**
+	 * Returns the main download ID for a user. If it doesn't exist it creates a new one.
+	 *
+	 * @return mixed
+	 */
 	static public function myDownloadID()
 	{
 		$user = JFactory::getUser();
@@ -241,6 +246,22 @@ class ArsHelperFilter
 			return '';
 		}
 
-		return md5($user->id . $user->username . $user->password);
+		/** @var ArsModelDlidlabels $model */
+		$model = F0FModel::getTmpInstance('Dlidlabels', 'ArsModel');
+		$dlidRecord = $model->user_id($user->id)->primary(1)->getFirstItem(true);
+
+		// Create a new main Download ID if none is saved
+		if (!is_object($dlidRecord) || empty($dlidRecord->dlid))
+		{
+			$data = array(
+				'user_id'	=> $user->id,
+				'primary'	=> 1,
+				'enabled'	=> 1,
+			);
+			$model->save($data);
+			$dlidRecord = $model->getSavedTable();
+		}
+
+		return $dlidRecord->dlid;
 	}
 }
