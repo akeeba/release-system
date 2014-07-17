@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewRelease $this */
+
 JLoader::import('joomla.utilities.date');
 
 if (!property_exists($this, 'item') || !is_object($this->item))

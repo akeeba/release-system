@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewUpdate $this */
+
 $rootURL = rtrim(JURI::base(),'/');
 $subpathURL = JURI::base(true);
 if(!empty($subpathURL) && ($subpathURL != '/')) {
@@ -16,7 +18,7 @@ if(!empty($subpathURL) && ($subpathURL != '/')) {
 
 $tag = "<"."?xml version=\"1.0\" encoding=\"utf-8\""."?".">";
 
-$dlid = trim(JRequest::getCmd('dlid',''));
+$dlid = trim($this->input->getCmd('dlid',''));
 if (!empty($dlid))
 {
 	$this->loadHelper('filter');

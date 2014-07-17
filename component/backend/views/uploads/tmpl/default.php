@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
+/** @var ArsViewUploads $this */
+
 $this->loadHelper('select');
 
 F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
@@ -17,8 +19,8 @@ F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 <div class="span12">
 
 <form name="adminForm" id="adminForm" action="index.php" method="post" class="form form-horizontal">
-	<input type="hidden" name="option" value="<?php echo JRequest::getCmd('option') ?>" />
-	<input type="hidden" name="view" value="<?php echo JRequest::getCmd('view') ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->input->getCmd('option') ?>" />
+	<input type="hidden" name="view" value="<?php echo $this->input->getCmd('view') ?>" />
 	<input type="hidden" name="task" id="task" value="category" />
 	<input type="hidden" name="folder" id="folder" value="<?php echo isset($this->folder) ? $this->escape($this->folder) : '' ?>" />
 	<input type="hidden" name="file" id="file" value="" />

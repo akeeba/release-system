@@ -1,22 +1,23 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
 
 class ArsControllerDownload extends F0FController
 {
-    public function __construct($config = array())
-    {
+	public function __construct($config = array())
+	{
 		parent::__construct($config);
 
-        $this->cacheableTasks = array();
+		$this->cacheableTasks = array();
 	}
 
-	public function execute($task) {
+	public function execute($task)
+	{
 		$task = 'download';
 
 		parent::execute($task);
@@ -27,8 +28,8 @@ class ArsControllerDownload extends F0FController
 		$id = $this->input->getInt('id', null);
 
 		// Get the page parameters
-		$app    = JFactory::getApplication();
-        $params = JComponentHelper::getParams('com_ars');
+		$app = JFactory::getApplication();
+		$params = JComponentHelper::getParams('com_ars');
 
 		// Get the model
 		$model = $this->getThisModel();
@@ -37,33 +38,37 @@ class ArsControllerDownload extends F0FController
 		$model->loginUser();
 
 		// Get the log table
-		$log = F0FModel::getTmpInstance('Logs','ArsModel')->getTable();
+		$log = F0FModel::getTmpInstance('Logs', 'ArsModel')->getTable();
 
 		// Get the item lists
-		if($id > 0) {
+		if ($id > 0)
+		{
 			$item = $model->getItem($id);
-		} else {
+		}
+		else
+		{
 			$item = null;
 		}
 
-		if(is_null($item))
+		if (is_null($item))
 		{
 			$log->save(array('authorized' => 0));
 
-            if($params->get('banUnauth', 0))
-            {
-                // Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
-                $app->triggerEvent('onAdminToolsThirdpartyException', array(
-                        'ARSscraper',
-                        JText::_('COM_ARS_BLOCKED_MESSAGE'),
-                        array('Item : '.$id)),
-                    true
-                );
-            }
+			if ($params->get('banUnauth', 0))
+			{
+				// Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
+				$app->triggerEvent('onAdminToolsThirdpartyException', array(
+						'ARSscraper',
+						JText::_('COM_ARS_BLOCKED_MESSAGE'),
+						array('Item : ' . $id)
+					),
+					true
+				);
+			}
 
-			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
+			return JError::raiseError(403, JText::_('ACCESS FORBIDDEN'));
 		}
-		elseif($item === -1 && $id)
+		elseif ($item === -1 && $id)
 		{
 			$redirect = '';
 
@@ -71,7 +76,7 @@ class ArsControllerDownload extends F0FController
 			$tmpItem = F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
 			$tmpItem->load($id);
 
-			if($tmpItem->redirect_unauth)
+			if ($tmpItem->redirect_unauth)
 			{
 				$redirect = $tmpItem->redirect_unauth;
 			}
@@ -81,7 +86,7 @@ class ArsControllerDownload extends F0FController
 				$release->load($tmpItem->release_id);
 
 				// Do I have a redirect set on the release?
-				if($release->redirect_unauth)
+				if ($release->redirect_unauth)
 				{
 					$redirect = $release->redirect_unauth;
 				}
@@ -90,7 +95,7 @@ class ArsControllerDownload extends F0FController
 					$category = F0FModel::getTmpInstance('Categories', 'ArsModel')->getTable();
 					$category->load($release->category_id);
 
-					if($category->redirect_unauth)
+					if ($category->redirect_unauth)
 					{
 						$redirect = $category->redirect_unauth;
 					}
@@ -98,37 +103,37 @@ class ArsControllerDownload extends F0FController
 			}
 
 			// Do I have a redirect set? If not, throw an error
-			if($redirect)
+			if ($redirect)
 			{
 				JFactory::getApplication()->redirect($redirect);
 			}
 			{
 				$log->save(array('authorized' => 0));
 
-                if($params->get('banUnauth', 0))
-                {
-                    // Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
-                    $app->triggerEvent('onAdminToolsThirdpartyException', array(
-                            'ARSscraper',
-                            JText::_('COM_ARS_BLOCKED_MESSAGE'),
-                            array('Item : '.$id)),
-                        true
-                    );
-                }
+				if ($params->get('banUnauth', 0))
+				{
+					// Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
+					$app->triggerEvent('onAdminToolsThirdpartyException', array(
+							'ARSscraper',
+							JText::_('COM_ARS_BLOCKED_MESSAGE'),
+							array('Item : ' . $id)
+						),
+						true
+					);
+				}
 
-				return JError::raiseError(403, JText::_('ACCESS FORBIDDEN') );
+				return JError::raiseError(403, JText::_('ACCESS FORBIDDEN'));
 			}
 		}
 
 		$item->hit();
 		$log->save(array(
-			'item_id' => $id,
-			'authorized' => 1
+				'item_id'    => $id,
+				'authorized' => 1
 			)
 		);
 
 		$model->doDownload();
-
 		// No need to return anything; doDownload() calls the exit() method of the application object
 	}
 }

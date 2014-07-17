@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewLatests $this */
+
 ?>
 <div class="ars-latest-<?php echo $renderSection ?>">
 

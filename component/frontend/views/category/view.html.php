@@ -1,23 +1,26 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
 
 class ArsViewCategory extends F0FViewHtml
 {
-	public function onAdd($tpl = null) {
+	public function onAdd($tpl = null)
+	{
 		return $this->onRead();
 	}
 
-	public function onEdit($tpl = null) {
+	public function onEdit($tpl = null)
+	{
 		return $this->onRead();
 	}
 
-	public function onRead($tpl = null) {
+	public function onRead($tpl = null)
+	{
 		// Load helpers
 		$this->loadHelper('breadcrumbs');
 		$this->loadHelper('html');
@@ -25,9 +28,9 @@ class ArsViewCategory extends F0FViewHtml
 		$this->loadHelper('title');
 
 		// Get some useful information
-		$model		= $this->getModel();
-		$item		= $model->item;
-		$repoType	= $item->type;
+		$model = $this->getModel();
+		$item = $model->item;
+		$repoType = $item->type;
 
 		// Add breadcrumbs
 		ArsHelperBreadcrumbs::addRepositoryRoot($repoType);
@@ -43,30 +46,30 @@ class ArsViewCategory extends F0FViewHtml
 
 		if ($show_feed)
 		{
-			$feed = 'index.php?option=com_ars&view=category&id='.$model->item->id.'&format=feed';
+			$feed = 'index.php?option=com_ars&view=category&id=' . $model->item->id . '&format=feed';
 			$rss = array(
-				'type' => 'application/rss+xml',
-				'title' => $title.' (RSS)'
+				'type'  => 'application/rss+xml',
+				'title' => $title . ' (RSS)'
 			);
 			$atom = array(
-				'type' => 'application/atom+xml',
-				'title' => $title.' (Atom)'
+				'type'  => 'application/atom+xml',
+				'title' => $title . ' (Atom)'
 			);
 
 			// Add the links
 			$document = JFactory::getDocument();
-			$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate',
+			$document->addHeadLink(JRoute::_($feed . '&type=rss'), 'alternate',
 				'rel', $rss);
-			$document->addHeadLink(JRoute::_($feed.'&type=atom'), 'alternate',
+			$document->addHeadLink(JRoute::_($feed . '&type=atom'), 'alternate',
 				'rel', $atom);
 		}
 
-		$this->pparams		= $params;
-		$this->pagination	= $model->relPagination;
-		$this->items		= $model->itemList;
-		$this->item			= $item;
-		$this->category_id	= $model->getState('category_id', 0);
-		$this->Itemid		= $this->input->getInt('Itemid', null);
+		$this->pparams = $params;
+		$this->pagination = $model->relPagination;
+		$this->items = $model->itemList;
+		$this->item = $item;
+		$this->category_id = $model->getState('category_id', 0);
+		$this->Itemid = $this->input->getInt('Itemid', null);
 
 		return true;
 	}

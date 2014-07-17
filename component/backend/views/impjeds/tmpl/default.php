@@ -8,9 +8,12 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
+/** @var ArsViewImpjeds $this */
+
 JHtml::_('behavior.multiselect');
 
 $base_folder = rtrim(JURI::base(), '/');
+
 if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
 
 $this->loadHelper('select');

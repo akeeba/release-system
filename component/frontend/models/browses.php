@@ -1,60 +1,69 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
 
-require_once JPATH_SITE.'/components/com_ars/helpers/filter.php';
+require_once JPATH_SITE . '/components/com_ars/helpers/filter.php';
 
 class ArsModelBrowses extends F0FModel
 {
-	public function __construct($config = array()) {
+	public function __construct($config = array())
+	{
 		$config['table'] = 'category';
 		parent::__construct($config);
 	}
 
 	/**
 	 * Get a listing of all Categories
+	 *
 	 * @return array
 	 */
 	public function getCategories()
 	{
 		// Get state variables
-		$grouping = $this->getState('grouping','normal');
+		$grouping = $this->getState('grouping', 'normal');
 		$orderby = $this->getState('orderby', 'order');
 
 		$start = 0;
 		$limit = 0;
 
 		// Get all published categories
-		$catModel = F0FModel::getTmpInstance('Categories','ArsModel')
-			->limitstart($start)
-			->limit($limit)
-			->published(1)
-			->access_user(JFactory::getUser()->id)
-			->type('');
+		$catModel = F0FModel::getTmpInstance('Categories', 'ArsModel')
+							->limitstart($start)
+							->limit($limit)
+							->published(1)
+							->access_user(JFactory::getUser()->id)
+							->type('');
 
-		if(version_compare(JVERSION, '1.6.0', 'ge')) {
+		if (version_compare(JVERSION, '1.6.0', 'ge'))
+		{
 			$app = JFactory::getApplication();
 			$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
 			if ($hasLanguageFilter)
 			{
 				$hasLanguageFilter = $app->getLanguageFilter();
 			}
-			if($hasLanguageFilter) {
+			if ($hasLanguageFilter)
+			{
 				$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 				$lang_filter_params = new JRegistry($lang_filter_plugin->params);
-				if ($lang_filter_params->get('remove_default_prefix')) {
+				if ($lang_filter_params->get('remove_default_prefix'))
+				{
 					// Get default site language
 					$lg = JFactory::getLanguage();
 					$catModel->setState('language', $lg->getTag());
-				}else{
+				}
+				else
+				{
 					$catModel->setState('language', JFactory::getApplication()->input->getCmd('language', '*'));
 				}
-			} else {
+			}
+			else
+			{
 				$catModel->setState('language', JFactory::getApplication()->input->getCmd('language', ''));
 			}
 		}
@@ -73,38 +82,38 @@ class ArsModelBrowses extends F0FModel
 			$vgroup = $params->get('vgroupid', '');
 		}
 
-		if($vgroup) {
+		if ($vgroup)
+		{
 			$catModel->setState('vgroup', $vgroup);
 		}
 
 		// Apply ordering
-		switch($orderby)
+		switch ($orderby)
 		{
 			case 'alpha':
-				$catModel->setState('filter_order','title');
-				$catModel->setState('filter_order_Dir','ASC');
+				$catModel->setState('filter_order', 'title');
+				$catModel->setState('filter_order_Dir', 'ASC');
 				break;
 
 			case 'ralpha':
-				$catModel->setState('filter_order','title');
-				$catModel->setState('filter_order_Dir','DESC');
+				$catModel->setState('filter_order', 'title');
+				$catModel->setState('filter_order_Dir', 'DESC');
 				break;
 
 			case 'created':
-				$catModel->setState('filter_order','created');
-				$catModel->setState('filter_order_Dir','ASC');
+				$catModel->setState('filter_order', 'created');
+				$catModel->setState('filter_order_Dir', 'ASC');
 				break;
 
 			case 'rcreated':
-				$catModel->setState('filter_order','created');
-				$catModel->setState('filter_order_Dir','DESC');
+				$catModel->setState('filter_order', 'created');
+				$catModel->setState('filter_order_Dir', 'DESC');
 				break;
 
 			case 'order':
-				$catModel->setState('filter_order','ordering');
-				$catModel->setState('filter_order_Dir','ASC');
+				$catModel->setState('filter_order', 'ordering');
+				$catModel->setState('filter_order_Dir', 'ASC');
 				break;
-
 		}
 
 		$allCategories = $catModel->getItemList();
@@ -113,16 +122,19 @@ class ArsModelBrowses extends F0FModel
 		$list = ArsHelperFilter::filterList($allCategories);
 		unset($allCategories);
 
-		if($grouping != 'none') {
+		if ($grouping != 'none')
+		{
 			$allCategories = $list;
 			$list = array('normal' => array(), 'bleedingedge' => array());
 
-			while(!empty($allCategories))
+			while (!empty($allCategories))
 			{
 				$cat = array_shift($allCategories);
 				$list[$cat->type][] = $cat;
 			}
-		} else {
+		}
+		else
+		{
 			$list = array('all' => $list);
 		}
 
@@ -131,25 +143,29 @@ class ArsModelBrowses extends F0FModel
 
 	/**
 	 * Loads and returns a category definition
+	 *
 	 * @param int $id The Category ID to load
+	 *
 	 * @return ArsTableCategory|null An instance of ArsTableCategory, or null if the user shouldn't view the category
 	 */
 	public function getCategory($id = 0)
 	{
 		$this->setState('category_id', $id);
 
-		$cat = F0FModel::getTmpInstance('Categories','ArsModel')
-			->access_user(JFactory::getUser()->id)
-			->getItem($id);
+		$cat = F0FModel::getTmpInstance('Categories', 'ArsModel')
+					   ->access_user(JFactory::getUser()->id)
+					   ->getItem($id);
 
 		// Is it published?
-		if(!$cat->published) {
+		if (!$cat->published)
+		{
 			return null;
 		}
 
 		// Does it pass the access level / subscriptions filter?
 		$dummy = $list = ArsHelperFilter::filterList(array($cat));
-		if(!count($dummy)) {
+		if (!count($dummy))
+		{
 			return null;
 		}
 
@@ -160,7 +176,9 @@ class ArsModelBrowses extends F0FModel
 
 	/**
 	 * Get a list of all releases in a given category
+	 *
 	 * @param int $cat_id The category ID
+	 *
 	 * @return array
 	 */
 	public function getReleases($cat_id = 0)
@@ -178,56 +196,63 @@ class ArsModelBrowses extends F0FModel
 		// Get limits
 		$start = $this->getState('limitstart', 0);
 		$app = JFactory::getApplication();
-		$limit = $this->getState('limit',-1);
-		if($limit == -1) {
+		$limit = $this->getState('limit', -1);
+		if ($limit == -1)
+		{
 			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
 		}
 
 		// Get all published releases
-		$model = F0FModel::getTmpInstance('Releases','ArsModel')
-			->limitstart($start)
-			->limit($limit)
-			->published(1)
-			->access_user(JFactory::getUser()->id)
-			->category($cat_id);
+		$model = F0FModel::getTmpInstance('Releases', 'ArsModel')
+						 ->limitstart($start)
+						 ->limit($limit)
+						 ->published(1)
+						 ->access_user(JFactory::getUser()->id)
+						 ->category($cat_id);
 
 		$app = JFactory::getApplication();
-		if($app->getLanguageFilter()) {
+		if ($app->getLanguageFilter())
+		{
 			$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 			$lang_filter_params = new JRegistry($lang_filter_plugin->params);
-			if ($lang_filter_params->get('remove_default_prefix')) {
+			if ($lang_filter_params->get('remove_default_prefix'))
+			{
 				// Get default site language
 				$lg = JFactory::getLanguage();
 				$model->setState('language', $lg->getTag());
-			}else{
+			}
+			else
+			{
 				$model->setState('language', JFactory::getApplication()->input->getCmd('language', '*'));
 			}
-		} else {
+		}
+		else
+		{
 			$model->setState('language', JFactory::getApplication()->input->getCmd('language', ''));
 		}
 
 		// Apply ordering
-		switch($orderby)
+		switch ($orderby)
 		{
 			case 'alpha':
-				$model->setState('filter_order','version');
-				$model->setState('filter_order_Dir','ASC');
+				$model->setState('filter_order', 'version');
+				$model->setState('filter_order_Dir', 'ASC');
 				break;
 			case 'ralpha':
-				$model->setState('filter_order','version');
-				$model->setState('filter_order_Dir','DESC');
+				$model->setState('filter_order', 'version');
+				$model->setState('filter_order_Dir', 'DESC');
 				break;
 			case 'created':
-				$model->setState('filter_order','created');
-				$model->setState('filter_order_Dir','ASC');
+				$model->setState('filter_order', 'created');
+				$model->setState('filter_order_Dir', 'ASC');
 				break;
 			case 'rcreated':
-				$model->setState('filter_order','created');
-				$model->setState('filter_order_Dir','DESC');
+				$model->setState('filter_order', 'created');
+				$model->setState('filter_order_Dir', 'DESC');
 				break;
 			case 'order':
-				$model->setState('filter_order','ordering');
-				$model->setState('filter_order_Dir','ASC');
+				$model->setState('filter_order', 'ordering');
+				$model->setState('filter_order_Dir', 'ASC');
 				break;
 		}
 
@@ -242,43 +267,54 @@ class ArsModelBrowses extends F0FModel
 		return $list;
 	}
 
-
 	/**
 	 * Loads and returns a release definition
+	 *
 	 * @param int $id The Release ID to load
+	 *
 	 * @return ArsTableReleases|null An instance of ArsTableReleases, or null if the user shouldn't view the release
 	 */
 	public function getRelease($id = 0)
 	{
 		$this->item = null;
 
-		$item = F0FModel::getTmpInstance('Releases','ArsModel')
-			->access_user(JFactory::getUser()->id)
-			->getItem($id);
+		$item = F0FModel::getTmpInstance('Releases', 'ArsModel')
+						->access_user(JFactory::getUser()->id)
+						->getItem($id);
 
 		// Is it published?
-		if(!$item->published) {
+		if (!$item->published)
+		{
 			return null;
 		}
 
 		// Does the category pass the level / subscriptions filter?
 		$category = F0FModel::getTmpInstance('Categories', 'ArsModel')
-			->access_user(JFactory::getUser()->id)
-			->getItem($item->category_id);
-		$dummy = ArsHelperFilter::filterList( array($category) );
-		if(!count($dummy)) return null;
+							->access_user(JFactory::getUser()->id)
+							->getItem($item->category_id);
+		$dummy = ArsHelperFilter::filterList(array($category));
+		if (!count($dummy))
+		{
+			return null;
+		}
 
 		// Does it pass the access level / subscriptions filter?
-		$dummy = ArsHelperFilter::filterList( array($item) );
-		if(!count($dummy)) return null;
+		$dummy = ArsHelperFilter::filterList(array($item));
+		if (!count($dummy))
+		{
+			return null;
+		}
 
 		$this->item = $item;
+
 		return $item;
 	}
 
 	/**
 	 * Get a list of all items in a given release
+	 *
 	 * @param int $rel_id The release ID
+	 *
 	 * @return array
 	 */
 	public function getItems($rel_id = 0)
@@ -296,55 +332,62 @@ class ArsModelBrowses extends F0FModel
 		// Get limits
 		$start = $this->getState('start', 0);
 		$app = JFactory::getApplication();
-		$limit = $this->getState('limit',-1);
-		if($limit == -1) {
+		$limit = $this->getState('limit', -1);
+		if ($limit == -1)
+		{
 			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
 		}
 
 		// Get all published releases
-		$model = F0FModel::getTmpInstance('Items','ArsModel')
-			->limitstart($start)
-			->limit($limit)
-			->published(1)
-			->access_user(JFactory::getUser()->id)
-			->release($rel_id);
+		$model = F0FModel::getTmpInstance('Items', 'ArsModel')
+						 ->limitstart($start)
+						 ->limit($limit)
+						 ->published(1)
+						 ->access_user(JFactory::getUser()->id)
+						 ->release($rel_id);
 		$app = JFactory::getApplication();
-		if($app->getLanguageFilter()) {
+		if ($app->getLanguageFilter())
+		{
 			$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 			$lang_filter_params = new JRegistry($lang_filter_plugin->params);
-			if ($lang_filter_params->get('remove_default_prefix')) {
+			if ($lang_filter_params->get('remove_default_prefix'))
+			{
 				// Get default site language
 				$lg = JFactory::getLanguage();
 				$model->setState('language', $lg->getTag());
-			}else{
+			}
+			else
+			{
 				$model->setState('language', JFactory::getApplication()->input->getCmd('language', '*'));
 			}
-		} else {
+		}
+		else
+		{
 			$model->setState('language', JFactory::getApplication()->input->getCmd('language', ''));
 		}
 
 		// Apply ordering
-		switch($orderby)
+		switch ($orderby)
 		{
 			case 'alpha':
-				$model->setState('filter_order','title');
-				$model->setState('filter_order_Dir','ASC');
+				$model->setState('filter_order', 'title');
+				$model->setState('filter_order_Dir', 'ASC');
 				break;
 			case 'ralpha':
-				$model->setState('filter_order','title');
-				$model->setState('filter_order_Dir','DESC');
+				$model->setState('filter_order', 'title');
+				$model->setState('filter_order_Dir', 'DESC');
 				break;
 			case 'created':
-				$model->setState('filter_order','created');
-				$model->setState('filter_order_Dir','ASC');
+				$model->setState('filter_order', 'created');
+				$model->setState('filter_order_Dir', 'ASC');
 				break;
 			case 'rcreated':
-				$model->setState('filter_order','created');
-				$model->setState('filter_order_Dir','DESC');
+				$model->setState('filter_order', 'created');
+				$model->setState('filter_order_Dir', 'DESC');
 				break;
 			case 'order':
-				$model->setState('filter_order','ordering');
-				$model->setState('filter_order_Dir','ASC');
+				$model->setState('filter_order', 'ordering');
+				$model->setState('filter_order_Dir', 'ASC');
 				break;
 		}
 
@@ -363,73 +406,87 @@ class ArsModelBrowses extends F0FModel
 	{
 		$this->itemList = $this->getCategories();
 
-		if(!count($this->itemList)) return;
-
-		foreach($this->itemList as $sectionname => $section)
+		if (!count($this->itemList))
 		{
-			if(!empty($section)) foreach($section as $cat)
+			return;
+		}
+
+		foreach ($this->itemList as $sectionname => $section)
+		{
+			if (!empty($section))
 			{
-				$model = F0FModel::getTmpInstance('Releases','ArsModel')
-					->category($cat->id)
-					->published(1)
-					->access_user(JFactory::getUser()->id)
-					->limitstart(0)
-					->limit(1);
-				switch($orderby)
+				foreach ($section as $cat)
 				{
-					case 'alpha':
-						$model->setState('filter_order','title');
-						$model->setState('filter_order_Dir','ASC');
-						break;
+					$model = F0FModel::getTmpInstance('Releases', 'ArsModel')
+									 ->category($cat->id)
+									 ->published(1)
+									 ->access_user(JFactory::getUser()->id)
+									 ->limitstart(0)
+									 ->limit(1);
+					switch ($orderby)
+					{
+						case 'alpha':
+							$model->setState('filter_order', 'title');
+							$model->setState('filter_order_Dir', 'ASC');
+							break;
 
-					case 'ralpha':
-						$model->setState('filter_order','title');
-						$model->setState('filter_order_Dir','DESC');
-						break;
+						case 'ralpha':
+							$model->setState('filter_order', 'title');
+							$model->setState('filter_order_Dir', 'DESC');
+							break;
 
-					case 'created':
-						$model->setState('filter_order','created');
-						$model->setState('filter_order_Dir','ASC');
-						break;
+						case 'created':
+							$model->setState('filter_order', 'created');
+							$model->setState('filter_order_Dir', 'ASC');
+							break;
 
-					case 'rcreated':
-						$model->setState('filter_order','created');
-						$model->setState('filter_order_Dir','DESC');
-						break;
+						case 'rcreated':
+							$model->setState('filter_order', 'created');
+							$model->setState('filter_order_Dir', 'DESC');
+							break;
 
-					case 'order':
-						$model->setState('filter_order','ordering');
-						$model->setState('filter_order_Dir','ASC');
-						break;
-
-				}
-				$model->setState('maturity',		$this->getState('maturity','alpha'));
-				$app = JFactory::getApplication();
-				$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
-				if ($hasLanguageFilter)
-				{
-					$hasLanguageFilter = $app->getLanguageFilter();
-				}
-				if($hasLanguageFilter) {
-					$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
-					$lang_filter_params = new JRegistry($lang_filter_plugin->params);
-					if ($lang_filter_params->get('remove_default_prefix')) {
-						// Get default site language
-						$lg = JFactory::getLanguage();
-						$model->setState('language', $lg->getTag());
-					}else{
-						$model->setState('language', JFactory::getApplication()->input->getCmd('language', '*'));
+						case 'order':
+							$model->setState('filter_order', 'ordering');
+							$model->setState('filter_order_Dir', 'ASC');
+							break;
 					}
-				} else {
-					$model->setState('language', JFactory::getApplication()->input->getCmd('language', ''));
-				}
+					$model->setState('maturity', $this->getState('maturity', 'alpha'));
+					$app = JFactory::getApplication();
+					$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
+					if ($hasLanguageFilter)
+					{
+						$hasLanguageFilter = $app->getLanguageFilter();
+					}
+					if ($hasLanguageFilter)
+					{
+						$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
+						$lang_filter_params = new JRegistry($lang_filter_plugin->params);
+						if ($lang_filter_params->get('remove_default_prefix'))
+						{
+							// Get default site language
+							$lg = JFactory::getLanguage();
+							$model->setState('language', $lg->getTag());
+						}
+						else
+						{
+							$model->setState('language', JFactory::getApplication()->input->getCmd('language', '*'));
+						}
+					}
+					else
+					{
+						$model->setState('language', JFactory::getApplication()->input->getCmd('language', ''));
+					}
 
-				$releases = $model->getItemList();
+					$releases = $model->getItemList();
 
-				if(empty($releases)) {
-					$cat->release = null;
-				} else {
-					$cat->release = array_shift($releases);
+					if (empty($releases))
+					{
+						$cat->release = null;
+					}
+					else
+					{
+						$cat->release = array_shift($releases);
+					}
 				}
 			}
 		}
@@ -451,53 +508,53 @@ class ArsModelBrowses extends F0FModel
 
 		$this->processFeedData($params->get('rel_orderby', 'order'));
 
-		if(!count($this->itemList)) return;
+		if (!count($this->itemList)) return;
 
-		foreach($this->itemList as $sectionname => $section)
+		foreach ($this->itemList as $sectionname => $section)
 		{
-			if(!empty($section)) foreach($section as $cat)
+			if (!empty($section)) foreach ($section as $cat)
 			{
-				if(empty($cat->release)) {
-					$cat->release = (object)array('id'=>null, 'files' => null);
+				if (empty($cat->release))
+				{
+					$cat->release = (object)array('id' => null, 'files' => null);
 					continue;
 				}
 
-				$model = F0FModel::getTmpInstance('Items','ArsModel');
+				$model = F0FModel::getTmpInstance('Items', 'ArsModel');
 
-				$orderby = $params->get('items_orderby',	'order');
-				switch($orderby)
+				$orderby = $params->get('items_orderby', 'order');
+				switch ($orderby)
 				{
 					case 'alpha':
-						$model->setState('filter_order','title');
-						$model->setState('filter_order_Dir','ASC');
+						$model->setState('filter_order', 'title');
+						$model->setState('filter_order_Dir', 'ASC');
 						break;
 
 					case 'ralpha':
-						$model->setState('filter_order','title');
-						$model->setState('filter_order_Dir','DESC');
+						$model->setState('filter_order', 'title');
+						$model->setState('filter_order_Dir', 'DESC');
 						break;
 
 					case 'created':
-						$model->setState('filter_order','created');
-						$model->setState('filter_order_Dir','ASC');
+						$model->setState('filter_order', 'created');
+						$model->setState('filter_order_Dir', 'ASC');
 						break;
 
 					case 'rcreated':
-						$model->setState('filter_order','created');
-						$model->setState('filter_order_Dir','DESC');
+						$model->setState('filter_order', 'created');
+						$model->setState('filter_order_Dir', 'DESC');
 						break;
 
 					case 'order':
-						$model->setState('filter_order','ordering');
-						$model->setState('filter_order_Dir','ASC');
+						$model->setState('filter_order', 'ordering');
+						$model->setState('filter_order_Dir', 'ASC');
 						break;
-
 				}
 
-				$model->setState('published',		1);
-				$model->setState('release',			$cat->release->id);
-				$model->setState('limitstart',		0);
-				$model->setState('limit',			0);
+				$model->setState('published', 1);
+				$model->setState('release', $cat->release->id);
+				$model->setState('limitstart', 0);
+				$model->setState('limit', 0);
 
 				$model->access_user(JFactory::getUser()->id);
 
@@ -507,17 +564,23 @@ class ArsModelBrowses extends F0FModel
 					$hasLanguageFilter = $app->getLanguageFilter();
 				}
 
-				if($hasLanguageFilter) {
+				if ($hasLanguageFilter)
+				{
 					$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
 					$lang_filter_params = new JRegistry($lang_filter_plugin->params);
-					if ($lang_filter_params->get('remove_default_prefix')) {
+					if ($lang_filter_params->get('remove_default_prefix'))
+					{
 						// Get default site language
 						$lg = JFactory::getLanguage();
 						$model->setState('language', $lg->getTag());
-					}else{
+					}
+					else
+					{
 						$model->setState('language', JFactory::getApplication()->input->getCmd('language', '*'));
 					}
-				} else {
+				}
+				else
+				{
 					$model->setState('language', JFactory::getApplication()->input->getCmd('language', ''));
 				}
 

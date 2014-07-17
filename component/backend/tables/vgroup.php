@@ -1,58 +1,64 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
 
 class ArsTableVgroup extends F0FTable
 {
-	function __construct( $table, $key, &$db )
+	function __construct($table, $key, &$db)
 	{
-		parent::__construct( '#__ars_vgroups', 'id', $db );
+		parent::__construct('#__ars_vgroups', 'id', $db);
 
 		$this->_columnAlias = array(
-			'enabled'		=> 'published',
-			'slug'			=> 'alias',
-			'created_on'	=> 'created',
-			'modified_on'	=> 'modified',
-			'locked_on'		=> 'checked_out_time',
-			'locked_by'		=> 'checked_out',
+			'enabled'     => 'published',
+			'slug'        => 'alias',
+			'created_on'  => 'created',
+			'modified_on' => 'modified',
+			'locked_on'   => 'checked_out_time',
+			'locked_by'   => 'checked_out',
 		);
 	}
 
 	function check()
 	{
 		// If the title is missing, throw an error
-		if(!$this->title) {
+		if (!$this->title)
+		{
 			$this->setError(JText::_('ERR_VGROUP_NEEDS_TITLE'));
+
 			return false;
 		}
 
 		JLoader::import('joomla.utilities.date');
 		$user = JFactory::getUser();
 		$date = new JDate();
-		if(!$this->created_by && empty($this->id)) {
+		if (!$this->created_by && empty($this->id))
+		{
 			$this->created_by = $user->id;
 			$this->created = $date->toSql();
-		} else {
+		}
+		else
+		{
 			$this->modified_by = $user->id;
 			$this->modified = $date->toSql();
 		}
 
-		if(empty($this->ordering)) {
+		if (empty($this->ordering))
+		{
 			$this->ordering = $this->getNextOrder();
 		}
 
-		if(empty($this->published) && ($this->published !== 0) ) {
+		if (empty($this->published) && ($this->published !== 0))
+		{
 			$this->published = 0;
 		}
 
 		return true;
 	}
-
 
 	/**
 	 * Checks if we are allowed to delete this record
@@ -61,19 +67,19 @@ class ArsTableVgroup extends F0FTable
 	 *
 	 * @return bool True if allowed to delete
 	 */
-	function onBeforeDelete( $oid=null )
+	function onBeforeDelete($oid = null)
 	{
 		$joins = array(
 			array(
-				'label'		=> 'categories',
-				'name'		=> '#__ars_categories',
-				'idfield'	=> 'id',
-				'idalias'	=> 'vgroup_id',
-				'joinfield'	=> 'vgroup_id'
+				'label'     => 'categories',
+				'name'      => '#__ars_categories',
+				'idfield'   => 'id',
+				'idalias'   => 'vgroup_id',
+				'joinfield' => 'vgroup_id'
 			)
 		);
 		$result = $this->canDelete($oid, $joins);
+
 		return $result && parent::onBeforeDelete($oid);
 	}
-
 }

@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
+/** @var ArsViewUpdate $this */
+
 if(!$this->published) {
 	die();
 }

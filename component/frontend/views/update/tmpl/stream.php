@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewUpdate $this */
+
 $rootURL	 = rtrim(JURI::base(), '/');
 $subpathURL	 = JURI::base(true);
 
@@ -27,7 +29,7 @@ $streamTypeMap = array(
 	'templates'	 => 'template'
 );
 
-$dlid = trim(JRequest::getCmd('dlid', ''));
+$dlid = trim($this->input->getCmd('dlid', ''));
 
 if (!empty($dlid))
 {

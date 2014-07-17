@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewLatests $this */
+
 $Itemid_query = empty($Itemid) ? "" : "&Itemid=$Itemid";
 $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid_query);
 

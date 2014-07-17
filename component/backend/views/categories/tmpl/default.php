@@ -7,8 +7,11 @@
 
 defined('_JEXEC') or die();
 
+/** @var F0FViewHtml $this */
+
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
+
 if (version_compare(JVERSION, '3.0', 'gt'))
 {
 	JHtml::_('dropdown.init');
@@ -16,6 +19,7 @@ if (version_compare(JVERSION, '3.0', 'gt'))
 }
 
 $base_folder = rtrim(JURI::base(), '/');
+
 if(substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($base_folder, 0, -13), '/');
 
 $this->loadHelper('select');

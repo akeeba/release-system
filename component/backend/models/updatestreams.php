@@ -14,8 +14,8 @@ class ArsModelUpdatestreams extends F0FModel
 		$db = $this->getDbo();
 
 		$query = $db->getQuery(true)
-			->select('*')
-			->from($db->qn('#__ars_updatestreams'));
+					->select('*')
+					->from($db->qn('#__ars_updatestreams'));
 
 		$fltName = $this->getState('name', null, 'string');
 		if ($fltName)

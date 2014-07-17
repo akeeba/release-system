@@ -1,40 +1,44 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
 
 class ArsModelDownloads extends F0FModel
 {
+
 	/** @var   boolean  True if we have logged in a user */
 	protected $haveLoggedInAUser = false;
 
-	public function __construct($config = array()) {
+	public function __construct($config = array())
+	{
 		parent::__construct($config);
 
-		require_once JPATH_ADMINISTRATOR.'/components/com_ars/helpers/amazons3.php';
-		require_once JPATH_SITE.'/components/com_ars/helpers/filter.php';
+		require_once JPATH_ADMINISTRATOR . '/components/com_ars/helpers/amazons3.php';
+		require_once JPATH_SITE . '/components/com_ars/helpers/filter.php';
 	}
 
 	/**
 	 * Loads and returns an item definition
+	 *
 	 * @param int $id The Item ID to load
+	 *
 	 * @return TableItems|null An instance of TableItems, or null if the user shouldn't view the item
 	 */
 	public function &getItem($id = null)
 	{
 		// Initialise
 		$this->item = null;
-		$null       = null;
+		$null = null;
 
-		$items = F0FModel::getTmpInstance('Items','ArsModel')
-			->access_user(JFactory::getUser()->id)
-			->published(1)
-			->item_id($id)
-			->getItemList();
+		$items = F0FModel::getTmpInstance('Items', 'ArsModel')
+						 ->access_user(JFactory::getUser()->id)
+						 ->published(1)
+						 ->item_id($id)
+						 ->getItemList();
 
 		if (empty($items))
 		{
@@ -42,27 +46,28 @@ class ArsModelDownloads extends F0FModel
 		}
 
 		// If the user is a guest and I wanted to show it to him, tell the controller to fire the redirect
-		if(JFactory::getUser()->guest && $items[0]->show_unauth_links && $items[0]->cat_show_unauth && $items[0]->rel_show_unauth)
+		if (JFactory::getUser()->guest && $items[0]->show_unauth_links && $items[0]->cat_show_unauth && $items[0]->rel_show_unauth)
 		{
 			$return = -1;
+
 			return $return;
 		}
 
 		// Additional check on item access level. I removed that from the model to allow
 		// item listing to unauthorized users
-		if(!in_array($items[0]->access, JFactory::getUser()->getAuthorisedViewLevels()))
+		if (!in_array($items[0]->access, JFactory::getUser()->getAuthorisedViewLevels()))
 		{
 			return $null;
 		}
 
 		// Does it pass the access level / subscriptions filter?
-		$dummy = ArsHelperFilter::filterList( $items );
-		if(!count($dummy))
+		$dummy = ArsHelperFilter::filterList($items);
+		if (!count($dummy))
 		{
 			return $null;
 		}
 
-		$item = F0FModel::getTmpInstance('Items','ArsModel')->getTable();
+		$item = F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
 		$item->bind(array_pop($items));
 
 		$this->item = $item;
@@ -72,52 +77,51 @@ class ArsModelDownloads extends F0FModel
 
 	public function doDownload()
 	{
-		if($this->item->type == 'link')
+		if ($this->item->type == 'link')
 		{
-			if(@ob_get_length () !== FALSE) {
+			if (@ob_get_length() !== false)
+			{
 				@ob_end_clean();
 			}
-			header('Location: '.$this->item->url);
+			header('Location: ' . $this->item->url);
 		}
 		else
 		{
 			$db = $this->getDBO();
 
 			$innerQuery = $db->getQuery(true)
-				->select(array(
-					$db->qn('r').'.'.'*',
-					$db->qn('c').'.'.$db->qn('title').' AS '.$db->qn('cat_title'),
-					$db->qn('c').'.'.$db->qn('alias').' AS '.$db->qn('cat_alias'),
-					$db->qn('c').'.'.$db->qn('type').' AS '.$db->qn('cat_type'),
-					$db->qn('c').'.'.$db->qn('groups').' AS '.$db->qn('cat_groups'),
-					$db->qn('c').'.'.$db->qn('directory').' AS '.$db->qn('cat_directory'),
-					$db->qn('c').'.'.$db->qn('access').' AS '.$db->qn('cat_access'),
-					$db->qn('c').'.'.$db->qn('published').' AS '.$db->qn('cat_published'),
-				))
-				->from($db->qn('#__ars_releases').' AS '.$db->qn('r'))
-				->join('INNER',$db->qn('#__ars_categories').' AS '.$db->qn('c').' ON ('.
-					$db->qn('c').'.'.$db->qn('id').' = '.$db->qn('r').'.'.$db->qn('category_id')
-				.')')
-			;
+							 ->select(array(
+								 $db->qn('r') . '.' . '*',
+								 $db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
+								 $db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
+								 $db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
+								 $db->qn('c') . '.' . $db->qn('groups') . ' AS ' . $db->qn('cat_groups'),
+								 $db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
+								 $db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
+								 $db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
+							 ))
+							 ->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r'))
+							 ->join('INNER', $db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON (' .
+								 $db->qn('c') . '.' . $db->qn('id') . ' = ' . $db->qn('r') . '.' . $db->qn('category_id')
+								 . ')');
 
 			$query = $db->getQuery(true)
-				->select(array(
-					$db->qn('i').'.'.'*',
-					$db->qn('r').'.'.$db->qn('category_id'),
-					$db->qn('r').'.'.$db->qn('version'),
-					$db->qn('r').'.'.$db->qn('alias').' AS '.$db->qn('rel_alias'),
-					$db->qn('maturity'),
-					$db->qn('r').'.'.$db->qn('groups').' AS '.$db->qn('rel_groups'),
-					$db->qn('r').'.'.$db->qn('access').' AS '.$db->qn('rel_access'),
-					$db->qn('r').'.'.$db->qn('published').' AS '.$db->qn('rel_published'),
-					$db->qn('cat_title'), $db->qn('cat_alias'), $db->qn('cat_type'),
-					$db->qn('cat_groups'), $db->qn('cat_directory'), $db->qn('cat_access'),
-					$db->qn('cat_published')
-				))->from($db->qn('#__ars_items').' AS '.$db->qn('i'))
-				->join('INNER', '('.$innerQuery.') AS '.$db->qn('r').' ON('.
-						$db->qn('r').'.'.$db->qn('id').' = '.$db->qn('i').'.'.$db->qn('release_id').')')
-				->where($db->qn('i').'.'.$db->qn('id').' = '.$db->q($this->item->id))
-			;
+						->select(array(
+							$db->qn('i') . '.' . '*',
+							$db->qn('r') . '.' . $db->qn('category_id'),
+							$db->qn('r') . '.' . $db->qn('version'),
+							$db->qn('r') . '.' . $db->qn('alias') . ' AS ' . $db->qn('rel_alias'),
+							$db->qn('maturity'),
+							$db->qn('r') . '.' . $db->qn('groups') . ' AS ' . $db->qn('rel_groups'),
+							$db->qn('r') . '.' . $db->qn('access') . ' AS ' . $db->qn('rel_access'),
+							$db->qn('r') . '.' . $db->qn('published') . ' AS ' . $db->qn('rel_published'),
+							$db->qn('cat_title'), $db->qn('cat_alias'), $db->qn('cat_type'),
+							$db->qn('cat_groups'), $db->qn('cat_directory'), $db->qn('cat_access'),
+							$db->qn('cat_published')
+						))->from($db->qn('#__ars_items') . ' AS ' . $db->qn('i'))
+						->join('INNER', '(' . $innerQuery . ') AS ' . $db->qn('r') . ' ON(' .
+							$db->qn('r') . '.' . $db->qn('id') . ' = ' . $db->qn('i') . '.' . $db->qn('release_id') . ')')
+						->where($db->qn('i') . '.' . $db->qn('id') . ' = ' . $db->q($this->item->id));
 
 			$db->setQuery($query);
 			$item = $db->loadObject();
@@ -131,30 +135,35 @@ class ArsModelDownloads extends F0FModel
 			$potentialPrefix = strtolower($potentialPrefix);
 			$useS3 = $potentialPrefix == 's3://';
 
-			if($useS3) {
-				$filename = substr($folder,5).'/'.$item->filename;
+			if ($useS3)
+			{
+				$filename = substr($folder, 5) . '/' . $item->filename;
 				$s3 = ArsHelperAmazons3::getInstance();
 				$url = $s3->getAuthenticatedURL('', $filename);
 
-				if(@ob_get_length () !== FALSE) {
+				if (@ob_get_length() !== false)
+				{
 					@ob_end_clean();
 				}
-				header('Location: '.$url);
+				header('Location: ' . $url);
 				$this->logoutUser();
 				JFactory::getApplication()->close();
 			}
 
-			if(!JFolder::exists($folder)) {
-				$folder = JPATH_ROOT.'/'.$folder;
-				if(!JFolder::exists($folder)) {
+			if (!JFolder::exists($folder))
+			{
+				$folder = JPATH_ROOT . '/' . $folder;
+				if (!JFolder::exists($folder))
+				{
 					header('HTTP/1.0 404 Not Found');
 					$this->logoutUser();
 					exit(0);
 				}
 			}
 
-			$filename = $folder.'/'.$item->filename;
-			if(!JFile::exists($filename)) {
+			$filename = $folder . '/' . $item->filename;
+			if (!JFile::exists($filename))
+			{
 				header('HTTP/1.0 404 Not Found');
 				$this->logoutUser();
 				exit(0);
@@ -163,189 +172,240 @@ class ArsModelDownloads extends F0FModel
 			$basename = @basename($filename);
 			$filesize = @filesize($filename);
 			$mime_type = $this->get_mime_type($filename);
-			if(empty($mime_type)) $mime_type = 'application/octet-stream';
+			if (empty($mime_type))
+			{
+				$mime_type = 'application/octet-stream';
+			}
 
 			// Clear cache
-			while (@ob_end_clean());
+			while (@ob_end_clean())
+			{
+				;
+			}
 
-            // Fix IE bugs
-            if (isset($_SERVER['HTTP_USER_AGENT']) && strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
-            	$header_file = preg_replace('/\./', '%2e', $basename, substr_count($basename, '.') - 1);
+			// Fix IE bugs
+			if (isset($_SERVER['HTTP_USER_AGENT']) && strstr($_SERVER['HTTP_USER_AGENT'], 'MSIE'))
+			{
+				$header_file = preg_replace('/\./', '%2e', $basename, substr_count($basename, '.') - 1);
 
-            	if (ini_get('zlib.output_compression'))  {
+				if (ini_get('zlib.output_compression'))
+				{
 					ini_set('zlib.output_compression', 'Off');
 				}
-            }
-            else {
-            	$header_file = $basename;
-            }
+			}
+			else
+			{
+				$header_file = $basename;
+			}
 
-            // Import ARS plugins
-            JLoader::import('joomla.plugin.helper');
-            JPluginHelper::importPlugin('ars');
+			// Import ARS plugins
+			JLoader::import('joomla.plugin.helper');
+			JPluginHelper::importPlugin('ars');
 
-            // Call any plugins to post-process the download file parameters
-            $object = array(
-            	'rawentry'		=> $item,
-            	'filename'		=> $filename,
-            	'basename'		=> $basename,
-            	'header_file'	=> $header_file,
-            	'mimetype'		=> $mime_type,
-            	'filesize'		=> $filesize
-            );
-            $app = JFactory::getApplication();
-            $retArray = $app->triggerEvent('onARSBeforeSendFile', array($object));
-            if(!empty($retArray)) {
-            	foreach($retArray as $ret)
-            	{
-            		if(empty($ret) || !is_array($ret)) continue;
-            		$ret = (object)$ret;
-	            	$filename = $ret->filename;
-	            	$basename = $ret->basename;
-	            	$header_file = $ret->header_file;
-	            	$mime_type = $ret->mimetype;
-	            	$filesize = $ret->filesize;
-            	}
-            }
+			// Call any plugins to post-process the download file parameters
+			$object = array(
+				'rawentry'    => $item,
+				'filename'    => $filename,
+				'basename'    => $basename,
+				'header_file' => $header_file,
+				'mimetype'    => $mime_type,
+				'filesize'    => $filesize
+			);
+			$app = JFactory::getApplication();
+			$retArray = $app->triggerEvent('onARSBeforeSendFile', array($object));
+			if (!empty($retArray))
+			{
+				foreach ($retArray as $ret)
+				{
+					if (empty($ret) || !is_array($ret))
+					{
+						continue;
+					}
+					$ret = (object)$ret;
+					$filename = $ret->filename;
+					$basename = $ret->basename;
+					$header_file = $ret->header_file;
+					$mime_type = $ret->mimetype;
+					$filesize = $ret->filesize;
+				}
+			}
 
 			@clearstatcache();
 			// Disable caching
 			header("Pragma: public");
-            header("Expires: 0");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Cache-Control: public", false);
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Cache-Control: public", false);
 
 			// Send MIME headers
-            header("Content-Description: File Transfer");
-			header('Content-Type: '.$mime_type);
-            header("Accept-Ranges: bytes");
-			header('Content-Disposition: attachment; filename="'.$header_file.'"');
+			header("Content-Description: File Transfer");
+			header('Content-Type: ' . $mime_type);
+			header("Accept-Ranges: bytes");
+			header('Content-Disposition: attachment; filename="' . $header_file . '"');
 			header('Content-Transfer-Encoding: binary');
 			header('Connection: close');
 
 			error_reporting(0);
-        	if ( ! ini_get('safe_mode') ) {
-		    	set_time_limit(0);
-        	}
+			if (!ini_get('safe_mode'))
+			{
+				set_time_limit(0);
+			}
 
 			// Support resumable downloads
 			$isResumable = false;
 			$seek_start = 0;
 			$seek_end = $filesize - 1;
-			if(isset($_SERVER['HTTP_RANGE'])) {
+			if (isset($_SERVER['HTTP_RANGE']))
+			{
 				list($size_unit, $range_orig) = explode('=', $_SERVER['HTTP_RANGE'], 2);
 
-				if ($size_unit == 'bytes') {
+				if ($size_unit == 'bytes')
+				{
 					//multiple ranges could be specified at the same time, but for simplicity only serve the first range
 					//http://tools.ietf.org/id/draft-ietf-http-range-retrieval-00.txt
 					list($range, $extra_ranges) = explode(',', $range_orig, 2);
-				} else {
+				}
+				else
+				{
 					$range = '';
 				}
-			} else {
+			}
+			else
+			{
 				$range = '';
 			}
 
-			if($range) {
+			if ($range)
+			{
 				//figure out download piece from range (if set)
 				list($seek_start, $seek_end) = explode('-', $range, 2);
 
 				//set start and end based on range (if set), else set defaults
 				//also check for invalid ranges.
-				$seek_end = (empty($seek_end)) ? ($filesize - 1) : min(abs(intval($seek_end)),($filesize - 1));
-				$seek_start = (empty($seek_start) || $seek_end < abs(intval($seek_start))) ? 0 : max(abs(intval($seek_start)),0);
+				$seek_end = (empty($seek_end)) ? ($filesize - 1) : min(abs(intval($seek_end)), ($filesize - 1));
+				$seek_start = (empty($seek_start) || $seek_end < abs(intval($seek_start))) ? 0 : max(abs(intval($seek_start)), 0);
 
 				$isResumable = true;
 			}
 
 			// Use 1M chunks for echoing the data to the browser
-			$chunksize = 1024*1024; //1M chunks
+			$chunksize = 1024 * 1024; //1M chunks
 			$buffer = '';
-	   		$handle = @fopen($filename, 'rb');
-	   		if($handle !== false)
-	   		{
+			$handle = @fopen($filename, 'rb');
+			if ($handle !== false)
+			{
 
-				if($isResumable) {
+				if ($isResumable)
+				{
 					//Only send partial content header if downloading a piece of the file (IE workaround)
-					if ($seek_start > 0 || $seek_end < ($filesize - 1)) {
+					if ($seek_start > 0 || $seek_end < ($filesize - 1))
+					{
 						header('HTTP/1.1 206 Partial Content');
 					}
 
 					// Necessary headers
 					$totalLength = $seek_end - $seek_start + 1;
-					header('Content-Range: bytes '.$seek_start.'-'.$seek_end.'/'.$filesize);
-					header('Content-Length: '.$totalLength);
+					header('Content-Range: bytes ' . $seek_start . '-' . $seek_end . '/' . $filesize);
+					header('Content-Length: ' . $totalLength);
 
 					// Seek to start
 					fseek($handle, $seek_start);
-				} else {
+				}
+				else
+				{
 					$isResumable = false;
 					// Notify of filesize, if this info is available
-					if($filesize > 0) header('Content-Length: '.(int)$filesize);
+					if ($filesize > 0)
+					{
+						header('Content-Length: ' . (int)$filesize);
+					}
 				}
 				$read = 0;
-	   			while (!feof($handle) && ($chunksize > 0)) {
-					if($isResumable) {
-						if($totalLength - $read < $chunksize) {
+				while (!feof($handle) && ($chunksize > 0))
+				{
+					if ($isResumable)
+					{
+						if ($totalLength - $read < $chunksize)
+						{
 							$chunksize = $totalLength - $read;
-							if($chunksize < 0) continue;
+							if ($chunksize < 0)
+							{
+								continue;
+							}
 						}
 					}
-	   				$buffer = fread($handle, $chunksize);
-					if($isResumable) {
+					$buffer = fread($handle, $chunksize);
+					if ($isResumable)
+					{
 						$read += strlen($buffer);
 					}
-	   				echo $buffer;
-	   				@ob_flush();
-	   				flush();
-	   			}
-	   			@fclose($handle);
-	   		}
-	   		else
-	   		{
+					echo $buffer;
+					@ob_flush();
+					flush();
+				}
+				@fclose($handle);
+			}
+			else
+			{
 				// Notify of filesize, if this info is available
-				if($filesize > 0) header('Content-Length: '.(int)$filesize);
-	   			@readfile($filename);
-	   		}
+				if ($filesize > 0)
+				{
+					header('Content-Length: ' . (int)$filesize);
+				}
+				@readfile($filename);
+			}
 
-            // Call any plugins to post-process the file download
-            $object = array(
-            	'rawentry'		=> $item,
-            	'filename'		=> $filename,
-            	'basename'		=> $basename,
-            	'header_file'	=> $header_file,
-            	'mimetype'		=> $mime_type,
-            	'filesize'		=> $filesize,
-				'resumable'		=> $isResumable,
-				'range_start'	=> $seek_start,
-				'range_end'		=> $seek_end,
-            );
-            $app = JFactory::getApplication();
-            $ret = $app->triggerEvent('onARSAfterSendFile', array($object));
-            if(!empty($ret)) {
-            	foreach($ret as $r) {
-            		echo $r;
-            	}
-            }
-
+			// Call any plugins to post-process the file download
+			$object = array(
+				'rawentry'    => $item,
+				'filename'    => $filename,
+				'basename'    => $basename,
+				'header_file' => $header_file,
+				'mimetype'    => $mime_type,
+				'filesize'    => $filesize,
+				'resumable'   => $isResumable,
+				'range_start' => $seek_start,
+				'range_end'   => $seek_end,
+			);
+			$app = JFactory::getApplication();
+			$ret = $app->triggerEvent('onARSAfterSendFile', array($object));
+			if (!empty($ret))
+			{
+				foreach ($ret as $r)
+				{
+					echo $r;
+				}
+			}
 		}
 
 		$this->logoutUser();
 		JFactory::getApplication()->close();
 	}
 
-	private function get_mime_type($filename) {
-		$mimePath = JPATH_ADMINISTRATOR.'/components/com_ars/assets/mime';
+	private function get_mime_type($filename)
+	{
+		$mimePath = JPATH_ADMINISTRATOR . '/components/com_ars/assets/mime';
 		$fileext = substr(strrchr($filename, '.'), 1);
-		if (empty($fileext)) return (false);
+		if (empty($fileext))
+		{
+			return (false);
+		}
 		$regex = "/^([\w\+\-\.\/]+)\s+(\w+\s)*($fileext\s)/i";
-		$lines = file($mimePath."/mime.types");
-		foreach($lines as $line) {
-			if (substr($line, 0, 1) == '#') continue; // skip comments
+		$lines = file($mimePath . "/mime.types");
+		foreach ($lines as $line)
+		{
+			if (substr($line, 0, 1) == '#')
+			{
+				continue;
+			} // skip comments
 			$line = rtrim($line) . " ";
-			if (!preg_match($regex, $line, $matches)) continue; // no match to the extension
+			if (!preg_match($regex, $line, $matches))
+			{
+				continue;
+			} // no match to the extension
 			return ($matches[1]);
 		}
+
 		return 'application/octet-stream'; // no match at all
 	}
 
@@ -370,16 +430,17 @@ class ArsModelDownloads extends F0FModel
 		JLoader::import('joomla.user.helper');
 
 		// Get the query parameters
-		$dlid						= JRequest::getString('dlid',null);
-		$credentials				= array();
-		$credentials['username']	= JRequest::getVar('username', '', 'get', 'username');
-		$credentials['password']	= JRequest::getString('password', '', 'get', JREQUEST_ALLOWRAW);
+		$dlid = $this->input->getString('dlid', null);
+		$credentials = array();
+		$credentials['username'] = $this->input->getVar('username', '', 'get', 'username');
+		$credentials['password'] = $this->input->getString('password', '', 'get', JREQUEST_ALLOWRAW);
 
 		// Initialise
 		$user_id = 0;
 
 		// First attempt to log in by download ID
-		if (!empty($dlid)) {
+		if (!empty($dlid))
+		{
 			try
 			{
 				$user_id = ArsHelperFilter::getUserFromDownloadID($dlid)->id;
@@ -391,13 +452,13 @@ class ArsModelDownloads extends F0FModel
 		}
 
 		// If the dlid failed, used he legacy username/password pair
-		if (($user_id === 0) && !empty($credentials['username']) && !empty($credentials['password']) )
+		if (($user_id === 0) && !empty($credentials['username']) && !empty($credentials['password']))
 		{
-			JLoader::import( 'joomla.user.authentication');
+			JLoader::import('joomla.user.authentication');
 			$app = JFactory::getApplication();
 			$options = array('remember' => false);
 			$authenticate = JAuthentication::getInstance();
-			$response	  = $authenticate->authenticate($credentials, $options);
+			$response = $authenticate->authenticate($credentials, $options);
 
 			if ($response->status == JAuthentication::STATUS_SUCCESS)
 			{
@@ -432,12 +493,12 @@ class ArsModelDownloads extends F0FModel
 
 			// Update the user related fields for the Joomla sessions table.
 			$query = $db->getQuery(true)
-				->update($db->qn('#__session'))
-				->set(array(
-					$db->qn('guest').' = ' . $db->q($newUserObject->get('guest')),
-					$db->qn('username').' = ' . $db->q($newUserObject->get('username')),
-					$db->qn('userid').' = ' . (int) $newUserObject->get('id')
-				))->where($db->qn('session_id').' = '.$db->q($session->getId()));
+						->update($db->qn('#__session'))
+						->set(array(
+							$db->qn('guest') . ' = ' . $db->q($newUserObject->get('guest')),
+							$db->qn('username') . ' = ' . $db->q($newUserObject->get('username')),
+							$db->qn('userid') . ' = ' . (int)$newUserObject->get('id')
+						))->where($db->qn('session_id') . ' = ' . $db->q($session->getId()));
 			$db->setQuery($query);
 			$db->execute();
 
@@ -460,9 +521,9 @@ class ArsModelDownloads extends F0FModel
 			return false;
 		}
 
-		$my 		= JFactory::getUser();
-		$session 	= JFactory::getSession();
-		$app 		= JFactory::getApplication();
+		$my = JFactory::getUser();
+		$session = JFactory::getSession();
+		$app = JFactory::getApplication();
 
 		// Hit the user last visit field
 		$my->setLastVisit();
@@ -473,97 +534,97 @@ class ArsModelDownloads extends F0FModel
 		// Force logout all users with that userid
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true)
-			->delete($db->qn('#__session'))
-			->where($db->qn('userid').' = '.(int) $my->id)
-			->where($db->qn('client_id').' = '.(int) $app->getClientId());
+					->delete($db->qn('#__session'))
+					->where($db->qn('userid') . ' = ' . (int)$my->id)
+					->where($db->qn('client_id') . ' = ' . (int)$app->getClientId());
 		$db->setQuery($query);
 		$db->execute();
 
 		return $this->haveLoggedInAUser;
 	}
 
-    /**
-     * Looking at previous log entries, do I have to block the user? He could have done too many requests
-     * (authorized or not), so I'll have to block him
-     *
-     * @param   null|int $id
-     *
-     * @return  bool    Did I block the user (IP)?
-     */
-    public function blockUser($id)
-    {
-        require_once JPATH_ROOT.'/administrator/components/com_ars/helpers/ip.php';
-        JLoader::import('joomla.utilities.date');
+	/**
+	 * Looking at previous log entries, do I have to block the user? He could have done too many requests
+	 * (authorized or not), so I'll have to block him
+	 *
+	 * @param   null|int $id
+	 *
+	 * @return  bool    Did I block the user (IP)?
+	 */
+	public function blockUser($id)
+	{
+		require_once JPATH_ROOT . '/administrator/components/com_ars/helpers/ip.php';
+		JLoader::import('joomla.utilities.date');
 
-        // Check for repeat offenses
-        $db      = JFactory::getDBO();
-        $params  = JComponentHelper::getParams('com_ars');
-        $jNow    = new JDate();
+		// Check for repeat offenses
+		$db = JFactory::getDBO();
+		$params = JComponentHelper::getParams('com_ars');
+		$jNow = new JDate();
 
-        $ip           = ArsHelperIp::getUserIP();
-        $ip = '41.218.209.24';
+		$ip = ArsHelperIp::getUserIP();
+		$ip = '41.218.209.24';
 
-        $downloads    = $params->get('banscrapers_num', 20);
-        $numfreq      = $params->get('banscrapers_numtime', 1);
-        $frequency    = $params->get('banscrapers_typetime', 'hour');
-        $mindatestamp = 0;
+		$downloads = $params->get('banscrapers_num', 20);
+		$numfreq = $params->get('banscrapers_numtime', 1);
+		$frequency = $params->get('banscrapers_typetime', 'hour');
+		$mindatestamp = 0;
 
-        // Site owner disabled this feature, let's stop here
-        if(!$downloads || !$numfreq)
-        {
-            return false;
-        }
+		// Site owner disabled this feature, let's stop here
+		if (!$downloads || !$numfreq)
+		{
+			return false;
+		}
 
-        switch ($frequency)
-        {
-            case 'minute':
-                $numfreq *= 60;
-                break;
+		switch ($frequency)
+		{
+			case 'minute':
+				$numfreq *= 60;
+				break;
 
-            case 'hour':
-                $numfreq *= 3600;
-                break;
+			case 'hour':
+				$numfreq *= 3600;
+				break;
 
-            case 'day':
-                $numfreq *= 86400;
-                break;
-            // As default we are using the hour preset
-            default :
-                $numfreq *= 3600;
-                break;
-        }
+			case 'day':
+				$numfreq *= 86400;
+				break;
+			// As default we are using the hour preset
+			default :
+				$numfreq *= 3600;
+				break;
+		}
 
-        if ($mindatestamp == 0)
-        {
-            $mindatestamp = $jNow->toUnix() - $numfreq;
-        }
+		if ($mindatestamp == 0)
+		{
+			$mindatestamp = $jNow->toUnix() - $numfreq;
+		}
 
-        $jMinDate = new JDate($mindatestamp);
-        $minDate = $jMinDate->toSql();
+		$jMinDate = new JDate($mindatestamp);
+		$minDate = $jMinDate->toSql();
 
-        $sql = $db->getQuery(true)
-            ->select('COUNT(*)')
-            ->from($db->qn('#__ars_log'))
-            ->where($db->qn('accessed_on') . ' >= ' . $db->q($minDate))
-            ->where($db->qn('ip') . ' = ' . $db->q($ip))
-            ->where($db->qn('item_id').' = '.$id);
+		$sql = $db->getQuery(true)
+				  ->select('COUNT(*)')
+				  ->from($db->qn('#__ars_log'))
+				  ->where($db->qn('accessed_on') . ' >= ' . $db->q($minDate))
+				  ->where($db->qn('ip') . ' = ' . $db->q($ip))
+				  ->where($db->qn('item_id') . ' = ' . $id);
 
-        $db->setQuery($sql);
-        try
-        {
-            $numOffenses = $db->loadResult();
-        }
-        catch (Exception $e)
-        {
-            $numOffenses = 0;
-        }
+		$db->setQuery($sql);
+		try
+		{
+			$numOffenses = $db->loadResult();
+		}
+		catch (Exception $e)
+		{
+			$numOffenses = 0;
+		}
 
-        // Downloads are under the limit, nothing to do here
-        if ($numOffenses < $downloads)
-        {
-            return false;
-        }
+		// Downloads are under the limit, nothing to do here
+		if ($numOffenses < $downloads)
+		{
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

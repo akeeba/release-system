@@ -1,8 +1,8 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
@@ -13,11 +13,14 @@ class ArsControllerDlidlabels extends F0FController
 	 * Executes a controller task. Overriden to make sure non-logged-in users
 	 * cannot create add-on Download IDs.
 	 *
-	 * @param   string  $task  The task to execute.
+	 * @param   string $task The task to execute.
+	 *
+	 * @return  null|bool  False on execution failure
 	 *
 	 * @throws  Exception
 	 */
-	public function execute($task) {
+	public function execute($task)
+	{
 		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
 
 		if (!$isAdmin && !$isCLI)
@@ -31,6 +34,43 @@ class ArsControllerDlidlabels extends F0FController
 		}
 
 		parent::execute($task);
+	}
+
+	public function reset()
+	{
+		// CSRF prevention
+		if ($this->csrfProtection)
+		{
+			$this->_csrfProtection();
+		}
+
+		$model = $this->getThisModel();
+
+		if (!$model->getId())
+		{
+			$model->setIDsFromRequest();
+		}
+
+		$status = $model->resetDownloadId();
+
+		// Redirect
+		if ($customURL = $this->input->get('returnurl', '', 'string'))
+		{
+			$customURL = base64_decode($customURL);
+		}
+
+		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->component . '&view=' . F0FInflector::pluralize($this->view) . $this->getItemidURLSuffix();
+
+		if (!$status)
+		{
+			$this->setRedirect($url, $model->getError(), 'error');
+		}
+		else
+		{
+			$this->setRedirect($url);
+		}
+
+		return $status;
 	}
 
 	protected function onBeforeBrowse()
@@ -70,7 +110,8 @@ class ArsControllerDlidlabels extends F0FController
 	 *
 	 * @throws Exception
 	 */
-	protected function onBeforeEdit() {
+	protected function onBeforeEdit()
+	{
 		$result = parent::onBeforeEdit();
 
 		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
@@ -78,15 +119,25 @@ class ArsControllerDlidlabels extends F0FController
 		if (($result !== false) && !$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
 
 			$item = $model->getItem();
+
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
+				return false;
+			}
+
+			if ($item->primary)
+			{
+				throw new Exception(JText::_('COM_ARS_DLIDLABELS_ERR_CANTEDITDEFAULT'), 403);
+
 				return false;
 			}
 
@@ -94,6 +145,42 @@ class ArsControllerDlidlabels extends F0FController
 		}
 
 		return ($result !== false);
+	}
+
+	/**
+	 * Edit view permissions check. Overriden to make sure a user won't try
+	 * editing another user's add-on Download IDs.
+	 *
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 */
+	protected function onBeforeReset()
+	{
+		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
+
+		if (!$isAdmin && !$isCLI)
+		{
+			$model = $this->getThisModel();
+
+			if (!$model->getId())
+			{
+				$model->setIDsFromRequest();
+			}
+
+			$item = $model->getItem();
+
+			if ($item->user_id != JFactory::getUser()->id)
+			{
+				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
+				return false;
+			}
+
+			$this->layout = 'form';
+		}
+
+		return true;
 	}
 
 	/**
@@ -110,7 +197,7 @@ class ArsControllerDlidlabels extends F0FController
 		if (!$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
@@ -119,6 +206,7 @@ class ArsControllerDlidlabels extends F0FController
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
 				return false;
 			}
 		}
@@ -131,7 +219,8 @@ class ArsControllerDlidlabels extends F0FController
 		return !JFactory::getUser()->guest;
 	}
 
-	protected function onBeforeSave() {
+	protected function onBeforeSave()
+	{
 		$result = parent::onBeforeSave();
 
 		list($isCLI, $isAdmin) = F0FDispatcher::isCliAdmin();
@@ -139,7 +228,7 @@ class ArsControllerDlidlabels extends F0FController
 		if (($result !== false) && !$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
@@ -152,6 +241,7 @@ class ArsControllerDlidlabels extends F0FController
 			elseif ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
 				return false;
 			}
 		}
@@ -168,7 +258,7 @@ class ArsControllerDlidlabels extends F0FController
 		if (!$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
@@ -177,6 +267,7 @@ class ArsControllerDlidlabels extends F0FController
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
 				return false;
 			}
 
@@ -195,7 +286,7 @@ class ArsControllerDlidlabels extends F0FController
 		if (!$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
@@ -204,6 +295,7 @@ class ArsControllerDlidlabels extends F0FController
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
 				return false;
 			}
 
@@ -222,7 +314,7 @@ class ArsControllerDlidlabels extends F0FController
 		if (!$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
-			if(!$model->getId())
+			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
@@ -231,6 +323,7 @@ class ArsControllerDlidlabels extends F0FController
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+
 				return false;
 			}
 

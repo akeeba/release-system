@@ -1,9 +1,9 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
- * @version $Id$
+ * @license   GNU General Public License version 3, or later
+ * @version   $Id$
  */
 
 // Protect from unauthorized access
@@ -11,81 +11,115 @@ defined('_JEXEC') or die();
 
 class ArsHelperCache
 {
+
 	private $cachepath = null;
+
 	private $domain = null;
+
 	private $lastUpdate = null;
+
 	private $registry = null;
+
 	private $hasCache = null;
-	
+
 	public function __construct($domain = 'cpanelstats', $ttl = 900)
 	{
 		// Get the domain
 		$filter = JFilterInput::getInstance();
 		$domain = $filter->clean($domain, 'CMD');
 		$this->domain = $domain;
-		
+
 		// Get the cache paths
-		$this->cachepath = JPATH_CACHE.'/com_ars/'.$domain.'.ini';
-		
+		$this->cachepath = JPATH_CACHE . '/com_ars/' . $domain . '.ini';
+
 		// Create a new registry
 		$this->registry = JRegistry::getInstance('arscache');
-		
+
 		// Load the registry
 		$this->hasCache = true;
 		JLoader::import('joomla.filesystem.folder');
 		JLoader::import('joomla.filesystem.file');
-		if(JFolder::exists(dirname($this->cachepath))) {
-			if(JFile::exists($this->cachepath)) {
+		if (JFolder::exists(dirname($this->cachepath)))
+		{
+			if (JFile::exists($this->cachepath))
+			{
 				$this->lastUpdate = @filemtime($this->cachepath);
-				if($this->lastUpdate === false) $this->lastUpdate = 0;
-				if($this->lastUpdate != 0) {
+				if ($this->lastUpdate === false)
+				{
+					$this->lastUpdate = 0;
+				}
+				if ($this->lastUpdate != 0)
+				{
 					$now = time();
-					if($this->lastUpdate > ($now - $ttl)) {
+					if ($this->lastUpdate > ($now - $ttl))
+					{
 						// Only loads cache if its age is at least $ttl seconds since now
-						$this->registry->loadFile($this->cachepath,'INI');
+						$this->registry->loadFile($this->cachepath, 'INI');
 					}
 				}
-			} else {
+			}
+			else
+			{
 				$this->lastUpdate = 0;
 			}
-		} else {
+		}
+		else
+		{
 			$this->lastUpdate = 0;
 			$result = JFolder::create(dirname($this->cachepath));
-			if(!$result) $this->hasCache = false;
+			if (!$result)
+			{
+				$this->hasCache = false;
+			}
 		}
 	}
-	
+
 	public function getValue($key, $default = null)
 	{
-		if(!$this->hasCache) {
+		if (!$this->hasCache)
+		{
 			return $default;
-		} else {
-			if(version_compare(JVERSION, '3.0', 'ge')) {
+		}
+		else
+		{
+			if (version_compare(JVERSION, '3.0', 'ge'))
+			{
 				return $this->registry->get($key, $default);
-			} else {
+			}
+			else
+			{
 				return $this->registry->getValue($key, $default);
 			}
 		}
 	}
-	
+
 	public function setValue($key, $value)
 	{
-		if(!$this->hasCache) {
+		if (!$this->hasCache)
+		{
 			return;
-		} else {
-			if(version_compare(JVERSION, '3.0', 'ge')) {
+		}
+		else
+		{
+			if (version_compare(JVERSION, '3.0', 'ge'))
+			{
 				$this->registry->set($key, $value);
-			} else {
+			}
+			else
+			{
 				$this->registry->setValue($key, $value);
 			}
 		}
 	}
-	
+
 	public function save()
 	{
-		if(!$this->hasCache) {
+		if (!$this->hasCache)
+		{
 			return;
-		} else {
+		}
+		else
+		{
 			$serialized = $this->registry->toString('INI');
 			$result = JFile::write($this->cachepath, $serialized);
 		}

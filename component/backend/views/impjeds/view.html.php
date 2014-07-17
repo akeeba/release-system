@@ -1,17 +1,19 @@
 <?php
-/**
- * @package AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
- */
 
+/**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @license   GNU General Public License version 3, or later
+ */
 class ArsViewImpjeds extends F0FViewHtml
 {
-	protected function onDisplay($tpl = null) {
+	protected function onDisplay($tpl = null)
+	{
 		return true;
 	}
 
-	protected function onAdd($tpl = null) {
+	protected function onAdd($tpl = null)
+	{
 		return true;
 	}
 }

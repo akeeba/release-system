@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewLatests $this */
+
 JLoader::import('joomla.utilities.date');
 $released = new JDate($item->release->created);
 $release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->release->id.'&Itemid=' . $Itemid);

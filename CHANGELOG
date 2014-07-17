@@ -1,3 +1,8 @@
+Version 2.4.0
+================================================================================
+- Removing PostgreSQL support (Joomla!'s PostgreSQL support is broken for almost a year)
++ Improved Download ID management: Download IDs no longer change when the password is changed / reset / rehashed
+
 Version 2.3.5
 ================================================================================
 ! CLI scripts were not being copied over

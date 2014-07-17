@@ -1,8 +1,8 @@
 <?php
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die();
@@ -12,7 +12,9 @@ defined('_JEXEC') or die();
  */
 class ArsDispatcher extends F0FDispatcher
 {
+
 	public $defaultView = 'browse';
+
 	private $allowedViews = array(
 		'browses', 'categories', 'downloads', 'latests', 'releases', 'updates',
 		'items', 'dlidlabels'
@@ -46,10 +48,13 @@ class ArsDispatcher extends F0FDispatcher
 			// Set the view, if it's allowed
 			$this->input->set('view', $view);
 			if (!in_array(F0FInflector::pluralize($view), $this->allowedViews))
+			{
 				$result = false;
+			}
 
 			if (($this->input->getCmd('format', 'html') == 'html') &&
-				(F0FInflector::pluralize($view) == 'items'))
+				(F0FInflector::pluralize($view) == 'items')
+			)
 			{
 				$result = false;
 			}
@@ -66,5 +71,4 @@ class ArsDispatcher extends F0FDispatcher
 
 		return $result;
 	}
-
 }

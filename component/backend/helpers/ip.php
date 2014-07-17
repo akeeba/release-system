@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package AkeebaReleaseSystem
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
- * @license GNU General Public License version 3, or later
+ * @license   GNU General Public License version 3, or later
  */
 defined('_JEXEC') or die();
 
@@ -25,14 +25,14 @@ class ArsHelperIp
 
 		if ((strstr($ip, ',') !== false) || (strstr($ip, ' ') !== false))
 		{
-			$ip	 = str_replace(' ', ',', $ip);
-			$ip	 = str_replace(',,', ',', $ip);
+			$ip = str_replace(' ', ',', $ip);
+			$ip = str_replace(',,', ',', $ip);
 			$ips = explode(',', $ip);
-			$ip	 = '';
+			$ip = '';
 			while (empty($ip) && !empty($ips))
 			{
-				$ip	 = array_pop($ips);
-				$ip	 = trim($ip);
+				$ip = array_pop($ips);
+				$ip = trim($ip);
 			}
 		}
 		else
@@ -129,7 +129,7 @@ class ArsHelperIp
 	/**
 	 * Is this an IPv6 IP address?
 	 *
-	 * @param   string  $ip  An IPv4 or IPv6 address
+	 * @param   string $ip An IPv4 or IPv6 address
 	 *
 	 * @return  boolean  True if it's IPv6
 	 */
@@ -146,7 +146,7 @@ class ArsHelperIp
 	/**
 	 * Converts inet_pton output to bits string
 	 *
-	 * @param   string  $inet  The in_addr representation of an IPv4 or IPv6 address
+	 * @param   string $inet The in_addr representation of an IPv4 or IPv6 address
 	 *
 	 * @return  string
 	 */
@@ -154,14 +154,14 @@ class ArsHelperIp
 	{
 		if (strlen($inet) == 4)
 		{
-			$unpacked	 = unpack('A4', $inet);
+			$unpacked = unpack('A4', $inet);
 		}
 		else
 		{
-			$unpacked	 = unpack('A16', $inet);
+			$unpacked = unpack('A16', $inet);
 		}
-		$unpacked	 = str_split($unpacked[1]);
-		$binaryip	 = '';
+		$unpacked = str_split($unpacked[1]);
+		$binaryip = '';
 
 		foreach ($unpacked as $char)
 		{
@@ -174,8 +174,8 @@ class ArsHelperIp
 	/**
 	 * Checks if an IP is contained in a list of IPs or IP expressions
 	 *
-	 * @param   string  $ip       The IPv4/IPv6 address to check
-	 * @param   array   $ipTable  The list of IP expressions
+	 * @param   string $ip      The IPv4/IPv6 address to check
+	 * @param   array  $ipTable The list of IP expressions
 	 *
 	 * @return  null|boolean  True if it's in the list, null if the filtering can't proceed
 	 */
@@ -236,8 +236,8 @@ class ArsHelperIp
 					continue;
 				}
 
-				$from	 = @inet_pton(trim($from));
-				$to		 = @inet_pton(trim($to));
+				$from = @inet_pton(trim($from));
+				$to = @inet_pton(trim($to));
 
 				// Sanity check
 				if (($from === false) || ($to === false))
@@ -275,9 +275,9 @@ class ArsHelperIp
 				elseif (!$ipv6 && strstr($maskbits, '.'))
 				{
 					// Convert IPv4 netmask to CIDR
-					$long		 = ip2long($maskbits);
-					$base		 = ip2long('255.255.255.255');
-					$maskbits	 = 32 - log(($long ^ $base) + 1, 2);
+					$long = ip2long($maskbits);
+					$base = ip2long('255.255.255.255');
+					$maskbits = 32 - log(($long ^ $base) + 1, 2);
 				}
 
 				// Convert network IP to in_addr representation
@@ -294,7 +294,7 @@ class ArsHelperIp
 
 				// Check the corresponding bits of the IP and the network
 				$ip_net_bits = substr($binaryip, 0, $maskbits);
-				$net_bits	 = substr($binarynet, 0, $maskbits);
+				$net_bits = substr($binarynet, 0, $maskbits);
 
 				if ($ip_net_bits == $net_bits)
 				{
@@ -334,7 +334,9 @@ class ArsHelperIp
 						foreach (count_chars($ipExpression, 1) as $i => $val)
 						{
 							if ($i == 46)
+							{
 								$dots = $val;
+							}
 						}
 						switch ($dots)
 						{
@@ -362,9 +364,9 @@ class ArsHelperIp
 							$binaryip = self::inet_to_bits($myIP);
 
 							// Convert netmask to CIDR
-							$long		 = ip2long($netmask);
-							$base		 = ip2long('255.255.255.255');
-							$maskbits	 = 32 - log(($long ^ $base) + 1, 2);
+							$long = ip2long($netmask);
+							$base = ip2long('255.255.255.255');
+							$maskbits = 32 - log(($long ^ $base) + 1, 2);
 
 							$net = @inet_pton($ipExpression);
 
@@ -379,7 +381,7 @@ class ArsHelperIp
 
 							// Check the corresponding bits of the IP and the network
 							$ip_net_bits = substr($binaryip, 0, $maskbits);
-							$net_bits	 = substr($binarynet, 0, $maskbits);
+							$net_bits = substr($binarynet, 0, $maskbits);
 
 							if ($ip_net_bits == $net_bits)
 							{

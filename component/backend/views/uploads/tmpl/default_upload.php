@@ -8,6 +8,8 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
+/** @var ArsViewUploads $this */
+
 $session  = JFactory::getSession();
 $suffix = '&'.$session->getName() .'='. $session->getId();
 
@@ -86,8 +88,8 @@ require_once JPATH_ROOT.'/components/com_ars/helpers/html.php'
 
 <!-- File Upload Form -->
 <form name="fileForm" action="<?php echo JURI::base(); ?>index.php" method="post" enctype="multipart/form-data" class="form form-horizontal">
-	<input type="hidden" name="option" value="<?php echo JRequest::getCmd('option') ?>" />
-	<input type="hidden" name="view" value="<?php echo JRequest::getCmd('view') ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->input->getCmd('option') ?>" />
+	<input type="hidden" name="view" value="<?php echo $this->input->getCmd('view') ?>" />
 	<input type="hidden" name="task" value="upload" />
 	<input type="hidden" name="id" value="<?php echo $this->category ?>" />
 	<input type="hidden" name="folder" value="<?php echo $this->escape($this->folder) ?>" />

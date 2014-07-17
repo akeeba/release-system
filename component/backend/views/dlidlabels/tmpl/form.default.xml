@@ -15,14 +15,20 @@
 		<header name="user_id" type="fieldsearchable" sortable="true"
 			buttons="yes" buttonclass="btn" searchfieldname="username"
 		/>
-		<header name="download_id" type="field" sortable="false"/>
+		<header name="dlid" type="field" sortable="true"/>
 		<header name="enabled" type="published" sortable="true" tdwidth="8%" />
+        <header name="reset" type="label" sortable="false" tdwidth="8%" />
+
+        <header name="primary" type="filterselectable">
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </header>
 	</headerset>
 
 	<fieldset name="items">
 		<field name="ars_dlidlabel_id" type="selectrow"/>
 		
-		<field name="label" type="text"
+		<field name="label" type="dlidlabel"
 			show_link="true"
 			url="index.php?option=com_ars&amp;view=dlidlabel&amp;id=[ITEM:ID]"
 			empty_replacement="(no title)"
@@ -30,7 +36,7 @@
 
 		<field name="user_id" type="user"/>
 		<field name="download_id" type="dlid"/>
-
 		<field name="enabled" type="published"/>
+        <field name="reset" type="dlidreset"/>
 	</fieldset>
 </form>

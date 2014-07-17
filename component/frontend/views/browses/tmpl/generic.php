@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+/** @var ArsViewBrowses $this */
+
 ?>
 <div class="ars-categories-<?php echo $renderSection ?>">
 

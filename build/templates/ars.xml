@@ -50,7 +50,7 @@
 		<files folder="backend">
 			<folder>assets</folder>
 			<folder>controllers</folder>
-			<folder>elements</folder>
+			<folder>fields</folder>
 			<folder>fields</folder>
 			<folder>helpers</folder>
 			<folder>models</folder>
