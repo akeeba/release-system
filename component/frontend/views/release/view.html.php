@@ -133,29 +133,10 @@ class ArsViewRelease extends F0FViewHtml
 			$model->item->hit();
 		}
 
-<<<<<<< HEAD
-		$this->category		= $category;
-		$this->user			= $user;
-		$this->dlid			= $dlid;
-		$this->directlink	= $directlink;
-		$this->pparams		= $pparams;
-		$this->item			= $model->item;
-
-		if (is_object($model->item) && method_exists($model->item, 'hit'))
-		{
-			$model->item->hit();
-		}
-
-		$this->items		= $model->itemList;
-		$this->pagination	= $model->items_pagination;
-		$this->release_id	= $model->item->id;
-		$this->Itemid		= $this->input->getInt('Itemid', null);
-=======
 		$this->items = $model->itemList;
 		$this->pagination = $model->items_pagination;
 		$this->release_id = $model->item->id;
 		$this->Itemid = $this->input->getInt('Itemid', null);
->>>>>>> release/2.4.0
 
 		if ($this->getLayout() == 'item')
 		{

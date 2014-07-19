@@ -53,11 +53,7 @@ class ArsModelBleedingedge extends F0FModel
 		{
 			$this->category_id = (int)$cat;
 			$this->category = F0FModel::getTmpInstance('Categories', 'ArsModel')
-<<<<<<< HEAD
-				->getItem($this->category_id);
-=======
 									  ->getItem($this->category_id);
->>>>>>> release/2.4.0
 		}
 
 		// Store folder
@@ -129,21 +125,12 @@ class ArsModelBleedingedge extends F0FModel
 
 		// Get all releases in the category
 		$allReleases = F0FModel::getTmpInstance('Releases', 'ArsModel')
-<<<<<<< HEAD
-			->category($this->category->id)
-			->order('created')
-			->dir('desc')
-			->limitstart(0)
-			->limit(0)
-			->getItemList(true);
-=======
 							   ->category($this->category->id)
 							   ->order('created')
 							   ->dir('desc')
 							   ->limitstart(0)
 							   ->limit(0)
 							   ->getItemList(true);
->>>>>>> release/2.4.0
 
 		// Check for possible use of Amazon S3
 		$potentialPrefix = substr($this->category->directory, 0, 5);
@@ -163,7 +150,6 @@ class ArsModelBleedingedge extends F0FModel
 				{
 					continue;
 				}
-<<<<<<< HEAD
 
 				$mustScanFolder = true;
 
@@ -176,20 +162,6 @@ class ArsModelBleedingedge extends F0FModel
 				{
 					$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
 
-=======
-
-				$mustScanFolder = true;
-
-				if ($useS3)
-				{
-					$folder = $this->folder . '/' . $release->version;
-					$known_folders[] = $release->version;
-				}
-				else
-				{
-					$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
-
->>>>>>> release/2.4.0
 					if ($folderName === false)
 					{
 						$mustScanFolder = false;
@@ -223,22 +195,14 @@ class ArsModelBleedingedge extends F0FModel
 					$release->published = 0;
 
 					$tmp = F0FModel::getTmpInstance('Releases', 'ArsModel')
-<<<<<<< HEAD
-						->getTable();
-=======
 								   ->getTable();
->>>>>>> release/2.4.0
 					$tmp->load($release->id);
 					$tmp->save($release);
 				}
 				else
 				{
 					$tmpRelease = F0FModel::getTmpInstance('Releases', 'ArsModel')
-<<<<<<< HEAD
-						->getTable();
-=======
 										  ->getTable();
->>>>>>> release/2.4.0
 					$tmpRelease->bind($release);
 					$this->checkFiles($tmpRelease);
 				}
@@ -424,11 +388,7 @@ class ArsModelBleedingedge extends F0FModel
 
 					// -- Create the BE release
 					$table = F0FModel::getTmpInstance('Releases', 'ArsModel')
-<<<<<<< HEAD
-						->getTable();
-=======
 									 ->getTable();
->>>>>>> release/2.4.0
 					if ($table->save($data, 'category_id'))
 					{
 						$this->checkFiles($table);
@@ -529,26 +489,15 @@ class ArsModelBleedingedge extends F0FModel
 				$release->notes = $notes;
 
 				$table = F0FModel::getTmpInstance('Releases', 'ArsModel')
-<<<<<<< HEAD
-					->getTable()
-					->save($release, 'category_id');
-=======
 								 ->getTable()
 								 ->save($release, 'category_id');
->>>>>>> release/2.4.0
 			}
 		}
 
 		$allItems = F0FModel::getTmpInstance('Items', 'ArsModel')
-<<<<<<< HEAD
-			->release($release->id)
-			->limitstart(0)
-			->getItemList(true);
-=======
 							->release($release->id)
 							->limitstart(0)
 							->getItemList(true);
->>>>>>> release/2.4.0
 
 		$known_items = array();
 
@@ -629,7 +578,6 @@ class ArsModelBleedingedge extends F0FModel
 					'created'     => $jNow->toSql(),
 					'access'      => '1'
 				);
-<<<<<<< HEAD
 
 				// Before saving the item, call the onNewARSBleedingEdgeItem()
 				// event of ars plugins so that they have the chance to modify
@@ -670,62 +618,16 @@ class ArsModelBleedingedge extends F0FModel
 					}
 				}
 
-=======
-
-				// Before saving the item, call the onNewARSBleedingEdgeItem()
-				// event of ars plugins so that they have the chance to modify
-				// this information.
-				// -- Load plugins
-				JLoader::import('joomla.plugin.helper');
-				JPluginHelper::importPlugin('ars');
-				// -- Setup information data
-				$infoData = array(
-					'folder'     => $folder,
-					'file'       => $file,
-					'release_id' => $release->id,
-					'release'    => $release
-				);
-				// -- Trigger the plugin event
-				$app = JFactory::getApplication();
-				$jResponse = $app->triggerEvent('onNewARSBleedingEdgeItem', array(
-					$infoData,
-					$data
-				));
-				// -- Merge response
-				if (is_array($jResponse))
-				{
-					foreach ($jResponse as $response)
-					{
-						if (is_array($response))
-						{
-							$data = array_merge($data, $response);
-						}
-					}
-				}
-
-				if (isset($data['ignore']))
-				{
-					if ($data['ignore'])
-					{
-						continue;
-					}
-				}
-
->>>>>>> release/2.4.0
 				$table = clone F0FModel::getTmpInstance('Items', 'ArsModel')->getTable();
 				$table->reset();
 				$result = $table->save($data);
 			}
 		}
 
-<<<<<<< HEAD
-		if (isset($table)) $table->reorder('`release_id` = ' . $release->id);
-=======
 		if (isset($table))
 		{
 			$table->reorder('`release_id` = ' . $release->id);
 		}
->>>>>>> release/2.4.0
 	}
 
 	private function coloriseChangelog(&$this_changelog, $first_changelog = array())
@@ -755,14 +657,10 @@ class ArsModelBleedingedge extends F0FModel
 
 			foreach ($this_changelog as $line)
 			{
-<<<<<<< HEAD
-				if (in_array($line, $first_changelog)) continue;
-=======
 				if (in_array($line, $first_changelog))
 				{
 					continue;
 				}
->>>>>>> release/2.4.0
 				if ($colorise_changelog)
 				{
 					$notes .= '<li>' . $this->colorise($line) . "</li>\n";

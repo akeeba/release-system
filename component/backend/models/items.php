@@ -151,14 +151,9 @@ class ArsModelItems extends F0FModel
 		{
 			$where[] = $db->qn('release_id') . ' = ' . $db->q($fltRelease);
 		}
-<<<<<<< HEAD
-		if($fltRelease) {
-			$where[] = $db->qn('release_id').' = '.$db->q($fltRelease);
-=======
 		if ($fltPublished != '')
 		{
 			$where[] = $db->qn('published') . ' = ' . $db->q($fltPublished);
->>>>>>> release/2.4.0
 		}
 		if (count($where))
 		{

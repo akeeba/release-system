@@ -10,10 +10,7 @@ defined('_JEXEC') or die();
 
 class plgArsBleedingedgediff extends JPlugin
 {
-<<<<<<< HEAD
-=======
 
->>>>>>> release/2.4.0
 	private $_enabled = false;
 
 	public function __construct(&$subject, $config = array())
@@ -123,15 +120,9 @@ class plgArsBleedingedgediff extends JPlugin
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-<<<<<<< HEAD
-			->select('*')
-			->from($db->qn('#__ars_categories'))
-			->where($db->qn('id') . ' = ' . $db->q($category_id));
-=======
 					->select('*')
 					->from($db->qn('#__ars_categories'))
 					->where($db->qn('id') . ' = ' . $db->q($category_id));
->>>>>>> release/2.4.0
 		$db->setQuery($query);
 		$category = $db->loadObject();
 
@@ -168,21 +159,12 @@ class plgArsBleedingedgediff extends JPlugin
 		// Find the previous release
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-<<<<<<< HEAD
-			->select('*')
-			->from($db->qn('#__ars_releases'))
-			->where($db->qn('category_id') . ' = ' . $db->q($category_id))
-			->where($db->qn('id') . ' < ' . $db->q($release->id))
-			->where($db->qn('published') . ' = ' . $db->q('1'))
-			->order($db->qn('id') . ' DESC');
-=======
 					->select('*')
 					->from($db->qn('#__ars_releases'))
 					->where($db->qn('category_id') . ' = ' . $db->q($category_id))
 					->where($db->qn('id') . ' < ' . $db->q($release->id))
 					->where($db->qn('published') . ' = ' . $db->q('1'))
 					->order($db->qn('id') . ' DESC');
->>>>>>> release/2.4.0
 		$db->setQuery($query, 0, 1);
 		$record = $db->loadObject();
 		if (empty($record))
@@ -206,16 +188,6 @@ class plgArsBleedingedgediff extends JPlugin
 	{
 		// Let's get automatic item title/description records
 		$subquery = $db->getQuery(true)
-<<<<<<< HEAD
-			->select($db->qn('category_id'))
-			->from('#__ars_releases')
-			->where($db->qn('id') . ' = ' . $db->q($info['release_id']));
-		$query = $db->getQuery(true)
-			->select('*')
-			->from($db->qn('#__ars_autoitemdesc'))
-			->where($db->qn('category') . ' IN (' . $subquery . ')')
-			->where('NOT ' . $db->qn('published') . ' = ' . $db->q('0'));
-=======
 					   ->select($db->qn('category_id'))
 					   ->from('#__ars_releases')
 					   ->where($db->qn('id') . ' = ' . $db->q($info['release_id']));
@@ -224,7 +196,6 @@ class plgArsBleedingedgediff extends JPlugin
 					->from($db->qn('#__ars_autoitemdesc'))
 					->where($db->qn('category') . ' IN (' . $subquery . ')')
 					->where('NOT ' . $db->qn('published') . ' = ' . $db->q('0'));
->>>>>>> release/2.4.0
 		$db->setQuery($query);
 		$autoitems = $db->loadObjectList();
 		$auto = (object)array('title' => '', 'description' => '');

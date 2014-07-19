@@ -57,12 +57,8 @@ class plgArsBleedingedgematurity extends JPlugin
 		}
 		$stability = array_pop($parts);
 
-<<<<<<< HEAD
-		switch($stability) {
-=======
 		switch ($stability)
 		{
->>>>>>> release/2.4.0
 			case 'ALPHA':
 				$data['maturity'] = 'alpha';
 				break;
