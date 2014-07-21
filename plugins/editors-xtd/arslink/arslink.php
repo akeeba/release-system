@@ -46,6 +46,10 @@ class plgButtonArslink extends JPlugin
 		 * and closes the select frame.
 		 */
 		$js = "
+
+
+;// This comment is intentionally put here to prevent badly written plugins from causing a Javascript error
+// due to missing trailing semicolon and/or newline in their code.
 		function arsSelectItem(id, title) {
 			var tag = '<a href='+'\"index.php?option=com_ars&amp;view=download&amp;id='+id+'\">'+title+'</a>';
 			jInsertEditorText(tag, '" . $name . "');

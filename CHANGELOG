@@ -1,3 +1,7 @@
+Version 2.4.1
+================================================================================
+~ Even better workaround for very badly written system plugins which output Javascript without a trailing semicolon and/or newline, leading to Javascript errors. This is not a bug in our software, it's a bug in those badly written plugins and WE have to work around THEIR bad code!
+
 Version 2.4.0
 ================================================================================
 - Removing PostgreSQL support (Joomla!'s PostgreSQL support is broken for almost a year)
