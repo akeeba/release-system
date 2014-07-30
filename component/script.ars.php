@@ -42,6 +42,12 @@ if (!class_exists('F0FUtilsUpdate', false))
 	@include_once __DIR__ . '/fof/utils/update/update.php';
 }
 
+// Pre-load the cache cleaner utility class from our own copy of FOF
+if (!class_exists('F0FUtilsCacheCleaner', false))
+{
+	@include_once __DIR__ . '/fof/utils/cache/cleaner.php';
+}
+
 class Com_ArsInstallerScript extends F0FUtilsInstallscript
 {
 
