@@ -26,7 +26,7 @@ class ArsModelDownloads extends F0FModel
 	 *
 	 * @param int $id The Item ID to load
 	 *
-	 * @return TableItems|null An instance of TableItems, or null if the user shouldn't view the item
+	 * @return ArsTableItem|null An instance of ArsTableItem, or null if the user shouldn't view the item
 	 */
 	public function &getItem($id = null)
 	{
@@ -83,6 +83,8 @@ class ArsModelDownloads extends F0FModel
 			{
 				@ob_end_clean();
 			}
+
+			header('HTTP/1.1 303 See other');
 			header('Location: ' . $this->item->url);
 		}
 		else

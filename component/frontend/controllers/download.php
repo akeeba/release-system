@@ -31,7 +31,7 @@ class ArsControllerDownload extends F0FController
 		$app = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_ars');
 
-		// Get the model
+		/** @var ArsModelDownloads $model */
 		$model = $this->getThisModel();
 
 		// Log in a user if I have to
