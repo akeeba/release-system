@@ -27,6 +27,8 @@ F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 	<input type="hidden" name="option" id="option" value="com_ars"/>
 	<input type="hidden" name="view" id="view" value="items"/>
 	<input type="hidden" name="task" id="task" value="browse"/>
+	<input type="hidden" name="layout" id="layout" value="modal"/>
+	<input type="hidden" name="tmpl" id="tmpl" value="component"/>
 	<input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
 	<input type="hidden" name="hidemainmenu" id="hidemainmenu" value="0"/>
 	<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->lists->order ?>"/>
