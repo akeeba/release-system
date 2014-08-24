@@ -6,6 +6,7 @@
         <drivers>
             <driver>mysql</driver>
             <driver>mysqli</driver>
+            <driver>pdomysql</driver>
         </drivers>
     </meta>
 
