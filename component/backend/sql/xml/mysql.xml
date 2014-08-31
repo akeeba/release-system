@@ -217,6 +217,7 @@ CREATE TABLE `#__ars_environments` (
 CREATE TABLE `#__ars_dlidlabels` (
   `ars_dlidlabel_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) unsigned NOT NULL,
+  `primary` TINYINT(1) NOT NULL DEFAULT 0,
   `label` varchar(255) NOT NULL DEFAULT '',
   `dlid` CHAR(32) NOT NULL,
   `enabled` tinyint(3) NOT NULL DEFAULT '1',
@@ -318,15 +319,23 @@ ALTER TABLE `#__ars_updatestreams` ADD INDEX `#__ars_updatestreams_jedid` (`jedi
             <query><![CDATA[
 ALTER TABLE `#__ars_dlidlabels` ADD COLUMN `dlid` CHAR(32) NOT NULL AFTER `label`
             ]]></query>
+            <query canfail="1"><![CDATA[
+ALTER TABLE `#__ars_dlidlabels` ADD INDEX `#__ars_dlidlabels_dlid` (`dlid`)
+            ]]></query>
+        </action>
+
+        <action table="#__ars_dlidlabels" canfail="0">
+            <condition type="missing" value="primary" />
             <query><![CDATA[
 ALTER TABLE `#__ars_dlidlabels` ADD COLUMN `primary` TINYINT(1) NOT NULL DEFAULT 0 AFTER `user_id`
             ]]></query>
-            <query><![CDATA[
+            <query canfail="1"><![CDATA[
 ALTER TABLE `#__ars_dlidlabels` ADD INDEX `#__ars_dlidlabels_primary` (`primary`)
             ]]></query>
-            <query><![CDATA[
-ALTER TABLE `#__ars_dlidlabels` ADD INDEX `#__ars_dlidlabels_dlid` (`dlid`)
-            ]]></query>
+        </action>
+
+        <action table="#__ars_dlidlabels" canfail="0">
+            <condition type="true" />
             <!-- Mark existing download IDs in #__ars_dlidlabels as secondary if nothing is specified -->
             <query><![CDATA[
 UPDATE #__ars_dlidlabels SET `primary` = 0 WHERE `primary` IS NULL
