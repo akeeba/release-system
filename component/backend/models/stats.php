@@ -64,7 +64,7 @@ class ArsModelStats extends F0FModel
 			(strpos(JUri::root(), '127.0.0.1') !== false)
 		)
 		{
-			//return false;
+			return false;
 		}
 
 		// Make sure the common tables are installed
