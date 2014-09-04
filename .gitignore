@@ -15,6 +15,7 @@
 /build/templates/release.json
 /build/tools
 /component/ars.xml
+/component/backend/assets/stats
 /component/backend/liveupdate/LICENSE.txt
 /component/backend/liveupdate/assets
 /component/backend/liveupdate/classes
