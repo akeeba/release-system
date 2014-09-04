@@ -94,13 +94,13 @@ class ArsModelStats extends F0FModel
 		// Data collection is turned off
 		if (!$params->get('stats_enabled', 1))
 		{
-			return true;
+			return false;
 		}
 
 		// It's not time to collect the stats
 		if (time() < ($lastrun + 3600 * 24))
 		{
-			return true;
+			return false;
 		}
 
 		$db = JFactory::getDbo();
