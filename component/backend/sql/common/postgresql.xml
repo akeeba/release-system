@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema>
+    <meta>
+        <drivers>
+            <driver>postgres</driver>
+            <driver>postgresql</driver>
+        </drivers>
+    </meta>
+
+    <sql>
+        <action table="#__akeeba_common" canfail="0">
+            <condition type="missing" value=""/>
+            <query><![CDATA[
+CREATE TABLE "#__akeeba_common" (
+	"key" character varying(255) NOT NULL,
+	"value" text NOT NULL,
+	PRIMARY KEY ("key")
+);
+            ]]></query>
+        </action>
+    </sql>
+</schema>

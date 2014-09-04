@@ -1,5 +1,6 @@
 Version 2.4.1
 ================================================================================
++ Anonymous reporting of PHP, MySQL and CMS versions (opt-out through the options)
 ~ Even better workaround for very badly written system plugins which output Javascript without a trailing semicolon and/or newline, leading to Javascript errors. This is not a bug in our software, it's a bug in those badly written plugins and WE have to work around THEIR bad code!
 ~ Using an HTTP 303 header for Link type items instead of 302
 # [LOW] ARS link plugin: filtering the list made it impossible to select an item (thanks @Bakual)

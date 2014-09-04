@@ -88,6 +88,9 @@ class ArsViewCpanels extends F0FViewHtml
 		$updateModel = F0FModel::getTmpInstance('Updates', 'ArsModel');
 		$this->currentVersion = $updateModel->getVersion();
 
+        // Collect information about the site
+        $this->statsIframe = F0FModel::getTmpInstance('Stats', 'ArsModel')->collectStatistics(true);
+
 		return true;
 	}
 }

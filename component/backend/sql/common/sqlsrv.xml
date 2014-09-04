@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema>
+    <meta>
+        <drivers>
+            <driver>sqlsrv</driver>
+            <driver>sqlazure</driver>
+        </drivers>
+    </meta>
+
+    <sql>
+        <action table="#__akeeba_common" canfail="0">
+            <condition type="missing" value=""/>
+            <query><![CDATA[
+CREATE TABLE [#__akeeba_common] (
+	[key] [NVARCHAR](255) NOT NULL,
+	[value] [TEXT] NOT NULL,
+	CONSTRAINT [PK_#__akeeba_common] PRIMARY KEY CLUSTERED
+	(
+		[key] ASC
+	) WITH (STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF)
+)
+            ]]></query>
+        </action>
+    </sql>
+</schema>

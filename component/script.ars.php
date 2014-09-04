@@ -211,6 +211,19 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 
 		<?php
 		parent::renderPostInstallation($status, $fofInstallationStatus, $strapperInstallationStatus, $parent);
+
+        /** @var ArsModelStats $model */
+        $model  = F0FModel::getTmpInstance('Stats', 'ArsModel');
+
+        if(method_exists($model, 'collectStatistics'))
+        {
+            $iframe = $model->collectStatistics(true);
+
+            if($iframe)
+            {
+                echo $iframe;
+            }
+        }
 	}
 
 	protected function renderPostUninstallation($status, $parent)

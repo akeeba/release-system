@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema>
+    <meta>
+        <drivers>
+            <driver>mysql</driver>
+            <driver>mysqli</driver>
+            <driver>pdomysql</driver>
+        </drivers>
+    </meta>
+
+    <sql>
+        <action table="#__akeeba_common" canfail="0">
+            <condition type="missing" value=""/>
+            <query><![CDATA[
+CREATE TABLE `#__akeeba_common` (
+	`key` varchar(255) NOT NULL,
+	`value` longtext NOT NULL,
+	PRIMARY KEY (`key`)
+) DEFAULT COLLATE utf8_general_ci CHARSET=utf8;
+            ]]></query>
+        </action>
+    </sql>
+</schema>

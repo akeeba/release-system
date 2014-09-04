@@ -175,6 +175,12 @@ else
 	}
 }
 $mdrSerie1 = implode(',', array_values($this->mdreport));
+
+if($this->statsIframe)
+{
+    echo $this->statsIframe;
+}
+
 ?>
 
 <script type="text/javascript">
