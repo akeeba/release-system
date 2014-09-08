@@ -125,6 +125,25 @@ class ArsModelStats extends F0FModel
 		list($db_major, $db_minor, $db_revision) = explode('.', $db->getVersion());
 		$db_qualifier = strpos($db_revision, '~') !== false ? substr($db_revision, strpos($db_revision, '~')) : '';
 
+        $db_driver = get_class($db);
+
+        if(stripos($db_driver, 'mysql') !== false)
+        {
+            $stats->setValue('dt', 1);
+        }
+        elseif(stripos($db_driver, 'sqlsrv') !== false || stripos($db_driver, 'sqlazure'))
+        {
+            $stats->setValue('dt', 2);
+        }
+        elseif(stripos($db_driver, 'postgresql') !== false)
+        {
+            $stats->setValue('dt', 3);
+        }
+        else
+        {
+            $stats->setValue('dt', 0);
+        }
+
 		$stats->setValue('sw', 11); // software
 		$stats->setValue('pro', 0); // pro
 		$stats->setValue('sm', $at_major); // software_major
@@ -134,7 +153,6 @@ class ArsModelStats extends F0FModel
 		$stats->setValue('pn', $php_minor); // php_minor
 		$stats->setValue('pr', $php_revision); // php_revision
 		$stats->setValue('pq', $php_qualifier); // php_qualifiers
-		$stats->setValue('dt', 1); // db_type
 		$stats->setValue('dm', $db_major); // db_major
 		$stats->setValue('dn', $db_minor); // db_minor
 		$stats->setValue('dr', $db_revision); // db_revision
