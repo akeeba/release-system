@@ -32,22 +32,28 @@ class ArsModelStats extends F0FModel
 	 *
 	 * @return string
 	 */
-	public function getSiteId()
-	{
-		// Can I load a site ID from the database?
-		$siteId = $this->getCommonVariable('stats_siteid', null);
+    public function getSiteId()
+    {
+        // Can I load a site ID from the database?
+        $siteId  = $this->getCommonVariable('stats_siteid', null);
+        // Can I load the site Url from the database?
+        $siteUrl = $this->getCommonVariable('stats_siteurl', null);
 
-		// No? Create a new, random one and save it to the database
-		if (empty($siteId))
-		{
-			$randomData = $this->getRandomData(120);
-			$siteId = sha1($randomData);
+        // No id or the saved URL is not the same as the current one (ie site restored to a new url)?
+        // Create a new, random site ID and save it to the database
+        if (empty($siteId) || (md5(JUri::base()) != $siteUrl))
+        {
+            $siteUrl = md5(JUri::base());
+            $this->setCommonVariable('stats_siteurl', $siteUrl);
 
-			$this->setCommonVariable('stats_siteid', $siteId);
-		}
+            $randomData = $this->getRandomData(120);
+            $siteId = sha1($randomData);
 
-		return $siteId;
-	}
+            $this->setCommonVariable('stats_siteid', $siteId);
+        }
+
+        return $siteId;
+    }
 
 	/**
 	 * Send site information to the remove collection service
