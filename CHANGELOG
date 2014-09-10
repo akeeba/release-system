@@ -1,3 +1,7 @@
+Version 2.4.2
+================================================================================
+! Reverting a user-submitted "bugfix" which wrecked havoc to Download IDs. As of today, we no longer accept user-submitted pull requests to ARS.
+
 Version 2.4.1
 ================================================================================
 + Anonymous reporting of PHP, MySQL and CMS versions (opt-out through the options)

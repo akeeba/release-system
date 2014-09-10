@@ -332,10 +332,6 @@ ALTER TABLE `#__ars_dlidlabels` ADD COLUMN `primary` TINYINT(1) NOT NULL DEFAULT
             <query canfail="1"><![CDATA[
 ALTER TABLE `#__ars_dlidlabels` ADD INDEX `#__ars_dlidlabels_primary` (`primary`)
             ]]></query>
-        </action>
-
-        <action table="#__ars_dlidlabels" canfail="0">
-            <condition type="true" />
             <!-- Mark existing download IDs in #__ars_dlidlabels as secondary if nothing is specified -->
             <query><![CDATA[
 UPDATE #__ars_dlidlabels SET `primary` = 0 WHERE `primary` IS NULL
