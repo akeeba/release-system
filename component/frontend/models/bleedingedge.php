@@ -624,7 +624,7 @@ class ArsModelBleedingedge extends F0FModel
 			}
 		}
 
-		if (isset($table))
+		if (isset($table) && is_object($table) && method_exists($table, 'reorder'))
 		{
 			$table->reorder('`release_id` = ' . $release->id);
 		}
