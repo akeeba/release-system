@@ -1,3 +1,7 @@
+Version 2.4.3
+================================================================================
+~ Some servers seem to try and load the AkeebaUsagestats class twice
+
 Version 2.4.2
 ================================================================================
 ! Reverting a user-submitted "bugfix" which wrecked havoc to Download IDs. As of today, we no longer accept user-submitted pull requests to ARS.
