@@ -37,9 +37,9 @@ if (!empty($dlid))
 	$dlid = ArsHelperFilter::reformatDownloadID($dlid);
 }
 
-if ($dlid !== false)
+if (!empty($dlid))
 {
-	$dlid = '&dlid=' . $dlid;
+	$dlid = '&dlid='.$dlid;
 }
 else
 {

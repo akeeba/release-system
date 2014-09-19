@@ -20,14 +20,19 @@ $categories = array('components','libraries','modules','packages','plugins','fil
 $tag = "<"."?xml version=\"1.0\" encoding=\"utf-8\""."?".">";
 
 $dlid = trim($this->input->getCmd('dlid',''));
+
 if (!empty($dlid))
 {
 	$this->loadHelper('filter');
 	$dlid = ArsHelperFilter::reformatDownloadID($dlid);
 }
-if ($dlid !== false) {
+
+if (!empty($dlid))
+{
 	$dlid = '&dlid='.$dlid;
-} else {
+}
+else
+{
 	$dlid = '';
 }
 

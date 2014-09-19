@@ -1,6 +1,7 @@
 Version 2.4.3
 ================================================================================
 ~ Some servers seem to try and load the AkeebaUsagestats class twice
+# [MEDIUM] The Akeeba Release System Download ID integration in emails didn't work due to a silly typo
 
 Version 2.4.2
 ================================================================================

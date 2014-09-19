@@ -17,7 +17,7 @@ JHtml::_('behavior.tooltip');
 $Itemid = empty($Itemid) ? "" : "&Itemid=$Itemid";
 $download_url = AKRouter::_('index.php?option=com_ars&view=download&format=raw&id='.$item->id.$Itemid);
 
-$directlink = false;
+$directLink = false;
 
 // Should I display the link to unauthorized user?
 if(!($item->cat_show_unauth && $item->rel_show_unauth && $item->show_unauth_links))
@@ -38,14 +38,14 @@ if ($this->directlink)
 	{
 		if (substr($basename, -strlen($ext)) == $ext)
 		{
-			$directlink = true;
+			$directLink = true;
 			break;
 		}
 	}
 
-	if ($directlink)
+	if ($directLink)
 	{
-		$directlink_url = $download_url .
+		$directLinkURL = $download_url .
 				(strstr($download_url, '?') !== false ? '&' : '?') .
 				'dlid='.$this->dlid.'&jcompat=my'.$ext;
 	}
@@ -120,10 +120,10 @@ if ($this->directlink)
 				</a>
 			</p>
 		</div>
-		<?php if ($directlink): ?>
+		<?php if ($directLink): ?>
 		<div class="pull-left">
 			&nbsp;
-			<a rel="nofollow" href="<?php echo htmlentities($directlink_url); ?>"
+			<a rel="nofollow" href="<?php echo htmlentities($directLinkURL); ?>"
 			   class="directlink hasTip" title="<?php echo $this->directlink_description ?>"
 			>
 				<?php echo JText::_('COM_ARS_LBL_ITEM_DIRECTLINK') ?>
