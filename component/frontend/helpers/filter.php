@@ -34,7 +34,7 @@ class ArsHelperFilter
 		}
 
 		// Load Filtering
-		require_once JPATH_ROOT . '/components/com_ars/helpers/filtering.php';
+		require_once JPATH_ADMINISTRATOR . '/components/com_ars/helpers/filtering.php';
 
 		// Cache user access and groups
 		if (is_null($myGroups))
