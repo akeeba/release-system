@@ -1,5 +1,6 @@
 Version 2.4.3
 ================================================================================
+~ Changed the .htaccess files to be compatible with Apache 2.4
 ~ Some servers seem to try and load the AkeebaUsagestats class twice
 # [HIGH] Wrong require_once causing problems with content plugin
 

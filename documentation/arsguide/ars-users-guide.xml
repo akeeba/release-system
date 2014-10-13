@@ -785,8 +785,15 @@
                 access, please create a .htaccess file with the following
                 content inside your files directory:</para>
 
-                <programlisting>order deny, allow
-deny from all</programlisting>
+                <programlisting>&lt;IfModule !mod_authz_core.c&gt;
+Order deny,allow
+Deny from all
+&lt;/IfModule&gt;
+&lt;IfModule mod_authz_core.c&gt;
+&lt;RequireAll&gt;
+Require all denied
+&lt;/RequireAll&gt;
+&lt;/IfModule&gt;</programlisting>
               </listitem>
             </varlistentry>
 
