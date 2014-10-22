@@ -180,7 +180,8 @@ class ArsHelperFiltering
 
 				case 'payplans':
 					$status = PayplansStatus::SUBSCRIPTION_ACTIVE;
-					$userGroups[$user_id] = PayplansApi::getUser($user_id)->getSubscriptions($status);
+					// For PayPlans 3.x
+					$userGroups[$user_id] = PayplansApi::getUser($user_id)->getPlans($status);
 					break;
 
 				default:
