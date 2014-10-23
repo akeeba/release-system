@@ -52,7 +52,11 @@ class ArsControllerDownload extends F0FController
 
 		if (is_null($item))
 		{
-			$log->save(array('authorized' => 0));
+			$log->save(array(
+					'item_id'    => $id,
+					'authorized' => 0
+				)
+			);
 
 			if ($params->get('banUnauth', 0))
 			{
