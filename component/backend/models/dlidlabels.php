@@ -66,6 +66,32 @@ class ArsModelDlidlabels extends F0FModel
 		return $result;
 	}
 
+	protected function onAfterDelete($id)
+	{
+		$result = parent::onAfterDelete($id);
+
+		if($result !== false)
+		{
+			// After adding/deleting a Download ID I have to clear the cache, otherwise I won't see the changes
+			F0FUtilsCacheCleaner::clearCacheGroups(array('com_ars'));
+		}
+
+		return $result;
+	}
+
+	protected function onAfterSave(&$table)
+	{
+		$result = parent::onAfterSave($table);
+
+		if($result !== false)
+		{
+			// After adding/deleting a Download ID I have to clear the cache, otherwise I won't see the changes
+			F0FUtilsCacheCleaner::clearCacheGroups(array('com_ars'));
+		}
+
+		return $result;
+	}
+
 	public function resetDownloadId()
 	{
 		if (is_array($this->id_list) && !empty($this->id_list))
