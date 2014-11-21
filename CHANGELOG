@@ -4,6 +4,7 @@ Version 2.4.3
 ~ Some servers seem to try and load the AkeebaUsagestats class twice
 # [LOW] The ID of the item is not saved in the log when the authorisation fails (user has no access)
 # [LOW] Additional Download ID page was showing incorrect data when Joomla cache was on
+# [LOW] Prevent 403 errors when an user tries to publish/unpublish/delete a Download ID and doesn't select a record
 # [HIGH] Intermittent issue with Bleeding Edge releases resulting in fatal errors
 # [HIGH] Wrong require_once causing problems with content plugin
 

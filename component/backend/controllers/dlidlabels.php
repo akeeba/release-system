@@ -258,12 +258,22 @@ class ArsControllerDlidlabels extends F0FController
 		if (!$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
+
+			// I don't have an id let's fetch id from the request
 			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
 
+			// Ehm... no id? it means that the user really selected nothing
+			if(!$model->getId())
+			{
+				$msg = JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+				JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_ars&view=dlidlabels'), $msg, 'notice');
+			}
+
 			$item = $model->getItem();
+
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
@@ -286,12 +296,22 @@ class ArsControllerDlidlabels extends F0FController
 		if (!$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
+
+			// I don't have an id let's fetch id from the request
 			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
 
+			// Ehm... no id? it means that the user really selected nothing
+			if(!$model->getId())
+			{
+				$msg = JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+				JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_ars&view=dlidlabels'), $msg, 'notice');
+			}
+
 			$item = $model->getItem();
+
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
@@ -314,12 +334,22 @@ class ArsControllerDlidlabels extends F0FController
 		if (!$isAdmin && !$isCLI)
 		{
 			$model = $this->getThisModel();
+
+			// I don't have an id let's fetch id from the request
 			if (!$model->getId())
 			{
 				$model->setIDsFromRequest();
 			}
 
+			// Ehm... no id? it means that the user really selected nothing
+			if(!$model->getId())
+			{
+				$msg = JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST');
+				JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_ars&view=dlidlabels'), $msg, 'notice');
+			}
+
 			$item = $model->getItem();
+
 			if ($item->user_id != JFactory::getUser()->id)
 			{
 				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
