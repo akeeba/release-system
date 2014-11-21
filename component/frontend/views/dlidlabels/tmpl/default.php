@@ -39,11 +39,11 @@ $menu = $menus->getActive();
 	</button>
 	<button class="btn" onclick="Joomla.submitbutton('publish'); return false;">
 		<span class="icon-eye-open"></span>
-		<?php echo JText::_('JPublished') ?>
+		<?php echo JText::_('JLIB_HTML_PUBLISH_ITEM') ?>
 	</button>
 	<button class="btn" onclick="Joomla.submitbutton('unpublish'); return false;">
 		<span class="icon-eye-close"></span>
-		<?php echo JText::_('JUnPublished') ?>
+		<?php echo JText::_('JLIB_HTML_UNPUBLISH_ITEM') ?>
 	</button>
 </div>
 

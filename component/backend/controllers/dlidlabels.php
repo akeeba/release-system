@@ -287,6 +287,14 @@ class ArsControllerDlidlabels extends F0FController
 		return $result;
 	}
 
+	protected function onAfterPublish()
+	{
+		// After touching a Download ID I have to clear the cache, otherwise I won't see the changes
+		F0FUtilsCacheCleaner::clearCacheGroups(array('com_ars'));
+
+		return true;
+	}
+
 	protected function onBeforeUnpublish()
 	{
 		$result = parent::onBeforeUnpublish();
@@ -323,6 +331,14 @@ class ArsControllerDlidlabels extends F0FController
 		}
 
 		return $result;
+	}
+
+	protected function onAfterUnpublish()
+	{
+		// After touching a Download ID I have to clear the cache, otherwise I won't see the changes
+		F0FUtilsCacheCleaner::clearCacheGroups(array('com_ars'));
+
+		return true;
 	}
 
 	protected function onBeforeRemove()

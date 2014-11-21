@@ -117,6 +117,9 @@ class ArsModelDlidlabels extends F0FModel
 					return false;
 				}
 			}
+
+			// After adding/deleting a Download ID I have to clear the cache, otherwise I won't see the changes
+			F0FUtilsCacheCleaner::clearCacheGroups(array('com_ars'));
 		}
 
 		return true;
