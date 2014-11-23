@@ -22,7 +22,7 @@ class ArsViewUpdate extends F0FViewHtml
 			default:
 			case 'all':
 				$component = JComponentHelper::getComponent('com_ars');
-				$params = ($component->params instanceof JRegistry) ? $component->params : new JParameter($component->params);
+				$params = ($component->params instanceof JRegistry) ? $component->params : new JRegistry($component->params);
 				$this->assign('updates_name', $params->get('updates_name', ''));
 				$this->assign('updates_desc', $params->get('updates_desc', ''));
 				$this->setLayout('all');
