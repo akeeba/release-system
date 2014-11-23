@@ -23,8 +23,8 @@ class ArsViewUpdate extends F0FViewHtml
 			case 'all':
 				$component = JComponentHelper::getComponent('com_ars');
 				$params = ($component->params instanceof JRegistry) ? $component->params : new JRegistry($component->params);
-				$this->assign('updates_name', $params->get('updates_name', ''));
-				$this->assign('updates_desc', $params->get('updates_desc', ''));
+				$this->updates_name = $params->get('updates_name', '');
+				$this->updates_desc = $params->get('updates_desc', '');
 				$this->setLayout('all');
 				break;
 
@@ -32,8 +32,8 @@ class ArsViewUpdate extends F0FViewHtml
 				$category = $this->input->getCmd('id', '');
 				$model = $this->getModel();
 				$items = $model->items;
-				$this->assign('category', $category);
-				$this->assign('items', $items);
+				$this->category = $category;
+				$this->items = $items;
 				$this->setLayout('category');
 				break;
 
@@ -53,8 +53,8 @@ class ArsViewUpdate extends F0FViewHtml
 					}
 				}
 
-				$this->assign('items', $items);
-				$this->assign('envs', $envs);
+				$this->items = $items;
+				$this->envs = $envs;
 				$this->setLayout('stream');
 				break;
 		}

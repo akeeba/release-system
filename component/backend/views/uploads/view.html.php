@@ -32,8 +32,8 @@ class ArsViewUploads extends F0FViewHtml
 
 	protected function onDisplay($tpl = null)
 	{
-		$this->assign('category', 0);
-		$this->assign('folder', '');
+		$this->category = 0;
+		$this->folder = '';
 
 		return true;
 	}
@@ -55,13 +55,13 @@ class ArsViewUploads extends F0FViewHtml
 		$parent = $model->getState('parent', null);
 		$config = JComponentHelper::getParams('com_media');
 
-		$this->assign('files', $files);
-		$this->assign('folders', $folders);
-		$this->assign('category', $category);
-		$this->assign('path', $path);
-		$this->assign('folder', $folder);
-		$this->assign('parent', $parent);
-		$this->assign('mediaconfig', $config);
+		$this->files = $files;
+		$this->folders = $folders;
+		$this->category = $category;
+		$this->path = $path;
+		$this->folder = $folder;
+		$this->parent = $parent;
+		$this->mediaconfig = $config;
 
 		if (function_exists('ini_get'))
 		{
@@ -81,7 +81,7 @@ class ArsViewUploads extends F0FViewHtml
 			$temp = $jconfig->getValue('config.tmp_path', '');
 		}
 		$isWritable = @is_writable($temp) && !$safe_mode;
-		$this->assign('chunking', !$isWritable);
+		$this->chunking = !$isWritable;
 
 		$document = JFactory::getDocument();
 		$document->addScript('http://code.google.com/intl/en/apis/gears/gears_init.js');

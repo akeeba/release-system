@@ -18,8 +18,8 @@ class ArsViewUpdate extends F0FViewHtml
 		$model = $this->getModel();
 		$items = $model->items;
 		$published = $model->published;
-		$this->assign('items', $items);
-		$this->assign('published', $published);
+		$this->items = $items;
+		$this->published = $published;
 
 		$this->setLayout($this->getModel()->getState('task'));
 

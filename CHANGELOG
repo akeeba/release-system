@@ -3,6 +3,7 @@ Version 2.4.3
 ~ Changed the .htaccess files to be compatible with Apache 2.4
 ~ Some servers seem to try and load the AkeebaUsagestats class twice
 ~ Removing references to JParameter (it was removed in Joomla! 3.4 alpha)
+~ Removing references to assign() in views (deprecated in Joomla! 3)
 # [LOW] The ID of the item is not saved in the log when the authorisation fails (user has no access)
 # [LOW] Additional Download ID page was showing incorrect data when Joomla cache was on
 # [LOW] Prevent 403 errors when an user tries to publish/unpublish/delete a Download ID and doesn't select a record
