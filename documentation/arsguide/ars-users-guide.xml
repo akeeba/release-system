@@ -2709,7 +2709,7 @@ version {arslatest <emphasis role="bold">release</emphasis> <replaceable>Categor
           more useful:</para>
 
           <para><programlisting>&lt;a href="{arslatest item_link 'com_foobar*.zip' Foobar}"&gt;Download
-Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
+Foobar version {arslatest release Foobar}&lt;/a&gt;</programlisting></para>
 
           <bridgehead>Creating links to specific items by means of the update
           stream ID</bridgehead>
@@ -2729,7 +2729,7 @@ Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
           more useful:</para>
 
           <para><programlisting>&lt;a href="{arslatest stream_link 123}"&gt;Download
-Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
+Foobar version {arslatest release Foobar}&lt;/a&gt;</programlisting></para>
 
           <bridgehead>Creating links for the Install from Web
           feature</bridgehead>
@@ -2776,7 +2776,7 @@ Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
           more useful:</para>
 
           <para><programlisting>&lt;a href="{arslatest installfromweb 123}"&gt;Install or download
-Foobar version {arlatest release Foobar}&lt;/a&gt;</programlisting></para>
+Foobar version {arslatest release Foobar}&lt;/a&gt;</programlisting></para>
 
           <tip>
             <para>You can use this feature in your successful login /
