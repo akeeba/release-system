@@ -52,6 +52,15 @@ class ArsControllerDownload extends F0FController
 
 		if (is_null($item))
 		{
+			$noAccessURL = JComponentHelper::getParams('com_ars')->get('no_access_url', '');
+
+			if (!empty($noAccessURL))
+			{
+				JFactory::getApplication()->redirect($noAccessURL);
+
+				return;
+			}
+
 			$log->save(array(
 					'item_id'    => $id,
 					'authorized' => 0
