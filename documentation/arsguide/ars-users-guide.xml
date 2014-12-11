@@ -120,10 +120,17 @@
             <para>Update streams. Offer updates to your software in two
             formats: INI files easily usable by any and all programming
             languages or automatic creation of <emphasis role="bold">Joomla!
-            XML extension update streams</emphasis>. That's right! As soon as
-            you publish a new version, all your clients using a modern version
-            of Joomla! will be able to automatically upgrade to it. No extra
-            file creation necessary.</para>
+            XML extension update streams</emphasis> and <emphasis
+            role="bold">JED Remote XML files</emphasis>. That's right! As soon
+            as you publish a new version, all your clients using a modern
+            version of Joomla! will be able to automatically upgrade to it.
+            Moreover, the Joomla! Extensions Directory will be notified of the
+            new version and update its listing. No extra file creation or
+            manual action is necessary. Coupled with <link
+            xlink:href="https://github.com/akeeba/releasemaker"
+            xmlns:xlink="http://www.w3.org/1999/xlink">Akeeba Release
+            Maker</link> your entire extension publish process can be
+            shortened to a single command.</para>
           </listitem>
 
           <listitem>
@@ -811,10 +818,8 @@ Require all denied
 
               <listitem>
                 <para>The Joomla! access level / view level to apply to the
-                release. In Joomla! 1.5 you only have a choice between public,
-                registered and special. In Joomla! 1.6 you can create custom
-                view levels, effectively choosing which user groups should be
-                granted access.</para>
+                release. You can create custom view levels, effectively
+                choosing which user groups should be granted access.</para>
               </listitem>
             </varlistentry>
 
@@ -962,10 +967,8 @@ Require all denied
 
               <listitem>
                 <para>The Joomla! access level / view level to apply to the
-                release. In Joomla! 1.5 you only have a choice between public,
-                registered and special. In Joomla! 1.6 you can create custom
-                view levels, effectively choosing which user groups should be
-                granted access.</para>
+                release. You can create custom view levels, effectively
+                choosing which user groups should be granted access.</para>
               </listitem>
             </varlistentry>
 
@@ -1190,10 +1193,8 @@ Require all denied
 
               <listitem>
                 <para>The Joomla! access level / view level to apply to the
-                item. In Joomla! 1.5 you only have a choice between public,
-                registered and special. In Joomla! 1.6 you can create custom
-                view levels, effectively choosing which user groups should be
-                granted access.</para>
+                item. You can create custom view levels, effectively choosing
+                which user groups should be granted access.</para>
               </listitem>
             </varlistentry>
 
@@ -1473,11 +1474,11 @@ Require all denied
         problems in that arena is providing updates to your clients and having
         to type in the same descriptions over and over again. ARS solves both
         problems. It can automatically produce update streams in a generic and
-        reusable INI format, or automatically produce Joomla! 1.6 XML update
-        streams for use with any Joomla! 1.6 extension. Then, instead of
-        having to manually type in the title and description of files, you can
-        set up automatic descriptions so that ARS can type in this information
-        for you.</para>
+        reusable INI format, or automatically produce Joomla! XML update
+        streams for use with any Joomla! extension. Then, instead of having to
+        manually type in the title and description of files, you can set up
+        automatic descriptions so that ARS can type in this information for
+        you.</para>
 
         <section xml:id="update-streams">
           <title>Setting up update streams</title>
@@ -1504,13 +1505,12 @@ Require all denied
               <term>XML format</term>
 
               <listitem>
-                <para>Joomla! 1.6 and later comes with an extension update
-                manager. In order for it to work, it requires developers to
-                supply update information in a custom XML format. There are
-                actually three type of XML files Joomla! 1.6 and later
-                understands. The "extensionset" document serves as the master
-                update stream. It contains links to one or more repositories,
-                one for each extension type Joomla! 1.6 and later understands,
+                <para>Joomla! comes with an extension updater. In order for it
+                to work, it requires developers to supply update information
+                in a custom XML format. There are actually three type of XML
+                files Joomla! understands. The "extensionset" document serves
+                as the master update stream. It contains links to one or more
+                repositories, one for each extension type Joomla! understands,
                 i.e. components, plugins, modules, libraries, packages,
                 templates and files. The second form of an "extensionset"
                 document is the master index of extensions of a specific type
@@ -1525,8 +1525,8 @@ Require all denied
                 <para>This is an overly complex system and maintaining such
                 files manually can be a drag. ARS handles all three types of
                 documents for you, automatically. In order to add updates
-                support to your Joomla! 1.6 and later extension, all you have
-                to do is to add the following lines just before the closing
+                support to your Joomla! extension, all you have to do is to
+                add the following lines just before the closing
                 &lt;/install&gt; tag in your extension's manifest XML
                 file:</para>
 
@@ -1543,9 +1543,10 @@ Require all denied
                 provided by ARS.</para>
 
                 <important>
-                  <para>Since Joomla! 1.7.0, you URL must end with
-                  <filename>.xml</filename> for Joomla! to be able to use it.
-                  This means that the long, non-SEF form of the URL, e.g.
+                  <para>In Joomla! 1.7, 2.5, 3.0, 3.1 and 3.2 your URL must
+                  end with <filename>.xml</filename> for Joomla! to be able to
+                  use it. This means that the long, non-SEF form of the URL,
+                  e.g.
                   <uri>http://www.example.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=1</uri>
                   mentioned in the XML link on the <guilabel>Update
                   Streams</guilabel> page will not work. Just append
@@ -1573,8 +1574,7 @@ Require all denied
 
                 <tip>
                   <para>It is not necessary to use CDATA if you escape
-                  ampersands (&amp;) to &amp;amp; as per the XML
-                  standard.</para>
+                  ampersands (&amp;) to &amp;amp; per the XML standard.</para>
                 </tip>
               </listitem>
             </varlistentry>
@@ -1585,9 +1585,9 @@ Require all denied
           Panel.</para>
 
           <para>On the very top of the page you will find a link to your
-          master Joomla! 1.6 and later update stream (the first type of
-          "extensionset" XML document). You can use that link in your Joomla!
-          1.6 and later extensions' XML files.</para>
+          master Joomla! update stream (the first type of "extensionset" XML
+          document). You can use that link in your Joomla! extensions' XML
+          files.</para>
 
           <para>The grid below is a standard Joomla! administrator table.
           Clicking on a stream name allows you to edit it. The most important
@@ -1600,10 +1600,19 @@ Require all denied
           including Live Update in your components can be found in a later
           section of this documentation.</para>
 
-          <para>The XML link will take you to the Joomla! 1.6 and later XML
-          "update" document for that stream. This is the XML file you should
-          in extension manifest files, inside the CDATA section mentioned
+          <para>The XML link will take you to the Joomla! XML "update"
+          document for that stream. This is the XML file you should in
+          extension manifest files, inside the CDATA section mentioned
           above.</para>
+
+          <para>The JED link will take you to the Joomla! Extension Directory
+          (JED) Remote XML document for that stream. You need to enter this
+          URL in your JED listing to have JED automatically update the listing
+          whenever you release a new version. Please note that at the time of
+          this writing JED will only check your Remote XML URL once every 24
+          hours. This means that your listing will be updated with a delay up
+          to one full day since the release of your extension's new
+          version.</para>
 
           <para>The D/L link is a special link which you can use in the
           Joomla! Extension Directory or anywhere you want to provide a direct
@@ -1625,7 +1634,7 @@ Require all denied
 
               <listitem>
                 <para>A name for the update stream. It can be anything you
-                want and is only used in the Joomla! 1.6 XML format
+                want and is only used in the Joomla! XML format
                 streams.</para>
 
                 <warning>
@@ -1648,9 +1657,8 @@ Require all denied
               <term>Extension type</term>
 
               <listitem>
-                <para>This is used by the Joomla! 1.6 XML format update
-                stream. If you don't care about Joomla! 1.6 or it's not a
-                Joomla! 1.6 extension, you'd better use "Files".</para>
+                <para>This is used by the Joomla! XML format update
+                stream.</para>
               </listitem>
             </varlistentry>
 
@@ -1695,8 +1703,8 @@ Require all denied
               <term>Element</term>
 
               <listitem>
-                <para>This is required for Joomla! 1.6 update streams. It
-                should contain the name of your extension, e.g. com_something,
+                <para>This is required for Joomla! update streams. It should
+                contain the name of your extension, e.g. com_something,
                 mod_something, plg_something etc.</para>
 
                 <para>For example, Akeeba Backup Core installs in the
@@ -1902,12 +1910,18 @@ date="2010-10-10"</programlisting>
 
           <bridgehead>Configuring the Amazon S3 integration</bridgehead>
 
+          <important>
+            <para>This integration is based on the old AWSv2 API. Some newer
+            S3 regions (e.g. Frankfurt) do not support the AWSv2 API for
+            uploading and listing files, therefore will not work with
+            ARS.</para>
+          </important>
+
           <para>Before you can use Amazon S3 with ARS, you have to configure
           it. Go to the main page (<guilabel>Control Panel</guilabel>) of the
-          component and click on the <guibutton>Parameters</guibutton>
-          (Joomla! 1.5) or <guibutton>Options</guibutton> (Joomla! 1.6 and
-          later). You will see the Amazon S3 integration area in the
-          configuration page. The available options are:</para>
+          component and click on the <guibutton>Options</guibutton> button.
+          You will see the Amazon S3 integration area in the configuration
+          page. The available options are:</para>
 
           <variablelist>
             <varlistentry>
