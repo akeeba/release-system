@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_ARS_VIEW_JED_XML_TITLE">
+		<message>
+				<![CDATA[COM_ARS_VIEW_JED_XML_DESC]]>
+		</message>
+	</layout>
+	<fields name="params">
+		<fieldset name="basic" label="COM_ARS_FIELDSET_BASIC">
+			<field name="streamid" type="sql" default="0" label="LBL_ITEMS_UPDATESTREAM" description="" query="SELECT `id`, `name` FROM `#__ars_updatestreams`" key_field="id" value_field="name" />
+		</fieldset>
+	</fields>
+	<fields name="request">
+		<fieldset name="request">
+			<field name="format"
+				type="hidden"
+				default="xml"
+			/>
+		</fieldset>
+	</fields>
+</metadata>

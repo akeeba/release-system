@@ -189,6 +189,8 @@ $sortFields = array(
 				&bull;
 				<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=stream&format=xml&id=<?php echo (int)$item->id ?>" target="_blank">XML</a>
 				&bull;
+				<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=jed&format=xml&id=<?php echo (int)$item->id ?>" target="_blank">JED</a>
+				&bull;
 				<a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=download&format=raw&id=<?php echo (int)$item->id ?>" target="_blank">D/L</a>
 			</td>
 			<td>

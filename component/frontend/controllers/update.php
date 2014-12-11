@@ -181,6 +181,35 @@ class ArsControllerUpdate extends F0FController
 		$this->display(true, $registeredURLParams);
 	}
 
+	public function jed()
+	{
+		$id = $this->input->getInt('id', 0);
+
+		if ($id == 0)
+		{
+			// Do we have a menu item parameter?
+			$app = JFactory::getApplication();
+			$params = $app->getPageParameters('com_ars');
+			$id = $params->get('streamid', 0);
+		}
+
+		$model = $this->getThisModel();
+		$model->getItems($id);
+		$model->getPublished($id);
+
+		$registeredURLParams = array(
+			'option' => 'CMD',
+			'view'   => 'CMD',
+			'task'   => 'CMD',
+			'format' => 'CMD',
+			'layout' => 'CMD',
+			'id'     => 'INT',
+			'dlid'   => 'STRING',
+		);
+
+		$this->display(true, $registeredURLParams);
+	}
+
 	public function ini()
 	{
 		$id = $this->input->getInt('id', 0);

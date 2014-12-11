@@ -57,6 +57,27 @@ class ArsViewUpdate extends F0FViewHtml
 				$this->envs = $envs;
 				$this->setLayout('stream');
 				break;
+
+			case 'jed':
+				$model = $this->getModel();
+				$items = $model->items;
+
+				$envmodel = F0FModel::getTmpInstance('Environments', 'ArsModel');
+				$rawenvs = $envmodel->getItemList(true);
+				$envs = array();
+
+				if (!empty($rawenvs))
+				{
+					foreach ($rawenvs as $env)
+					{
+						$envs[$env->id] = $env;
+					}
+				}
+
+				$this->items = $items;
+				$this->envs = $envs;
+				$this->setLayout('jed');
+				break;
 		}
 
 		return true;
