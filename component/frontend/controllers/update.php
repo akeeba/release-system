@@ -164,6 +164,9 @@ class ArsControllerUpdate extends F0FController
 			$app = JFactory::getApplication();
 			$params = $app->getPageParameters('com_ars');
 			$id = $params->get('streamid', 0);
+			
+			// Define the Id for caching as if it were received as a safeuri param
+			JFactory::getApplication()->input->set('id', $id);
 		}
 		$model = $this->getThisModel();
 		$model->getItems($id);
