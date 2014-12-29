@@ -41,11 +41,11 @@ NOT be typed!
 1. You will first need to do the initial link with Akeeba Build Tools, running
    the following command (Mac OS X, Linux, other *NIX systems):
 
-$ php ../buildfiles/tools/init.php `pwd`
+$ php ../buildfiles/tools/link.php `pwd`
 
    or, on Windows:
 
-> php ../buildfiles/tools/init.php %CD%
+> php ../buildfiles/tools/link.php %CD%
 
 2. After the initial linking takes place, go inside the build directory:
 
