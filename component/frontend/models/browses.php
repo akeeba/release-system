@@ -79,7 +79,9 @@ class ArsModelBrowses extends F0FModel
 		else
 		{
 			$params = $app->getPageParameters('com_ars');
-			$vgroup = $params->get('vgroupid', '');
+
+			// The vgroupid may be set as part of the request, prefer that and fall back to the params otherwise
+			$vgroup = $app->input->getUint('vgroupid', $params->get('vgroupid', ''));
 		}
 
 		if ($vgroup)
