@@ -103,8 +103,9 @@ function arsBuildRouteHtml(&$query)
 	$id = ArsRouterHelper::getAndPop($query, 'id');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
 	$language = ArsRouterHelper::getAndPop($query, 'language', $currentlang);
+	$vgroupid = ArsRouterHelper::getAndPop($query, 'vgroupid');
 
-	$qoptions = array('option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id, 'language' => $language);
+	$qoptions = array('option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id, 'language' => $language, 'vgroupid' => $vgroupid);
 	switch ($view)
 	{
 		case 'dlidlabel':
@@ -224,6 +225,15 @@ function arsBuildRouteHtml(&$query)
 				$options = $qoptions;
 				unset($options['id']);
 				$params = array('catid' => $id);
+
+				// Does the category have a visual group?  If so, let's add that to the query options
+				$catVgroupId = $catModel->getItem($id)->vgroup_id;
+
+				if ($catVgroupId)
+				{
+					$options['vgroupid'] = $catVgroupId;
+				}
+
 				$menu = ArsRouterHelper::findMenu($options, $params);
 				$Itemid = empty($menu) ? null : $menu->id;
 
@@ -236,6 +246,13 @@ function arsBuildRouteHtml(&$query)
 				{
 					// Not found. Try fetching a browser menu item
 					$options = array('option' => 'com_ars', 'view' => 'browses', 'layout' => 'repository', 'language' => $language);
+
+					// Does the category have a visual group?  If so, let's add that to the query options
+					if ($catVgroupId)
+					{
+						$options['vgroupid'] = $catVgroupId;
+					}
+
 					$menu = ArsRouterHelper::findMenu($options);
 					$Itemid = empty($menu) ? null : $menu->id;
 					if (!empty($Itemid))
@@ -310,6 +327,15 @@ function arsBuildRouteHtml(&$query)
 				// Try to find a category menu item
 				$options = array('view' => 'category', 'option' => 'com_ars', 'language' => $language);
 				$params = array('catid' => $release->category_id);
+
+				// Does the category have a visual group?  If so, let's add that to the query options
+				$catVgroupId = $catModel->getItem($release->category_id)->vgroup_id;
+
+				if ($catVgroupId)
+				{
+					$options['vgroupid'] = $catVgroupId;
+				}
+
 				$menu = ArsRouterHelper::findMenu($options, $params);
 				if (!empty($menu))
 				{
@@ -321,6 +347,13 @@ function arsBuildRouteHtml(&$query)
 				{
 					// Nah. Let's find a browse menu item.
 					$options = array('view' => 'browses', 'option' => 'com_ars', 'language' => $language);
+
+					// Does the category have a visual group?  If so, let's add that to the query options
+					if ($catVgroupId)
+					{
+						$options['vgroupid'] = $catVgroupId;
+					}
+
 					$menu = ArsRouterHelper::findMenu($options);
 					if (!empty($menu))
 					{
@@ -397,6 +430,16 @@ function arsBuildRouteFeed(&$query)
 			{
 				$options = array('view' => 'category', 'option' => 'com_ars');
 				$params = array('catid' => $id);
+
+				// Does the category have a visual group?  If so, let's add that to the query options
+				$catModel = F0FModel::getTmpInstance('Categories', 'ArsModel');
+				$catVgroupId = $catModel->getItem($id)->vgroup_id;
+
+				if ($catVgroupId)
+				{
+					$options['vgroupid'] = $catVgroupId;
+				}
+
 				$menu = ArsRouterHelper::findMenu($options, $params);
 				if (!empty($menu))
 				{
@@ -407,6 +450,13 @@ function arsBuildRouteFeed(&$query)
 				{
 					// Nah. Let's find a browse menu item.
 					$options = array('view' => 'browses', 'option' => 'com_ars');
+
+					// Does the category have a visual group?  If so, let's add that to the query options
+					if ($catVgroupId)
+					{
+						$options['vgroupid'] = $catVgroupId;
+					}
+
 					$menu = ArsRouterHelper::findMenu($options);
 
 					$model = F0FModel::getTmpInstance('Categories', 'ArsModel');
@@ -448,8 +498,9 @@ function arsBuildRouteRaw(&$query)
 	$layout = ArsRouterHelper::getAndPop($query, 'layout');
 	$id = ArsRouterHelper::getAndPop($query, 'id');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
+	$vgroupid = ArsRouterHelper::getAndPop($query, 'vgroupid');
 
-	$qoptions = array('option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id);
+	$qoptions = array('option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id, 'vgroupid' => $vgroupid);
 	$menus = JMenu::getInstance('site');
 
 	// Get download item info
@@ -520,6 +571,15 @@ function arsBuildRouteRaw(&$query)
 	{
 		$options = array('option' => 'com_ars', 'view' => 'release');
 		$params = array('relid' => $release->id);
+
+		// Does the category have a visual group?  If so, let's add that to the query options
+		$catVgroupId = $catModel->getItem($release->category_id)->vgroup_id;
+
+		if ($catVgroupId)
+		{
+			$options['vgroupid'] = $catVgroupId;
+		}
+
 		$menu = ArsRouterHelper::findMenu($options, $params);
 		if (is_object($menu))
 		{
@@ -530,6 +590,12 @@ function arsBuildRouteRaw(&$query)
 		{
 			$options = array('option' => 'com_ars', 'view' => 'category');
 			$params = array('catid' => $release->category_id);
+
+			if ($catVgroupId)
+			{
+				$options['vgroupid'] = $catVgroupId;
+			}
+
 			$menu = ArsRouterHelper::findMenu($options, $params);
 		}
 		if (is_object($menu))
@@ -541,6 +607,12 @@ function arsBuildRouteRaw(&$query)
 		if (!is_object($menu))
 		{
 			$options = array('view' => 'browses', 'option' => 'com_ars');
+
+			if ($catVgroupId)
+			{
+				$options['vgroupid'] = $catVgroupId;
+			}
+
 			$menu = ArsRouterHelper::findMenu($options);
 			if (!is_object($menu))
 			{
