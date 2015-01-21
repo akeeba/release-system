@@ -198,6 +198,8 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 	 */
 	protected function renderPostInstallation($status, $fofInstallationStatus, $strapperInstallationStatus, $parent)
 	{
+		$this->warnAboutJSNPowerAdmin();
+
 		?>
 		<img src="../media/com_ars/icons/ars_logo_48.png" width="48" height="48" alt="Akeeba Release System"
 			 align="right"/>
@@ -233,4 +235,44 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 		<?php
 		parent::renderPostUninstallation($status, $parent);
 	}
+
+
+	/**
+	 * The PowerAdmin extension makes menu items disappear. People assume it's our fault. JSN PowerAdmin authors don't
+	 * own up to their software's issue. I have no choice but to warn our users about the faulty third party software.
+	 */
+	private function warnAboutJSNPowerAdmin()
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('COUNT(*)')
+			->from($db->qn('#__extensions'))
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->where($db->qn('element') . ' = ' . $db->q('com_poweradmin'))
+			->where($db->qn('enabled') . ' = ' . $db->q('1'));
+		$hasPowerAdmin = $db->setQuery($query)->loadResult();
+
+		if (!$hasPowerAdmin)
+		{
+			return;
+		}
+
+		echo <<< HTML
+<div class="well" style="margin: 2em 0;">
+<h1 style="font-size: 32pt; line-height: 120%; color: red; margin-bottom: 1em">WARNING: Menu items for {$this->componentName} might not be displayed on your site.</h1>
+<p style="font-size: 18pt; line-height: 150%; margin-bottom: 1.5em">
+	We have detected that you are using JSN PowerAdmin on your site. This software ignores Joomla! standards and
+	<b>hides</b> the Component menu items to {$this->componentName} in the administrator backend of your site. Unfortunately we
+	can't provide support for third party software. Please contact the developers of JSN PowerAdmin for support
+	regarding this issue.
+</p>
+<p style="font-size: 18pt; line-height: 120%; color: green;">
+	Tip: You can disable JSN PowerAdmin to see the menu items to Akeeba Backup.
+</p>
+</div>
+
+HTML;
+
+	}
+
 }
