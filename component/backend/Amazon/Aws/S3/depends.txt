@@ -1,0 +1,34 @@
+Aws\S3
+Guzzle
+Symfony
+
+
+use Akeeba\ARS\Amazon\Aws\Common\Client\AbstractClient;
+use Akeeba\ARS\Amazon\Aws\Common\Client\AwsClientInterface;
+use Akeeba\ARS\Amazon\Aws\Common\Client\ClientBuilder;
+use Akeeba\ARS\Amazon\Aws\Common\Client\ExpiredCredentialsChecker;
+use Akeeba\ARS\Amazon\Aws\Common\Client\UploadBodyListener;
+use Akeeba\ARS\Amazon\Aws\Common\Credentials\CredentialsInterface;
+use Akeeba\ARS\Amazon\Aws\Common\Enum;
+use Akeeba\ARS\Amazon\Aws\Common\Enum\ClientOptions as Options;
+use Akeeba\ARS\Amazon\Aws\Common\Enum\DateFormat;
+use Akeeba\ARS\Amazon\Aws\Common\Enum\Size;
+use Akeeba\ARS\Amazon\Aws\Common\Enum\UaString as Ua;
+use Akeeba\ARS\Amazon\Aws\Common\Exception\InvalidArgumentException;
+use Akeeba\ARS\Amazon\Aws\Common\Exception\LogicException;
+use Akeeba\ARS\Amazon\Aws\Common\Exception\OverflowException;
+use Akeeba\ARS\Amazon\Aws\Common\Exception\Parser\DefaultXmlExceptionParser;
+use Akeeba\ARS\Amazon\Aws\Common\Exception\RuntimeException;
+use Akeeba\ARS\Amazon\Aws\Common\Exception\ServiceResponseException;
+use Akeeba\ARS\Amazon\Aws\Common\Exception\UnexpectedValueException;
+use Akeeba\ARS\Amazon\Aws\Common\Iterator\AwsResourceIterator;
+use Akeeba\ARS\Amazon\Aws\Common\Model\MultipartUpload\AbstractTransfer as CommonAbstractTransfer;
+use Akeeba\ARS\Amazon\Aws\Common\Model\MultipartUpload\AbstractTransfer;
+use Akeeba\ARS\Amazon\Aws\Common\Model\MultipartUpload\AbstractTransferState;
+use Akeeba\ARS\Amazon\Aws\Common\Model\MultipartUpload\AbstractUploadBuilder;
+use Akeeba\ARS\Amazon\Aws\Common\Model\MultipartUpload\AbstractUploadId;
+use Akeeba\ARS\Amazon\Aws\Common\Model\MultipartUpload\AbstractUploadPart;
+use Akeeba\ARS\Amazon\Aws\Common\Model\MultipartUpload\TransferInterface;
+use Akeeba\ARS\Amazon\Aws\Common\Model\MultipartUpload\UploadIdInterface;
+use Akeeba\ARS\Amazon\Aws\Common\Signature\SignatureInterface;
+use Akeeba\ARS\Amazon\Aws\Common\Signature\SignatureV4;
