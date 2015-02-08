@@ -16,7 +16,8 @@ class ArsToolbar extends F0FToolbar
 			'categories',
 			'releases',
 			'items',
-			'impjeds'
+			'updatestreams',
+			'logs',
 		);
 
 		return $views;

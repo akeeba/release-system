@@ -183,6 +183,10 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 
 			// Files from older versions
 			'administrator/components/com_ars/views/vgroup/tmpl/form.php',
+
+			// Import from JoomlaCode feature
+			'administrator/components/com_ars/controllers/impjed.php',
+			'administrator/components/com_ars/models/impjeds.php',
 		),
 		'folders' => array(
 			'administrator/components/com_ars/assets/geoip',
@@ -194,6 +198,9 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 			'components/com_ars/views/browse',
 			'components/com_ars/views/download',
 			'components/com_ars/views/latest',
+
+			// Import from JoomlaCode feature
+			'administrator/components/com_ars/views/impjeds',
 		)
 	);
 
