@@ -95,55 +95,27 @@ class ArsHelperChameleon
 		{
 			case 'category':
 			default:
-				if (version_compare(JVERSION, '3.0', 'ge'))
-				{
-					$style = $params->get('categorystyle', 'rounded');
-					$sfx = $params->get('categorysuffix', '');
-				}
-				else
-				{
-					$style = $params->getValue('categorystyle', 'rounded');
-					$sfx = $params->getValue('categorysuffix', '');
-				}
+				$style = $params->get('categorystyle', 'rounded');
+				$sfx = $params->get('categorysuffix', '');
+
 				break;
 
 			case 'release':
-				if (version_compare(JVERSION, '3.0', 'ge'))
-				{
-					$style = $params->get('releasestyle', 'rounded');
-					$sfx = $params->get('releasesuffix', '');
-				}
-				else
-				{
-					$style = $params->getValue('releasestyle', 'rounded');
-					$sfx = $params->getValue('releasesuffix', '');
-				}
+				$style = $params->get('releasestyle', 'rounded');
+				$sfx = $params->get('releasesuffix', '');
+
 				break;
 
 			case 'item':
-				if (version_compare(JVERSION, '3.0', 'ge'))
-				{
-					$style = $params->get('itemstyle', 'rounded');
-					$sfx = $params->get('itemsuffix', '');
-				}
-				else
-				{
-					$style = $params->getValue('itemstyle', 'rounded');
-					$sfx = $params->getValue('itemsuffix', '');
-				}
+				$style = $params->get('itemstyle', 'rounded');
+				$sfx = $params->get('itemsuffix', '');
+
 				break;
 		}
 
 		if ($bleeding_edge)
 		{
-			if (version_compare(JVERSION, '3.0', 'ge'))
-			{
-				$sfx2 = $params->get('besuffix', '');
-			}
-			else
-			{
-				$sfx2 = $params->getValue('besuffix', '');
-			}
+			$sfx2 = $params->get('besuffix', '');
 			if (!empty($sfx2))
 			{
 				$sfx .= ' ' . $sfx2;
@@ -176,14 +148,7 @@ class ArsHelperChameleon
 			$default_template = '<a class="directlink" href="%s">%s</a>';
 		}
 
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$template = $params->get($style, $default_template);
-		}
-		else
-		{
-			$template = $params->getValue($style, $default_template);
-		}
+		$template = $params->get($style, $default_template);
 
 		$template = str_replace('&quot;', '"', $template);
 		$template = str_replace('[[', '\\<', $template);
@@ -200,14 +165,7 @@ class ArsHelperChameleon
 		else
 		{
 			$default_description = JText::_('COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_DEFAULT');
-			if (version_compare(JVERSION, '3.0', 'ge'))
-			{
-				$description = $params->get('directlink_description', $default_description);
-			}
-			else
-			{
-				$description = $params->getValue('directlink_description', $default_description);
-			}
+			$description = $params->get('directlink_description', $default_description);
 
 			return sprintf($template, $link, $description, $title);
 		}

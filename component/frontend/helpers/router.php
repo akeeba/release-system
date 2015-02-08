@@ -9,19 +9,14 @@ defined('_JEXEC') or die();
 
 class AKRouter
 {
-
-	static $addsSuffix = null;
-
 	static function _($plainURL)
 	{
-		if (is_null(self::$addsSuffix))
-		{
-			self::doesItAddSuffix();
-		}
+		$config = JFactory::getConfig();
+		$addSuffix = $config->get('sef_suffix', 0) == 1;
 
 		$url = JRoute::_($plainURL);
 
-		if (self::$addsSuffix)
+		if ($addSuffix)
 		{
 			$uri = new JURI($plainURL);
 			$params = $uri->getQuery(true);
@@ -54,18 +49,5 @@ class AKRouter
 		}
 
 		return $url;
-	}
-
-	static function doesItAddSuffix()
-	{
-		$config = JFactory::getConfig();
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			self::$addsSuffix = $config->get('sef_suffix', 0) == 1;
-		}
-		else
-		{
-			self::$addsSuffix = $config->getValue('config.sef_suffix', 0) == 1;
-		}
 	}
 }

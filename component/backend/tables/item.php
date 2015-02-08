@@ -445,14 +445,7 @@ class ArsTableItem extends F0FTable
 
 				$config = JFactory::getConfig();
 
-				if (version_compare(JVERSION, '3.0', 'ge'))
-				{
-					$target = $config->get('tmp_path') . '/temp.dat';
-				}
-				else
-				{
-					$target = $config->getValue('config.tmp_path') . '/temp.dat';
-				}
+				$target = $config->get('tmp_path') . '/temp.dat';
 
 				if (function_exists('curl_exec'))
 				{

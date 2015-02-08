@@ -14,11 +14,6 @@ JLoader::import('joomla.utilities.date');
 $released = new JDate($item->created);
 $release_url = AKRouter::_('index.php?option=com_ars&view=release&id='.$item->id.'&Itemid='.$Itemid);
 
-if(version_compare(JVERSION, '3.0', 'lt')) {
-	JLoader::import('joomla.html.pane');
-	$tabs	= JPane::getInstance('tabs');
-}
-
 switch ($item->maturity)
 {
 	case 'stable':
@@ -79,29 +74,18 @@ switch ($item->maturity)
 		<?php endif; ?>
 	</dl>
 
-	<?php if(version_compare(JVERSION, '3.0', 'lt')): ?>
-		<?php echo $tabs->startPane('reltabs-'.$item->id); ?>
-		<?php echo $tabs->startPanel(JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'),'reltabs-'.$item->id.'-desc') ?>
-		<?php echo ArsHelperHtml::preProcessMessage($item->description, 'com_ars.release_description'); ?>
-		<?php echo $tabs->endPanel(); ?>
-		<?php echo $tabs->startPanel(JText::_('COM_ARS_RELEASE_NOTES_LABEL'),'reltabs-'.$item->id.'-notes') ?>
-		<?php echo ArsHelperHtml::preProcessMessage($item->notes, 'com_ars.release_notes') ?>
-		<?php echo $tabs->endPanel(); ?>
-		<?php echo $tabs->endPane(); ?>
-	<?php else: ?>
-		<ul class="nav nav-tabs">
-			<li class="active"><a href="#reltabs-<?php echo $item->id ?>-desc" data-toggle="tab"><?php echo JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL') ?></a>
-			<li><a href="#reltabs-<?php echo $item->id ?>-notes" data-toggle="tab"><?php echo JText::_('COM_ARS_RELEASE_NOTES_LABEL') ?></a>
-		</ul>
-		<div class="tab-content">
-			<div class="tab-pane active" id="reltabs-<?php echo $item->id ?>-desc">
-				<?php echo ArsHelperHtml::preProcessMessage($item->description, 'com_ars.release_description'); ?>
-			</div>
-			<div class="tab-pane" id="reltabs-<?php echo $item->id ?>-notes">
-				<?php echo ArsHelperHtml::preProcessMessage($item->notes, 'com_ars.release_notes'); ?>
-			</div>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#reltabs-<?php echo $item->id ?>-desc" data-toggle="tab"><?php echo JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL') ?></a>
+		<li><a href="#reltabs-<?php echo $item->id ?>-notes" data-toggle="tab"><?php echo JText::_('COM_ARS_RELEASE_NOTES_LABEL') ?></a>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="reltabs-<?php echo $item->id ?>-desc">
+			<?php echo ArsHelperHtml::preProcessMessage($item->description, 'com_ars.release_description'); ?>
 		</div>
-	<?php endif; ?>
+		<div class="tab-pane" id="reltabs-<?php echo $item->id ?>-notes">
+			<?php echo ArsHelperHtml::preProcessMessage($item->notes, 'com_ars.release_notes'); ?>
+		</div>
+	</div>
 
 	<?php if(!isset($no_link) || !$no_link): ?>
 		<p class="readmore">

@@ -71,14 +71,7 @@ class ArsTableCategory extends F0FTable
 			$query->where('NOT(' . $db->qn('id') . ' = ' . $db->q($this->id) . ')');
 		}
 		$db->setQuery($query);
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$aliases = $db->loadColumn();
-		}
-		else
-		{
-			$aliases = $db->loadResultArray();
-		}
+		$aliases = $db->loadColumn();
 		if (in_array($this->alias, $aliases))
 		{
 			$this->setError(JText::_('COM_ARS_CATEGORY_ERR_NEEDS_UNIQUE_SLUG'));
@@ -154,10 +147,9 @@ class ArsTableCategory extends F0FTable
 		}
 
 		// Set the access to registered if there are subscriptions groups defined
-		$baseAccess = version_compare(JVERSION, '1.6.0', 'ge') ? 1 : 0;
-		if (!empty($this->groups) && ($this->access == $baseAccess))
+		if (!empty($this->groups) && ($this->access == 1))
 		{
-			$this->access = $baseAccess + 1;
+			$this->access = 2;
 		}
 
 		JLoader::import('joomla.utilities.date');

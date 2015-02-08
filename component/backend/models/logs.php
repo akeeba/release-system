@@ -108,14 +108,7 @@ class ArsModelLogs extends F0FModel
 							  ->from($db->qn('#__ars_items'))
 							  ->where($db->qn('release_id') . ' IN (' . $query_inner . ')');
 			$db->setQuery($query_outer);
-			if (version_compare(JVERSION, '3.0', 'ge'))
-			{
-				$ids = $db->loadColumn();
-			}
-			else
-			{
-				$ids = $db->loadResultArray();
-			}
+			$ids = $db->loadColumn();
 			$clause = '(' . implode(", ", $ids) . ')';
 
 			$query->where($db->qn('item_id') . ' IN ' . $clause);
@@ -128,14 +121,7 @@ class ArsModelLogs extends F0FModel
 							  ->from($db->qn('#__ars_items'))
 							  ->where($db->qn('release_id') . ' = ' . $db->q($fltVersion));
 			$db->setQuery($query_outer);
-			if (version_compare(JVERSION, '3.0', 'ge'))
-			{
-				$ids = $db->loadColumn();
-			}
-			else
-			{
-				$ids = $db->loadResultArray();
-			}
+			$ids = $db->loadColumn();
 			$clause = '(' . implode(", ", $ids) . ')';
 
 			$query->where($db->qn('item_id') . ' IN ' . $clause);
@@ -233,14 +219,7 @@ class ArsModelLogs extends F0FModel
 							  ->from($db->qn('#__ars_items'))
 							  ->where($db->qn('release_id') . ' IN (' . $query_inner . ')');
 			$db->setQuery($query_outer);
-			if (version_compare(JVERSION, '3.0', 'ge'))
-			{
-				$ids = $db->loadColumn();
-			}
-			else
-			{
-				$ids = $db->loadResultArray();
-			}
+			$ids = $db->loadColumn();
 			$clause = '(' . implode(", ", $ids) . ')';
 
 			$query->where($db->qn('item_id') . ' IN ' . $clause);
@@ -253,14 +232,7 @@ class ArsModelLogs extends F0FModel
 							  ->from($db->qn('#__ars_items'))
 							  ->where($db->qn('release_id') . ' = ' . $db->q($fltVersion));
 			$db->setQuery($query_outer);
-			if (version_compare(JVERSION, '3.0', 'ge'))
-			{
-				$ids = $db->loadColumn();
-			}
-			else
-			{
-				$ids = $db->loadResultArray();
-			}
+			$ids = $db->loadColumn();
 			$clause = '(' . implode(", ", $ids) . ')';
 
 			$query->where($db->qn('item_id') . ' IN ' . $clause);
@@ -297,14 +269,7 @@ class ArsModelLogs extends F0FModel
 					->where($db->qn('email') . ' LIKE ' . $qfrag, 'OR')
 					->where($db->qn('params') . ' LIKE ' . $qfrag, 'OR');
 		$db->setQuery($query);
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			return $db->loadColumn();
-		}
-		else
-		{
-			return $db->loadResultArray();
-		}
+		return $db->loadColumn();
 	}
 
 	/**
@@ -324,13 +289,6 @@ class ArsModelLogs extends F0FModel
 					->where($db->qn('title') . ' LIKE ' . $qfrag);
 
 		$db->setQuery($query);
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			return $db->loadColumn();
-		}
-		else
-		{
-			return $db->loadResultArray();
-		}
+		return $db->loadColumn();
 	}
 }

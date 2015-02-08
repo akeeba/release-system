@@ -127,14 +127,10 @@ if ($this->item->id == 0)
 				<label for="access" class="control-label"><?php echo JText::_('JFIELD_ACCESS_LABEL'); ?></label>
 
 				<div class="controls">
-					<?php if (version_compare(JVERSION, '3.0', 'gt')): ?>
-						<?php
-						$options = array(JHtml::_('select.option', '', JText::_('COM_ARS_COMMON_SHOW_ALL_LEVELS')));
-						echo JHTML::_('access.level', 'access', $this->item->access, '', $options);
-						?>
-					<?php else: ?>
-						<?php echo JHTML::_('list.accesslevel', $this->item); ?>
-					<?php endif; ?>
+					<?php
+					$options = array(JHtml::_('select.option', '', JText::_('COM_ARS_COMMON_SHOW_ALL_LEVELS')));
+					echo JHTML::_('access.level', 'access', $this->item->access, '', $options);
+					?>
 				</div>
 			</div>
 			<div class="control-group">

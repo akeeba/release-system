@@ -71,14 +71,7 @@ class ArsTableUpdatestream extends F0FTable
 			$query->where('NOT(' . $db->qn('id') . '=' . $db->q($this->id) . ')');
 		}
 		$db->setQuery($query);
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$aliases = $db->loadColumn();
-		}
-		else
-		{
-			$aliases = $db->loadResultArray();
-		}
+		$aliases = $db->loadColumn();
 		if (in_array($this->alias, $aliases))
 		{
 			$this->setError(JText::_('ERR_USTREAM_NEEDS_UNIQUE_ALIAS'));

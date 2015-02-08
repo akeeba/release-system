@@ -12,11 +12,8 @@ defined('_JEXEC') or die();
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-if (version_compare(JVERSION, '3.0', 'gt'))
-{
-	JHtml::_('dropdown.init');
-	JHtml::_('formbehavior.chosen', 'select');
-}
+JHtml::_('dropdown.init');
+JHtml::_('formbehavior.chosen', 'select');
 
 $model = $this->getModel();
 
@@ -48,25 +45,23 @@ $sortFields = array(
 
 ?>
 
-<?php if (version_compare(JVERSION, '3.0', 'ge')): ?>
-	<script type="text/javascript">
-		Joomla.orderTable = function ()
+<script type="text/javascript">
+	Joomla.orderTable = function ()
+	{
+		table = document.getElementById("sortTable");
+		direction = document.getElementById("directionTable");
+		order = table.options[table.selectedIndex].value;
+		if (order != '<?php echo $this->lists->order ?>')
 		{
-			table = document.getElementById("sortTable");
-			direction = document.getElementById("directionTable");
-			order = table.options[table.selectedIndex].value;
-			if (order != '<?php echo $this->lists->order ?>')
-			{
-				dirn = 'asc';
-			}
-			else
-			{
-				dirn = direction.options[direction.selectedIndex].value;
-			}
-			Joomla.tableOrdering(order, dirn);
+			dirn = 'asc';
 		}
-	</script>
-<?php endif; ?>
+		else
+		{
+			dirn = direction.options[direction.selectedIndex].value;
+		}
+		Joomla.tableOrdering(order, dirn);
+	}
+</script>
 
 <div class="row-fluid">
 <div class="span12">
@@ -81,11 +76,10 @@ $sortFields = array(
 <input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->lists->order_Dir ?>"/>
 <input type="hidden" name="<?php echo JFactory::getSession()->getFormToken(); ?>" value="1"/>
 
-<?php if (version_compare(JVERSION, '3.0', 'gt')): ?>
 	<div id="filter-bar" class="btn-toolbar">
 		<div class="btn-group pull-right hidden-phone">
 			<label for="limit"
-				   class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC') ?></label>
+			       class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC') ?></label>
 			<?php echo $this->getModel()->getPagination()->getLimitBox(); ?>
 		</div>
 		<?php
@@ -109,7 +103,6 @@ $sortFields = array(
 		</div>
 	</div>
 	<div class="clearfix"></div>
-<?php endif; ?>
 
 <table class="table table-striped" id="itemsList">
 	<thead>
