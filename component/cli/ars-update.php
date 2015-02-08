@@ -123,12 +123,6 @@ else
 }
 require_once JPATH_LIBRARIES . '/cms.php';
 
-// You can't fix stupid… but you can try working around it
-if ((!function_exists('json_encode')) || (!function_exists('json_decode')))
-{
-	require_once JPATH_ADMINISTRATOR . '/components/com_ars/helpers/jsonlib.php';
-}
-
 // Load the JApplicationCli class
 JLoader::import('joomla.application.cli');
 JLoader::import('joomla.application.component.helper');

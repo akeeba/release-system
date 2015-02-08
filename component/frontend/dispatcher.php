@@ -22,12 +22,6 @@ class ArsDispatcher extends F0FDispatcher
 
 	public function onBeforeDispatch()
 	{
-		// You can't fix stupid… but you can try working around it
-		if ((!function_exists('json_encode')) || (!function_exists('json_decode')))
-		{
-			require_once JPATH_ADMINISTRATOR . '/components/' . $this->component . '/helpers/jsonlib.php';
-		}
-
 		$result = parent::onBeforeDispatch();
 
 		if ($result)

@@ -187,6 +187,9 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 			// Import from JoomlaCode feature
 			'administrator/components/com_ars/controllers/impjed.php',
 			'administrator/components/com_ars/models/impjeds.php',
+
+			// JSON compatibility library
+			'administrator/components/com_ars/helpers/jsonlib.php',
 		),
 		'folders' => array(
 			'administrator/components/com_ars/assets/geoip',
