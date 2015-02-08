@@ -141,7 +141,7 @@ class ArsModelDownloads extends F0FModel
 			{
 				$filename = substr($folder, 5) . '/' . $item->filename;
 				$s3 = ArsHelperAmazons3::getInstance();
-				$url = $s3->getAuthenticatedURL('', $filename);
+				$url = $s3->getAuthenticatedURL($filename);
 
 				if (@ob_get_length() !== false)
 				{

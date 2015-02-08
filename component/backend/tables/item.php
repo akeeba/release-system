@@ -406,7 +406,7 @@ class ArsTableItem extends F0FTable
 						{
 							// Get a signed URL
 							$s3 = ArsHelperAmazons3::getInstance();
-							$url = $s3->getAuthenticatedURL('', rtrim(substr($folder, 5), '/') . '/' . ltrim($filename, '/'));
+							$url = $s3->getAuthenticatedURL(rtrim(substr($folder, 5), '/') . '/' . ltrim($filename, '/'));
 						}
 					}
 					else

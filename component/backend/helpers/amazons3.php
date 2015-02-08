@@ -415,29 +415,13 @@ class ArsHelperAmazons3 extends JObject
 	/**
 	 * Get a query string authenticated URL
 	 *
-	 * @param string  $bucket     Bucket name
-	 * @param string  $uri        Object URI
-	 * @param integer $lifetime   Lifetime in seconds
-	 * @param boolean $hostBucket Use the bucket name as the hostname
-	 * @param boolean $https      Use HTTPS ($hostBucket should be false for SSL verification)
+	 * @param   string  $path  Object URI
 	 *
-	 * @return string
+	 * @return  string
 	 */
-	public static function getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false)
+	public function getAuthenticatedURL($path)
 	{
-		if (empty($bucket))
-		{
-			$bucket = self::$bucket;
-		}
-		if (is_null($lifetime))
-		{
-			$lifetime = self::$timeForSignedRequests;
-		}
-		$expires = time() + $lifetime;
-		$uri = str_replace('%2F', '/', rawurlencode($uri)); // URI should be encoded (thanks Sean O'Dea)
-		return sprintf(($https ? 'https' : 'http') . '://%s/%s?AWSAccessKeyId=%s&Expires=%u&Signature=%s',
-			$hostBucket ? $bucket : $bucket . '.s3.amazonaws.com', $uri, self::$accessKey, $expires,
-			urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$uri}")));
+		return $this->s3Client->getObjectUrl(self::$bucket, $path, '+' . self::$timeForSignedRequests . ' seconds');
 	}
 
 }
