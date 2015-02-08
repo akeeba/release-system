@@ -326,7 +326,7 @@ class ArsModelUploads extends F0FModel
 		{
 			$s3 = ArsHelperAmazons3::getInstance();
 
-			return $s3->deleteObject('', $filepath);
+			return $s3->deleteObject($filepath);
 		}
 		else
 		{

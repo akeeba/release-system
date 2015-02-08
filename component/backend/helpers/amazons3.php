@@ -254,37 +254,30 @@ class ArsHelperAmazons3 extends JObject
 		}
 	}
 
-
 	/**
-	 * Delete an object
+	 * Delete a file from Amazon S3
 	 *
-	 * @param string $bucket Bucket name
-	 * @param string $uri    Object URI
+	 * @param   string  $path  The path to the Amazon S3 file to delete
 	 *
-	 * @return boolean
+	 * @return  bool  True on success
 	 */
-	public static function deleteObject($bucket, $uri)
+	public function deleteObject($path)
 	{
-		if (empty($bucket))
+		try
 		{
-			$bucket = self::$bucket;
+			$result = $this->s3Client->deleteObject(array(
+				'Bucket'    => self::$bucket,
+				'Key'       => $path
+			));
+
+			return true;
 		}
-		$rest = new ArsHelperS3Request('DELETE', $bucket, $uri);
-		$rest = $rest->getResponse();
-		if ($rest->error === false && $rest->code !== 204)
+		catch (Exception $e)
 		{
-			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
-		}
-		if ($rest->error !== false)
-		{
-			$o = self::getInstance();
-			$o->setError(sprintf(__CLASS__ . "::deleteObject({$bucket}, {$uri}): [%s] %s",
-				$rest->error['code'], $rest->error['message']));
+			$this->setError($e->getCode() . ' :: ' . $e->getMessage());
 
 			return false;
 		}
-
-		return true;
 	}
 
 	/**
