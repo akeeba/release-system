@@ -50,6 +50,12 @@ if (!class_exists('F0FUtilsCacheCleaner', false))
 
 class Com_ArsInstallerScript extends F0FUtilsInstallscript
 {
+	/**
+	 * The minimum Joomla! version required to install this extension
+	 *
+	 * @var   string
+	 */
+	protected $minimumJoomlaVersion = '3.2.1';
 
 	/**
 	 * The component's name

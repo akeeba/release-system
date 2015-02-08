@@ -1,3 +1,7 @@
+Version 2.5.0
+================================================================================
+- Remove Joomla! 2.5 support
+
 Version 2.4.4
 ================================================================================
 + Support for Joomla Extension Directory's "Remote XML" feature, see http://dev.extensions.joomla.org/component/content/article?id=10
