@@ -48,6 +48,7 @@
 
 		<!-- Back-end files -->
 		<files folder="backend">
+			<folder>Amazon</folder>
 			<folder>assets</folder>
 			<folder>controllers</folder>
 			<folder>fields</folder>

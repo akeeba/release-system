@@ -226,7 +226,7 @@ class ArsModelBleedingedge extends F0FModel
 			if ($useS3)
 			{
 				$s3 = ArsHelperAmazons3::getInstance();
-				$response = $s3->getObject('', substr($changelog, 5));
+				$response = $s3->getObject(substr($changelog, 5));
 				$hasChangelog = $response !== false;
 
 				if ($hasChangelog)
@@ -301,7 +301,7 @@ class ArsModelBleedingedge extends F0FModel
 					if ($useS3)
 					{
 						$s3 = ArsHelperAmazons3::getInstance();
-						$response = $s3->getObject('', substr($changelog, 5));
+						$response = $s3->getObject(substr($changelog, 5));
 						$hasChangelog = $response !== false;
 						if ($hasChangelog)
 						{
@@ -466,7 +466,7 @@ class ArsModelBleedingedge extends F0FModel
 			if ($useS3)
 			{
 				$s3 = ArsHelperAmazons3::getInstance();
-				$response = $s3->getObject('', substr($changelog, 5));
+				$response = $s3->getObject(substr($changelog, 5));
 				$hasChangelog = $response !== false;
 				if ($hasChangelog)
 				{

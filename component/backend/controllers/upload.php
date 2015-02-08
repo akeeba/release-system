@@ -162,8 +162,7 @@ class ArsControllerUpload extends F0FController
 				$s3targetdir .= '/';
 			}
 
-			$input = $s3->inputFile($filepath);
-			$success = $s3->putObject($input, '', $s3targetdir . $file['name']);
+			$success = $s3->putObject($filepath, $s3targetdir . $file['name']);
 
 			if (!@unlink($filepath))
 			{
@@ -270,7 +269,7 @@ class ArsControllerUpload extends F0FController
 			$newFolder = $trimmedParent . '/' . $file;
 			$newFolder = trim($newFolder, '/') . '/';
 			$s3 = ArsHelperAmazons3::getInstance();
-			$status = $s3->putObject('', '', $newFolder);
+			$status = $s3->putObject('', $newFolder);
 		}
 		else
 		{
