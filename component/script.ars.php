@@ -58,6 +58,13 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 	protected $minimumJoomlaVersion = '3.2.1';
 
 	/**
+	 * The minimum PHP version required to install this extension
+	 *
+	 * @var   string
+	 */
+	protected $minimumPHPVersion = '5.3.4';
+
+	/**
 	 * The component's name
 	 *
 	 * @var   string
