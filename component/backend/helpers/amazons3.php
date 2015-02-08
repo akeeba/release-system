@@ -280,61 +280,6 @@ class ArsHelperAmazons3 extends JObject
 		}
 	}
 
-	/**
-	 * Get a list of buckets
-	 *
-	 * @param boolean $detailed Returns detailed bucket list when true
-	 *
-	 * @return array | false
-	 */
-	public static function listBuckets($detailed = false)
-	{
-		$rest = new ArsHelperS3Request('GET', '', '');
-		$rest = $rest->getResponse();
-		if ($rest->error === false && $rest->code !== 200)
-		{
-			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
-		}
-		if ($rest->error !== false)
-		{
-			$o = self::getInstance();
-			$o->setError(sprintf(__CLASS__ . '::' . __METHOD__ . "(): [%s] %s", $rest->error['code'], $rest->error['message']));
-
-			return false;
-		}
-		$results = array();
-		if (!isset($rest->body->Buckets))
-		{
-			return $results;
-		}
-
-		if ($detailed)
-		{
-			if (isset($rest->body->Owner, $rest->body->Owner->ID, $rest->body->Owner->DisplayName))
-			{
-				$results['owner'] = array(
-					'id' => (string)$rest->body->Owner->ID, 'name' => (string)$rest->body->Owner->ID
-				);
-			}
-			$results['buckets'] = array();
-			foreach ($rest->body->Buckets->Bucket as $b)
-			{
-				$results['buckets'][] = array(
-					'name' => (string)$b->Name, 'time' => strtotime((string)$b->CreationDate)
-				);
-			}
-		}
-		else
-		{
-			foreach ($rest->body->Buckets->Bucket as $b)
-			{
-				$results[] = (string)$b->Name;
-			}
-		}
-
-		return $results;
-	}
-
 	/*
 	* Get contents for a bucket
 	*
@@ -348,128 +293,120 @@ class ArsHelperAmazons3 extends JObject
 	* @param boolean $returnCommonPrefixes Set to true to return CommonPrefixes
 	* @return array | false
 	*/
-	public static function getBucket($bucket, $prefix = null, $marker = null, $maxKeys = null, $delimiter = null, $returnCommonPrefixes = false)
+	public function getBucket($bucket = null, $prefix = null, $marker = null, $maxKeys = null, $delimiter = null, $returnCommonPrefixes = false)
 	{
-		if (empty($bucket))
-		{
-			$bucket = self::$bucket;
-		}
-		$rest = new ArsHelperS3Request('GET', $bucket, '');
+		$operation = array(
+			'Bucket' => empty($bucket) ? self::$bucket : $bucket
+		);
+
+
 		if ($prefix !== null && $prefix !== '')
 		{
-			$rest->setParameter('prefix', $prefix);
+			$operation['Prefix'] = $prefix;
 		}
+
 		if ($marker !== null && $marker !== '')
 		{
-			$rest->setParameter('marker', $marker);
+			$operation['Marker'] = $marker;
 		}
+
 		if ($maxKeys !== null && $maxKeys !== '')
 		{
-			$rest->setParameter('max-keys', $maxKeys);
+			$operation['MaxKeys'] = $maxKeys;
 		}
+
 		if ($delimiter !== null && $delimiter !== '')
 		{
-			$rest->setParameter('delimiter', $delimiter);
+			$operation['Delimiter'] = $delimiter;
 		}
-		$response = $rest->getResponse();
-		if ($response->error === false && $response->code !== 200)
+
+		try
 		{
-			$response->error = array('code' => $response->code, 'message' => 'Unexpected HTTP status');
+			$opResult = $this->s3Client->listObjects($operation);
 		}
-		if ($response->error !== false)
+		catch (Exception $e)
 		{
-			self::getInstance()
-				->setError(sprintf(__CLASS__ . "::getBucket(): [%s] %s", $response->error['code'], $response->error['message']));
+			$this->setError($e->getCode() . ' :: ' . $e->getMessage());
 
 			return false;
 		}
 
 		$results = array();
-
 		$nextMarker = null;
-		if (isset($response->body, $response->body->Contents))
+
+		foreach ($opResult->Contents as $c)
 		{
-			foreach ($response->body->Contents as $c)
+			$results[(string)$c['Key']] = array(
+				'name' => (string)$c['Key'],
+				'time' => strtotime((string)$c['LastModified']),
+				'size' => (int)$c['Size'],
+				'hash' => substr((string)$c['ETag'], 1, -1)
+			);
+			$nextMarker = (string)$c['Key'];
+		}
+
+
+		if ($returnCommonPrefixes)
+		{
+			foreach ($opResult->CommonPrefixes as $c)
 			{
-				$results[(string)$c->Key] = array(
-					'name' => (string)$c->Key,
-					'time' => strtotime((string)$c->LastModified),
-					'size' => (int)$c->Size,
-					'hash' => substr((string)$c->ETag, 1, -1)
-				);
-				$nextMarker = (string)$c->Key;
+				$results[(string)$c['Prefix']] = array('prefix' => (string)$c['Prefix']);
 			}
 		}
 
-		if ($returnCommonPrefixes && isset($response->body, $response->body->CommonPrefixes))
-		{
-			foreach ($response->body->CommonPrefixes as $c)
-			{
-				$results[(string)$c->Prefix] = array('prefix' => (string)$c->Prefix);
-			}
-		}
-
-		if (isset($response->body, $response->body->IsTruncated) &&
-			(string)$response->body->IsTruncated == 'false'
-		)
+		if (!$opResult->IsTruncated)
 		{
 			return $results;
 		}
 
-		if (isset($response->body, $response->body->NextMarker))
+		if (isset($opResult->NextMarker))
 		{
-			$nextMarker = (string)$response->body->NextMarker;
+			$nextMarker = (string)$opResult->NextMarker;
 		}
 
 		// Loop through truncated results if maxKeys isn't specified
-		if ($maxKeys == null && $nextMarker !== null && (string)$response->body->IsTruncated == 'true')
+		if ($maxKeys == null && $nextMarker !== null)
 		{
 			do
 			{
-				$rest = new ArsHelperS3Request('GET', $bucket, '');
-				if ($prefix !== null && $prefix !== '')
+				$operation['Marker'] = $nextMarker;
+
+				try
 				{
-					$rest->setParameter('prefix', $prefix);
+					$opResult = $this->s3Client->listObjects($operation);
 				}
-				$rest->setParameter('marker', $nextMarker);
-				if ($delimiter !== null && $delimiter !== '')
+				catch (Exception $e)
 				{
-					$rest->setParameter('delimiter', $delimiter);
+					$opResult = false;
+
+					continue;
 				}
 
-				if (($response = $rest->getResponse(true)) == false || $response->code !== 200)
+				foreach ($opResult->Contents as $c)
 				{
-					break;
+					$results[(string)$c['Key']] = array(
+						'name' => (string)$c['Key'],
+						'time' => strtotime((string)$c['LastModified']),
+						'size' => (int)$c['Size'],
+						'hash' => substr((string)$c['ETag'], 1, -1)
+					);
+					$nextMarker = (string)$c['Key'];
 				}
 
-				if (isset($response->body, $response->body->Contents))
+				if ($returnCommonPrefixes)
 				{
-					foreach ($response->body->Contents as $c)
+					foreach ($opResult->CommonPrefixes as $c)
 					{
-						$results[(string)$c->Key] = array(
-							'name' => (string)$c->Key,
-							'time' => strtotime((string)$c->LastModified),
-							'size' => (int)$c->Size,
-							'hash' => substr((string)$c->ETag, 1, -1)
-						);
-						$nextMarker = (string)$c->Key;
+						$results[(string)$c['Prefix']] = array('prefix' => (string)$c['Prefix']);
 					}
 				}
 
-				if ($returnCommonPrefixes && isset($response->body, $response->body->CommonPrefixes))
+				if (isset($operation->NextMarker))
 				{
-					foreach ($response->body->CommonPrefixes as $c)
-					{
-						$results[(string)$c->Prefix] = array('prefix' => (string)$c->Prefix);
-					}
-				}
-
-				if (isset($response->body, $response->body->NextMarker))
-				{
-					$nextMarker = (string)$response->body->NextMarker;
+					$nextMarker = (string)$opResult->NextMarker;
 				}
 			}
-			while ($response !== false && (string)$response->body->IsTruncated == 'true');
+			while ($opResult !== false && (string)$opResult->IsTruncated);
 		}
 
 		return $results;
