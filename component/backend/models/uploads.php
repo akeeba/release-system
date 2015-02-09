@@ -239,7 +239,7 @@ class ArsModelUploads extends F0FModel
 	private function _listS3Contents($path = null)
 	{
 		static $lastDirectory = null;
-		static $lasListing = array();
+		static $lastListing = array();
 
 		$directory = substr($path, 5);
 		if ($directory === false)
@@ -260,6 +260,8 @@ class ArsModelUploads extends F0FModel
 
 			$s3 = ArsHelperAmazons3::getInstance();
 			$lastListing = $s3->getBucket('', $directory, null, null, '/', true);
+
+			$lastDirectory = $directory;
 		}
 
 		return $lastListing;

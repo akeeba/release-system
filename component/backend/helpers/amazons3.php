@@ -311,9 +311,9 @@ class ArsHelperAmazons3 extends JObject
 		$results = array();
 		$nextMarker = null;
 
-		if ((isset($opResult->Contents)) && !empty($opResult->Contents))
+		if ((isset($opResult['Contents'])) && !empty($opResult['Contents']))
 		{
-			foreach ($opResult->Contents as $c)
+			foreach ($opResult['Contents'] as $c)
 			{
 				$results[(string)$c['Key']] = array(
 					'name' => (string)$c['Key'],
@@ -361,15 +361,18 @@ class ArsHelperAmazons3 extends JObject
 					continue;
 				}
 
-				foreach ($opResult->Contents as $c)
+				if (isset($opResult['Contents']) && !empty($opResult['Contents']))
 				{
-					$results[(string)$c['Key']] = array(
-						'name' => (string)$c['Key'],
-						'time' => strtotime((string)$c['LastModified']),
-						'size' => (int)$c['Size'],
-						'hash' => substr((string)$c['ETag'], 1, -1)
-					);
-					$nextMarker = (string)$c['Key'];
+					foreach ($opResult['Contents'] as $c)
+					{
+						$results[(string)$c['Key']] = array(
+							'name' => (string)$c['Key'],
+							'time' => strtotime((string)$c['LastModified']),
+							'size' => (int)$c['Size'],
+							'hash' => substr((string)$c['ETag'], 1, -1)
+						);
+						$nextMarker = (string)$c['Key'];
+					}
 				}
 
 				if ($returnCommonPrefixes && isset($opResult['CommonPrefixes']))
