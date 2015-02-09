@@ -68,13 +68,13 @@ class Autoloader
 		$className = ltrim($className, '\\');
 
 		// Make sure the class has an Akeeba\Engine prefix
-		if (substr($className, 0, 21) != 'Akeeba\\ARS\\Amazon\\Aws')
+		if (substr($className, 0, 17) != 'Akeeba\\ARS\\Amazon')
 		{
 			return;
 		}
 
 		// Remove the prefix and explode on backslashes
-		$className = substr($className, 22);
+		$className = substr($className, 18);
 		$class = explode('\\', $className);
 
 		$rootPath = self::$awsPath;

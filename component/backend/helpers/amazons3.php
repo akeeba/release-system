@@ -1,37 +1,19 @@
 <?php
 /**
- * Akeeba Engine
- * The modular PHP5 site backup engine
- *
- * @copyright Copyright (c)2009-2014 Nicholas K. Dionysopoulos
- * @license   GNU GPL version 3 or, at your option, any later version
- * @package   akeebaengine
- * @version   $Id$
- *
- * This file contains the ArsHelperAmazons3 class which allows storing and
- * retrieving files from Amazon's Simple Storage Service (Amazon S3).
- * It is a subset of S3.php, written by Donovan Schonknecht and available
- * at http://undesigned.org.za/2007/10/22/amazon-s3-php-class under a
- * BSD-like license. I have merely removed the parts which weren't useful
- * to ARS and changed the naming.
- *
- * Note for this version: I have added multipart uploads, a feature which
- * wasn't included in the original version of the S3.php. As a result, this
- * file no longer reflects the original author's work and should not be
- * confused with it.
- *
- * Amazon S3 is a trademark of Amazon.com, Inc. or its affiliates.
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @license   GNU General Public License version 3, or later
  */
 
 // Protection against direct access
 defined('_JEXEC') or die();
 
-use Akeeba\ARS\Amazon\Aws\Common\Credentials\Credentials;
-
-if (!defined('AKEEBA_CACERT_PEM'))
+if (!class_exists('Akeeba\\ARS\\Amazon\\Aws\\Autoloader'))
 {
-	define('AKEEBA_CACERT_PEM', JPATH_ADMINISTRATOR . '/components/com_ars/assets/cacert.pem');
+	require_once __DIR__ . '/../Amazon/Autoloader.php';
 }
+
+use Akeeba\ARS\Amazon\Aws\Common\Credentials\Credentials;
 
 class ArsHelperAmazons3 extends JObject
 {
@@ -150,11 +132,6 @@ class ArsHelperAmazons3 extends JObject
 
 		if (!is_object($instance))
 		{
-			if (!class_exists('Akeeba\\ARS\\Amazon\\Aws\\Autoloader'))
-			{
-				require_once __DIR__ . '/../Amazon/Autoloader.php';
-			}
-
 			$component = JComponentHelper::getComponent('com_ars');
 
 			if (!($component->params instanceof JRegistry))
