@@ -25,6 +25,29 @@ F0FTemplateUtils::addJS('media://com_ars/js/jqplot.highlighter.min.js');
 F0FTemplateUtils::addJS('media://com_ars/js/jquery.colorhelpers.min.js');
 
 ?>
+
+<?php
+// Obsolete PHP version check
+if (version_compare(JVERSION, '5.9.0', 'lt')):
+	JLoader::import('joomla.utilities.date');
+	$akeebaCommonDatePHP = new JDate('2014-08-14 00:00:00', 'GMT');
+	$akeebaCommonDateObsolescence = new JDate('2015-05-14 00:00:00', 'GMT');
+	?>
+	<div id="phpVersionCheck" class="alert alert-warning">
+		<h3><?php echo JText::_('AKEEBA_COMMON_PHPVERSIONTOOOLD_WARNING_TITLE'); ?></h3>
+		<p>
+			<?php echo JText::sprintf(
+				'AKEEBA_COMMON_PHPVERSIONTOOOLD_WARNING_BODY',
+				PHP_VERSION,
+				$akeebaCommonDatePHP->format(JText::_('DATE_FORMAT_LC1')),
+				$akeebaCommonDateObsolescence->format(JText::_('DATE_FORMAT_LC1')),
+				'5.5'
+			);
+			?>
+		</p>
+	</div>
+<?php endif; ?>
+
 <div id="updateNotice"></div>
 
 <?php if (!$this->hasplugin): ?>
