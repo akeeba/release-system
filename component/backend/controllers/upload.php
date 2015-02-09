@@ -269,7 +269,7 @@ class ArsControllerUpload extends F0FController
 			$newFolder = $trimmedParent . '/' . $file;
 			$newFolder = trim($newFolder, '/') . '/';
 			$s3 = ArsHelperAmazons3::getInstance();
-			$status = $s3->putObject('', $newFolder);
+			$status = $s3->putObject('$folder$', $newFolder, true);
 		}
 		else
 		{

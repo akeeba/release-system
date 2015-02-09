@@ -32,6 +32,7 @@ class ArsModelUploads extends F0FModel
 	function getCategoryFolder()
 	{
 		static $folder = null;
+
 		if (empty($folder))
 		{
 			$category_id = $this->getState('category', 0);
@@ -50,25 +51,7 @@ class ArsModelUploads extends F0FModel
 				$potentialPrefix = strtolower($potentialPrefix);
 				$useS3 = $potentialPrefix == 's3://';
 
-				if ($useS3)
-				{
-					$check = substr($folder, 5);
-					if ($check === false)
-					{
-						$check = '';
-					}
-					if (!empty($check))
-					{
-						$check .= '/';
-					}
-					$s3 = ArsHelperAmazons3::getInstance();
-					$items = $s3->getBucket('', $check);
-					if (empty($items))
-					{
-						$folder = '';
-					}
-				}
-				else
+				if (!$useS3)
 				{
 					JLoader::import('joomla.filesystem.folder');
 					if (!JFolder::exists($folder))
@@ -88,6 +71,7 @@ class ArsModelUploads extends F0FModel
 			}
 
 			$subfolder = $this->getState('folder', '');
+
 			if (!empty($subfolder))
 			{
 				if ($useS3)
@@ -98,10 +82,22 @@ class ArsModelUploads extends F0FModel
 						jexit();
 					}
 					$subfolder = trim($subfolder, '/');
+
+					$folderWithoutS3Prefix = substr($folder, 5);
+
+					if ($subfolder == $folderWithoutS3Prefix)
+					{
+						$subfolder = '';
+					}
+					elseif (strpos($subfolder, $folderWithoutS3Prefix) === 0)
+					{
+						$subfolder = substr($subfolder, strlen($folderWithoutS3Prefix));
+					}
+
 					$folder = $folder . (empty($subfolder) ? '' : '/' . $subfolder);
 
 					$pieces = explode('/', $subfolder);
-					$debris = array_pop($pieces);
+					array_pop($pieces);
 					$parent = implode('/', $pieces);
 				}
 				else
@@ -261,6 +257,7 @@ class ArsModelUploads extends F0FModel
 			{
 				$directory = trim($directory, '/') . '/';
 			}
+
 			$s3 = ArsHelperAmazons3::getInstance();
 			$lastListing = $s3->getBucket('', $directory, null, null, '/', true);
 		}

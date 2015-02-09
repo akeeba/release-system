@@ -311,39 +311,36 @@ class ArsHelperAmazons3 extends JObject
 		$results = array();
 		$nextMarker = null;
 
-		if (!(isset($opResult->Contents)) || empty($opResult->Contents))
+		if ((isset($opResult->Contents)) && !empty($opResult->Contents))
 		{
-			return array();
+			foreach ($opResult->Contents as $c)
+			{
+				$results[(string)$c['Key']] = array(
+					'name' => (string)$c['Key'],
+					'time' => strtotime((string)$c['LastModified']),
+					'size' => (int)$c['Size'],
+					'hash' => substr((string)$c['ETag'], 1, -1)
+				);
+				$nextMarker = (string)$c['Key'];
+			}
 		}
 
-		foreach ($opResult->Contents as $c)
+		if ($returnCommonPrefixes && isset($opResult['CommonPrefixes']))
 		{
-			$results[(string)$c['Key']] = array(
-				'name' => (string)$c['Key'],
-				'time' => strtotime((string)$c['LastModified']),
-				'size' => (int)$c['Size'],
-				'hash' => substr((string)$c['ETag'], 1, -1)
-			);
-			$nextMarker = (string)$c['Key'];
-		}
-
-
-		if ($returnCommonPrefixes)
-		{
-			foreach ($opResult->CommonPrefixes as $c)
+			foreach ($opResult['CommonPrefixes'] as $c)
 			{
 				$results[(string)$c['Prefix']] = array('prefix' => (string)$c['Prefix']);
 			}
 		}
 
-		if (!$opResult->IsTruncated)
+		if (!$opResult['IsTruncated'])
 		{
 			return $results;
 		}
 
-		if (isset($opResult->NextMarker))
+		if (isset($opResult['NextMarker']))
 		{
-			$nextMarker = (string)$opResult->NextMarker;
+			$nextMarker = (string)$opResult['NextMarker'];
 		}
 
 		// Loop through truncated results if maxKeys isn't specified
@@ -375,20 +372,20 @@ class ArsHelperAmazons3 extends JObject
 					$nextMarker = (string)$c['Key'];
 				}
 
-				if ($returnCommonPrefixes)
+				if ($returnCommonPrefixes && isset($opResult['CommonPrefixes']))
 				{
-					foreach ($opResult->CommonPrefixes as $c)
+					foreach ($opResult['CommonPrefixes'] as $c)
 					{
 						$results[(string)$c['Prefix']] = array('prefix' => (string)$c['Prefix']);
 					}
 				}
 
-				if (isset($operation->NextMarker))
+				if (isset($opResult['NextMarker']))
 				{
-					$nextMarker = (string)$opResult->NextMarker;
+					$nextMarker = (string)$opResult['NextMarker'];
 				}
 			}
-			while ($opResult !== false && (string)$opResult->IsTruncated);
+			while ($opResult !== false && (string)$opResult['IsTruncated']);
 		}
 
 		return $results;
