@@ -9,7 +9,7 @@ defined('_JEXEC') or die();
 
 /** @var F0FViewForm $this */
 
-JHtml::_('behavior.framework');
+JHtml::_('jquery.framework');
 
 $this->loadHelper('filter');
 

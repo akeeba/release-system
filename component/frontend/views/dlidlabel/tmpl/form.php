@@ -9,7 +9,7 @@ defined('_JEXEC') or die();
 
 /** @var F0FViewHtml $this */
 
-JHtml::_('behavior.framework');
+JHtml::_('jquery.framework');
 
 // Render the form
 echo $this->getRenderedForm();
