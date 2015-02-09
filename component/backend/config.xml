@@ -125,7 +125,40 @@
 		description="COM_ARS_CONFIG_S3INTEGRATION_HEADER_DESC">
 		<field name="s3access" type="text" default="" label="COM_ARS_CONFIG_S3_ACCESSKEY_LABEL" description="COM_ARS_CONFIG_S3_ACCESSKEY_DESC" size="50" filter="raw" />
 		<field name="s3secret" type="password" default="" label="COM_ARS_CONFIG_S3_SECRETKEY_LABEL" description="COM_ARS_CONFIG_S3_SECRETKEY_DESC" size="50" filter="raw" />
+		<field name="s3ssl" type="list" default="1" label="COM_ARS_CONFIG_S3_SSL_LABEL" description="COM_ARS_CONFIG_S3_SSL_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="s3bucket" type="text" default="" label="COM_ARS_CONFIG_S3_BUCKET_LABEL" description="COM_ARS_CONFIG_S3_BUCKET_LABEL"/>
+		<field name="s3method" type="list" default="s3" label="COM_ARS_CONFIG_S3_METHOD_LABEL" description="COM_ARS_CONFIG_S3_METHOD_DESC">
+			<option value="s3">COM_ARS_CONFIG_S3_SIGNATURE_V2</option>
+			<option value="v4">COM_ARS_CONFIG_S3_SIGNATURE_V4</option>
+		</field>
+		<field name="s3region" type="list" default="us-east-1"
+			label="COM_ARS_CONFIG_S3_REGION_LABEL"
+			description ="COM_ARS_CONFIG_S3_REGION_DESC">
+			<option value="">COM_ARS_CONFIG_S3_REGION_NONE</option>
+			<option value="us-east-1">COM_ARS_CONFIG_S3_REGION_USEAST1</option>
+			<option value="us-east-2">COM_ARS_CONFIG_S3_REGION_USEAST2</option>
+			<option value="us-west-2">COM_ARS_CONFIG_S3_REGION_USWEST2</option>
+			<option value="us-west-1">COM_ARS_CONFIG_S3_REGION_USWEST1</option>
+			<option value="eu-west-1">COM_ARS_CONFIG_S3_REGION_EUWEST1</option>
+			<option value="eu-west-2">COM_ARS_CONFIG_S3_REGION_EUWEST2</option>
+			<option value="eu-central-1">COM_ARS_CONFIG_S3_REGION_EUCENTRAL1</option>
+			<option value="eu-central-2">COM_ARS_CONFIG_S3_REGION_EUCENTRAL2</option>
+			<option value="ap-southeast-1">COM_ARS_CONFIG_S3_REGION_APSE1</option>
+			<option value="ap-southeast-2">COM_ARS_CONFIG_S3_REGION_APSE2</option>
+			<option value="ap-northeast-1">COM_ARS_CONFIG_S3_REGION_APNE1</option>
+			<option value="ap-northeast-2">COM_ARS_CONFIG_S3_REGION_APNE2</option>
+			<option value="sa-east-1">COM_ARS_CONFIG_S3_REGION_SAEAST1</option>
+			<option value="sa-east-2">COM_ARS_CONFIG_S3_REGION_SAEAST2</option>
+			<option value="sa-west-1">COM_ARS_CONFIG_S3_REGION_SAWEST1</option>
+			<option value="sa-west-2">COM_ARS_CONFIG_S3_REGION_SAWEST2</option>
+		</field>
+		<field name="s3rrs" type="list" default="0" label="COM_ARS_CONFIG_S3_RRS_LABEL" description="COM_ARS_CONFIG_S3_RRS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="s3perms" type="list" default="private"
 			label="COM_ARS_CONFIG_S3_PERMS_LABEL"
 			description ="COM_ARS_CONFIG_S3_PERMS_DESC">
