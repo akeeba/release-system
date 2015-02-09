@@ -311,6 +311,11 @@ class ArsHelperAmazons3 extends JObject
 		$results = array();
 		$nextMarker = null;
 
+		if (!(isset($opResult->Contents)) || empty($opResult->Contents))
+		{
+			return array();
+		}
+
 		foreach ($opResult->Contents as $c)
 		{
 			$results[(string)$c['Key']] = array(
