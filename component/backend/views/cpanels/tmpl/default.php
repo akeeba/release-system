@@ -15,6 +15,8 @@ $icons_root = JURI::base() . 'components/com_ars/assets/images/';
 
 $groups = array('basic', 'tools', 'update');
 
+JHtml::_('formbehavior.chosen', 'select');
+
 F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
 
 F0FTemplateUtils::addJS('media://com_ars/js/gui-helpers.js');

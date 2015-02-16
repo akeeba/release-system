@@ -4,6 +4,7 @@ Version 2.5.0
 - gh-68 Remove Import from JoomlaCode feature (JoomlaCode.org is shutting down)
 - Remove obsolete JSON compatibility library
 + Check for obsolete PHP versions and printing a warning
++ Apply Chosen (smart drop-downs and multiselects) throughout the backend
 
 Version 2.4.4
 ================================================================================

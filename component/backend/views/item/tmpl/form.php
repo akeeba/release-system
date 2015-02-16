@@ -11,6 +11,8 @@ defined('_JEXEC') or die();
 
 $editor = JFactory::getEditor();
 
+JHtml::_('formbehavior.chosen', 'select');
+
 $this->loadHelper('select');
 $this->loadHelper('filtering');
 

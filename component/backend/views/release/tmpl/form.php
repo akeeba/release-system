@@ -10,6 +10,7 @@ defined('_JEXEC') or die();
 /** @var ArsViewRelease $this */
 
 JHTML::_('behavior.calendar');
+JHtml::_('formbehavior.chosen', 'select');
 
 $editor = JFactory::getEditor();
 

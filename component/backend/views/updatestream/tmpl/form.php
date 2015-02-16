@@ -9,6 +9,8 @@ defined('_JEXEC') or die();
 
 /** @var F0FViewHtml $this */
 
+JHtml::_('formbehavior.chosen', 'select');
+
 $this->loadHelper('select');
 
 F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
