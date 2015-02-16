@@ -28,13 +28,13 @@ class ArsToolbar extends F0FToolbar
 		parent::onBrowse();
 
 		JToolBarHelper::divider();
-		JToolBarHelper::back('COM_ARS_TITLE_CPANELS', 'index.php?option=com_ars');
+		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
 	}
 
 	public function onImpjeds()
 	{
 		JToolBarHelper::title(JText::_($this->input->getCmd('option', 'com_foobar')) . ' &ndash; <small>' . JText::_('COM_ARS_TITLE_IMPJEDS') . '</small>', str_replace('com_', '', $this->input->getCmd('option', 'com_foobar')));
-		JToolBarHelper::back('COM_ARS_TITLE_CPANELS', 'index.php?option=com_ars');
+		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
 
 		$this->renderSubmenu();
 	}
@@ -66,7 +66,7 @@ class ArsToolbar extends F0FToolbar
 		}
 
 		JToolBarHelper::divider();
-		JToolBarHelper::back('COM_ARS_TITLE_CPANELS', 'index.php?option=com_ars');
+		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
 
 		$this->renderSubmenu();
 	}
@@ -84,7 +84,7 @@ class ArsToolbar extends F0FToolbar
 		}
 
 		JToolBarHelper::divider();
-		JToolBarHelper::back('COM_ARS_TITLE_CPANELS', 'index.php?option=com_ars');
+		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
 
 		$this->renderSubmenu();
 	}
@@ -92,7 +92,7 @@ class ArsToolbar extends F0FToolbar
 	public function onUploads()
 	{
 		JToolBarHelper::title(JText::_($this->input->getCmd('option', 'com_foobar')) . ' &ndash; <small>' . JText::_('COM_ARS_TITLE_UPLOADS') . '</small>', str_replace('com_', '', $this->input->getCmd('option', 'com_foobar')));
-		JToolBarHelper::back('COM_ARS_TITLE_CPANELS', 'index.php?option=com_ars');
+		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
 
 		$this->renderSubmenu();
 	}
@@ -155,7 +155,7 @@ class ArsToolbar extends F0FToolbar
 		}
 
 		JToolBarHelper::divider();
-		JToolBarHelper::back('COM_ARS_TITLE_CPANELS', 'index.php?option=com_ars');
+		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
 
 		$this->renderSubmenu();
 	}

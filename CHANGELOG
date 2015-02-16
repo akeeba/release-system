@@ -5,6 +5,7 @@ Version 2.5.0
 - Remove obsolete JSON compatibility library
 + Check for obsolete PHP versions and printing a warning
 + Apply Chosen (smart drop-downs and multiselects) throughout the backend
+# [LOW] Bad styling of back button under Joomla! 3.x
 
 Version 2.4.4
 ================================================================================

@@ -584,3 +584,10 @@ li.plupload_droptext {
 .fof-usersfield-id:before { content: " [" }
 .fof-usersfield-id:after { content: "]" }
 .fof-usersfield-name { display: block; }
+
+/**
+ * Joomla! 3.x workarounds for missing icon classes
+ */
+div#toolbar div#toolbar-back button.btn span.icon-back::before {
+    content: "";
+}
