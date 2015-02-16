@@ -12,86 +12,259 @@ class ArsHelperSelect
 
 	private static $countries = array(
 		''   => '----',
-		'AD' => 'Andorra', 'AE' => 'United Arab Emirates', 'AF' => 'Afghanistan',
-		'AG' => 'Antigua and Barbuda', 'AI' => 'Anguilla', 'AL' => 'Albania',
-		'AM' => 'Armenia', 'AN' => 'Netherlands Antilles', 'AO' => 'Angola',
-		'AQ' => 'Antarctica', 'AR' => 'Argentina', 'AS' => 'American Samoa',
-		'AT' => 'Austria', 'AU' => 'Australia', 'AW' => 'Aruba',
-		'AX' => 'Aland Islands', 'AZ' => 'Azerbaijan', 'BA' => 'Bosnia and Herzegovina',
-		'BB' => 'Barbados', 'BD' => 'Bangladesh', 'BE' => 'Belgium',
-		'BF' => 'Burkina Faso', 'BG' => 'Bulgaria', 'BH' => 'Bahrain',
-		'BI' => 'Burundi', 'BJ' => 'Benin', 'BL' => 'Saint Barthélemy',
-		'BM' => 'Bermuda', 'BN' => 'Brunei Darussalam', 'BO' => 'Bolivia, Plurinational State of',
-		'BR' => 'Brazil', 'BS' => 'Bahamas', 'BT' => 'Bhutan', 'BV' => 'Bouvet Island',
-		'BW' => 'Botswana', 'BY' => 'Belarus', 'BZ' => 'Belize', 'CA' => 'Canada',
-		'CC' => 'Cocos (Keeling) Islands', 'CD' => 'Congo, the Democratic Republic of the',
-		'CF' => 'Central African Republic', 'CG' => 'Congo', 'CH' => 'Switzerland',
-		'CI' => 'Cote d\'Ivoire', 'CK' => 'Cook Islands', 'CL' => 'Chile',
-		'CM' => 'Cameroon', 'CN' => 'China', 'CO' => 'Colombia', 'CR' => 'Costa Rica',
-		'CU' => 'Cuba', 'CV' => 'Cape Verde', 'CX' => 'Christmas Island', 'CY' => 'Cyprus',
-		'CZ' => 'Czech Republic', 'DE' => 'Germany', 'DJ' => 'Djibouti', 'DK' => 'Denmark',
-		'DM' => 'Dominica', 'DO' => 'Dominican Republic', 'DZ' => 'Algeria',
-		'EC' => 'Ecuador', 'EE' => 'Estonia', 'EG' => 'Egypt', 'EH' => 'Western Sahara',
-		'ER' => 'Eritrea', 'ES' => 'Spain', 'ET' => 'Ethiopia', 'FI' => 'Finland',
-		'FJ' => 'Fiji', 'FK' => 'Falkland Islands (Malvinas)', 'FM' => 'Micronesia, Federated States of',
-		'FO' => 'Faroe Islands', 'FR' => 'France', 'GA' => 'Gabon', 'GB' => 'United Kingdom',
-		'GD' => 'Grenada', 'GE' => 'Georgia', 'GF' => 'French Guiana', 'GG' => 'Guernsey',
-		'GH' => 'Ghana', 'GI' => 'Gibraltar', 'GL' => 'Greenland', 'GM' => 'Gambia',
-		'GN' => 'Guinea', 'GP' => 'Guadeloupe', 'GQ' => 'Equatorial Guinea', 'GR' => 'Greece',
-		'GS' => 'South Georgia and the South Sandwich Islands', 'GT' => 'Guatemala',
-		'GU' => 'Guam', 'GW' => 'Guinea-Bissau', 'GY' => 'Guyana', 'HK' => 'Hong Kong',
-		'HM' => 'Heard Island and McDonald Islands', 'HN' => 'Honduras', 'HR' => 'Croatia',
-		'HT' => 'Haiti', 'HU' => 'Hungary', 'ID' => 'Indonesia', 'IE' => 'Ireland',
-		'IL' => 'Israel', 'IM' => 'Isle of Man', 'IN' => 'India', 'IO' => 'British Indian Ocean Territory',
-		'IQ' => 'Iraq', 'IR' => 'Iran, Islamic Republic of', 'IS' => 'Iceland',
-		'IT' => 'Italy', 'JE' => 'Jersey', 'JM' => 'Jamaica', 'JO' => 'Jordan',
-		'JP' => 'Japan', 'KE' => 'Kenya', 'KG' => 'Kyrgyzstan', 'KH' => 'Cambodia',
-		'KI' => 'Kiribati', 'KM' => 'Comoros', 'KN' => 'Saint Kitts and Nevis',
-		'KP' => 'Korea, Democratic People\'s Republic of', 'KR' => 'Korea, Republic of',
-		'KW' => 'Kuwait', 'KY' => 'Cayman Islands', 'KZ' => 'Kazakhstan',
-		'LA' => 'Lao People\'s Democratic Republic', 'LB' => 'Lebanon',
-		'LC' => 'Saint Lucia', 'LI' => 'Liechtenstein', 'LK' => 'Sri Lanka',
-		'LR' => 'Liberia', 'LS' => 'Lesotho', 'LT' => 'Lithuania', 'LU' => 'Luxembourg',
-		'LV' => 'Latvia', 'LY' => 'Libyan Arab Jamahiriya', 'MA' => 'Morocco',
-		'MC' => 'Monaco', 'MD' => 'Moldova, Republic of', 'ME' => 'Montenegro',
-		'MF' => 'Saint Martin (French part)', 'MG' => 'Madagascar', 'MH' => 'Marshall Islands',
-		'MK' => 'Macedonia, the former Yugoslav Republic of', 'ML' => 'Mali',
-		'MM' => 'Myanmar', 'MN' => 'Mongolia', 'MO' => 'Macao', 'MP' => 'Northern Mariana Islands',
-		'MQ' => 'Martinique', 'MR' => 'Mauritania', 'MS' => 'Montserrat', 'MT' => 'Malta',
-		'MU' => 'Mauritius', 'MV' => 'Maldives', 'MW' => 'Malawi', 'MX' => 'Mexico',
-		'MY' => 'Malaysia', 'MZ' => 'Mozambique', 'NA' => 'Namibia', 'NC' => 'New Caledonia',
-		'NE' => 'Niger', 'NF' => 'Norfolk Island', 'NG' => 'Nigeria', 'NI' => 'Nicaragua',
-		'NL' => 'Netherlands', 'NO' => 'Norway', 'NP' => 'Nepal', 'NR' => 'Nauru', 'NU' => 'Niue',
-		'NZ' => 'New Zealand', 'OM' => 'Oman', 'PA' => 'Panama', 'PE' => 'Peru', 'PF' => 'French Polynesia',
-		'PG' => 'Papua New Guinea', 'PH' => 'Philippines', 'PK' => 'Pakistan', 'PL' => 'Poland',
-		'PM' => 'Saint Pierre and Miquelon', 'PN' => 'Pitcairn', 'PR' => 'Puerto Rico',
-		'PS' => 'Palestinian Territory, Occupied', 'PT' => 'Portugal', 'PW' => 'Palau',
-		'PY' => 'Paraguay', 'QA' => 'Qatar', 'RE' => 'Reunion', 'RO' => 'Romania',
-		'RS' => 'Serbia', 'RU' => 'Russian Federation', 'RW' => 'Rwanda', 'SA' => 'Saudi Arabia',
-		'SB' => 'Solomon Islands', 'SC' => 'Seychelles', 'SD' => 'Sudan', 'SE' => 'Sweden',
-		'SG' => 'Singapore', 'SH' => 'Saint Helena, Ascension and Tristan da Cunha',
-		'SI' => 'Slovenia', 'SJ' => 'Svalbard and Jan Mayen', 'SK' => 'Slovakia',
-		'SL' => 'Sierra Leone', 'SM' => 'San Marino', 'SN' => 'Senegal', 'SO' => 'Somalia',
-		'SR' => 'Suriname', 'ST' => 'Sao Tome and Principe', 'SV' => 'El Salvador',
-		'SY' => 'Syrian Arab Republic', 'SZ' => 'Swaziland', 'TC' => 'Turks and Caicos Islands',
-		'TD' => 'Chad', 'TF' => 'French Southern Territories', 'TG' => 'Togo',
-		'TH' => 'Thailand', 'TJ' => 'Tajikistan', 'TK' => 'Tokelau', 'TL' => 'Timor-Leste',
-		'TM' => 'Turkmenistan', 'TN' => 'Tunisia', 'TO' => 'Tonga', 'TR' => 'Turkey',
-		'TT' => 'Trinidad and Tobago', 'TV' => 'Tuvalu', 'TW' => 'Taiwan, Province of China',
-		'TZ' => 'Tanzania, United Republic of', 'UA' => 'Ukraine', 'UG' => 'Uganda',
-		'UM' => 'United States Minor Outlying Islands', 'US' => 'United States',
-		'UY' => 'Uruguay', 'UZ' => 'Uzbekistan', 'VA' => 'Holy See (Vatican City State)',
-		'VC' => 'Saint Vincent and the Grenadines', 'VE' => 'Venezuela, Bolivarian Republic of',
-		'VG' => 'Virgin Islands, British', 'VI' => 'Virgin Islands, U.S.', 'VN' => 'Viet Nam',
-		'VU' => 'Vanuatu', 'WF' => 'Wallis and Futuna', 'WS' => 'Samoa', 'YE' => 'Yemen',
-		'YT' => 'Mayotte', 'ZA' => 'South Africa', 'ZM' => 'Zambia', 'ZW' => 'Zimbabwe'
+		'AD' => 'Andorra',
+		'AE' => 'United Arab Emirates',
+		'AF' => 'Afghanistan',
+		'AG' => 'Antigua and Barbuda',
+		'AI' => 'Anguilla',
+		'AL' => 'Albania',
+		'AM' => 'Armenia',
+		'AN' => 'Netherlands Antilles',
+		'AO' => 'Angola',
+		'AQ' => 'Antarctica',
+		'AR' => 'Argentina',
+		'AS' => 'American Samoa',
+		'AT' => 'Austria',
+		'AU' => 'Australia',
+		'AW' => 'Aruba',
+		'AX' => 'Aland Islands',
+		'AZ' => 'Azerbaijan',
+		'BA' => 'Bosnia and Herzegovina',
+		'BB' => 'Barbados',
+		'BD' => 'Bangladesh',
+		'BE' => 'Belgium',
+		'BF' => 'Burkina Faso',
+		'BG' => 'Bulgaria',
+		'BH' => 'Bahrain',
+		'BI' => 'Burundi',
+		'BJ' => 'Benin',
+		'BL' => 'Saint Barthélemy',
+		'BM' => 'Bermuda',
+		'BN' => 'Brunei Darussalam',
+		'BO' => 'Bolivia, Plurinational State of',
+		'BR' => 'Brazil',
+		'BS' => 'Bahamas',
+		'BT' => 'Bhutan',
+		'BV' => 'Bouvet Island',
+		'BW' => 'Botswana',
+		'BY' => 'Belarus',
+		'BZ' => 'Belize',
+		'CA' => 'Canada',
+		'CC' => 'Cocos (Keeling) Islands',
+		'CD' => 'Congo, the Democratic Republic of the',
+		'CF' => 'Central African Republic',
+		'CG' => 'Congo',
+		'CH' => 'Switzerland',
+		'CI' => 'Cote d\'Ivoire',
+		'CK' => 'Cook Islands',
+		'CL' => 'Chile',
+		'CM' => 'Cameroon',
+		'CN' => 'China',
+		'CO' => 'Colombia',
+		'CR' => 'Costa Rica',
+		'CU' => 'Cuba',
+		'CV' => 'Cape Verde',
+		'CX' => 'Christmas Island',
+		'CY' => 'Cyprus',
+		'CZ' => 'Czech Republic',
+		'DE' => 'Germany',
+		'DJ' => 'Djibouti',
+		'DK' => 'Denmark',
+		'DM' => 'Dominica',
+		'DO' => 'Dominican Republic',
+		'DZ' => 'Algeria',
+		'EC' => 'Ecuador',
+		'EE' => 'Estonia',
+		'EG' => 'Egypt',
+		'EH' => 'Western Sahara',
+		'ER' => 'Eritrea',
+		'ES' => 'Spain',
+		'ET' => 'Ethiopia',
+		'FI' => 'Finland',
+		'FJ' => 'Fiji',
+		'FK' => 'Falkland Islands (Malvinas)',
+		'FM' => 'Micronesia, Federated States of',
+		'FO' => 'Faroe Islands',
+		'FR' => 'France',
+		'GA' => 'Gabon',
+		'GB' => 'United Kingdom',
+		'GD' => 'Grenada',
+		'GE' => 'Georgia',
+		'GF' => 'French Guiana',
+		'GG' => 'Guernsey',
+		'GH' => 'Ghana',
+		'GI' => 'Gibraltar',
+		'GL' => 'Greenland',
+		'GM' => 'Gambia',
+		'GN' => 'Guinea',
+		'GP' => 'Guadeloupe',
+		'GQ' => 'Equatorial Guinea',
+		'GR' => 'Greece',
+		'GS' => 'South Georgia and the South Sandwich Islands',
+		'GT' => 'Guatemala',
+		'GU' => 'Guam',
+		'GW' => 'Guinea-Bissau',
+		'GY' => 'Guyana',
+		'HK' => 'Hong Kong',
+		'HM' => 'Heard Island and McDonald Islands',
+		'HN' => 'Honduras',
+		'HR' => 'Croatia',
+		'HT' => 'Haiti',
+		'HU' => 'Hungary',
+		'ID' => 'Indonesia',
+		'IE' => 'Ireland',
+		'IL' => 'Israel',
+		'IM' => 'Isle of Man',
+		'IN' => 'India',
+		'IO' => 'British Indian Ocean Territory',
+		'IQ' => 'Iraq',
+		'IR' => 'Iran, Islamic Republic of',
+		'IS' => 'Iceland',
+		'IT' => 'Italy',
+		'JE' => 'Jersey',
+		'JM' => 'Jamaica',
+		'JO' => 'Jordan',
+		'JP' => 'Japan',
+		'KE' => 'Kenya',
+		'KG' => 'Kyrgyzstan',
+		'KH' => 'Cambodia',
+		'KI' => 'Kiribati',
+		'KM' => 'Comoros',
+		'KN' => 'Saint Kitts and Nevis',
+		'KP' => 'Korea, Democratic People\'s Republic of',
+		'KR' => 'Korea, Republic of',
+		'KW' => 'Kuwait',
+		'KY' => 'Cayman Islands',
+		'KZ' => 'Kazakhstan',
+		'LA' => 'Lao People\'s Democratic Republic',
+		'LB' => 'Lebanon',
+		'LC' => 'Saint Lucia',
+		'LI' => 'Liechtenstein',
+		'LK' => 'Sri Lanka',
+		'LR' => 'Liberia',
+		'LS' => 'Lesotho',
+		'LT' => 'Lithuania',
+		'LU' => 'Luxembourg',
+		'LV' => 'Latvia',
+		'LY' => 'Libyan Arab Jamahiriya',
+		'MA' => 'Morocco',
+		'MC' => 'Monaco',
+		'MD' => 'Moldova, Republic of',
+		'ME' => 'Montenegro',
+		'MF' => 'Saint Martin (French part)',
+		'MG' => 'Madagascar',
+		'MH' => 'Marshall Islands',
+		'MK' => 'Macedonia, the former Yugoslav Republic of',
+		'ML' => 'Mali',
+		'MM' => 'Myanmar',
+		'MN' => 'Mongolia',
+		'MO' => 'Macao',
+		'MP' => 'Northern Mariana Islands',
+		'MQ' => 'Martinique',
+		'MR' => 'Mauritania',
+		'MS' => 'Montserrat',
+		'MT' => 'Malta',
+		'MU' => 'Mauritius',
+		'MV' => 'Maldives',
+		'MW' => 'Malawi',
+		'MX' => 'Mexico',
+		'MY' => 'Malaysia',
+		'MZ' => 'Mozambique',
+		'NA' => 'Namibia',
+		'NC' => 'New Caledonia',
+		'NE' => 'Niger',
+		'NF' => 'Norfolk Island',
+		'NG' => 'Nigeria',
+		'NI' => 'Nicaragua',
+		'NL' => 'Netherlands',
+		'NO' => 'Norway',
+		'NP' => 'Nepal',
+		'NR' => 'Nauru',
+		'NU' => 'Niue',
+		'NZ' => 'New Zealand',
+		'OM' => 'Oman',
+		'PA' => 'Panama',
+		'PE' => 'Peru',
+		'PF' => 'French Polynesia',
+		'PG' => 'Papua New Guinea',
+		'PH' => 'Philippines',
+		'PK' => 'Pakistan',
+		'PL' => 'Poland',
+		'PM' => 'Saint Pierre and Miquelon',
+		'PN' => 'Pitcairn',
+		'PR' => 'Puerto Rico',
+		'PS' => 'Palestinian Territory, Occupied',
+		'PT' => 'Portugal',
+		'PW' => 'Palau',
+		'PY' => 'Paraguay',
+		'QA' => 'Qatar',
+		'RE' => 'Reunion',
+		'RO' => 'Romania',
+		'RS' => 'Serbia',
+		'RU' => 'Russian Federation',
+		'RW' => 'Rwanda',
+		'SA' => 'Saudi Arabia',
+		'SB' => 'Solomon Islands',
+		'SC' => 'Seychelles',
+		'SD' => 'Sudan',
+		'SE' => 'Sweden',
+		'SG' => 'Singapore',
+		'SH' => 'Saint Helena, Ascension and Tristan da Cunha',
+		'SI' => 'Slovenia',
+		'SJ' => 'Svalbard and Jan Mayen',
+		'SK' => 'Slovakia',
+		'SL' => 'Sierra Leone',
+		'SM' => 'San Marino',
+		'SN' => 'Senegal',
+		'SO' => 'Somalia',
+		'SR' => 'Suriname',
+		'ST' => 'Sao Tome and Principe',
+		'SV' => 'El Salvador',
+		'SY' => 'Syrian Arab Republic',
+		'SZ' => 'Swaziland',
+		'TC' => 'Turks and Caicos Islands',
+		'TD' => 'Chad',
+		'TF' => 'French Southern Territories',
+		'TG' => 'Togo',
+		'TH' => 'Thailand',
+		'TJ' => 'Tajikistan',
+		'TK' => 'Tokelau',
+		'TL' => 'Timor-Leste',
+		'TM' => 'Turkmenistan',
+		'TN' => 'Tunisia',
+		'TO' => 'Tonga',
+		'TR' => 'Turkey',
+		'TT' => 'Trinidad and Tobago',
+		'TV' => 'Tuvalu',
+		'TW' => 'Taiwan, Province of China',
+		'TZ' => 'Tanzania, United Republic of',
+		'UA' => 'Ukraine',
+		'UG' => 'Uganda',
+		'UM' => 'United States Minor Outlying Islands',
+		'US' => 'United States',
+		'UY' => 'Uruguay',
+		'UZ' => 'Uzbekistan',
+		'VA' => 'Holy See (Vatican City State)',
+		'VC' => 'Saint Vincent and the Grenadines',
+		'VE' => 'Venezuela, Bolivarian Republic of',
+		'VG' => 'Virgin Islands, British',
+		'VI' => 'Virgin Islands, U.S.',
+		'VN' => 'Viet Nam',
+		'VU' => 'Vanuatu',
+		'WF' => 'Wallis and Futuna',
+		'WS' => 'Samoa',
+		'YE' => 'Yemen',
+		'YT' => 'Mayotte',
+		'ZA' => 'South Africa',
+		'ZM' => 'Zambia',
+		'ZW' => 'Zimbabwe'
 	);
 
 	public static function decodeCountry($cCode)
 	{
 		if (array_key_exists($cCode, self::$countries))
 		{
-			return self::$countries[$cCode];
+			return self::$countries[ $cCode ];
 		}
 		else
 		{
@@ -120,7 +293,7 @@ class ArsHelperSelect
 
 	public static function categorytypes($selected = null, $id = 'type', $attribs = array())
 	{
-		$options = array();
+		$options   = array();
 		$options[] = JHTML::_('select.option', '', '- ' . JText::_('COM_ARS_CATEGORIES_TYPE_SELECT') . ' -');
 		$options[] = JHTML::_('select.option', 'normal', JText::_('COM_ARS_CATEGORIES_TYPE_NORMAL'));
 		$options[] = JHTML::_('select.option', 'bleedingedge', JText::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE'));
@@ -154,7 +327,7 @@ class ArsHelperSelect
 
 	public static function published($selected = null, $id = 'enabled', $attribs = array())
 	{
-		$options = array();
+		$options   = array();
 		$options[] = JHTML::_('select.option', '', '- ' . JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL') . ' -');
 		$options[] = JHTML::_('select.option', 0, JText::_('JUNPUBLISHED'));
 		$options[] = JHTML::_('select.option', 1, JText::_('JPUBLISHED'));
@@ -185,7 +358,7 @@ class ArsHelperSelect
 		{
 			$groups = ArsHelperFiltering::getAkeebaGroups();
 
-			$options = array();
+			$options   = array();
 			$options[] = JHTML::_('select.option', '', '- ' . JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL') . ' -');
 
 			if (count($groups))
@@ -198,8 +371,8 @@ class ArsHelperSelect
 					'multiple' => 'multiple',
 					'size'     => 5
 				);
-				$attribs = array_merge($default_attribs, $attribs);
-				$html = self::genericlist($options, $name . '[]', $attribs, $selected, $name);
+				$attribs         = array_merge($default_attribs, $attribs);
+				$html            = self::genericlist($options, $name . '[]', $attribs, $selected, $name);
 			}
 		}
 
@@ -227,7 +400,7 @@ class ArsHelperSelect
 		{
 			$groups = PayplansApi::getPlans();
 
-			$options = array();
+			$options   = array();
 			$options[] = JHTML::_('select.option', '', '- ' . JText::_('COM_ARS_COMMON_STATE_SELECT_LABEL') . ' -');
 
 			if (count($groups))
@@ -240,8 +413,8 @@ class ArsHelperSelect
 					'multiple' => 'multiple',
 					'size'     => 5
 				);
-				$attribs = array_merge($default_attribs, $attribs);
-				$html = self::genericlist($options, $name . '[]', $attribs, $selected, $name);
+				$attribs         = array_merge($default_attribs, $attribs);
+				$html            = self::genericlist($options, $name . '[]', $attribs, $selected, $name);
 			}
 		}
 		else
@@ -255,10 +428,10 @@ class ArsHelperSelect
 	public static function categories($selected = null, $id = 'category', $attribs = array())
 	{
 		$items = F0FModel::getTmpInstance('Categories', 'ArsModel')
-						 ->nobeunpub(1)
-						 ->getItemList(true);
+		                 ->nobeunpub(1)
+		                 ->getItemList(true);
 
-		$options = array();
+		$options   = array();
 		$options[] = JHTML::_('select.option', 0, '- ' . JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -');
 		if (count($items))
 		{
@@ -273,7 +446,7 @@ class ArsHelperSelect
 
 	public static function maturities($selected = null, $id = 'maturity', $attribs = array())
 	{
-		$options = array();
+		$options   = array();
 		$options[] = JHTML::_('select.option', '', '- ' . JText::_('COM_ARS_RELEASES_MATURITY_SELECT') . ' -');
 
 		$maturities = array('alpha', 'beta', 'rc', 'stable');
@@ -307,9 +480,9 @@ class ArsHelperSelect
 			{
 				if (!array_key_exists($item->cat_title, $cache))
 				{
-					$cache[$item->cat_title] = array();
+					$cache[ $item->cat_title ] = array();
 				}
-				$cache[$item->cat_title][] = (object)array('id' => $item->id, 'version' => $item->version);
+				$cache[ $item->cat_title ][] = (object) array('id' => $item->id, 'version' => $item->version);
 			}
 
 			foreach ($cache as $category => $releases)
@@ -343,7 +516,7 @@ class ArsHelperSelect
 
 	public static function itemtypes($selected = null, $id = 'type', $attribs = array())
 	{
-		$options = array();
+		$options   = array();
 		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_ITEMS_TYPE_SELECT') . ' -');
 
 		$types = array('file', 'link');
@@ -359,7 +532,7 @@ class ArsHelperSelect
 	{
 		require_once JPATH_ADMINISTRATOR . '/components/com_ars/helpers/amazons3.php';
 
-		$options = array();
+		$options   = array();
 		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
 
 		// Try to figure out a directory
@@ -368,18 +541,18 @@ class ArsHelperSelect
 		{
 			// Get the release
 			$release = F0FModel::getTmpInstance('Releases', 'ArsModel')
-							   ->getItem((int)$release_id);
+			                   ->getItem((int) $release_id);
 
 			// Get the category
 			$category = F0FModel::getTmpInstance('Categories', 'ArsModel')
-								->getItem((int)$release->category_id);
+			                    ->getItem((int) $release->category_id);
 
 			// Get which directory to use
 			$directory = $category->directory;
 
 			$potentialPrefix = substr($directory, 0, 5);
 			$potentialPrefix = strtolower($potentialPrefix);
-			$useS3 = ($potentialPrefix == 's3://');
+			$useS3           = ($potentialPrefix == 's3://');
 
 			if ($useS3)
 			{
@@ -388,7 +561,7 @@ class ArsHelperSelect
 				{
 					$directory = '';
 				}
-				$s3 = ArsHelperAmazons3::getInstance();
+				$s3    = ArsHelperAmazons3::getInstance();
 				$items = $s3->getBucket('', $directory . '/');
 				if (empty($items))
 				{
@@ -418,9 +591,9 @@ class ArsHelperSelect
 		if (!empty($directory))
 		{
 			$items = F0FModel::getTmpInstance('Items', 'ArsModel')
-							 ->category($release->category_id)
-							 ->release('false')
-							 ->getItemList(true);
+			                 ->category($release->category_id)
+			                 ->release('false')
+			                 ->getItemList(true);
 
 			if (!empty($items))
 			{
@@ -454,7 +627,7 @@ class ArsHelperSelect
 		{
 			if ($useS3)
 			{
-				$s3 = ArsHelperAmazons3::getInstance();
+				$s3       = ArsHelperAmazons3::getInstance();
 				$allFiles = $s3->getBucket('', $directory, null, null, null, true);
 				if (!empty($allFiles))
 				{
@@ -472,7 +645,7 @@ class ArsHelperSelect
 			else
 			{
 				$allFiles = JFolder::files($directory, '.', 3, true);
-				$root = str_replace('\\', '/', $directory);
+				$root     = str_replace('\\', '/', $directory);
 				if (!empty($allFiles))
 				{
 					foreach ($allFiles as $aFile)
@@ -503,8 +676,8 @@ class ArsHelperSelect
 
 	public static function updatetypes($selected = null, $id = 'type', $attribs = array())
 	{
-		$types = array('components', 'libraries', 'modules', 'packages', 'plugins', 'files', 'templates');
-		$options = array();
+		$types     = array('components', 'libraries', 'modules', 'packages', 'plugins', 'files', 'templates');
+		$options   = array();
 		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_UPDATETYPES_SELECT') . ' -');
 		foreach ($types as $type)
 		{
@@ -517,9 +690,9 @@ class ArsHelperSelect
 	public static function updatestreams($selected = null, $id = 'updatestream', $attribs = array())
 	{
 		$items = F0FModel::getTmpInstance('Updatestreams', 'ArsModel')
-						 ->getItemList(true);
+		                 ->getItemList(true);
 
-		$options = array();
+		$options   = array();
 		$options[] = JHTML::_('select.option', 0, '- ' . JText::_('LBL_ITEMS_UPDATESTREAM_SELECT') . ' -');
 		if (count($items))
 		{
@@ -543,7 +716,7 @@ class ArsHelperSelect
 
 		if (is_null($levelMap))
 		{
-			$db = JFactory::getDBO();
+			$db    = JFactory::getDBO();
 			$query = 'SELECT `id`, `title` FROM `#__viewlevels`';
 			$db->setQuery($query);
 			$levelMap = $db->loadAssocList('id', 'title');
@@ -551,7 +724,7 @@ class ArsHelperSelect
 
 		if (array_key_exists($access_level_id, $levelMap))
 		{
-			return $levelMap[$access_level_id];
+			return $levelMap[ $access_level_id ];
 		}
 		else
 		{
@@ -563,7 +736,7 @@ class ArsHelperSelect
 	{
 		JLoader::import('joomla.language.helper');
 		$languages = JLanguageHelper::getLanguages('lang_code');
-		$options = array();
+		$options   = array();
 		if ($show_select)
 		{
 			$options[] = JHTML::_('select.option', '', '---');
@@ -594,14 +767,14 @@ class ArsHelperSelect
 			{
 				foreach ($languages as $key => $lang)
 				{
-					$langs[$key] = $lang->title;
+					$langs[ $key ] = $lang->title;
 				}
 			}
 		}
 
 		if (array_key_exists($langCode, $langs))
 		{
-			return $langs[$langCode];
+			return $langs[ $langCode ];
 		}
 		else
 		{
@@ -612,9 +785,9 @@ class ArsHelperSelect
 	public static function vgroups($selected = null, $id = 'vgroup', $attribs = array())
 	{
 		$items = F0FModel::getTmpInstance('Vgroups', 'ArsModel')
-						 ->getItemList(true);
+		                 ->getItemList(true);
 
-		$options = array();
+		$options   = array();
 		$options[] = JHTML::_('select.option', 0, '- ' . JText::_('LBL_VGROUP_SELECT') . ' -');
 		if (count($items))
 		{
@@ -629,7 +802,7 @@ class ArsHelperSelect
 
 	public static function clientid($selected = null, $id = 'clientid', $attribs = array())
 	{
-		$options = array();
+		$options   = array();
 		$options[] = JHTML::_('select.option', '1', JText::_('LBL_CLIENTID_BACKEND'));
 		$options[] = JHTML::_('select.option', '0', JText::_('LBL_CLIENTID_FRONTEND'));
 
@@ -640,19 +813,19 @@ class ArsHelperSelect
 	{
 		static $items = array();
 
-		if (!isset($items[$id]))
+		if (!isset($items[ $id ]))
 		{
-			$items[$id] = clone F0FModel::getTmpInstance('Environments', 'ArsModel')
-										->getItem($id);
+			$items[ $id ] = clone F0FModel::getTmpInstance('Environments', 'ArsModel')
+			                              ->getItem($id);
 		}
 
 		$base_folder = rtrim(JURI::base(), '/');
-		if (substr($base_folder, -13) == 'administrator')
+		if (substr($base_folder, - 13) == 'administrator')
 		{
-			$base_folder = rtrim(substr($base_folder, 0, -13), '/');
+			$base_folder = rtrim(substr($base_folder, 0, - 13), '/');
 		}
 
-		return JHtml::image($base_folder . '/media/com_ars/environments/' . $items[$id]->icon, $items[$id]->title, $attribs);
+		return JHtml::image($base_folder . '/media/com_ars/environments/' . $items[ $id ]->icon, $items[ $id ]->title, $attribs);
 	}
 
 	public static function environmenticons($selected = null, $id = 'icon', $attribs = array())
@@ -661,7 +834,7 @@ class ArsHelperSelect
 		$directory = JPATH_ROOT . '/media/com_ars/environments';
 		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
 
-		$files = JFolder :: files($directory);
+		$files = JFolder:: files($directory);
 
 		if (!empty($files))
 		{
@@ -677,9 +850,11 @@ class ArsHelperSelect
 	public static function environments($selected = null, $id = 'environments', $attribs = array())
 	{
 		$items = F0FModel::getTmpInstance('Environments', 'ArsModel')
-						 ->getItemList(true);
+		                 ->filter_order('title')
+		                 ->filter_order_Dir('desc')
+		                 ->getItemList(true);
 
-		$options = array();
+		$options   = array();
 		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_ITEMS_ENVIRONMENT_SELECT') . ' -');
 
 		if (!empty($items))
@@ -702,21 +877,21 @@ class ArsHelperSelect
 		if (is_null($vgroups))
 		{
 			$items = F0FModel::getTmpInstance('Vgroups', 'ArsModel')
-							 ->published(1)
-							 ->getItemList(true);
+			                 ->published(1)
+			                 ->getItemList(true);
 
 			if (count($items))
 			{
 				foreach ($items as $item)
 				{
-					$vgroups[$item->id] = $item->title;
+					$vgroups[ $item->id ] = $item->title;
 				}
 			}
 		}
 
 		if (array_key_exists($vgroup_id, $vgroups))
 		{
-			return $vgroups[$vgroup_id];
+			return $vgroups[ $vgroup_id ];
 		}
 		else
 		{
