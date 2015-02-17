@@ -63,6 +63,7 @@ class plgButtonArslink extends JPlugin
 		$tmpl = $app->getTemplate();
 		$doc->addStyleDeclaration(".button2-left .arsitem {background: url(templates/$tmpl/images/j_button2_readmore.png) 100% 0 no-repeat;}");
 
+		JHtml::_('behavior.core');
 		JHtml::_('behavior.modal');
 
 		/*

@@ -9,6 +9,7 @@ defined('_JEXEC') or die();
 
 /** @var ArsViewRelease $this */
 
+JHtml::_('behavior.core');
 JHTML::_('behavior.calendar');
 JHtml::_('formbehavior.chosen', 'select');
 

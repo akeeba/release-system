@@ -11,6 +11,7 @@ defined('_JEXEC') or die();
 
 JLoader::import('joomla.utilities.date');
 
+JHtml::_('behavior.core');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 

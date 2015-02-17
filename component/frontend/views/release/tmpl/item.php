@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 // Incoming var injected by loadAnyTemplate
 if(!isset($userAccess)) $userAccess = array();
 
+JHtml::_('behavior.core');
 JHtml::_('behavior.tooltip');
 
 $Itemid = empty($Itemid) ? "" : "&Itemid=$Itemid";

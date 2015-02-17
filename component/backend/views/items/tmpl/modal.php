@@ -18,6 +18,7 @@ if (substr($base_folder, -13) == 'administrator') $base_folder = rtrim(substr($b
 
 $function = $this->input->getCmd('function', 'arsSelectItem');
 
+JHtml::_('behavior.core');
 JHtml::_('formbehavior.chosen', 'select');
 
 $this->loadHelper('select');

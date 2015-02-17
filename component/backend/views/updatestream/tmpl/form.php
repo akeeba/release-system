@@ -9,6 +9,7 @@ defined('_JEXEC') or die();
 
 /** @var F0FViewHtml $this */
 
+JHtml::_('behavior.core');
 JHtml::_('formbehavior.chosen', 'select');
 
 $this->loadHelper('select');

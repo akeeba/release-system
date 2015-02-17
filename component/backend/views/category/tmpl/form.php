@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 
 $editor = JFactory::getEditor();
 
+JHtml::_('behavior.core');
 JHtml::_('formbehavior.chosen', 'select');
 
 $this->loadHelper('select');

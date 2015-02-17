@@ -9,6 +9,7 @@ defined('_JEXEC') or die();
 
 /** @var ArsViewRelease $this */
 
+JHtml::_('behavior.core');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
