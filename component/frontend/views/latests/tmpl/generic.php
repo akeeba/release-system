@@ -27,13 +27,13 @@ defined('_JEXEC') or die();
 	<?php if ($vgroup->numitems[$renderSection] == 0) {
 		continue;
 	} ?>
-	<div class="ars-vgroup-<?php $vgroup->id ?>">
+	<div class="ars-vgroup-<?php echo $vgroup->id ?>">
 		<?php if($vgroup->title): ?>
-		<h3 class="ars-vgroup-<?php $vgroup->id ?>-title">
+		<h3 class="ars-vgroup-<?php echo $vgroup->id ?>-title">
 			<?php echo $vgroup->title; ?>
 		</h3>
 		<?php if ($vgroup->description): ?>
-		<div class="ars-vgroup-<?php $vgroup->id ?>-description">
+		<div class="ars-vgroup-<?php echo $vgroup->id ?>-description">
 			<?php echo $vgroup->description; ?>
 		</div>
 		<?php endif; ?>
