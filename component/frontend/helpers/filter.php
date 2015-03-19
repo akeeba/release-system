@@ -220,9 +220,9 @@ class ArsHelperFilter
 	 *
 	 * @return mixed
 	 */
-	static public function myDownloadID()
+	static public function myDownloadID($user_id = null)
 	{
-		$user = JFactory::getUser();
+		$user = JFactory::getUser($user_id);
 
 		if ($user->guest)
 		{
