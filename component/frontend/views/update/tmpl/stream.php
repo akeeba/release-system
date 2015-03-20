@@ -173,11 +173,11 @@ ComArsRouter::$routeHtml = false;
 				<maintainerurl><?php echo JURI::base(); ?></maintainerurl>
 				<section>Updates</section>
 				<targetplatform name="<?php echo $platformName ?>" version="<?php echo $platformVersion ?>" />
-		<?php if (($platformName == 'joomla') && (version_compare($platformVersion, '2.5', 'lt'))): ?>
-					<client_id><?php echo $item->client_id ?></client_id>
-		<?php else: ?>
-					<client><?php echo $item->client_id ? 'administrator' : 'site' ?></client>
-		<?php endif; ?>
+<?php if (($platformName == 'joomla') && (version_compare($platformVersion, '2.5', 'lt'))): ?>
+				<client_id><?php echo (int) $item->client_id ?></client_id>
+<?php else: ?>
+				<client><?php echo (int) $item->client_id ?></client>
+<?php endif; ?>
 				<folder><?php echo empty($item->folder) ? '' : $item->folder ?></folder>
 			</update>
 		<?php
