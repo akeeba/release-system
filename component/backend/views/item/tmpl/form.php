@@ -18,6 +18,7 @@ $this->loadHelper('select');
 $this->loadHelper('filtering');
 
 F0FTemplateUtils::addCSS('media://com_ars/css/backend.css');
+F0FTemplateUtils::addJS('media://com_ars/js/gui-helpers.js');
 
 if ($this->item->id == 0)
 {
@@ -247,10 +248,6 @@ if ($this->item->id == 0)
 			}
 		})(akeeba.jQuery);
 		/**/
-	}
-
-	function basename(path) {
-   		return path.split(/[\\/]/).pop();
 	}
 
 	function onLinkBlur()
