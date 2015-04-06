@@ -235,7 +235,8 @@ if ($this->item->id == 0)
 					},
 					function (data, textStatus)
 					{
-						$('#filename').html(data);
+						$('#filename').html(data).trigger('liszt:updated');
+						onFileChange();
 					}
 				)
 			}
@@ -246,6 +247,10 @@ if ($this->item->id == 0)
 			}
 		})(akeeba.jQuery);
 		/**/
+	}
+
+	function basename(path) {
+   		return path.split(/[\\/]/).pop();
 	}
 
 	function onLinkBlur()
@@ -261,8 +266,8 @@ if ($this->item->id == 0)
 				{
 					newAlias = newAlias.substr(0, qmPos);
 				}
-				newAlias = newAlias.replace(' ', '-');
-				newAlias = newAlias.replace('.', '-');
+				newAlias = newAlias.replace(' ', '-', 'g');
+				newAlias = newAlias.replace('.', '-', 'g');
 				$('#alias').val(newAlias);
 			}
 		})(akeeba.jQuery);
@@ -273,8 +278,8 @@ if ($this->item->id == 0)
 		(function ($)
 		{
 			var newAlias = basename($('#filename').val());
-			newAlias = newAlias.replace(' ', '-');
-			newAlias = newAlias.replace('.', '-');
+			newAlias = newAlias.replace(' ', '-', 'g');
+			newAlias = newAlias.replace('.', '-', 'g');
 			$('#alias').val(newAlias);
 		})(akeeba.jQuery);
 	}
