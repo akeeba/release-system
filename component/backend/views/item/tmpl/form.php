@@ -236,7 +236,17 @@ if ($this->item->id == 0)
 					},
 					function (data, textStatus)
 					{
-						$('#filename').html(data).trigger('liszt:updated');
+						$('#filename').html(data);
+
+						try
+						{
+							$('#filename').trigger('liszt:updated');
+						}
+						catch (e)
+						{
+
+						}
+
 						onFileChange();
 					}
 				)
