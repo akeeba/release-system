@@ -6,7 +6,9 @@
 	Run "phing git" from the build directory to build everything except the docs
 -->
 <project name="AkeebaReleaseSystem" description="Akeeba Release System" default="git" >
-	<property file="./build.properties" />
+	<!-- Passwords etc are read from the build.properties file ABOVE the repository's root -->
+	<property file="../../build.properties" />
+
 	<!-- Default properties, set only if not already assigned in the build.properties file -->
 	<property name="dirs.root" value=".." />
 	<property name="dirs.component" value="../component" />
@@ -15,13 +17,15 @@
 	<property name="dirs.plugins" value="../plugins" />
 	<property name="dirs.release" value="../release" />
 	<property name="version" value="git" />
-	
 	<property name="dirs.bin" value="bin" />
 	<property name="dirs.bin.libxml" value="${dirs.bin}/libxml" />
 	<property name="dirs.bin.fop" value="${dirs.bin}/fop" />
 	<property name="dirs.bin.dbxsl" value="${dirs.bin}/dbxsl" />
 	<property name="dirs.bin.release" value="../release" />
-	<property name="dirs.documentation" value="../documentation" />	
+	<property name="dirs.documentation" value="../documentation" />
+
+	<property name="langbuilder.packagename" value="ars" />
+	<property name="langbuilder.software" value="Akeeba Release System" />
 
 	<taskdef name="zipme" classname="phingext.ZipmeTask" />
 	<taskdef name="gitversion" classname="phingext.GitVersionTask" />
