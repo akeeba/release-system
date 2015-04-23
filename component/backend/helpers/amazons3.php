@@ -403,7 +403,31 @@ class ArsHelperAmazons3 extends JObject
 	 */
 	public function getAuthenticatedURL($path)
 	{
-		return $this->s3Client->getObjectUrl(self::$bucket, $path, '+' . self::$timeForSignedRequests . ' seconds');
-	}
+		// Pre-signed URLs need to use the old S3 signature method. Therefore we need a new S3Client object.
 
+		$amazonCredentials = new Credentials(
+			self::$accessKey,
+			self::$secretKey
+		);
+
+		$clientOptions = array(
+			'credentials' => $amazonCredentials,
+			'scheme'      => self::$useSSL ? 'https' : 'http',
+			'signature'   => 's3',
+		);
+
+		if (self::$useSSL)
+		{
+			$clientOptions['ssl.certificate_authority'] = realpath(__DIR__ . '/../assets/cacert.pem');
+		}
+		else
+		{
+			$clientOptions['ssl.certificate_authority'] = false;
+		}
+
+		// Create the S3 client instance
+		$s3Client = \Akeeba\ARS\Amazon\Aws\S3\S3Client::factory($clientOptions);
+
+		return $s3Client->getObjectUrl(self::$bucket, $path, '+' . self::$timeForSignedRequests . ' seconds');
+	}
 }

@@ -1,6 +1,7 @@
 Version 2.5.1
 ================================================================================
 + Copy button in the Update Streams page
+# [HIGH] S3 authenticated downloads would fail if you're using the new v4 Amazon S3 API
 
 Version 2.5.0
 ================================================================================
