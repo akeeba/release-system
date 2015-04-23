@@ -117,6 +117,11 @@ class ArsToolbar extends F0FToolbar
 		$this->_onBrowseWithCopy();
 	}
 
+	public function onUpdatestreamsBrowse()
+	{
+		$this->_onBrowseWithCopy();
+	}
+
 	public function _onBrowseWithCopy()
 	{
 		// Set toolbar title
