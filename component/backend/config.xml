@@ -92,6 +92,15 @@
 	</fieldset>
 
 	<fieldset name="backend" label="COM_ARS_CONFIG_BACKEND_HEADER_LABEL" description="COM_ARS_CONFIG_BACKEND_HEADER_DESC" addformpath="/administrator/components/com_ars/elements">
+		<field name="usestrapper" type="list" default="3"
+			   label="COM_ARS_CONFIG_FRONTEND_USESTRAPPER_LABEL"
+			   description="COM_ARS_CONFIG_FRONTEND_USESTRAPPER_DESC">
+			<option value="0">COM_ARS_CONFIG_FRONTEND_USESTRAPPER_NONE</option>
+			<option value="1">COM_ARS_CONFIG_FRONTEND_USESTRAPPER_FRONTEND</option>
+			<option value="2">COM_ARS_CONFIG_FRONTEND_USESTRAPPER_BACKEND</option>
+			<option value="3">COM_ARS_CONFIG_FRONTEND_USESTRAPPER_BOTH</option>
+		</field >
+
 		<field name="graphswidth" type="list" default="8"
 			label="COM_ARS_CONFIG_BACKEND_GRAPHSWIDTH_LABEL"
 			description="COM_ARS_CONFIG_BACKEND_GRAPHSWIDTH_LABEL">
