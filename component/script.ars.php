@@ -1,10 +1,10 @@
 <?php
 /**
- * @package   AkeebaBackup
- * @copyright Copyright (c)2009-2014 Nicholas K. Dionysopoulos
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
- *
  */
+
 defined('_JEXEC') or die();
 
 // Load FOF if not already loaded
@@ -215,7 +215,7 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 			'administrator/components/com_ars/helpers',
 			'administrator/components/com_ars/models',
 			'administrator/components/com_ars/tables',
-			'administrator/components/com_ars/views',
+			'administrator/components/com_ars/tables',
 		)
 	);
 

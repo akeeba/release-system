@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   AkeebaSubs
+ * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  @package   AkeebaReleaseSystem
+  @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+  @license   GNU General Public License version 3, or later
+-->
 <config addfieldpath="/administrator/components/com_ars/elements">
 	<fieldset name="updatestream" label="COM_ARS_CONFIG_BACKEND_UPDATESTREAM_LABEL" description="COM_ARS_CONFIG_BACKEND_UPDATESTREAM_DESC">
 		<field name="updates_name" type="text" default="Downloads"
