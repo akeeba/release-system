@@ -5,7 +5,11 @@
 	$Id$
 */
 
-.icon-48-ars { background-image: url(../icons/ars_logo_48.png); }
+.icon-ars {
+    background-image: url(../icons/ars_logo_16.png);
+    width: 16px !important;
+    height: 16px !important;;
+}
 
 /*
  * UI Icons - 32x32

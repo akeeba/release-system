@@ -1,23 +1,33 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
-defined('_JEXEC') or die();
+namespace Akeeba\ReleaseSystem\Admin\Toolbar;
 
-class ArsToolbar extends F0FToolbar
+defined('_JEXEC') or die;
+
+use JToolBarHelper;
+use JText;
+
+class Toolbar extends \FOF30\Toolbar\Toolbar
 {
+	/**
+	 * Returns the views of the component to be displayed in the toolbar submenu
+	 *
+	 * @return  array  A list of all views, in the order to be displayed in the toolbar submenu
+	 */
 	protected function getMyViews()
 	{
 		$views = array(
-			'cpanels',
-			'categories',
-			'releases',
-			'items',
-			'updatestreams',
-			'logs',
+			'ControlPanel',
+			'Categories',
+			'Releases',
+			'Items',
+			'UpdateStreams',
+			'Logs',
 		);
 
 		return $views;
@@ -31,29 +41,36 @@ class ArsToolbar extends F0FToolbar
 		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
 	}
 
-	public function onImpjeds()
+	public function onControlPanels()
 	{
-		JToolBarHelper::title(JText::_($this->input->getCmd('option', 'com_foobar')) . ' &ndash; <small>' . JText::_('COM_ARS_TITLE_IMPJEDS') . '</small>', str_replace('com_', '', $this->input->getCmd('option', 'com_foobar')));
-		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
-
 		$this->renderSubmenu();
+
+		$option = $this->container->componentName;
+
+		JToolBarHelper::title(JText::_($option), str_replace('com_', '', $option));
+
+		JToolBarHelper::preferences($option);
 	}
 
 	public function onEnvironmentsBrowse()
 	{
+		$option = $this->container->componentName;
+
 		// Set toolbar title
-		$subtitle_key = $this->input->getCmd('option', 'com_foobar') . '_TITLE_' . strtoupper($this->input->getCmd('view', 'cpanel'));
-		JToolBarHelper::title(JText::_($this->input->getCmd('option', 'com_foobar')) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', str_replace('com_', '', $this->input->getCmd('option', 'com_foobar')));
+		$subtitle_key = $option . '_TITLE_ENVIRONMENTS';
+		JToolBarHelper::title(JText::_($option) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', str_replace('com_', '', $option));
 
 		// Add toolbar buttons
 		if ($this->perms->create)
 		{
 			JToolBarHelper::addNew();
 		}
+
 		if ($this->perms->edit)
 		{
 			JToolBarHelper::editList();
 		}
+
 		if ($this->perms->create || $this->perms->edit)
 		{
 			JToolBarHelper::divider();
@@ -61,7 +78,7 @@ class ArsToolbar extends F0FToolbar
 
 		if ($this->perms->delete)
 		{
-			$msg = JText::_($this->input->getCmd('option', 'com_foobar') . '_CONFIRM_DELETE');
+			$msg = JText::_($option . '_CONFIRM_DELETE');
 			JToolBarHelper::deleteList($msg);
 		}
 
@@ -73,13 +90,16 @@ class ArsToolbar extends F0FToolbar
 
 	public function onLogsBrowse()
 	{
+		$option = $this->container->componentName;
+
 		// Set toolbar title
-		$subtitle_key = $this->input->getCmd('option', 'com_foobar') . '_TITLE_' . strtoupper($this->input->getCmd('view', 'cpanel'));
-		JToolBarHelper::title(JText::_($this->input->getCmd('option', 'com_foobar')) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', str_replace('com_', '', $this->input->getCmd('option', 'com_foobar')));
+		$subtitle_key = $option . '_TITLE_LOGS';
+		JToolBarHelper::title(JText::_($option) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', str_replace('com_', '', $option));
 
 		if ($this->perms->delete)
 		{
-			$msg = JText::_($this->input->getCmd('option', 'com_foobar') . '_CONFIRM_DELETE');
+			$msg = JText::_($option . '_CONFIRM_DELETE');
+
 			JToolBarHelper::deleteList($msg);
 		}
 
@@ -91,7 +111,9 @@ class ArsToolbar extends F0FToolbar
 
 	public function onUploads()
 	{
-		JToolBarHelper::title(JText::_($this->input->getCmd('option', 'com_foobar')) . ' &ndash; <small>' . JText::_('COM_ARS_TITLE_UPLOADS') . '</small>', str_replace('com_', '', $this->input->getCmd('option', 'com_foobar')));
+		$option = $this->container->componentName;
+
+		JToolBarHelper::title(JText::_($option) . ' &ndash; <small>' . JText::_('COM_ARS_TITLE_UPLOADS') . '</small>', str_replace('com_', '', $option));
 		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
 
 		$this->renderSubmenu();
@@ -124,19 +146,24 @@ class ArsToolbar extends F0FToolbar
 
 	public function _onBrowseWithCopy()
 	{
+		$option = $this->container->componentName;
+		$view = $this->container->input->getCmd('view', 'ControlPanel');
+
 		// Set toolbar title
-		$subtitle_key = $this->input->getCmd('option', 'com_foobar') . '_TITLE_' . strtoupper($this->input->getCmd('view', 'cpanel'));
-		JToolBarHelper::title(JText::_($this->input->getCmd('option', 'com_foobar')) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', str_replace('com_', '', $this->input->getCmd('option', 'com_foobar')));
+		$subtitle_key = $option . '_TITLE_' . $view;
+		JToolBarHelper::title(JText::_($option) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', str_replace('com_', '', $option));
 
 		// Add toolbar buttons
 		if ($this->perms->create)
 		{
 			JToolBarHelper::addNew();
 		}
+
 		if ($this->perms->edit)
 		{
 			JToolBarHelper::editList();
 		}
+
 		if ($this->perms->create || $this->perms->edit)
 		{
 			JToolBarHelper::divider();
@@ -148,14 +175,17 @@ class ArsToolbar extends F0FToolbar
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::divider();
 		}
+
 		if ($this->perms->create)
 		{
 			JToolBarHelper::custom('copy', 'copy.png', 'copy_f2.png', 'COM_ARS_COMMON_COPY_LABEL', false);
 			JToolBarHelper::divider();
 		}
+
 		if ($this->perms->delete)
 		{
-			$msg = JText::_($this->input->getCmd('option', 'com_foobar') . '_CONFIRM_DELETE');
+			$msg = JText::_($option . '_CONFIRM_DELETE');
+
 			JToolBarHelper::deleteList($msg);
 		}
 
