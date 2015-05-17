@@ -1,12 +1,13 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
-// Protection against direct access
-defined('_JEXEC') or die();
+namespace Akeeba\ReleaseSystem\Admin\Helper;
+
+defined('_JEXEC') or die;
 
 if (!class_exists('Akeeba\\ARS\\Amazon\\Aws\\Autoloader'))
 {
@@ -14,8 +15,9 @@ if (!class_exists('Akeeba\\ARS\\Amazon\\Aws\\Autoloader'))
 }
 
 use Akeeba\ARS\Amazon\Aws\Common\Credentials\Credentials;
+use Akeeba\ARS\Amazon\Aws\S3\S3Client;
 
-class ArsHelperAmazons3 extends JObject
+class AmazonS3 extends \JObject
 {
 	// ACL flags
 	const ACL_PRIVATE = 'private';
@@ -112,7 +114,8 @@ class ArsHelperAmazons3 extends JObject
 		// If SSL is not enabled you must not provide the CA root file.
 		if (self::$useSSL)
 		{
-			$clientOptions['ssl.certificate_authority'] = realpath(JPATH_LIBRARIES . '/fof30/Download/Adapter/cacert.pem');
+			$clientOptions['ssl.certificate_authority'] =
+				realpath(JPATH_LIBRARIES . '/fof30/Download/Adapter/cacert.pem');
 		}
 		else
 		{
@@ -120,7 +123,7 @@ class ArsHelperAmazons3 extends JObject
 		}
 
 		// Create the S3 client instance
-		$this->s3Client = \Akeeba\ARS\Amazon\Aws\S3\S3Client::factory($clientOptions);
+		$this->s3Client = S3Client::factory($clientOptions);
 	}
 
 	/**
@@ -132,11 +135,11 @@ class ArsHelperAmazons3 extends JObject
 
 		if (!is_object($instance))
 		{
-			$component = JComponentHelper::getComponent('com_ars');
+			$component = \JComponentHelper::getComponent('com_ars');
 
-			if (!($component->params instanceof JRegistry))
+			if (!($component->params instanceof \JRegistry))
 			{
-				$params = new JRegistry($component->params);
+				$params = new \JRegistry($component->params);
 			}
 			else
 			{
@@ -144,21 +147,21 @@ class ArsHelperAmazons3 extends JObject
 			}
 
 			// Set up
-			self::$accessKey = $params->get('s3access', '');
-			self::$secretKey = $params->get('s3secret', '');
-			self::$useSSL = $params->get('s3ssl', 1);
-			self::$bucket = $params->get('s3bucket', '');
-			self::$region = $params->get('s3region', 'us-east-1');
-			self::$signatureMethod = $params->get('s3method', 's3');
-			self::$rrs = $params->get('s3rrs', 0);
-			self::$acl = $params->get('s3perms', 'private');
+			self::$accessKey             = $params->get('s3access', '');
+			self::$secretKey             = $params->get('s3secret', '');
+			self::$useSSL                = $params->get('s3ssl', 1);
+			self::$bucket                = $params->get('s3bucket', '');
+			self::$region                = $params->get('s3region', 'us-east-1');
+			self::$signatureMethod       = $params->get('s3method', 's3');
+			self::$rrs                   = $params->get('s3rrs', 0);
+			self::$acl                   = $params->get('s3perms', 'private');
 			self::$timeForSignedRequests = $params->get('s3time', 900);
 
 			// Remove slashes from the bucket...
 			self::$bucket = str_replace('/', '', self::$bucket);
 
 			// Get the instance
-			$instance = new ArsHelperAmazons3();
+			$instance = new AmazonS3();
 		}
 
 		return $instance;
@@ -167,9 +170,9 @@ class ArsHelperAmazons3 extends JObject
 	/**
 	 * Save a file to Amazon S3
 	 *
-	 * @param   string  $fileOrContent  The absolute filesystem path or, if $rawContent is true, the raw content to save
-	 * @param   string  $path           The path in Amazon S3 where the data will be stored
-	 * @param   bool    $rawContent     Does the $fileOrContent parameter contain raw data to upload?
+	 * @param   string $fileOrContent The absolute filesystem path or, if $rawContent is true, the raw content to save
+	 * @param   string $path          The path in Amazon S3 where the data will be stored
+	 * @param   bool   $rawContent    Does the $fileOrContent parameter contain raw data to upload?
 	 *
 	 * @return  bool  True on success
 	 */
@@ -208,7 +211,7 @@ class ArsHelperAmazons3 extends JObject
 	/**
 	 * Get the contents of a file stored on Amazon S3
 	 *
-	 * @param   string  $path  The path of the file stored on S3
+	 * @param   string $path The path of the file stored on S3
 	 *
 	 * @return  string|bool  The data returned from S3, false if it failed
 	 */
@@ -217,13 +220,13 @@ class ArsHelperAmazons3 extends JObject
 		try
 		{
 			$result = $this->s3Client->getObject(array(
-				'Bucket'    => self::$bucket,
-				'Key'       => $path
+				'Bucket' => self::$bucket,
+				'Key'    => $path
 			));
 
 			return $result['Body'];
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			$this->setError($e->getCode() . ' :: ' . $e->getMessage());
 
@@ -234,7 +237,7 @@ class ArsHelperAmazons3 extends JObject
 	/**
 	 * Delete a file from Amazon S3
 	 *
-	 * @param   string  $path  The path to the Amazon S3 file to delete
+	 * @param   string $path The path to the Amazon S3 file to delete
 	 *
 	 * @return  bool  True on success
 	 */
@@ -243,13 +246,13 @@ class ArsHelperAmazons3 extends JObject
 		try
 		{
 			$result = $this->s3Client->deleteObject(array(
-				'Bucket'    => self::$bucket,
-				'Key'       => $path
+				'Bucket' => self::$bucket,
+				'Key'    => $path
 			));
 
 			return true;
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			$this->setError($e->getCode() . ' :: ' . $e->getMessage());
 
@@ -301,27 +304,27 @@ class ArsHelperAmazons3 extends JObject
 		{
 			$opResult = $this->s3Client->listObjects($operation);
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			$this->setError($e->getCode() . ' :: ' . $e->getMessage());
 
 			return false;
 		}
 
-		$results = array();
+		$results    = array();
 		$nextMarker = null;
 
 		if ((isset($opResult['Contents'])) && !empty($opResult['Contents']))
 		{
 			foreach ($opResult['Contents'] as $c)
 			{
-				$results[(string)$c['Key']] = array(
+				$results[ (string)$c['Key'] ] = array(
 					'name' => (string)$c['Key'],
 					'time' => strtotime((string)$c['LastModified']),
 					'size' => (int)$c['Size'],
 					'hash' => substr((string)$c['ETag'], 1, -1)
 				);
-				$nextMarker = (string)$c['Key'];
+				$nextMarker                   = (string)$c['Key'];
 			}
 		}
 
@@ -329,7 +332,7 @@ class ArsHelperAmazons3 extends JObject
 		{
 			foreach ($opResult['CommonPrefixes'] as $c)
 			{
-				$results[(string)$c['Prefix']] = array('prefix' => (string)$c['Prefix']);
+				$results[ (string)$c['Prefix'] ] = array('prefix' => (string)$c['Prefix']);
 			}
 		}
 
@@ -354,7 +357,7 @@ class ArsHelperAmazons3 extends JObject
 				{
 					$opResult = $this->s3Client->listObjects($operation);
 				}
-				catch (Exception $e)
+				catch (\Exception $e)
 				{
 					$opResult = false;
 
@@ -365,13 +368,13 @@ class ArsHelperAmazons3 extends JObject
 				{
 					foreach ($opResult['Contents'] as $c)
 					{
-						$results[(string)$c['Key']] = array(
+						$results[ (string)$c['Key'] ] = array(
 							'name' => (string)$c['Key'],
 							'time' => strtotime((string)$c['LastModified']),
 							'size' => (int)$c['Size'],
 							'hash' => substr((string)$c['ETag'], 1, -1)
 						);
-						$nextMarker = (string)$c['Key'];
+						$nextMarker                   = (string)$c['Key'];
 					}
 				}
 
@@ -379,7 +382,7 @@ class ArsHelperAmazons3 extends JObject
 				{
 					foreach ($opResult['CommonPrefixes'] as $c)
 					{
-						$results[(string)$c['Prefix']] = array('prefix' => (string)$c['Prefix']);
+						$results[ (string)$c['Prefix'] ] = array('prefix' => (string)$c['Prefix']);
 					}
 				}
 
@@ -397,7 +400,7 @@ class ArsHelperAmazons3 extends JObject
 	/**
 	 * Get a query string authenticated URL
 	 *
-	 * @param   string  $path  Object URI
+	 * @param   string $path Object URI
 	 *
 	 * @return  string
 	 */
@@ -418,7 +421,8 @@ class ArsHelperAmazons3 extends JObject
 
 		if (self::$useSSL)
 		{
-			$clientOptions['ssl.certificate_authority'] = realpath(JPATH_LIBRARIES . '/fof30/Download/Adapter/cacert.pem');
+			$clientOptions['ssl.certificate_authority'] =
+				realpath(JPATH_LIBRARIES . '/fof30/Download/Adapter/cacert.pem');
 		}
 		else
 		{
@@ -426,7 +430,7 @@ class ArsHelperAmazons3 extends JObject
 		}
 
 		// Create the S3 client instance
-		$s3Client = \Akeeba\ARS\Amazon\Aws\S3\S3Client::factory($clientOptions);
+		$s3Client = S3Client::factory($clientOptions);
 
 		return $s3Client->getObjectUrl(self::$bucket, $path, '+' . self::$timeForSignedRequests . ' seconds');
 	}
