@@ -88,6 +88,13 @@ class Releases extends DataModel
 		if (!is_null($fltAccessUser))
 		{
 			$access_levels = \JFactory::getUser($fltAccessUser)->getAuthorisedViewLevels();
+
+			if (empty($access_levels))
+			{
+				// Essentially, tell it to find nothing if no our user is authorised to no access levels
+				$access_levels = [$db->q(-1)];
+			}
+
 			$access_levels = array_map(array($db, 'quote'), $access_levels);
 
 			// Filter this table
