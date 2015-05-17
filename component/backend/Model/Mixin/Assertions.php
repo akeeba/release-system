@@ -56,4 +56,19 @@ trait Assertions
 	{
 		$this->assert(in_array($value, $validValues), $message);
 	}
+
+	/**
+	 * Assert that $value is set to none of $validValues. Otherwise throw a RuntimeException with the $message language
+	 * string.
+	 *
+	 * @param   mixed   $value        The value to check
+	 * @param   array   $validValues  An array of invalid values for $value
+	 * @param   string  $message      The language key for the message to throw
+	 *
+	 * @throws  \RuntimeException
+	 */
+	protected function assertNotInArray($value, array $validValues, $message)
+	{
+		$this->assert(!in_array($value, $validValues), $message);
+	}
 }
