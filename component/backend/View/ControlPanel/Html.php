@@ -33,23 +33,29 @@ class Html extends \FOF30\View\DataView\Html
 	/** @var  int  Total number of downloads (for all time) */
 	public $downloadsEver = 0;
 
-	/** @var  int  Downloads per day for the past month */
+	/** @var  array  Information to plot the downloads per day for the past month */
 	public $monthlyDailyReport = [];
 
-	/** @var  int  Graphs width in pixels */
+	/** @var  int  Graphs width in Bootstrap columns (1 to 12) */
 	public $graphsWidth = 0;
 
 	/** @var  bool  Is the GeoIP plugin installed? */
-	public $hasPlugin = false;
+	public $hasGeoIPPlugin = false;
 
 	/** @var  bool  Does the GeoIP plugin needs to update its GeoIP database? */
-	public $pluginNeedsUpdate = false;
+	public $geoIPPluginNeedsUpdate = false;
 
 	/** @var  string  Currently installed version of the component */
 	public $currentVersion = '0.0.0';
 
 	/** @var  string  The IFrame URL for collecting usage statistics */
 	public $statsIFrame = '';
+
+	/** @var  \JDate  When the odl PHP version will be reported */
+	public $akeebaCommonDatePHP = '';
+
+	/** @var  \JDate  When we are supposed to stop supporting the obsolete PHP version */
+	public $akeebaCommonDateObsolescence = '';
 
 	/**
 	 * Executes before rendering the 'main' task's view template
@@ -128,14 +134,18 @@ class Html extends \FOF30\View\DataView\Html
 
 		$this->graphsWidth = $width;
 
-		$this->hasPlugin = $model->hasGeoIPPlugin();
-		$this->pluginNeedsUpdate = $model->GeoIPDBNeedsUpdate();
+		$this->hasGeoIPPlugin = $model->hasGeoIPPlugin();
+		$this->geoIPPluginNeedsUpdate = $model->GeoIPDBNeedsUpdate();
 
+		// Information for the PHP version warning
+		$this->akeebaCommonDatePHP = \JFactory::getDate('2015-08-14 00:00:00', 'GMT')->format(\JText::_('DATE_FORMAT_LC1'));
+		$this->akeebaCommonDateObsolescence = \JFactory::getDate('2016-05-14 00:00:00', 'GMT')->format(\JText::_('DATE_FORMAT_LC1'));
+
+		// Collect information about the site
 		/** @var Updates $updateModel */
 		$updateModel = $this->container->factory->model('Updates');
 		$this->currentVersion = $updateModel->getVersion();
 
-		// Collect information about the site
 		/** @var Statistics $statsModel */
 		$statsModel = $this->container->factory->model('Statistics');
 		$this->statsIFrame = $statsModel->collectStatistics(true);
