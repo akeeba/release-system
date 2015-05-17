@@ -80,7 +80,7 @@ class Categories extends DataModel
 		$config['tableName'] = '#__ars_categories';
 		$config['idFieldName'] = 'id';
 		$config['aliasFields'] = [
-			'slub' 	      => 'alias',
+			'slug' 	      => 'alias',
 			'enabled'     => 'published',
 			'created_on'  => 'created',
 			'modified_on' => 'modified',
