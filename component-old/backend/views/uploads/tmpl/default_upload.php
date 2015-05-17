@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 $session  = JFactory::getSession();
 $suffix = '&'.$session->getName() .'='. $session->getId();
 
-require_once dirname(__FILE__).'/default.php';
+require_once dirname(__FILE__) . '/default.php';
 $i = 1;
 
 F0FTemplateUtils::addJS('media://com_ars/js/qui-helpers.js');

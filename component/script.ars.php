@@ -190,6 +190,9 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 
 			// JSON compatibility library
 			'administrator/components/com_ars/helpers/jsonlib.php',
+
+			// Moving to FOF 3
+			'administrator/components/com_ars/assets/cacert.pem',
 		),
 		'folders' => array(
 			'administrator/components/com_ars/assets/geoip',
@@ -204,6 +207,15 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 
 			// Import from JoomlaCode feature
 			'administrator/components/com_ars/views/impjeds',
+
+			// Moving to FOF 3
+			'administrator/components/com_ars/assets/images',
+			'administrator/components/com_ars/controllers',
+			'administrator/components/com_ars/fields',
+			'administrator/components/com_ars/helpers',
+			'administrator/components/com_ars/models',
+			'administrator/components/com_ars/tables',
+			'administrator/components/com_ars/views',
 		)
 	);
 

@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fof>
-    <!-- Currently empty, only used for the autoloader to recognise this component as F0F-powered -->
+	<common>
+		<container>
+			<option name="componentNamespace">Akeeba\ReleaseSystem</option>
+			<option name="factoryClass">FOF30\Factory\MagicFactory</option>
+			<option name="scaffolding">0</option>
+		</container>
+	</common>
+
+	<frontend>
+		<container>
+			<option name="factoryClass">FOF30\Factory\BasicFactory</option>
+			<option name="scaffolding">0</option>
+		</container>
+	</frontend>
 </fof>
