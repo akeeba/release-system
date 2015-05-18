@@ -25,7 +25,7 @@ $groups = array('basic', 'tools', 'update');
 
 				@foreach ($this->iconDefinitions[$group] as $icon)
 				<div class="icon">
-					<a href="index.php?option=com_ars{{{ is_null($icon['view']) ? '' : '&' . $icon['view']  }}}{{{ is_null($icon['task']) ? '' : '&' . $icon['task']  }}}">
+					<a href="index.php?option=com_ars{{{ is_null($icon['view']) ? '' : '&view=' . $icon['view']  }}}{{{ is_null($icon['task']) ? '' : '&task=' . $icon['task']  }}}">
 						<div class="ak-icon ak-icon-{{{ $icon['icon'] }}}">&nbsp;</div>
 						<span>{{{ $icon['label'] }}}</span>
 					</a>
