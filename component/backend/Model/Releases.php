@@ -103,6 +103,8 @@ class Releases extends DataModel
 		$this->belongsTo('category', 'Categories', 'category_id', 'id');
 		$this->hasMany('items', 'Items', 'id', 'release_id');
 
+		$this->with(['category']);
+
 		// Behaviours
 		$this->addBehaviour('Filters');
 		$this->addBehaviour('RelationFilters');

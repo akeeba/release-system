@@ -103,6 +103,8 @@ class Categories extends DataModel
 		$this->belongsTo('visualGroup', 'VisualGroups', 'vgroup_id', 'id');
 		$this->hasMany('releases', 'Releases', 'id', 'category_id');
 
+		$this->with(['visualGroup']);
+
 		// Behaviours
 		$this->addBehaviour('Filters');
 		$this->addBehaviour('Created');
