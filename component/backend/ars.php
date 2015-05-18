@@ -13,7 +13,7 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 	throw new RuntimeException('FOF 3.0 is not installed', 500);
 }
 
-//$model = FOF30\Container\Container::getInstance('com_ars')->factory->model('Categories');
+//$model = FOF30\Container\Container::getInstance('com_ars')->factory->model('Items');
 //$xo = new FOF30\Utils\ModelTypeHints($model);
 //echo "<pre>" . $xo->getHints() . "</pre>"; die;
 

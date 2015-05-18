@@ -46,7 +46,7 @@ use FOF30\Model\DataModel;
  * @method  $this  type()               type(string $v)
  * @method  $this  groups()             groups(string $v)
  * @method  $this  directory()          directory(string $v)
- * @method  $this  vgroup_id()          vgroup_id(int $v)
+ * @method  $this  vgroup()             vgroup(int $v)
  * @method  $this  created()            created(string $v)
  * @method  $this  created_by()         created_by(int $v)
  * @method  $this  modified()           modified(string $v)
@@ -59,6 +59,15 @@ use FOF30\Model\DataModel;
  * @method  $this  redirect_unauth()    redirect_unauth(string $v)
  * @method  $this  published()          published(int $v)
  * @method  $this  language()           language(string $v)
+ * @method  $this  language2()          language2(string $v)
+ * @method  $this  access_user()        access_user(int $user_id)
+ * @method  $this  nobeunpub()          nobeunpub(bool $v)
+ * @method  $this  search()             search(string $v)
+ *
+ * Relations:
+ *
+ * @property  VisualGroups  $visualGroup  The visual group this category belongs to
+ * @property  Releases[]    $releases     The releases of this category
  */
 class Categories extends DataModel
 {
@@ -91,7 +100,8 @@ class Categories extends DataModel
 		parent::__construct($container, $config);
 
 		// Relations
-		$this->hasMany('release', 'Releases', 'id', 'category_id');
+		$this->belongsTo('visualGroup', 'VisualGroups', 'vgroup_id', 'id');
+		$this->hasMany('releases', 'Releases', 'id', 'category_id');
 
 		// Behaviours
 		$this->addBehaviour('Filters');

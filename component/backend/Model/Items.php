@@ -13,6 +13,76 @@ use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 
+/**
+ * Model for download items
+ *
+ * Fields:
+ *
+ * @property  int     $id
+ * @property  int     $release_id
+ * @property  string  $title
+ * @property  string  $alias
+ * @property  string  $description
+ * @property  string  $type
+ * @property  string  $filename
+ * @property  string  $url
+ * @property  int     $updatestream
+ * @property  string  $md5
+ * @property  string  $sha1
+ * @property  int     $filesize
+ * @property  string  $groups
+ * @property  int     $hits
+ * @property  string  $created
+ * @property  string  $modified
+ * @property  int     $checked_out
+ * @property  string  $checked_out_time
+ * @property  int     $access
+ * @property  bool    $show_unauth_links
+ * @property  string  $redirect_unauth
+ * @property  bool    $published
+ * @property  string  $language
+ * @property  string  $environments
+ *
+ * Filters:
+ *
+ * @method  $this  id()                 id(int $v)
+ * @method  $this  item_id()            item_id(int $v)
+ * @method  $this  release()            release(int $v)
+ * @method  $this  title()              title(string $v)
+ * @method  $this  alias()              alias(string $v)
+ * @method  $this  description()        description(string $v)
+ * @method  $this  type()               type(string $v)
+ * @method  $this  filename()           filename(string $v)
+ * @method  $this  url()                url(string $v)
+ * @method  $this  updatestream()       updatestream(int $v)
+ * @method  $this  md5()                md5(string $v)
+ * @method  $this  sha1()               sha1(string $v)
+ * @method  $this  filesize()           filesize(int $v)
+ * @method  $this  groups()             groups(string $v)
+ * @method  $this  hits()               hits(int $v)
+ * @method  $this  created()            created(string $v)
+ * @method  $this  created_by()         created_by(int $v)
+ * @method  $this  modified()           modified(string $v)
+ * @method  $this  modified_by()        modified_by(int $v)
+ * @method  $this  checked_out()        checked_out(int $v)
+ * @method  $this  checked_out_time()   checked_out_time(string $v)
+ * @method  $this  ordering()           ordering(int $v)
+ * @method  $this  access()             access(int $v)
+ * @method  $this  show_unauth_links()  show_unauth_links(bool $v)
+ * @method  $this  redirect_unauth()    redirect_unauth(string $v)
+ * @method  $this  published()          published(bool $v)
+ * @method  $this  environments()       environments(string $v)
+ * @method  $this  category()           category(int $v)
+ * @method  $this  language()           language(string $v)
+ * @method  $this  language2()          language2(string $v)
+ * @method  $this  access_user()        access_user(int $user_id)
+ *
+ * Relations:
+ *
+ * @property  Releases       $release
+ * @property  UpdateStreams  $updateStreamObject
+ *
+ **/
 class Items extends DataModel
 {
 	use Mixin\ImplodedArrays;

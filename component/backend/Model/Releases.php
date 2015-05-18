@@ -12,6 +12,63 @@ defined('_JEXEC') or die;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 
+/**
+ * Model for Releases
+ *
+ * Fields:
+ *
+ * @property  int     $id
+ * @property  int     $category_id
+ * @property  string  $version
+ * @property  string  $alias
+ * @property  string  $maturity
+ * @property  string  $description
+ * @property  string  $notes
+ * @property  string  $groups
+ * @property  int     $hits
+ * @property  string  $created
+ * @property  string  $modified
+ * @property  int     $checked_out
+ * @property  string  $checked_out_time
+ * @property  int     $access
+ * @property  bool    $show_unauth_links
+ * @property  string  $redirect_unauth
+ * @property  bool    $published
+ * @property  string  $language
+ *
+ * Filters:
+ *
+ * @method  $this  id()                 id(int $v)
+ * @method  $this  category()           category(int $v)
+ * @method  $this  version()            version(string $v)
+ * @method  $this  alias()              alias(string $v)
+ * @method  $this  maturity()           maturity(string $v)
+ * @method  $this  description()        description(string $v)
+ * @method  $this  notes()              notes(string $v)
+ * @method  $this  groups()             groups(string $v)
+ * @method  $this  hits()               hits(int $v)
+ * @method  $this  created()            created(string $v)
+ * @method  $this  created_by()         created_by(int $v)
+ * @method  $this  modified()           modified(string $v)
+ * @method  $this  modified_by()        modified_by(int $v)
+ * @method  $this  checked_out()        checked_out(int $v)
+ * @method  $this  checked_out_time()   checked_out_time(string $v)
+ * @method  $this  ordering()           ordering(int $v)
+ * @method  $this  access()             access(int $v)
+ * @method  $this  show_unauth_links()  show_unauth_links(bool $v)
+ * @method  $this  redirect_unauth()    redirect_unauth(string $v)
+ * @method  $this  published()          published(bool $v)
+ * @method  $this  language()           language(string $v)
+ * @method  $this  language2()          language2(string $v)
+ * @method  $this  access_user()        access_user(int $user_id)
+ * @method  $this  nobeunpub()          nobeunpub(bool $v)
+ *
+ * Relations:
+ *
+ * @property  Categories  $category
+ * @property  Items       $items
+ *
+ **/
 class Releases extends DataModel
 {
 	use Mixin\ImplodedArrays;
@@ -56,6 +113,7 @@ class Releases extends DataModel
 		$this->blacklistFilters([
 			'category_id',
 			'language',
+			'maturity'
 		]);
 
 		// Defaults
