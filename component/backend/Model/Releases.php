@@ -395,6 +395,29 @@ class Releases extends DataModel
 	}
 
 	/**
+	 * Checks if we are allowed to delete this record. If there are items linked to this release then the deletion
+	 * will fails with a RuntimeException.
+	 *
+	 * @param   int  $oid  The numeric ID of the category to delete
+	 *
+	 * @return  void
+	 */
+	function onBeforeDelete(&$oid)
+	{
+		$joins = array(
+			array(
+				'label'     => 'item',
+				'name'      => '#__ars_items',
+				'idfield'   => 'id',
+				'idalias'   => 'item_id',
+				'joinfield' => 'release_id'
+			)
+		);
+
+		$this->canDelete($oid, $joins);
+	}
+
+	/**
 	 * Converts the loaded comma-separated list of subscription levels into an array
 	 *
 	 * @param   string  $value  The comma-separated list
