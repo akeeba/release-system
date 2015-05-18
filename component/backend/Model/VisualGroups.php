@@ -12,7 +12,39 @@ defined('_JEXEC') or die();
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 
-
+/**
+ * Model fir Visual Groups
+ *
+ * Fields:
+ *
+ * @property  int     $id
+ * @property  string  $title
+ * @property  string  $description
+ * @property  string  $created
+ * @property  string  $modified
+ * @property  int     $checked_out
+ * @property  string  $checked_out_time
+ * @property  int     $published
+ *
+ * Filters:
+ *
+ * @method  $this  id()                id(int $v)
+ * @method  $this  title()             title(string $v)
+ * @method  $this  description()       description(string $v)
+ * @method  $this  created()           created(string $v)
+ * @method  $this  created_by()        created_by(int $v)
+ * @method  $this  modified()          modified(string $v)
+ * @method  $this  modified_by()       modified_by(int $v)
+ * @method  $this  checked_out()       checked_out(int $v)
+ * @method  $this  checked_out_time()  checked_out_time(string $v)
+ * @method  $this  ordering()          ordering(int $v)
+ * @method  $this  published()         published(int $v)
+ *
+ * Relations:
+ *
+ * @property  Categories  $categories
+ *
+ */
 class VisualGroups extends DataModel
 {
 	use Mixin\Assertions;
