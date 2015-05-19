@@ -16,7 +16,9 @@
 
 		<header name="access" type="AccessLevel" label="JFIELD_ACCESS_LABEL" sortable="true"/>
 		<header name="published" type="Published" label="JPUBLISHED" sortable="true"/>
-		<header name="language" type="Language" label="JFIELD_LANGUAGE_LABEL" sortable="true"/>
+		<header name="language" type="Language" label="JFIELD_LANGUAGE_LABEL" sortable="true">
+			<option value="*">JALL_LANGUAGE</option>
+		</header>
 	</headerset>
 	<fieldset name="items">
 		<field name="ordering" type="Ordering" class="input-mini input-sm"/>
@@ -36,6 +38,8 @@
 
 		<field name="access" type="AccessLevel" sortable="true"/>
 		<field name="published" type="Actions" />
-		<field name="language" type="Language" />
+		<field name="language" type="Language">
+			<option value="*">JALL_LANGUAGE</option>
+		</field>
 	</fieldset>
 </form>

@@ -73,6 +73,7 @@ class Categories extends DataModel
 {
 	use Mixin\ImplodedArrays;
 	use Mixin\Assertions;
+	use Mixin\VersionedCopy;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
@@ -102,7 +103,13 @@ class Categories extends DataModel
 			'groups',
 			'vgroup_id',
 			'show_unauth_links',
-			'redirect_unauth'
+			'redirect_unauth',
+			'checked_out',
+			'checked_out_time',
+			'modified',
+			'modified_by',
+			'created',
+			'created_by',
 		];
 
 		parent::__construct($container, $config);
