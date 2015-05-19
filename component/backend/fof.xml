@@ -10,6 +10,7 @@
 			<option name="componentNamespace">Akeeba\ReleaseSystem</option>
 			<option name="factoryClass">FOF30\Factory\MagicFactory</option>
 			<option name="scaffolding">0</option>
+			<option name="saveScaffolding">0</option>
 		</container>
 	</common>
 
@@ -17,6 +18,7 @@
 		<container>
 			<option name="factoryClass">FOF30\Factory\BasicFactory</option>
 			<option name="scaffolding">0</option>
+			<option name="saveScaffolding">0</option>
 		</container>
 	</frontend>
 </fof>
