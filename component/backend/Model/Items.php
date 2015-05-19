@@ -88,6 +88,7 @@ class Items extends DataModel
 	use Mixin\ImplodedArrays;
 	use Mixin\Assertions;
 	use Mixin\JsonData;
+	use Mixin\VersionedCopy;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
