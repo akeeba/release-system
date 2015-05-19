@@ -21,7 +21,7 @@
 
 		<field name="published" type="Published" label="JPUBLISHED"/>
 
-		<field name="access" type="AccessLevel" label="JFIELD_ACCESS_LABEL"/>
+		<field name="access" type="AccessLevel" label="JFIELD_ACCESS_LABEL" default="1" />
 
 		<field name="show_unauth_links" type="Checkbox" label="COM_ARS_COMMON_SHOW_UNAUTH_LINKS"/>
 
@@ -35,7 +35,9 @@
 			   source_value="value"
 				/>
 
-		<field name="language" type="Language" label="JFIELD_LANGUAGE_LABEL" default="en-GB"/>
+		<field name="language" type="Language" label="JFIELD_LANGUAGE_LABEL" default="*" client="site">
+			<option value="*">JALL_LANGUAGE</option>
+		</field>
 
 	</fieldset>
 

@@ -97,6 +97,14 @@ class Categories extends DataModel
 			'locked_by'   => 'checked_out',
 		];
 
+		// Automatic checks should not take place on these fields:
+		$config['fieldsSkipChecks'] = [
+			'groups',
+			'vgroup_id',
+			'show_unauth_links',
+			'redirect_unauth'
+		];
+
 		parent::__construct($container, $config);
 
 		// Relations
