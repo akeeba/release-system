@@ -116,13 +116,13 @@ class DownloadIDLabels extends DataModel
 	protected function onAfterDelete(&$id)
 	{
 		// After adding/deleting a Download ID I have to clear the cache, otherwise I won't see the changes
-		CacheCleaner::clearCacheGroups('com_ars');
+		CacheCleaner::clearCacheGroups(array('com_ars'));
 	}
 
 	protected function onAfterSave()
 	{
 		// After adding/deleting a Download ID I have to clear the cache, otherwise I won't see the changes
-		CacheCleaner::clearCacheGroups('com_ars');
+		CacheCleaner::clearCacheGroups(array('com_ars'));
 	}
 
 	/**
@@ -142,7 +142,7 @@ class DownloadIDLabels extends DataModel
 			}
 
 			// After adding/deleting a Download ID I have to clear the cache, otherwise I won't see the changes
-			CacheCleaner::clearCacheGroups('com_ars');
+			CacheCleaner::clearCacheGroups(array('com_ars'));
 		}
 
 		return true;

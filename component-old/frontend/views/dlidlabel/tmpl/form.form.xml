@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
 	<fieldset name="basic_configuration"
-		label="COM_ARS_TITLE_DLIDLABELS_EDIT"
+		label="COM_ARS_TITLE_DOWNLOADIDLABELS_EDIT"
 	>
 		<field name="label" type="text"
 			class="inputbox"
