@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form type="browse" show_header="1" show_filters="1" show_pagination="1"
-	  norows_placeholder="COM_ARS_COMMON_NOITEMS_LABEL">
+	  norows_placeholder="COM_ARS_COMMON_NOITEMS_LABEL"
+      cssfiles="media://com_ars/css/backend.css">
 	<headerset>
 		<header name="ordering" type="Ordering" label="JFIELD_ORDERING_LABEL" sortable="true" tdwith="1%"/>
 		<header name="id" type="RowSelect" label="JGLOBAL_FIELD_ID_LABEL" sortable="true" tdwith="20"/>

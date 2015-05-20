@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form validate="true">
+<form
+        validate="true"
+        cssfiles="media://com_ars/css/backend.css">
 	<fieldset name="basic" label="COM_ARS_RELEASE_BASIC_LABEL" class="span6">
 		<field name="category_id" type="Model" label="COM_ARS_RELEASES_FIELD_CATEGORY"
 			   model="Categories"
