@@ -11,7 +11,7 @@
 		<field name="vgroup_id" type="Model" label="LBL_CATEGORIES_VGROUP"
 			   model="VisualGroups" key_field="id" value_field="title" translate="false" none="–––"
 			   show_link="true"
-			   url="index.php?option=com_ars&amp;view=VisualGroup&amp;id=[ITEM:vgroup_id]"
+			   url="index.php?option=com_ars&amp;view=VisualGroup&amp;id=[ITEM:VGROUP_ID]"
 				/>
 
 		<field name="type" type="GenericList" label="COM_ARS_CATEGORIES_FIELD_TYPE">
