@@ -24,7 +24,7 @@ use FOF30\Model\DataModel;
  * @property  string  $alias
  * @property  string  $description
  * @property  string  $type
- * @property  string  $groups
+ * @property  array   $groups
  * @property  string  $directory
  * @property  int     $vgroup_id
  * @property  string  $created

@@ -24,7 +24,7 @@ use FOF30\Model\DataModel;
  * @property  string  $maturity
  * @property  string  $description
  * @property  string  $notes
- * @property  string  $groups
+ * @property  array   $groups
  * @property  int     $hits
  * @property  string  $created
  * @property  string  $modified
