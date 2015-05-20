@@ -30,6 +30,7 @@ class Environments extends DataModel
 	public function __construct(Container $container, array $config = array())
 	{
 		$config['tableName'] = '#__ars_environments';
+		$config['idFieldName'] = 'id';
 
 		parent::__construct($container, $config);
 

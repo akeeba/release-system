@@ -98,6 +98,24 @@ class Releases extends DataModel
 			'locked_by'   => 'checked_out',
 		];
 
+		// Automatic checks should not take place on these fields:
+		$config['fieldsSkipChecks'] = [
+			'description',
+			'notes',
+			'groups',
+			'hits',
+			'created',
+			'created_by',
+			'modified',
+			'modified_by',
+			'checked_out',
+			'checked_out_time',
+			'ordering',
+			'show_unauth_links',
+			'redirect_unauth',
+			'language',
+		];
+
 		parent::__construct($container, $config);
 
 		// Relations

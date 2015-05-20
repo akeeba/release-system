@@ -100,10 +100,12 @@ class Categories extends DataModel
 
 		// Automatic checks should not take place on these fields:
 		$config['fieldsSkipChecks'] = [
+			'description',
 			'groups',
 			'vgroup_id',
 			'show_unauth_links',
 			'redirect_unauth',
+			'language',
 			'checked_out',
 			'checked_out_time',
 			'modified',

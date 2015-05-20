@@ -12,6 +12,8 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
+use JHtml;
+use JText;
 
 /**
  * Model for download items
@@ -41,7 +43,7 @@ use FOF30\Model\DataModel;
  * @property  string  $redirect_unauth
  * @property  bool    $published
  * @property  string  $language
- * @property  string  $environments
+ * @property  array   $environments
  *
  * Filters:
  *
@@ -113,11 +115,37 @@ class Items extends DataModel
 			'locked_by'   => 'checked_out',
 		];
 
+		// Automatic checks should not take place on these fields:
+		$config['fieldsSkipChecks'] = [
+			'description',
+			'filename',
+			'url',
+			'updatestream',
+			'md5',
+			'sha1',
+			'filesize',
+			'groups',
+			'hits',
+			'created',
+			'created_by',
+			'modified',
+			'modified_by',
+			'checked_out',
+			'checked_out_time',
+			'ordering',
+			'show_unauth_links',
+			'redirect_unauth',
+			'language',
+			'environments',
+		];
+
 		parent::__construct($container, $config);
 
 		// Relations
 		$this->belongsTo('release', 'Releases', 'release_id', 'id');
 		$this->hasOne('updateStreamObject', 'UpdateStreams', 'updatestream', 'id');
+
+		$this->with(['release', 'updateStreamObject']);
 
 		// Behaviours
 		$this->addBehaviour('Filters');
@@ -862,5 +890,179 @@ class Items extends DataModel
 	protected function setEnvironmentsAttribute($value)
 	{
 		return $this->setAttributeForJson($value);
+	}
+
+	/**
+	 * Returns a list of select options which will let the user pick a file for a release. Files already used in other
+	 * items of the same category will not be listed to prevent the list getting too long.
+	 *
+	 * @param   int  $release_id  The numeric ID of the release selected by the user
+	 * @param   int  $item_id     The numeric ID of the current item. Leave 0 if it's a new item.
+	 *
+	 * @return  array  Array of JHtml options.
+	 */
+	public function getFilesOptions($release_id, $item_id = 0)
+	{
+		$options   = array();
+		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
+
+		// Try to figure out a directory
+		$directory = null;
+
+		if (empty($release_id))
+		{
+			return $options;
+		}
+
+		/** @var Releases $releaseModel */
+		$releaseModel = $this->container->factory->model('Releases')->tmpInstance();
+
+		// Get the release
+		$release = $releaseModel->find((int) $release_id);
+
+		// Get which directory to use
+		$directory = $release->category->directory;
+
+		$potentialPrefix = substr($directory, 0, 5);
+		$potentialPrefix = strtolower($potentialPrefix);
+		$useS3           = ($potentialPrefix == 's3://');
+
+		if ($useS3)
+		{
+			$directory = substr($directory, 5);
+
+			if ($directory === false)
+			{
+				$directory = '';
+			}
+
+			$s3    = AmazonS3::getInstance();
+			$items = $s3->getBucket('', $directory . '/');
+
+			if (empty($items))
+			{
+				$directory = null;
+			}
+
+			if (empty($directory))
+			{
+				$directory = '/';
+			}
+		}
+		else
+		{
+			\JLoader::import('joomla.filesystem.folder');
+
+			if (!\JFolder::exists($directory))
+			{
+				$directory = JPATH_ROOT . '/' . $directory;
+
+				if (!\JFolder::exists($directory))
+				{
+					$directory = null;
+				}
+			}
+		}
+
+		if (empty($directory))
+		{
+			return $options;
+		}
+
+		// Get a list of files already used in this category (so as not to show them again, he he!)
+		$files = array();
+
+		$itemsModel = $this->tmpInstance();
+
+		$items = $itemsModel
+			->category($release->category_id)
+			->release('false')
+			->get(true);
+
+		if (!empty($items))
+		{
+			// Walk through the list and find the currently selected filename
+			$currentFilename = '';
+
+			foreach ($items as $item)
+			{
+				if ($item->id == $item_id)
+				{
+					$currentFilename = $item->filename;
+
+					break;
+				}
+			}
+
+			// Remove already used filenames except the currently selected filename
+			reset($items);
+
+			foreach ($items as $item)
+			{
+				if (($item->filename != $currentFilename) && !empty($item->filename))
+				{
+					$files[] = $item->filename;
+				}
+			}
+
+			$files = array_unique($files);
+		}
+
+		// Produce a list of files and remove the items in the $files array
+		$useFiles = array();
+
+		if ($useS3)
+		{
+			$s3       = Amazons3::getInstance();
+			$allFiles = $s3->getBucket('', $directory, null, null, null, true);
+
+			if (!empty($allFiles))
+			{
+				foreach ($allFiles as $aFile => $info)
+				{
+					$aFile = ltrim(substr($aFile, strlen($directory)), '/');
+
+					if (in_array($aFile, $files))
+					{
+						continue;
+					}
+
+					$useFiles[] = $aFile;
+				}
+			}
+		}
+		else
+		{
+			$allFiles = \JFolder::files($directory, '.', 3, true);
+			$root     = str_replace('\\', '/', $directory);
+
+			if (!empty($allFiles))
+			{
+				foreach ($allFiles as $aFile)
+				{
+					$aFile = str_replace('\\', '/', $aFile);
+					$aFile = ltrim(substr($aFile, strlen($root)), '/');
+
+					if (in_array($aFile, $files))
+					{
+						continue;
+					}
+
+					$useFiles[] = $aFile;
+				}
+			}
+		}
+
+		if (empty($useFiles))
+		{
+			return $options;
+		}
+
+		foreach ($useFiles as $file)
+		{
+			$options[] = JHTML::_('select.option', $file, $file);
+		}
+
+		return $options;
 	}
 }
