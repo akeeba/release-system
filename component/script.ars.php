@@ -209,6 +209,7 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 			'administrator/components/com_ars/views/impjeds',
 
 			// Moving to FOF 3
+			'media/com_ars/theme',
 			'administrator/components/com_ars/assets/images',
 			'administrator/components/com_ars/controllers',
 			'administrator/components/com_ars/fields',
