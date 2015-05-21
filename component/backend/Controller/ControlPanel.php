@@ -115,7 +115,7 @@ ENDRESULT;
 
 		if ($result === true)
 		{
-			$msg = JText::_('COM_AKEEBASUBS_GEOIP_MSG_DOWNLOADEDGEOIPDATABASE');
+			$msg = JText::_('COM_ARS_GEOIP_MSG_DOWNLOADEDGEOIPDATABASE');
 			$this->setRedirect($url, $msg);
 		}
 		else
