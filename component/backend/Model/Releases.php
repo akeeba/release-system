@@ -155,7 +155,22 @@ class Releases extends DataModel
 	{
 		$db = $this->getDbo();
 
-		$fltCategory = $this->getState('category', null, 'int');
+		$logCategoryLimit = $this->getState('logCategoryLimit', 0, 'int');
+		$fltCategory = null;
+
+		/**
+		 * In the back-end of the component when the model state 'logCategoryLimit' is set to 1 we will get the default
+		 * category ID to filter by from the 'category' state variable of the Logs model. This allows us to do a
+		 * drill-down search in the logs using nothing but XML forms.
+		 */
+		if ($this->container->platform->isBackend() && $logCategoryLimit)
+		{
+			/** @var Categories $logsModel */
+			$logsModel = $this->container->factory->model('Logs');
+			$fltCategory = $logsModel->getState('category', null, 'int');
+		}
+
+		$fltCategory = $this->getState('category', $fltCategory, 'int');
 
 		if ($fltCategory > 0)
 		{

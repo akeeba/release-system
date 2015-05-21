@@ -35,7 +35,6 @@ class Logs extends DataModel
 		parent::__construct($container, $config);
 
 		// Relations
-		$this->hasOne('user', 'Users', 'user_id', 'id');
 		$this->hasOne('item', 'Items', 'item_id', 'id');
 
 		// Behaviours
@@ -44,7 +43,7 @@ class Logs extends DataModel
 		$this->addBehaviour('Created');
 		$this->addBehaviour('Modified');
 
-		$this->with(['user', 'item']);
+		$this->with(['item']);
 	}
 
 	/**
