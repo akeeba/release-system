@@ -125,29 +125,6 @@ class DownloadIDLabels extends DataModel
 		CacheCleaner::clearCacheGroups(array('com_ars'));
 	}
 
-	/**
-	 * Resets one or more download IDs. The IDs to reset are stored in the id_list state variable.
-	 *
-	 * @return  bool  True on success. An Exception is thrown on failure.
-	 */
-	public function resetDownloadId()
-	{
-		if (is_array($this->id_list) && !empty($this->id_list))
-		{
-			foreach ($this->id_list as $id)
-			{
-				$table = $this->findOrFail($id);
-				$table->dlid = null;
-				$table->save();
-			}
-
-			// After adding/deleting a Download ID I have to clear the cache, otherwise I won't see the changes
-			CacheCleaner::clearCacheGroups(array('com_ars'));
-		}
-
-		return true;
-	}
-
 	public function check()
 	{
 		if ($this->container->platform->isFrontend())

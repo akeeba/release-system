@@ -42,6 +42,8 @@ class DownloadIDLabels extends DataController
 
 			$this->input->set('user_id', $user->id);
 		}
+
+		return parent::execute($task);
 	}
 
 	public function reset()
@@ -65,7 +67,8 @@ class DownloadIDLabels extends DataController
 
 		try
 		{
-			$model->resetDownloadId();
+			$model->dlid = null;
+			$model->save();
 			$error = null;
 		}
 		catch (\Exception $e)
@@ -79,7 +82,7 @@ class DownloadIDLabels extends DataController
 			$customURL = base64_decode($customURL);
 		}
 
-		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->component . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
+		$url = !empty($customURL) ? $customURL : 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
 
 		if (!is_null($error))
 		{

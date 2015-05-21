@@ -23,12 +23,21 @@ class DownloadIDLabel extends Text
 	 */
 	public function getRepeatable()
 	{
+		static $oldUrl = null;
+
 		$this->class = ' ';
+
+		if (!empty($oldUrl))
+		{
+			$this->element['url'] = $oldUrl;
+		}
 
 		if (($this->value == '_MAIN_') || $this->item->primary)
 		{
 			$this->class = 'label label-success';
 			$this->value = \JText::_('COM_ARS_DLIDLABELS_LBL_DEFAULT');
+
+			$oldUrl = (string) $this->element['url'];
 			$this->element['url'] = '';
 		}
 

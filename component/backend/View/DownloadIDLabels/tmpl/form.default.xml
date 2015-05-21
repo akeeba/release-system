@@ -27,7 +27,8 @@
                text="COM_ARS_DLIDLABELS_FIELD_RESET"
                class="btn-micro btn-warning"
                icon="icon-retweet icon-white"
-               url="index.php?option=com_ars&amp;view=DownloadIDLabel&amp;task=reset&amp;id=[ITEM:ID]&amp;[TOKEN]=1"
+               url="index.php?option=com_ars&amp;view=DownloadIDLabels&amp;task=reset&amp;id=[ITEM:ID]&amp;[TOKEN]=1"
+               onclick="window.location = window.jQuery(this).attr('href'); return false;"
                 />
     </fieldset>
 </form>
