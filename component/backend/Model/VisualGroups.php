@@ -13,7 +13,7 @@ use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 
 /**
- * Model fir Visual Groups
+ * Model for Visual Groups
  *
  * Fields:
  *

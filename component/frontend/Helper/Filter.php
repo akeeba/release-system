@@ -48,7 +48,7 @@ abstract class Filter
 		{
 			$container = Container::getInstance('com_ars');
 			/** @var SubscriptionIntegration $subsIntegration */
-			$subsIntegration = $container->factory->model('SubscriptionsIntegration');
+			$subsIntegration = $container->factory->model('SubscriptionIntegration');
 
 			// Get subscription groups of current user
 			if (!$subsIntegration->hasIntegration())

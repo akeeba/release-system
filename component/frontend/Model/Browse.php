@@ -13,6 +13,19 @@ use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use FOF30\Model\DataModel\Collection;
 use FOF30\Model\Model;
 
+/**
+ * Class Browse
+ *
+ * @package Akeeba\ReleaseSystem\Site\Model
+ *
+ * @method  $this  grouping() grouping(string $v)
+ * @method  $this  orderby() orderby(string $v)
+ * @method  $this  rel_orderby() rel_orderby(string $v)
+ * @method  $this  limit() limit(int $limit)
+ * @method  $this  limitstart() limitstart(int $limitStart)
+ * @method  $this  items_orderby() items_orderby(int $limitStart)
+ * @method  $this  maturity() maturity(int $limitStart)
+ */
 class Browse extends Model
 {
 	/**
@@ -24,7 +37,7 @@ class Browse extends Model
 	{
 		// Get state variables
 		$grouping = $this->getState('grouping', 'normal');
-		$orderby = $this->getState('orderby', 'order');
+		$orderby  = $this->getState('orderby', 'order');
 
 		$start = 0;
 		$limit = 0;
@@ -33,14 +46,14 @@ class Browse extends Model
 		/** @var Categories $catModel */
 		$catModel = $this->container->factory->model('Categories')->tmpInstance();
 		$catModel
-							->limitstart($start)
-							->limit($limit)
-							->published(1)
-							->access_user($this->container->platform->getUser()->id)
-							->type('');
+			->limitstart($start)
+			->limit($limit)
+			->published(1)
+			->access_user($this->container->platform->getUser()->id)
+			->type('');
 
 		/** @var \JApplicationSite $app */
-		$app = \JFactory::getApplication();
+		$app               = \JFactory::getApplication();
 		$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
 
 		if ($hasLanguageFilter)
@@ -128,17 +141,20 @@ class Browse extends Model
 		if ($grouping != 'none')
 		{
 			$allCategories = $list;
-			$list = array('normal' => array(), 'bleedingedge' => array());
+			$list          = array('normal' => array(), 'bleedingedge' => array());
 
 			foreach ($allCategories as $cat)
 			{
-				$list[$cat->type][] = $cat;
+				$list[ $cat->type ][] = $cat;
 			}
 		}
 		else
 		{
 			$list = array('all' => $list);
 		}
+
+		// TODO Do I need this?
+		$this->setState('pagination', new \JPagination($catModel->count(), $catModel->limitstart, $catModel->limit));
 
 		return $list;
 	}
@@ -215,7 +231,7 @@ class Browse extends Model
 		// Get limits
 		$start = $this->getState('limitstart', 0);
 		/** @var \JApplicationSite $app */
-		$app = \JFactory::getApplication();
+		$app   = \JFactory::getApplication();
 		$limit = $this->getState('limit', -1);
 
 		if ($limit == -1)
@@ -227,11 +243,11 @@ class Browse extends Model
 		/** @var Releases $model */
 		$model = $this->container->factory->model('Releases')->tmpInstance();
 		$model
-						 ->limitstart($start)
-						 ->limit($limit)
-						 ->published(1)
-						 ->access_user($this->container->platform->getUser()->id)
-						 ->category($cat_id);
+			->limitstart($start)
+			->limit($limit)
+			->published(1)
+			->access_user($this->container->platform->getUser()->id)
+			->category($cat_id);
 
 		if ($app->getLanguageFilter())
 		{
@@ -327,8 +343,8 @@ class Browse extends Model
 
 		// Does the category pass the level / subscriptions filter?
 		$category = $item->category;
-		$dummy = new Collection([$category]);
-		$dummy = Filter::filterList($dummy);
+		$dummy    = new Collection([$category]);
+		$dummy    = Filter::filterList($dummy);
 
 		if (!count($dummy))
 		{
@@ -353,7 +369,7 @@ class Browse extends Model
 	/**
 	 * Get a list of all items in a given release
 	 *
-	 * @param   int  $rel_id  The release ID
+	 * @param   int $rel_id The release ID
 	 *
 	 * @return  array
 	 */
@@ -371,9 +387,9 @@ class Browse extends Model
 		$orderby = $this->getState('items_orderby', 'order');
 
 		// Get limits
-		$start = $this->getState('start', 0);
+		$start = $this->getState('limitstart', 0);
 		/** @var \JApplicationSite $app */
-		$app = \JFactory::getApplication();
+		$app   = \JFactory::getApplication();
 		$limit = $this->getState('limit', -1);
 
 		if ($limit == -1)
@@ -386,11 +402,11 @@ class Browse extends Model
 		$model = $this->container->factory->model('Items')->tmpInstance();
 
 		$model
-						 ->limitstart($start)
-						 ->limit($limit)
-						 ->published(1)
-						 ->access_user(\JFactory::getUser()->id)
-						 ->release($rel_id);
+			->limitstart($start)
+			->limit($limit)
+			->published(1)
+			->access_user(\JFactory::getUser()->id)
+			->release($rel_id);
 
 		if ($app->getLanguageFilter())
 		{
@@ -469,11 +485,11 @@ class Browse extends Model
 					$model = $this->container->factory->model('Releases')->tmpInstance();
 
 					$model
-									 ->category($cat->id)
-									 ->published(1)
-									 ->access_user(\JFactory::getUser()->id)
-									 ->limitstart(0)
-									 ->limit(1);
+						->category($cat->id)
+						->published(1)
+						->access_user(\JFactory::getUser()->id)
+						->limitstart(0)
+						->limit(1);
 
 					switch ($orderby)
 					{
@@ -505,7 +521,7 @@ class Browse extends Model
 
 					$model->setState('maturity', $this->getState('maturity', 'alpha'));
 					/** @var \JApplicationSite $app */
-					$app = \JFactory::getApplication();
+					$app               = \JFactory::getApplication();
 					$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
 
 					if ($hasLanguageFilter)
@@ -573,84 +589,87 @@ class Browse extends Model
 
 		foreach ($this->itemList as $sectionname => $section)
 		{
-			if (!empty($section)) foreach ($section as $cat)
+			if (!empty($section))
 			{
-				if (empty($cat->release))
+				foreach ($section as $cat)
 				{
-					$cat->release = (object)array('id' => null, 'files' => null);
-
-					continue;
-				}
-
-				/** @var Items $model */
-				$model = $this->container->factory->model('Items')->tmpInstance();
-				$orderby = $params->get('items_orderby', 'order');
-
-				switch ($orderby)
-				{
-					case 'alpha':
-						$model->setState('filter_order', 'title');
-						$model->setState('filter_order_Dir', 'ASC');
-						break;
-
-					case 'ralpha':
-						$model->setState('filter_order', 'title');
-						$model->setState('filter_order_Dir', 'DESC');
-						break;
-
-					case 'created':
-						$model->setState('filter_order', 'created');
-						$model->setState('filter_order_Dir', 'ASC');
-						break;
-
-					case 'rcreated':
-						$model->setState('filter_order', 'created');
-						$model->setState('filter_order_Dir', 'DESC');
-						break;
-
-					case 'order':
-						$model->setState('filter_order', 'ordering');
-						$model->setState('filter_order_Dir', 'ASC');
-						break;
-				}
-
-				$model->setState('published', 1);
-				$model->setState('release', $cat->release->id);
-				$model->setState('limitstart', 0);
-				$model->setState('limit', 0);
-
-				$model->access_user(\JFactory::getUser()->id);
-
-				$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
-
-				if ($hasLanguageFilter)
-				{
-					$hasLanguageFilter = $app->getLanguageFilter();
-				}
-
-				if ($hasLanguageFilter)
-				{
-					$lang_filter_plugin = \JPluginHelper::getPlugin('system', 'languagefilter');
-					$lang_filter_params = new \JRegistry($lang_filter_plugin->params);
-
-					if ($lang_filter_params->get('remove_default_prefix'))
+					if (empty($cat->release))
 					{
-						// Get default site language
-						$lg = \JFactory::getLanguage();
-						$model->setState('language', $lg->getTag());
+						$cat->release = (object)array('id' => null, 'files' => null);
+
+						continue;
+					}
+
+					/** @var Items $model */
+					$model   = $this->container->factory->model('Items')->tmpInstance();
+					$orderby = $params->get('items_orderby', 'order');
+
+					switch ($orderby)
+					{
+						case 'alpha':
+							$model->setState('filter_order', 'title');
+							$model->setState('filter_order_Dir', 'ASC');
+							break;
+
+						case 'ralpha':
+							$model->setState('filter_order', 'title');
+							$model->setState('filter_order_Dir', 'DESC');
+							break;
+
+						case 'created':
+							$model->setState('filter_order', 'created');
+							$model->setState('filter_order_Dir', 'ASC');
+							break;
+
+						case 'rcreated':
+							$model->setState('filter_order', 'created');
+							$model->setState('filter_order_Dir', 'DESC');
+							break;
+
+						case 'order':
+							$model->setState('filter_order', 'ordering');
+							$model->setState('filter_order_Dir', 'ASC');
+							break;
+					}
+
+					$model->setState('published', 1);
+					$model->setState('release', $cat->release->id);
+					$model->setState('limitstart', 0);
+					$model->setState('limit', 0);
+
+					$model->access_user(\JFactory::getUser()->id);
+
+					$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
+
+					if ($hasLanguageFilter)
+					{
+						$hasLanguageFilter = $app->getLanguageFilter();
+					}
+
+					if ($hasLanguageFilter)
+					{
+						$lang_filter_plugin = \JPluginHelper::getPlugin('system', 'languagefilter');
+						$lang_filter_params = new \JRegistry($lang_filter_plugin->params);
+
+						if ($lang_filter_params->get('remove_default_prefix'))
+						{
+							// Get default site language
+							$lg = \JFactory::getLanguage();
+							$model->setState('language', $lg->getTag());
+						}
+						else
+						{
+							$model->setState('language', $app->input->getCmd('language', '*'));
+						}
 					}
 					else
 					{
-						$model->setState('language', $app->input->getCmd('language', '*'));
+						$model->setState('language', $app->input->getCmd('language', ''));
 					}
-				}
-				else
-				{
-					$model->setState('language', $app->input->getCmd('language', ''));
-				}
 
-				$rawlist = $model->get();
-				$cat->release->files = Filter::filterList($rawlist);
+					$rawlist             = $model->get();
+					$cat->release->files = Filter::filterList($rawlist);
+				}
 			}
 		}
 	}
