@@ -27,4 +27,29 @@ class Item extends DataController
 			$data['environments'] = array();
 		}
 	}
+
+	protected function onBeforeAdd()
+	{
+		$this->defaultsForAdd = [
+			'release_id' => 0,
+			'type'       => 'file',
+			'access'     => 1,
+			'published'  => 0,
+			'language'   => '*',
+		];
+
+		if ($stateValue = $this->getModel()->getState('release', null))
+		{
+			$this->defaultsForAdd['release_id'] = $stateValue;
+		}
+
+		foreach ($this->defaultsForAdd as $k => $v)
+		{
+			if ($stateValue = $this->getModel()->getState($k, $v))
+			{
+				$this->defaultsForAdd[ $k ] = $stateValue;
+			}
+		}
+	}
+
 }
