@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form type="browse" show_header="1" show_filters="1" show_pagination="1"
 	  norows_placeholder="COM_ARS_COMMON_NOITEMS_LABEL"
-      cssfiles="media://com_ars/css/backend.css">
+	  cssfiles="media://com_ars/css/backend.css">
 	<headerset>
 		<header name="ordering" type="Ordering" label="JFIELD_ORDERING_LABEL" sortable="true" tdwith="1%"/>
 		<header name="id" type="RowSelect" label="JGLOBAL_FIELD_ID_LABEL" sortable="true" tdwith="20"/>
 		<header name="category_id" type="Model" label="COM_ARS_RELEASES_FIELD_CATEGORY" sortable="true"
-                model="Categories"
-                key_field="id"
-                value_field="title"
-                />
+				model="Categories"
+				key_field="id"
+				value_field="title"
+				/>
 		<header name="version" type="Searchable" label="COM_ARS_RELEASES_FIELD_VERSION" sortable="true"/>
 		<header name="maturity" type="Selectable" label="COM_ARS_RELEASES_FIELD_MATURITY" sortable="true">
 			<option value="alpha">COM_ARS_RELEASES_MATURITY_ALPHA</option>
@@ -26,11 +26,12 @@
 		<field name="ordering" type="Ordering" class="input-mini input-sm"/>
 		<field name="id" type="SelectRow"/>
 		<field name="category_id" type="Model"
-               model="Categories"
-               key_field="id"
-               value_field="title"
-                />
-		<field name="version" type="Text"/>
+			   model="Categories"
+			   key_field="id"
+			   value_field="title"
+				/>
+		<field name="version" type="Text"
+			   url="index.php?option=com_ars&amp;view=Release&amp;id=[ITEM:ID]"/>
 		<field name="maturity" type="GenericList" label="COM_ARS_RELEASES_FIELD_MATURITY">
 			<option value="alpha">COM_ARS_RELEASES_MATURITY_ALPHA</option>
 			<option value="beta">COM_ARS_RELEASES_MATURITY_BETA</option>
