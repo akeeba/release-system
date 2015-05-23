@@ -22,4 +22,23 @@ class Category extends DataController
 		}
 	}
 
+	protected function onBeforeAdd()
+	{
+		$this->defaultsForAdd = [
+			'vgroup_id' => 0,
+			'type'      => 'normal',
+			'access'    => 1,
+			'published' => 0,
+			'language'  => '*',
+		];
+
+		foreach ($this->defaultsForAdd as $k => $v)
+		{
+			if ($stateValue = $this->getModel()->getState($k, $v))
+			{
+				$this->defaultsForAdd[$k] = $stateValue;
+			}
+		}
+	}
+
 }
