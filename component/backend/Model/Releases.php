@@ -504,7 +504,7 @@ class Releases extends DataModel
 	 *
 	 * @return  void
 	 */
-	protected function onAfterCopy(Categories &$releaseAfterCopy)
+	protected function onAfterCopy(Releases &$releaseAfterCopy)
 	{
 		self::$recordBeforeCopy->items->map(function($item) use($releaseAfterCopy) {
 			$item->copy([
