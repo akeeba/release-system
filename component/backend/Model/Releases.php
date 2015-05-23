@@ -73,7 +73,12 @@ class Releases extends DataModel
 {
 	use Mixin\ImplodedArrays;
 	use Mixin\Assertions;
-	use Mixin\VersionedCopy;
+	use Mixin\VersionedCopy {
+		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
+	}
+
+	/** @var  self|null  Used to handle copies */
+	protected static $recordBeforeCopy = null;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
@@ -476,5 +481,37 @@ class Releases extends DataModel
 	protected function setGroupsAttribute($value)
 	{
 		return $this->setAttributeForImplodedArray($value);
+	}
+
+	/**
+	 * Runs before copying a Release
+	 *
+	 * @see  Categories::onBeforeCopy  for the concept
+	 *
+	 * @return  void
+	 */
+	protected function onBeforeCopy()
+	{
+		self::$recordBeforeCopy = $this->getClone();
+
+		$this->onBeforeCopyVersioned();
+	}
+
+	/**
+	 * Runs after copying a Release
+	 *
+	 * @see  Categories::onAfterCopy  for the concept
+	 *
+	 * @return  void
+	 */
+	protected function onAfterCopy(Categories &$releaseAfterCopy)
+	{
+		self::$recordBeforeCopy->items->map(function($item) use($releaseAfterCopy) {
+			$item->copy([
+				'release_id' => $releaseAfterCopy->id
+			]);
+		});
+
+		self::$recordBeforeCopy = null;
 	}
 }

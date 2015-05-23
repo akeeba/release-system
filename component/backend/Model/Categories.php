@@ -73,7 +73,12 @@ class Categories extends DataModel
 {
 	use Mixin\ImplodedArrays;
 	use Mixin\Assertions;
-	use Mixin\VersionedCopy;
+	use Mixin\VersionedCopy {
+		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
+	}
+
+	/** @var  self|null  Used to handle copies */
+	protected static $recordBeforeCopy = null;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
@@ -345,5 +350,40 @@ class Categories extends DataModel
 	protected function setGroupsAttribute($value)
 	{
 		return $this->setAttributeForImplodedArray($value);
+	}
+
+	/**
+	 * Runs before copying a Category. What we do:
+	 * * Store a cloned copy of the current record. We'll need it to clone releases.
+	 * * Use the onBeforeCopy of the VersionedCopy trait (aliased as onBeforeCopyVersioned) to get a valid new "alias"
+	 *   for the copied Category.
+	 *
+	 * @return  void
+	 */
+	protected function onBeforeCopy()
+	{
+		self::$recordBeforeCopy = $this->getClone();
+
+		$this->onBeforeCopyVersioned();
+	}
+
+	/**
+	 * Runs after our category is copied. We copy the releases of the original category into the new (copied) category.
+	 * We use some DataModel magic to do that. self::$recordBeforeCopy->releases is a virtual property which gives us
+	 * access to a FOF DataModel Collection that holds the releases fetched from the relation set in the Category model.
+	 * The map() method runs the callback on each one of them. Our callback calls copy() on each item to copy it,
+	 * passing it the new category ID at the same time.
+	 *
+	 * @param   Categories  $categoryAfterCopy  The new (copied) category
+	 */
+	protected function onAfterCopy(Categories &$categoryAfterCopy)
+	{
+		self::$recordBeforeCopy->releases->map(function($release) use($categoryAfterCopy) {
+			$release->copy([
+				'category_id' => $categoryAfterCopy->id
+			]);
+		});
+
+		self::$recordBeforeCopy = null;
 	}
 }
