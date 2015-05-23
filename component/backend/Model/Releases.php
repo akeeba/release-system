@@ -90,6 +90,7 @@ class Releases extends DataModel
 		$config['tableName'] = '#__ars_releases';
 		$config['idFieldName'] = 'id';
 		$config['aliasFields'] = [
+			'title'       => 'version',
 			'slug' 	      => 'alias',
 			'enabled'     => 'published',
 			'created_on'  => 'created',
