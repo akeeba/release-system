@@ -281,14 +281,30 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select('COUNT(*)')
-			->from($db->qn('#__extensions'))
-			->where($db->qn('type') . ' = ' . $db->q('component'))
-			->where($db->qn('element') . ' = ' . $db->q('com_poweradmin'))
-			->where($db->qn('enabled') . ' = ' . $db->q('1'));
+					->select('COUNT(*)')
+					->from($db->qn('#__extensions'))
+					->where($db->qn('type') . ' = ' . $db->q('component'))
+					->where($db->qn('element') . ' = ' . $db->q('com_poweradmin'))
+					->where($db->qn('enabled') . ' = ' . $db->q('1'));
 		$hasPowerAdmin = $db->setQuery($query)->loadResult();
 
 		if (!$hasPowerAdmin)
+		{
+			return;
+		}
+
+		$query = $db->getQuery(true)
+					->select('manifest_cache')
+					->from($db->qn('#__extensions'))
+					->where($db->qn('type') . ' = ' . $db->q('component'))
+					->where($db->qn('element') . ' = ' . $db->q('com_poweradmin'))
+					->where($db->qn('enabled') . ' = ' . $db->q('1'));
+		$paramsJson = $db->setQuery($query)->loadResult();
+		$jsnPAManifest = new JRegistry();
+		$jsnPAManifest->loadString($paramsJson, 'JSON');
+		$version = $jsnPAManifest->get('version', '0.0.0');
+
+		if (version_compare($version, '2.1.2', 'ge'))
 		{
 			return;
 		}
