@@ -319,7 +319,7 @@ class Com_ArsInstallerScript extends F0FUtilsInstallscript
 	regarding this issue.
 </p>
 <p style="font-size: 18pt; line-height: 120%; color: green;">
-	Tip: You can disable JSN PowerAdmin to see the menu items to Akeeba Backup.
+	Tip: You can disable JSN PowerAdmin to see the menu items to {$this->componentName}.
 </p>
 </div>
 
