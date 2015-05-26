@@ -7,9 +7,12 @@
 
 namespace Akeeba\ReleaseSystem\Site\Helper;
 
+use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\DownloadIDLabels;
 use Akeeba\ReleaseSystem\Site\Model\SubscriptionIntegration;
+use Akeeba\ReleaseSystem\Site\Model\VisualGroups;
 use FOF30\Container\Container;
+use FOF30\Model\DataModel;
 use FOF30\Model\DataModel\Collection;
 
 defined('_JEXEC') or die();
@@ -17,30 +20,19 @@ defined('_JEXEC') or die();
 abstract class Filter
 {
 	/**
-	 * Filters a list
+	 * Used to filter a list by subscription levels
 	 *
-	 * @param   Collection  $source  The source list
+	 * @param   DataModel  $source  The source item to check whether it should be included in the list
 	 *
-	 * @return  array  The filtered list
+	 * @return  bool  True if we should add it to the list, false otherwise
 	 */
-	static public function filterList(Collection $source)
+	public static function filterItem($source)
 	{
 		static $myGroups = null;
 
-		// Initialise filtered list
-		$list = array();
-
-		// If we pass a DataModel we'll convert it to a Collection
-
-		// Check for empty source lists
-		if (!is_object($source) || !($source instanceof Collection))
+		if (!is_object($source) || !($source instanceof DataModel))
 		{
-			return $list;
-		}
-
-		if (!$source->count())
-		{
-			return $list;
+			return false;
 		}
 
 		// Cache user access and groups
@@ -61,55 +53,138 @@ abstract class Filter
 			}
 		}
 
-		// Do the real filtering
-		foreach ($source as $s)
+		// Filter by subscription group
+		if (!empty($source->groups))
 		{
-			// Filter by subscription group
-			if (!empty($s->groups))
+			// Category defines subscriptions groups, user belongs to none, do
+			// not display anything.
+			if (empty($mygroups))
 			{
-				// Category defines subscriptions groups, user belongs to none, do
-				// not display anything.
-				if (empty($mygroups))
-				{
-					continue;
-				}
-
-				// Check if any of the category's subscriptions groups are in the
-				// list of groups the user belongs to
-				$groups = $s->groups;
-
-				if (!is_array($groups))
-				{
-					$groups = explode(',', $groups);
-				}
-
-				$inGroups = false;
-
-				if (!empty($groups))
-				{
-					foreach ($groups as $group)
-					{
-						if (in_array($group, $mygroups))
-						{
-							$inGroups = true;
-						}
-					}
-				}
-				else
-				{
-					$inGroups = true;
-				}
-
-				if (!$inGroups)
-				{
-					continue;
-				}
+				return false;
 			}
 
-			$list[] = $s;
+			// Check if any of the category's subscriptions groups are in the
+			// list of groups the user belongs to
+			$groups = $source->groups;
+
+			if (!is_array($groups))
+			{
+				$groups = explode(',', $groups);
+			}
+
+			$inGroups = false;
+
+			if (!empty($groups))
+			{
+				foreach ($groups as $group)
+				{
+					if (in_array($group, $mygroups))
+					{
+						$inGroups = true;
+					}
+				}
+			}
+			else
+			{
+				$inGroups = true;
+			}
+
+			if (!$inGroups)
+			{
+				return false;
+			}
 		}
 
-		return $list;
+		return true;
+	}
+
+	/**
+	 * Figures out how many items exist per visual group and category type
+	 *
+	 * @param   Collection  $categories
+	 *
+	 * @return  array
+	 */
+	public static function getCategoriesPerVisualGroup(Collection $categories)
+	{
+		$container = Container::getInstance('com_ars');
+
+		// Load visual group definitions
+		/** @var VisualGroups $vGroupModel */
+		$vGroupModel = $container->factory->model('VisualGroups')->tmpInstance();
+		$allVisualGroups = $vGroupModel->published(1)->get(true);
+
+		$visualGroups = array();
+
+		$defaultVisualGroup = (object)[
+			'id'          => 0,
+			'title'       => '',
+			'description' => '',
+			'numitems'    => [
+				'all' => 0,
+				'bleedingedge' => 0,
+				'normal' => 0
+			],
+		];
+
+		if (!empty($allVisualGroups))
+		{
+			/** @var VisualGroups $vGroup */
+			foreach ($allVisualGroups as $vGroup)
+			{
+				// Get the number of items per visual group and render section
+				$noOfItems = [
+					'all' => 0,
+					'bleedingedge' => 0,
+					'normal' => 0
+				];
+
+				if ($categories->count())
+				{
+					/** @var Categories $item */
+					foreach ($categories as $item)
+					{
+						$renderSection = $item->type;
+
+						if (empty($item->vgroup_id))
+						{
+							$defaultVisualGroup->numitems['all']++;
+							$defaultVisualGroup->numitems[$renderSection]++;
+
+							continue;
+						}
+
+						if ($item->vgroup_id != $vGroup->id)
+						{
+							continue;
+						}
+
+						$noOfItems['all']++;
+						$noOfItems[$renderSection]++;
+					}
+				}
+
+				$visualGroups[$vGroup->id] = (object)[
+					'id'          => $vGroup->id,
+					'title'       => $vGroup->title,
+					'description' => $vGroup->description,
+					'numitems'    => $noOfItems,
+				];
+			}
+		}
+		else
+		{
+			/** @var Categories $item */
+			foreach ($categories as $item)
+			{
+				$renderSection = $item->type;
+
+				$defaultVisualGroup->numitems['all']++;
+				$defaultVisualGroup->numitems[$renderSection]++;
+			}
+		}
+
+		return array_merge(array($defaultVisualGroup), $visualGroups);
 	}
 
 	/**
@@ -120,7 +195,7 @@ abstract class Filter
 	 *
 	 * @return  bool|string
 	 */
-	static public function reformatDownloadID($dlid)
+	public static function reformatDownloadID($dlid)
 	{
 		// Check if the Download ID is empty or consists of only whitespace
 		if (empty($dlid))

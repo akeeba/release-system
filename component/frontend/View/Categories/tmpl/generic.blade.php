@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-/** @var  \Akeeba\ReleaseSystem\Site\View\Browse\Html  $this */
+/** @var  \Akeeba\ReleaseSystem\Site\View\Categories\Html  $this */
 ?>
 <div class="ars-categories-{{ $section }}">
 	@unless(empty($title))
@@ -30,9 +30,11 @@ defined('_JEXEC') or die;
 						@endunless
 					@endunless
 
-					@foreach($this->items[$section] as $id => $item)
+					@foreach($this->items as $id => $item)
 						@unless($item->vgroup_id != $vgroup->id)
-							@include('site:com_ars/Browse/category', ['id' => $id, 'item' => $item, 'Itemid' => $this->Itemid])
+							@if(($item->type == $section) || ($section == 'all'))
+								@include('site:com_ars/Categories/category', ['id' => $id, 'item' => $item, 'Itemid' => $this->Itemid])
+							@endif
 						@endunless
 					@endforeach
 				</div>

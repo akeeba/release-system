@@ -13,27 +13,27 @@ use Akeeba\ReleaseSystem\Admin\Helper\ComponentParams;
 
 class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 {
-	/** @var   string  The name of the default view, in case none is specified */
-	public $defaultView = 'Browse';
-
 	public $viewMap = [
-		'browses'    => 'Browse',
-		'browse'     => 'Browse',
-		'categories' => 'Category',
-		'category'   => 'Category',
+		'browses'    => 'Categories',
+		'browse'     => 'Categories',
+		'categories' => 'Categories',
+		'category'   => 'Releases',
+		'release'    => 'Items',
+		'releases'   => 'Releases',
 		'download'   => 'Download',
 		'downloads'  => 'Download',
+		'item'       => 'Item',
+		'items'      => 'Items',
 		'latest'     => 'Latest',
 		'latests'    => 'Latest',
-		'release'    => 'Releases',
-		'releases'   => 'Releases',
 		'update'     => 'Updates',
 		'updates'    => 'Updates',
-		'item'       => 'Item',
-		'items'      => 'Item',
 		'dlidlabel'  => 'DownloadIDLabel',
 		'dlidlabels' => 'DownloadIDLabels'
 	];
+
+	/** @var   string  The name of the default view, in case none is specified */
+	public $defaultView = 'Browse';
 
 	public function onBeforeDispatch()
 	{

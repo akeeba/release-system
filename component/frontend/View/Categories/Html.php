@@ -5,18 +5,19 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\ReleaseSystem\Site\View\Browse;
+namespace Akeeba\ReleaseSystem\Site\View\Categories;
 
 defined('_JEXEC') or die;
 
+use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Title;
-use Akeeba\ReleaseSystem\Site\Model\Browse;
-use Akeeba\ReleaseSystem\Site\Model\VisualGroups;
+use Akeeba\ReleaseSystem\Site\Model\Categories;
+use FOF30\Model\DataModel\Collection;
 use FOF30\View\View as BaseView;
 
 class Html extends BaseView
 {
-	/** @var  array  The items to display */
+	/** @var  Collection  The items to display */
 	public $items;
 
 	/** @var  \JRegistry  Page parameters */
@@ -40,85 +41,27 @@ class Html extends BaseView
 	/** @var  object  The active menu item */
 	public $menu;
 
-	public function onBeforeMain($tpl = null)
+	public function onBeforeBrowse($tpl = null)
 	{
+		// Prevent phpStorm's whining...
+		if ($tpl) {}
+
 		// Load the model
-		/** @var Browse $model */
+		/** @var Categories $model */
 		$model = $this->getModel();
 
 		// Assign data to the view, part 1 (we need this later on)
-		$this->items = $model->getCategories();
-
-		// Load visual group definitions
-		/** @var VisualGroups $vGroupModel */
-		$vGroupModel = $this->container->factory->model('VisualGroups')->tmpInstance();
-
-		$raw = $vGroupModel->get(true);
-
-		$visualGroups = array();
-		$groupedItems = 0;
-
-		$defaultVisualGroup = (object)[
-			'id'          => 0,
-			'title'       => '',
-			'description' => '',
-			'numitems'    => [],
-		];
-
-		if (!empty($raw))
+		$this->items = $model->get()->filter(function ($item)
 		{
-			foreach ($raw as $r)
-			{
-				// Get the number of items per visual group and render section
-				$noOfItems = array();
+			return Filter::filterItem($item);
+		});
 
-				if (!empty($this->items))
-				{
-					foreach ($this->items as $renderSection => $items)
-					{
-						$noOfItems[$renderSection] = 0;
-
-						if (!array_key_exists($renderSection, $defaultVisualGroup->numitems))
-						{
-							$defaultVisualGroup->numitems[$renderSection] = 0;
-						}
-
-						foreach ($items as $item)
-						{
-							if ($item->vgroup_id == $r->id)
-							{
-								$noOfItems[$renderSection]++;
-								$groupedItems++;
-							}
-							elseif ($item->vgroup_id == 0)
-							{
-								$defaultVisualGroup->numitems[$renderSection]++;
-							}
-						}
-					}
-				}
-
-				$visualGroups[$r->id] = (object)[
-					'id'          => $r->id,
-					'title'       => $r->title,
-					'description' => $r->description,
-					'numitems'    => $noOfItems,
-				];
-			}
-		}
-		else
-		{
-			foreach ($this->items as $renderSection => $items)
-			{
-				$defaultVisualGroup->numitems[$renderSection] = count($items);
-			}
-		}
-
-		$visualGroups = array_merge(array($defaultVisualGroup), $visualGroups);
+		$visualGroups = Filter::getCategoriesPerVisualGroup($this->items);
 
 		// Add RSS links
 		/** @var \JApplicationSite $app */
 		$app = \JFactory::getApplication();
+		/** @var \JRegistry $params */
 		$params = $app->getParams('com_ars');
 
 		// Set page title and meta
@@ -154,7 +97,7 @@ class Html extends BaseView
 		$this->order_Dir = $model->getState('filter_order_Dir', 'DESC', 'cmd');
 
 		// Assign data to the view
-		$this->pagination = $model->pagination;
+		$this->pagination = new \JPagination($model->count(), $model->limitstart, $model->limit);
 		$this->vgroups = $visualGroups;
 
 		// Pass page params

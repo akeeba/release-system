@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die;
 
-/** @var  \Akeeba\ReleaseSystem\Site\View\Browse\Html  $this */
+/** @var  \Akeeba\ReleaseSystem\Site\View\Categories\Html  $this */
 ?>
 
 <div class="item-page{{{ $this->params->get('pageclass_sfx') }}}">
@@ -11,5 +11,5 @@ defined('_JEXEC') or die;
 	</div>
 	@endif
 
-	@include('site:com_ars/Browse/generic', ['section' => 'bleedingedge', 'items' => $this->items['bleedingedge'], 'title' => 'ARS_CATEGORY_BLEEDINGEDGE'])
+	@include('site:com_ars/Categories/generic', ['section' => 'normal', 'items' => $this->items['normal'], 'title' => 'ARS_CATEGORY_NORMAL'])
 </div>
