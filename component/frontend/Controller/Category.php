@@ -28,13 +28,10 @@ class Category extends DataController
 			$task = $this->getCrudTask();
 		}
 
-		// For the HTML view we only allow browse or read (default: read)
+		// For the HTML view we only allow browse
 		if (in_array($format, ['html', 'feed']))
 		{
-			if (!in_array($task, ['browse', 'read']))
-			{
-				$task = 'browse';
-			}
+			$task = 'browse';
 		}
 
 		return parent::execute($task);

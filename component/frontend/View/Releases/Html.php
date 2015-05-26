@@ -5,13 +5,14 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\ReleaseSystem\Site\View\Categories;
+namespace Akeeba\ReleaseSystem\Site\View\Releases;
 
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Title;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
+use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Model\DataModel\Collection;
 use FOF30\View\View as BaseView;
 
@@ -19,6 +20,9 @@ class Html extends BaseView
 {
 	/** @var  Collection  The items to display */
 	public $items;
+
+	/** @var  Categories  The category of the releases */
+	public $category;
 
 	/** @var  \JRegistry  Page parameters */
 	public $params;
@@ -38,7 +42,7 @@ class Html extends BaseView
 	/** @var  int  Active menu item ID */
 	public $Itemid;
 
-	/** @var  object  The active menu item */
+	/** @var  \JMenuNode  The active menu item */
 	public $menu;
 
 	public function onBeforeBrowse($tpl = null)
@@ -47,16 +51,14 @@ class Html extends BaseView
 		if ($tpl) {}
 
 		// Load the model
-		/** @var Categories $model */
+		/** @var Releases $model */
 		$model = $this->getModel();
 
 		// Assign data to the view, part 1 (we need this later on)
-		$this->items = $model->get(true)->filter(function ($item)
+		$this->items = $model->get()->filter(function ($item)
 		{
 			return Filter::filterItem($item);
 		});
-
-		$visualGroups = Filter::getCategoriesPerVisualGroup($this->items);
 
 		// Add RSS links
 		/** @var \JApplicationSite $app */
@@ -71,7 +73,7 @@ class Html extends BaseView
 
 		if ($show_feed)
 		{
-			$feed = 'index.php?option=com_ars&view=Categories&format=feed';
+			$feed = 'index.php?option=com_ars&view=Releases&format=feed';
 
 			$rss = array(
 				'type'  => 'application/rss+xml',
@@ -98,7 +100,7 @@ class Html extends BaseView
 
 		// Assign data to the view
 		$this->pagination = new \JPagination($model->count(), $model->limitstart, $model->limit);
-		$this->vgroups = $visualGroups;
+		$this->category = $this->getModel('Categories');
 
 		// Pass page params
 		$this->params = $app->getParams();
