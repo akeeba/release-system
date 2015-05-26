@@ -70,24 +70,17 @@ switch ($item->maturity)
 		@endif
 	</dl>
 
-	<ul class="nav nav-tabs">
-		<li class="active">
-			<a href="#reltabs-{{{ $item->id }}}-desc" data-toggle="tab">
-				@lang('COM_ARS_RELEASE_DESCRIPTION_LABEL')
-			</a>
-		<li>
-			<a href="#reltabs-{{{ $item->id }}}-notes" data-toggle="tab">
-				@lang('COM_ARS_RELEASE_NOTES_LABEL')
-			</a>
-	</ul>
-	<div class="tab-content">
-		<div class="tab-pane active" id="reltabs-{{{ $item->id }}}-desc">
-			{{ Format::preProcessMessage($item->description, 'com_ars.release_description') }}
-		</div>
-		<div class="tab-pane" id="reltabs-{{{ $item->id }}}-notes">
-			{{ Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
-		</div>
-	</div>
+	@jhtml('bootstrap.startTabSet', 'ars-reltabs-' . $item->id, ['active' => "reltabs-{$item->id}-desc"])
+
+	@jhtml('bootstrap.addTab', 'ars-reltabs-' . $item->id, "reltabs-{$item->id}-desc", JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'))
+	{{ Format::preProcessMessage($item->description, 'com_ars.release_description') }}
+	@jhtml('bootstrap.endTab')
+
+	@jhtml('bootstrap.addTab', 'ars-reltabs-' . $item->id, "reltabs-{$item->id}-notes", JText::_('COM_ARS_RELEASE_NOTES_LABEL'))
+	{{ Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
+	@jhtml('bootstrap.endTab')
+
+	@jhtml('bootstrap.endTabSet')
 
 	@if(!isset($no_link) || !$no_link)
 	<p class="readmore">
