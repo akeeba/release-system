@@ -62,6 +62,7 @@ use FOF30\Model\DataModel;
  * @method  $this  language2()          language2(string $v)
  * @method  $this  access_user()        access_user(int $user_id)
  * @method  $this  nobeunpub()          nobeunpub(bool $v)
+ * @method  $this  latest()             latest(bool $v)
  *
  * Relations:
  *
@@ -262,6 +263,15 @@ class Releases extends DataModel
 			case 'stable':
 				$query->where($db->qn('maturity') . ' = ' . $db->q('stable'));
 				break;
+		}
+
+		// Latest version filter. Use as $releases->published(1)->latest(true)->get(true)
+		$fltLatest = $this->getState('latest', false, 'bool');
+
+		if ($fltLatest)
+		{
+			// Why just a DESC group by clause? See http://stackoverflow.com/questions/1313120/retrieving-the-last-record-in-each-group
+			$query->group($db->qn('category_id') . ' DESC');
 		}
 	}
 
