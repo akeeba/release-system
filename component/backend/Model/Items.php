@@ -227,12 +227,8 @@ class Items extends DataModel
 			/** @var Categories $categoriesModel */
 			$categories = [];
 			$categoriesModel = $this->container->factory->model('Categories')->tmpInstance();
-			$categoriesModel->access($access_levels)->get(true)->transform(function($items) use($categories){
-				/** @var Categories $item */
-				foreach($items as $item)
-				{
-					$categories[] = $item->id;
-				}
+			$categoriesModel->access($access_levels)->get(true)->transform(function($item) use(&$categories){
+				$categories[] = $item->id;
 			});
 
 			if (empty($categories))
@@ -262,12 +258,9 @@ class Items extends DataModel
 			/** @var Categories $categoriesModel */
 			$categories = [];
 			$categoriesModel = $this->container->factory->model('Categories')->tmpInstance();
-			$categoriesModel->language($fltLanguage)->get(true)->transform(function($items) use($categories){
+			$categoriesModel->language($fltLanguage)->get(true)->transform(function($item) use(&$categories){
 				/** @var Categories $item */
-				foreach($items as $item)
-				{
-					$categories[] = $item->id;
-				}
+				$categories[] = $item->id;
 			});
 
 			if (empty($categories))
@@ -290,12 +283,8 @@ class Items extends DataModel
 			/** @var Categories $categoriesModel */
 			$categories = [];
 			$categoriesModel = $this->container->factory->model('Categories')->tmpInstance();
-			$categoriesModel->language2($fltLanguage2)->get(true)->transform(function($items) use($categories){
-				/** @var Categories $item */
-				foreach($items as $item)
-				{
-					$categories[] = $item->id;
-				}
+			$categoriesModel->language2($fltLanguage2)->get(true)->transform(function($item) use(&$categories){
+				$categories[] = $item->id;
 			});
 
 			if (empty($categories))
@@ -351,12 +340,8 @@ class Items extends DataModel
 			/** @var Releases $releasesModel */
 			$releases = [];
 			$releasesModel = $this->container->factory->model('Releases')->tmpInstance();
-			$releasesModel->category($fltCategory)->get(true)->transform(function($items) use($releases){
-				/** @var Releases $item */
-				foreach($items as $item)
-				{
-					$releases[] = $item->id;
-				}
+			$releasesModel->category($fltCategory)->get(true)->transform(function($item) use(&$releases){
+				$releases[] = $item->id;
 			});
 
 			if (!empty($releases))

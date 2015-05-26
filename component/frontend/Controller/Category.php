@@ -54,6 +54,7 @@ class Category extends DataController
 		$model = $this->getModel();
 		$model->orderby($params->get('orderby', 'order'))
 			  ->limitstart(0)
-			  ->limit(0);
+			  ->limit(0)
+			  ->access_user(\JFactory::getUser()->id);
 	}
 }

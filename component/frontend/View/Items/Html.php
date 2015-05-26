@@ -5,14 +5,14 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\ReleaseSystem\Site\View\Releases;
+namespace Akeeba\ReleaseSystem\Site\View\Items;
 
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Title;
-use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
+use Akeeba\ReleaseSystem\Site\Model\Items;
 use FOF30\Model\DataModel\Collection;
 use FOF30\View\View as BaseView;
 
@@ -21,8 +21,8 @@ class Html extends BaseView
 	/** @var  Collection  The items to display */
 	public $items;
 
-	/** @var  Categories  The category of the releases */
-	public $category;
+	/** @var  Releases  The category of the releases */
+	public $release;
 
 	/** @var  \JRegistry  Page parameters */
 	public $params;
@@ -36,9 +36,6 @@ class Html extends BaseView
 	/** @var  \JPagination  Pagination object */
 	public $pagination;
 
-	/** @var  array Visual groups */
-	public $vgroups;
-
 	/** @var  int  Active menu item ID */
 	public $Itemid;
 
@@ -51,7 +48,7 @@ class Html extends BaseView
 		if ($tpl) {}
 
 		// Load the model
-		/** @var Releases $model */
+		/** @var Items $model */
 		$model = $this->getModel();
 
 		// Assign data to the view, part 1 (we need this later on)
@@ -60,38 +57,41 @@ class Html extends BaseView
 			return Filter::filterItem($item);
 		});
 
-		// Add RSS links
 		/** @var \JApplicationSite $app */
 		$app = \JFactory::getApplication();
-		/** @var \JRegistry $params */
-		$params = $app->getParams('com_ars');
+		$user = \JFactory::getUser();
+		$params = $app->getParams();
 
-		// Set page title and meta
-		$title = Title::setTitleAndMeta($params, 'ARS_VIEW_BROWSE_TITLE');
+		// DirectLink setup
+		$this->downloadId = Filter::myDownloadID();
 
-		$show_feed = $params->get('show_feed_link');
+		$directlink = $params->get('show_directlink', 1) && !$user->guest;
+		$this->directlink = $directlink;
 
-		if ($show_feed)
+		// Pass on Direct Link-related stuff
+		if ($directlink)
 		{
-			$feed = 'index.php?option=com_ars&view=Releases&category_id=' . $this->getModel('Categories')->id . '&format=feed';
+			$directlink_extensions = explode(',', $params->get('directlink_extensions', 'zip,tar,tar.gz,tgz,tbz,tar.bz2'));
 
-			$rss = array(
-				'type'  => 'application/rss+xml',
-				'title' => $title . ' (RSS)'
-			);
+			if (empty($directlink_extensions))
+			{
+				$directlink_extensions = array();
+			}
+			else
+			{
+				$temp = array();
 
-			$atom = array(
-				'type'  => 'application/atom+xml',
-				'title' => $title . ' (Atom)'
-			);
+				foreach ($directlink_extensions as $ext)
+				{
+					$temp[] = '.' . trim($ext);
+				}
 
-			// Add the links
-			/** @var \JDocumentHTML $document */
-			$document = \JFactory::getDocument();
-			$document->addHeadLink(\AKRouter::_($feed . '&type=rss'), 'alternate',
-				'rel', $rss);
-			$document->addHeadLink(\AKRouter::_($feed . '&type=atom'), 'alternate',
-				'rel', $atom);
+				$directlink_extensions = $temp;
+			}
+
+			$this->directlink_extensions = $directlink_extensions;
+
+			$this->directlink_description = $params->get('directlink_description', \JText::_('COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_DEFAULT'));
 		}
 
 		// Get the ordering
@@ -100,10 +100,10 @@ class Html extends BaseView
 
 		// Assign data to the view
 		$this->pagination = new \JPagination($model->count(), $model->limitstart, $model->limit);
-		$this->category = $this->getModel('Categories');
+		$this->release = $this->getModel('Releases');
 
 		// Pass page params
-		$this->params = $app->getParams();
+		$this->params = $params;
 		$this->Itemid = $this->input->getInt('Itemid', 0);
 		$this->menu = $app->getMenu()->getActive();
 

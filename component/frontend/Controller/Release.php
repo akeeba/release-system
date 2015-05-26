@@ -43,13 +43,7 @@ class Release extends DataController
 
 	public function onBeforeBrowse()
 	{
-		$limitstart = $this->input->getInt('limitstart', -1);
-
-		if ($limitstart >= 0)
-		{
-			$this->input->set('start', $limitstart);
-		}
-
+		// Only apply on HTML views
 		if (!in_array($this->input->getCmd('format', 'html'), ['html', 'feed']))
 		{
 			return;
@@ -63,11 +57,13 @@ class Release extends DataController
 		// Push the page params to the Releases model
 		/** @var Categories $categoryModel */
 		$categoryModel = $this->getModel('Categories')
-							  ->orderby($params->get('orderby', 'order'));
+							  ->orderby($params->get('orderby', 'order'))
+							  ->access_user(\JFactory::getUser()->id);
 
 		/** @var Releases $releasesModel */
 		$releasesModel = $this->getModel()
-							  ->orderby($params->get('rel_orderby', 'order'));
+							  ->orderby($params->get('rel_orderby', 'order'))
+							  ->access_user(\JFactory::getUser()->id);
 
 		// Get the category ID
 		$id = $this->input->getInt('category_id', 0);
@@ -98,6 +94,7 @@ class Release extends DataController
 			if (!empty($noAccessURL))
 			{
 				\JFactory::getApplication()->redirect($noAccessURL);
+
 				return;
 			}
 

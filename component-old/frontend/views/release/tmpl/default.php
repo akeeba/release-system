@@ -84,7 +84,7 @@ $pageHeading = $this->pparams->get('page_heading', $menu->title) . ' ' . $this->
 	</div>
 
 	<br/>
-	<?php echo JText::_('ARS_RELEASES_PER_PAGE') ?>
+		<?php echo JText::_('ARS_RELEASES_PER_PAGE') ?>
 	<?php echo $this->pagination->getLimitBox(); ?>
 <?php endif; ?>
 </form>

@@ -9,8 +9,7 @@ namespace Akeeba\ReleaseSystem\Site\Model;
 
 
 use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
-use Akeeba\ReleaseSystem\Admin\Model\Categories;
-use Akeeba\ReleaseSystem\Admin\Model\Releases;
+use FOF30\Container\Container;
 use FOF30\Model\DataModel\Collection;
 use FOF30\Model\Model;
 
@@ -59,6 +58,8 @@ class BleedingEdge extends Model
 		elseif (is_numeric($cat))
 		{
 			$this->category_id = (int)$cat;
+			$container = Container::getInstance('com_ars');
+			$this->category = $container->factory->model('Categories')->tmpInstance();
 			$this->category->find($this->category_id);
 		}
 
@@ -429,7 +430,7 @@ class BleedingEdge extends Model
 			return;
 		}
 
-		// Make sure it is a Bleeding Edge category
+		// Can't proceed if it's not a bleedingedge category
 		if ($this->category->type != 'bleedingedge')
 		{
 			return;
