@@ -34,6 +34,9 @@ class Logs extends DataModel
 
 		parent::__construct($container, $config);
 
+		// Disable automatic checks
+		$this->autoChecks = false;
+
 		// Relations
 		$this->hasOne('item', 'Items', 'item_id', 'id');
 
@@ -136,7 +139,7 @@ class Logs extends DataModel
 	{
 		if (empty($this->user_id))
 		{
-			$user = \JFactory::getUser();
+			$user = $this->container->platform->getUser();
 			$this->user_id = $user->id;
 		}
 

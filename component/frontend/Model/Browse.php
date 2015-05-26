@@ -176,7 +176,7 @@ class Browse extends Model
 		try
 		{
 			$cat = $catModel
-				->access_user(\JFactory::getUser()->id)
+				->access_user($this->container->platform->getUser()->id)
 				->id($id)
 				->firstOrFail();
 
@@ -325,7 +325,7 @@ class Browse extends Model
 		{
 			/** @var Releases $item */
 			$item = $relModel
-				->access_user(\JFactory::getUser()->id)
+				->access_user($this->container->platform->getUser()->id)
 				->id($id)
 				->firstOrFail();
 
@@ -405,7 +405,7 @@ class Browse extends Model
 			->limitstart($start)
 			->limit($limit)
 			->published(1)
-			->access_user(\JFactory::getUser()->id)
+			->access_user($this->container->platform->getUser()->id)
 			->release($rel_id);
 
 		if ($app->getLanguageFilter())
@@ -487,7 +487,7 @@ class Browse extends Model
 					$model
 						->category($cat->id)
 						->published(1)
-						->access_user(\JFactory::getUser()->id)
+						->access_user($this->container->platform->getUser()->id)
 						->limitstart(0)
 						->limit(1);
 
@@ -637,7 +637,7 @@ class Browse extends Model
 					$model->setState('limitstart', 0);
 					$model->setState('limit', 0);
 
-					$model->access_user(\JFactory::getUser()->id);
+					$model->access_user($this->container->platform->getUser()->id);
 
 					$hasLanguageFilter = method_exists($app, 'getLanguageFilter');
 

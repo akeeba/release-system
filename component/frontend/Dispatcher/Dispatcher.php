@@ -22,6 +22,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		'releases'   => 'Releases',
 		'download'   => 'Item',
 		'downloads'  => 'Item',
+		'Download'   => 'Item',
 		'item'       => 'Item',
 		'items'      => 'Items',
 		'latest'     => 'Latest',
@@ -33,7 +34,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	];
 
 	/** @var   string  The name of the default view, in case none is specified */
-	public $defaultView = 'Browse';
+	public $defaultView = 'Categories';
 
 	public function onBeforeDispatch()
 	{

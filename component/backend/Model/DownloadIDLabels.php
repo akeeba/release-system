@@ -129,7 +129,7 @@ class DownloadIDLabels extends DataModel
 	{
 		if ($this->container->platform->isFrontend())
 		{
-			$this->user_id = \JFactory::getUser()->id;
+			$this->user_id = $this->container->platform->getUser()->id;
 		}
 
 		$db = $this->getDbo();

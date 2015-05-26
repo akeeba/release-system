@@ -29,7 +29,7 @@ class ControlPanel extends Model
 
 		if (is_null($result))
 		{
-			$db = \JFactory::getDbo();
+			$db = $this->container->db;
 
 			$query = $db->getQuery(true)
 						->select('COUNT(*)')
@@ -146,7 +146,7 @@ class ControlPanel extends Model
 	public function setComponentParameter($parameter, $value)
 	{
 		// Fetch the component parameters
-		$db = JFactory::getDbo();
+		$db = $this->container->db;
 		$sql = $db->getQuery(true)
 		          ->select($db->qn('params'))
 		          ->from($db->qn('#__extensions'))
@@ -253,7 +253,7 @@ class ControlPanel extends Model
 	 */
 	private function getPopular($itemCount = 5, $from = null, $to = null)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->container->db;
 
 		$query = $db->getQuery(true)
 					->select(array(
@@ -349,7 +349,7 @@ class ControlPanel extends Model
 	 */
 	public function getNumDownloads($interval)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->container->db;
 
 		$interval = strtolower($interval);
 		$allTime = false;
@@ -427,7 +427,7 @@ class ControlPanel extends Model
 	 */
 	public function getChartData()
 	{
-		$db = JFactory::getDbo();
+		$db = $this->container->db;
 
 		$now = JFactory::getDate();
 
@@ -474,7 +474,7 @@ class ControlPanel extends Model
 	 */
 	public function getMonthlyStats()
 	{
-		$db = JFactory::getDBO();
+		$db = $this->container->db;
 
 		$now = JFactory::getDate();
 

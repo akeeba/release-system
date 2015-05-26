@@ -159,14 +159,19 @@ class Categories extends DataModel
 			$query->where($db->qn('vgroup_id') . ' = ' . $db->q($fltVgroup));
 		}
 
-		// Access by user filter
+		// Access by user filter (unless we are asked to display unauthorized links for this category)
 		$fltAccessUser = $this->getState('access_user', null, 'int');
 
 		if (!is_null($fltAccessUser))
 		{
-			$access_levels = \JFactory::getUser($fltAccessUser)->getAuthorisedViewLevels();
+			$access_levels = $this->container->platform->getUser($fltAccessUser)->getAuthorisedViewLevels();
 			$access_levels = array_map(array($db, 'quote'), $access_levels);
-			$query->where($db->qn('access') . ' IN (' . implode(',', $access_levels) . ')');
+			$query->where(
+				'(' .
+				'('. $db->qn('access') . ' IN (' . implode(',', $access_levels) . ')) OR (' .
+				$db->qn('show_unauth_links') . ' = ' . $db->q(1)
+				. '))'
+			);
 		}
 
 		// No unpublished Bleeding Edge categories filter

@@ -29,7 +29,7 @@ trait DateManipulation
 	{
 		\JLoader::import('joomla.utilities.date');
 
-		$db = \JFactory::getDbo();
+		$db = $this->container->db;
 
 		if (empty($value) || ($value == $db->getNullDate()))
 		{
@@ -111,7 +111,7 @@ trait DateManipulation
 			$uNow = $jNow->toUnix();
 		}
 
-		$db = \JFactory::getDbo();
+		$db = $this->container->db;
 
 		$triggered = false;
 

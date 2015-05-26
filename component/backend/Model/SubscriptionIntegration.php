@@ -113,7 +113,7 @@ class SubscriptionIntegration extends Model
 
 		if (empty($user_id))
 		{
-			$user_id = \JFactory::getUser()->id;
+			$user_id = $this->container->platform->getUser()->id;
 		}
 
 		if (!isset($this->userGroups[$user_id]))

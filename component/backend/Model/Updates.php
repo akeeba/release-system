@@ -217,7 +217,7 @@ ENDBODY;
 	{
 		JLoader::import('joomla.updater.update');
 
-		$db = JFactory::getDbo();
+		$db = $this->container->db;
 
 		$update_site = array_shift($this->getUpdateSiteIds());
 
@@ -312,7 +312,7 @@ ENDBODY;
 	 */
 	private function setLastSend()
 	{
-		$db     = JFactory::getDbo();
+		$db     = $this->container->db;
 		$params = JComponentHelper::getParams('com_ars');
 
 		$params->set('akeebasubs_autoupdate_lastsend', time());

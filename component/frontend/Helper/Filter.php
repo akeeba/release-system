@@ -26,11 +26,23 @@ abstract class Filter
 	 *
 	 * @return  bool  True if we should add it to the list, false otherwise
 	 */
-	public static function filterItem($source)
+	public static function filterItem($source, $displayUnauthorized = false, $filterByViewLevels = null)
 	{
 		static $myGroups = null;
 
 		if (!is_object($source) || !($source instanceof DataModel))
+		{
+			return false;
+		}
+
+		// If we're told to display unauthorized links for this item we have to oblige
+		if ($source->show_unauth_links && $displayUnauthorized)
+		{
+			return true;
+		}
+
+		// Should I also filter by a list of view access levels?
+		if (is_array($filterByViewLevels) && !in_array($source->access, $filterByViewLevels))
 		{
 			return false;
 		}
@@ -317,7 +329,7 @@ abstract class Filter
 			throw new \Exception('Invalid Download ID', 403);
 		}
 
-		return \JFactory::getUser($matchingRecord->user_id);
+		return $container->platform->getUser($matchingRecord->user_id);
 	}
 
 	/**
@@ -327,14 +339,14 @@ abstract class Filter
 	 */
 	static public function myDownloadID($user_id = null)
 	{
-		$user = \JFactory::getUser($user_id);
+		$container = Container::getInstance('com_ars');
+		$user = $container->platform->getUser($user_id);
 
 		if ($user->guest)
 		{
 			return '';
 		}
 
-		$container = Container::getInstance('com_ars');
 		/** @var DownloadIDLabels $model */
 		$model = $container->factory->model('DownloadIDLabels')->tmpInstance();
 		$dlidRecord = $model->user_id($user->id)->primary(1)->firstOrCreate([

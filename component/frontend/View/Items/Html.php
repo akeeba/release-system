@@ -54,12 +54,12 @@ class Html extends BaseView
 		// Assign data to the view, part 1 (we need this later on)
 		$this->items = $model->get()->filter(function ($item)
 		{
-			return Filter::filterItem($item);
+			return Filter::filterItem($item, true);
 		});
 
 		/** @var \JApplicationSite $app */
 		$app = \JFactory::getApplication();
-		$user = \JFactory::getUser();
+		$user = $this->container->platform->getUser();
 		$params = $app->getParams();
 
 		// DirectLink setup

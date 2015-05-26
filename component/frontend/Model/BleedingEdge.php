@@ -7,6 +7,7 @@
 
 namespace Akeeba\ReleaseSystem\Site\Model;
 
+defined('_JEXEC') or die();
 
 use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
 use FOF30\Container\Container;

@@ -58,12 +58,12 @@ class Release extends DataController
 		/** @var Categories $categoryModel */
 		$categoryModel = $this->getModel('Categories')
 							  ->orderby($params->get('orderby', 'order'))
-							  ->access_user(\JFactory::getUser()->id);
+							  ->access_user($this->container->platform->getUser()->id);
 
 		/** @var Releases $releasesModel */
 		$releasesModel = $this->getModel()
 							  ->orderby($params->get('rel_orderby', 'order'))
-							  ->access_user(\JFactory::getUser()->id);
+							  ->access_user($this->container->platform->getUser()->id);
 
 		// Get the category ID
 		$id = $this->input->getInt('category_id', 0);
@@ -83,13 +83,15 @@ class Release extends DataController
 			{
 				throw new \Exception('Filtering failed');
 			}
-
-			// Filter the releases by this category
-			$releasesModel->category($categoryModel->id);
 		}
 		catch (\Exception $e)
 		{
 			$noAccessURL = \JComponentHelper::getParams('com_ars')->get('no_access_url', '');
+
+			if ($categoryModel->id && $categoryModel->redirect_unauth && $categoryModel->show_unauth_links)
+			{
+				$noAccessURL = $categoryModel->redirect_unauth;
+			}
 
 			if (!empty($noAccessURL))
 			{
@@ -100,6 +102,9 @@ class Release extends DataController
 
 			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
+
+		// Filter the releases by this category
+		$releasesModel->category($categoryModel->id);
 
 		/** @var BleedingEdge $bleedingEdgeModel */
 		$bleedingEdgeModel = $this->container->factory->model('BleedingEdge');

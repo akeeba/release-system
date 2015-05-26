@@ -203,7 +203,7 @@ class Items extends DataModel
 
 		if (!is_null($fltAccessUser))
 		{
-			$user = \JFactory::getUser($fltAccessUser);
+			$user = $this->container->platform->getUser($fltAccessUser);
 
 			if (!is_object($user) || !($user instanceof \JUser))
 			{
@@ -211,7 +211,7 @@ class Items extends DataModel
 			}
 			else
 			{
-				$access_levels = \JFactory::getUser($fltAccessUser)->getAuthorisedViewLevels();
+				$access_levels = $this->container->platform->getUser($fltAccessUser)->getAuthorisedViewLevels();
 
 				if (empty($access_levels))
 				{
@@ -223,6 +223,14 @@ class Items extends DataModel
 			}
 
 			$access_levels = array_unique($access_levels);
+
+			// Filter this table
+			$query->where(
+				'(' .
+				'('. $db->qn('access') . ' IN (' . implode(',', $access_levels) . ')) OR (' .
+				$db->qn('show_unauth_links') . ' = ' . $db->q(1)
+				. '))'
+			);
 
 			/** @var Categories $categoriesModel */
 			$categories = [];
@@ -243,9 +251,6 @@ class Items extends DataModel
 				$subQuery->where($db->qn('category_id') . ' IN (' . implode(',', $categories) . ')');
 				$subQuery->where($db->qn('access') . ' IN (' . implode(',', $access_levels) . ')');
 			});
-
-			// IMPORTANT! I want to display items to unauthorized users for the unauthorised link feature to work.
-			// Therefore I must not to filter by item access
 		}
 
 		$fltLanguage = $this->getState('language', null, 'cmd');

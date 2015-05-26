@@ -23,7 +23,7 @@ class Statistics extends Model
 	 */
 	public function checkAndFixCommonTables()
 	{
-		$db = \JFactory::getDbo();
+		$db = $this->container->db;
 		$dbInstaller = new Installer($db, JPATH_ADMINISTRATOR . '/components/com_ars/sql/common');
 		$dbInstaller->updateSchema();
 
@@ -116,7 +116,7 @@ class Statistics extends Model
 			return false;
 		}
 
-		$db = \JFactory::getDbo();
+		$db = $this->container->db;
 		$stats = new \AkeebaUsagestats();
 
 		$stats->setSiteId($siteId);
@@ -194,7 +194,7 @@ class Statistics extends Model
 	 */
 	public function getCommonVariable($key, $default = null)
 	{
-		$db = \JFactory::getDbo();
+		$db = $this->container->db;
 		$query = $db->getQuery(true)
 					->select($db->qn('value'))
 					->from($db->qn('#__akeeba_common'))
@@ -223,7 +223,7 @@ class Statistics extends Model
 	 */
 	public function setCommonVariable($key, $value)
 	{
-		$db = \JFactory::getDbo();
+		$db = $this->container->db;
 		$query = $db->getQuery(true)
 					->select('COUNT(*)')
 					->from($db->qn('#__akeeba_common'))

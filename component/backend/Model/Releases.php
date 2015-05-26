@@ -187,7 +187,7 @@ class Releases extends DataModel
 
 		if (!is_null($fltAccessUser))
 		{
-			$access_levels = \JFactory::getUser($fltAccessUser)->getAuthorisedViewLevels();
+			$access_levels = $this->container->platform->getUser($fltAccessUser)->getAuthorisedViewLevels();
 
 			if (empty($access_levels))
 			{
@@ -198,7 +198,12 @@ class Releases extends DataModel
 			$access_levels = array_map(array($db, 'quote'), $access_levels);
 
 			// Filter this table
-			$query->where($db->qn('access') . ' IN (' . implode(',', $access_levels) . ')');
+			$query->where(
+				'(' .
+				'('. $db->qn('access') . ' IN (' . implode(',', $access_levels) . ')) OR (' .
+				$db->qn('show_unauth_links') . ' = ' . $db->q(1)
+				. '))'
+			);
 
 			// Filter the categories table, too
 			$this->whereHas('category', function(\JDatabaseQuery $subQuery) use($access_levels, $db) {

@@ -3,11 +3,20 @@ defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Releases\Html $this */
 
+use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Admin\Helper\Format;
 
 $released = JFactory::getDate($item->created);
+
 $release_url = Router::_('index.php?option=com_ars&view=Items&release_id=' . $item->id . '&Itemid=' . $Itemid);
+
+$authorisedViewLevels = $this->getContainer()->platform->getUser()->getAuthorisedViewLevels();
+
+if (!Filter::filterItem($item, false, $authorisedViewLevels) && !empty($item->redirect_unauth))
+{
+	$release_url = $item->redirect_unauth;
+}
 
 switch ($item->maturity)
 {

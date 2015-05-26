@@ -3,12 +3,18 @@ defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Items\Html $this */
 
+use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Admin\Helper\Format;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 
 $download_url =
 		Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id . '&Itemid=' . $this->Itemid);
+
+if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()->getAuthorisedViewLevels()) && !empty($item->redirect_unauth))
+{
+	$download_url = $item->redirect_unauth;
+}
 
 $directLink = false;
 
@@ -32,6 +38,13 @@ if ($this->directlink)
 				'dlid=' . $this->downloadId . '&jcompat=my' . $ext;
 	}
 }
+
+if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()->getAuthorisedViewLevels()) && !empty($item->redirect_unauth))
+{
+	$download_url = $item->redirect_unauth;
+	$directLink = false;
+}
+
 ?>
 
 <div class="ars-item-{{{ $item->id }}} well">
