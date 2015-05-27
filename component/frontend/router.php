@@ -511,7 +511,7 @@ function arsBuildRouteRaw(&$query)
 	if (in_array($view, ['download', 'Download', 'downloads', 'Downloads', 'Items', 'Item']))
 	{
 		$view = 'Item';
-		$task = 'Download';
+		$task = 'download';
 	}
 
 	if (($view != 'Item') || ($task != 'download'))
@@ -530,6 +530,16 @@ function arsBuildRouteRaw(&$query)
 	/** @var \Akeeba\ReleaseSystem\Site\Model\Items $download */
 	$download = $container->factory->model('Items')->tmpInstance();
 	$download->find($id);
+
+	// If we have an extension other than html, raw, ini, xml, php try to set the format to manipulate the extension (if
+	// Joomla! is configured to use extensions in URLs)
+	$fileTarget = ($download->type == 'link') ? $download->url : $download->filename;
+	$extension = pathinfo($fileTarget, PATHINFO_EXTENSION);
+
+	if (!in_array($extension, ['html', 'raw', 'ini', 'xml', 'php']))
+	{
+		$query['format'] = $extension;
+	}
 
 	// Get release info
 	$release = $download->release;
