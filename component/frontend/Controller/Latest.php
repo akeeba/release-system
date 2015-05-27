@@ -24,6 +24,35 @@ class Latest extends Controller
 		parent::__construct($container, $config);
 	}
 
+	/**
+	 * Overrides the default display method to add caching support
+	 *
+	 * @param   bool        $cachable  Is this a cacheable view?
+	 * @param   bool|array  $urlparams Registered URL parameters
+	 * @param   null|string $tpl       Sub-template (not really used...)
+	 */
+	public function display($cachable = false, $urlparams = false, $tpl = null)
+	{
+		$cachable = true;
+
+		if (!is_array($urlparams))
+		{
+			$urlparams = [];
+		}
+
+		$additionalParams = array(
+			'option'      => 'CMD',
+			'view'        => 'CMD',
+			'task'        => 'CMD',
+			'format'      => 'CMD',
+			'layout'      => 'CMD',
+			'id'          => 'INT',
+		);
+
+		$urlparams = array_merge($additionalParams, $urlparams);
+
+		parent::display($cachable, $urlparams, $tpl);
+	}
 
 	public function execute($task)
 	{
