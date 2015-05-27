@@ -1766,20 +1766,22 @@ function arsParseRouteXml(&$segments)
 function arsParseRouteIni(&$segments)
 {
 	$query = array();
-	$query['view'] = 'update';
+	$query['view'] = 'Update';
 	$query['format'] = 'ini';
 	$query['task'] = 'ini';
 
 	$check = array_shift($segments);
+
 	if ($check != 'updates')
 	{
-		die();
+		return $query;
 	}
 
 	$cat = count($segments) ? array_shift($segments) : null;
 	$stream = count($segments) ? array_shift($segments) : null;
 
 	$query['task'] = 'stream';
+
 	$db = JFactory::getDBO();
 	$dbquery = $db->getQuery(true)
 				  ->select('*')
@@ -1788,10 +1790,12 @@ function arsParseRouteIni(&$segments)
 				  ->where($db->qn('type') . ' = ' . $db->q($cat));
 	$db->setQuery($dbquery, 0, 1);
 	$item = $db->loadObject();
+
 	if (empty($item))
 	{
-		die();
+		return $query;
 	}
+
 	$query['id'] = $item->id;
 
 	return $query;
