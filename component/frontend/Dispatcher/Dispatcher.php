@@ -13,6 +13,11 @@ use Akeeba\ReleaseSystem\Admin\Helper\ComponentParams;
 
 class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 {
+	/**
+	 * Map old views to the new ones.
+	 *
+	 * @var array
+	 */
 	public $viewMap = [
 		'browses'    => 'Categories',
 		'browse'     => 'Categories',
