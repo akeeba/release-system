@@ -1159,46 +1159,33 @@ function arsParseRoute(&$segments)
 {
 	$input = JFactory::getApplication()->input;
 
-	$format = $input->getCmd('format', 'html');
-	$url = JURI::getInstance()->toString();
-	$ext = substr(strtolower($url), -4);
-	if ($ext == '.raw')
+	$format = $input->getCmd('format', null);
+
+	if (is_null($format))
 	{
-		$format = 'raw';
+		$url = JURI::getInstance()->toString();
+		$ext = substr(strtolower($url), -4);
+		$format = ltrim($ext, '.');
 	}
-	if ($ext == '.xml')
-	{
-		$format = 'xml';
-	}
-	if ($ext == '.ini')
-	{
-		$format = 'ini';
-	}
+
+	$segments = ArsRouterHelper::preconditionSegments($segments);
 
 	switch ($format)
 	{
 		case 'html':
-			$segments = ArsRouterHelper::preconditionSegments($segments);
-
 			return arsParseRouteHtml($segments);
 			break;
 
 		case 'raw':
 		default:
-			$segments = ArsRouterHelper::preconditionSegments($segments);
-
 			return arsParseRouteRaw($segments);
 			break;
 
 		case 'xml':
-			$segments = ArsRouterHelper::preconditionSegments($segments);
-
 			return arsParseRouteXml($segments);
 			break;
 
 		case 'ini':
-			$segments = ArsRouterHelper::preconditionSegments($segments);
-
 			return arsParseRouteIni($segments);
 			break;
 	}
@@ -1214,12 +1201,14 @@ function arsParseRouteHtml(&$segments)
 	{
 		// We have a sub(-sub-sub)menu item
 		$found = true;
+
 		while ($found && count($segments))
 		{
 			$parent = $menu->id;
 			$lastSegment = array_shift($segments);
 
 			$m = $menus->getItems(array('parent_id', 'alias'), array($parent, $lastSegment), true);
+
 			if (is_object($m))
 			{
 				$found = true;
@@ -1240,13 +1229,13 @@ function arsParseRouteHtml(&$segments)
 		{
 			case 1:
 				// Repository view
-				$query['view'] = 'browses';
+				$query['view'] = 'Categories';
 				$query['layout'] = array_pop($segments);
 				break;
 
 			case 2:
 				// Category view
-				$query['view'] = 'category';
+				$query['view'] = 'Releases';
 				$query['layout'] = null;
 				$catalias = array_pop($segments);
 				$root = array_pop($segments);
@@ -1262,18 +1251,18 @@ function arsParseRouteHtml(&$segments)
 
 				if (empty($cat))
 				{
-					$query['view'] = 'browses';
+					$query['view'] = 'Categories';
 					$query['layout'] = 'repository';
 				}
 				else
 				{
-					$query['id'] = $cat->id;
+					$query['category_id'] = $cat->id;
 				}
 				break;
 
 			case 3:
 				// Release view
-				$query['view'] = 'release';
+				$query['view'] = 'Items';
 				$query['layout'] = null;
 				$relalias = array_pop($segments);
 				$catalias = array_pop($segments);
@@ -1304,12 +1293,12 @@ function arsParseRouteHtml(&$segments)
 
 				if (empty($rel))
 				{
-					$query['view'] = 'browses';
+					$query['view'] = 'Categories';
 					$query['layout'] = 'repository';
 				}
 				else
 				{
-					$query['id'] = $rel->id;
+					$query['release_id'] = $rel->id;
 				}
 
 				break;
@@ -1327,19 +1316,19 @@ function arsParseRouteHtml(&$segments)
 		$catalias = null;
 		$relalias = null;
 
-		if (empty($view) || ($view == 'browses') || ($view == 'browses'))
+		if (empty($view) || in_array($view, ['Categories', 'browse', 'browses']))
 		{
 			switch (count($segments))
 			{
 				case 1:
 					// Category view
-					$query['view'] = 'category';
+					$query['view'] = 'Releases';
 					$catalias = array_pop($segments);
 					break;
 
 				case 2:
 					// Release view
-					$query['view'] = 'release';
+					$query['view'] = 'Items';
 					$relalias = array_pop($segments);
 					$catalias = array_pop($segments);
 					break;
@@ -1350,13 +1339,13 @@ function arsParseRouteHtml(&$segments)
 					break;
 			}
 		}
-		elseif (empty($view) || ($view == 'category'))
+		elseif (empty($view) || in_array($view, ['Releases', 'category']))
 		{
 			switch (count($segments))
 			{
 				case 1:
 					// Release view
-					$query['view'] = 'release';
+					$query['view'] = 'Items';
 					$relalias = array_pop($segments);
 					break;
 
@@ -1368,7 +1357,14 @@ function arsParseRouteHtml(&$segments)
 		}
 		else
 		{
-			if (in_array($view, array('dlidlabels', 'dlidlabel')))
+			if (in_array($view, ['DownloadIDLabels', 'dlidlabels']))
+			{
+				$query['view'] = $view;
+
+				return $query;
+			}
+
+			if (in_array($view, ['DownloadIDLabel', 'dlidlabel']))
 			{
 				$query['view'] = $view;
 
@@ -1381,11 +1377,12 @@ function arsParseRouteHtml(&$segments)
 				return arsParseRouteRaw($segments);
 			}
 
-			$query['view'] = 'release';
+			$query['view'] = 'Items';
 			$relalias = array_pop($segments);
 		}
 
 		$db = JFactory::getDBO();
+
 		if ($relalias && $catalias)
 		{
 			$dbquery = $db->getQuery(true)
@@ -1410,12 +1407,12 @@ function arsParseRouteHtml(&$segments)
 
 			if (empty($rel))
 			{
-				$query['view'] = 'browses';
+				$query['view'] = 'Categories';
 				$query['layout'] = 'repository';
 			}
 			else
 			{
-				$query['id'] = $rel->id;
+				$query['release_id'] = $rel->id;
 			}
 		}
 		elseif ($catalias && is_null($relalias))
@@ -1432,12 +1429,12 @@ function arsParseRouteHtml(&$segments)
 
 			if (empty($cat))
 			{
-				$query['view'] = 'browses';
+				$query['view'] = 'Categories';
 				$query['layout'] = 'repository';
 			}
 			else
 			{
-				$query['id'] = $cat->id;
+				$query['category_id'] = $cat->id;
 			}
 		}
 		else
@@ -1467,12 +1464,12 @@ function arsParseRouteHtml(&$segments)
 
 			if (empty($rel))
 			{
-				$query['view'] = 'browses';
+				$query['view'] = 'Categories';
 				$query['layout'] = 'repository';
 			}
 			else
 			{
-				$query['id'] = $rel->id;
+				$query['release_id'] = $rel->id;
 			}
 		}
 	}
