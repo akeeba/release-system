@@ -6,8 +6,8 @@ defined('_JEXEC') or die;
 <div class="item-page{{{ $this->params->get('pageclass_sfx') }}}">
 	<div class="page-header">
 		<h1>
-	@if($this->params->get('show_page_heading') && is_object($menu))
-		{{{ $this->params->get('page_heading', $menu->title) }}}
+	@if($this->params->get('show_page_heading') && is_object($this->menu))
+		{{{ $this->params->get('page_heading', $this->menu->title) }}}
 	@else
 		@lang('ARS_VIEW_LATEST_TITLE')
 	@endif
