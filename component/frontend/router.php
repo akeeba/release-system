@@ -1636,7 +1636,7 @@ function arsParseRouteRaw(&$segments)
 function arsParseRouteXml(&$segments)
 {
 	$query = array();
-	$query['view'] = 'update';
+	$query['view'] = 'Update';
 	$query['format'] = 'xml';
 
 	$menus = JMenu::getInstance('site');
@@ -1648,6 +1648,7 @@ function arsParseRouteXml(&$segments)
 		// Analyze URL
 		$uri = new JURI($menuitem->link);
 		$option = $uri->getVar('option');
+
 		// Sanity check
 		if ($option != 'com_ars')
 		{
@@ -1660,6 +1661,7 @@ function arsParseRouteXml(&$segments)
 			$layout = $uri->getVar('layout');
 			$format = $uri->getVar('format', 'ini');
 			$id = $uri->getVar('id', null);
+
 			if (empty($task) && !empty($layout))
 			{
 				$task = $layout;
@@ -1694,7 +1696,7 @@ function arsParseRouteXml(&$segments)
 				}
 			}
 
-			if (($option == 'com_ars') && ($view == 'update'))
+			if (($option == 'com_ars') && in_array($view, ['Update', 'update', 'updates']))
 			{
 				switch ($task)
 				{
@@ -1720,9 +1722,10 @@ function arsParseRouteXml(&$segments)
 	}
 
 	$check = array_shift($segments);
+
 	if ($check != 'updates')
 	{
-		die();
+		return $query;
 	}
 
 	$cat = count($segments) ? array_shift($segments) : null;
@@ -1748,10 +1751,12 @@ function arsParseRouteXml(&$segments)
 					  ->where($db->qn('type') . ' = ' . $db->q($cat));
 		$db->setQuery($dbquery, 0, 1);
 		$item = $db->loadObject();
+
 		if (empty($item))
 		{
-			die();
+			return $query;
 		}
+
 		$query['id'] = $item->id;
 	}
 
