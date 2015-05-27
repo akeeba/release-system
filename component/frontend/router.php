@@ -705,10 +705,18 @@ function arsBuildRouteXml(&$query)
 {
 	$segments = array();
 
-	$view = ArsRouterHelper::getAndPop($query, 'view', 'update');
+	$view = ArsRouterHelper::getAndPop($query, 'view', 'Update');
 	$my_task = ArsRouterHelper::getAndPop($query, 'task', 'default');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid', null);
 	$local_id = ArsRouterHelper::getAndPop($query, 'id', 'components');
+
+	if ($view != 'Update')
+	{
+		return $segments;
+	}
+
+	$task = 'all';
+	$id = 0;
 
 	// Analyze the current Itemid
 	if (!empty($Itemid))
@@ -718,8 +726,9 @@ function arsBuildRouteXml(&$query)
 		$menuitem = $menus->getItem($Itemid);
 
 		// Analyze URL
-		$uri = new JURI($menuitem->link);
+		$uri = new JUri($menuitem->link);
 		$option = $uri->getVar('option');
+
 		// Sanity check
 		if ($option != 'com_ars')
 		{
@@ -727,15 +736,16 @@ function arsBuildRouteXml(&$query)
 		}
 		else
 		{
-			$view = $uri->getVar('view');
 			$task = $uri->getVar('task');
 			$layout = $uri->getVar('layout');
 			$format = $uri->getVar('format', 'ini');
 			$id = $uri->getVar('id', null);
+
 			if (empty($task) && !empty($layout))
 			{
 				$task = $layout;
 			}
+
 			if (empty($task))
 			{
 				if ($format == 'ini')
@@ -775,7 +785,22 @@ function arsBuildRouteXml(&$query)
 			if (empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties
-				$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'));
+				$options       = array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars');
+
+				$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+				$otherMenuItem = null;
+
+				foreach ($possibleViews as $possibleView)
+				{
+					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+					$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions);
+
+					if (!empty($otherMenuItem))
+					{
+						break;
+					}
+				}
+
 				if (!empty($otherMenuItem))
 				{
 					// Exact match
@@ -803,7 +828,22 @@ function arsBuildRouteXml(&$query)
 			if (empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties
-				$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'category', 'option' => 'com_ars'), array('category' => $local_id));
+				$options = array('view' => 'updates', 'layout' => 'category', 'option' => 'com_ars');
+				$params = array('category' => $local_id);
+				$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+				$otherMenuItem = null;
+
+				foreach ($possibleViews as $possibleView)
+				{
+					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+					$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions, $params);
+
+					if (!empty($otherMenuItem))
+					{
+						break;
+					}
+				}
+
 				if (!empty($otherMenuItem))
 				{
 					// Exact match
@@ -812,7 +852,22 @@ function arsBuildRouteXml(&$query)
 				else
 				{
 					// Try to find an Itemid for all categories
-					$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'));
+					$options = array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars');
+					$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+					$otherMenuItem = null;
+
+					foreach ($possibleViews as $possibleView)
+					{
+						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+						$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions);
+
+						if (!empty($otherMenuItem))
+						{
+							break;
+						}
+					}
+
+					// Try to find an Itemid for all categories
 					if (!empty($otherMenuItem))
 					{
 						$query['Itemid'] = $otherMenuItem->id;
@@ -858,13 +913,29 @@ function arsBuildRouteXml(&$query)
 
 			if (empty($stream))
 			{
-				die();
+				return $segments;
 			}
 
 			if (empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties
-				$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'stream', 'option' => 'com_ars'), array('streamid' => $local_id));
+				$options = array('view' => 'updates', 'layout' => 'stream', 'option' => 'com_ars');
+				$params = array('streamid' => $local_id);
+				$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+				$otherMenuItem = null;
+
+				foreach ($possibleViews as $possibleView)
+				{
+					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+					$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions, $params);
+
+					if (!empty($otherMenuItem))
+					{
+						break;
+					}
+				}
+
+				// Try to find an Itemid with the same properties
 				if (!empty($otherMenuItem))
 				{
 					// Exact match
@@ -873,7 +944,22 @@ function arsBuildRouteXml(&$query)
 				else
 				{
 					// Try to find an Itemid for the parent category
-					$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'category', 'option' => 'com_ars'), array('category' => $stream->type));
+					$options = array('view' => 'updates', 'layout' => 'category', 'option' => 'com_ars');
+					$params = array('category' => $stream->type);
+					$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+					$otherMenuItem = null;
+
+					foreach ($possibleViews as $possibleView)
+					{
+						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+						$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions, $params);
+
+						if (!empty($otherMenuItem))
+						{
+							break;
+						}
+					}
+
 					if (!empty($otherMenuItem))
 					{
 						$query['Itemid'] = $otherMenuItem->id;
@@ -882,7 +968,21 @@ function arsBuildRouteXml(&$query)
 					else
 					{
 						// Try to find an Itemid for all categories
-						$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'));
+						$options = array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars');
+						$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+						$otherMenuItem = null;
+
+						foreach ($possibleViews as $possibleView)
+						{
+							$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+							$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions);
+
+							if (!empty($otherMenuItem))
+							{
+								break;
+							}
+						}
+
 						if (!empty($otherMenuItem))
 						{
 							$query['Itemid'] = $otherMenuItem->id;
@@ -898,12 +998,12 @@ function arsBuildRouteXml(&$query)
 					}
 				}
 			}
-			else
+			else // if $Itemid is not empty
 			{
 				// menu item id exists in the query
 				if (($task == 'stream') && ($id == $local_id))
 				{
-					$query['Itemid'] = $otherMenuItem->id;
+					$query['Itemid'] = $Itemid;
 				}
 				elseif (($task == 'category') && ($id == $stream->type))
 				{
