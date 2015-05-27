@@ -710,7 +710,7 @@ function arsBuildRouteXml(&$query)
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid', null);
 	$local_id = ArsRouterHelper::getAndPop($query, 'id', 'components');
 
-	if ($view != 'Update')
+	if (!in_array($view, ['Update', 'updates', 'update']))
 	{
 		return $segments;
 	}
@@ -901,6 +901,7 @@ function arsBuildRouteXml(&$query)
 			break;
 
 		case 'stream':
+			// TODO Cache this?
 			$db = JFactory::getDBO();
 			$dbquery = $db->getQuery(true)
 						  ->select(array(
@@ -1034,9 +1035,15 @@ function arsBuildRouteIni(&$query)
 	$segments = array();
 
 	$view = ArsRouterHelper::getAndPop($query, 'view', 'update');
-	$my_task = ArsRouterHelper::getAndPop($query, 'task', 'default');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid', null);
 	$local_id = ArsRouterHelper::getAndPop($query, 'id', 'components');
+	$task = 'ini';
+	$id = '';
+
+	if (!in_array($view, ['Update', 'updates', 'update']))
+	{
+		return $segments;
+	}
 
 	// Analyze the current Itemid
 	if (!empty($Itemid))
@@ -1046,8 +1053,9 @@ function arsBuildRouteIni(&$query)
 		$menuitem = $menus->getItem($Itemid);
 
 		// Analyze URL
-		$uri = new JURI($menuitem->link);
+		$uri = new JUri($menuitem->link);
 		$option = $uri->getVar('option');
+
 		// Sanity check
 		if ($option != 'com_ars')
 		{
@@ -1055,15 +1063,16 @@ function arsBuildRouteIni(&$query)
 		}
 		else
 		{
-			$view = $uri->getVar('view');
 			$task = $uri->getVar('task');
 			$layout = $uri->getVar('layout');
 			$format = $uri->getVar('format', 'ini');
 			$id = $uri->getVar('id', null);
+
 			if (empty($task) && !empty($layout))
 			{
 				$task = $layout;
 			}
+
 			if (empty($task))
 			{
 				if ($format == 'ini')
@@ -1096,6 +1105,7 @@ function arsBuildRouteIni(&$query)
 		}
 	}
 
+	// TODO cache this?
 	$db = JFactory::getDBO();
 	$dbquery = $db->getQuery(true)
 				  ->select(array(
@@ -1132,7 +1142,7 @@ function arsBuildRouteIni(&$query)
 		// menu item id exists in the query
 		if (($task == 'ini') && ($id == $local_id))
 		{
-			$query['Itemid'] = $otherMenuItem->id;
+			$query['Itemid'] = $Itemid;
 		}
 		else
 		{
