@@ -1482,7 +1482,8 @@ function arsParseRouteRaw(&$segments)
 	$query = array();
 	$menus = JMenu::getInstance('site');
 	$menu = $menus->getActive();
-	$query['view'] = 'download';
+	$query['view'] = 'Item';
+	$query['task'] = 'download';
 	$query['format'] = 'raw';
 
 	if (is_null($menu))
@@ -1529,7 +1530,7 @@ function arsParseRouteRaw(&$segments)
 
 		if (empty($item))
 		{
-			$query['view'] = 'browses';
+			$query['view'] = 'Categories';
 			$query['layout'] = 'repository';
 			$query['format'] = 'html';
 		}
@@ -1549,13 +1550,13 @@ function arsParseRouteRaw(&$segments)
 		$relalias = null;
 		$relid = null;
 
-		if (empty($view) || ($view == 'browses'))
+		if (empty($view) || in_array($view, ['Categories', 'browse', 'browses']))
 		{
 			$itemalias = array_pop($segments);
 			$relalias = array_pop($segments);
 			$catalias = array_pop($segments);
 		}
-		elseif ($view == 'category')
+		elseif (in_array($view, ['Releases', 'category']))
 		{
 			$itemalias = array_pop($segments);
 			$relalias = array_pop($segments);
@@ -1598,14 +1599,17 @@ function arsParseRouteRaw(&$segments)
 		{
 			$dbquery->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias));
 		}
+
 		if (!empty($relid))
 		{
 			$dbquery->where($db->qn('r') . '.' . $db->qn('id') . ' = ' . $db->q($relid));
 		}
+
 		if (!empty($catalias))
 		{
 			$dbquery->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
 		}
+
 		if (!empty($catid))
 		{
 			$dbquery->where($db->qn('c') . '.' . $db->qn('id') . ' = ' . $db->q($catid));
@@ -1616,8 +1620,8 @@ function arsParseRouteRaw(&$segments)
 
 		if (empty($item))
 		{
-			JError::raiseError('404', 'Item not found');
-			$query['view'] = 'browses';
+			// JError::raiseError('404', 'Item not found');
+			$query['view'] = 'Categories';
 			$query['layout'] = 'repository';
 		}
 		else
