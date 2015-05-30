@@ -28,10 +28,6 @@
 					<option value="0">JHide</option>
 					<option value="1">JShow</option>
 			</field>
-			<field name="show_feed_link" type="radio" default="1" label="ARS_BROWSE_REPOSITORY_RSS_LBL" description="ARS_BROWSE_REPOSITORY_RSS_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
-			</field>
 		</fieldset>
 	</fields>
 </metadata>

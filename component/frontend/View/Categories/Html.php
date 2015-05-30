@@ -65,34 +65,6 @@ class Html extends BaseView
 		/** @var \JRegistry $params */
 		$params = $app->getParams('com_ars');
 
-		// Set page title and meta
-		$title = Title::setTitleAndMeta($params, 'ARS_VIEW_BROWSE_TITLE');
-
-		$show_feed = $params->get('show_feed_link');
-
-		if ($show_feed)
-		{
-			$feed = 'index.php?option=com_ars&view=Categories&format=feed';
-
-			$rss = array(
-				'type'  => 'application/rss+xml',
-				'title' => $title . ' (RSS)'
-			);
-
-			$atom = array(
-				'type'  => 'application/atom+xml',
-				'title' => $title . ' (Atom)'
-			);
-
-			// Add the links
-			/** @var \JDocumentHTML $document */
-			$document = \JFactory::getDocument();
-			$document->addHeadLink(Router::_($feed . '&type=rss'), 'alternate',
-				'rel', $rss);
-			$document->addHeadLink(Router::_($feed . '&type=atom'), 'alternate',
-				'rel', $atom);
-		}
-
 		// Get the ordering
 		$this->order = $model->getState('filter_order', 'id', 'cmd');
 		$this->order_Dir = $model->getState('filter_order_Dir', 'DESC', 'cmd');
