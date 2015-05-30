@@ -41,6 +41,9 @@
         <field name="referer" type="Text" />
         <field name="ip" type="Text" />
         <field name="country" type="GenericList"
+			   source_class="Akeeba\ReleaseSystem\Admin\Helper\Select"
+			   source_method="countryOptions"
+			   source_format="optionsobject"
                 />
         <field name="authorized" type="Published" />
     </fieldset>
