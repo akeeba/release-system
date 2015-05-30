@@ -9,6 +9,7 @@ namespace Akeeba\ReleaseSystem\Site\View\Releases;
 
 defined('_JEXEC') or die;
 
+use Akeeba\ReleaseSystem\Site\Helper\Breadcrumbs;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Title;
@@ -60,6 +61,11 @@ class Html extends BaseView
 		{
 			return Filter::filterItem($item, true);
 		});
+
+		// Add breadcrumbs
+		$repoType = $this->items->first()->category->type;
+		Breadcrumbs::addRepositoryRoot($repoType);
+		Breadcrumbs::addCategory($this->items->first()->category->id, $this->items->first()->category->title);
 
 		// Add RSS links
 		/** @var \JApplicationSite $app */

@@ -9,8 +9,10 @@ namespace Akeeba\ReleaseSystem\Site\View\Items;
 
 defined('_JEXEC') or die;
 
+use Akeeba\ReleaseSystem\Site\Helper\Breadcrumbs;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Title;
+use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use Akeeba\ReleaseSystem\Site\Model\Items;
 use FOF30\Model\DataModel\Collection;
@@ -61,6 +63,15 @@ class Html extends BaseView
 		$app = \JFactory::getApplication();
 		$user = $this->container->platform->getUser();
 		$params = $app->getParams();
+
+		// Add Breadcrumbs
+		/** @var Releases $release */
+		$release = $this->items->first()->release;
+		/** @var Categories $category */
+		$category = $release->category;
+		Breadcrumbs::addRepositoryRoot($category->type);
+		Breadcrumbs::addCategory($category->id, $category->title);
+		Breadcrumbs::addRelease($release->id, $release->version);
 
 		// DirectLink setup
 		$this->downloadId = Filter::myDownloadID();
