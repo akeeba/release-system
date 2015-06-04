@@ -11,55 +11,6 @@ defined('_JEXEC') or die();
 
 JLoader::import('joomla.plugin.plugin');
 
-// PHP version check
-if (defined('PHP_VERSION'))
-{
-	$version = PHP_VERSION;
-}
-elseif (function_exists('phpversion'))
-{
-	$version = phpversion();
-}
-else
-{
-	// No version info. I'll lie and hope for the best.
-	$version = '5.0.0';
-}
-// Old PHP version detected. EJECT! EJECT! EJECT!
-if (!version_compare($version, '5.3.0', '>='))
-{
-	return;
-}
-
-// Make sure F0F is loaded, otherwise do not run
-if (!defined('F0F_INCLUDED'))
-{
-	include_once JPATH_LIBRARIES . '/f0f/include.php';
-}
-if (!defined('F0F_INCLUDED') || !class_exists('F0FLess', true))
-{
-	return;
-}
-
-// Required for compatibility with certain operating systems
-if (!function_exists('fnmatch'))
-{
-	function fnmatch($pattern, $string)
-	{
-		return @preg_match(
-			'/^' . strtr(addcslashes($pattern, '/\\.+^$(){}=!<>|'),
-				array('*' => '.*', '?' => '.?')) . '$/i', $string
-		);
-	}
-}
-
-// Do not run if Akeeba Subscriptions is not enabled
-JLoader::import('joomla.application.component.helper');
-if (!JComponentHelper::isEnabled('com_ars', true))
-{
-	return;
-}
-
 class plgContentArslatest extends JPlugin
 {
 
@@ -73,26 +24,57 @@ class plgContentArslatest extends JPlugin
 	private $categoryLatest = array();
 
 	/**
+	 * Should this plugin be allowed to run? True if FOF can be loaded and the ARS component is enabled
+	 *
+	 * @var  bool
+	 */
+	private $enabled = true;
+
+	public function __construct(&$subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+
+		if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+		{
+			$this->enabled = false;
+		}
+
+		// Do not run if Akeeba Subscriptions is not enabled
+		JLoader::import('joomla.application.component.helper');
+
+		if (!JComponentHelper::isEnabled('com_ars'))
+		{
+			$this->enabled = false;
+		}
+	}
+
+	/**
 	 * Content preparation plugin hook
 	 *
-	 * @param srting $context
+	 * @param string $context
 	 * @param object $row
 	 * @param array  $params
 	 * @param int    $limitstart
 	 */
 	public function onContentPrepare($context, &$row, &$params, $limitstart = 0)
 	{
+		if (!$this->enabled)
+		{
+			return true;
+		}
+
 		$text = is_object($row) ? $row->text : $row;
 
-		if (JString::strpos($row->text, 'arslatest') !== false)
+		if (\Joomla\String\String::strpos($row->text, 'arslatest') !== false)
 		{
 			if (!$this->prepared)
 			{
 				// Deferred initialisation to the very last possible minute
 				$this->initialise();
 			}
+
 			$regex = "#{arslatest(.*?)}#s";
-			$text = preg_replace_callback($regex, array($this, 'process'), $text);
+			$text  = preg_replace_callback($regex, array($this, 'process'), $text);
 		}
 
 		if (is_object($row))
@@ -113,6 +95,7 @@ class plgContentArslatest extends JPlugin
 		$ret = '';
 
 		list($op, $content, $pattern) = $this->analyzeString($match[1]);
+
 		switch (strtolower($op))
 		{
 			case 'release':
@@ -128,8 +111,8 @@ class plgContentArslatest extends JPlugin
 				$ret = $this->parseStreamLink($content);
 				break;
 			case 'installfromweb':
-				$session = JFactory::getSession();
-				$installat = $session->get('installat', null, 'arsjed');
+				$session    = JFactory::getSession();
+				$installat  = $session->get('installat', null, 'arsjed');
 				$installapp = $session->get('installapp', null, 'arsjed');
 
 				if (!empty($installapp) && !empty($installat))
@@ -151,19 +134,35 @@ class plgContentArslatest extends JPlugin
 	 */
 	private function initialise()
 	{
-		$model = F0FModel::getTmpInstance('Browses', 'ArsModel')
-						 ->grouping('none')
-						 ->orderby('order');
-		$model->processLatest();
-		$cats = $model->itemList;
+		// Make sure our auto-loader is set up and ready
+		$container = \FOF30\Container\Container::getInstance('com_ars');
 
-		if (!empty($cats))
+		/** @var \Akeeba\ReleaseSystem\Admin\Model\Releases $model */
+		$model = $container->factory->model('Releases');
+		$model->reset(true)
+		      ->published(1)
+		      ->latest(true)
+		      ->access_user($container->platform->getUser()->id)
+		      ->with(['items', 'category']);
+
+		/** @var \FOF30\Model\DataModel\Collection $releases */
+		$releases = $model->get(true)->filter(function ($item)
 		{
-			foreach ($cats['all'] as $cat)
+			return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true);
+		});
+
+		$cats = [];
+
+		if ($releases->count())
+		{
+			/** @var \Akeeba\ReleaseSystem\Admin\Model\Releases $release */
+			foreach ($releases as $release)
 			{
-				$cat->title = trim(strtoupper($cat->title));
-				$this->categoryTitles[$cat->title] = $cat->id;
-				$this->categoryLatest[$cat->id] = $cat->release;
+				$cat                                 = $release->category;
+				$cat->title                          = trim(strtoupper($cat->title));
+				$cats[]                              = $cat;
+				$this->categoryTitles[ $cat->title ] = $cat->id;
+				$this->categoryLatest[ $cat->id ]    = $release;
 			}
 		}
 
@@ -172,13 +171,13 @@ class plgContentArslatest extends JPlugin
 
 	private function analyzeString($string)
 	{
-		$op = '';
+		$op      = '';
 		$content = '';
 		$pattern = '';
 
 		$string = trim($string);
 		$string = strtoupper($string);
-		$parts = explode(' ', $string, 2);
+		$parts  = explode(' ', $string, 2);
 
 		if (count($parts) == 2)
 		{
@@ -189,8 +188,9 @@ class plgContentArslatest extends JPlugin
 			}
 			elseif ($op == 'ITEM_LINK')
 			{
-				$content = trim($parts[1]);
+				$content    = trim($parts[1]);
 				$firstquote = strpos($content, "'");
+
 				if ($firstquote !== false)
 				{
 					$secondquote = strpos($content, "'", $firstquote + 1);
@@ -199,6 +199,7 @@ class plgContentArslatest extends JPlugin
 				{
 					$secondquote = false;
 				}
+
 				if ($secondquote !== false)
 				{
 					$pattern = trim(substr($content, 0, $secondquote), "'");
@@ -215,10 +216,12 @@ class plgContentArslatest extends JPlugin
 		{
 			$content = '';
 		}
+
 		if (empty($content))
 		{
 			$op = '';
 		}
+
 		if (empty($content))
 		{
 			$pattern = '';
@@ -227,18 +230,23 @@ class plgContentArslatest extends JPlugin
 		return array($op, $content, $pattern);
 	}
 
+	/**
+	 * @param   string  $content
+	 *
+	 * @return  \Akeeba\ReleaseSystem\Admin\Model\Releases
+	 */
 	private function getLatestRelease($content)
 	{
 		$release = null;
 
 		if (array_key_exists($content, $this->categoryTitles))
 		{
-			$catid = $this->categoryTitles[$content];
+			$catid = $this->categoryTitles[ $content ];
 		}
 		else
 		{
 			// guessing it is a category id
-			$catid = (int)$content;
+			$catid = (int) $content;
 		}
 
 		if (!array_key_exists($catid, $this->categoryLatest))
@@ -246,7 +254,7 @@ class plgContentArslatest extends JPlugin
 			return $release;
 		}
 
-		$release = $this->categoryLatest[$catid];
+		$release = $this->categoryLatest[ $catid ];
 
 		if (empty($release))
 		{
@@ -256,9 +264,15 @@ class plgContentArslatest extends JPlugin
 		return $release;
 	}
 
+	/**
+	 * @param   string  $content
+	 *
+	 * @return  string
+	 */
 	private function parseRelease($content)
 	{
 		$release = $this->getLatestRelease($content);
+
 		if (empty($release))
 		{
 			return '';
@@ -267,30 +281,44 @@ class plgContentArslatest extends JPlugin
 		return $release->version;
 	}
 
+	/**
+	 * @param   string  $content
+	 *
+	 * @return  string
+	 */
 	private function parseReleaseLink($content)
 	{
 		$release = $this->getLatestRelease($content);
+
 		if (empty($release))
 		{
 			return '';
 		}
 
-		$releaseid = $release->id;
-		$link = JRoute::_('index.php?option=com_ars&view=release&id=' . $releaseid);
+		$link      = JRoute::_('index.php?option=com_ars&view=Items&release_id=' . $release->id);
 
 		return $link;
 	}
 
+	/**
+	 * @param   string  $content
+	 * @param   string  $pattern
+	 *
+	 * @return  string
+	 */
 	private function parseItemLink($content, $pattern)
 	{
 		$release = $this->getLatestRelease($content);
+
 		if (empty($release))
 		{
 			return '';
 		}
 
 		$item = null;
-		foreach ($release->files as $file)
+
+		/** @var \Akeeba\ReleaseSystem\Site\Model\Items $file */
+		foreach ($release->items as $file)
 		{
 			if ($file->type == 'file')
 			{
@@ -300,7 +328,9 @@ class plgContentArslatest extends JPlugin
 			{
 				$fname = $file->url;
 			}
+
 			$fname = strtoupper(basename($fname));
+
 			if (fnmatch($pattern, $fname))
 			{
 				$item = $file;
@@ -313,7 +343,7 @@ class plgContentArslatest extends JPlugin
 			return '';
 		}
 
-		$link = JRoute::_('index.php?option=com_ars&view=download&id=' . $item->id);
+		$link = JRoute::_('index.php?option=com_ars&view=Item&format=raw&id=' . $item->id);
 
 		return $link;
 	}
@@ -326,43 +356,33 @@ class plgContentArslatest extends JPlugin
 
 		if (empty($dlid) && !$user->guest)
 		{
-			if (!class_exists('ArsHelperFilter'))
-			{
-				@include_once JPATH_SITE . '/components/com_ars/helpers/filter.php';
-			}
-
-			$dlid = class_exists('ArsHelperFilter') ? ArsHelperFilter::myDownloadID() : '';
+			$dlid = \Akeeba\ReleaseSystem\Site\Helper\Filter::myDownloadID();
 		}
 
-		$link = JRoute::_('index.php?option=com_ars&view=update&task=download&format=raw&id=' . (int)$content, false);
+		$url  = 'index.php?option=com_ars&view=update&task=Item&format=raw&id=' . (int) $content;
 
 		if (!empty($dlid))
 		{
-			if (strstr($link, '?') === false)
-			{
-				$link .= '?dlid=' . $dlid;
-			}
-			else
-			{
-				$link .= '&dlid=' . $dlid;
-			}
+			$url .= '&dlid=' . $dlid;
 		}
+
+		$link = JRoute::_($url, false);
 
 		return $link;
 	}
 
 	private function parseIFWLink()
 	{
-		$session = JFactory::getSession();
-		$installat = $session->get('installat', null, 'arsjed');
-		$installapp = (int)($session->get('installapp', null, 'arsjed'));
+		$session    = JFactory::getSession();
+		$installat  = $session->get('installat', null, 'arsjed');
+		$installapp = (int) ($session->get('installapp', null, 'arsjed'));
 
 		// Find the stream ID based on the $installapp key
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
-					->select($db->qn('id'))
-					->from('#__ars_updatestreams')
-					->where($db->qn('jedid') . '=' . $db->q($installapp));
+		            ->select($db->qn('id'))
+		            ->from('#__ars_updatestreams')
+		            ->where($db->qn('jedid') . '=' . $db->q($installapp));
 		$db->setQuery($query);
 		$streamId = $db->loadResult();
 
