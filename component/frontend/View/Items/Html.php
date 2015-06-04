@@ -66,7 +66,7 @@ class Html extends BaseView
 
 		// Add Breadcrumbs
 		/** @var Releases $release */
-		$release = $this->items->first()->release;
+		$release = $this->getModel('Releases');
 		/** @var Categories $category */
 		$category = $release->category;
 		Breadcrumbs::addRepositoryRoot($category->type);
