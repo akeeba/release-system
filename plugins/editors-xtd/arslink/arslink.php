@@ -51,7 +51,7 @@ class plgButtonArslink extends JPlugin
 ;// This comment is intentionally put here to prevent badly written plugins from causing a Javascript error
 // due to missing trailing semicolon and/or newline in their code.
 		function arsSelectItem(id, title) {
-			var tag = '<a href='+'\"index.php?option=com_ars&amp;view=download&amp;id='+id+'\">'+title+'</a>';
+			var tag = '<a href='+'\"index.php?option=com_ars&amp;view=Item&amp;id='+id+'\">'+title+'</a>';
 			jInsertEditorText(tag, '" . $name . "');
 			SqueezeBox.close();
 		}";
@@ -70,7 +70,7 @@ class plgButtonArslink extends JPlugin
 		 * Use the built-in element view to select the article.
 		 * Currently uses blank class.
 		 */
-		$link = 'index.php?option=com_ars&amp;view=items&amp;layout=modal&amp;tmpl=component';
+		$link = 'index.php?option=com_ars&amp;view=Items&amp;layout=modal&amp;tmpl=component';
 
 		$button = new JObject();
 		$button->set('modal', true);
