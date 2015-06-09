@@ -17,18 +17,20 @@
             <option value="1">JYES</option>
         </header>
 
-        <header name="category" type="Model" onlyFilter="true"
-                model="Categories"
-                key_field="id"
-                value_field="title"
+        <header name="category" type="Selectable" onlyFilter="true"
+                source_class="Akeeba\ReleaseSystem\Admin\Helper\Select"
+                source_method="categoriesOptions"
+                source_translate="false"
+                source_key="key"
+                source_value="value"
                 />
 
-        <header name="version" type="Model" onlyFilter="true"
-                model="Releases"
-                key_field="id"
-                value_field="version">
-            <state key="logCategoryLimit">1</state>
-        </header>
+        <header name="version" type="Selectable" onlyFilter="true"
+                source_class="Akeeba\ReleaseSystem\Admin\Helper\Select"
+                source_method="releasesOptions"
+                source_translate="false"
+                source_format="optionsobject"
+                />
     </headerset>
     <fieldset name="items">
         <field name="item_id" type="ViewTemplate" source="admin:com_ars/Logs/default_item" />
