@@ -108,8 +108,8 @@ class AkeebaSubsTwo extends Base
 		\JLoader::import('joomla.utilities.date');
 		$jNow = new \JDate();
 
-		JLoader::import('joomla.filesystem.folder');
-		JLoader::import('joomla.filesystem.file');
+		\JLoader::import('joomla.filesystem.folder');
+		\JLoader::import('joomla.filesystem.file');
 		$rawList = \F0FModel::getTmpInstance('Subscriptions', 'AkeebasubsModel', array('table' => 'subscriptions', 'input' => array('option' => 'com_akeebasubs')))
 						   ->enabled(1)
 						   ->user_id($user_id)

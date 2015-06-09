@@ -73,8 +73,8 @@ class PayPlans extends Base
 	 */
 	public function getGroupsForUser($user_id)
 	{
-		$status = PayplansStatus::SUBSCRIPTION_ACTIVE;
+		$status = \PayplansStatus::SUBSCRIPTION_ACTIVE;
 		// For PayPlans 3.x
-		return PayplansApi::getUser($user_id)->getPlans($status);
+		return \PayplansApi::getUser($user_id)->getPlans($status);
 	}
 }
