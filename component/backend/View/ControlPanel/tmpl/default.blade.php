@@ -19,7 +19,11 @@ defined('_JEXEC') or die;
 different order using @yield later on! --}}
 @include('admin:com_ars/ControlPanel/footer')
 @include('admin:com_ars/ControlPanel/graphs')
-@include('admin:com_ars/ControlPanel/icons')
+@if(class_exists('\\AkeebaStrapper30'))
+    @include('admin:com_ars/ControlPanel/icons')
+@else
+    @include('admin:com_ars/ControlPanel/icons_compat')
+@endif
 @include('admin:com_ars/ControlPanel/phpversion')
 
 {{-- Note: I don't pass $this->hasGeoIPPlugin and $this->geoIPPluginNeedsUpdate. This demonstrates how Blade

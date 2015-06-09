@@ -4,7 +4,7 @@
  * copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
  * license   GNU General Public License version 3, or later
  *
- * This file renders the control panel icons when Akeeba Strapper is loaded
+ * This file renders the control panel icons when Akeeba Strapper is not available or not loaded
  */
 
 defined('_JEXEC') or die;
@@ -26,12 +26,11 @@ $groups = array('basic', 'tools', 'update');
 				</h3>
 
 				@foreach ($this->iconDefinitions[$group] as $icon)
-				<div class="icon">
-					<a href="index.php?option=com_ars{{{ is_null($icon['view']) ? '' : '&view=' . $icon['view']  }}}{{{ is_null($icon['task']) ? '' : '&task=' . $icon['task']  }}}">
+                <a href="index.php?option=com_ars{{{ is_null($icon['view']) ? '' : '&view=' . $icon['view']  }}}{{{ is_null($icon['task']) ? '' : '&task=' . $icon['task']  }}}"
+                        class="btn" style="width: 9em; height: 6em; margin: 0.5em">
 						<div class="ak-icon ak-icon-{{{ $icon['icon'] }}}">&nbsp;</div>
 						<span>{{{ $icon['label'] }}}</span>
-					</a>
-				</div>
+				</a>
 				@endforeach
 
 				<div class="ak_clr_left"></div>
