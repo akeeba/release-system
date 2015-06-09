@@ -9,10 +9,21 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 defined('_JEXEC') or die;
 
+use FOF30\Container\Container;
 use FOF30\Controller\DataController;
 
 class Item extends DataController
 {
+	public function __construct(Container $container, array $config = array())
+	{
+		parent::__construct($container, $config);
+
+		if ($this->getModel()->getState('limit', 0) != 0)
+		{
+			$this->getModel()->with([]);
+		}
+	}
+
 	protected function onBeforeApplySave(&$data)
 	{
 		// When you deselect all items Chosen doesn't return any items in the request :(
