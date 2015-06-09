@@ -6,12 +6,13 @@
 		<header name="ordering" type="Ordering" label="JFIELD_ORDERING_LABEL" sortable="true" tdwith="1%"/>
 		<header name="id" type="RowSelect" label="JGLOBAL_FIELD_ID_LABEL" sortable="true" tdwith="20"/>
 		<header name="category_id" type="Model" label="COM_ARS_RELEASES_FIELD_CATEGORY" sortable="true"
+                searchfieldname="category"
 				model="Categories"
 				key_field="id"
 				value_field="title"
 				/>
 		<header name="version" type="Searchable" label="COM_ARS_RELEASES_FIELD_VERSION" sortable="true"/>
-		<header name="maturity" type="Selectable" label="COM_ARS_RELEASES_FIELD_MATURITY" sortable="true">
+		<header name="maturity" type="Field" label="COM_ARS_RELEASES_FIELD_MATURITY" sortable="true">
 			<option value="alpha">COM_ARS_RELEASES_MATURITY_ALPHA</option>
 			<option value="beta">COM_ARS_RELEASES_MATURITY_BETA</option>
 			<option value="rc">COM_ARS_RELEASES_MATURITY_RC</option>
