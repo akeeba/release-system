@@ -43,7 +43,7 @@
 
 	</fieldset>
 
-	<fieldset name="description" label="COM_ARS_RELEASE_BASIC_LABEL" class="span7">
+	<fieldset name="descriptionset" label="COM_ARS_RELEASE_BASIC_LABEL" class="span7">
 
 		<field name="description" type="Editor"
 			   label_placement="none"

@@ -43,12 +43,12 @@
 		</field>
 	</fieldset>
 	<fieldset name="spacer" class="ak_clr"/>
-	<fieldset name="description" label="COM_ARS_RELEASE_DESCRIPTION_LABEL" class="span6">
+	<fieldset name="description_set" label="COM_ARS_RELEASE_DESCRIPTION_LABEL" class="span6">
 		<field name="description" type="Editor" label_placement="none"
 			   height="350" width="97%" buttons="true"
 				/>
 	</fieldset>
-	<fieldset name="notes" label="COM_ARS_RELEASE_NOTES_LABEL" class="span6">
+	<fieldset name="notes_set" label="COM_ARS_RELEASE_NOTES_LABEL" class="span6">
 		<field name="notes" type="Editor" label_placement="none"
 			   height="350" width="97%" buttons="true"
 				/>
