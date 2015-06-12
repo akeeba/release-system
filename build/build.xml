@@ -1,227 +1,72 @@
 <?xml version="1.0"?>
-<!--
-	Joomla! Akeeba Release System build file for Phing
-	written by Nicholas K. Dionysopoulos
-	
-	Run "phing git" from the build directory to build everything except the docs
--->
 <project name="AkeebaReleaseSystem" description="Akeeba Release System" default="git" >
-	<!-- Passwords etc are read from the build.properties file ABOVE the repository's root -->
-	<property file="../../build.properties" />
+	<import file="${phing.dir}/../../buildfiles/phing/common.xml" />
 
-	<!-- Default properties, set only if not already assigned in the build.properties file -->
-	<property name="dirs.root" value=".." />
-	<property name="dirs.component" value="../component" />
-	<property name="dirs.languages" value="../component/translation" />
-	<property name="dirs.modules" value="../modules" />
-	<property name="dirs.plugins" value="../plugins" />
-	<property name="dirs.release" value="../release" />
-	<property name="version" value="git" />
-	<property name="dirs.bin" value="bin" />
-	<property name="dirs.bin.libxml" value="${dirs.bin}/libxml" />
-	<property name="dirs.bin.fop" value="${dirs.bin}/fop" />
-	<property name="dirs.bin.dbxsl" value="${dirs.bin}/dbxsl" />
-	<property name="dirs.bin.release" value="../release" />
-	<property name="dirs.documentation" value="../documentation" />
-
-	<property name="langbuilder.packagename" value="ars" />
-	<property name="langbuilder.software" value="Akeeba Release System" />
-
-	<taskdef name="zipme" classname="phingext.ZipmeTask" />
-	<taskdef name="gitversion" classname="phingext.GitVersionTask" />
-
-	<!--
-	====================================================================================================
-	File sets
-	====================================================================================================
-	-->
-	
-	<fileset dir="${dirs.component}" id="ars">
+	<fileset dir="${dirs.component}" id="component">
 		<include name="backend/**" />
-		<include name="fof/**" />
 		<include name="frontend/**" />
 		<include name="language/**" />
 		<include name="media/**" />
 
-        <include name="strapper/**" />
-        <exclude name="strapper/sources**" />
+		<include name="*" />
 
-		<include name="LICENSE.txt" />
-		<include name="README.php" />
-		<include name="ars.xml" />
-		<include name="script.ars.php" />
+		<exclude name="cli/**" />
+		<exclude name="LICENSE.txt" />
+		<exclude name="script.ars.php" />
 	</fileset>
-	
-	<!--
-	====================================================================================================
-	Tasks - General
-	====================================================================================================
-	-->
-	
-	<target name="git" description="Makes everything except the documentation"
-		depends="new-release,setup-properties,component-package">
-	</target>
-	
-	<target name="all" description="Makes everything"
-		depends="git,documentation,lang">
-	</target>
 
-	<target name="documentation" description="Creates the documentation packages"
-		depends="doc-j-pdf">
-	</target>	
+	<fileset dir="${dirs.component}/cli" id="cli">
+		<include name="*.php" />
+		<include name="file_ars.xml" />
+	</fileset>
 
-	<target name="new-release" description="Empty the release directory">
-		<!-- Recreate the release directory -->
-		<delete quiet="yes" includeemptydirs="true">
-			<fileset dir="${dirs.release}">
-				<include name="**" />
-				<exclude name=".svn/**" />
-				<exclude name=".git/**" />
-			</fileset>
-		</delete>
-		<mkdir dir="${dirs.release}" />
-	</target>
-	
-	<target name="setup-properties" description="Set up version and build properties">
-		<!-- Initialize the build.date timestamp -->
-		<tstamp>
-			<format property="build.date" pattern="%Y-%m-%d" />
-		</tstamp>
+	<fileset dir="${dirs.release}" id="package">
+		<include name="com_*.zip" />
+		<include name="file_*.zip" />
+		<include name="mod_*.zip" />
+		<include name="plg_*.zip" />
+		<include name="lib_*.zip" />
+		<include name="pkg_*.xml" />
+		<include name="*.txt" />
+		<include name="script.ars.php" />
 
-		<!-- Initialize the version if it's not set -->
-		<if>
-			<equals arg1="${version}" arg2="git" />
-			<then>
-				<gitversion workingcopy="${dirs.root}" propertyname="git.lastrevision" />
-				<property name="version" value="rev${git.lastrevision}" override="true" />
-			</then>
-		</if>
-	</target>
+		<exclude name="plg_ars_tainting*" />
+	</fileset>
 
-	<!--
-	====================================================================================================
-	Tasks - Joomla! packages
-	====================================================================================================
-	-->
-	
-	<target name="component-package" description="Component package build"
-		depends="new-release,setup-properties">
-		<!-- Create the package -->
-		<copy file="./templates/ars.xml" tofile="${dirs.component}/ars.xml" overwrite="true">
-			<filterchain id="standard-tokens">
-				<replacetokens begintoken="##" endtoken="##">
-					<token key="DATE" value="${build.date}" />
-					<token key="VERSION" value="${version}" />
-				</replacetokens>
-			</filterchain>
-		</copy>
-		
-		<zipme basedir="${dirs.component}" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
-			<fileset refid="ars" />
-		</zipme>
-		<zipme basedir="${dirs.modules}" prefix="modules/" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
-			<fileset dir="${dirs.modules}">
-				<include name="**" />
-			</fileset>
-		</zipme>
-		<zipme basedir="${dirs.plugins}" prefix="plugins/" destfile="${dirs.release}/com_ars-${version}.zip" includeemptydirs="true">
-			<fileset dir="${dirs.plugins}">
-				<include name="**" />
-				<exclude name="ars/tainting/**" />
-			</fileset>
-		</zipme>
-	</target>
-	
 	<!--
 	====================================================================================================
 	Tasks - Documentation
 	====================================================================================================
 	-->
-	
-	<target name="doc-j-pdf" description="Documentation for Joomla! in PDF format">
-		<exec command="xsltproc --nonet --xinclude --novalid --stringparam body.start.indent 0 --stringparam variablelist.term.break.after 1 --stringparam variablelist.term.separator &quot;&quot; --stringparam variablelist.max.termlength 12 --stringparam section.autolabel 1 --stringparam toc.section.depth 5 --stringparam fop1.extensions 1 --output ${dirs.bin.release}/arsguide.fo ${dirs.bin.dbxsl}/fo/docbook.xsl ${dirs.documentation}/arsguide/ars-users-guide.xml" dir="${project.basedir}" />
-		<exec command="${dirs.bin.fop}/fop -fo ${dirs.bin.release}/arsguide.fo -pdf ${dirs.bin.release}/ars-users-guide.pdf" logoutput="true" />
-		<delete file="${dirs.release}arsguide.fo" quiet="yes" />
+
+	<target name="documentation" description="The documentation"
+			depends="doc-j-pdf">
 	</target>
 
+	<target name="doc-j-pdf" description="Documentation for Joomla! in PDF format">
+		<phingcall target="docbook-pdf">
+			<property name="docs.input" value="ars-users-guide.xml" />
+		</phingcall>
+	</target>
+
+	<target name="doc-j-pdf" description="Documentation for Joomla! in ePub format">
+		<phingcall target="docbook-epub">
+			<property name="docs.input" value="ars-users-guide.xml" />
+		</phingcall>
+	</target>
 	<!--
 	====================================================================================================
 	Tasks - Project management
 	====================================================================================================
 	-->
 
-	<target name="lang" description="Generate and upload language files">
-		<exec command="php ./buildlang.php ${application.startdir}/build.properties ${application.startdir}/.. ${version}" dir="buildlang" passthru="true" />
-	</target>
-	
-	<target name="link" description="Internal linker">
-		<exec command="php ../buildfiles/tools/link.php ${application.startdir}/.." dir="${application.startdir}/.." passthru="true" />
-		<exec command="php ../buildfiles/tools/langlink.php ${application.startdir}/.." dir="${application.startdir}/.." passthru="true" />
-	</target>
-	
-	<target name="relink" description="Project relinker">
-		<exec command="php ../buildfiles/tools/relink.php ${site} ${application.startdir}/.." dir="${application.startdir}/.." passthru="true" />
-		<exec command="php ../buildfiles/tools/relinklang.php ${site} ${application.startdir}/.." dir="${application.startdir}/.." passthru="true" />
+	<target name="docsdeploy-ars" >
+		<phingcall target="docbook-deploy">
+			<property name="docsdeploy.path.source" value="" />
+			<property name="docsdeploy.path.target" value="arsguide" />
+		</phingcall>
 	</target>
 
-	<target name="release" depends="setup-properties" description="Upload the release to AkeebaBackup.com">
-		<copy file="./templates/release.json" tofile="${dirs.root}/release.json" overwrite="true">
-			<filterchain id="standard-tokens">
-				<replacetokens begintoken="##" endtoken="##">
-					<token key="DATE" value="${build.date}" />
-					<token key="VERSION" value="${version}" />
-					<token key="RELEASEDIR" value="${phing.dir}/${dirs.release}" />
-					<token key="REPODIR" value="${phing.dir}/${dirs.root}" />
-				</replacetokens>
-			</filterchain>
-		</copy>
-
-		<exec command="php ${project.basedir}/../../releasemaker/releasemaker/index.php ${project.basedir}/../release.json" dir="${project.basedir}" passthru="true" />
-
-		<delete file="${dirs.root}/release.json" quiet="yes" />
-	</target>
-
-	<target name="ftpdeploy" depends="git">
-		<gitversion workingcopy="${dirs.root}" propertyname="git.lastrevision" />
-		<!-- Core release -->
-		<echo>Uploading ARS nightly build</echo>
-		<ftpdeploy
-			host="${ftp.host}"
-			port="${ftp.port}"
-			username="${ftp.username}"
-			password="${ftp.password}"
-			dir="${ftp.dir}/ars/rev${git.lastrevision}"
-			mode="${ftp.mode}"
-			passive="true"
-			level="debug">
-			<fileset dir="${dirs.root}">
-				<include name="CHANGELOG"/>
-			</fileset>			
-			<fileset dir="${dirs.release}">
-				<include name="com_ars*.zip"/>
-			</fileset>			
-		</ftpdeploy>
-	</target>
-	
-	<target name="docsdeploy">
-		<!-- English manual -->
-		<echo>Uploading Akeeba Release System documentation</echo>
-		<ftpdeploy
-			host="${ftp.host}"
-			port="${ftp.port}"
-			username="${ftp.username}"
-			password="${ftp.password}"
-			dir="${ftp.dir.docs}/arsdocumentation"
-			mode="${ftp.mode}"
-			passive="true"
-			level="debug">
-			<fileset dir="${dirs.documentation}/arsguide">
-				<include name="*.xml"/>
-			</fileset>			
-		</ftpdeploy>
-	</target>
-	
-	<target name="lang" description="Generate and upload language files">
-		<exec command="php ./buildlang.php" dir="buildlang" passthru="true" />
-	</target>
+	<target name="docsdeploy"
+			depends="docsdeploy-ars" />
 </project>

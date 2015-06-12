@@ -1,330 +1,514 @@
 <?php
 /**
- * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
- * @license   GNU General Public License version 3, or later
+ * @package      akeebasubs
+ * @copyright    Copyright (c)2010-2015 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @license      GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
+ * @version      $Id$
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// no direct access
 defined('_JEXEC') or die();
 
-// Load FOF if not already loaded
-if (!defined('F0F_INCLUDED'))
-{
-	$paths = array(
-		(defined('JPATH_LIBRARIES') ? JPATH_LIBRARIES : JPATH_ROOT . '/libraries') . '/f0f/include.php',
-		__DIR__ . '/fof/include.php',
-	);
-
-	foreach ($paths as $filePath)
-	{
-		if (!defined('F0F_INCLUDED') && file_exists($filePath))
-		{
-			@include_once $filePath;
-		}
-	}
-}
-
-// Pre-load the installer script class from our own copy of FOF
-if (!class_exists('F0FUtilsInstallscript', false))
-{
-	@include_once __DIR__ . '/fof/utils/installscript/installscript.php';
-}
-
-// Pre-load the database schema installer class from our own copy of FOF
-if (!class_exists('F0FDatabaseInstaller', false))
-{
-	@include_once __DIR__ . '/fof/database/installer.php';
-}
-
-// Pre-load the update utility class from our own copy of FOF
-if (!class_exists('F0FUtilsUpdate', false))
-{
-	@include_once __DIR__ . '/fof/utils/update/update.php';
-}
-
-// Pre-load the cache cleaner utility class from our own copy of FOF
-if (!class_exists('F0FUtilsCacheCleaner', false))
-{
-	@include_once __DIR__ . '/fof/utils/cache/cleaner.php';
-}
-
-class Com_ArsInstallerScript extends F0FUtilsInstallscript
+class Pkg_ArsInstallerScript
 {
 	/**
-	 * The minimum Joomla! version required to install this extension
+	 * The name of our package, e.g. pkg_example. Used for dependency tracking.
 	 *
-	 * @var   string
+	 * @var  string
 	 */
-	protected $minimumJoomlaVersion = '3.2.1';
+	protected $packageName = 'pkg_ars';
 
 	/**
 	 * The minimum PHP version required to install this extension
 	 *
 	 * @var   string
 	 */
-	protected $minimumPHPVersion = '5.3.4';
+	protected $minimumPHPVersion = '5.4.0';
 
 	/**
-	 * The component's name
+	 * The minimum Joomla! version required to install this extension
 	 *
 	 * @var   string
 	 */
-	protected $componentName = 'com_ars';
+	protected $minimumJoomlaVersion = '3.4.0';
 
 	/**
-	 * The title of the component (printed on installation and uninstallation messages)
+	 * The maximum Joomla! version this extension can be installed on
 	 *
-	 * @var string
+	 * @var   string
 	 */
-	protected $componentTitle = 'Akeeba Release System';
+	protected $maximumJoomlaVersion = '3.9.99';
 
 	/**
-	 * The list of extra modules and plugins to install on component installation / update and remove on component
-	 * uninstallation.
+	 * A list of extensions (modules, plugins) to enable after installation. Each item has four values, in this order:
+	 * type (plugin, module, ...), name (of the extension), client (0=site, 1=admin), group (for plugins).
 	 *
-	 * @var   array
+	 * @var array
 	 */
-	protected $installation_queue = array(
-		// modules => { (folder) => { (module) => { (position), (published) } }* }*
-		'modules' => array(
-			'admin' => array(),
-			'site'  => array(
-				'arsdlid'      => array('left', 0),
-				'arsdownloads' => array('left', 0),
-			)
-		),
-		// plugins => { (folder) => { (element) => (published) }* }*
-		'plugins' => array(
-			'ars'                => array(
-				'bleedingedgediff'     => 0,
-				'bleedingedgematurity' => 0,
-			),
-			'content'            => array(
-				'arsdlid'   => 0,
-				'arslatest' => 1,
-			),
-			'editors-xtd'        => array(
-				'arslink' => 1,
-			),
-			'sh404sefextplugins' => array(
-				'com_ars' => 1,
-			),
-			'system'             => array(
-				'arsjed' => 1,
-			),
-		)
-	);
+	protected $extensionsToEnable = [
+		['plugin', 'arslatest', 1, 'content'],
+		['plugin', 'arslink', 1, 'editors-xtd'],
+		['plugin', 'arsjed', 1, 'system'],
+	];
 
 	/**
-	 * Obsolete files and folders to remove from both paid and free releases. This is used when you refactor code and
-	 * some files inevitably become obsolete and need to be removed.
+	 * =================================================================================================================
+	 * DO NOT EDIT BELOW THIS LINE
+	 * =================================================================================================================
+	 */
+
+	/**
+	 * Joomla! pre-flight event. This runs before Joomla! installs or updates the package. This is our last chance to
+	 * tell Joomla! if it should abort the installation.
 	 *
-	 * @var   array
-	 */
-	protected $removeFilesAllVersions = array(
-		'files'   => array(
-			'cache/com_ars.updates.php',
-			'cache/com_ars.updates.ini',
-			'administrator/cache/com_ars.updates.php',
-			'administrator/cache/com_ars.updates.ini',
-
-			'administrator/components/com_ars/install.sql',
-			'administrator/components/com_ars/uninstall.sql',
-			'administrator/components/com_ars/controllers/categories.php',
-			'administrator/components/com_ars/controllers/default.php',
-			'administrator/components/com_ars/controllers/items.php',
-			'administrator/components/com_ars/controllers/logs.php',
-			'administrator/components/com_ars/controllers/releases.php',
-			'administrator/components/com_ars/controllers/updatestreams.php',
-			'administrator/components/com_ars/controllers/vgroups.php',
-			'administrator/components/com_ars/elements/styles.php',
-			'administrator/components/com_ars/helpers/includes.php',
-			'administrator/components/com_ars/models/autodesc.php',
-			'administrator/components/com_ars/models/base.php',
-			'administrator/components/com_ars/models/cpanel.php',
-			'administrator/components/com_ars/models/filtering.php',
-			'administrator/components/com_ars/models/impjed.php',
-			'administrator/components/com_ars/models/upload.php',
-			'administrator/components/com_ars/tables/base.php',
-			'administrator/components/com_ars/tables/categories.php',
-			'administrator/components/com_ars/tables/environments.php',
-			'administrator/components/com_ars/tables/items.php',
-			'administrator/components/com_ars/tables/logs.php',
-			'administrator/components/com_ars/tables/releases.php',
-			'administrator/components/com_ars/tables/updatestreams.php',
-			'administrator/components/com_ars/tables/vgroups.php',
-			'administrator/components/com_ars/views/base.view.html.php',
-			'administrator/components/com_ars/views/autodesc/view.html.php',
-			'administrator/components/com_ars/views/autodesc/tmpl/default.php',
-			'administrator/components/com_ars/views/categories/view.html.php',
-			'administrator/components/com_ars/views/categories/tmpl/form.php',
-			'administrator/components/com_ars/views/environments/view.html.php',
-			'administrator/components/com_ars/views/environments/tmpl/form.php',
-			'administrator/components/com_ars/views/items/view.html.php',
-			'administrator/components/com_ars/views/items/tmpl/form.php',
-			'administrator/components/com_ars/views/logs/view.html.php',
-			'administrator/components/com_ars/views/releases/view.html.php',
-			'administrator/components/com_ars/views/releases/tmpl/form.php',
-			'administrator/components/com_ars/views/updatestreams/view.html.php',
-			'administrator/components/com_ars/views/updatestreams/tmpl/form.php',
-			'administrator/components/com_ars/views/vgroups/view.html.php',
-			'administrator/components/com_ars/views/vgroups/tmpl/form.php',
-			'components/com_ars/controllers/default.php',
-			'components/com_ars/helpers/includes.php',
-			'components/com_ars/models/base.php',
-			'components/com_ars/models/browse.php',
-			'components/com_ars/models/category.php',
-			'components/com_ars/models/download.php',
-			'components/com_ars/models/release.php',
-			'components/com_ars/models/update.php',
-			'components/com_ars/views/view.html.php',
-			'media/com_ars/js/akeebajq.js',
-			'media/com_ars/js/akeebajqui.js',
-
-			// Files from older versions
-			'administrator/components/com_ars/views/vgroup/tmpl/form.php',
-
-			// Import from JoomlaCode feature
-			'administrator/components/com_ars/controllers/impjed.php',
-			'administrator/components/com_ars/models/impjeds.php',
-
-			// JSON compatibility library
-			'administrator/components/com_ars/helpers/jsonlib.php',
-
-			// Moving to FOF 3
-			'administrator/components/com_ars/assets/cacert.pem',
-		),
-		'folders' => array(
-			'administrator/components/com_ars/assets/geoip',
-			'administrator/components/com_ars/elements',
-			'administrator/components/com_ars/language',
-			'administrator/components/com_ars/views/cpanel',
-			'administrator/components/com_ars/views/impjed',
-			'administrator/components/com_ars/views/upload',
-			'components/com_ars/views/browse',
-			'components/com_ars/views/download',
-			'components/com_ars/views/latest',
-
-			// Import from JoomlaCode feature
-			'administrator/components/com_ars/views/impjeds',
-
-			// Moving to FOF 3
-			'media/com_ars/theme',
-			'administrator/components/com_ars/assets/images',
-			'administrator/components/com_ars/controllers',
-			'administrator/components/com_ars/fields',
-			'administrator/components/com_ars/helpers',
-			'administrator/components/com_ars/models',
-			'administrator/components/com_ars/tables',
-			'administrator/components/com_ars/tables',
-		)
-	);
-
-	/**
-	 * A list of scripts to be copied to the "cli" directory of the site
+	 * In here we'll try to install FOF. We have to do that before installing the component since it's using an
+	 * installation script extending FOF's InstallScript class. We can't use a <file> tag in the manifest to install FOF
+	 * since the FOF installation is expected to fail if a newer version of FOF is already installed on the site.
 	 *
-	 * @var   array
+	 * @param   string                     $type    Installation type (install, update, discover_install)
+	 * @param   \JInstallerAdapterPackage  $parent  Parent object
+	 *
+	 * @return  boolean  True to let the installation proceed, false to halt the installation
 	 */
-	protected $cliScriptFiles = array(
-		'ars-update.php'
-	);
-
-	/**
-	 * Renders the post-installation message
-	 */
-	protected function renderPostInstallation($status, $fofInstallationStatus, $strapperInstallationStatus, $parent)
+	public function preflight($type, $parent)
 	{
-		$this->warnAboutJSNPowerAdmin();
+		// Check the minimum PHP version
+		if (!version_compare(PHP_VERSION, $this->minimumPHPVersion, 'ge'))
+		{
+			$msg = "<p>You need PHP $this->minimumPHPVersion or later to install this package</p>";
+			JLog::add($msg, JLog::WARNING, 'jerror');
 
-		?>
-		<img src="../media/com_ars/icons/ars_logo_48.png" width="48" height="48" alt="Akeeba Release System"
-			 align="right"/>
+			return false;
+		}
 
-		<h2>Welcome to Akeeba Release System!</h2>
+		// Check the minimum Joomla! version
+		if (!version_compare(JVERSION, $this->minimumJoomlaVersion, 'ge'))
+		{
+			$msg = "<p>You need Joomla! $this->minimumJoomlaVersion or later to install this component</p>";
+			JLog::add($msg, JLog::WARNING, 'jerror');
 
-		<div style="margin: 1em; font-size: 14pt; background-color: #fffff9; color: black">
-			You can download translation files <a href="http://cdn.akeebabackup.com/language/ars/index.html">directly
-				from our CDN page</a>.
-		</div>
+			return false;
+		}
 
-		<?php
-		parent::renderPostInstallation($status, $fofInstallationStatus, $strapperInstallationStatus, $parent);
+		// Check the maximum Joomla! version
+		if (!version_compare(JVERSION, $this->maximumJoomlaVersion, 'le'))
+		{
+			$msg = "<p>You need Joomla! $this->maximumJoomlaVersion or earlier to install this component</p>";
+			JLog::add($msg, JLog::WARNING, 'jerror');
 
-        /** @var ArsModelStats $model */
-        $model  = F0FModel::getTmpInstance('Stats', 'ArsModel');
+			return false;
+		}
 
-        if(method_exists($model, 'collectStatistics'))
-        {
-            $iframe = $model->collectStatistics(true);
+		// Try to install FOF. We need to do this in preflight to make sure that FOF is available when we install our
+		// component. The reason being that the component's installation script extends FOF's InstallScript class.
+		// We can't use a <file> tag in our package manifest because FOF's package is *supposed* to fail to install if
+		// a newer version is already installed. This would unfortunately cancel the installation of the entire package,
+		// so we have to get a bit tricky.
+		$this->installOrUpdateFOF($parent);
 
-            if($iframe)
-            {
-                echo $iframe;
-            }
-        }
+		// Likewise, installing Akeeba Strapper may fail if there's a newer version installed. This would unfortunately
+		// cancel the installation of the entire package, so we have to get a bit tricky.
+		$this->installOrUpdateStapper($parent);
+
+		// Add strapper30 dependency for our package
+		$this->addDependency('strapper30', $this->packageName);
+
+		return true;
 	}
 
-	protected function renderPostUninstallation($status, $parent)
+	/**
+	 * Tuns on installation (but not on upgrade). This happens in install and discover_install installation routes.
+	 *
+	 * @param   \JInstallerAdapterPackage  $parent  Parent object
+	 *
+	 * @return  bool
+	 */
+	public function install($parent)
 	{
-		?>
-		<h2>Akeeba Release System uninstallation status</h2>
-		<?php
-		parent::renderPostUninstallation($status, $parent);
+		// Enable the extensions we need to install
+		$this->enableExtensions();
+
+		return true;
+	}
+
+	/**
+	 * Runs on uninstallation
+	 *
+	 * @param   \JInstallerAdapterPackage  $parent  Parent object
+	 *
+	 * @return  bool
+	 */
+	public function uninstall($parent)
+	{
+		// Preload FOF classes required for the InstallScript. This is required since we'll be trying to uninstall FOF
+		// before uninstalling the component itself. The component has an uninstallation script which uses FOF, so...
+		@include_once(JPATH_LIBRARIES . '/fof30/include.php');
+		class_exists('FOF30\\Utils\\InstallScript');
+		class_exists('FOF30\\Database\\Installer');
+
+		// Remove strapper30 dependency for our package
+		$this->removeDependency('strapper30', $this->packageName);
+
+		// First try to uninstall Akeeba Strapper. The uninstallation might fail if there are other extensions depending
+		// on it. That would cause the entire package uninstallation to fail, hence the need for special handling.
+		// This needs to be uninstalled before FOF since it depends on FOF. You can't uninstall the library before
+		// uninstalling its dependencies!
+		$this->uninstallStrapper($parent);
+
+		// Then try to uninstall the FOF library. The uninstallation might fail if there are other extensions depending
+		// on it. That would cause the entire package uninstallation to fail, hence the need for special handling.
+		$this->uninstallFOF($parent);
+
+		return true;
+	}
+
+	/**
+	 * Tries to install or update FOF. The FOF library package installation can fail if there's a newer version
+	 * installed. In this case we raise no error. If, however, the FOF library package installation failed AND we can
+	 * not load FOF then we raise an error: this means that FOF installation really failed (e.g. unwritable folder) and
+	 * we can't install this package.
+	 *
+	 * @param   \JInstallerAdapterPackage  $parent
+	 */
+	private function installOrUpdateFOF($parent)
+	{
+		// Get the path to the FOF package
+		$sourcePath = $parent->getParent()->getPath('source');
+		$sourcePackage = $sourcePath . '/lib_fof30.zip';
+
+		// Extract and install the package
+		$package = JInstallerHelper::unpack($sourcePackage);
+		$tmpInstaller  = new JInstaller;
+		$error = null;
+
+		try
+		{
+			$installResult = $tmpInstaller->install($package['dir']);
+		}
+		catch (\Exception $e)
+		{
+			$installResult = false;
+			$error = $e->getMessage();
+		}
+
+		// Try to include FOF. If that fails then the FOF package isn't installed because its installation failed, not
+		// because we had a newer version already installed. As a result we have to abort the entire package's
+		// installation.
+		if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+		{
+			if (empty($error))
+			{
+				$error = JText::sprintf(
+					'JLIB_INSTALLER_ABORT_PACK_INSTALL_ERROR_EXTENSION',
+					JText::_('JLIB_INSTALLER_' . strtoupper($parent->get('route'))),
+					basename($sourcePackage)
+				);
+			}
+
+			throw new RuntimeException($error);
+		}
+	}
+
+	/**
+	 * Try to uninstall the FOF library. We don't go through the Joomla! package uninstallation since we can expect the
+	 * uninstallation of the FOF library to fail if other software depends on it.
+	 *
+	 * @param   JInstallerAdapterPackage  $parent
+	 */
+	private function uninstallFOF($parent)
+	{
+		$tmpInstaller = new JInstaller;
+
+		$db = $parent->getParent()->getDbo();
+
+		$query = $db->getQuery(true)
+		            ->select('extension_id')
+		            ->from('#__extensions')
+		            ->where('type = ' . $db->quote('library'))
+		            ->where('element = ' . $db->quote('lib_fof30'));
+
+		$db->setQuery($query);
+		$id = $db->loadResult();
+
+		if (!$id)
+		{
+			return;
+		}
+
+		try
+		{
+			$tmpInstaller->uninstall('library', $id, 0);
+		}
+		catch (\Exception $e)
+		{
+			// We can expect the uninstallation to fail if there are other extensions depending on the FOF library.
+		}
+	}
+
+	/**
+	 * Tries to install or update Akeeba Strapper.
+	 *
+	 * @param   \JInstallerAdapterPackage  $parent
+	 */
+	private function installOrUpdateStapper($parent)
+	{
+		// Get the path to the FOF package
+		$sourcePath = $parent->getParent()->getPath('source');
+		$sourcePackage = $sourcePath . '/file_strapper30.zip';
+
+		// Extract and install the package
+		$package = JInstallerHelper::unpack($sourcePackage);
+		$tmpInstaller  = new JInstaller;
+		$error = null;
+
+		try
+		{
+			$installResult = $tmpInstaller->install($package['dir']);
+		}
+		catch (\Exception $e)
+		{
+			$installResult = false;
+			$error = $e->getMessage();
+		}
+	}
+
+	/**
+	 * Try to uninstall Akeeba Strapper
+	 *
+	 * @param   JInstallerAdapterPackage  $parent
+	 */
+	private function uninstallStrapper($parent)
+	{
+		$tmpInstaller = new JInstaller;
+
+		$db = $parent->getParent()->getDbo();
+
+		$query = $db->getQuery(true)
+		            ->select('extension_id')
+		            ->from('#__extensions')
+		            ->where('type = ' . $db->quote('file'))
+		            ->where('element = ' . $db->quote('file_strapper30'));
+
+		$db->setQuery($query);
+		$id = $db->loadResult();
+
+		if (!$id)
+		{
+			return;
+		}
+
+		try
+		{
+			$tmpInstaller->uninstall('file', $id, 0);
+		}
+		catch (\Exception $e)
+		{
+			// We can expect the uninstallation to fail if there are other extensions depending on the Akeeba Strapper
+			// package.
+		}
 	}
 
 
 	/**
-	 * The PowerAdmin extension makes menu items disappear. People assume it's our fault. JSN PowerAdmin authors don't
-	 * own up to their software's issue. I have no choice but to warn our users about the faulty third party software.
+	 * Enable modules and plugins after installing them
 	 */
-	private function warnAboutJSNPowerAdmin()
+	private function enableExtensions()
 	{
 		$db = JFactory::getDbo();
-		$query = $db->getQuery(true)
-					->select('COUNT(*)')
-					->from($db->qn('#__extensions'))
-					->where($db->qn('type') . ' = ' . $db->q('component'))
-					->where($db->qn('element') . ' = ' . $db->q('com_poweradmin'))
-					->where($db->qn('enabled') . ' = ' . $db->q('1'));
-		$hasPowerAdmin = $db->setQuery($query)->loadResult();
 
-		if (!$hasPowerAdmin)
+		foreach ($this->extensionsToEnable as $ext)
 		{
-			return;
+			$this->enableExtension($ext[0], $ext[1], $ext[2], $ext[3]);
 		}
-
-		$query = $db->getQuery(true)
-					->select('manifest_cache')
-					->from($db->qn('#__extensions'))
-					->where($db->qn('type') . ' = ' . $db->q('component'))
-					->where($db->qn('element') . ' = ' . $db->q('com_poweradmin'))
-					->where($db->qn('enabled') . ' = ' . $db->q('1'));
-		$paramsJson = $db->setQuery($query)->loadResult();
-		$jsnPAManifest = new JRegistry();
-		$jsnPAManifest->loadString($paramsJson, 'JSON');
-		$version = $jsnPAManifest->get('version', '0.0.0');
-
-		if (version_compare($version, '2.1.2', 'ge'))
-		{
-			return;
-		}
-
-		echo <<< HTML
-<div class="well" style="margin: 2em 0;">
-<h1 style="font-size: 32pt; line-height: 120%; color: red; margin-bottom: 1em">WARNING: Menu items for {$this->componentName} might not be displayed on your site.</h1>
-<p style="font-size: 18pt; line-height: 150%; margin-bottom: 1.5em">
-	We have detected that you are using JSN PowerAdmin on your site. This software ignores Joomla! standards and
-	<b>hides</b> the Component menu items to {$this->componentName} in the administrator backend of your site. Unfortunately we
-	can't provide support for third party software. Please contact the developers of JSN PowerAdmin for support
-	regarding this issue.
-</p>
-<p style="font-size: 18pt; line-height: 120%; color: green;">
-	Tip: You can disable JSN PowerAdmin to see the menu items to {$this->componentName}.
-</p>
-</div>
-
-HTML;
-
 	}
 
+	/**
+	 * Enable an extension
+	 *
+	 * @param   string   $type    The extension type.
+	 * @param   string   $name    The name of the extension (the element field).
+	 * @param   integer  $client  The application id (0: Joomla CMS site; 1: Joomla CMS administrator).
+	 * @param   string   $group   The extension group (for plugins).
+	 */
+	private function enableExtension($type, $name, $client = 1, $group = null)
+	{
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true)
+					->update('#__extensions')
+					->set($db->qn('enabled') . ' = ' . $db->q(1))
+		            ->where('type = ' . $db->quote($type))
+		            ->where('element = ' . $db->quote($name));
+
+		switch ($type)
+		{
+			case 'plugin':
+				// Plugins have a folder but not a client
+				$query->where('folder = ' . $db->quote($group));
+				break;
+
+			case 'language':
+			case 'module':
+			case 'template':
+				// Languages, modules and templates have a client but not a folder
+				$client = JApplicationHelper::getClientInfo($client, true);
+				$query->where('client_id = ' . (int) $client->id);
+				break;
+
+			default:
+			case 'library':
+			case 'package':
+			case 'component':
+				// Components, packages and libraries don't have a folder or client.
+				// Included for completeness.
+				break;
+		}
+
+		$db->setQuery($query);
+
+		try
+		{
+			$db->execute();
+		}
+		catch (\Exception $e)
+		{
+		}
+	}
+
+	/**
+	 * Get the dependencies for a package from the #__akeeba_common table
+	 *
+	 * @param   string  $package  The package
+	 *
+	 * @return  array  The dependencies
+	 */
+	protected function getDependencies($package)
+	{
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true)
+		            ->select($db->qn('value'))
+		            ->from($db->qn('#__akeeba_common'))
+		            ->where($db->qn('key') . ' = ' . $db->q($package));
+
+		try
+		{
+			$dependencies = $db->setQuery($query)->loadResult();
+			$dependencies = json_decode($dependencies);
+
+			if (empty($dependencies))
+			{
+				$dependencies = array();
+			}
+		}
+		catch (Exception $e)
+		{
+			$dependencies = array();
+		}
+
+		return $dependencies;
+	}
+
+	/**
+	 * Sets the dependencies for a package into the #__akeeba_common table
+	 *
+	 * @param   string  $package       The package
+	 * @param   array   $dependencies  The dependencies list
+	 */
+	protected function setDependencies($package, array $dependencies)
+	{
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true)
+		            ->delete('#__akeeba_common')
+		            ->where($db->qn('key') . ' = ' . $db->q($package));
+
+		try
+		{
+			$db->setQuery($query)->execute();
+		}
+		catch (Exception $e)
+		{
+			// Do nothing if the old key wasn't found
+		}
+
+		$object = (object)array(
+			'key' => $package,
+			'value' => json_encode($dependencies)
+		);
+
+		try
+		{
+			$db->insertObject('#__akeeba_common', $object, 'key');
+		}
+		catch (Exception $e)
+		{
+			// Do nothing if the old key wasn't found
+		}
+	}
+
+	/**
+	 * Adds a package dependency to #__akeeba_common
+	 *
+	 * @param   string  $package     The package
+	 * @param   string  $dependency  The dependency to add
+	 */
+	protected function addDependency($package, $dependency)
+	{
+		$dependencies = $this->getDependencies($package);
+
+		if (!in_array($dependency, $dependencies))
+		{
+			$dependencies[] = $dependency;
+
+			$this->setDependencies($package, $dependencies);
+		}
+	}
+
+	/**
+	 * Removes a package dependency from #__akeeba_common
+	 *
+	 * @param   string  $package     The package
+	 * @param   string  $dependency  The dependency to remove
+	 */
+	protected function removeDependency($package, $dependency)
+	{
+		$dependencies = $this->getDependencies($package);
+
+		if (in_array($dependency, $dependencies))
+		{
+			$index = array_search($dependency, $dependencies);
+			unset($dependencies[$index]);
+
+			$this->setDependencies($package, $dependencies);
+		}
+	}
+
+	/**
+	 * Do I have a dependency for a package in #__akeeba_common
+	 *
+	 * @param   string  $package     The package
+	 * @param   string  $dependency  The dependency to check for
+	 *
+	 * @return bool
+	 */
+	protected function hasDependency($package, $dependency)
+	{
+		$dependencies = $this->getDependencies($package);
+
+		return in_array($dependency, $dependencies);
+	}
 }

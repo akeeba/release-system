@@ -5,21 +5,21 @@
 	<author>Nicholas K. Dionysopoulos</author>
 	<authorEmail>nicholas@akeebabackup.com</authorEmail>
 	<authorUrl>http://www.akeebabackup.com</authorUrl>
-	<copyright>Copyright (c)2010-2012 Nicholas K. Dionysopoulos</copyright>
+	<copyright>Copyright (c)2010-2015 Nicholas K. Dionysopoulos</copyright>
 	<license>This component in released under the GNU/GPL v3 or later license</license>
 	<version>##VERSION##</version>
 	<description>Akeeba Release System</description>
 
 	<!-- Public front end files -->
 	<files folder="frontend">
-		<folder>controllers</folder>
-		<folder>helpers</folder>
-		<folder>models</folder>
+		<folder>Controller</folder>
+		<folder>Dispatcher</folder>
+		<folder>Helper</folder>
+		<folder>Model</folder>
+		<folder>View</folder>
 		<folder>views</folder>
 
 		<filename>ars.php</filename>
-		<filename>dispatcher.php</filename>
-		<filename>index.html</filename>
 		<filename>metadata.xml</filename>
 		<filename>router.php</filename>
 	</files>
@@ -36,7 +36,6 @@
 		<folder>icons</folder>
 		<folder>js</folder>
 		<folder>plugins</folder>
-		<folder>theme</folder>
 		<filename>index.html</filename>
 	</media>
 
@@ -50,22 +49,19 @@
 		<files folder="backend">
 			<folder>Amazon</folder>
 			<folder>assets</folder>
-			<folder>controllers</folder>
-			<folder>fields</folder>
-			<folder>fields</folder>
-			<folder>helpers</folder>
-			<folder>models</folder>
+			<folder>Controller</folder>
+			<folder>Dispatcher</folder>
+			<folder>Form</folder>
+			<folder>Helper</folder>
+			<folder>Model</folder>
 			<folder>sql</folder>
-			<folder>tables</folder>
-			<folder>views</folder>
+			<folder>Toolbar</folder>
+			<folder>View</folder>
 
 			<filename>access.xml</filename>
 			<filename>ars.php</filename>
 			<filename>config.xml</filename>
-			<filename>dispatcher.php</filename>
 			<filename>fof.xml</filename>
-			<filename>index.html</filename>
-			<filename>toolbar.php</filename>
 		</files>
 
 		<!-- Back-end translation files -->
@@ -76,10 +72,5 @@
 	</administration>
 	
 	<!-- Installation / uninstallation script file -->
-	<scriptfile>script.ars.php</scriptfile>
-
-    <!-- Update servers -->
-    <updateservers>
-        <server type="extension" priority="1" name="Akeeba Release System">http://cdn.akeebabackup.com/updates/ars.xml</server>
-    </updateservers>
+	<scriptfile>script.com_ars.php</scriptfile>
 </extension>
