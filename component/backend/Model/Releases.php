@@ -40,6 +40,7 @@ use FOF30\Model\DataModel;
  *
  * @method  $this  id()                 id(int $v)
  * @method  $this  category()           category(int $v)
+ * @method  $this  category_id()        category_id(int $v)
  * @method  $this  version()            version(string $v)
  * @method  $this  alias()              alias(string $v)
  * @method  $this  maturity()           maturity(string $v)
@@ -63,7 +64,7 @@ use FOF30\Model\DataModel;
  * @method  $this  access_user()        access_user(int $user_id)
  * @method  $this  nobeunpub()          nobeunpub(bool $v)
  * @method  $this  latest()             latest(bool $v)
- * @method  $this  filter_order()       filter_order(string $orderMethod)
+ * @method  $this  orderby_filter()     orderby_filter(string $orderMethod)
  *
  * Relations:
  *

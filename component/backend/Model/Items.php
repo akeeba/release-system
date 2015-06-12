@@ -50,6 +50,7 @@ use JText;
  * @method  $this  id()                 id(int $v)
  * @method  $this  item_id()            item_id(int $v)
  * @method  $this  release()            release(int $v)
+ * @method  $this  release_id()         release_id(int $v)
  * @method  $this  title()              title(string $v)
  * @method  $this  alias()              alias(string $v)
  * @method  $this  description()        description(string $v)
@@ -78,7 +79,7 @@ use JText;
  * @method  $this  language()           language(string $v)
  * @method  $this  language2()          language2(string $v)
  * @method  $this  access_user()        access_user(int $user_id)
- * @method  $this  filter_order()       filter_order(string $orderMethod)
+ * @method  $this  orderby_filter()     orderby_filter(string $orderMethod)
  *
  * Relations:
  *
