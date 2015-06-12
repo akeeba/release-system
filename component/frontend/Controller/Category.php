@@ -85,6 +85,7 @@ class Category extends DataController
 		$model->orderby($params->get('orderby', 'order'))
 			  ->limitstart(0)
 			  ->limit(0)
+			  ->published(1)
 			  ->access_user($this->container->platform->getUser()->id);
 	}
 }

@@ -111,7 +111,7 @@ class Item extends DataController
 			$releaseModel->find($id);
 
 			// Make sure subscription level filtering allows access
-			if (!Filter::filterItem($releaseModel))
+			if (!Filter::filterItem($releaseModel) || !$releaseModel->published)
 			{
 				throw new \Exception('Filtering failed');
 			}
@@ -140,7 +140,7 @@ class Item extends DataController
 			// Try to filter the category as well
 			$category = $releaseModel->category;
 
-			if (!Filter::filterItem($category))
+			if (!Filter::filterItem($category) || !$category->published)
 			{
 				throw new \Exception('Filtering failed');
 			}
@@ -165,7 +165,7 @@ class Item extends DataController
 		}
 
 		// Filter the releases by this category
-		$itemsModel->release($releaseModel->id);
+		$itemsModel->release($releaseModel->id)->published(1);
 
 		/** @var BleedingEdge $bleedingEdgeModel */
 		$bleedingEdgeModel = $this->container->factory->model('BleedingEdge');
