@@ -139,7 +139,7 @@ class Releases extends DataModel
 
 		// Some filters we will have to handle programmatically so we need to exclude them from the behaviour
 		$this->blacklistFilters([
-			'category_id',
+			//'category_id', // I actually need this for eager loading...
 			'language',
 			'maturity'
 		]);
@@ -177,6 +177,7 @@ class Releases extends DataModel
 			$fltCategory = $logsModel->getState('category', null, 'int');
 		}
 
+		$fltCategory = $this->getState('category_id', $fltCategory, 'int');
 		$fltCategory = $this->getState('category', $fltCategory, 'int');
 
 		if ($fltCategory > 0)

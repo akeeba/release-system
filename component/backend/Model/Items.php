@@ -155,7 +155,7 @@ class Items extends DataModel
 
 		// Some filters we will have to handle programmatically so we need to exclude them from the behaviour
 		$this->blacklistFilters([
-			'release_id',
+			//'release_id', // I actually need this for eager loading...
 			'language',
 		]);
 
@@ -192,7 +192,8 @@ class Items extends DataModel
 			$query->where($db->qn('id') . ' = ' . $db->q($fltItemId));
 		}
 
-		$fltRelease = $this->getState('release', null, 'int');
+		$fltRelease = $this->getState('release_id', null, 'int');
+		$fltRelease = $this->getState('release', $fltRelease, 'int');
 
 		if ($fltRelease > 0)
 		{
