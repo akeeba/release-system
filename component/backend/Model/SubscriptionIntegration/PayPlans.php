@@ -73,6 +73,12 @@ class PayPlans extends Base
 	 */
 	public function getGroupsForUser($user_id)
 	{
+		// If we are not logged in we don't have any active subscriptions.
+		if (empty($user_id))
+		{
+			return [];
+		}
+
 		$status = \PayplansStatus::SUBSCRIPTION_ACTIVE;
 		// For PayPlans 3.x
 		return \PayplansApi::getUser($user_id)->getPlans($status);

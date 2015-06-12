@@ -101,6 +101,12 @@ class AkeebaSubsFive extends Base
 	 */
 	public function getGroupsForUser($user_id)
 	{
+		// If we are not logged in we don't have any active subscriptions.
+		if (empty($user_id))
+		{
+			return [];
+		}
+
 		$container = Container::getInstance('com_akeebasubs');
 		$subscriptionsModel = $container->factory->model('Subscriptions')->tmpInstance();
 		$rawList = $subscriptionsModel->enabled(1)->user_id($user_id)->get(true);

@@ -116,6 +116,12 @@ class SubscriptionIntegration extends Model
 			$user_id = $this->container->platform->getUser()->id;
 		}
 
+		// Seriously, if we still don't have a user ID we can't have any subscription!
+		if (empty($user_id))
+		{
+			return [];
+		}
+
 		if (!isset($this->userGroups[$user_id]))
 		{
 			$this->userGroups[$user_id] = $this->integration->getGroupsForUser($user_id);

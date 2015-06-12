@@ -103,6 +103,12 @@ class AkeebaSubsTwo extends Base
 	 */
 	public function getGroupsForUser($user_id)
 	{
+		// If we are not logged in we don't have any active subscriptions.
+		if (empty($user_id))
+		{
+			return [];
+		}
+
 		\JLoader::import('f0f.include');
 
 		\JLoader::import('joomla.utilities.date');
