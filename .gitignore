@@ -8,6 +8,7 @@
 /build/phingext
 /build/tools
 /component/ars.xml
+/component/cli/*.xml
 /component/language/backend/en-GB
 /component/language/frontend/en-GB
 /modules/site/arsdlid/language/en-GB
