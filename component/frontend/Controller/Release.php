@@ -136,7 +136,7 @@ class Release extends DataController
 		}
 
 		// Filter the releases by this category
-		$releasesModel->category($categoryModel->id);
+		$releasesModel->category($categoryModel->id)->orderBy('created', 'DESC');
 
 		/** @var BleedingEdge $bleedingEdgeModel */
 		$bleedingEdgeModel = $this->container->factory->model('BleedingEdge');
