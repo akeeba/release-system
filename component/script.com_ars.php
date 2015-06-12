@@ -93,8 +93,13 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'components/com_ars/helpers',
 			'components/com_ars/models',
 			'components/com_ars/views/browse',
+			'components/com_ars/views/browses',
+			'components/com_ars/views/category',
+			'components/com_ars/views/dlidlabel',
+			'components/com_ars/views/dlidlabels',
 			'components/com_ars/views/download',
-			'components/com_ars/views/latest',
+			'components/com_ars/views/latests',
+			'components/com_ars/views/release',
 
 			'media/com_ars/theme',
 		)
