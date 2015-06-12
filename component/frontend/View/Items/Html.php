@@ -54,7 +54,7 @@ class Html extends BaseView
 		$model = $this->getModel();
 
 		// Assign data to the view, part 1 (we need this later on)
-		$this->items = $model->get()->filter(function ($item)
+		$this->items = $model->get(true)->filter(function ($item)
 		{
 			return Filter::filterItem($item, true);
 		});

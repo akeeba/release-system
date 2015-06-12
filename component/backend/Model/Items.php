@@ -210,7 +210,7 @@ class Items extends DataModel
 
 			if (!is_object($user) || !($user instanceof \JUser))
 			{
-				$access_levels = array($db->q(-1));
+				$access_levels = array(-1);
 			}
 			else
 			{
@@ -219,18 +219,17 @@ class Items extends DataModel
 				if (empty($access_levels))
 				{
 					// Essentially, tell it to find nothing if no our user is authorised to no access levels
-					$access_levels = [$db->q(-1)];
+					$access_levels = [-1];
 				}
-
-				$access_levels = array_map(array($db, 'quote'), $access_levels);
 			}
 
 			$access_levels = array_unique($access_levels);
 
 			// Filter this table
+			$access_levels_escaped = array_map(array($db, 'quote'), $access_levels);
 			$query->where(
 				'(' .
-				'('. $db->qn('access') . ' IN (' . implode(',', $access_levels) . ')) OR (' .
+				'('. $db->qn('access') . ' IN (' . implode(',', $access_levels_escaped) . ')) OR (' .
 				$db->qn('show_unauth_links') . ' = ' . $db->q(1)
 				. '))'
 			);

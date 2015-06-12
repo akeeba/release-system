@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use FOF30\Model\Model;
+use JLoader;
 
 class Download extends Model
 {

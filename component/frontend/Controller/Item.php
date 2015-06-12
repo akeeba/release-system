@@ -24,13 +24,13 @@ class Item extends DataController
 		// If we're using the JSON API we need a manager
 		$format = $this->input->getCmd('format', 'html');
 
-		if (!in_array($format, ['html', 'feed']) && !($this->checkACL('core.manage') || $this->checkACL('core.admin')))
+		if (($format == 'json') && !($this->checkACL('core.manage') || $this->checkACL('core.admin')))
 		{
 			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		// For the HTML view we only allow browse and download
-		if (in_array($format, ['html', 'feed']))
+		if ($format != 'json')
 		{
 			if (!in_array($task, ['browse', 'download']))
 			{
@@ -88,13 +88,17 @@ class Item extends DataController
 
 		// Push the page params to the Items model
 		/** @var Releases $releaseModel */
-		$releaseModel = $this->getModel('Releases')
+		$releaseModel = $this->getModel('Releases');
+		$releaseModel
 							 ->orderby_filter($params->get('rel_orderby', 'order'))
+							 ->category_id(0)
 							 ->access_user($this->container->platform->getUser()->id);
 
 		/** @var Items $itemsModel */
-		$itemsModel = $this->getModel()
+		$itemsModel = $this->getModel();
+		$itemsModel
 						   ->orderby_filter($params->get('items_orderby', 'order'))
+						   ->release_id(0)
 						   ->access_user($this->container->platform->getUser()->id);
 
 		// Get the release ID
@@ -230,9 +234,10 @@ class Item extends DataController
 			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
-		// The release must be accessible
+
 		try
 		{
+			// The release must be accessible
 			$release = $item->release;
 
 			// Make sure subscription level filtering allows access
