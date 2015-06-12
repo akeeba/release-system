@@ -75,6 +75,7 @@ class Latest extends Controller
 			  ->published(1)
 			  ->latest(true)
 			  ->access_user($this->container->platform->getUser()->id)
+			  ->category_id(0)
 			  ->with(['items']);
 
 		/** @var Categories $categoriesModel */
