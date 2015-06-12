@@ -139,7 +139,7 @@ abstract class Filter
 			],
 		];
 
-		if (!empty($allVisualGroups))
+		if ($allVisualGroups->count())
 		{
 			/** @var VisualGroups $vGroup */
 			foreach ($allVisualGroups as $vGroup)
