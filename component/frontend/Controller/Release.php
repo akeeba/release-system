@@ -89,12 +89,12 @@ class Release extends DataController
 		// Push the page params to the Releases model
 		/** @var Categories $categoryModel */
 		$categoryModel = $this->getModel('Categories')
-							  ->orderby($params->get('orderby', 'order'))
+							  ->orderby_filter($params->get('orderby', 'order'))
 							  ->access_user($this->container->platform->getUser()->id);
 
 		/** @var Releases $releasesModel */
 		$releasesModel = $this->getModel()
-							  ->orderby($params->get('rel_orderby', 'order'))
+							  ->orderby_filter($params->get('rel_orderby', 'order'))
 							  ->access_user($this->container->platform->getUser()->id);
 
 		// Get the category ID
@@ -136,7 +136,7 @@ class Release extends DataController
 		}
 
 		// Filter the releases by this category
-		$releasesModel->category($categoryModel->id)->orderBy('created', 'DESC')->published(1);
+		$releasesModel->category($categoryModel->id)->published(1);
 
 		/** @var BleedingEdge $bleedingEdgeModel */
 		$bleedingEdgeModel = $this->container->factory->model('BleedingEdge');

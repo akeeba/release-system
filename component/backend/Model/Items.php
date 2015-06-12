@@ -78,6 +78,7 @@ use JText;
  * @method  $this  language()           language(string $v)
  * @method  $this  language2()          language2(string $v)
  * @method  $this  access_user()        access_user(int $user_id)
+ * @method  $this  filter_order()       filter_order(string $orderMethod)
  *
  * Relations:
  *
@@ -305,6 +306,37 @@ class Items extends DataModel
 				$subQuery->where($db->qn('language') . ' = ' . $db->q($fltLanguage2));
 				$subQuery->where($db->qn('category_id') . ' IN (' . implode(',', $categories) . ')');
 			});
+		}
+
+		// Order filtering
+		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
+
+		switch ($fltOrderBy)
+		{
+			case 'alpha':
+				$this->setState('filter_order', 'title');
+				$this->setState('filter_order_Dir', 'ASC');
+				break;
+
+			case 'ralpha':
+				$this->setState('filter_order', 'title');
+				$this->setState('filter_order_Dir', 'DESC');
+				break;
+
+			case 'created':
+				$this->setState('filter_order', 'created');
+				$this->setState('filter_order_Dir', 'ASC');
+				break;
+
+			case 'rcreated':
+				$this->setState('filter_order', 'created');
+				$this->setState('filter_order_Dir', 'DESC');
+				break;
+
+			case 'order':
+				$this->setState('filter_order', 'ordering');
+				$this->setState('filter_order_Dir', 'ASC');
+				break;
 		}
 	}
 

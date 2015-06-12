@@ -89,12 +89,12 @@ class Item extends DataController
 		// Push the page params to the Items model
 		/** @var Releases $releaseModel */
 		$releaseModel = $this->getModel('Releases')
-							 ->orderby($params->get('rel_orderby', 'order'))
+							 ->orderby_filter($params->get('rel_orderby', 'order'))
 							 ->access_user($this->container->platform->getUser()->id);
 
 		/** @var Items $itemsModel */
 		$itemsModel = $this->getModel()
-						   ->orderby($params->get('items_orderby', 'order'))
+						   ->orderby_filter($params->get('items_orderby', 'order'))
 						   ->access_user($this->container->platform->getUser()->id);
 
 		// Get the release ID

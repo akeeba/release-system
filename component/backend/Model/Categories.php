@@ -63,6 +63,7 @@ use FOF30\Model\DataModel;
  * @method  $this  access_user()        access_user(int $user_id)
  * @method  $this  nobeunpub()          nobeunpub(bool $v)
  * @method  $this  search()             search(string $v)
+ * @method  $this  filter_order()       filter_order(string $orderMethod)
  *
  * Relations:
  *
@@ -208,6 +209,37 @@ class Categories extends DataModel
 				'(' . $db->qn('description') . ' LIKE ' . $db->quote($search) . ')' .
 				')'
 			);
+		}
+
+		// Order filtering
+		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
+
+		switch ($fltOrderBy)
+		{
+			case 'alpha':
+				$this->setState('filter_order', 'title');
+				$this->setState('filter_order_Dir', 'ASC');
+				break;
+
+			case 'ralpha':
+				$this->setState('filter_order', 'title');
+				$this->setState('filter_order_Dir', 'DESC');
+				break;
+
+			case 'created':
+				$this->setState('filter_order', 'created');
+				$this->setState('filter_order_Dir', 'ASC');
+				break;
+
+			case 'rcreated':
+				$this->setState('filter_order', 'created');
+				$this->setState('filter_order_Dir', 'DESC');
+				break;
+
+			case 'order':
+				$this->setState('filter_order', 'ordering');
+				$this->setState('filter_order_Dir', 'ASC');
+				break;
 		}
 	}
 

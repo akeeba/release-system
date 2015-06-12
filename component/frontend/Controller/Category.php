@@ -82,7 +82,7 @@ class Category extends DataController
 
 		/** @var \Akeeba\ReleaseSystem\Site\Model\Categories $model */
 		$model = $this->getModel();
-		$model->orderby($params->get('orderby', 'order'))
+		$model->orderby_filter($params->get('orderby', 'order'))
 			  ->limitstart(0)
 			  ->limit(0)
 			  ->published(1)
