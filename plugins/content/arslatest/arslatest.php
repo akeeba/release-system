@@ -65,7 +65,7 @@ class plgContentArslatest extends JPlugin
 
 		$text = is_object($row) ? $row->text : $row;
 
-		if (\Joomla\String\String::strpos($row->text, 'arslatest') !== false)
+		if (\JString::strpos($row->text, 'arslatest') !== false)
 		{
 			if (!$this->prepared)
 			{

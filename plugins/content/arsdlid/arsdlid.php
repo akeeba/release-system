@@ -47,7 +47,7 @@ class plgContentArsdlid extends JPlugin
 		}
 
 		// Check whether the plugin should process or not
-		if (\Joomla\String\String::strpos($article->text, 'downloadid') === false)
+		if (\JString::strpos($article->text, 'downloadid') === false)
 		{
 			return true;
 		}
