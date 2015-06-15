@@ -214,6 +214,22 @@ class DownloadIDLabels extends DataController
 
 	protected function onBeforeSave()
 	{
+		$this->getModel()->savestate(0);
+
+		if ($this->container->platform->isFrontend())
+		{
+			$user = $this->container->platform->getUser();
+
+			/** @var \Akeeba\ReleaseSystem\Admin\Model\DownloadIDLabels $model */
+			$model = $this->getModel()->savestate(false);
+
+			if (empty($model->user_id) && empty($model->id))
+			{
+				$model->user_id = $user->id;
+			}
+		}
+
+
 		$this->onBeforeReset();
 	}
 
@@ -246,5 +262,11 @@ class DownloadIDLabels extends DataController
 	protected function onBeforeRemove()
 	{
 		$this->onBeforeEdit();
+	}
+
+	protected function onAfterRemove()
+	{
+		// After deleting a Download ID I have to clear the cache, otherwise I won't see the changes
+		CacheCleaner::clearCacheGroups(array('com_ars'));
 	}
 }
