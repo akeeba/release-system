@@ -1,5 +1,5 @@
 Akeeba Release System
-The most popular backup component for the Joomla! CMS
+The only download manager made for software distribution.
 
 --------------------------------------------------------------------------------
 PREREQUISITES
