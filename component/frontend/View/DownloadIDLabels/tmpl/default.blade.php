@@ -42,6 +42,17 @@ $options[] = JHtml::_('select.option', '', 'JALL');
         </button>
     </div>
 
+    <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=add&' . JFactory::getSession()->getToken() . '=1&returnurl=' . $returnUrl) }}"
+       class="btn btn-success">
+        <span class="icon icon-white icon-plus"></span>
+        @lang('JNEW')
+    </a>
+
+    <div class="btn-group pull-right">
+        {{ $this->pagination->getLimitBox() }}
+    </div>
+
+
     <table class="table table-striped" width="100%">
         <thead>
             <tr>
@@ -61,13 +72,8 @@ $options[] = JHtml::_('select.option', '', 'JALL');
         </thead>
         <tfoot>
             <tr>
-               <td colspan="10">
-                   <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=add&' . JFactory::getSession()->getToken() . '=1&returnurl=' . $returnUrl) }}" class="btn btn-success">
-                       <span class="icon icon-white icon-plus"></span>
-                       @lang('JNEW')
-                   </a>
-
-                   <span class="label label-warning">TODO</span> Items per page, pagination, new item
+                <td colspan="10" style="text-align: center">
+                    {{ $this->pagination->getListFooter() }}
                </td>
             </tr>
         </tfoot>
