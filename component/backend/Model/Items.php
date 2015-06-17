@@ -194,7 +194,17 @@ class Items extends DataModel
 			$query->where($db->qn('id') . ' = ' . $db->q($fltItemId));
 		}
 
-		$fltRelease = $this->getState('release_id', null, 'int');
+		$fltRelease = $this->getState('release_id', null, 'array');
+
+		if (!is_array($fltRelease))
+		{
+			$fltRelease = $this->getState('release_id', null, 'int');
+		}
+		else
+		{
+			$fltRelease = null;
+		}
+
 		$fltRelease = $this->getState('release', $fltRelease, 'int');
 
 		if ($fltRelease > 0)
