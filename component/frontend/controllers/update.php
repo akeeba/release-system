@@ -149,7 +149,7 @@ class ArsControllerUpdate extends F0FController
 			'task'   => 'CMD',
 			'format' => 'CMD',
 			'layout' => 'CMD',
-			'id'     => 'INT',
+			'id'     => 'CMD',
 			'dlid'   => 'STRING',
 		);
 		$this->display(true, $registeredURLParams);
