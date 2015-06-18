@@ -129,7 +129,7 @@ class Update extends Controller
 			'task'   => 'CMD',
 			'format' => 'CMD',
 			'layout' => 'CMD',
-			'id'     => 'INT',
+			'id' => 'CMD',
 			'dlid'   => 'STRING',
 		);
 
