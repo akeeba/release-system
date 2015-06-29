@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form validate="true"
+      cssfiles="media://com_ars/css/backend.css">
+    <fieldset name="basic" label="COM_ARS_CATEGORY_BASIC_LABEL">
+        <field name="title" type="Text" label="LBL_ENVIRONMENTS_TITLE" required="true" />
+        <field name="xmltitle" type="Text" label="LBL_ENVIRONMENT_XMLTITLE"
+               descripiton="LBL_ENVIRONMENT_XMLTITLE_TIP"
+               required="true" />
+        <field name="icon" type="ImageList" label="LBL_ENVIRONMENT_ICON"
+               directory="media/com_ars/environments"
+               hide_default="true"
+                />
+    </fieldset>
+</form>

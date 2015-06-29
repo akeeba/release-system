@@ -287,8 +287,9 @@ class ArsUpdate extends JApplicationCli
 
 		$this->out("Checking for new versions");
 
-		/** @var ArsModelUpdates $updateModel */
-		$updateModel = F0FModel::getTmpInstance('Updates', 'ArsModel');
+		$container = \FOF30\Container\Container::getInstance('com_akeebasubs');
+		/** @var \Akeeba\ReleaseSystem\Admin\Model\Updates $updateModel */
+		$updateModel = $container->factory->model('Updates')->tmpInstance();
 
 		$result = $updateModel->autoupdate();
 

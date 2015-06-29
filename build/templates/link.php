@@ -17,12 +17,6 @@ $symlink_folders = array(
 	'translations/component/backend/en-GB'		=> 'component/language/backend/en-GB',
 	'translations/component/frontend/en-GB'		=> 'component/language/frontend/en-GB',
 
-	# FOF
-	'../fof/fof'								=> 'component/fof',
-
-	# Akeeba Strapper
-	'../fof/strapper'							=> 'component/strapper',
-
     // Usagestats
     '../usagestats/lib'                         => 'component/backend/assets/stats'
 );

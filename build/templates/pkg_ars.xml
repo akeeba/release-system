@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.3.0" type="package" method="upgrade">
+    <name>Akeeba Release System package</name>
+    <author>Nicholas K. Dionysopoulos</author>
+    <creationDate>##DATE##</creationDate>
+    <packagename>ars</packagename>
+    <version>##VERSION##</version>
+    <url>https://www.akeebabackup.com</url>
+    <packager>Akeeba Ltd</packager>
+    <packagerurl>https://www.akeebabackup.com</packagerurl>
+    <copyright>Copyright (c)2010-2015 Nicholas K. Dionysopoulos</copyright>
+    <license>GNU GPL v3 or later</license>
+    <description>Akeeba Release System installation package v.##VERSION##</description>
+
+    <!-- List of extensions to install -->
+    <files>
+        <!-- Component -->
+        <file type="component" id="com_ars">com_ars.zip</file>
+
+        <!-- CLI scripts -->
+        <file type="file" id="file_ars">file_ars.zip</file>
+
+        <!-- Modules -->
+        <file type="module" client="site" id="mod_arsdlid">mod_arsdlid.zip</file>
+        <file type="module" client="site" id="mod_arsdownloads">mod_arsdownloads.zip</file>
+
+        <!-- Plugins: ars -->
+        <file type="plugin" group="ars" id="bleedingedgediff">plg_ars_bleedingedgediff.zip</file>
+        <file type="plugin" group="ars" id="bleedingedgematurity">plg_ars_bleedingedgematurity.zip</file>
+
+        <!-- Plugins: content -->
+        <file type="plugin" group="content" id="arsdlid">plg_content_arsdlid.zip</file>
+        <file type="plugin" group="content" id="arslatest">plg_content_arslatest.zip</file>
+
+		<!-- Plugins: editors-xtd -->
+		<file type="plugin" group="editors-xtd" id="arslink">plg_editors-xtd_arslink.zip</file>
+
+        <!-- Plugins: system -->
+        <file type="plugin" group="system" id="arsjed">plg_system_arsjed.zip</file>
+    </files>
+
+    <!-- Installation script -->
+    <scriptfile>script.ars.php</scriptfile>
+
+    <!-- Update servers -->
+    <updateservers>
+        <server type="extension" priority="1" name="Akeeba Release System">http://cdn.akeebabackup.com/updates/ars.xml</server>
+    </updateservers>
+</extension>

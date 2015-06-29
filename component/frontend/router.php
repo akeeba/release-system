@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  * @version   $Id$
  */
@@ -9,15 +9,19 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-include_once JPATH_LIBRARIES . '/f0f/include.php';
-
-class ComArsRouter
+if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
 {
+	throw new RuntimeException('FOF 3.0 is not installed', 500);
+}
 
-	public static $routeRaw = true;
+if (!class_exists('ComArsRouter'))
+{
+	require_once __DIR__ . '/Helper/ComArsRouter.php';
+}
 
-	public static $routeHtml = true;
-
+if (!class_exists('ArsRouterHelper'))
+{
+	require_once __DIR__ . '/Helper/ArsRouterHelper.php';
 }
 
 function arsBuildRoute(&$query)
@@ -25,7 +29,7 @@ function arsBuildRoute(&$query)
 	$format = isset($query['format']) ? $query['format'] : 'html';
 	$view = isset($query['view']) ? $query['view'] : 'browses';
 
-	if ($view == 'download')
+	if (in_array($view, ['download', 'downloads', 'Item']))
 	{
 		$format = 'raw';
 	}
@@ -42,15 +46,15 @@ function arsBuildRoute(&$query)
 				$segments = array();
 			}
 			break;
-		case 'feed':
-			$segments = arsBuildRouteFeed($query);
-			break;
+
 		case 'xml':
 			$segments = arsBuildRouteXml($query);
 			break;
+
 		case 'ini':
 			$segments = arsBuildRouteIni($query);
 			break;
+
 		case 'raw':
 		default:
 			if (ComArsRouter::$routeRaw)
@@ -69,12 +73,12 @@ function arsBuildRoute(&$query)
 
 function arsBuildRouteHtml(&$query)
 {
-	static $currentlang = null;
+	static $currentLang = null;
 
-	if (is_null($currentlang))
+	if (is_null($currentLang))
 	{
-		$jlang = JFactory::getLanguage();
-		$currentlang = $jlang->getTag();
+		$jLang = JFactory::getLanguage();
+		$currentLang = $jLang->getTag();
 	}
 
 	$segments = array();
@@ -88,12 +92,7 @@ function arsBuildRouteHtml(&$query)
 		return $segments;
 	}
 
-	/**
-	 * if(in_array($query['view'], array('dlidlabels', 'dlidlabel')))
-	 * {
-	 * return $segments;
-	 * }
-	 **/
+	$container = \FOF30\Container\Container::getInstance('com_ars');
 
 	$menus = JMenu::getInstance('site');
 
@@ -102,35 +101,70 @@ function arsBuildRouteHtml(&$query)
 	$layout = ArsRouterHelper::getAndPop($query, 'layout');
 	$id = ArsRouterHelper::getAndPop($query, 'id');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
-	$language = ArsRouterHelper::getAndPop($query, 'language', $currentlang);
+	$language = ArsRouterHelper::getAndPop($query, 'language', $currentLang);
 	$vgroupid = ArsRouterHelper::getAndPop($query, 'vgroupid');
 
-	$qoptions = array('option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id, 'language' => $language, 'vgroupid' => $vgroupid);
+	// The id in the Releases view is called category_id
+	if ($view == 'Releases')
+	{
+		$alt_id = ArsRouterHelper::getAndPop($query, 'category_id');
+		$id = empty($alt_id) ? $id : $alt_id;
+	}
+
+	// The id in the Items view is called release_id
+	if ($view == 'Items')
+	{
+		$alt_id = ArsRouterHelper::getAndPop($query, 'release_id');
+		$id = empty($alt_id) ? $id : $alt_id;
+	}
+
+	$queryOptions = [
+		'option' => 'com_ars',
+		'view' => $view,
+		'task' => $task,
+		'layout' => $layout,
+		'id' => $id,
+		'language' => $language,
+		'vgroupid' => $vgroupid
+	];
+
 	switch ($view)
 	{
 		case 'dlidlabel':
 		case 'dlidlabels':
+		case 'DownloadIDLabels':
+		case 'DownloadIDLabel':
 			if ($Itemid)
 			{
 				$menu = $menus->getItem($Itemid);
-				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'browses';
+				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'Categories';
+
 				// No, we have to find another root
-				if (($mView != 'dlidlabel') && ($mView != 'dlidlabels'))
+				if (!in_array($mView, ['dlidlabel', 'dlidlabels', 'DownloadIDLabel', 'DownloadIDLabels']))
 				{
 					$Itemid = null;
 				}
 			}
 
-			if (empty($Itemid))
+			$possibleViews = ['dlidlabel', 'dlidlabels', 'DownloadIDLabel', 'DownloadIDLabels'];
+
+			foreach ($possibleViews as $possibleView)
 			{
-				$menu = ArsRouterHelper::findMenu($qoptions);
+				$altQueryOptions = array_merge($queryOptions, ['view' => $possibleView]);
+				$menu = ArsRouterHelper::findMenu($altQueryOptions);
 				$Itemid = empty($menu) ? null : $menu->id;
+
+				if (!empty($Itemid))
+				{
+					break;
+				}
 			}
 
 			if (empty($Itemid))
 			{
 				$query['option'] = 'com_ars';
 				$query['view'] = $view;
+
 				if (!empty($language))
 				{
 					$query['language'] = $language;
@@ -146,10 +180,12 @@ function arsBuildRouteHtml(&$query)
 			{
 				$query['task'] = $task;
 			}
+
 			if (!empty($layout))
 			{
 				$query['layout'] = $layout;
 			}
+
 			if (!empty($id))
 			{
 				$query['id'] = $id;
@@ -158,22 +194,32 @@ function arsBuildRouteHtml(&$query)
 			break;
 
 		case 'browses':
-			// Is it a browser menu?
+		case 'categories':
+		case 'Categories':
+			// Is it a Categories list menu item?
 			if ($Itemid)
 			{
 				$menu = $menus->getItem($Itemid);
-				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'browses';
-				// No, we have to find another root
-				if (($mView != 'browses'))
+				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'Categories';
+
+				if (!in_array($mView, ['browses', 'browse', 'Categories']))
 				{
 					$Itemid = null;
 				}
 			}
 
-			if (empty($Itemid))
+			$possibleViews = ['browse', 'browses', 'Categories'];
+
+			foreach ($possibleViews as $possibleView)
 			{
-				$menu = ArsRouterHelper::findMenu($qoptions);
+				$altQueryOptions = array_merge($queryOptions, ['view' => $possibleView]);
+				$menu = ArsRouterHelper::findMenu($altQueryOptions);
 				$Itemid = empty($menu) ? null : $menu->id;
+
+				if (!empty($Itemid))
+				{
+					break;
+				}
 			}
 
 			if (empty($Itemid))
@@ -189,15 +235,18 @@ function arsBuildRouteHtml(&$query)
 			break;
 
 		case 'category':
-			// Do we have a category menu?
+		case 'Releases':
+			// Do we have a category menu item (showing the releases of a Category)?
 			if ($Itemid)
 			{
 				$menu = $menus->getItem($Itemid);
-				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'browses';
+				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'Categories';
+
 				// No, we have to find another root
-				if (($mView == 'category'))
+				if (in_array($mView, ['category', 'Releases']))
 				{
 					$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
+
 					if ($params->get('cat_id', 0) == $id)
 					{
 						$query['Itemid'] = $Itemid;
@@ -209,33 +258,55 @@ function arsBuildRouteHtml(&$query)
 						$Itemid = null;
 					}
 				}
-				elseif ($mView != 'browses')
+				elseif (!in_array($mView, ['browses', 'browse', 'Categories']))
 				{
 					$Itemid = null;
 				}
 			}
 
+			// TODO Cache category aliases and vgroup ID
 			// Get category alias
-			$catModel = F0FModel::getTmpInstance('Categories', 'ArsModel');
-			$catalias = $catModel->getItem($id)->alias;
+			/** @var \Akeeba\ReleaseSystem\Site\Model\Categories $category */
+			$category = $container->factory->model('Categories')->tmpInstance();
+
+			try
+			{
+				$category->find($id);
+			}
+			catch (\Exception $e)
+			{
+			}
+
+			$catAlias = $category->alias;
+			$catVgroupId = $category->vgroup_id;
 
 			if (empty($Itemid))
 			{
 				// Try to find a menu item for this category
-				$options = $qoptions;
+				$options = $queryOptions;
 				unset($options['id']);
 				$params = array('catid' => $id);
 
 				// Does the category have a visual group?  If so, let's add that to the query options
-				$catVgroupId = $catModel->getItem($id)->vgroup_id;
 
 				if ($catVgroupId)
 				{
 					$options['vgroupid'] = $catVgroupId;
 				}
 
-				$menu = ArsRouterHelper::findMenu($options, $params);
-				$Itemid = empty($menu) ? null : $menu->id;
+				$possibleViews = ['category', 'Releases'];
+
+				foreach ($possibleViews as $possibleView)
+				{
+					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+					$menu = ArsRouterHelper::findMenu($altQueryOptions, $params);
+					$Itemid = empty($menu) ? null : $menu->id;
+
+					if (!empty($Itemid))
+					{
+						break;
+					}
+				}
 
 				if (!empty($Itemid))
 				{
@@ -244,8 +315,8 @@ function arsBuildRouteHtml(&$query)
 				}
 				else
 				{
-					// Not found. Try fetching a browser menu item
-					$options = array('option' => 'com_ars', 'view' => 'browses', 'layout' => 'repository', 'language' => $language);
+					// Not found. Try fetching a Categories menu item
+					$options = array('option' => 'com_ars', 'view' => 'Categories', 'layout' => 'repository', 'language' => $language);
 
 					// Does the category have a visual group?  If so, let's add that to the query options
 					if ($catVgroupId)
@@ -253,61 +324,84 @@ function arsBuildRouteHtml(&$query)
 						$options['vgroupid'] = $catVgroupId;
 					}
 
-					$menu = ArsRouterHelper::findMenu($options);
-					$Itemid = empty($menu) ? null : $menu->id;
-					if (!empty($Itemid))
+					$possibleViews = ['browse', 'browses', 'Categories'];
+
+					foreach ($possibleViews as $possibleView)
 					{
-						// Push the Itemid and category alias
-						$query['Itemid'] = $menu->id;
-						$segments[] = $catalias;
+						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+						$menu = ArsRouterHelper::findMenu($altQueryOptions);
+						$Itemid = empty($menu) ? null : $menu->id;
+
+						if (!empty($Itemid))
+						{
+							$query['Itemid'] = $menu->id;
+							$segments[] = $catAlias;
+
+							break;
+						}
 					}
-					else
+
+					if (empty($Itemid))
 					{
 						// Push the browser layout and category alias
 						$segments[] = 'repository';
-						$segments[] = $catalias;
+						$segments[] = $catAlias;
 					}
 				}
 			}
 			else
 			{
-				// This is a browser menu. Push the category alias
+				// This is a Categories menu item. Push the category alias
 				$query['Itemid'] = $Itemid;
-				$segments[] = $catalias;
+				$segments[] = $catAlias;
 			}
 
 			break;
 
 		case 'release':
+		case 'Items':
+			// TODO Cache category IDs and release alias per release, get category aliases and vgroup IDs from category cache
 			// Get release info
-			$relModel = F0FModel::getTmpInstance('Releases', 'ArsModel');
-			$release = $relModel->getItem($id);
+			/** @var \Akeeba\ReleaseSystem\Site\Model\Releases $release */
+			$release = $container->factory->model('Releases')->tmpInstance();
 
-			// Get category alias
-			$catModel = F0FModel::getTmpInstance('Categories', 'ArsModel');
-			$catalias = $catModel->getItem($release->category_id)->alias;
+			try
+			{
+				$release->find($id);
+			}
+			catch (\Exception $e)
+			{
+			}
+
+			// Get release info
+			$releaseAlias = $release->alias;
+			$catId = $release->category->id;
+			$catAlias = $release->category->alias;
+			$catVgroup = $release->category->vgroup_id;
 
 			// Do we have a "category" menu?
 			if ($Itemid)
 			{
 				$menu = $menus->getItem($Itemid);
-				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'browses';
-				if (($mView == 'browses'))
+				$mView = isset($menu->query['view']) ? $menu->query['view'] : 'Categories';
+
+				if (in_array($mView, ['browses', 'browse', 'Categories']))
 				{
-					// No. It is a browse menu item. We must add the category and release aliases.
+					// No. It is a Categories menu item. We must add the category and release aliases.
 					$query['Itemid'] = $Itemid;
-					$segments[] = $catalias;
-					$segments[] = $release->alias;
+					$segments[] = $catAlias;
+					$segments[] = $releaseAlias;
 				}
-				elseif (($mView == 'category'))
+				elseif (in_array($mView, ['category', 'Releases']))
 				{
 					// Yes! Is it the category we want?
 					$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
-					if ($params->get('catid', 0) == $release->category_id)
+
+					if ($params->get('catid', 0) == $catId)
 					{
 						// Cool! Just append the release alias
 						$query['Itemid'] = $Itemid;
-						$segments[] = $release->alias;
+						$segments[] = $releaseAlias;
 					}
 					else
 					{
@@ -325,23 +419,37 @@ function arsBuildRouteHtml(&$query)
 			if (empty($Itemid))
 			{
 				// Try to find a category menu item
-				$options = array('view' => 'category', 'option' => 'com_ars', 'language' => $language);
-				$params = array('catid' => $release->category_id);
+				$options = array('view' => 'Category', 'option' => 'com_ars', 'language' => $language);
+				$params = array('catid' => $catId);
 
 				// Does the category have a visual group?  If so, let's add that to the query options
-				$catVgroupId = $catModel->getItem($release->category_id)->vgroup_id;
+				$catVgroupId = $catVgroup;
 
 				if ($catVgroupId)
 				{
 					$options['vgroupid'] = $catVgroupId;
 				}
 
-				$menu = ArsRouterHelper::findMenu($options, $params);
+				$possibleViews = ['release', 'Items'];
+
+				foreach ($possibleViews as $possibleView)
+				{
+					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+					$menu = ArsRouterHelper::findMenu($altQueryOptions, $params);
+
+					if (!empty($menu))
+					{
+						$query['Itemid'] = $menu->id;
+
+						break;
+					}
+				}
+
 				if (!empty($menu))
 				{
 					// Found it! Just append the release alias
 					$query['Itemid'] = $menu->id;
-					$segments[] = $release->alias;
+					$segments[] = $releaseAlias;
 				}
 				else
 				{
@@ -354,125 +462,34 @@ function arsBuildRouteHtml(&$query)
 						$options['vgroupid'] = $catVgroupId;
 					}
 
-					$menu = ArsRouterHelper::findMenu($options);
-					if (!empty($menu))
+					$possibleViews = ['browse', 'browses', 'Categories'];
+
+					foreach ($possibleViews as $possibleView)
 					{
-						// We must add the category and release aliases.
-						$query['Itemid'] = $menu->id;
-						$segments[] = $catalias;
-						$segments[] = $release->alias;
+						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+						$menu = ArsRouterHelper::findMenu($altQueryOptions);
+
+						if (!empty($menu))
+						{
+							$query['Itemid'] = $menu->id;
+
+							break;
+						}
 					}
-					else
-					{
-						// I must add the full path
-						$segments[] = 'repository';
-						$segments[] = $catalias;
-						$segments[] = $release->alias;
-					}
-				}
-			}
-
-			break;
-	}
-
-	return $segments;
-}
-
-function arsBuildRouteFeed(&$query)
-{
-
-	$segments = array();
-
-	$view = ArsRouterHelper::getAndPop($query, 'view', 'browses');
-	$layout = ArsRouterHelper::getAndPop($query, 'layout', 'repository');
-	$id = ArsRouterHelper::getAndPop($query, 'id', 0);
-	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
-
-	$menus = JMenu::getInstance('site');
-
-	$query['format'] = 'feed';
-
-	switch ($view)
-	{
-		case 'browses':
-		case 'categories':
-			$view = 'browses';
-			$query['Itemid'] = $Itemid;
-			break;
-
-		case 'category':
-			if ($Itemid)
-			{
-				$menu = $menus->getItem($Itemid);
-				if (empty($menu))
-				{
-					$Itemid = null;
-				}
-				elseif ((isset($menu->query['view']) ? $menu->query['view'] : 'browses') == 'category')
-				{
-					$params = is_object($menu->params) ? $menu->params : new JRegistry($menu->params);
-					if ($params->get('catid', 0) != $id)
-					{
-						$Itemid = null;
-					}
-					else
-					{
-						$query['Itemid'] = $menu->id;
-					}
-				}
-				else
-				{
-					$Itemid = null;
-				}
-			}
-
-			if (empty($Itemid))
-			{
-				$options = array('view' => 'category', 'option' => 'com_ars');
-				$params = array('catid' => $id);
-
-				// Does the category have a visual group?  If so, let's add that to the query options
-				$catModel = F0FModel::getTmpInstance('Categories', 'ArsModel');
-				$catVgroupId = $catModel->getItem($id)->vgroup_id;
-
-				if ($catVgroupId)
-				{
-					$options['vgroupid'] = $catVgroupId;
-				}
-
-				$menu = ArsRouterHelper::findMenu($options, $params);
-				if (!empty($menu))
-				{
-					// Found it!
-					$query['Itemid'] = $menu->id;
-				}
-				else
-				{
-					// Nah. Let's find a browse menu item.
-					$options = array('view' => 'browses', 'option' => 'com_ars');
-
-					// Does the category have a visual group?  If so, let's add that to the query options
-					if ($catVgroupId)
-					{
-						$options['vgroupid'] = $catVgroupId;
-					}
-
-					$menu = ArsRouterHelper::findMenu($options);
-
-					$model = F0FModel::getTmpInstance('Categories', 'ArsModel');
-					$category = $model->getItem($id);
 
 					if (!empty($menu))
 					{
 						// We must add the category and release aliases.
 						$query['Itemid'] = $menu->id;
-						$segments[] = $category->alias;
+						$segments[] = $catAlias;
+						$segments[] = $releaseAlias;
 					}
 					else
 					{
 						// I must add the full path
 						$segments[] = 'repository';
-						$segments[] = $category->alias;
+						$segments[] = $catAlias;
+						$segments[] = $releaseAlias;
 					}
 				}
 			}
@@ -487,38 +504,55 @@ function arsBuildRouteRaw(&$query)
 {
 	$segments = array();
 
-	$view = isset($query['view']) ? $query['view'] : '';
-	if ($view != 'download')
+	$view = ArsRouterHelper::getAndPop($query, 'view', 'invalid');
+	$task = ArsRouterHelper::getAndPop($query, 'task', 'download');
+
+	// Map all possible views
+	if (in_array($view, ['download', 'Download', 'downloads', 'Downloads', 'Items', 'Item']))
+	{
+		$view = 'Item';
+		$task = 'download';
+	}
+
+	if (($view != 'Item') || ($task != 'download'))
 	{
 		return $segments;
 	}
 
-	$view = ArsRouterHelper::getAndPop($query, 'view', 'browses');
-	$task = ArsRouterHelper::getAndPop($query, 'task');
-	$layout = ArsRouterHelper::getAndPop($query, 'layout');
+	$container = \FOF30\Container\Container::getInstance('com_ars');
+
 	$id = ArsRouterHelper::getAndPop($query, 'id');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
-	$vgroupid = ArsRouterHelper::getAndPop($query, 'vgroupid');
 
-	$qoptions = array('option' => 'com_ars', 'view' => $view, 'task' => $task, 'layout' => $layout, 'id' => $id, 'vgroupid' => $vgroupid);
 	$menus = JMenu::getInstance('site');
 
 	// Get download item info
-	$dlModel = F0FModel::getTmpInstance('Items', 'ArsModel');
-	$download = $dlModel->getItem($id);
+	/** @var \Akeeba\ReleaseSystem\Site\Model\Items $download */
+	$download = $container->factory->model('Items')->tmpInstance();
+	$download->find($id);
+
+	// If we have an extension other than html, raw, ini, xml, php try to set the format to manipulate the extension (if
+	// Joomla! is configured to use extensions in URLs)
+	$fileTarget = ($download->type == 'link') ? $download->url : $download->filename;
+	$extension = pathinfo($fileTarget, PATHINFO_EXTENSION);
+
+	if (!in_array($extension, ['html', 'raw', 'ini', 'xml', 'php']))
+	{
+		$query['format'] = $extension;
+	}
 
 	// Get release info
-	$relModel = F0FModel::getTmpInstance('Releases', 'ArsModel');
-	$release = $relModel->getItem($download->release_id);
+	$release = $download->release;
 
 	// Get category alias
-	$catModel = F0FModel::getTmpInstance('Categories', 'ArsModel');
-	$catalias = $catModel->getItem($release->category_id)->alias;
+	$catAlias = $release->category->alias;
+	$catVgroupId = $release->category->vgroup_id;
 
 	if ($Itemid)
 	{
 		$menu = $menus->getItem($Itemid);
 		$mview = '';
+
 		if (!empty($menu))
 		{
 			if (isset($menu->query['view']))
@@ -526,17 +560,22 @@ function arsBuildRouteRaw(&$query)
 				$mview = $menu->query['view'];
 			}
 		}
+
 		switch ($mview)
 		{
 			case 'browses':
-				$segments[] = $catalias;
+			case 'browse':
+			case 'Categories':
+				$segments[] = $catAlias;
 				$segments[] = $release->alias;
 				$segments[] = $download->alias;
 				$query['Itemid'] = $Itemid;
 				break;
 
 			case 'category':
+			case 'Releases':
 				$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
+
 				if ($params->get('catid', 0) == $release->category_id)
 				{
 					$segments[] = $release->alias;
@@ -550,7 +589,9 @@ function arsBuildRouteRaw(&$query)
 				break;
 
 			case 'release':
+			case 'Items':
 				$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
+
 				if ($params->get('relid', 0) == $release->id)
 				{
 					$segments[] = $download->alias;
@@ -569,24 +610,34 @@ function arsBuildRouteRaw(&$query)
 
 	if (empty($Itemid))
 	{
-		$options = array('option' => 'com_ars', 'view' => 'release');
+		$options = array('option' => 'com_ars', 'view' => 'Items');
 		$params = array('relid' => $release->id);
-
-		// Does the category have a visual group?  If so, let's add that to the query options
-		$catVgroupId = $catModel->getItem($release->category_id)->vgroup_id;
 
 		if ($catVgroupId)
 		{
 			$options['vgroupid'] = $catVgroupId;
 		}
 
-		$menu = ArsRouterHelper::findMenu($options, $params);
+		$possibleViews = ['Items', 'release'];
+		$menu = null;
+
+		foreach ($possibleViews as $possibleView)
+		{
+			$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+			$menu = ArsRouterHelper::findMenu($altQueryOptions, $params);
+
+			if (is_object($menu))
+			{
+				break;
+			}
+		}
+
 		if (is_object($menu))
 		{
 			$segments[] = $download->alias;
 			$query['Itemid'] = $menu->id;
 		}
-		if (!is_object($menu))
+		else
 		{
 			$options = array('option' => 'com_ars', 'view' => 'category');
 			$params = array('catid' => $release->category_id);
@@ -596,14 +647,27 @@ function arsBuildRouteRaw(&$query)
 				$options['vgroupid'] = $catVgroupId;
 			}
 
-			$menu = ArsRouterHelper::findMenu($options, $params);
+			$possibleViews = ['Releases', 'category'];
+
+			foreach ($possibleViews as $possibleView)
+			{
+				$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+				$menu = ArsRouterHelper::findMenu($altQueryOptions, $params);
+
+				if (is_object($menu))
+				{
+					break;
+				}
+			}
 		}
+
 		if (is_object($menu))
 		{
 			$segments[] = $release->alias;
 			$segments[] = $download->alias;
 			$query['Itemid'] = $menu->id;
 		}
+
 		if (!is_object($menu))
 		{
 			$options = array('view' => 'browses', 'option' => 'com_ars');
@@ -613,17 +677,30 @@ function arsBuildRouteRaw(&$query)
 				$options['vgroupid'] = $catVgroupId;
 			}
 
-			$menu = ArsRouterHelper::findMenu($options);
+			$possibleViews = ['Categories', 'browse', 'browses'];
+			$menu = null;
+
+			foreach ($possibleViews as $possibleView)
+			{
+				$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+				$menu = ArsRouterHelper::findMenu($altQueryOptions);
+
+				if (is_object($menu))
+				{
+					break;
+				}
+			}
+
 			if (!is_object($menu))
 			{
 				$segments[] = 'repository';
-				$segments[] = $catalias;
+				$segments[] = $catAlias;
 				$segments[] = $release->alias;
 				$segments[] = $download->alias;
 			}
 			else
 			{
-				$segments[] = $catalias;
+				$segments[] = $catAlias;
 				$segments[] = $release->alias;
 				$segments[] = $download->alias;
 				$query['Itemid'] = $menu->id;
@@ -638,10 +715,18 @@ function arsBuildRouteXml(&$query)
 {
 	$segments = array();
 
-	$view = ArsRouterHelper::getAndPop($query, 'view', 'update');
+	$view = ArsRouterHelper::getAndPop($query, 'view', 'Update');
 	$my_task = ArsRouterHelper::getAndPop($query, 'task', 'default');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid', null);
 	$local_id = ArsRouterHelper::getAndPop($query, 'id', 'components');
+
+	if (!in_array($view, ['Update', 'updates', 'update']))
+	{
+		return $segments;
+	}
+
+	$task = 'all';
+	$id = 0;
 
 	// Analyze the current Itemid
 	if (!empty($Itemid))
@@ -651,8 +736,9 @@ function arsBuildRouteXml(&$query)
 		$menuitem = $menus->getItem($Itemid);
 
 		// Analyze URL
-		$uri = new JURI($menuitem->link);
+		$uri = new JUri($menuitem->link);
 		$option = $uri->getVar('option');
+
 		// Sanity check
 		if ($option != 'com_ars')
 		{
@@ -660,15 +746,16 @@ function arsBuildRouteXml(&$query)
 		}
 		else
 		{
-			$view = $uri->getVar('view');
 			$task = $uri->getVar('task');
 			$layout = $uri->getVar('layout');
 			$format = $uri->getVar('format', 'ini');
 			$id = $uri->getVar('id', null);
+
 			if (empty($task) && !empty($layout))
 			{
 				$task = $layout;
 			}
+
 			if (empty($task))
 			{
 				if ($format == 'ini')
@@ -708,7 +795,22 @@ function arsBuildRouteXml(&$query)
 			if (empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties
-				$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'));
+				$options       = array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars');
+
+				$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+				$otherMenuItem = null;
+
+				foreach ($possibleViews as $possibleView)
+				{
+					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+					$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions);
+
+					if (!empty($otherMenuItem))
+					{
+						break;
+					}
+				}
+
 				if (!empty($otherMenuItem))
 				{
 					// Exact match
@@ -736,7 +838,22 @@ function arsBuildRouteXml(&$query)
 			if (empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties
-				$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'category', 'option' => 'com_ars'), array('category' => $local_id));
+				$options = array('view' => 'updates', 'layout' => 'category', 'option' => 'com_ars');
+				$params = array('category' => $local_id);
+				$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+				$otherMenuItem = null;
+
+				foreach ($possibleViews as $possibleView)
+				{
+					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+					$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions, $params);
+
+					if (!empty($otherMenuItem))
+					{
+						break;
+					}
+				}
+
 				if (!empty($otherMenuItem))
 				{
 					// Exact match
@@ -745,7 +862,22 @@ function arsBuildRouteXml(&$query)
 				else
 				{
 					// Try to find an Itemid for all categories
-					$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'));
+					$options = array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars');
+					$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+					$otherMenuItem = null;
+
+					foreach ($possibleViews as $possibleView)
+					{
+						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+						$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions);
+
+						if (!empty($otherMenuItem))
+						{
+							break;
+						}
+					}
+
+					// Try to find an Itemid for all categories
 					if (!empty($otherMenuItem))
 					{
 						$query['Itemid'] = $otherMenuItem->id;
@@ -779,6 +911,7 @@ function arsBuildRouteXml(&$query)
 			break;
 
 		case 'stream':
+			// TODO Cache this?
 			$db = JFactory::getDBO();
 			$dbquery = $db->getQuery(true)
 						  ->select(array(
@@ -791,13 +924,29 @@ function arsBuildRouteXml(&$query)
 
 			if (empty($stream))
 			{
-				die();
+				return $segments;
 			}
 
 			if (empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties
-				$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'stream', 'option' => 'com_ars'), array('streamid' => $local_id));
+				$options = array('view' => 'updates', 'layout' => 'stream', 'option' => 'com_ars');
+				$params = array('streamid' => $local_id);
+				$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+				$otherMenuItem = null;
+
+				foreach ($possibleViews as $possibleView)
+				{
+					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+					$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions, $params);
+
+					if (!empty($otherMenuItem))
+					{
+						break;
+					}
+				}
+
+				// Try to find an Itemid with the same properties
 				if (!empty($otherMenuItem))
 				{
 					// Exact match
@@ -806,7 +955,22 @@ function arsBuildRouteXml(&$query)
 				else
 				{
 					// Try to find an Itemid for the parent category
-					$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'category', 'option' => 'com_ars'), array('category' => $stream->type));
+					$options = array('view' => 'updates', 'layout' => 'category', 'option' => 'com_ars');
+					$params = array('category' => $stream->type);
+					$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+					$otherMenuItem = null;
+
+					foreach ($possibleViews as $possibleView)
+					{
+						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+						$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions, $params);
+
+						if (!empty($otherMenuItem))
+						{
+							break;
+						}
+					}
+
 					if (!empty($otherMenuItem))
 					{
 						$query['Itemid'] = $otherMenuItem->id;
@@ -815,7 +979,21 @@ function arsBuildRouteXml(&$query)
 					else
 					{
 						// Try to find an Itemid for all categories
-						$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'));
+						$options = array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars');
+						$possibleViews = ['Update', 'Updates', 'update', 'updates'];
+						$otherMenuItem = null;
+
+						foreach ($possibleViews as $possibleView)
+						{
+							$altQueryOptions = array_merge($options, ['view' => $possibleView]);
+							$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions);
+
+							if (!empty($otherMenuItem))
+							{
+								break;
+							}
+						}
+
 						if (!empty($otherMenuItem))
 						{
 							$query['Itemid'] = $otherMenuItem->id;
@@ -831,12 +1009,12 @@ function arsBuildRouteXml(&$query)
 					}
 				}
 			}
-			else
+			else // if $Itemid is not empty
 			{
 				// menu item id exists in the query
 				if (($task == 'stream') && ($id == $local_id))
 				{
-					$query['Itemid'] = $otherMenuItem->id;
+					$query['Itemid'] = $Itemid;
 				}
 				elseif (($task == 'category') && ($id == $stream->type))
 				{
@@ -867,9 +1045,15 @@ function arsBuildRouteIni(&$query)
 	$segments = array();
 
 	$view = ArsRouterHelper::getAndPop($query, 'view', 'update');
-	$my_task = ArsRouterHelper::getAndPop($query, 'task', 'default');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid', null);
 	$local_id = ArsRouterHelper::getAndPop($query, 'id', 'components');
+	$task = 'ini';
+	$id = '';
+
+	if (!in_array($view, ['Update', 'updates', 'update']))
+	{
+		return $segments;
+	}
 
 	// Analyze the current Itemid
 	if (!empty($Itemid))
@@ -879,8 +1063,9 @@ function arsBuildRouteIni(&$query)
 		$menuitem = $menus->getItem($Itemid);
 
 		// Analyze URL
-		$uri = new JURI($menuitem->link);
+		$uri = new JUri($menuitem->link);
 		$option = $uri->getVar('option');
+
 		// Sanity check
 		if ($option != 'com_ars')
 		{
@@ -888,15 +1073,16 @@ function arsBuildRouteIni(&$query)
 		}
 		else
 		{
-			$view = $uri->getVar('view');
 			$task = $uri->getVar('task');
 			$layout = $uri->getVar('layout');
 			$format = $uri->getVar('format', 'ini');
 			$id = $uri->getVar('id', null);
+
 			if (empty($task) && !empty($layout))
 			{
 				$task = $layout;
 			}
+
 			if (empty($task))
 			{
 				if ($format == 'ini')
@@ -929,6 +1115,7 @@ function arsBuildRouteIni(&$query)
 		}
 	}
 
+	// TODO cache this?
 	$db = JFactory::getDBO();
 	$dbquery = $db->getQuery(true)
 				  ->select(array(
@@ -965,7 +1152,7 @@ function arsBuildRouteIni(&$query)
 		// menu item id exists in the query
 		if (($task == 'ini') && ($id == $local_id))
 		{
-			$query['Itemid'] = $otherMenuItem->id;
+			$query['Itemid'] = $Itemid;
 		}
 		else
 		{
@@ -982,86 +1169,36 @@ function arsParseRoute(&$segments)
 {
 	$input = JFactory::getApplication()->input;
 
-	$format = $input->getCmd('format', 'html');
-	$url = JURI::getInstance()->toString();
-	$ext = substr(strtolower($url), -4);
-	if ($ext == '.raw')
+	$format = $input->getCmd('format', null);
+
+	if (is_null($format))
 	{
-		$format = 'raw';
+		$url = JURI::getInstance()->toString();
+		$ext = substr(strtolower($url), -4);
+		$format = ltrim($ext, '.');
 	}
-	if ($ext == '.xml')
-	{
-		$format = 'xml';
-	}
-	if ($ext == '.ini')
-	{
-		$format = 'ini';
-	}
+
+	$segments = ArsRouterHelper::preconditionSegments($segments);
 
 	switch ($format)
 	{
-		case 'feed':
-			return arsParseRouteFeed($segments);
-			break;
-
 		case 'html':
-			$segments = ArsRouterHelper::preconditionSegments($segments);
-
 			return arsParseRouteHtml($segments);
 			break;
 
 		case 'raw':
 		default:
-			$segments = ArsRouterHelper::preconditionSegments($segments);
-
 			return arsParseRouteRaw($segments);
 			break;
 
 		case 'xml':
-			$segments = ArsRouterHelper::preconditionSegments($segments);
-
 			return arsParseRouteXml($segments);
 			break;
 
 		case 'ini':
-			$segments = ArsRouterHelper::preconditionSegments($segments);
-
 			return arsParseRouteIni($segments);
 			break;
 	}
-}
-
-function arsParseRouteFeed(&$segments)
-{
-	$query = array();
-	$menus = JMenu::getInstance('site');
-
-	$query['format'] = 'feed';
-	$query['view'] = 'browses';
-
-	if (!empty($segments))
-	{
-		$alias = array_pop($segments);
-		$query['view'] = 'category';
-		$query['layout'] = 'default';
-
-		$db = JFactory::getDBO();
-		$dbquery = $db->getQuery(true)
-					  ->select('*')
-					  ->from($db->qn('#__ars_categories'))
-					  ->where($db->qn('alias') . ' = ' . $db->q($alias))
-					  ->where($db->qn('published') . ' = ' . $db->q('1'));
-		$db->setQuery($dbquery);
-		$records = $db->loadObjectList();
-
-		if (!empty($records))
-		{
-			$record = array_pop($records);
-			$query['id'] = (int)$record->id;
-		}
-	}
-
-	return $query;
 }
 
 function arsParseRouteHtml(&$segments)
@@ -1074,12 +1211,14 @@ function arsParseRouteHtml(&$segments)
 	{
 		// We have a sub(-sub-sub)menu item
 		$found = true;
+
 		while ($found && count($segments))
 		{
 			$parent = $menu->id;
 			$lastSegment = array_shift($segments);
 
 			$m = $menus->getItems(array('parent_id', 'alias'), array($parent, $lastSegment), true);
+
 			if (is_object($m))
 			{
 				$found = true;
@@ -1100,13 +1239,13 @@ function arsParseRouteHtml(&$segments)
 		{
 			case 1:
 				// Repository view
-				$query['view'] = 'browses';
+				$query['view'] = 'Categories';
 				$query['layout'] = array_pop($segments);
 				break;
 
 			case 2:
 				// Category view
-				$query['view'] = 'category';
+				$query['view'] = 'Releases';
 				$query['layout'] = null;
 				$catalias = array_pop($segments);
 				$root = array_pop($segments);
@@ -1122,18 +1261,18 @@ function arsParseRouteHtml(&$segments)
 
 				if (empty($cat))
 				{
-					$query['view'] = 'browses';
+					$query['view'] = 'Categories';
 					$query['layout'] = 'repository';
 				}
 				else
 				{
-					$query['id'] = $cat->id;
+					$query['category_id'] = $cat->id;
 				}
 				break;
 
 			case 3:
 				// Release view
-				$query['view'] = 'release';
+				$query['view'] = 'Items';
 				$query['layout'] = null;
 				$relalias = array_pop($segments);
 				$catalias = array_pop($segments);
@@ -1164,12 +1303,12 @@ function arsParseRouteHtml(&$segments)
 
 				if (empty($rel))
 				{
-					$query['view'] = 'browses';
+					$query['view'] = 'Categories';
 					$query['layout'] = 'repository';
 				}
 				else
 				{
-					$query['id'] = $rel->id;
+					$query['release_id'] = $rel->id;
 				}
 
 				break;
@@ -1187,19 +1326,19 @@ function arsParseRouteHtml(&$segments)
 		$catalias = null;
 		$relalias = null;
 
-		if (empty($view) || ($view == 'browses') || ($view == 'browses'))
+		if (empty($view) || in_array($view, ['Categories', 'browse', 'browses']))
 		{
 			switch (count($segments))
 			{
 				case 1:
 					// Category view
-					$query['view'] = 'category';
+					$query['view'] = 'Releases';
 					$catalias = array_pop($segments);
 					break;
 
 				case 2:
 					// Release view
-					$query['view'] = 'release';
+					$query['view'] = 'Items';
 					$relalias = array_pop($segments);
 					$catalias = array_pop($segments);
 					break;
@@ -1210,13 +1349,13 @@ function arsParseRouteHtml(&$segments)
 					break;
 			}
 		}
-		elseif (empty($view) || ($view == 'category'))
+		elseif (empty($view) || in_array($view, ['Releases', 'category']))
 		{
 			switch (count($segments))
 			{
 				case 1:
 					// Release view
-					$query['view'] = 'release';
+					$query['view'] = 'Items';
 					$relalias = array_pop($segments);
 					break;
 
@@ -1228,7 +1367,14 @@ function arsParseRouteHtml(&$segments)
 		}
 		else
 		{
-			if (in_array($view, array('dlidlabels', 'dlidlabel')))
+			if (in_array($view, ['DownloadIDLabels', 'dlidlabels']))
+			{
+				$query['view'] = $view;
+
+				return $query;
+			}
+
+			if (in_array($view, ['DownloadIDLabel', 'dlidlabel']))
 			{
 				$query['view'] = $view;
 
@@ -1241,11 +1387,12 @@ function arsParseRouteHtml(&$segments)
 				return arsParseRouteRaw($segments);
 			}
 
-			$query['view'] = 'release';
+			$query['view'] = 'Items';
 			$relalias = array_pop($segments);
 		}
 
 		$db = JFactory::getDBO();
+
 		if ($relalias && $catalias)
 		{
 			$dbquery = $db->getQuery(true)
@@ -1270,12 +1417,12 @@ function arsParseRouteHtml(&$segments)
 
 			if (empty($rel))
 			{
-				$query['view'] = 'browses';
+				$query['view'] = 'Categories';
 				$query['layout'] = 'repository';
 			}
 			else
 			{
-				$query['id'] = $rel->id;
+				$query['release_id'] = $rel->id;
 			}
 		}
 		elseif ($catalias && is_null($relalias))
@@ -1292,12 +1439,12 @@ function arsParseRouteHtml(&$segments)
 
 			if (empty($cat))
 			{
-				$query['view'] = 'browses';
+				$query['view'] = 'Categories';
 				$query['layout'] = 'repository';
 			}
 			else
 			{
-				$query['id'] = $cat->id;
+				$query['category_id'] = $cat->id;
 			}
 		}
 		else
@@ -1327,12 +1474,12 @@ function arsParseRouteHtml(&$segments)
 
 			if (empty($rel))
 			{
-				$query['view'] = 'browses';
+				$query['view'] = 'Categories';
 				$query['layout'] = 'repository';
 			}
 			else
 			{
-				$query['id'] = $rel->id;
+				$query['release_id'] = $rel->id;
 			}
 		}
 	}
@@ -1345,7 +1492,8 @@ function arsParseRouteRaw(&$segments)
 	$query = array();
 	$menus = JMenu::getInstance('site');
 	$menu = $menus->getActive();
-	$query['view'] = 'download';
+	$query['view'] = 'Item';
+	$query['task'] = 'download';
 	$query['format'] = 'raw';
 
 	if (is_null($menu))
@@ -1392,7 +1540,7 @@ function arsParseRouteRaw(&$segments)
 
 		if (empty($item))
 		{
-			$query['view'] = 'browses';
+			$query['view'] = 'Categories';
 			$query['layout'] = 'repository';
 			$query['format'] = 'html';
 		}
@@ -1412,13 +1560,13 @@ function arsParseRouteRaw(&$segments)
 		$relalias = null;
 		$relid = null;
 
-		if (empty($view) || ($view == 'browses'))
+		if (empty($view) || in_array($view, ['Categories', 'browse', 'browses']))
 		{
 			$itemalias = array_pop($segments);
 			$relalias = array_pop($segments);
 			$catalias = array_pop($segments);
 		}
-		elseif ($view == 'category')
+		elseif (in_array($view, ['Releases', 'category']))
 		{
 			$itemalias = array_pop($segments);
 			$relalias = array_pop($segments);
@@ -1461,14 +1609,17 @@ function arsParseRouteRaw(&$segments)
 		{
 			$dbquery->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias));
 		}
+
 		if (!empty($relid))
 		{
 			$dbquery->where($db->qn('r') . '.' . $db->qn('id') . ' = ' . $db->q($relid));
 		}
+
 		if (!empty($catalias))
 		{
 			$dbquery->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
 		}
+
 		if (!empty($catid))
 		{
 			$dbquery->where($db->qn('c') . '.' . $db->qn('id') . ' = ' . $db->q($catid));
@@ -1479,8 +1630,8 @@ function arsParseRouteRaw(&$segments)
 
 		if (empty($item))
 		{
-			JError::raiseError('404', 'Item not found');
-			$query['view'] = 'browses';
+			// JError::raiseError('404', 'Item not found');
+			$query['view'] = 'Categories';
 			$query['layout'] = 'repository';
 		}
 		else
@@ -1495,7 +1646,7 @@ function arsParseRouteRaw(&$segments)
 function arsParseRouteXml(&$segments)
 {
 	$query = array();
-	$query['view'] = 'update';
+	$query['view'] = 'Update';
 	$query['format'] = 'xml';
 
 	$menus = JMenu::getInstance('site');
@@ -1507,6 +1658,7 @@ function arsParseRouteXml(&$segments)
 		// Analyze URL
 		$uri = new JURI($menuitem->link);
 		$option = $uri->getVar('option');
+
 		// Sanity check
 		if ($option != 'com_ars')
 		{
@@ -1519,6 +1671,7 @@ function arsParseRouteXml(&$segments)
 			$layout = $uri->getVar('layout');
 			$format = $uri->getVar('format', 'ini');
 			$id = $uri->getVar('id', null);
+
 			if (empty($task) && !empty($layout))
 			{
 				$task = $layout;
@@ -1553,7 +1706,7 @@ function arsParseRouteXml(&$segments)
 				}
 			}
 
-			if (($option == 'com_ars') && ($view == 'update'))
+			if (($option == 'com_ars') && in_array($view, ['Update', 'update', 'updates']))
 			{
 				switch ($task)
 				{
@@ -1579,9 +1732,10 @@ function arsParseRouteXml(&$segments)
 	}
 
 	$check = array_shift($segments);
+
 	if ($check != 'updates')
 	{
-		die();
+		return $query;
 	}
 
 	$cat = count($segments) ? array_shift($segments) : null;
@@ -1607,10 +1761,12 @@ function arsParseRouteXml(&$segments)
 					  ->where($db->qn('type') . ' = ' . $db->q($cat));
 		$db->setQuery($dbquery, 0, 1);
 		$item = $db->loadObject();
+
 		if (empty($item))
 		{
-			die();
+			return $query;
 		}
+
 		$query['id'] = $item->id;
 	}
 
@@ -1620,20 +1776,22 @@ function arsParseRouteXml(&$segments)
 function arsParseRouteIni(&$segments)
 {
 	$query = array();
-	$query['view'] = 'update';
+	$query['view'] = 'Update';
 	$query['format'] = 'ini';
 	$query['task'] = 'ini';
 
 	$check = array_shift($segments);
+
 	if ($check != 'updates')
 	{
-		die();
+		return $query;
 	}
 
 	$cat = count($segments) ? array_shift($segments) : null;
 	$stream = count($segments) ? array_shift($segments) : null;
 
 	$query['task'] = 'stream';
+
 	$db = JFactory::getDBO();
 	$dbquery = $db->getQuery(true)
 				  ->select('*')
@@ -1642,216 +1800,13 @@ function arsParseRouteIni(&$segments)
 				  ->where($db->qn('type') . ' = ' . $db->q($cat));
 	$db->setQuery($dbquery, 0, 1);
 	$item = $db->loadObject();
+
 	if (empty($item))
 	{
-		die();
+		return $query;
 	}
+
 	$query['id'] = $item->id;
 
 	return $query;
-}
-
-class ArsRouterHelper
-{
-	static function getAndPop(&$query, $key, $default = null)
-	{
-		if (isset($query[$key]))
-		{
-			$value = $query[$key];
-			unset($query[$key]);
-
-			return $value;
-		}
-		else
-		{
-			return $default;
-		}
-	}
-
-	/**
-	 * Finds a menu whose query parameters match those in $qoptions
-	 *
-	 * @param array $qoptions The query parameters to look for
-	 * @param array $params   The menu parameters to look for
-	 *
-	 * @return null|object Null if not found, or the menu item if we did find it
-	 */
-	static public function findMenu($qoptions = array(), $params = null)
-	{
-		$input = JFactory::getApplication()->input;
-
-		// Convert $qoptions to an object
-		if (empty($qoptions) || !is_array($qoptions))
-		{
-			$qoptions = array();
-		}
-
-		$menus = JMenu::getInstance('site');
-		$menuitem = $menus->getActive();
-
-		// First check the current menu item (fastest shortcut!)
-		if (is_object($menuitem))
-		{
-			if (self::checkMenu($menuitem, $qoptions, $params))
-			{
-				return $menuitem;
-			}
-		}
-
-		// Find all potential menu items
-		$possible_items = array();
-		foreach ($menus->getMenu() as $item)
-		{
-			if (self::checkMenu($item, $qoptions, $params))
-			{
-				$possible_items[] = $item;
-			}
-		}
-
-		// If no potential item exists, return null
-		if (empty($possible_items))
-		{
-			return null;
-		}
-
-		// Filter by language, if required
-		$app = JFactory::getApplication();
-		$langCode = '*';
-		if ($app->getLanguageFilter())
-		{
-			$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
-			$lang_filter_params = new JRegistry($lang_filter_plugin->params);
-			if ($lang_filter_params->get('remove_default_prefix'))
-			{
-				// Get default site language
-				$lg = JFactory::getLanguage();
-				$langCode = $lg->getTag();
-			}
-			else
-			{
-				$langCode = $input->getCmd('language', '*');
-			}
-		}
-		else
-		{
-			$langCode = $input->getCmd('language', '*');
-		}
-
-		if ($langCode == '*')
-		{
-			// No language filtering required, return the first item
-			return array_shift($possible_items);
-		}
-		else
-		{
-			// Filter for exact language or *
-			foreach ($possible_items as $item)
-			{
-				if (in_array($item->language, array($langCode, '*')))
-				{
-					return $item;
-				}
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Checks if a menu item conforms to the query options and parameters specified
-	 *
-	 * @param object $menu     A menu item
-	 * @param array  $qoptions The query options to look for
-	 * @param array  $params   The menu parameters to look for
-	 *
-	 * @return bool
-	 */
-	static public function checkMenu($menu, $qoptions, $params = null)
-	{
-		$query = $menu->query;
-		foreach ($qoptions as $key => $value)
-		{
-			//if(is_null($value)) continue;
-			if ($key == 'language')
-			{
-				continue;
-			}
-			if (empty($value))
-			{
-				continue;
-			}
-			if (!isset($query[$key]))
-			{
-				return false;
-			}
-			if ($query[$key] != $value)
-			{
-				return false;
-			}
-		}
-
-		if (isset($qoptions['language']))
-		{
-			if (($menu->language != $qoptions['language']) && ($menu->language != '*'))
-			{
-				return false;
-			}
-		}
-
-		if (!is_null($params))
-		{
-			$menus = JMenu::getInstance('site');
-			$check = $menu->params instanceof JRegistry ? $menu->params : $menus->getParams($menu->id);
-
-			foreach ($params as $key => $value)
-			{
-				if (is_null($value))
-				{
-					continue;
-				}
-				if ($key == 'language')
-				{
-					$v = $check->get($key);
-					if (($v != $value) && ($v != '*') && !empty($v))
-					{
-						return false;
-					}
-				}
-				else
-				{
-					if ($check->get($key) != $value)
-					{
-						return false;
-					}
-				}
-			}
-		}
-
-		return true;
-	}
-
-	static public function preconditionSegments($segments)
-	{
-		$newSegments = array();
-		if (!empty($segments))
-		{
-			foreach ($segments as $segment)
-			{
-				if (strstr($segment, ':'))
-				{
-					$segment = str_replace(':', '-', $segment);
-				}
-				if (is_array($segment))
-				{
-					$newSegments[] = implode('-', $segment);
-				}
-				else
-				{
-					$newSegments[] = $segment;
-				}
-			}
-		}
-
-		return $newSegments;
-	}
 }

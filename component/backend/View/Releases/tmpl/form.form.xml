@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+        validate="true"
+        cssfiles="media://com_ars/css/backend.css">
+	<fieldset name="basic" label="COM_ARS_RELEASE_BASIC_LABEL" class="span6">
+		<field name="category_id" type="Model" label="COM_ARS_RELEASES_FIELD_CATEGORY"
+			   model="Categories"
+			   key_field="id"
+			   value_field="title"
+			   none="–––"
+				/>
+		<field name="version" type="Text" label="COM_ARS_RELEASES_FIELD_VERSION"
+				/>
+		<field name="alias" type="Text" label="COM_ARS_RELEASES_FIELD_ALIAS"/>
+		<field name="maturity" type="GenericList" label="COM_ARS_RELEASES_FIELD_MATURITY">
+			<option value="alpha">COM_ARS_RELEASES_MATURITY_ALPHA</option>
+			<option value="beta">COM_ARS_RELEASES_MATURITY_BETA</option>
+			<option value="rc">COM_ARS_RELEASES_MATURITY_RC</option>
+			<option value="stable">COM_ARS_RELEASES_MATURITY_STABLE</option>
+		</field>
+		<field name="hits" type="Text" label="JGLOBAL_HITS"/>
+		<field name="published" type="Published" label="JPUBLISHED"/>
+	</fieldset>
+	<fieldset name="basic2" label=" " class="span6">
+		<field name="access" type="AccessLevel" label="JFIELD_ACCESS_LABEL" default="1"/>
+
+		<field name="show_unauth_links" type="Checkbox" label="COM_ARS_COMMON_SHOW_UNAUTH_LINKS"/>
+
+		<field name="redirect_unauth" type="Text" label="COM_ARS_COMMON_REDIRECT_UNAUTH"/>
+
+		<field name="groups" type="GenericList" label="COM_ARS_COMMON_CATEGORIES_GROUPS_LABEL"
+			   multiple="multiple"
+			   source_class="Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration"
+			   source_method="getGroupsForSelect"
+			   source_key="key"
+			   source_value="value"
+				/>
+
+		<field name="created" type="Calendar" label="COM_ARS_RELEASES_FIELD_RELEASED" />
+
+		<field name="language" type="Language" label="JFIELD_LANGUAGE_LABEL" default="*" client="site">
+			<option value="*">JALL_LANGUAGE</option>
+		</field>
+	</fieldset>
+	<fieldset name="spacer" class="ak_clr"/>
+	<fieldset name="description_set" label="COM_ARS_RELEASE_DESCRIPTION_LABEL" class="span6">
+		<field name="description" type="Editor" label_placement="none"
+			   height="350" width="97%" buttons="true"
+				/>
+	</fieldset>
+	<fieldset name="notes_set" label="COM_ARS_RELEASE_NOTES_LABEL" class="span6">
+		<field name="notes" type="Editor" label_placement="none"
+			   height="350" width="97%" buttons="true"
+				/>
+	</fieldset>
+</form>

@@ -1,3 +1,8 @@
+Version 3.0.0.b1
+================================================================================
+~ Rewritten with FOF 3.0, 30% faster on average
+- RSS and Atom feeds were removed
+
 Version 2.5.1
 ================================================================================
 + Copy button in the Update Streams page
