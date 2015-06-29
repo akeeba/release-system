@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+        validate="true" class="row-fluid"
+        cssfiles="media://com_ars/css/backend.css">
+	<fieldset name="basic" label="COM_ARS_RELEASE_BASIC_LABEL" class="span5">
+
+		<field name="title" type="Text" label="COM_ARS_CATEGORIES_FIELD_TITLE"/>
+
+		<field name="alias" type="Text" label="COM_ARS_CATEGORIES_FIELD_ALIAS"/>
+
+		<field name="vgroup_id" type="Model" label="LBL_CATEGORIES_VGROUP"
+			   model="VisualGroups" key_field="id" value_field="title" translate="false" none="–––"
+			   show_link="true"
+			   url="index.php?option=com_ars&amp;view=VisualGroup&amp;id=[ITEM:VGROUP_ID]"
+				/>
+
+		<field name="type" type="GenericList" label="COM_ARS_CATEGORIES_FIELD_TYPE">
+			<option value="normal">COM_ARS_CATEGORIES_TYPE_NORMAL</option>
+			<option value="bleedingedge">COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE</option>
+		</field>
+
+		<field name="directory" type="Text" label="COM_ARS_CATEGORIES_FIELD_DIRECTORY"/>
+
+		<field name="published" type="Published" label="JPUBLISHED"/>
+
+		<field name="access" type="AccessLevel" label="JFIELD_ACCESS_LABEL" default="1" />
+
+		<field name="show_unauth_links" type="Checkbox" label="COM_ARS_COMMON_SHOW_UNAUTH_LINKS"/>
+
+		<field name="redirect_unauth" type="Text" label="COM_ARS_COMMON_REDIRECT_UNAUTH"/>
+
+		<field name="groups" type="GenericList" label="COM_ARS_COMMON_CATEGORIES_GROUPS_LABEL"
+			   multiple="multiple"
+			   source_class="Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration"
+			   source_method="getGroupsForSelect"
+			   source_key="key"
+			   source_value="value"
+				/>
+
+		<field name="language" type="Language" label="JFIELD_LANGUAGE_LABEL" default="*" client="site">
+			<option value="*">JALL_LANGUAGE</option>
+		</field>
+
+	</fieldset>
+
+	<fieldset name="descriptionset" label="COM_ARS_RELEASE_BASIC_LABEL" class="span7">
+
+		<field name="description" type="Editor"
+			   label_placement="none"
+			   filter="JComponentHelper::filterText"
+			   buttons="true"/>
+
+	</fieldset>
+</form>

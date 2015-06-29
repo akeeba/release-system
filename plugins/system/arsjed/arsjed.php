@@ -11,47 +11,40 @@ defined('_JEXEC') or die();
 
 JLoader::import('joomla.plugin.plugin');
 
-// PHP version check
-if (defined('PHP_VERSION'))
-{
-	$version = PHP_VERSION;
-}
-elseif (function_exists('phpversion'))
-{
-	$version = phpversion();
-}
-else
-{
-	// No version info. I'll lie and hope for the best.
-	$version = '5.0.0';
-}
-// Old PHP version detected. EJECT! EJECT! EJECT!
-if (!version_compare($version, '5.3.0', '>='))
-{
-	return;
-}
-
-// Make sure F0F is loaded, otherwise do not run
-if (!defined('F0F_INCLUDED'))
-{
-	include_once JPATH_LIBRARIES . '/f0f/include.php';
-}
-if (!defined('F0F_INCLUDED') || !class_exists('F0FLess', true))
-{
-	return;
-}
-
-// Do not run if Akeeba Subscriptions is not enabled
-JLoader::import('joomla.application.component.helper');
-if (!JComponentHelper::isEnabled('com_ars', true))
-{
-	return;
-}
-
 class plgSystemArsjed extends JPlugin
 {
+	/**
+	 * Should this plugin be allowed to run? True if FOF can be loaded and the ARS component is enabled
+	 *
+	 * @var  bool
+	 */
+	private $enabled = true;
+
+	public function __construct(&$subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+
+		if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+		{
+			$this->enabled = false;
+		}
+
+		// Do not run if Akeeba Subscriptions is not enabled
+		JLoader::import('joomla.application.component.helper');
+
+		if (!JComponentHelper::isEnabled('com_ars'))
+		{
+			$this->enabled = false;
+		}
+	}
+
 	public function onAfterInitialise()
 	{
+		if (!$this->enabled)
+		{
+			return true;
+		}
+
 		$app = JFactory::getApplication();
 
 		$installat = base64_decode($app->input->get('installat', null, 'base64'));

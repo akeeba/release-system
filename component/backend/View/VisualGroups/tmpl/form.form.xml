@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form validate="true"
+      cssfiles="media://com_ars/css/backend.css">
+    <fieldset name="scaffolding">
+        <field name="title" type="Text" label="LBL_VGROUPS_TITLE" required="true" />
+        <field name="published" type="Published" label="JPUBLISHED" required="true"/>
+        <field name="description" type="Editor" label="LBL_VGROUPS_DESCRIPTION" buttons="true"/>
+    </fieldset>
+</form>

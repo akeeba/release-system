@@ -39,9 +39,11 @@ class plgArsBleedingedgediff extends JPlugin
 		}
 
 		// Make sure we can get the category's directory
-		$release = $info['release'];
+		/** @var \Akeeba\ReleaseSystem\Admin\Model\Releases $release */
+		$release     = $info['release'];
 		$category_id = $release->category_id;
-		$folder = $this->_getCategoryDirectory($category_id);
+		$folder      = $this->_getCategoryDirectory($category_id);
+
 		if (empty($folder))
 		{
 			return false;
@@ -49,22 +51,27 @@ class plgArsBleedingedgediff extends JPlugin
 
 		// Check the file extension against the list
 		$extensionsString = $this->params->get('validextensions', 'txt,js,htm,html,css');
+
 		if (empty($extensionsString))
 		{
 			return false;
 		}
-		$temp = explode(',', $extensionsString);
+
+		$temp  = explode(',', $extensionsString);
 		$found = false;
 		$fname = strtolower($data['filename']);
+
 		foreach ($temp as $ext)
 		{
 			$extension = '.' . trim(strtolower($ext));
-			if (substr($fname, -strlen($extension)) == $extension)
+
+			if (substr($fname, - strlen($extension)) == $extension)
 			{
 				$found = true;
 				break;
 			}
 		}
+
 		if (!$found)
 		{
 			return false;
@@ -72,23 +79,25 @@ class plgArsBleedingedgediff extends JPlugin
 
 		// Get the previous file (and make sure it exists)
 		$previousFile = $this->_getPreviousFile($info, $data);
+
 		if (is_null($previousFile))
 		{
 			return false;
 		}
+
 		if (!file_exists($previousFile))
 		{
 			return false;
 		}
 
 		// Create the diff
-		$thisFile = $folder . DIRECTORY_SEPARATOR . $data['filename'];
-		$lines1 = file($thisFile);
-		$lines2 = file($previousFile);
+		$thisFile   = $folder . DIRECTORY_SEPARATOR . $data['filename'];
+		$lines1     = file($thisFile);
+		$lines2     = file($previousFile);
 		$diffObject = new Horde_Text_Diff('native', array($lines2, $lines1));
 		unset($lines1, $lines2);
 		$renderer = new Horde_Text_Diff_Renderer_Html();
-		$diff = $renderer->render($diffObject);
+		$diff     = $renderer->render($diffObject);
 		unset($renderer);
 		unset($diffObject);
 
@@ -99,7 +108,7 @@ class plgArsBleedingedgediff extends JPlugin
 		if ($this->params->get('use_description', 0))
 		{
 			$data['description'] .= $this->_getAutoDescription($info, $data) .
-				$this->params->get('midtext', '');
+			                        $this->params->get('midtext', '');
 		}
 
 		// Update the item's description with the diff
@@ -118,11 +127,11 @@ class plgArsBleedingedgediff extends JPlugin
 	 */
 	private function _getCategoryDirectory($category_id)
 	{
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
-					->select('*')
-					->from($db->qn('#__ars_categories'))
-					->where($db->qn('id') . ' = ' . $db->q($category_id));
+		            ->select('*')
+		            ->from($db->qn('#__ars_categories'))
+		            ->where($db->qn('id') . ' = ' . $db->q($category_id));
 		$db->setQuery($query);
 		$category = $db->loadObject();
 
@@ -152,19 +161,19 @@ class plgArsBleedingedgediff extends JPlugin
 	private function _getPreviousFile($info, $data)
 	{
 		// Get the category directory
-		$release = $info['release'];
+		$release     = $info['release'];
 		$category_id = $release->category_id;
-		$folder = $this->_getCategoryDirectory($category_id);
+		$folder      = $this->_getCategoryDirectory($category_id);
 
 		// Find the previous release
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
-					->select('*')
-					->from($db->qn('#__ars_releases'))
-					->where($db->qn('category_id') . ' = ' . $db->q($category_id))
-					->where($db->qn('id') . ' < ' . $db->q($release->id))
-					->where($db->qn('published') . ' = ' . $db->q('1'))
-					->order($db->qn('id') . ' DESC');
+		            ->select('*')
+		            ->from($db->qn('#__ars_releases'))
+		            ->where($db->qn('category_id') . ' = ' . $db->q($category_id))
+		            ->where($db->qn('id') . ' < ' . $db->q($release->id))
+		            ->where($db->qn('published') . ' = ' . $db->q('1'))
+		            ->order($db->qn('id') . ' DESC');
 		$db->setQuery($query, 0, 1);
 		$record = $db->loadObject();
 		if (empty($record))
@@ -173,7 +182,7 @@ class plgArsBleedingedgediff extends JPlugin
 		}
 
 		return $folder . DIRECTORY_SEPARATOR . $record->alias . DIRECTORY_SEPARATOR
-		. $info['file'];
+		       . $info['file'];
 	}
 
 	/**
@@ -188,17 +197,17 @@ class plgArsBleedingedgediff extends JPlugin
 	{
 		// Let's get automatic item title/description records
 		$subquery = $db->getQuery(true)
-					   ->select($db->qn('category_id'))
-					   ->from('#__ars_releases')
-					   ->where($db->qn('id') . ' = ' . $db->q($info['release_id']));
-		$query = $db->getQuery(true)
-					->select('*')
-					->from($db->qn('#__ars_autoitemdesc'))
-					->where($db->qn('category') . ' IN (' . $subquery . ')')
-					->where('NOT ' . $db->qn('published') . ' = ' . $db->q('0'));
+		               ->select($db->qn('category_id'))
+		               ->from('#__ars_releases')
+		               ->where($db->qn('id') . ' = ' . $db->q($info['release_id']));
+		$query    = $db->getQuery(true)
+		               ->select('*')
+		               ->from($db->qn('#__ars_autoitemdesc'))
+		               ->where($db->qn('category') . ' IN (' . $subquery . ')')
+		               ->where('NOT ' . $db->qn('published') . ' = ' . $db->q('0'));
 		$db->setQuery($query);
 		$autoitems = $db->loadObjectList();
-		$auto = (object)array('title' => '', 'description' => '');
+		$auto      = (object) array('title' => '', 'description' => '');
 		if (!empty($autoitems))
 		{
 			$fname = basename($data['filename']);
