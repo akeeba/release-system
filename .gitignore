@@ -11,6 +11,7 @@
 /component/cli/*.xml
 /component/language/backend/en-GB
 /component/language/frontend/en-GB
+/documentation/*/*.xml~
 /modules/site/arsdlid/language/en-GB
 /modules/site/arsdownloads/language/en-GB
 /plugins/*/*/language/en-GB
