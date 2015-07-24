@@ -157,8 +157,8 @@ ComArsRouter::$routeHtml = false;
 			}
 			?>
 			<update>
-				<name><?php echo $item->name ?></name>
-				<description><?php echo $item->name ?></description>
+				<name><![CDATA[<?php echo $item->name ?>]]></name>
+				<description><![CDATA[<?php echo $item->name ?>]]></description>
 				<element><?php echo $item->element ?></element>
 				<type><?php echo $streamTypeMap[$item->type]; ?></type>
 				<version><?php echo $item->version ?></version>
@@ -169,7 +169,7 @@ ComArsRouter::$routeHtml = false;
 				<tags>
 					<tag><?php echo $item->maturity ?></tag>
 				</tags>
-				<maintainer><?php echo JFactory::getConfig()->get('sitename'); ?></maintainer>
+				<maintainer><![CDATA[<?php echo JFactory::getConfig()->get('sitename'); ?>]]></maintainer>
 				<maintainerurl><?php echo JURI::base(); ?></maintainerurl>
 				<section>Updates</section>
 				<targetplatform name="<?php echo $platformName ?>" version="<?php echo $platformVersion ?>" />
