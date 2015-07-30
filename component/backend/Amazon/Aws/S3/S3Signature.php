@@ -101,7 +101,9 @@ class S3Signature implements S3SignatureInterface
 
         // URL encoding already occurs in the URI template expansion. Undo that and encode using the same encoding as
         // GET object, PUT object, etc.
-        $path = S3Client::encodeKey(rawurldecode($request->getPath()));
+        $path = $request->getPath();
+        $filename = basename($path);
+        $path = S3Client::encodeKey(rawurldecode($path));
         $request->setPath($path);
 
         // Make sure to handle temporary credentials
@@ -114,6 +116,7 @@ class S3Signature implements S3SignatureInterface
         $request->getQuery()
             ->set('AWSAccessKeyId', $credentials->getAccessKeyId())
             ->set('Expires', $expires)
+            ->set('response-content-disposition', 'filename=' . $filename)
             ->set('Signature', $this->signString(
                 $this->createCanonicalizedString($request, $expires),
                 $credentials
