@@ -25,7 +25,7 @@ define('_JEXEC', 1);
 // Enable Akeeba Engine
 define('AKEEBAENGINE', 1);
 
-$minphp = '5.3.1';
+$minphp = '5.4.0';
 if (version_compare(PHP_VERSION, $minphp, 'lt'))
 {
 	$curversion = PHP_VERSION;
