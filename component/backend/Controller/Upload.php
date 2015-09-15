@@ -76,7 +76,7 @@ class Upload extends Controller
 		// Get some data from the request
 		$categoryId = $this->input->getInt('id', 0);
 		$folder = $this->input->getString('folder', '');
-		$file = $this->input->files->get('upload');
+		$file = $this->input->files->get('upload', [], 'raw');
 
 		// Get output directory
 		/** @var \Akeeba\ReleaseSystem\Admin\Model\Upload $model */
