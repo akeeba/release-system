@@ -71,6 +71,7 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			'components/com_ars/views/view.html.php',
 			'components/com_ars/dispatcher.php',
+			'components/com_ars/views/Releases/item.xml',
 
 			'media/com_ars/js/akeebajq.js',
 			'media/com_ars/js/akeebajqui.js',
