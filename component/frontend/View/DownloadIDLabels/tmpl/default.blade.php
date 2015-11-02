@@ -30,16 +30,26 @@ $options[] = JHtml::_('select.option', '', 'JALL');
     <input type="hidden" name="task" value="browse" />
 
     <div class="form form-inline form-search well well-small well-sm">
-        @lang('JSEARCH_FILTER_LABEL')
-        @jhtml('select.genericlist', $options, 'enabled', ['onclick' => 'this.form.submit()'], 'value', 'text', $this->getModel()->getState('enabled'), false, true)
+        <span class="form-group">
+            <label for="enabled">
+                @lang('JSEARCH_FILTER_LABEL')
+            </label>
+            @jhtml('select.genericlist', $options, 'enabled', ['onclick' => 'this.form.submit()', 'class' => 'form-control'], 'value', 'text', $this->getModel()->getState('enabled'), false, true)
+        </span>
 
-        <input type="text" name="label" value="{{ $this->getModel()->getState('label') }}"
-                placeholder="@lang('COM_ARS_DLIDLABELS_FIELD_LABEL')"
-                class="span4 search-query"/>
+        <span class="form-group">
+            <span class="input-group">
+                <input type="text" name="label" value="{{ $this->getModel()->getState('label') }}"
+                       placeholder="@lang('COM_ARS_DLIDLABELS_FIELD_LABEL')"
+                       class="span4 search-query form-control"/>
 
-        <button type="submit" class="btn">
-            <span class="icon icon-search"
-        </button>
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default">
+                        <span class="icon icon-search"></span>
+                    </button>
+                </span>
+            </span>
+        </span>
     </div>
 
     <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=add&' . JFactory::getSession()->getToken() . '=1&returnurl=' . $returnUrl) }}"
