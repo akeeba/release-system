@@ -268,17 +268,16 @@ class Releases extends DataModel
 				break;
 		}
 
+		// Order filtering
+		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
+
 		// Latest version filter. Use as $releases->published(1)->latest(true)->get(true)
 		$fltLatest = $this->getState('latest', false, 'bool');
 
 		if ($fltLatest)
 		{
-			// Why just a DESC group by clause? See http://stackoverflow.com/questions/1313120/retrieving-the-last-record-in-each-group
-			$query->group($db->qn('category_id') . ' DESC');
+			$fltOrderBy = 'order';
 		}
-
-		// Order filtering
-		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
 
 		switch ($fltOrderBy)
 		{
@@ -306,6 +305,32 @@ class Releases extends DataModel
 				$this->setState('filter_order', 'ordering');
 				$this->setState('filter_order_Dir', 'ASC');
 				break;
+		}
+	}
+
+	/**
+	 * Implements custom filtering
+	 *
+	 * @param   \JDatabaseQuery  $query           The model query we're operating on
+	 * @param   bool             $overrideLimits  Are we told to override limits?
+	 *
+	 * @return  void
+	 */
+	protected function onAfterBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	{
+		$db = $this->getDbo();
+
+		// Latest version filter. Use as $releases->published(1)->latest(true)->get(true)
+		$fltLatest = $this->getState('latest', false, 'bool');
+
+		if ($fltLatest)
+		{
+			$innerQuery = clone $query;
+			$query = $db->getQuery(true)
+						->select('*')
+						->from('(' . $innerQuery . ') AS ' . $db->qn('#__ars_releases'))
+						// Why just a DESC group by clause? See http://stackoverflow.com/questions/1313120/retrieving-the-last-record-in-each-group
+						->group($db->qn('category_id') . ' DESC');
 		}
 	}
 

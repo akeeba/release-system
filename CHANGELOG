@@ -1,6 +1,7 @@
 Version 3.0.1
 ================================================================================
 # [HIGH] gh-86 Children pages of menu items defaulting to 'raw' format when SEF URL extensions are turned off (h/t @mbabker and @wilsonge)
+# [HIGH] gh-87 Latest releases displaying oldest, instead of latest, releases (h/t @mbabker)
 
 Version 3.0.0
 ================================================================================
