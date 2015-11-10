@@ -25,6 +25,8 @@ define('_JEXEC', 1);
 // Enable Akeeba Engine
 define('AKEEBAENGINE', 1);
 
+error_reporting(E_ALL); ini_set('display_errors', 1);
+
 $minphp = '5.4.0';
 if (version_compare(PHP_VERSION, $minphp, 'lt'))
 {
@@ -248,7 +250,10 @@ class ArsUpdate extends JApplicationCli
 		define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . '/components/com_ars');
 
 		// Load F0F
-		JLoader::import('f0f.include');
+		if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+		{
+			throw new RuntimeException('FOF 3.0 is not installed', 500);
+		}
 
 		// Load the language files
 		$jlang = JFactory::getLanguage();
@@ -287,9 +292,9 @@ class ArsUpdate extends JApplicationCli
 
 		$this->out("Checking for new versions");
 
-		$container = \FOF30\Container\Container::getInstance('com_akeebasubs');
-		/** @var \Akeeba\ReleaseSystem\Admin\Model\Updates $updateModel */
-		$updateModel = $container->factory->model('Updates')->tmpInstance();
+		$container = \FOF30\Container\Container::getInstance('com_ars');
+		/** @var \Akeeba\ReleaseSystem\Site\Model\ExtensionUpdates $updateModel */
+		$updateModel = $container->factory->model('ExtensionUpdates')->tmpInstance();
 
 		$result = $updateModel->autoupdate();
 

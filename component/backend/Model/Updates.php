@@ -219,7 +219,8 @@ ENDBODY;
 
 		$db = $this->container->db;
 
-		$update_site = array_shift($this->getUpdateSiteIds());
+		$upgradeSiteIDs = $this->getUpdateSiteIds();
+		$update_site    = array_shift($upgradeSiteIDs);
 
 		$query = $db->getQuery(true)
 		            ->select($db->qn('update_id'))
