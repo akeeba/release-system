@@ -25,8 +25,6 @@ define('_JEXEC', 1);
 // Enable Akeeba Engine
 define('AKEEBAENGINE', 1);
 
-error_reporting(E_ALL); ini_set('display_errors', 1);
-
 $minphp = '5.4.0';
 if (version_compare(PHP_VERSION, $minphp, 'lt'))
 {
