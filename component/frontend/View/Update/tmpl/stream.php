@@ -170,7 +170,7 @@ foreach ($this->items as $item):
 		<type><?php echo $streamTypeMap[ $item->type ]; ?></type>
 		<version><?php echo $item->version ?></version>
 		<infourl
-			title="<?php echo $item->cat_title . ' ' . $item->version ?>"><?php echo $rootURL . Router::_('index.php?option=com_ars&view=release&id=' . $item->release_id) ?></infourl>
+            title="<?php echo $item->cat_title . ' ' . $item->version ?>"><?php echo $rootURL . Router::_('index.php?option=com_ars&view=Items&release_id=' . $item->release_id) ?></infourl>
 		<downloads>
 			<downloadurl type="full"
 						 format="<?php echo $format ?>"><?php echo $downloadURL ?></downloadurl>
