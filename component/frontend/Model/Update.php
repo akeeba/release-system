@@ -115,7 +115,20 @@ class Update extends Model
 					->order($db->qn('r') . '.' . $db->qn('created') . ' DESC');
 		$db->setQuery($query);
 
-		return $db->loadObjectList();
+		$ret = $db->loadObjectList();
+
+		if (is_array($ret) && !empty($ret))
+		{
+			foreach ($ret as &$item)
+			{
+				$environments = $item->environments;
+				$environments = empty($environments) ? array() : json_decode($environments);
+				$environments = empty($environments) ? array() : $environments;
+				$item->environments = $environments;
+			}
+		}
+
+		return $ret;
 	}
 
 	public function getPublished($id)
