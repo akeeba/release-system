@@ -51,6 +51,9 @@ else
 // Clear everything before starting the output
 @ob_end_clean();
 
+// Tell the client this is an XML file
+@header('Content-type: application/xml');
+
 // Custom header for SiteGround's SuperCacher. The default value caches the
 // output for 5 minutes.
 JFactory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
@@ -68,7 +71,7 @@ foreach ($this->items as $item):
 	{
 		case 'file':
 			$downloadURL =
-				$rootURL . Router::_('index.php?option=com_ars&view=download&id=' . $item->item_id . $dlid);
+				$rootURL . Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->item_id . $dlid);
 			$basename    = basename($item->filename);
 
 			if (substr(strtolower($basename), -4) == '.zip')
@@ -167,10 +170,10 @@ foreach ($this->items as $item):
 		<type><?php echo $streamTypeMap[ $item->type ]; ?></type>
 		<version><?php echo $item->version ?></version>
 		<infourl
-			title="<?php echo $item->cat_title . ' ' . $item->version ?>"><?php echo $rootURL . Router::_('index.php?option=com_ars&view=release&id=' . $item->release_id) ?></infourl>
+            title="<?php echo $item->cat_title . ' ' . $item->version ?>"><?php echo $rootURL . Router::_('index.php?option=com_ars&view=Items&release_id=' . $item->release_id) ?></infourl>
 		<downloads>
 			<downloadurl type="full"
-						 format="<?php echo $format ?>"><?php echo htmlentities($downloadURL) ?></downloadurl>
+						 format="<?php echo $format ?>"><?php echo $downloadURL ?></downloadurl>
 		</downloads>
 		<tags>
 			<tag><?php echo $item->maturity ?></tag>

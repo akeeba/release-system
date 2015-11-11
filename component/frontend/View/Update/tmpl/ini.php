@@ -28,13 +28,13 @@ if (!empty($this->items)):
 	$item         = array_shift($this->items);
 
 	$moreURL = $rootURL .
-		str_replace('&amp;', '&', JRoute::_('index.php?option=com_ars&view=release&id=' . $item->release_id));
+		str_replace('&amp;', '&', JRoute::_('index.php?option=com_ars&view=Items&release_id=' . $item->release_id));
 
 	switch ($item->itemtype)
 	{
 		case 'file':
 			$downloadURL = $rootURL .
-				str_replace('&amp;', '&', Router::_('index.php?option=com_ars&view=download&id=' . $item->item_id));
+				str_replace('&amp;', '&', Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->item_id));
 			break;
 
 		case 'link':

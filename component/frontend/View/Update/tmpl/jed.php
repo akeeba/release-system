@@ -58,7 +58,7 @@ foreach ($this->items as $item):
 	{
 		case 'file':
 			$downloadURL = $rootURL .
-				Router::_('index.php?option=com_ars&view=download&id=' . $item->item_id . $dlid);
+				Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->item_id . $dlid);
 
 			$basename    = basename($item->filename);
 
@@ -133,7 +133,7 @@ foreach ($this->items as $item):
 		];
 	}
 ?>
-	<download_link><?php echo htmlentities($downloadURL) ?></download_link>
+	<download_link><?php echo $downloadURL ?></download_link>
 	<version><?php echo $item->version ?></version>
 	<compatibility>
 		<?php
