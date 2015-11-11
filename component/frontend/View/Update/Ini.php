@@ -38,5 +38,8 @@ class Ini extends Raw
 		// Set the content type to text/plain
 		$document = \JFactory::getDocument();
 		$document->setMimeEncoding('text/plain');
+
+        // Set the content type to text/plain
+        @header('Content-type: text/plain');
 	}
 }
