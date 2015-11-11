@@ -51,6 +51,9 @@ else
 // Clear everything before starting the output
 @ob_end_clean();
 
+// Tell the client this is an XML file
+@header('Content-type: application/xml');
+
 // Custom header for SiteGround's SuperCacher. The default value caches the
 // output for 5 minutes.
 JFactory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
@@ -170,7 +173,7 @@ foreach ($this->items as $item):
 			title="<?php echo $item->cat_title . ' ' . $item->version ?>"><?php echo $rootURL . Router::_('index.php?option=com_ars&view=release&id=' . $item->release_id) ?></infourl>
 		<downloads>
 			<downloadurl type="full"
-						 format="<?php echo $format ?>"><?php echo htmlentities($downloadURL) ?></downloadurl>
+						 format="<?php echo $format ?>"><?php echo $downloadURL ?></downloadurl>
 		</downloads>
 		<tags>
 			<tag><?php echo $item->maturity ?></tag>
