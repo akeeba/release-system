@@ -71,7 +71,7 @@ foreach ($this->items as $item):
 	{
 		case 'file':
 			$downloadURL =
-				$rootURL . Router::_('index.php?option=com_ars&view=download&id=' . $item->item_id . $dlid);
+				$rootURL . Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->item_id . $dlid);
 			$basename    = basename($item->filename);
 
 			if (substr(strtolower($basename), -4) == '.zip')
