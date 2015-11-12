@@ -6,7 +6,7 @@
 		<header name="ordering" type="Ordering" label="JFIELD_ORDERING_LABEL" sortable="true" tdwith="1%"/>
 		<header name="id" type="RowSelect" label="JGLOBAL_FIELD_ID_LABEL" sortable="true" tdwith="20"/>
 		<header name="category_id" type="Model" label="COM_ARS_RELEASES_FIELD_CATEGORY" sortable="true"
-                searchfieldname="category"
+                searchfieldname="category_id"
 				model="Categories"
 				key_field="id"
 				value_field="title"
