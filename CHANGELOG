@@ -7,6 +7,7 @@ Version 3.0.1
 # [MEDIUM] The CLI auto-update script throws a fatal error
 # [LOW] Categories view: couldn't filter by Visual Group
 # [LOW] Releases view: couldn't filter by Category
+# [LOW] A fresh installation didn't install any environments
 
 Version 3.0.0
 ================================================================================
