@@ -124,6 +124,15 @@ class UpdateStreams extends DataModel
 		$db->setQuery($query);
 		$aliases = $db->loadColumn();
 
+		$numericSuffix = 0;
+		$alias = $this->alias;
+
+		while (in_array($alias, $aliases) && ($numericSuffix < 100))
+		{
+			$alias = $this->alias . '-' . ++$numericSuffix;
+		}
+
+		$this->alias = $alias;
 		$this->assertNotInArray($this->alias, $aliases, 'ERR_USTREAM_NEEDS_UNIQUE_ALIAS');
 
 		// Automaticaly fix the type
