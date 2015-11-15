@@ -487,6 +487,11 @@ class Items extends DataModel
 		}
 
 		// Added environment ID
+		if (empty($this->environments) && !empty($auto->environments))
+		{
+			$this->environments = explode(',', $auto->environments);
+		}
+
 		if (!empty($this->environments) && is_array($this->environments))
 		{
 			// Filter out empty environments
