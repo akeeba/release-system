@@ -119,7 +119,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 		$this->renderSubmenu();
 	}
 
-	public function onAutodescsBrowse()
+	public function onAutoDescriptionsBrowse()
 	{
 		$this->_onBrowseWithCopy();
 	}

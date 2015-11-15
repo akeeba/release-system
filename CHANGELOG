@@ -1,5 +1,6 @@
 Version 3.0.1
 ================================================================================
++ Copy button in the Automatic Descriptions page
 # [HIGH] Update streams did not have the correct environment version encoded in them
 # [HIGH] Update stream content was syntactically invalid XML
 # [HIGH] gh-86 Children pages of menu items defaulting to 'raw' format when SEF URL extensions are turned off (h/t @mbabker and @wilsonge)
