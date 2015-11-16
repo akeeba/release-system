@@ -180,6 +180,50 @@ class Item extends DataController
 		$this->getView()->setModel('Releases', $releaseModel);
 	}
 
+	/**
+	 * Handles input data transformations before telling the Model to save them.
+	 *
+	 * @param   array  $data
+	 *
+	 * @return  void  The $data array is directly handled
+	 */
+	protected function onBeforeApplySave(&$data)
+	{
+		// If "groups" is a comma separated list of IDs convert to a proper array
+		if (isset($data['groups']) && !is_array($data['groups']))
+		{
+			if (empty($data['groups']))
+			{
+				$data['groups'] = array();
+			}
+
+			if (!is_array($data['groups']))
+			{
+				$data['groups'] = explode(',', $data['groups']);
+				$data['groups'] = array_map(function ($x) {
+					return trim($x);
+				}, $data['groups']);
+			}
+		}
+
+		// If "environments" is a comma separated list of IDs convert to a proper array
+		if (isset($data['environments']) && !is_array($data['environments']))
+		{
+			if (empty($data['environments']))
+			{
+				$data['environments'] = array();
+			}
+
+			if (!is_array($data['environments']))
+			{
+				$data['environments'] = explode(',', $data['environments']);
+				$data['environments'] = array_map(function ($x) {
+					return trim($x);
+				}, $data['environments']);
+			}
+		}
+	}
+
 	public function download()
 	{
 		$id = $this->input->getInt('id', null);
