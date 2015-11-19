@@ -67,10 +67,10 @@ $options[] = JHtml::_('select.option', '', 'JALL');
         <thead>
             <tr>
                 <th>
-                    @lang('COM_ARS_DLIDLABELS_FIELD_LABEL')
+                    @lang('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID')
                 </th>
                 <th>
-                    @lang('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID')
+                    @lang('COM_ARS_DLIDLABELS_FIELD_LABEL')
                 </th>
                 <th>
                     @lang('JPUBLISHED')
