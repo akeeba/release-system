@@ -1,5 +1,6 @@
 Version 3.0.2
 ================================================================================
++ Added warning if Categories menu entry is missing
 # [LOW] Mixed up table labels in the front end Add-on Download IDs page
 
 Version 3.0.1

@@ -35,6 +35,12 @@ immediately. Alternatively I could wrap this in a @section/@show block or even @
 render it. --}}
 @yield('phpVersionWarning', '')
 
+@if($this->needsMenuItem)
+<div class="alert alert-warning">
+	@lang('COM_ARS_MISSING_CATEGORIES_MENU')
+</div>
+@endif
+
 {{-- This DIV is required to render the update notification, if there is an update available --}}
 <div id="updateNotice"></div>
 
