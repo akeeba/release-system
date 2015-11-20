@@ -97,7 +97,7 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 		</dt>
 		<dd>
 			@foreach($item->environments as $environment)
-				{{ Select::environmentIcon($environment->id) }}
+				{{ Select::environmentIcon($environment) }}
 			@endforeach
 		</dd>
 		@endunless
