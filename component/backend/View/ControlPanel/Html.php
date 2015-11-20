@@ -57,6 +57,8 @@ class Html extends \FOF30\View\DataView\Html
 	/** @var  \JDate  When we are supposed to stop supporting the obsolete PHP version */
 	public $akeebaCommonDateObsolescence = '';
 
+	public $needsMenuItem;
+
 	/**
 	 * Executes before rendering the 'main' task's view template
 	 *
@@ -134,6 +136,7 @@ class Html extends \FOF30\View\DataView\Html
 
 		$this->graphsWidth = $width;
 
+		$this->needsMenuItem  = $model->needsCategoriesMenu();
 		$this->hasGeoIPPlugin = $model->hasGeoIPPlugin();
 		$this->geoIPPluginNeedsUpdate = $model->GeoIPDBNeedsUpdate();
 
