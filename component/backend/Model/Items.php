@@ -92,7 +92,9 @@ class Items extends DataModel
 	use Mixin\ImplodedArrays;
 	use Mixin\Assertions;
 	use Mixin\JsonData;
-	use Mixin\VersionedCopy;
+	use Mixin\VersionedCopy {
+		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
+	}
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
@@ -845,6 +847,20 @@ class Items extends DataModel
 		}
 
 		return parent::check();
+	}
+
+	/**
+	 * Runs before copying an Item
+	 *
+	 * @see  Releases::onBeforeCopy  for the concept
+	 *
+	 * @return  void
+	 */
+	protected function onBeforeCopy()
+	{
+		$this->onBeforeCopyVersioned();
+
+		$this->enabled = false;
 	}
 
 	/**

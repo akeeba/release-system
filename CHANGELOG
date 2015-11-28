@@ -6,6 +6,7 @@ Version 3.0.2
 # [LOW] Compatibility badges not shown in the Items view in the front-end
 # [LOW] Copying a Release does not make it disabled by default
 # [LOW] Copying a Release does not copy its Items
+# [LOW] Copying an Item does not make it disabled by default
 
 Version 3.0.1
 ================================================================================
