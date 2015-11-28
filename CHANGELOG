@@ -4,7 +4,8 @@ Version 3.0.2
 # [HIGH] gh-91 Latest Releases view shows incorrect links for releases
 # [LOW] Mixed up table labels in the front end Add-on Download IDs page
 # [LOW] Compatibility badges not shown in the Items view in the front-end
-# [LOW] Copying a release does not make it disabled by default
+# [LOW] Copying a Release does not make it disabled by default
+# [LOW] Copying a Release does not copy its Items
 
 Version 3.0.1
 ================================================================================

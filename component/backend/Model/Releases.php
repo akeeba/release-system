@@ -80,8 +80,8 @@ class Releases extends DataModel
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
 	}
 
-	/** @var  self|null  Used to handle copies */
-	protected static $recordBeforeCopy = null;
+	/** @var  DataModel\Collection  Used to handle copies */
+	protected static $itemsBeforeCopy = null;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
@@ -566,7 +566,7 @@ class Releases extends DataModel
 	 */
 	protected function onBeforeCopy()
 	{
-		self::$recordBeforeCopy = $this->getClone();
+		self::$itemsBeforeCopy = clone $this->items;
 
 		$this->onBeforeCopyVersioned();
 
@@ -582,12 +582,18 @@ class Releases extends DataModel
 	 */
 	protected function onAfterCopy(Releases &$releaseAfterCopy)
 	{
-		self::$recordBeforeCopy->items->map(function($item) use($releaseAfterCopy) {
+		if (!is_object(self::$itemsBeforeCopy) || !(self::$itemsBeforeCopy instanceof DataModel\Collection))
+		{
+			return;
+		}
+
+		self::$itemsBeforeCopy->map(function($item) use($releaseAfterCopy) {
+			/** @var  Items  $item */
 			$item->copy([
 				'release_id' => $releaseAfterCopy->id
 			]);
 		});
 
-		self::$recordBeforeCopy = null;
+		self::$itemsBeforeCopy = null;
 	}
 }
