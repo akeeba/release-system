@@ -1,9 +1,10 @@
 Version 3.0.2
 ================================================================================
 + Added warning if Categories menu entry is missing
+# [HIGH] gh-91 Latest Releases view shows incorrect links for releases
 # [LOW] Mixed up table labels in the front end Add-on Download IDs page
 # [LOW] Compatibility badges not shown in the Items view in the front-end
-# [HIGH] gh-91 Latest Releases view shows incorrect links for releases
+# [LOW] Copying a release does not make it disabled by default
 
 Version 3.0.1
 ================================================================================

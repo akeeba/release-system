@@ -569,6 +569,8 @@ class Releases extends DataModel
 		self::$recordBeforeCopy = $this->getClone();
 
 		$this->onBeforeCopyVersioned();
+
+		$this->enabled = false;
 	}
 
 	/**
