@@ -1,6 +1,7 @@
 Version 3.0.2
 ================================================================================
 + Added warning if Categories menu entry is missing
++ XML Update Streams now include PHP version compatibility in ars-phpcompat tags under each update tag.
 # [HIGH] gh-91 Latest Releases view shows incorrect links for releases
 # [LOW] Mixed up table labels in the front end Add-on Download IDs page
 # [LOW] Compatibility badges not shown in the Items view in the front-end

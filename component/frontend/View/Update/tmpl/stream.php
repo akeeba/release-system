@@ -148,7 +148,13 @@ foreach ($this->items as $item):
 		];
 	}
 
-	foreach ($platforms as $platform):
+	$parsedPlatforms = [
+		'platforms' => [],
+		'php'		=> []
+	];
+
+	foreach ($platforms as $platform)
+	{
 		$platformParts = explode('/', $platform, 2);
 
 		switch (count($platformParts))
@@ -162,6 +168,21 @@ foreach ($this->items as $item):
 				$platformVersion = $platformParts[1];
 				break;
 		}
+
+		if (strtolower($platformName) == 'php')
+		{
+			$parsedPlatforms['php'][] = $platformVersion;
+
+			continue;
+		}
+
+		$parsedPlatforms['platforms'][] = [$platformName, $platformVersion];
+	}
+
+
+
+	foreach ($parsedPlatforms['platforms'] as $platform):
+		list($platformName, $platformVersion) = $platform;
 ?>
 	<update>
 		<name><![CDATA[<?php echo $item->name ?>]]></name>
@@ -188,6 +209,11 @@ foreach ($this->items as $item):
 			<client><?php echo (int)$item->client_id ?></client>
 		<?php endif; ?>
 		<folder><?php echo empty($item->folder) ? '' : $item->folder ?></folder>
+		<?php if (!empty($parsedPlatforms['php'])): ?>
+		<?php foreach ($parsedPlatforms['php'] as $phpVersion): ?>
+		<ars-phpcompat version="<?php echo $phpVersion ?>" />
+		<?php endforeach; ?>
+		<?php endif; ?>
 	</update>
 	<?php
 	endforeach;
