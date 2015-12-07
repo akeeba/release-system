@@ -58,7 +58,7 @@ if (!empty($this->items)):
 				$envs[$eid] = $this->envs[$eid];
 			}
 
-			$platforms[] = $envs[$eid]->xmltitle;
+			$platforms[] = $this->envs[$eid]->xmltitle;
 		}
 	}
 	else
