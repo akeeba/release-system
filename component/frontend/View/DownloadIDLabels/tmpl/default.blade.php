@@ -114,7 +114,7 @@ $options[] = JHtml::_('select.option', '', 'JALL');
                     </a>
                     @unless($item->primary)
                     <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . JFactory::getSession()->getToken() . '=1&returnurl=' . $returnUrl) }}"
-                       class="btn btn-danger" title="@lang('COM_ARS_DLIDLABELS_FIELD_RESET')">
+                       class="btn btn-danger" title="@lang('COM_ARS_DLIDLABELS_FIELD_TRASH')">
                         <span class="icon icon-white icon-trash"></span>
                     </a>
                     @endunless
