@@ -63,7 +63,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 		// Load common CSS and JavaScript
 		\JHtml::_('jquery.framework');
-		$this->container->template->addCSS('media://com_akeebasubs/css/frontend.css', $this->container->mediaVersion);
+		$this->container->template->addCSS('media://com_ars/css/frontend.css', $this->container->mediaVersion);
 	}
 
 	/**

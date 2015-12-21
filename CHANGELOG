@@ -9,6 +9,7 @@ Version 3.0.2
 # [LOW] Copying a Release does not copy its Items
 # [LOW] Copying an Item does not make it disabled by default
 # [LOW] INI update streams didn't display the environments list correctly
+# [LOW] Wrong paths to CSS files caused them to not get loaded
 
 Version 3.0.1
 ================================================================================

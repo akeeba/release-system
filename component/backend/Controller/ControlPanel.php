@@ -111,7 +111,7 @@ ENDRESULT;
 		$geoip = new AkeebaGeoipProvider();
 		$result = $geoip->updateDatabase();
 
-		$url = 'index.php?option=com_akeebasubs';
+		$url = 'index.php?option=com_ars';
 
 		if ($result === true)
 		{
