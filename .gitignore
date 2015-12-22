@@ -1,10 +1,6 @@
 # phpStorm
 /.idea
 
-# Release text files
-/DESCRIPTION.html
-/RELEASENOTES.html
-
 # Build tools
 /build/bin
 /build/buildlang
