@@ -36,7 +36,10 @@ render it. --}}
 @yield('phpVersionWarning', '')
 
 @if($this->needsMenuItem)
-<div class="alert alert-warning">
+<div class="alert alert-info">
+	<h4>
+		@lang('COM_ARS_MISSING_CATEGORIES_MENU_HEAD')
+	</h4>
 	@lang('COM_ARS_MISSING_CATEGORIES_MENU')
 </div>
 @endif
