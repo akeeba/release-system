@@ -1,3 +1,7 @@
+Version 3.0.4
+================================================================================
+~ Disable CLI script workaround necessary only under Joomla! 3.4.7 on all other versions of Joomla!
+
 Version 3.0.3
 ================================================================================
 # [HIGH] Joomla! 3.4.7 has a major bug which may prevent CLI (CRON) scripts from executing
