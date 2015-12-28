@@ -103,6 +103,10 @@ class Update extends Controller
 					case 'stream':
 						$task = 'stream';
 						break;
+
+					case 'jed':
+						$task = 'jed';
+						break;
 				}
 				break;
 
@@ -309,14 +313,11 @@ class Update extends Controller
 		}
 
 		/** @var UpdateModel $model */
-		$model           = $this->getModel();
-		$view            = $this->getView();
-		$view->items     = $model->getItems($id);
-		$view->published = $model->getPublished($id);
+		$model     = $this->getModel();
+		$items     = $model->getItems($id);
+		$published = $model->getPublished($id);
 
-		$items = $view->items;
-
-		if (!$view->published)
+		if (!$published)
 		{
 			// This stream isn't published. Go away! GO. AWAY.
 			die();

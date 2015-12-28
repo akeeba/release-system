@@ -1,5 +1,6 @@
 Version 3.0.4
 ================================================================================
+# [HIGH] The download update stream was broken
 # [MEDIUM] The JED update stream was broken
 # [LOW] The XML update stream was broken if not platform version was specified
 ~ Disable CLI script workaround necessary only under Joomla! 3.4.7 on all other versions of Joomla!
