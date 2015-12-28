@@ -62,6 +62,8 @@ require_once JPATH_SITE . '/components/com_ars/router.php';
 ComArsRouter::$routeRaw  = false;
 ComArsRouter::$routeHtml = false;
 
+$jVersion = new JVersion;
+
 ?><?php echo $tag; ?>
 <!-- Update stream generated automatically by Akeeba Release System on <?= gmdate('Y-m-d H:i:s') ?> GMT -->
 <updates>
