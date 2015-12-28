@@ -1,5 +1,6 @@
 Version 3.0.4
 ================================================================================
+# [MEDIUM] The JED update stream was broken
 ~ Disable CLI script workaround necessary only under Joomla! 3.4.7 on all other versions of Joomla!
 
 Version 3.0.3
