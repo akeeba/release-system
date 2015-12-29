@@ -298,6 +298,14 @@ class plgContentArslatest extends JPlugin
 		}
 
 		$link      = JRoute::_('index.php?option=com_ars&view=Items&release_id=' . $release->id);
+        $container = \FOF30\Container\Container::getInstance('com_ars');
+
+        $authorisedViewLevels = $container->platform->getUser()->getAuthorisedViewLevels();
+
+        if (!Filter::filterItem($release, false, $authorisedViewLevels) && !empty($release->redirect_unauth))
+        {
+            $link = $release->redirect_unauth;
+        }
 
 		return $link;
 	}
