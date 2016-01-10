@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @license   GNU General Public License version 3, or later
+ */
+
 defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Releases\Html  $this */

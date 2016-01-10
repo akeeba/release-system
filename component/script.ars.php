@@ -1,7 +1,7 @@
 <?php
 /**
  * @package      akeebasubs
- * @copyright    Copyright (c)2010-2015 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright    Copyright (c)2010 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license      GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
  * @version      $Id$
  *

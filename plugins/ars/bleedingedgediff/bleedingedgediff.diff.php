@@ -2,7 +2,7 @@
 /**
  * @package    AkeebaReleaseSystem
  * @subpackage plugins.arsdlid
- * @copyright  Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright  Copyright (c)2010-2016 Nicholas K. Dionysopoulos
  * @license    GNU General Public License version 3, or later
  */
 
@@ -20,7 +20,7 @@ defined('_JEXEC') or die();
  * <dairiki@dairiki.org>, and is used/adapted with his permission.
  *
  * Copyright 2004 Geoffrey T. Dairiki <dairiki@dairiki.org>
- * Copyright 2004-2013 The Horde Project (http://www.horde.org/)
+ * Copyright 2004-2016 The Horde Project (http://www.horde.org/)
  *
  * See the enclosed file COPYING for license information (LGPL). If you did
  * not receive this file, see http://opensource.org/licenses/lgpl-license.php.
@@ -303,7 +303,7 @@ class Horde_Text_Diff
  * Geoffrey T. Dairiki <dairiki@dairiki.org>. The original PHP version of this
  * code was written by him, and is used/adapted with his permission.
  *
- * Copyright 2004-2013 The Horde Project (http://www.horde.org/)
+ * Copyright 2004-2016 The Horde Project (http://www.horde.org/)
  *
  * See the enclosed file COPYING for license information (LGPL). If you did
  * not receive this file, see http://opensource.org/licenses/lgpl-license.php.
@@ -798,7 +798,7 @@ class Horde_Text_Diff_Engine_Native
  * <dairiki@dairiki.org>, and is used/adapted with his permission.
  *
  * Copyright 2004 Geoffrey T. Dairiki <dairiki@dairiki.org>
- * Copyright 2004-2013 The Horde Project (http://www.horde.org/)
+ * Copyright 2004-2016 The Horde Project (http://www.horde.org/)
  *
  * See the enclosed file COPYING for license information (LGPL). If you did
  * not receive this file, see http://opensource.org/licenses/lgpl-license.php.
@@ -831,7 +831,7 @@ abstract class Horde_Text_Diff_Op_Base
  * <dairiki@dairiki.org>, and is used/adapted with his permission.
  *
  * Copyright 2004 Geoffrey T. Dairiki <dairiki@dairiki.org>
- * Copyright 2004-2013 The Horde Project (http://www.horde.org/)
+ * Copyright 2004-2016 The Horde Project (http://www.horde.org/)
  *
  * See the enclosed file COPYING for license information (LGPL). If you did
  * not receive this file, see http://opensource.org/licenses/lgpl-license.php.
@@ -858,7 +858,7 @@ class Horde_Text_Diff_Op_Add extends Horde_Text_Diff_Op_Base
  * <dairiki@dairiki.org>, and is used/adapted with his permission.
  *
  * Copyright 2004 Geoffrey T. Dairiki <dairiki@dairiki.org>
- * Copyright 2004-2013 The Horde Project (http://www.horde.org/)
+ * Copyright 2004-2016 The Horde Project (http://www.horde.org/)
  *
  * See the enclosed file COPYING for license information (LGPL). If you did
  * not receive this file, see http://opensource.org/licenses/lgpl-license.php.
@@ -885,7 +885,7 @@ class Horde_Text_Diff_Op_Change extends Horde_Text_Diff_Op_Base
  * <dairiki@dairiki.org>, and is used/adapted with his permission.
  *
  * Copyright 2004 Geoffrey T. Dairiki <dairiki@dairiki.org>
- * Copyright 2004-2013 The Horde Project (http://www.horde.org/)
+ * Copyright 2004-2016 The Horde Project (http://www.horde.org/)
  *
  * See the enclosed file COPYING for license information (LGPL). If you did
  * not receive this file, see http://opensource.org/licenses/lgpl-license.php.
@@ -916,7 +916,7 @@ class Horde_Text_Diff_Op_Copy extends Horde_Text_Diff_Op_Base
  * <dairiki@dairiki.org>, and is used/adapted with his permission.
  *
  * Copyright 2004 Geoffrey T. Dairiki <dairiki@dairiki.org>
- * Copyright 2004-2013 The Horde Project (http://www.horde.org/)
+ * Copyright 2004-2016 The Horde Project (http://www.horde.org/)
  *
  * See the enclosed file COPYING for license information (LGPL). If you did
  * not receive this file, see http://opensource.org/licenses/lgpl-license.php.
@@ -944,7 +944,7 @@ class Horde_Text_Diff_Op_Delete extends Horde_Text_Diff_Op_Base
  * This class renders the diff in classic diff format. It is intended that
  * this class be customized via inheritance, to obtain fancier outputs.
  *
- * Copyright 2004-2013 The Horde Project (http://www.horde.org/)
+ * Copyright 2004-2016 The Horde Project (http://www.horde.org/)
  *
  * See the enclosed file COPYING for license information (LGPL). If you did
  * not receive this file, see http://opensource.org/licenses/lgpl-license.php.
