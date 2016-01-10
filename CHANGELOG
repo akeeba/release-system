@@ -2,6 +2,15 @@ Version 3.0.4
 ================================================================================
 # [HIGH] The wording of the missing Category menu message is utterly frustrating and unhelpful
 
+Version 3.0.4
+================================================================================
+# [HIGH] The download update stream was broken
+# [HIGH] Links generated in the Master XML Update Stream result in an error page
+# [MEDIUM] The JED update stream was broken
+# [LOW] The XML update stream was broken if not platform version was specified
+# [LOW] Fixed showing link to unauthorized users while using the "Latest Release" plugin
+~ Disable CLI script workaround necessary only under Joomla! 3.4.7 on all other versions of Joomla!
+
 Version 3.0.3
 ================================================================================
 # [HIGH] Joomla! 3.4.7 has a major bug which may prevent CLI (CRON) scripts from executing

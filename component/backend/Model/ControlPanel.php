@@ -549,7 +549,7 @@ class ControlPanel extends Model
 		$query = $db->getQuery(true)
 				->select('COUNT(id)')
 				->from('#__menu')
-				->where($db->qn('link').' = '.$db->q('index.php?option=com_ars&view=Releases'))
+				->where($db->qn('link').' = '.$db->q('index.php?option=com_ars&view=Categories&layout=repository'))
 				->where($db->qn('published').' = '.$db->q(1));
 
 		return !(bool) $db->setQuery($query)->loadResult();

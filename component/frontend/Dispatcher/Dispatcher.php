@@ -19,23 +19,24 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	 * @var array
 	 */
 	public $viewMap = [
-		'browses'    => 'Categories',
-		'browse'     => 'Categories',
-		'categories' => 'Categories',
-		'category'   => 'Releases',
-		'release'    => 'Items',
-		'releases'   => 'Releases',
-		'download'   => 'Item',
-		'downloads'  => 'Item',
-		'Download'   => 'Item',
-		'item'       => 'Item',
-		'items'      => 'Items',
-		'latest'     => 'Latest',
-		'latests'    => 'Latest',
-		'update'     => 'Updates',
-		'updates'    => 'Updates',
-		'dlidlabel'  => 'DownloadIDLabel',
-		'dlidlabels' => 'DownloadIDLabels'
+			'browses'    => 'Categories',
+			'browse'     => 'Categories',
+			'categories' => 'Categories',
+			'category'   => 'Releases',
+			'release'    => 'Items',
+			'releases'   => 'Releases',
+			'download'   => 'Item',
+			'downloads'  => 'Item',
+			'Download'   => 'Item',
+			'item'       => 'Item',
+			'items'      => 'Items',
+			'latest'     => 'Latest',
+			'latests'    => 'Latest',
+			'update'     => 'Update',
+			'updates'    => 'Update',
+			'Updates'    => 'Update',
+			'dlidlabel'  => 'DownloadIDLabel',
+			'dlidlabels' => 'DownloadIDLabels'
 	];
 
 	/** @var   string  The name of the default view, in case none is specified */
@@ -73,11 +74,11 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	 */
 	public function applyViewMap()
 	{
-		$view = $this->container->input->getCmd('view', 'Browse');
+		$view = $this->container->input->getCmd('view', 'Categories');
 
 		if (empty($view))
 		{
-			$view = 'Browse';
+			$view = 'Categories';
 		}
 
 		if (array_key_exists($view, $this->viewMap))
@@ -87,8 +88,9 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 		if (!in_array($view, $this->viewMap))
 		{
-			$view = 'Browse';
+			$view = 'Categories';
 		}
+
 		$this->container->input->set('view', $view);
 	}
 }

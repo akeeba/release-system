@@ -7,6 +7,8 @@
  */
 
 // Protect from unauthorized access
+use Akeeba\ReleaseSystem\Site\Helper\Filter;
+
 defined('_JEXEC') or die();
 
 JLoader::import('joomla.plugin.plugin');
@@ -296,6 +298,14 @@ class plgContentArslatest extends JPlugin
 		}
 
 		$link      = JRoute::_('index.php?option=com_ars&view=Items&release_id=' . $release->id);
+        $container = \FOF30\Container\Container::getInstance('com_ars');
+
+        $authorisedViewLevels = $container->platform->getUser()->getAuthorisedViewLevels();
+
+        if (!Filter::filterItem($release, false, $authorisedViewLevels) && !empty($release->redirect_unauth))
+        {
+            $link = $release->redirect_unauth;
+        }
 
 		return $link;
 	}
@@ -343,7 +353,14 @@ class plgContentArslatest extends JPlugin
 			return '';
 		}
 
-		$link = JRoute::_('index.php?option=com_ars&view=Item&format=raw&id=' . $item->id);
+		$link = JRoute::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id);
+
+        $container = \FOF30\Container\Container::getInstance('com_ars');
+
+        if (!Filter::filterItem($item, false, $container->platform->getUser()->getAuthorisedViewLevels()) && !empty($item->redirect_unauth))
+        {
+            $link = $item->redirect_unauth;
+        }
 
 		return $link;
 	}
