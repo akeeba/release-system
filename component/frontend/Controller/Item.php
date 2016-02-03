@@ -81,6 +81,16 @@ class Item extends DataController
 			return;
 		}
 
+		$layout = $this->input->getCmd('layout', 'default');
+		$tmpl = $this->input->getCmd('tmpl', '');
+
+		if (($layout == 'modal') && ($tmpl == 'component'))
+		{
+			$this->onBeforeBrowseModal();
+
+			return;
+		}
+
 		// Get the page parameters
 		/** @var \JApplicationSite $app */
 		$app    = \JFactory::getApplication();
@@ -178,6 +188,10 @@ class Item extends DataController
 		// Push the models to the view
 		$this->getView()->setDefaultModel($itemsModel);
 		$this->getView()->setModel('Releases', $releaseModel);
+	}
+
+	public function onBeforeBrowseModal()
+	{
 	}
 
 	/**

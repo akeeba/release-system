@@ -375,9 +375,16 @@ function arsBuildRouteHtml(&$query)
 
 			// Get release info
 			$releaseAlias = $release->alias;
-			$catId = $release->category->id;
-			$catAlias = $release->category->alias;
-			$catVgroup = $release->category->vgroup_id;
+			$catId = 0;
+			$catAlias = '';
+			$catVgroup = 0;
+
+			if (is_object($release->category))
+			{
+				$catId = $release->category->id;
+				$catAlias = $release->category->alias;
+				$catVgroup = $release->category->vgroup_id;
+			}
 
 			// Do we have a "category" menu?
 			if ($Itemid)

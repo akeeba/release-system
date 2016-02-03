@@ -1,5 +1,6 @@
 Version 3.0.4
 ================================================================================
+# [HIGH] The ARS editor button plugin was broken in the front-end of the site
 # [HIGH] The wording of the missing Category menu message is unhelpful
 # [HIGH] The download update stream was broken
 # [HIGH] Links generated in the Master XML Update Stream result in an error page
