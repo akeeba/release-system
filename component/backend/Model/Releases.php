@@ -179,7 +179,24 @@ class Releases extends DataModel
 			$fltCategory = $logsModel->getState('category', null, 'int');
 		}
 
-		$fltCategory = $this->getState('category_id', $fltCategory, 'int');
+		$fltCategory = $this->getState('category_id', $fltCategory, 'raw');
+
+		if (is_array($fltCategory))
+		{
+			if (isset($fltCategory['method']) && ($fltCategory['method'] == 'exact') && isset($fltCategory['value']))
+			{
+				$fltCategory = (int) $fltCategory['value'];
+			}
+			else
+			{
+				$fltCategory = 0;
+			}
+		}
+		else
+		{
+			$fltCategory = $this->getState('category_id', $fltCategory, 'int');
+		}
+
 		$fltCategory = $this->getState('category', $fltCategory, 'int');
 
 		if ($fltCategory > 0)

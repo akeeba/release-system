@@ -5,7 +5,8 @@ Version 3.0.4
 # [HIGH] The download update stream was broken
 # [HIGH] Links generated in the Master XML Update Stream result in an error page
 # [MEDIUM] The JED update stream was broken
-# [LOW] PHP Notice in the front-end when a release contains no Items
+# [LOW] PHP Notice in the front-end when a Release contains no Items
+# [LOW] PHP Notice in the front-end when a Category contains no Releases# [LOW] PHP Notice in the front-end when a Category contains no Releases
 # [LOW] You can't see the Hits column in the Items and Releases views' grid display
 # [LOW] The XML update stream was broken if not platform version was specified
 # [LOW] Fixed showing link to unauthorized users while using the "Latest Release" plugin
