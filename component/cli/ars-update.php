@@ -128,6 +128,12 @@ JLoader::import('joomla.application.cli');
 JLoader::import('joomla.application.component.helper');
 JLoader::import('cms.component.helper');
 
+if (version_compare(JVERSION, '3.4.9999', 'ge'))
+{
+	// Joomla! 3.5 and later does not load the configuration.php unless you explicitly tell it to.
+	JFactory::getConfig(JPATH_CONFIGURATION . '/configuration.php');
+}
+
 /**
  * Akeeba Release System Update application
  */

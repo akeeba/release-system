@@ -1,5 +1,6 @@
 Version 3.0.4
 ================================================================================
+! Joomla! 3.5 breaks CLI scripts, workaround applied
 # [HIGH] The ARS editor button plugin was broken in the front-end of the site
 # [HIGH] The wording of the missing Category menu message is unhelpful
 # [HIGH] The download update stream was broken
