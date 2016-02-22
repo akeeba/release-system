@@ -105,6 +105,10 @@ class Release extends DataController
 			$id = $params->get('catid', 0);
 		}
 
+		// Required for caching
+		$this->input->set('id', null);
+		$this->input->set('category_id', $id);
+
 		try
 		{
 			// Try to find the category

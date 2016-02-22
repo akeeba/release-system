@@ -119,6 +119,8 @@ class Update extends Controller
 				break;
 		}
 
+		$this->input->set('task', $task);
+
 		parent::execute($task);
 	}
 
@@ -133,7 +135,7 @@ class Update extends Controller
 			'task'   => 'CMD',
 			'format' => 'CMD',
 			'layout' => 'CMD',
-			'id' => 'CMD',
+			'id'     => 'CMD',
 			'dlid'   => 'STRING',
 		);
 
@@ -157,10 +159,14 @@ class Update extends Controller
 			$params = $app->getParams('com_ars');
 			$cat    = $params->get('category', 'components');
 		}
+
 		if (empty($cat))
 		{
 			throw new \RuntimeException(\JText::_('ARS_ERR_NOUPDATESOURCE'), 500);
 		}
+
+		// Required for caching
+		$this->input->set('id', $cat);
 
 		/** @var UpdateModel $model */
 		$model       = $this->getModel();
@@ -188,6 +194,7 @@ class Update extends Controller
 	public function stream()
 	{
 		$id = $this->input->getInt('id', 0);
+
 		if ($id == 0)
 		{
 			// Do we have a menu item parameter?
@@ -237,6 +244,9 @@ class Update extends Controller
 			$id     = $params->get('streamid', 0);
 		}
 
+		// Required for caching
+		$this->input->set('id', $id);
+
 		/** @var UpdateModel $model */
 		$model           = $this->getModel();
 		$view            = $this->getView();
@@ -273,6 +283,9 @@ class Update extends Controller
 			$params = $app->getParams('com_ars');
 			$id     = $params->get('streamid', 0);
 		}
+
+		// Required for caching
+		$this->input->set('id', $id);
 
 		/** @var UpdateModel $model */
 		$model           = $this->getModel();
@@ -311,6 +324,9 @@ class Update extends Controller
 			$params = $app->getParams('com_ars');
 			$id     = $params->get('streamid', 0);
 		}
+
+		// Required for caching
+		$this->input->set('id', $id);
 
 		/** @var UpdateModel $model */
 		$model     = $this->getModel();

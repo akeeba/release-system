@@ -128,6 +128,10 @@ class Item extends DataController
 			$id = $params->get('relid', 0);
 		}
 
+		// Required for caching
+		$this->input->set('relid', null);
+		$this->input->set('release_id', $id);
+
 		try
 		{
 			// Try to find the release

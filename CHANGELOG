@@ -1,5 +1,6 @@
 Version 3.0.5
 ================================================================================
+# [MEDIUM] Inconsistent caching results in front-end could display wrong data when Joomla! caching is enabled
 # [LOW] Extra closing parantheses character printed in the Download ID view in the front-end
 # [LOW] Front-end ARS Item editor button: no filters are visible
 # [LOW] Front-end ARS Item editor button: cannot use pagination
