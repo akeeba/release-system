@@ -14,6 +14,11 @@ $this->getContainer()->toolbar->setRenderFrontendSubmenu(true);
 
 // Turn off routing before displaying the form to prevent JPagination's call to JRoute from removing the layoun and tmpl
 // query string parameters which are critical for pagination links to work.
+if (!class_exists('ComArsRouter'))
+{
+	require_once JPATH_COMPONENT . '/Helper/ComArsRouter.php';
+}
+
 ComArsRouter::$routeHtml = false;
 
 // Now render the form
