@@ -14,5 +14,15 @@ use FOF30\View\DataView\Form as BaseView;
 
 class Form extends BaseView
 {
+	protected function onBeforeBrowse()
+	{
+		parent::onBeforeBrowse();
+
+		$this->pagination->setAdditionalUrlParam('option', 'com_ars');
+		$this->pagination->setAdditionalUrlParam('view', 'Items');
+		$this->pagination->setAdditionalUrlParam('layout', 'modal');
+		$this->pagination->setAdditionalUrlParam('tmpl', 'component');
+		$this->pagination->setAdditionalUrlParam('Itemid', '');
+	}
 
 }

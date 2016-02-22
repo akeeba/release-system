@@ -9,9 +9,18 @@ defined('_JEXEC') or die();
 
 /** @var \FOF30\View\DataView\Form $this */
 
+// Render the filter sidebar
 $this->getContainer()->toolbar->setRenderFrontendSubmenu(true);
 
+// Turn off routing before displaying the form to prevent JPagination's call to JRoute from removing the layoun and tmpl
+// query string parameters which are critical for pagination links to work.
+ComArsRouter::$routeHtml = false;
+
+// Now render the form
 echo $this->getRenderedForm();
+
+// Re-enable ARS routing
+ComArsRouter::$routeHtml = true;
 
 $function = $this->input->getCmd('function', 'arsSelectItem');
 ?>
