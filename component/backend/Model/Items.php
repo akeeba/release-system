@@ -259,6 +259,21 @@ class Items extends DataModel
 				$categories = [-1];
 			}
 
+			// We have a category filter.
+			if (!empty($fltCategory))
+			{
+				// If the category exists in our list of allowed categories, filter by it
+				if (in_array($fltCategory, $categories))
+				{
+					$categories = [$fltCategory];
+				}
+				// Otherwise show nothing (selected category is unreachable)
+				else
+				{
+					$categories = [-1];
+				}
+			}
+
 			$categories = array_map(array($db, 'quote'), $categories);
 
 			$this->whereHas('release', function(\JDatabaseQuery $subQuery) use($db, $access_levels, $categories) {
@@ -288,6 +303,20 @@ class Items extends DataModel
 				$categories = [-1];
 			}
 
+			if (!empty($fltCategory))
+			{
+				// If the category exists in our list of allowed categories, filter by it
+				if (in_array($fltCategory, $categories))
+				{
+					$categories = [$fltCategory];
+				}
+				// Otherwise show nothing (selected category is unreachable)
+				else
+				{
+					$categories = [-1];
+				}
+			}
+
 			$this->whereHas('release', function(\JDatabaseQuery $subQuery) use($db, $fltLanguage, $categories) {
 				$categories = array_map(array($db, 'quote'), $categories);
 
@@ -310,6 +339,20 @@ class Items extends DataModel
 			{
 				// Essentially, tell it to find nothing if no categories fulfill our criteria
 				$categories = [-1];
+			}
+
+			if (!empty($fltCategory))
+			{
+				// If the category exists in our list of allowed categories, filter by it
+				if (in_array($fltCategory, $categories))
+				{
+					$categories = [$fltCategory];
+				}
+				// Otherwise show nothing (selected category is unreachable)
+				else
+				{
+					$categories = [-1];
+				}
 			}
 
 			$this->whereHas('release', function(\JDatabaseQuery $subQuery) use($db, $fltLanguage2, $categories) {

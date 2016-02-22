@@ -9,6 +9,8 @@ defined('_JEXEC') or die();
 
 /** @var \FOF30\View\DataView\Form $this */
 
+$this->getContainer()->toolbar->setRenderFrontendSubmenu(true);
+
 echo $this->getRenderedForm();
 
 $function = $this->input->getCmd('function', 'arsSelectItem');

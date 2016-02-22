@@ -70,6 +70,15 @@ class Item extends DataController
 
 		$urlparams = array_merge($additionalParams, $urlparams);
 
+		// Do not cache filterable views
+		$layout = $this->input->getCmd('layout', 'default');
+		$tmpl = $this->input->getCmd('tmpl', '');
+
+		if (($layout == 'modal') && ($tmpl == 'component'))
+		{
+			$cachable = false;
+		}
+
 		parent::display($cachable, $urlparams, $tpl);
 	}
 
