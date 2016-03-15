@@ -1,3 +1,7 @@
+Version 3.0.6
+================================================================================
++ UTF8MB4 support for our own database tables (requires Joomla! 3.5 and a PHP/MySQL environment with UTF8MB4 support)
+
 Version 3.0.5
 ================================================================================
 # [MEDIUM] Inconsistent caching results in front-end could display wrong data when Joomla! caching is enabled

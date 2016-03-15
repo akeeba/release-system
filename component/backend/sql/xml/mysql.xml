@@ -33,7 +33,7 @@ CREATE TABLE `#__ars_vgroups` (
     `ordering` bigint(20) NOT NULL DEFAULT '0',
     `published` int(11) NOT NULL DEFAULT '1',
     PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8mb4_unicode_ci;
             ]]></query>
         </action>
 
@@ -63,7 +63,7 @@ CREATE TABLE `#__ars_categories` (
 	`language` char(7) NOT NULL DEFAULT '*',
     PRIMARY KEY (`id`),
 	KEY `#___ars_categories_published` (`published`)
-) DEFAULT CHARACTER SET utf8
+) DEFAULT COLLATE utf8mb4_unicode_ci;
             ]]></query>
         </action>
 
@@ -95,7 +95,7 @@ CREATE TABLE `#__ars_releases` (
 	PRIMARY KEY `id` (`id`),
 	KEY `#__ars_releases_category_id` (`category_id`),
 	KEY `#__ars_releases_published` (`published`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8mb4_unicode_ci;
             ]]></query>
         </action>
 
@@ -134,7 +134,7 @@ CREATE TABLE `#__ars_items` (
 	KEY `#__ars_items_release_id` (`release_id`),
 	KEY `#__ars_items_updatestream` (`updatestream`),
 	KEY `#__ars_items_published` (`published`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8mb4_unicode_ci;
             ]]></query>
         </action>
 
@@ -155,7 +155,7 @@ CREATE TABLE `#__ars_log` (
 	KEY `ars_log_authorized` (`authorized`),
 	KEY `ars_log_itemid` (`item_id`),
 	KEY `ars_log_userid` (`user_id`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8mb4_unicode_ci;
             ]]></query>
         </action>
 
@@ -183,7 +183,7 @@ CREATE TABLE `#__ars_updatestreams` (
 	PRIMARY KEY `id` (`id`),
 	KEY `#__ars_updatestreams_published` (`published`),
 	KEY `#__ars_updatestreams_jedid` (`jedid`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8mb4_unicode_ci;
             ]]></query>
         </action>
 
@@ -199,7 +199,7 @@ CREATE TABLE `#__ars_autoitemdesc` (
 	`environments` varchar(100) DEFAULT NULL,
 	`published` int(11) NOT NULL DEFAULT '1',
 	PRIMARY KEY `id` (`id`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8mb4_unicode_ci;
             ]]></query>
         </action>
 
@@ -212,7 +212,7 @@ CREATE TABLE `#__ars_environments` (
   `xmltitle` varchar(20) NOT NULL DEFAULT '1.0',
   `icon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8;
+) DEFAULT COLLATE utf8mb4_unicode_ci;
             ]]></query>
         </action>
 
@@ -231,7 +231,7 @@ CREATE TABLE `#__ars_dlidlabels` (
   `modified_by` bigint(20) NOT NULL DEFAULT '0',
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`ars_dlidlabel_id`)
-) DEFAULT CHARSET=utf8;
+) DEFAULT COLLATE utf8mb4_unicode_ci;
             ]]></query>
             <query>
                 INSERT INTO `#__ars_environments` (`id`, `title`, `xmltitle`, `icon`)
@@ -261,30 +261,55 @@ CREATE TABLE `#__ars_dlidlabels` (
                 (23, 'PHP 5.3', 'php/5.3', 'php-53x.png'),
                 (24, 'PHP 5.4', 'php/5.4', 'php-54x.png'),
                 (25, 'PHP 5.5', 'php/5.5', 'php-55x.png'),
-                (26, 'PHP 5.6', 'php/5.6', 'php-56x.png');
+                (26, 'PHP 5.6', 'php/5.6', 'php-56x.png'),
+                (27, 'PHP 7.0', 'php/7.0', 'php-70x.png');
             </query>
         </action>
 
         <action table="#__ars_items" canfail="1">
-            <condition type="true" />
+            <condition type="index" value="#__ars_items_release_id" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_items` ADD INDEX `#__ars_items_release_id` (release_id);
             ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="1">
+            <condition type="index" value="#__ars_items_updatestream" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_items` ADD INDEX `#__ars_items_updatestream` (updatestream);
             ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="1">
+            <condition type="index" value="#__ars_items_published" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_items` ADD INDEX `#__ars_items_published` (published);
             ]]></query>
+        </action>
+
+        <action table="#__ars_releases" canfail="1">
+            <condition type="index" value="#__ars_releases_category_id" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_releases` ADD INDEX `#__ars_releases_category_id` (category_id);
             ]]></query>
+        </action>
+
+        <action table="#__ars_releases" canfail="1">
+            <condition type="index" value="#__ars_releases_published" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_releases` ADD INDEX `#__ars_releases_published` (published);
             ]]></query>
+        </action>
+
+        <action table="#__ars_categories" canfail="1">
+            <condition type="index" value="#__ars_categories_published" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_categories` ADD INDEX `#__ars_categories_published` (published);
             ]]></query>
+        </action>
+
+        <action table="#__ars_updatestreams" canfail="1">
+            <condition type="index" value="#__ars_updatestreams_published" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_updatestreams` ADD INDEX `#__ars_updatestreams_published` (published);
             ]]></query>

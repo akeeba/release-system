@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  @package   AkeebaReleaseSystem
-  @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
-  @license   GNU General Public License version 3, or later
--->
 <schema>
     <meta>
         <drivers>
@@ -11,17 +6,27 @@
             <driver>mysqli</driver>
             <driver>pdomysql</driver>
         </drivers>
+        <!-- We don't want this table to be converted to a different charset automatically. We will only convert a single
+         column. -->
+        <autocollation>false</autocollation>
     </meta>
 
     <sql>
         <action table="#__akeeba_common" canfail="0">
             <condition type="missing" value=""/>
             <query><![CDATA[
-CREATE TABLE IF NOT EXISTS `#__akeeba_common` (
+CREATE TABLE `#__akeeba_common` (
 	`key` varchar(255) NOT NULL,
-	`value` longtext NOT NULL,
+	`value` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
 	PRIMARY KEY (`key`)
 ) DEFAULT COLLATE utf8_general_ci CHARSET=utf8;
+            ]]></query>
+        </action>
+
+        <action table="#__akeeba_common" canfail="1">
+            <condition type="utf8mb4upgrade"/>
+            <query><![CDATA[
+ALTER TABLE `#__akeeba_common` MODIFY COLUMN `value` longtext COLLATE utf8mb4_unicode_ci NOT NULL;
             ]]></query>
         </action>
     </sql>
