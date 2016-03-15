@@ -153,7 +153,7 @@ class Categories extends DataModel
 		$db = $this->getDbo();
 
 		// Visual Groups filter
-		$fltVgroup = $this->getState('vgroup', null, 'int');
+		$fltVgroup = $this->getState('vgroup_id', null, 'int');
 
 		if ($fltVgroup)
 		{
