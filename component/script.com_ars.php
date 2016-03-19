@@ -90,6 +90,9 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'administrator/components/com_ars/elements',
 			'administrator/components/com_ars/language',
 
+			// Old Amazon integration
+			'administrator/components/com_ars/Amazon',
+
 			'components/com_ars/controllers',
 			'components/com_ars/helpers',
 			'components/com_ars/models',
