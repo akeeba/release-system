@@ -72,19 +72,20 @@ class Latest extends Controller
 		/** @var Releases $model */
 		$model = $this->getModel();
 		$model->reset(true)
-			  ->published(1)
-			  ->latest(true)
-			  ->access_user($this->container->platform->getUser()->id)
-			  ->category_id(0)
-			  ->with(['items']);
+		      ->published(1)
+		      ->latest(true)
+		      ->access_user($this->container->platform->getUser()->id)
+		      ->category_id(0)
+		      ->maturity($params->get('min_maturity', 'alpha'))
+		      ->with(['items']);
 
 		/** @var Categories $categoriesModel */
 		$categoriesModel = $this->getModel('Categories');
 		$categoriesModel->reset(true)
-						->orderby($params->get('orderby', 'order'))
-						->published(1)
-						->access_user($this->container->platform->getUser()->id)
-						->with([]);
+		                ->orderby_filter($params->get('orderby', 'order'))
+		                ->published(1)
+		                ->access_user($this->container->platform->getUser()->id)
+		                ->with([]);
 		$this->getView()->setModel('Categories', $categoriesModel);
 	}
 }
