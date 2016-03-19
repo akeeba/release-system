@@ -1,0 +1,22 @@
+{
+  "config": {
+    "vendor-dir": "component/backend/vendor"
+  },
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "akeeba/s3",
+        "version": "master",
+        "source": {
+          "url": "https://github.com/akeeba/s3",
+          "type": "git",
+          "reference": "master"
+        }
+      }
+    }
+  ],
+  "require": {
+    "akeeba/s3": "dev-master"
+  }
+}
