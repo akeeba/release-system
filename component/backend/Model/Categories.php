@@ -317,7 +317,7 @@ class Categories extends DataModel
 			}
 
 			$s3 = AmazonS3::getInstance();
-			$items = $s3->getBucket('', $check);
+			$items = $s3->getBucket('', $check, null, null, '/', true);
 
 			$this->assertNotEmpty($items, 'COM_ARS_CATEGORY_ERR_S3_DIRECTORY_NOT_EXISTS');
 		}
