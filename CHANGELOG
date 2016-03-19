@@ -2,6 +2,7 @@ Version 3.1.0
 ================================================================================
 + UTF8MB4 support for our own database tables (requires Joomla! 3.5 and a PHP/MySQL environment with UTF8MB4 support)
 ~ gh-97 Replacing Amazon AWS SDK with own S3 integration
+# [HIGH] Cannot assing an S3 folder to a Category if the folder does not contain any files
 # [HIGH] Cannot edit a Category when the directory it points to no longer exists
 # [MEDIUM] gh-95 Cannot filter front-end Normal and Category views by visual groups
 # [MEDIUM] gh-96 Cannot filter front-end Latest view by visual groups and/or minimum stability
