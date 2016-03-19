@@ -2,6 +2,7 @@ Version 3.0.6
 ================================================================================
 + UTF8MB4 support for our own database tables (requires Joomla! 3.5 and a PHP/MySQL environment with UTF8MB4 support)
 # [HIGH] Cannot edit a Category when the directory it points to no longer exists
+# [MEDIUM] gh-95 Cannot filter front-end Normal and Category views by visual groups
 
 Version 3.0.5
 ================================================================================
