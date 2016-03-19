@@ -757,7 +757,7 @@ class Items extends DataModel
 						else
 						{
 							// Get a signed URL
-							$s3 = Amazons3::getInstance();
+							$s3 = AmazonS3::getInstance();
 							$url = $s3->getAuthenticatedURL(rtrim(substr($folder, 5), '/') . '/' . ltrim($filename, '/'));
 						}
 					}
@@ -1001,7 +1001,7 @@ class Items extends DataModel
 	public function getFilesOptions($release_id, $item_id = 0)
 	{
 		$options   = array();
-		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
+		$options[] = JHtml::_('select.option', '', '- ' . JText::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
 
 		// Try to figure out a directory
 		$directory = null;
@@ -1110,7 +1110,7 @@ class Items extends DataModel
 
 		if ($useS3)
 		{
-			$s3       = Amazons3::getInstance();
+			$s3       = AmazonS3::getInstance();
 			$allFiles = $s3->getBucket('', $directory, null, null, null, true);
 
 			if (!empty($allFiles))
