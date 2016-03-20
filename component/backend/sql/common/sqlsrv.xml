@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  @package   AkeebaReleaseSystem
-  @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
-  @license   GNU General Public License version 3, or later
--->
 <schema>
     <meta>
         <drivers>
@@ -14,7 +9,7 @@
 
     <sql>
         <action table="#__akeeba_common" canfail="0">
-            <condition type="missing" value=""/>
+            <condition type="missing" value="#__akeeba_common"/>
             <query><![CDATA[
 CREATE TABLE [#__akeeba_common] (
 	[key] [NVARCHAR](255) NOT NULL,
