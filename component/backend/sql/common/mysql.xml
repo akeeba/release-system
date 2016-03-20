@@ -13,9 +13,9 @@
 
     <sql>
         <action table="#__akeeba_common" canfail="0">
-            <condition type="missing" value=""/>
+            <condition type="missing" value="#__akeeba_common"/>
             <query><![CDATA[
-CREATE TABLE `#__akeeba_common` (
+CREATE TABLE IF NOT EXISTS `#__akeeba_common` (
 	`key` varchar(255) NOT NULL,
 	`value` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
 	PRIMARY KEY (`key`)
