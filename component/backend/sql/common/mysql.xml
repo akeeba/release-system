@@ -13,7 +13,7 @@
 
     <sql>
         <action table="#__akeeba_common" canfail="0">
-            <condition type="missing" value="#__akeeba_common"/>
+            <condition type="missing" value=""/>
             <query><![CDATA[
 CREATE TABLE IF NOT EXISTS `#__akeeba_common` (
 	`key` varchar(255) NOT NULL,

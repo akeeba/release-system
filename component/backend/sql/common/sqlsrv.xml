@@ -9,7 +9,7 @@
 
     <sql>
         <action table="#__akeeba_common" canfail="0">
-            <condition type="missing" value="#__akeeba_common"/>
+            <condition type="missing" value=""/>
             <query><![CDATA[
 CREATE TABLE [#__akeeba_common] (
 	[key] [NVARCHAR](255) NOT NULL,
