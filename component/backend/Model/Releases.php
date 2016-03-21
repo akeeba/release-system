@@ -285,6 +285,12 @@ class Releases extends DataModel
 				break;
 		}
 
+		// Default ordering ID descending (latest created release on top)
+		$filterOrder = $this->getState('filter_order', 'id');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'DESC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
+
 		// Order filtering
 		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
 

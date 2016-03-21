@@ -95,6 +95,14 @@ class UpdateStreams extends DataModel
 		$this->addBehaviour('Modified');
 	}
 
+	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	{
+		$filterOrder = $this->getState('filter_order', 'category');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'ASC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
+	}
+
 	public function check()
 	{
 		$this->assertNotEmpty($this->name, 'ERR_USTREAM_NEEDS_NAME');

@@ -82,6 +82,14 @@ class VisualGroups extends DataModel
 		$this->addBehaviour('Modified');
 	}
 
+	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	{
+		$filterOrder = $this->getState('filter_order', 'ordering');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'ASC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
+	}
+
 	/**
 	 * Triggered after building the query. If we're in the front-end we force the sorting to be always by ordering,
 	 * ascending

@@ -62,6 +62,11 @@ class Environments extends DataModel
 
 			$query->where($db->qn('title') . ' LIKE ' . $db->q($fltSearch));
 		}
+
+		$filterOrder = $this->getState('filter_order', 'title');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'ASC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
 	}
 
 }

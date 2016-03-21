@@ -221,6 +221,11 @@ class Categories extends DataModel
 			);
 		}
 
+		$filterOrder = $this->getState('filter_order', 'ordering');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'ASC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
+
 		// Order filtering
 		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
 

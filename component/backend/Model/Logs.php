@@ -133,6 +133,11 @@ class Logs extends DataModel
 
 			$query->where($db->qn('item_id') . ' IN ' . $clause);
 		}
+
+		$filterOrder = $this->getState('filter_order', 'accessed_on');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'DESC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
 	}
 
 	public function check()
