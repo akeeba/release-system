@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  @package   AkeebaReleaseSystem
-  @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
-  @license   GNU General Public License version 3, or later
--->
 <schema>
     <meta>
         <drivers>
@@ -16,7 +11,7 @@
         <action table="#__akeeba_common" canfail="0">
             <condition type="missing" value=""/>
             <query><![CDATA[
-CREATE TABLE "#__akeeba_common" (
+CREATE TABLE IF NOT EXISTS "#__akeeba_common" (
 	"key" character varying(255) NOT NULL,
 	"value" text NOT NULL,
 	PRIMARY KEY ("key")
