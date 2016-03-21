@@ -36,7 +36,10 @@ defined('_JEXEC') or die;
 						@endunless
 					@endunless
 
-					@foreach($this->categories as $id => $item)
+					@foreach($this->categories->filter(function ($item)
+						{
+							return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true);
+						}) as $id => $item)
 						@unless($item->vgroup_id != $vgroup->id)
 							@if(($item->type == $section) || ($section == 'all'))
 								@include('site:com_ars/Latest/category', ['id' => $id, 'item' => $item, 'Itemid' => $this->Itemid])

@@ -90,7 +90,10 @@ switch ($release->maturity)
 	</dl>
 
 	<table class="table table-striped">
-		@foreach($release->items as $i)
+		@foreach($release->items->filter(function ($item)
+		{
+			return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true);
+		}) as $i)
 		@include('site:com_ars/Latest/item', ['item' => $i, 'Itemid' => $this->Itemid])
 		@endforeach
 	</table>
