@@ -1,6 +1,7 @@
 # Akeeba Release System
 
 A download manager component for Joomla!, designed for software distribution
+
 ## NO SUPPORT
 
 This software is provided **WITHOUT ANY KIND OF SUPPORT WHATSOEVER**. We have disabled Issues on this repository to stress this. Kindly note that any requests sent to us about this software will not be replied.
