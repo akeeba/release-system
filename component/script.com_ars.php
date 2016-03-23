@@ -76,8 +76,12 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'media/com_ars/js/akeebajq.js',
 			'media/com_ars/js/akeebajqui.js',
 
-			// Usage stats
+			// Usage stats & update notifications
 			'administrator/components/com_ars/Model/Statistics.php',
+			'administrator/components/com_ars/Model/Updates.php',
+			'components/com_ars/Model/ExtensionUpdates.php',
+			'administrator/components/com_ars/Controller/Updates.php',
+			'cli/ars-update.php',
 
 		),
 		'folders' => array(

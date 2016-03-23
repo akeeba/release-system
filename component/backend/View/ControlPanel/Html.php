@@ -9,7 +9,6 @@ namespace Akeeba\ReleaseSystem\Admin\View\ControlPanel;
 
 use Akeeba\ReleaseSystem\Admin\Helper\Cache;
 use Akeeba\ReleaseSystem\Admin\Model\ControlPanel;
-use Akeeba\ReleaseSystem\Admin\Model\Updates;
 use JComponentHelper;
 use JLoader;
 
@@ -139,10 +138,5 @@ class Html extends \FOF30\View\DataView\Html
 		// Information for the PHP version warning
 		$this->akeebaCommonDatePHP = \JFactory::getDate('2015-08-14 00:00:00', 'GMT')->format(\JText::_('DATE_FORMAT_LC1'));
 		$this->akeebaCommonDateObsolescence = \JFactory::getDate('2016-05-14 00:00:00', 'GMT')->format(\JText::_('DATE_FORMAT_LC1'));
-
-		// Collect information about the site
-		/** @var Updates $updateModel */
-		$updateModel = $this->container->factory->model('Updates');
-		$this->currentVersion = $updateModel->getVersion();
 	}
 }
