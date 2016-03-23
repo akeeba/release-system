@@ -9,7 +9,6 @@ namespace Akeeba\ReleaseSystem\Admin\View\ControlPanel;
 
 use Akeeba\ReleaseSystem\Admin\Helper\Cache;
 use Akeeba\ReleaseSystem\Admin\Model\ControlPanel;
-use Akeeba\ReleaseSystem\Admin\Model\Statistics;
 use Akeeba\ReleaseSystem\Admin\Model\Updates;
 use JComponentHelper;
 use JLoader;
@@ -47,9 +46,6 @@ class Html extends \FOF30\View\DataView\Html
 
 	/** @var  string  Currently installed version of the component */
 	public $currentVersion = '0.0.0';
-
-	/** @var  string  The IFrame URL for collecting usage statistics */
-	public $statsIFrame = '';
 
 	/** @var  \JDate  When the odl PHP version will be reported */
 	public $akeebaCommonDatePHP = '';
@@ -148,10 +144,5 @@ class Html extends \FOF30\View\DataView\Html
 		/** @var Updates $updateModel */
 		$updateModel = $this->container->factory->model('Updates');
 		$this->currentVersion = $updateModel->getVersion();
-
-		/** @var Statistics $statsModel */
-		$statsModel = $this->container->factory->model('Statistics');
-		$this->statsIFrame = $statsModel->collectStatistics(true);
-
 	}
 }

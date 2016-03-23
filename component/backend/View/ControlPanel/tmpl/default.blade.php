@@ -66,8 +66,6 @@ render it. --}}
 	</div>
 </div>
 
-{{ $this->statsIFrame }}
-
 {{-- This Javascript is required to render the update notification, if there is an update available --}}
 <script type="text/javascript">
 	(function($) {

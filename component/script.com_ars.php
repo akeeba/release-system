@@ -76,6 +76,9 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'media/com_ars/js/akeebajq.js',
 			'media/com_ars/js/akeebajqui.js',
 
+			// Usage stats
+			'administrator/components/com_ars/Model/Statistics.php',
+
 		),
 		'folders' => array(
 			// Moving to FOF 3
@@ -92,6 +95,9 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			// Old Amazon integration
 			'administrator/components/com_ars/Amazon',
+
+			// Usage stats
+			'administrator/components/com_ars/assets/stats',
 
 			'components/com_ars/controllers',
 			'components/com_ars/helpers',
@@ -139,21 +145,6 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 		</div>
 
 		<?php
-
-		$container = FOF30\Container\Container::getInstance('com_ars');
-
-        /** @var \Akeeba\ReleaseSystem\Admin\Model\Statistics $model */
-        $model  = $container->factory->model('Statistics');
-
-        if (method_exists($model, 'collectStatistics'))
-        {
-            $iframe = $model->collectStatistics(true);
-
-            if ($iframe)
-            {
-                echo $iframe;
-            }
-        }
 	}
 
 	protected function renderPostUninstallation($parent)
