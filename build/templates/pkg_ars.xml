@@ -17,9 +17,6 @@
         <!-- Component -->
         <file type="component" id="com_ars">com_ars.zip</file>
 
-        <!-- CLI scripts -->
-        <file type="file" id="file_ars">file_ars.zip</file>
-
         <!-- Modules -->
         <file type="module" client="site" id="mod_arsdlid">mod_arsdlid.zip</file>
         <file type="module" client="site" id="mod_arsdownloads">mod_arsdownloads.zip</file>
