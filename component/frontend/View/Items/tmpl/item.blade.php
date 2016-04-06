@@ -53,85 +53,93 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 
 ?>
 
-<div class="ars-item-{{{ $item->id }}} well">
-	<h4>
+<div class="ars-item-{{{ $item->id }}}">
+	<h5>
+		<button class="btn btn-sm" type="button" data-toggle="collapse"
+				data-target="#ars-item-{{{ $item->id }}}-info" aria-expanded="false"
+				aria-controls="ars-item-{{{ $item->id }}}-info">
+			<span class="glyphicon glyphicon-info-sign"></span>
+		</button>
+
 		<a href="{{ htmlentities($download_url) }}">
 			{{{ $item->title }}}
 		</a>
-	</h4>
+	</h5>
 
-	<dl class="dl-horizontal ars-release-properties">
-		@unless(!$this->params->get('show_downloads', 1))
-		<dt>
-			@lang('LBL_ITEMS_HITS')
-		</dt>
-		<dd>
-			@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
-		</dd>
+	<div id="ars-item-{{{ $item->id }}}-info" class="well collapse">
+		<dl class="dl-horizontal ars-release-properties">
+			@unless(!$this->params->get('show_downloads', 1))
+				<dt>
+					@lang('LBL_ITEMS_HITS')
+				</dt>
+				<dd>
+					@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
+				</dd>
+			@endunless
+
+			@unless(empty($item->filesize) || !$this->params->get('show_filesize',1))
+				<dt>
+					@lang('LBL_ITEMS_FILESIZE')
+				</dt>
+				<dd>
+					{{ Format::sizeFormat($item->filesize) }}
+				</dd>
+			@endunless
+
+			@unless(empty($item->md5) || !$this->params->get('show_md5',1))
+				<dt>
+					@lang('LBL_ITEMS_MD5')
+				</dt>
+				<dd>
+					{{{ $item->md5 }}}
+				</dd>
+			@endunless
+
+			@unless(empty($item->sha1) || !$this->params->get('show_sha1',1))
+				<dt>
+					@lang('LBL_ITEMS_SHA1')
+				</dt>
+				<dd>
+					{{{ $item->sha1 }}}
+				</dd>
+			@endunless
+
+			@unless(empty($item->environments) || !$this->params->get('show_environments',1))
+				<dt>
+					@lang('LBL_ITEMS_ENVIRONMENTS')
+				</dt>
+				<dd>
+					@foreach($item->environments as $environment)
+						{{ Select::environmentIcon($environment) }}
+					@endforeach
+				</dd>
+			@endunless
+		</dl>
+
+		@unless(empty($item->description))
+			<div class="ars-item-description well small">
+				<?php echo Format::preProcessMessage($item->description, 'com_ars.item_description'); ?>
+			</div>
 		@endunless
 
-		@unless(empty($item->filesize) || !$this->params->get('show_filesize',1))
-		<dt>
-			@lang('LBL_ITEMS_FILESIZE')
-		</dt>
-		<dd>
-			{{ Format::sizeFormat($item->filesize) }}
-		</dd>
-		@endunless
-
-		@unless(empty($item->md5) || !$this->params->get('show_md5',1))
-		<dt>
-			@lang('LBL_ITEMS_MD5')
-		</dt>
-		<dd>
-			{{{ $item->md5 }}}
-		</dd>
-		@endunless
-
-		@unless(empty($item->sha1) || !$this->params->get('show_sha1',1))
-		<dt>
-			@lang('LBL_ITEMS_SHA1')
-		</dt>
-		<dd>
-			{{{ $item->sha1 }}}
-		</dd>
-		@endunless
-
-		@unless(empty($item->environments) || !$this->params->get('show_environments',1))
-		<dt>
-			@lang('LBL_ITEMS_ENVIRONMENTS')
-		</dt>
-		<dd>
-			@foreach($item->environments as $environment)
-				{{ Select::environmentIcon($environment) }}
-			@endforeach
-		</dd>
-		@endunless
-	</dl>
-
-	@unless(empty($item->description))
-	<div class="ars-item-description well small">
-		<?php echo Format::preProcessMessage($item->description, 'com_ars.item_description'); ?>
-	</div>
-	@endunless
-
-	<div>
-		<div class="pull-left">
-			<p class="readmore">
-				<a href="{{ htmlentities($download_url) }}" class="btn btn-primary">
-					@lang('LBL_ITEM_DOWNLOAD')
-				</a>
-			</p>
+		<div>
+			<div class="pull-left">
+				<p class="readmore">
+					<a href="{{ htmlentities($download_url) }}" class="btn btn-primary">
+						@lang('LBL_ITEM_DOWNLOAD')
+					</a>
+				</p>
+			</div>
+			@unless(!$directLink)
+				<div class="pull-left">
+					&nbsp;
+					<a rel="nofollow" href="{{ htmlentities($directLinkURL) }}"
+					   class="directlink hasTip" title="{{{ $this->directlink_description }}}">
+						@lang('COM_ARS_LBL_ITEM_DIRECTLINK')
+					</a>
+				</div>
+			@endunless
+			<div class="clearfix"></div>
 		</div>
-		@unless(!$directLink)
-		<div class="pull-left">
-			&nbsp;
-			<a rel="nofollow" href="{{ htmlentities($directLinkURL) }}"
-			   class="directlink hasTip" title="{{{ $this->directlink_description }}}">
-				@lang('COM_ARS_LBL_ITEM_DIRECTLINK')
-			</a>
-		</div>
-		@endunless
-		<div class="clearfix"></div>
 	</div>
 </div>

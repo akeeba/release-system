@@ -23,6 +23,8 @@ $released   = \JFactory::getDate($this->release->created);
 
 	@include('site:com_ars/Releases/release', ['id' => $this->release->id, 'item' => $this->release, 'Itemid' => $this->Itemid, 'no_link' => true])
 
+	<hr/>
+
 	<div class="ars-items">
 	@if(count($this->items))
 		@foreach($this->items as $item)

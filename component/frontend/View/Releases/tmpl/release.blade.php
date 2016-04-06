@@ -50,7 +50,7 @@ switch ($item->maturity)
 ?>
 
 <div class="ars-release-{{{ $item->id }}}">
-	<h5>
+	<h4>
 		<button class="btn btn-sm" type="button" data-toggle="collapse"
 				data-target="#ars-release-{{{ $item->id }}}-info" aria-expanded="false"
 				aria-controls="ars-release-{{{ $item->id }}}-info">
@@ -58,13 +58,13 @@ switch ($item->maturity)
 		</button>
 
 		<a href="{{ htmlentities($release_url) }}">
-			{{{ $this->category->title }}}
+			{{{ $item->category->title }}}
 			{{{ $item->version }}}
 		</a>
 		<span class="label {{{ $maturityClass }}}">
 			@lang('COM_ARS_RELEASES_MATURITY_' . $item->maturity)
 		</span>
-	</h5>
+	</h4>
 
 	<div id="ars-release-{{{ $item->id }}}-info" class="well collapse">
 		<dl class="dl-horizontal ars-release-properties">
