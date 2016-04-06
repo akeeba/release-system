@@ -15,14 +15,8 @@
 		<exclude name="script.ars.php" />
 	</fileset>
 
-	<fileset dir="${dirs.component}/cli" id="cli">
-		<include name="*.php" />
-		<include name="file_ars.xml" />
-	</fileset>
-
 	<fileset dir="${dirs.release}" id="package">
 		<include name="com_*.zip" />
-		<include name="file_*.zip" />
 		<include name="mod_*.zip" />
 		<include name="plg_*.zip" />
 		<include name="lib_*.zip" />
