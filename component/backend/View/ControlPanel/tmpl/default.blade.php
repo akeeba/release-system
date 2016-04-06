@@ -61,26 +61,3 @@ render it. --}}
 		@yield('footer')
 	</div>
 </div>
-
-{{ $this->statsIFrame }}
-
-{{-- This Javascript is required to render the update notification, if there is an update available --}}
-<script type="text/javascript">
-	(function($) {
-		$(document).ready(function(){
-			$.ajax('index.php?option=com_ars&view=ControlPanel&task=updateinfo&tmpl=component', {
-				success: function(msg, textStatus, jqXHR)
-				{
-					// Get rid of junk before and after data
-					var match = msg.match(/###([\s\S]*?)###/);
-					data = match[1];
-
-					if (data.length)
-					{
-						$('#updateNotice').html(data);
-					}
-				}
-			})
-		});
-	})(akeeba.jQuery);
-</script>

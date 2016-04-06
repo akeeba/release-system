@@ -1,6 +1,7 @@
 Version 3.2.x
 ================================================================================
 - Remove Akeeba Strapper
+- Remove update notifications and staitstics collection
 ~ Changing the styling of categories, releases and items views
 # [LOW] Notice in the Normal and BleedingEdge sub-views
 

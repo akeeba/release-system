@@ -41,9 +41,4 @@
 
     <!-- Installation script -->
     <scriptfile>script.ars.php</scriptfile>
-
-    <!-- Update servers -->
-    <updateservers>
-        <server type="extension" priority="1" name="Akeeba Release System">http://cdn.akeebabackup.com/updates/ars.xml</server>
-    </updateservers>
 </extension>
