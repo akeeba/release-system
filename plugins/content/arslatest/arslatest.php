@@ -140,7 +140,7 @@ class plgContentArslatest extends JPlugin
 		$container = \FOF30\Container\Container::getInstance('com_ars');
 
 		/** @var \Akeeba\ReleaseSystem\Admin\Model\Releases $model */
-		$model = $container->factory->model('Releases');
+		$model = $container->factory->model('Releases')->tmpInstance();
 		$model->reset(true)
 		      ->published(1)
 		      ->latest(true)
