@@ -49,59 +49,67 @@ switch ($item->maturity)
 
 ?>
 
-<div class="ars-release-{{{ $item->id }}} well">
-	<h4>
-		<span class="label {{{ $maturityClass }}} pull-right">
-			@lang('COM_ARS_RELEASES_MATURITY_' . $item->maturity)
-		</span>
+<div class="ars-release-{{{ $item->id }}}">
+	<h5>
+		<button class="btn btn-sm" type="button" data-toggle="collapse"
+				data-target="#ars-release-{{{ $item->id }}}-info" aria-expanded="false"
+				aria-controls="ars-release-{{{ $item->id }}}-info">
+			<span class="glyphicon glyphicon-info-sign"></span>
+		</button>
 
 		<a href="{{ htmlentities($release_url) }}">
+			{{{ $this->category->title }}}
 			{{{ $item->version }}}
 		</a>
-	</h4>
+		<span class="label {{{ $maturityClass }}}">
+			@lang('COM_ARS_RELEASES_MATURITY_' . $item->maturity)
+		</span>
+	</h5>
 
-	<dl class="dl-horizontal ars-release-properties">
-		<dt>
-			@lang('COM_ARS_RELEASES_FIELD_MATURITY')
-		</dt>
-		<dd>
-			@lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($item->maturity))
-		</dd>
+	<div id="ars-release-{{{ $item->id }}}-info" class="well collapse">
+		<dl class="dl-horizontal ars-release-properties">
+			<dt>
+				@lang('COM_ARS_RELEASES_FIELD_MATURITY')
+			</dt>
+			<dd>
+				@lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($item->maturity))
+			</dd>
 
-		<dt>
-			@lang('LBL_RELEASES_RELEASEDON')
-		</dt>
-		<dd>
-			@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))
-		</dd>
+			<dt>
+				@lang('LBL_RELEASES_RELEASEDON')
+			</dt>
+			<dd>
+				@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))
+			</dd>
 
-		@if($this->params->get('show_downloads', 1))
-		<dt>
-			@lang('LBL_RELEASES_HITS')
-		</dt>
-		<dd>
-			@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
-		</dd>
+			@if($this->params->get('show_downloads', 1))
+				<dt>
+					@lang('LBL_RELEASES_HITS')
+				</dt>
+				<dd>
+					@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
+				</dd>
+			@endif
+		</dl>
+
+		@jhtml('bootstrap.startTabSet', 'ars-reltabs-' . $item->id, ['active' => "reltabs-{$item->id}-desc"])
+
+		@jhtml('bootstrap.addTab', 'ars-reltabs-' . $item->id, "reltabs-{$item->id}-desc", JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'))
+		{{ Format::preProcessMessage($item->description, 'com_ars.release_description') }}
+		@jhtml('bootstrap.endTab')
+
+		@jhtml('bootstrap.addTab', 'ars-reltabs-' . $item->id, "reltabs-{$item->id}-notes", JText::_('COM_ARS_RELEASE_NOTES_LABEL'))
+		{{ Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
+		@jhtml('bootstrap.endTab')
+
+		@jhtml('bootstrap.endTabSet')
+
+		@if(!isset($no_link) || !$no_link)
+			<p class="readmore">
+				<a href="{{ htmlentities($release_url) }}" class="btn btn-primary">
+					@lang('LBL_RELEASE_VIEWITEMS')
+				</a>
+			</p>
 		@endif
-	</dl>
-
-	@jhtml('bootstrap.startTabSet', 'ars-reltabs-' . $item->id, ['active' => "reltabs-{$item->id}-desc"])
-
-	@jhtml('bootstrap.addTab', 'ars-reltabs-' . $item->id, "reltabs-{$item->id}-desc", JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'))
-	{{ Format::preProcessMessage($item->description, 'com_ars.release_description') }}
-	@jhtml('bootstrap.endTab')
-
-	@jhtml('bootstrap.addTab', 'ars-reltabs-' . $item->id, "reltabs-{$item->id}-notes", JText::_('COM_ARS_RELEASE_NOTES_LABEL'))
-	{{ Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
-	@jhtml('bootstrap.endTab')
-
-	@jhtml('bootstrap.endTabSet')
-
-	@if(!isset($no_link) || !$no_link)
-	<p class="readmore">
-		<a href="{{ htmlentities($release_url) }}" class="btn btn-primary">
-			@lang('LBL_RELEASE_VIEWITEMS')
-		</a>
-	</p>
-	@endif
+	</div>
 </div>

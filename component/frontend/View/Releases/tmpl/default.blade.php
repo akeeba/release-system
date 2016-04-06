@@ -21,6 +21,8 @@ defined('_JEXEC') or die;
 
 	@include('site:com_ars/Categories/category', ['id' => $this->category->id, 'item' => $this->category, 'Itemid' => $this->Itemid, 'no_link' => true])
 
+	<hr/>
+
 	<div class="ars-releases">
 	@if(count($this->items))
 		@foreach($this->items as $item)
