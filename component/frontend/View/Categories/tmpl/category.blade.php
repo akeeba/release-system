@@ -14,23 +14,26 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 	$category_url = $item->redirect_unauth;
 }
 ?>
-<div class="ars-category-{{{ $id }}} well">
+<div class="ars-category-{{{ $id }}}">
+
 	<h4 class="{{ $item->type == 'bleedingedge' ? 'warning' : '' }}">
+		<button class="btn btn-sm" type="button" data-toggle="collapse"
+				data-target="#ars-category-{{{ $id }}}-info" aria-expanded="false"
+				aria-controls="ars-category-{{{ $id }}}-info">
+			<span class="glyphicon glyphicon-info-sign"></span>
+		</button>
+
 		<a href="{{ htmlentities($category_url) }}">
 			{{{ $item->title }}}
 		</a>
 	</h4>
 
-	<div class="ars-browse-category">
-		<div class="ars-category-description">
-			{{ Format::preProcessMessage($item->description, 'com_ars.category_description') }}
+	<div class="collapse" id="ars-category-{{{ $id }}}-info">
+		<div class="ars-browse-category well">
+			<div class="ars-category-description">
+				{{ Format::preProcessMessage($item->description, 'com_ars.category_description') }}
+			</div>
 		</div>
-		@if(!isset($no_link))
-		<p class="readmore">
-			<a href="{{ htmlentities($category_url) }}" class="btn btn-primary">
-				@lang('LBL_CATEGORY_VIEW')
-			</a>
-		</p>
-		@endif
 	</div>
 </div>
+<div class="clearfix"></div>
