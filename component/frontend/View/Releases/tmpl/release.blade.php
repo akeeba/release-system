@@ -51,20 +51,25 @@ switch ($item->maturity)
 
 <div class="ars-release-{{{ $item->id }}}">
 	<h4>
-		<button class="btn btn-sm" type="button" data-toggle="collapse"
-				data-target="#ars-release-{{{ $item->id }}}-info" aria-expanded="false"
-				aria-controls="ars-release-{{{ $item->id }}}-info">
-			<span class="glyphicon glyphicon-info-sign"></span>
-		</button>
-
 		<a href="{{ htmlentities($release_url) }}">
-			{{{ $item->category->title }}}
+			@lang('COM_ARS_RELEASES_VERSION')
 			{{{ $item->version }}}
 		</a>
 		<span class="label {{{ $maturityClass }}}">
 			@lang('COM_ARS_RELEASES_MATURITY_' . $item->maturity)
 		</span>
 	</h4>
+	<p>
+		<strong>@lang('LBL_RELEASES_RELEASEDON')</strong>:
+		@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))
+		<button class="btn btn-link" type="button" data-toggle="collapse"
+				data-target="#ars-release-{{{ $item->id }}}-info" aria-expanded="false"
+				aria-controls="ars-release-{{{ $item->id }}}-info">
+			<span class="glyphicon glyphicon-info-sign"></span>
+			@lang('COM_ARS_RELEASES_MOREINFO')
+		</button>
+	</p>
+	<p>&nbsp;</p>
 
 	<div id="ars-release-{{{ $item->id }}}-info" class="well collapse">
 		<dl class="dl-horizontal ars-release-properties">

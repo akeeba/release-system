@@ -19,9 +19,7 @@ defined('_JEXEC') or die;
 	</div>
 	@endif
 
-	@include('site:com_ars/Categories/category', ['id' => $this->category->id, 'item' => $this->category, 'Itemid' => $this->Itemid, 'no_link' => true])
-
-	<hr/>
+	@include('site:com_ars/Releases/category', ['id' => $this->category->id, 'item' => $this->category, 'Itemid' => $this->Itemid, 'no_link' => true])
 
 	<div class="ars-releases">
 	@if(count($this->items))

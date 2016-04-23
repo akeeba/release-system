@@ -54,17 +54,37 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 ?>
 
 <div class="ars-item-{{{ $item->id }}}">
-	<h5>
-		<button class="btn btn-sm" type="button" data-toggle="collapse"
-				data-target="#ars-item-{{{ $item->id }}}-info" aria-expanded="false"
-				aria-controls="ars-item-{{{ $item->id }}}-info">
-			<span class="glyphicon glyphicon-info-sign"></span>
-		</button>
-
+	<h4>
 		<a href="{{ htmlentities($download_url) }}">
 			{{{ $item->title }}}
 		</a>
-	</h5>
+	</h4>
+	@unless(empty($item->environments) || !$this->params->get('show_environments',1))
+		<p>
+			@foreach($item->environments as $environment)
+				{{ Select::environmentIcon($environment) }}
+			@endforeach
+		</p>
+	@endunless
+	<p>
+		<span class="glyphicon glyphicon-file"></span>
+		<a href="{{ htmlentities($download_url) }}">
+			<code>{{{ basename(($item->type == 'file') ? $item->filename : $item->url) }}}</code>
+		</a>
+
+		<a href="{{ htmlentities($download_url) }}" class="btn btn-link">
+			<span class="glyphicon glyphicon-download-alt"></span>
+			@lang('LBL_ITEM_DOWNLOAD')
+		</a>
+
+		<button class="btn btn-link" type="button" data-toggle="collapse"
+				data-target="#ars-item-{{{ $item->id }}}-info" aria-expanded="false"
+				aria-controls="ars-item-{{{ $item->id }}}-info">
+			<span class="glyphicon glyphicon-info-sign"></span>
+			@lang('COM_ARS_RELEASES_MOREINFO')
+		</button>
+	</p>
+	<p>&nbsp;</p>
 
 	<div id="ars-item-{{{ $item->id }}}-info" class="well collapse">
 		<dl class="dl-horizontal ars-release-properties">

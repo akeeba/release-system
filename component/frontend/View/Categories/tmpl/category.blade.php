@@ -17,16 +17,23 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 <div class="ars-category-{{{ $id }}}">
 
 	<h4 class="{{ $item->type == 'bleedingedge' ? 'warning' : '' }}">
-		<button class="btn btn-sm" type="button" data-toggle="collapse"
-				data-target="#ars-category-{{{ $id }}}-info" aria-expanded="false"
-				aria-controls="ars-category-{{{ $id }}}-info">
-			<span class="glyphicon glyphicon-info-sign"></span>
-		</button>
-
 		<a href="{{ htmlentities($category_url) }}">
 			{{{ $item->title }}}
 		</a>
 	</h4>
+	<p>
+		<button class="btn btn-link" type="button" data-toggle="collapse"
+				data-target="#ars-category-{{{ $id }}}-info" aria-expanded="false"
+				aria-controls="ars-category-{{{ $id }}}-info">
+			<span class="glyphicon glyphicon-info-sign"></span>
+			@lang('COM_ARS_RELEASES_MOREINFO')
+		</button>
+
+		<a href="{{ htmlentities($category_url) }}" class="btn btn-link">
+			<span class="glyphicon glyphicon-folder-open"></span>
+			@lang('COM_ARS_CATEGORIES_AVAILABLEVERSIONS')
+		</a>
+	</p>
 
 	<div class="collapse" id="ars-category-{{{ $id }}}-info">
 		<div class="ars-browse-category well">
