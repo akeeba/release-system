@@ -23,7 +23,7 @@ class Breadcrumbs
 
 		$rootName = null;
 
-		if (!is_object($menuitem) || $menuitem->query['view'] != 'browse')
+		if (!is_object($menuitem) || !in_array(strtolower($menuitem->query['view']), ['browse', 'categories']))
 		{
 			$app = JFactory::getApplication();
 			$pathway = $app->getPathway();
@@ -69,7 +69,7 @@ class Breadcrumbs
 		$menus = JMenu::getInstance('site');
 		$menuitem = $menus->getActive();
 
-		if (!is_object($menuitem) || $menuitem->query['view'] != 'category')
+		if (!is_object($menuitem) || !in_array(strtolower($menuitem->query['view']), ['category', 'releases']))
 		{
 			$app = JFactory::getApplication();
 			$pathway = $app->getPathway();
@@ -120,7 +120,7 @@ class Breadcrumbs
 		$menus = JMenu::getInstance('site');
 		$menuitem = $menus->getActive();
 
-		if (!is_object($menuitem) || $menuitem->query['view'] != 'release')
+		if (!is_object($menuitem) || !in_array(strtolower($menuitem->query['view']), ['release', 'items']))
 		{
 			$app = JFactory::getApplication();
 			$pathway = $app->getPathway();
