@@ -7,10 +7,12 @@
 <config addfieldpath="/administrator/components/com_ars/elements">
     <fieldset name="updatestream" label="COM_ARS_CONFIG_BACKEND_UPDATESTREAM_LABEL"
               description="COM_ARS_CONFIG_BACKEND_UPDATESTREAM_DESC">
+
         <field name="updates_name" type="text" default="Downloads"
                label="COM_ARS_CONFIG_UPDATES_NAME_LABEL"
                description="COM_ARS_CONFIG_UPDATES_NAME_DESC"
         />
+
         <field name="updates_desc" type="text" default="My Downloads"
                label="COM_ARS_CONFIG_UPDATES_DESC_LABEL"
                description="COM_ARS_CONFIG_UPDATES_DESC_DESC"
@@ -20,7 +22,9 @@
     <fieldset name="frontend" label="COM_ARS_CONFIG_FRONTEND_HEADER_LABEL"
               description="COM_ARS_CONFIG_FRONTEND_HEADER_DESC"
               addformpath="/administrator/components/com_ars/elements">
+
         <field name="@spacer" type="spacer" default="" label="" description=""/>
+
         <field name="begenchangelog" type="radio" default="1"
                label="COM_ARS_CONFIG_BEGENCHANGELOG_LABEL"
                description="COM_ARS_CONFIG_BEGENCHANGELOG_DESC">
@@ -36,83 +40,61 @@
         </field>
 
         <field name="@spacer" type="spacer" default="" label="" description=""/>
+
         <field name="no_access_url" type="text" default="" label="COM_ARS_CONFIG_FE_NOACCESSURL_LABEL"
                description="COM_ARS_CONFIG_FE_NOACCESSURL_DESC" size="50"/>
+
         <field name="show_downloads" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_DOWNLOADS_LABEL"
                description="COM_ARS_CONFIG_SHOW_DOWNLOADS_DESC">
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
+
         <field name="show_filesize" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_FILESIZE_LABEL"
                description="COM_ARS_CONFIG_SHOW_FILESIZE_DESC">
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
+
         <field name="show_md5" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_MD5_LABEL"
                description="COM_ARS_CONFIG_SHOW_MD5_DESC">
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
+
         <field name="show_sha1" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_SHA1_LABEL"
                description="COM_ARS_CONFIG_SHOW_SHA1_DESC">
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
+
         <field name="show_environments" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_LABEL"
                description="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_DESC">
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
+
         <field name="show_directlink" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_DIRECTLINK_LABEL"
                description="COM_ARS_CONFIG_SHOW_DIRECTLINK_DESC">
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
+
         <field name="directlink_extensions" type="text" default="zip,tar,tar.gz"
                label="COM_ARS_CONFIG_DIRECTLINKEXTENSIONS_LABEL" description="COM_ARS_CONFIG_DIRECTLINKEXTENSIONS_DESC"
                size="50"/>
         <field name="directlink_description" type="text" default="" label="COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_LABEL"
                description="COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_DESC" size="50"/>
-
-        <field name="autoupdateCli" type="list" default="1"
-               label="CONFIG_AUTOUPDATE_SETTINGS_LABEL"
-               description="CONFIG_AUTOUPDATE_SETTINGS_DESC">
-            <option value="1">CONFIG_AUTOUPDATE_NOTIFY_UPDATE</option>
-            <option value="2">CONFIG_AUTOUPDATE_NOTIFY</option>
-            <option value="3">CONFIG_AUTOUPDATE_UPDATE</option>
-        </field>
-
-        <field name="notificationFreq" type="text" default="1"
-               label="CONFIG_NOTIFICATION_FREQ_LABEL"/>
-
-        <field name="notificationTime" type="list" default="day"
-               label="CONFIG_NOTIFICATION_TIME_LABEL">
-            <option value="min">CONFIG_NOTIFICATION_TIME_MIN</option>
-            <option value="hour">CONFIG_NOTIFICATION_TIME_HOUR</option>
-            <option value="day">CONFIG_NOTIFICATION_TIME_DAY</option>
-        </field>
-
-        <field name="notificationEmail" type="text" default=""
-               label="CONFIG_NOTIFICATION_EMAIL_LABEL"
-               description="CONFIG_NOTIFICATION_EMAIL_DESC"/>
     </fieldset>
 
     <fieldset name="backend" label="COM_ARS_CONFIG_BACKEND_HEADER_LABEL"
               description="COM_ARS_CONFIG_BACKEND_HEADER_DESC" addformpath="/administrator/components/com_ars/elements">
-        <field name="usestrapper" type="list" default="3"
-               label="COM_ARS_CONFIG_FRONTEND_USESTRAPPER_LABEL"
-               description="COM_ARS_CONFIG_FRONTEND_USESTRAPPER_DESC">
-            <option value="0">COM_ARS_CONFIG_FRONTEND_USESTRAPPER_NONE</option>
-            <option value="1">COM_ARS_CONFIG_FRONTEND_USESTRAPPER_FRONTEND</option>
-            <option value="2">COM_ARS_CONFIG_FRONTEND_USESTRAPPER_BACKEND</option>
-            <option value="3">COM_ARS_CONFIG_FRONTEND_USESTRAPPER_BOTH</option>
-        </field>
 
         <field name="graphswidth" type="list" default="8"
                label="COM_ARS_CONFIG_BACKEND_GRAPHSWIDTH_LABEL"
@@ -141,22 +123,28 @@
             name="s3integration"
             label="COM_ARS_CONFIG_S3INTEGRATION_HEADER_LABEL"
             description="COM_ARS_CONFIG_S3INTEGRATION_HEADER_DESC">
+
         <field name="s3access" type="text" default="" label="COM_ARS_CONFIG_S3_ACCESSKEY_LABEL"
                description="COM_ARS_CONFIG_S3_ACCESSKEY_DESC" size="50" filter="raw"/>
+
         <field name="s3secret" type="password" default="" label="COM_ARS_CONFIG_S3_SECRETKEY_LABEL"
                description="COM_ARS_CONFIG_S3_SECRETKEY_DESC" size="50" filter="raw"/>
+
         <field name="s3ssl" type="list" default="1" label="COM_ARS_CONFIG_S3_SSL_LABEL"
                description="COM_ARS_CONFIG_S3_SSL_DESC">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
+
         <field name="s3bucket" type="text" default="" label="COM_ARS_CONFIG_S3_BUCKET_LABEL"
                description="COM_ARS_CONFIG_S3_BUCKET_LABEL"/>
+
         <field name="s3method" type="list" default="s3" label="COM_ARS_CONFIG_S3_METHOD_LABEL"
                description="COM_ARS_CONFIG_S3_METHOD_DESC">
             <option value="s3">COM_ARS_CONFIG_S3_SIGNATURE_V2</option>
             <option value="v4">COM_ARS_CONFIG_S3_SIGNATURE_V4</option>
         </field>
+
         <field name="s3region" type="list" default="us-east-1"
                label="COM_ARS_CONFIG_S3_REGION_LABEL"
                description="COM_ARS_CONFIG_S3_REGION_DESC">
@@ -178,11 +166,13 @@
             <option value="sa-west-1">COM_ARS_CONFIG_S3_REGION_SAWEST1</option>
             <option value="sa-west-2">COM_ARS_CONFIG_S3_REGION_SAWEST2</option>
         </field>
+
         <field name="s3rrs" type="list" default="0" label="COM_ARS_CONFIG_S3_RRS_LABEL"
                description="COM_ARS_CONFIG_S3_RRS_DESC">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
+
         <field name="s3perms" type="list" default="private"
                label="COM_ARS_CONFIG_S3_PERMS_LABEL"
                description="COM_ARS_CONFIG_S3_PERMS_DESC">
@@ -193,6 +183,7 @@
             <option value="bucket-owner-read">COM_ARS_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_READ</option>
             <option value="bucket-owner-full-control">COM_ARS_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_FULL_CONTROL</option>
         </field>
+
         <field name="s3time" type="list" default="900"
                label="COM_ARS_CONFIG_S3_TIME_LABEL" desc="COM_ARS_CONFIG_S3_TIME_DESC">
             <option value="60">COM_ARS_CONFIG_S3_TIME_1MINUTE</option>
