@@ -11,5 +11,5 @@ defined('_JEXEC') or die;
 	</div>
 	@endif
 
-	@include('site:com_ars/Categories/generic', ['section' => 'bleedingedge', 'items' => $this->items['bleedingedge'], 'title' => 'ARS_CATEGORY_BLEEDINGEDGE'])
+	@include('site:com_ars/Categories/generic', ['section' => 'bleedingedge', 'title' => 'ARS_CATEGORY_BLEEDINGEDGE'])
 </div>

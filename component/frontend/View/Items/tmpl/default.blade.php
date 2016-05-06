@@ -21,7 +21,7 @@ $released   = \JFactory::getDate($this->release->created);
 	</div>
 	@endif
 
-	@include('site:com_ars/Releases/release', ['id' => $this->release->id, 'item' => $this->release, 'Itemid' => $this->Itemid, 'no_link' => true])
+	@include('site:com_ars/Items/release', ['id' => $this->release->id, 'item' => $this->release, 'Itemid' => $this->Itemid, 'no_link' => true])
 
 	<div class="ars-items">
 	@if(count($this->items))

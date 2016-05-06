@@ -18,20 +18,6 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 	public function onBeforeDispatch()
 	{
-		// Load Akeeba Strapper, if it is installed
-		\JLoader::import('joomla.filesystem.folder');
-
-		$useStrapper = ComponentParams::getParam('usestrapper', 3);
-
-		if (in_array($useStrapper, [2, 3]) && \JFolder::exists(JPATH_SITE . '/media/strapper30'))
-		{
-			@include_once JPATH_SITE . '/media/strapper30/strapper.php';
-
-			if (class_exists('\\AkeebaStrapper30', false))
-			{
-				\AkeebaStrapper30::bootstrap();
-			}
-		}
 		// Render submenus as drop-down navigation bars powered by Bootstrap
 		$this->container->renderer->setOption('linkbar_style', 'classic');
 
