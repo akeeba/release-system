@@ -105,7 +105,7 @@ class Breadcrumbs
 				$Itemid = empty($Itemid) ? '' : '&Itemid=' . $Itemid;
 
 				$rootName = $name;
-				$rootURI = JRoute::_('index.php?option=com_ars&view=category&id=' . $id . $Itemid);
+				$rootURI = JRoute::_('index.php?option=com_ars&view=Releases&category_id=' . $id . $Itemid);
 			}
 
 			if (!is_null($rootName) && isset($rootURI))
@@ -156,7 +156,7 @@ class Breadcrumbs
 				$Itemid = empty($Itemid) ? '' : '&Itemid=' . $Itemid;
 
 				$rootName = $name;
-				$rootURI = JRoute::_('index.php?option=com_ars&view=release&id=' . $id . $Itemid);
+				$rootURI = JRoute::_('index.php?option=com_ars&view=Items&release_id=' . $id . $Itemid);
 			}
 
 			if (isset($rootName) && isset($rootURI))
