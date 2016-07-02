@@ -1,7 +1,7 @@
 <?php
 /**
  * @package      akeebasubs
- * @copyright    Copyright (c)2010-2015 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright    Copyright (c)2010 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license      GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
  * @version      $Id$
  *
@@ -119,13 +119,6 @@ class Pkg_ArsInstallerScript
 		// so we have to get a bit tricky.
 		$this->installOrUpdateFOF($parent);
 
-		// Likewise, installing Akeeba Strapper may fail if there's a newer version installed. This would unfortunately
-		// cancel the installation of the entire package, so we have to get a bit tricky.
-		$this->installOrUpdateStapper($parent);
-
-		// Add strapper30 dependency for our package
-		$this->addDependency('strapper30', $this->packageName);
-
 		return true;
 	}
 
@@ -140,6 +133,9 @@ class Pkg_ArsInstallerScript
 	{
 		// Enable the extensions we need to install
 		$this->enableExtensions();
+
+		// Remove strapper30 dependency for our package (it's no longer necessary)
+		$this->removeDependency('strapper30', $this->packageName);
 
 		return true;
 	}
@@ -161,12 +157,6 @@ class Pkg_ArsInstallerScript
 
 		// Remove strapper30 dependency for our package
 		$this->removeDependency('strapper30', $this->packageName);
-
-		// First try to uninstall Akeeba Strapper. The uninstallation might fail if there are other extensions depending
-		// on it. That would cause the entire package uninstallation to fail, hence the need for special handling.
-		// This needs to be uninstalled before FOF since it depends on FOF. You can't uninstall the library before
-		// uninstalling its dependencies!
-		$this->uninstallStrapper($parent);
 
 		// Then try to uninstall the FOF library. The uninstallation might fail if there are other extensions depending
 		// on it. That would cause the entire package uninstallation to fail, hence the need for special handling.
@@ -257,70 +247,6 @@ class Pkg_ArsInstallerScript
 			// We can expect the uninstallation to fail if there are other extensions depending on the FOF library.
 		}
 	}
-
-	/**
-	 * Tries to install or update Akeeba Strapper.
-	 *
-	 * @param   \JInstallerAdapterPackage  $parent
-	 */
-	private function installOrUpdateStapper($parent)
-	{
-		// Get the path to the FOF package
-		$sourcePath = $parent->getParent()->getPath('source');
-		$sourcePackage = $sourcePath . '/file_strapper30.zip';
-
-		// Extract and install the package
-		$package = JInstallerHelper::unpack($sourcePackage);
-		$tmpInstaller  = new JInstaller;
-		$error = null;
-
-		try
-		{
-			$installResult = $tmpInstaller->install($package['dir']);
-		}
-		catch (\Exception $e)
-		{
-			$installResult = false;
-			$error = $e->getMessage();
-		}
-	}
-
-	/**
-	 * Try to uninstall Akeeba Strapper
-	 *
-	 * @param   JInstallerAdapterPackage  $parent
-	 */
-	private function uninstallStrapper($parent)
-	{
-		$tmpInstaller = new JInstaller;
-
-		$db = $parent->getParent()->getDbo();
-
-		$query = $db->getQuery(true)
-		            ->select('extension_id')
-		            ->from('#__extensions')
-		            ->where('type = ' . $db->quote('file'))
-		            ->where('element = ' . $db->quote('file_strapper30'));
-
-		$db->setQuery($query);
-		$id = $db->loadResult();
-
-		if (!$id)
-		{
-			return;
-		}
-
-		try
-		{
-			$tmpInstaller->uninstall('file', $id, 0);
-		}
-		catch (\Exception $e)
-		{
-			// We can expect the uninstallation to fail if there are other extensions depending on the Akeeba Strapper
-			// package.
-		}
-	}
-
 
 	/**
 	 * Enable modules and plugins after installing them

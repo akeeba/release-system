@@ -1,7 +1,7 @@
 <?php
 /**
  * package   AkeebaReleaseSystem
- * copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * license   GNU General Public License version 3, or later
  */
 
@@ -23,23 +23,33 @@ $options[] = JHtml::_('select.option', '', 'JALL');
 ?>
 
 <div class="alert alert-info">
-    @sprintf('COM_ARS_DLIDLABELS_MASTERDLID', Filter::myDownloadID()))
+    @sprintf('COM_ARS_DLIDLABELS_MASTERDLID', Filter::myDownloadID())
 </div>
 
 <form name="arsDownloadID" action="{{ htmlentities($formURI) }}" method="post">
     <input type="hidden" name="task" value="browse" />
 
     <div class="form form-inline form-search well well-small well-sm">
-        @lang('JSEARCH_FILTER_LABEL')
-        @jhtml('select.genericlist', $options, 'enabled', ['onclick' => 'this.form.submit()'], 'value', 'text', $this->getModel()->getState('enabled'), false, true)
+        <span class="form-group">
+            <label for="enabled">
+                @lang('JSEARCH_FILTER_LABEL')
+            </label>
+            @jhtml('select.genericlist', $options, 'enabled', ['onchange' => 'this.form.submit()', 'class' => 'form-control'], 'value', 'text', $this->getModel()->getState('enabled'), false, true)
+        </span>
 
-        <input type="text" name="label" value="{{ $this->getModel()->getState('label') }}"
-                placeholder="@lang('COM_ARS_DLIDLABELS_FIELD_LABEL')"
-                class="span4 search-query"/>
+        <span class="form-group">
+            <span class="input-group">
+                <input type="text" name="label" value="{{ $this->getModel()->getState('label') }}"
+                       placeholder="@lang('COM_ARS_DLIDLABELS_FIELD_LABEL')"
+                       class="span4 search-query form-control"/>
 
-        <button type="submit" class="btn">
-            <span class="icon icon-search"
-        </button>
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default">
+                        <span class="icon icon-search"></span>
+                    </button>
+                </span>
+            </span>
+        </span>
     </div>
 
     <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=add&' . JFactory::getSession()->getToken() . '=1&returnurl=' . $returnUrl) }}"
@@ -57,10 +67,10 @@ $options[] = JHtml::_('select.option', '', 'JALL');
         <thead>
             <tr>
                 <th>
-                    @lang('COM_ARS_DLIDLABELS_FIELD_LABEL')
+                    @lang('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID')
                 </th>
                 <th>
-                    @lang('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID')
+                    @lang('COM_ARS_DLIDLABELS_FIELD_LABEL')
                 </th>
                 <th>
                     @lang('JPUBLISHED')
@@ -104,7 +114,7 @@ $options[] = JHtml::_('select.option', '', 'JALL');
                     </a>
                     @unless($item->primary)
                     <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . JFactory::getSession()->getToken() . '=1&returnurl=' . $returnUrl) }}"
-                       class="btn btn-danger" title="@lang('COM_ARS_DLIDLABELS_FIELD_RESET')">
+                       class="btn btn-danger" title="@lang('COM_ARS_DLIDLABELS_FIELD_TRASH')">
                         <span class="icon icon-white icon-trash"></span>
                     </a>
                     @endunless

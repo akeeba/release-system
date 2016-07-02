@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -9,14 +9,28 @@ namespace Akeeba\ReleaseSystem\Admin\Helper;
 
 defined('_JEXEC') or die;
 
-if (!class_exists('Akeeba\\ARS\\Amazon\\Aws\\Autoloader'))
+if (!class_exists('Akeeba\\Engine\\Postproc\\Connector\\S3v4\\Connector'))
 {
-	require_once __DIR__ . '/../Amazon/Autoloader.php';
+	\FOF30\Autoloader\Autoloader::getInstance()->addMap(
+		'Akeeba\\Engine\\Postproc\\Connector\\S3v4\\', array(
+			realpath(__DIR__ . '/../vendor/akeeba/s3/src')
+		)
+	);
 }
 
-use Akeeba\ARS\Amazon\Aws\Common\Credentials\Credentials;
-use Akeeba\ARS\Amazon\Aws\S3\S3Client;
+if (!defined('AKEEBAENGINE'))
+{
+	define('AKEEBAENGINE', 1);
+}
 
+use Akeeba\Engine\Postproc\Connector\S3v4\Configuration;
+use Akeeba\Engine\Postproc\Connector\S3v4\Connector;
+use Akeeba\Engine\Postproc\Connector\S3v4\Input;
+
+/**
+ * This class is an abstraction layer to the actual Amazon S3 API implementation we are using. It allows us to shield
+ * the ARS code from any necessary changes to the underlying API client implementation.
+ */
 class AmazonS3 extends \JObject
 {
 	// ACL flags
@@ -95,35 +109,36 @@ class AmazonS3 extends \JObject
 	/**
 	 * Public constructor
 	 */
-	function __construct()
+	function __construct($properties = null)
 	{
+		parent::__construct($properties);
+
 		// Prepare the credentials object
-		$amazonCredentials = new Credentials(
+		$s3Configuration = new Configuration(
 			self::$accessKey,
-			self::$secretKey
+			self::$secretKey,
+			self::$signatureMethod,
+			self::$region
 		);
+
+		$s3Configuration->setSSL(self::$useSSL);
 
 		// Prepare the client options array. See http://docs.aws.amazon.com/aws-sdk-php/guide/latest/configuration.html#client-configuration-options
 		$clientOptions = array(
-			'credentials' => $amazonCredentials,
+			'credentials' => $s3Configuration,
 			'scheme'      => self::$useSSL ? 'https' : 'http',
 			'signature'   => self::$signatureMethod,
 			'region'      => self::$region,
 		);
 
 		// If SSL is not enabled you must not provide the CA root file.
-		if (self::$useSSL)
+		if (self::$useSSL && !defined('AKEEBA_CACERT_PEM'))
 		{
-			$clientOptions['ssl.certificate_authority'] =
-				realpath(JPATH_LIBRARIES . '/fof30/Download/Adapter/cacert.pem');
-		}
-		else
-		{
-			$clientOptions['ssl.certificate_authority'] = false;
+			define('AKEEBA_CACERT_PEM', JPATH_LIBRARIES . '/fof30/Download/Adapter/cacert.pem');
 		}
 
 		// Create the S3 client instance
-		$this->s3Client = S3Client::factory($clientOptions);
+		$this->s3Client = new Connector($s3Configuration);
 	}
 
 	/**
@@ -178,25 +193,27 @@ class AmazonS3 extends \JObject
 	 */
 	public function putObject($fileOrContent, $path, $rawContent = false)
 	{
-		$uploadOperation = array(
-			'Bucket'       => self::$bucket,
-			'Key'          => $path,
-			'SourceFile'   => $fileOrContent,
-			'ACL'          => self::$acl,
-			'StorageClass' => self::$rrs ? 'REDUCED_REDUNDANCY' : 'STANDARD'
-		);
-
 		if ($rawContent)
 		{
-			// Ref: http://docs.aws.amazon.com/aws-sdk-php/guide/latest/service-s3.html
+			$input = Input::createFromData($fileOrContent);
+		}
+		else
+		{
+			$input = Input::createFromFile($fileOrContent);
+		}
 
-			unset($uploadOperation['SourceFile']);
-			$uploadOperation['Body'] = $fileOrContent;
+		$headers = array(
+			'X-Amz-Storage-Class' => 'STANDARD'
+		);
+
+		if (self::$rrs)
+		{
+			$headers['X-Amz-Storage-Class'] = 'REDUCED_REDUNDANCY';
 		}
 
 		try
 		{
-			$this->s3Client->putObject($uploadOperation);
+			$this->s3Client->putObject($input, self::$bucket, $path, self::$acl);
 		}
 		catch (\Exception $e)
 		{
@@ -219,12 +236,7 @@ class AmazonS3 extends \JObject
 	{
 		try
 		{
-			$result = $this->s3Client->getObject(array(
-				'Bucket' => self::$bucket,
-				'Key'    => $path
-			));
-
-			return $result['Body'];
+			return $this->s3Client->getObject(self::$bucket, $path);
 		}
 		catch (\Exception $e)
 		{
@@ -245,10 +257,7 @@ class AmazonS3 extends \JObject
 	{
 		try
 		{
-			$result = $this->s3Client->deleteObject(array(
-				'Bucket' => self::$bucket,
-				'Key'    => $path
-			));
+			$this->s3Client->deleteObject(self::$bucket, $path);
 
 			return true;
 		}
@@ -275,34 +284,19 @@ class AmazonS3 extends \JObject
 	*/
 	public function getBucket($bucket = null, $prefix = null, $marker = null, $maxKeys = null, $delimiter = null, $returnCommonPrefixes = false)
 	{
-		$operation = array(
-			'Bucket' => empty($bucket) ? self::$bucket : $bucket
-		);
-
-
-		if ($prefix !== null && $prefix !== '')
+		if (empty($bucket))
 		{
-			$operation['Prefix'] = $prefix;
+			$bucket = self::$bucket;
 		}
 
-		if ($marker !== null && $marker !== '')
+		if (empty($delimiter))
 		{
-			$operation['Marker'] = $marker;
-		}
-
-		if ($maxKeys !== null && $maxKeys !== '')
-		{
-			$operation['MaxKeys'] = $maxKeys;
-		}
-
-		if ($delimiter !== null && $delimiter !== '')
-		{
-			$operation['Delimiter'] = $delimiter;
+			$delimiter = '/';
 		}
 
 		try
 		{
-			$opResult = $this->s3Client->listObjects($operation);
+			return $this->s3Client->getBucket($bucket, $prefix, $marker, $maxKeys, $delimiter, $returnCommonPrefixes);
 		}
 		catch (\Exception $e)
 		{
@@ -310,91 +304,6 @@ class AmazonS3 extends \JObject
 
 			return false;
 		}
-
-		$results    = array();
-		$nextMarker = null;
-
-		if ((isset($opResult['Contents'])) && !empty($opResult['Contents']))
-		{
-			foreach ($opResult['Contents'] as $c)
-			{
-				$results[ (string)$c['Key'] ] = array(
-					'name' => (string)$c['Key'],
-					'time' => strtotime((string)$c['LastModified']),
-					'size' => (int)$c['Size'],
-					'hash' => substr((string)$c['ETag'], 1, -1)
-				);
-				$nextMarker                   = (string)$c['Key'];
-			}
-		}
-
-		if ($returnCommonPrefixes && isset($opResult['CommonPrefixes']))
-		{
-			foreach ($opResult['CommonPrefixes'] as $c)
-			{
-				$results[ (string)$c['Prefix'] ] = array('prefix' => (string)$c['Prefix']);
-			}
-		}
-
-		if (!$opResult['IsTruncated'])
-		{
-			return $results;
-		}
-
-		if (isset($opResult['NextMarker']))
-		{
-			$nextMarker = (string)$opResult['NextMarker'];
-		}
-
-		// Loop through truncated results if maxKeys isn't specified
-		if ($maxKeys == null && $nextMarker !== null)
-		{
-			do
-			{
-				$operation['Marker'] = $nextMarker;
-
-				try
-				{
-					$opResult = $this->s3Client->listObjects($operation);
-				}
-				catch (\Exception $e)
-				{
-					$opResult = false;
-
-					continue;
-				}
-
-				if (isset($opResult['Contents']) && !empty($opResult['Contents']))
-				{
-					foreach ($opResult['Contents'] as $c)
-					{
-						$results[ (string)$c['Key'] ] = array(
-							'name' => (string)$c['Key'],
-							'time' => strtotime((string)$c['LastModified']),
-							'size' => (int)$c['Size'],
-							'hash' => substr((string)$c['ETag'], 1, -1)
-						);
-						$nextMarker                   = (string)$c['Key'];
-					}
-				}
-
-				if ($returnCommonPrefixes && isset($opResult['CommonPrefixes']))
-				{
-					foreach ($opResult['CommonPrefixes'] as $c)
-					{
-						$results[ (string)$c['Prefix'] ] = array('prefix' => (string)$c['Prefix']);
-					}
-				}
-
-				if (isset($opResult['NextMarker']))
-				{
-					$nextMarker = (string)$opResult['NextMarker'];
-				}
-			}
-			while ($opResult !== false && (string)$opResult['IsTruncated']);
-		}
-
-		return $results;
 	}
 
 	/**
@@ -406,32 +315,6 @@ class AmazonS3 extends \JObject
 	 */
 	public function getAuthenticatedURL($path)
 	{
-		// Pre-signed URLs need to use the old S3 signature method. Therefore we need a new S3Client object.
-
-		$amazonCredentials = new Credentials(
-			self::$accessKey,
-			self::$secretKey
-		);
-
-		$clientOptions = array(
-			'credentials' => $amazonCredentials,
-			'scheme'      => self::$useSSL ? 'https' : 'http',
-			'signature'   => 's3',
-		);
-
-		if (self::$useSSL)
-		{
-			$clientOptions['ssl.certificate_authority'] =
-				realpath(JPATH_LIBRARIES . '/fof30/Download/Adapter/cacert.pem');
-		}
-		else
-		{
-			$clientOptions['ssl.certificate_authority'] = false;
-		}
-
-		// Create the S3 client instance
-		$s3Client = S3Client::factory($clientOptions);
-
-		return $s3Client->getObjectUrl(self::$bucket, $path, '+' . self::$timeForSignedRequests . ' seconds');
+		return $this->s3Client->getAuthenticatedURL(self::$bucket, $path, self::$timeForSignedRequests);
 	}
 }

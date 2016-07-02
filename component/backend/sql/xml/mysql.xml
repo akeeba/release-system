@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   @package   AkeebaReleaseSystem
-  @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+  @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
   @license   GNU General Public License version 3, or later
 -->
 <schema>
@@ -33,7 +33,7 @@ CREATE TABLE `#__ars_vgroups` (
     `ordering` bigint(20) NOT NULL DEFAULT '0',
     `published` int(11) NOT NULL DEFAULT '1',
     PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
         </action>
 
@@ -63,7 +63,7 @@ CREATE TABLE `#__ars_categories` (
 	`language` char(7) NOT NULL DEFAULT '*',
     PRIMARY KEY (`id`),
 	KEY `#___ars_categories_published` (`published`)
-) DEFAULT CHARACTER SET utf8
+) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
         </action>
 
@@ -95,7 +95,7 @@ CREATE TABLE `#__ars_releases` (
 	PRIMARY KEY `id` (`id`),
 	KEY `#__ars_releases_category_id` (`category_id`),
 	KEY `#__ars_releases_published` (`published`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
         </action>
 
@@ -134,7 +134,7 @@ CREATE TABLE `#__ars_items` (
 	KEY `#__ars_items_release_id` (`release_id`),
 	KEY `#__ars_items_updatestream` (`updatestream`),
 	KEY `#__ars_items_published` (`published`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
         </action>
 
@@ -155,7 +155,7 @@ CREATE TABLE `#__ars_log` (
 	KEY `ars_log_authorized` (`authorized`),
 	KEY `ars_log_itemid` (`item_id`),
 	KEY `ars_log_userid` (`user_id`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
         </action>
 
@@ -183,7 +183,7 @@ CREATE TABLE `#__ars_updatestreams` (
 	PRIMARY KEY `id` (`id`),
 	KEY `#__ars_updatestreams_published` (`published`),
 	KEY `#__ars_updatestreams_jedid` (`jedid`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
         </action>
 
@@ -199,7 +199,7 @@ CREATE TABLE `#__ars_autoitemdesc` (
 	`environments` varchar(100) DEFAULT NULL,
 	`published` int(11) NOT NULL DEFAULT '1',
 	PRIMARY KEY `id` (`id`)
-) DEFAULT CHARACTER SET utf8;
+) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
         </action>
 
@@ -212,7 +212,7 @@ CREATE TABLE `#__ars_environments` (
   `xmltitle` varchar(20) NOT NULL DEFAULT '1.0',
   `icon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8;
+) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
         </action>
 
@@ -231,30 +231,85 @@ CREATE TABLE `#__ars_dlidlabels` (
   `modified_by` bigint(20) NOT NULL DEFAULT '0',
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`ars_dlidlabel_id`)
-) DEFAULT CHARSET=utf8;
+) DEFAULT COLLATE utf8_general_ci;
+            ]]></query>
+            <query>
+                INSERT INTO `#__ars_environments` (`id`, `title`, `xmltitle`, `icon`)
+                VALUES
+                (1, 'Joomla! 1.5', 'joomla/1.5', 'ars-joomla15.png'),
+                (2, 'Joomla! 1.6', 'joomla/1.6', 'ars-joomla16.png'),
+                (3, 'Joomla! 1.7', 'joomla/1.7', 'ars-joomla17.png'),
+                (4, 'Joomla! 2.5', 'joomla/2.5', 'ars-joomla25.png'),
+                (5, 'Joomla! 3.x', 'joomla/3', 'ars-joomla3x.png'),
+                (6, 'Joomla! 3.0', 'joomla/3.0', 'ars-joomla30.png'),
+                (7, 'Joomla! 3.1', 'joomla/3.1', 'ars-joomla31.png'),
+                (8, 'Joomla! 3.2', 'joomla/3.2', 'ars-joomla32.png'),
+                (9, 'Joomla! 3.3', 'joomla/3.3', 'ars-joomla33.png'),
+                (10, 'Joomla! 3.4', 'joomla/3.4', 'ars-joomla34.png'),
+                (11, 'Joomla! 3.5', 'joomla/3.5', 'ars-joomla35.png'),
+                (12, 'Linux (32-bit)', 'linux/x86', 'ars-linux32.png'),
+                (13, 'Linux (64-bit)', 'linux/x86-64', 'ars-linux64.png'),
+                (14, 'Mac OS X', 'macosx/10', 'ars-macosx.png'),
+                (15, 'WHMCS 4.5.2', 'whmcs/4.5.2', 'ars-whmcs452.png'),
+                (16, 'Windows 7', 'win/7', 'ars-win7.png'),
+                (17, 'Windows XP', 'win/xp', 'ars-winxp.png'),
+                (18, 'WordPress 3.2+', 'wordpress/3', 'ars-wp32plus.png'),
+                (19, 'WordPress 4.x', 'wordpress/4', 'ars-wordpress.png'),
+                (20, 'ePub', 'epub/3.0', 'epub.png'),
+                (21, 'PDF', 'pdf/1.5', 'pdf.png'),
+                (22, 'PHP 5.2', 'php/5.2', 'php-52x.png'),
+                (23, 'PHP 5.3', 'php/5.3', 'php-53x.png'),
+                (24, 'PHP 5.4', 'php/5.4', 'php-54x.png'),
+                (25, 'PHP 5.5', 'php/5.5', 'php-55x.png'),
+                (26, 'PHP 5.6', 'php/5.6', 'php-56x.png'),
+                (27, 'PHP 7.0', 'php/7.0', 'php-70x.png');
+            </query>
+        </action>
+
+        <action table="#__ars_items" canfail="1">
+            <condition type="index" value="#__ars_items_release_id" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_items` ADD INDEX `#__ars_items_release_id` (release_id);
             ]]></query>
         </action>
 
         <action table="#__ars_items" canfail="1">
-            <condition type="true" />
-            <query><![CDATA[
-ALTER TABLE `#__ars_items` ADD INDEX `#__ars_items_release_id` (release_id);
-            ]]></query>
+            <condition type="index" value="#__ars_items_updatestream" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_items` ADD INDEX `#__ars_items_updatestream` (updatestream);
             ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="1">
+            <condition type="index" value="#__ars_items_published" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_items` ADD INDEX `#__ars_items_published` (published);
             ]]></query>
+        </action>
+
+        <action table="#__ars_releases" canfail="1">
+            <condition type="index" value="#__ars_releases_category_id" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_releases` ADD INDEX `#__ars_releases_category_id` (category_id);
             ]]></query>
+        </action>
+
+        <action table="#__ars_releases" canfail="1">
+            <condition type="index" value="#__ars_releases_published" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_releases` ADD INDEX `#__ars_releases_published` (published);
             ]]></query>
+        </action>
+
+        <action table="#__ars_categories" canfail="1">
+            <condition type="index" value="#__ars_categories_published" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_categories` ADD INDEX `#__ars_categories_published` (published);
             ]]></query>
+        </action>
+
+        <action table="#__ars_updatestreams" canfail="1">
+            <condition type="index" value="#__ars_updatestreams_published" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_updatestreams` ADD INDEX `#__ars_updatestreams_published` (published);
             ]]></query>

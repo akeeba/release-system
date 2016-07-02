@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -92,7 +92,9 @@ class Items extends DataModel
 	use Mixin\ImplodedArrays;
 	use Mixin\Assertions;
 	use Mixin\JsonData;
-	use Mixin\VersionedCopy;
+	use Mixin\VersionedCopy {
+		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
+	}
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
@@ -257,6 +259,21 @@ class Items extends DataModel
 				$categories = [-1];
 			}
 
+			// We have a category filter.
+			if (!empty($fltCategory))
+			{
+				// If the category exists in our list of allowed categories, filter by it
+				if (in_array($fltCategory, $categories))
+				{
+					$categories = [$fltCategory];
+				}
+				// Otherwise show nothing (selected category is unreachable)
+				else
+				{
+					$categories = [-1];
+				}
+			}
+
 			$categories = array_map(array($db, 'quote'), $categories);
 
 			$this->whereHas('release', function(\JDatabaseQuery $subQuery) use($db, $access_levels, $categories) {
@@ -286,6 +303,20 @@ class Items extends DataModel
 				$categories = [-1];
 			}
 
+			if (!empty($fltCategory))
+			{
+				// If the category exists in our list of allowed categories, filter by it
+				if (in_array($fltCategory, $categories))
+				{
+					$categories = [$fltCategory];
+				}
+				// Otherwise show nothing (selected category is unreachable)
+				else
+				{
+					$categories = [-1];
+				}
+			}
+
 			$this->whereHas('release', function(\JDatabaseQuery $subQuery) use($db, $fltLanguage, $categories) {
 				$categories = array_map(array($db, 'quote'), $categories);
 
@@ -310,6 +341,20 @@ class Items extends DataModel
 				$categories = [-1];
 			}
 
+			if (!empty($fltCategory))
+			{
+				// If the category exists in our list of allowed categories, filter by it
+				if (in_array($fltCategory, $categories))
+				{
+					$categories = [$fltCategory];
+				}
+				// Otherwise show nothing (selected category is unreachable)
+				else
+				{
+					$categories = [-1];
+				}
+			}
+
 			$this->whereHas('release', function(\JDatabaseQuery $subQuery) use($db, $fltLanguage2, $categories) {
 				$categories = array_map(array($db, 'quote'), $categories);
 
@@ -317,6 +362,12 @@ class Items extends DataModel
 				$subQuery->where($db->qn('category_id') . ' IN (' . implode(',', $categories) . ')');
 			});
 		}
+
+		// Default ordering ID descending (latest created release on top)
+		$filterOrder = $this->getState('filter_order', 'id');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'DESC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
 
 		// Order filtering
 		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
@@ -487,6 +538,11 @@ class Items extends DataModel
 		}
 
 		// Added environment ID
+		if (empty($this->environments) && !empty($auto->environments))
+		{
+			$this->environments = explode(',', $auto->environments);
+		}
+
 		if (!empty($this->environments) && is_array($this->environments))
 		{
 			// Filter out empty environments
@@ -707,7 +763,7 @@ class Items extends DataModel
 						else
 						{
 							// Get a signed URL
-							$s3 = Amazons3::getInstance();
+							$s3 = AmazonS3::getInstance();
 							$url = $s3->getAuthenticatedURL(rtrim(substr($folder, 5), '/') . '/' . ltrim($filename, '/'));
 						}
 					}
@@ -843,6 +899,20 @@ class Items extends DataModel
 	}
 
 	/**
+	 * Runs before copying an Item
+	 *
+	 * @see  Releases::onBeforeCopy  for the concept
+	 *
+	 * @return  void
+	 */
+	protected function onBeforeCopy()
+	{
+		$this->onBeforeCopyVersioned();
+
+		$this->enabled = false;
+	}
+
+	/**
 	 * Reorders the entire releases array on inserting a new object and sets the current ordering to 1
 	 *
 	 * @param   \stdClass  $dataObject
@@ -937,7 +1007,7 @@ class Items extends DataModel
 	public function getFilesOptions($release_id, $item_id = 0)
 	{
 		$options   = array();
-		$options[] = JHTML::_('select.option', '', '- ' . JText::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
+		$options[] = JHtml::_('select.option', '', '- ' . JText::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
 
 		// Try to figure out a directory
 		$directory = null;
@@ -1046,7 +1116,7 @@ class Items extends DataModel
 
 		if ($useS3)
 		{
-			$s3       = Amazons3::getInstance();
+			$s3       = AmazonS3::getInstance();
 			$allFiles = $s3->getBucket('', $directory, null, null, null, true);
 
 			if (!empty($allFiles))

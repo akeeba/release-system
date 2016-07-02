@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -80,6 +80,14 @@ class VisualGroups extends DataModel
 		$this->addBehaviour('Filters');
 		$this->addBehaviour('Created');
 		$this->addBehaviour('Modified');
+	}
+
+	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	{
+		$filterOrder = $this->getState('filter_order', 'ordering');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'ASC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
 	}
 
 	/**

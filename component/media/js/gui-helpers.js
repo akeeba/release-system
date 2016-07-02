@@ -162,11 +162,11 @@ return{defaults:defaults,add:add,create:create,cache:cache,abort:abort,clear:cle
 
 /*!
  * jQuery blockUI plugin
- * Version 2.66.0-2013.10.09
+ * Version 2.66.0-2016.10.09
  * Requires jQuery v1.7 or later
  *
  * Examples at: http://malsup.com/jquery/block/
- * Copyright (c) 2007-2013 M. Alsup
+ * Copyright (c) 2007-2016 M. Alsup
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -19,13 +19,15 @@ defined('_JEXEC') or die();
 
 abstract class Filter
 {
-	/**
-	 * Used to filter a list by subscription levels
-	 *
-	 * @param   DataModel  $source  The source item to check whether it should be included in the list
-	 *
-	 * @return  bool  True if we should add it to the list, false otherwise
-	 */
+    /**
+     * Used to filter a list by subscription levels
+     *
+     * @param   DataModel   $source                 The source item to check whether it should be included in the list
+     * @param   bool        $displayUnauthorized    Do we want to display such item to unauthorized users, too?
+     * @param   null        $filterByViewLevels     View levels of the user
+     *
+     * @return  bool True if we should add it to the list, false otherwise
+     */
 	public static function filterItem($source, $displayUnauthorized = false, $filterByViewLevels = null)
 	{
 		static $myGroups = null;

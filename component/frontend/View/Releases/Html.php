@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -14,6 +14,7 @@ use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Title;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
+use Akeeba\ReleaseSystem\Site\Model\Items;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Model\DataModel\Collection;
 use FOF30\View\View as BaseView;
@@ -63,15 +64,28 @@ class Html extends BaseView
 		});
 
 		// Add breadcrumbs
-		$repoType = $this->items->first()->category->type;
+		/** @var Items $firstItem */
+		$firstItem = $this->items->first();
+
+		if (empty($firstItem))
+		{
+			$category_id = $model->getState('category', 0);
+			/** @var Items $category */
+			$category = $this->container->factory->model('Items');
+			$category->load($category_id);
+		}
+		else
+		{
+			$category = $firstItem->category;
+		}
+
+		$repoType  = $category->type;
 		Breadcrumbs::addRepositoryRoot($repoType);
-		Breadcrumbs::addCategory($this->items->first()->category->id, $this->items->first()->category->title);
+		Breadcrumbs::addCategory($category->id, $category->title);
 
 		// Add RSS links
 		/** @var \JApplicationSite $app */
 		$app = \JFactory::getApplication();
-		/** @var \JRegistry $params */
-		$params = $app->getParams('com_ars');
 
 		// Get the ordering
 		$this->order = $model->getState('filter_order', 'id', 'cmd');

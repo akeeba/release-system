@@ -1,0 +1,463 @@
+Version 3.1.2
+================================================================================
+~ Better default filtering in back-end views
+# [MEDIUM] Latest releases view would always show unauthorized links
+
+Version 3.1.1
+================================================================================
+! Installation errors
+
+Version 3.1.0
+================================================================================
++ UTF8MB4 support for our own database tables (requires Joomla! 3.5 and a PHP/MySQL environment with UTF8MB4 support)
+~ gh-97 Replacing Amazon AWS SDK with own S3 integration
+# [HIGH] Cannot assing an S3 folder to a Category if the folder does not contain any files
+# [HIGH] Cannot edit a Category when the directory it points to no longer exists
+# [MEDIUM] gh-95 Cannot filter front-end Normal and Category views by visual groups
+# [MEDIUM] gh-96 Cannot filter front-end Latest view by visual groups and/or minimum stability
+
+Version 3.0.5
+================================================================================
+# [MEDIUM] Inconsistent caching results in front-end could display wrong data when Joomla! caching is enabled
+# [LOW] Extra closing parantheses character printed in the Download ID view in the front-end
+# [LOW] Front-end ARS Item editor button: no filters are visible
+# [LOW] Front-end ARS Item editor button: cannot use pagination
+
+Version 3.0.4
+================================================================================
+! Joomla! 3.5 breaks CLI scripts, workaround applied
+# [HIGH] The ARS editor button plugin was broken in the front-end of the site
+# [HIGH] The wording of the missing Category menu message is unhelpful
+# [HIGH] The download update stream was broken
+# [HIGH] Links generated in the Master XML Update Stream result in an error page
+# [MEDIUM] The JED update stream was broken
+# [LOW] PHP Notice in the front-end when a Release contains no Items
+# [LOW] PHP Notice in the front-end when a Category contains no Releases# [LOW] PHP Notice in the front-end when a Category contains no Releases
+# [LOW] You can't see the Hits column in the Items and Releases views' grid display
+# [LOW] The XML update stream was broken if not platform version was specified
+# [LOW] Fixed showing link to unauthorized users while using the "Latest Release" plugin
+~ Disable CLI script workaround necessary only under Joomla! 3.4.7 on all other versions of Joomla!
+
+Version 3.0.3
+================================================================================
+# [HIGH] Joomla! 3.4.7 has a major bug which may prevent CLI (CRON) scripts from executing
+
+Version 3.0.2
+================================================================================
++ Added warning if Categories menu entry is missing
++ XML Update Streams now include PHP version compatibility in ars-phpcompat tags under each update tag.
+# [HIGH] gh-91 Latest Releases view shows incorrect links for releases
+# [LOW] Mixed up table labels in the front end Add-on Download IDs page
+# [LOW] Compatibility badges not shown in the Items view in the front-end
+# [LOW] Copying a Release does not make it disabled by default
+# [LOW] Copying a Release does not copy its Items
+# [LOW] Copying an Item does not make it disabled by default
+# [LOW] INI update streams didn't display the environments list correctly
+# [LOW] Wrong paths to CSS files caused them to not get loaded
+
+Version 3.0.1
+================================================================================
++ Copy button in the Automatic Descriptions page
+# [HIGH] Environments from Automatic Descriptions are not applied to new Items
+# [HIGH] Update streams did not have the correct environment version encoded in them
+# [HIGH] Update stream content was syntactically invalid XML
+# [HIGH] gh-86 Children pages of menu items defaulting to 'raw' format when SEF URL extensions are turned off (h/t @mbabker and @wilsonge)
+# [HIGH] gh-87 Latest releases displaying oldest, instead of latest, releases (h/t @mbabker)
+# [MEDIUM] The CLI auto-update script throws a fatal error
+# [LOW] Categories view: couldn't filter by Visual Group
+# [LOW] Releases view: couldn't filter by Category
+# [LOW] A fresh installation didn't install any environments
+# [LOW] Could not copy update streams
+
+Version 3.0.0
+================================================================================
+# [HIGH] Latest downloads module displays wrong list of items
+# [HIGH] Cannot upload .zip files under Joomla! 3.4.4+
+# [HIGH] Creating a front-end Category view results in error
+
+Version 3.0.0.b1
+================================================================================
+~ Rewritten with FOF 3.0, 30% faster on average
+- RSS and Atom feeds were removed
+
+Version 2.5.1
+================================================================================
++ Copy button in the Update Streams page
+# [HIGH] S3 authenticated downloads would fail if you're using the new v4 Amazon S3 API
+
+Version 2.5.0
+================================================================================
+- gh-69 Remove Joomla! 2.5 support
+- gh-68 Remove Import from JoomlaCode feature (JoomlaCode.org is shutting down)
+- Remove obsolete JSON compatibility library
++ Check for obsolete PHP versions and printing a warning
++ Apply Chosen (smart drop-downs and multiselects) throughout the backend
+# [MEDIUM] client value in update stream was wrong (thanks Johan)
+# [LOW] Bad styling of back button under Joomla! 3.x
+
+Version 2.4.4
+================================================================================
++ Support for Joomla Extension Directory's "Remote XML" feature, see http://dev.extensions.joomla.org/component/content/article?id=10
+
+Version 2.4.3
+================================================================================
+~ Changed the .htaccess files to be compatible with Apache 2.4
+~ Some servers seem to try and load the AkeebaUsagestats class twice
+~ Removing references to JParameter (it was removed in Joomla! 3.4 alpha)
+~ Removing references to assign() in views (deprecated in Joomla! 3)
++ Adding support for Redirect URL for Unauthorised to Items, instead of just Categories and Releases
+# [LOW] The ID of the item is not saved in the log when the authorisation fails (user has no access)
+# [LOW] Additional Download ID page was showing incorrect data when Joomla cache was on
+# [LOW] Prevent 403 errors when an user tries to publish/unpublish/delete a Download ID and doesn't select a record
+# [HIGH] Intermittent issue with Bleeding Edge releases resulting in fatal errors
+# [HIGH] Wrong require_once causing problems with content plugin
+
+Version 2.4.2
+================================================================================
+! Reverting a user-submitted "bugfix" which wrecked havoc to Download IDs.
+
+Version 2.4.1
+================================================================================
++ Anonymous reporting of PHP, MySQL and CMS versions (opt-out through the options)
+~ Even better workaround for very badly written system plugins which output Javascript without a trailing semicolon and/or newline, leading to Javascript errors. This is not a bug in our software, it's a bug in those badly written plugins and WE have to work around THEIR bad code!
+~ Using an HTTP 303 header for Link type items instead of 302
+# [LOW] ARS link plugin: filtering the list made it impossible to select an item (thanks @Bakual)
+
+Version 2.4.0
+================================================================================
+- Removing PostgreSQL support (Joomla!'s PostgreSQL support is broken for almost a year)
++ Improved Download ID management: Download IDs no longer change when the password is changed / reset / rehashed
+
+Version 2.3.5
+================================================================================
+! CLI scripts were not being copied over
+# [HIGH] All items were unpublished when an item was not found in a Bleeding edge category
+# [LOW] The Bleeding Edge maturity plugin was broken after applying "Bleeding edge releases with dots/spaces in the folder gave a 404 error"
+# [LOW] Release Maker may return an error 500 when saving / updating a release
+
+Version 2.3.4
+================================================================================
++ Show update information in the component's control panel page
++ Allow the user to forcibly reload the update information from the component's control panel page
++ Database table installation, uninstallation and update is now handled by our own code instead of the unreliable JInstaller code
++ Automatically repair the database tables in case of an update going wrong
++ Search box in Update Streams allows you to filter streams by name
+~ Significant performance improvement in the Latest Releases content plugin when using Akeeba Subscriptions
+# [MEDIUM] Blank page or 400 error message after updating from 2.3.2 or lower using Live Update
+# [MEDIUM] Bleeding edge releases with dots/spaces in the folder gave a 404 error
+# [MEDIUM] Updating the GeoIP database throw a fatal error when the GeoIP library has not been loaded
+# [LOW] Searching by title in Automatic Item Descriptions leads to a SQL error
+
+Version 2.3.3
+================================================================================
++ Added sh404SEF plugin to create SEF url with that component
++ Automatic ordering of new releases and items towards the top to make it easier to reorder then using Joomla! 3's very buggy drag'n'drop reordering feature
+~ CSRF protection for GeoIP update
+~ Only show a reminder to update the GeoIP database if it's older than two weeks
+~ AJAX ordering now shows the ordering in a textbox, to faciliate ordering without much frustration in Joomla! 3
+~ Now using the built-in Joomla! extensions updater instead of Live Update to deliver updates
+# [MEDIUM] Wrong link for GeoIP update
+# [MEDIUM] Download link in update stream always appends &dummy=my.zip (thanks Francesco & Hayden)
+# [LOW] Fixed page headings
+# [LOW] gh-25 Fixed ordering under Joomla! 3.x
+# [LOW] ARS Latest Release plugin: fixed broken link (stream_link and installfromweb)
+# [LOW] RSS feeds broken for Category and Release view in some circumstances
+# [LOW] frontend.css was not always loaded in the front-end
+# [LOW] Update XML <name> tag should have the name of the extension, not the URL alias
+
+Version 2.3.2
+================================================================================
+~ Now using a separate plugin for GeoIP features
+# [HIGH] The Install from Web integration is broken
+# [HIGH] The master XML update stream didn't have a closing tag
+# [LOW] MD5 and SHA1 sums are calculated even if they are filled in but the file size is not specified
+# [LOW] Sometimes the edit URL of an add-on download ID in the front-end was wrong
+
+Version 2.3.1
+================================================================================
+# [HIGH] The Install from Web integration plugin would not get installed with the component
+
+Version 2.3.0
+================================================================================
++ Option to show unauthorised links
++ Download update stream URL: download the latest item made available in an update stream
++ Support for the Install from Web feature in Joomla! 3.2
+~ Try very hard not to load GeoIP if another extension loads it before us (we can't guarantee that crappy code in other extensions will not cause a site crash; we can only make sure OUR code doesn't cause such a crash)
+~ Improved back-end display in Joomla! 3
+# [LOW] "Failed to delete temp.dat" message when downloading a remote file failed during item creation
+
+Version 2.2.1
+================================================================================
+! Access Levels not respected during download
+! An annoying –but harmless– fatal error was shown on upgrade from older versions
+
+Version 2.2.0
+================================================================================
++ The front-end interface was rewritten to make use of Bootstrap, like all of our software
++ #99 Visual Groups now have an optional description
+~ Overall performance boost in the front-end
+# [MEDIUM] Caching worked erratically
+# [LOW] Pagination issue in the front-end when mixing items of different access levels
+# [LOW] Short open tag leads to stats graph not working on some servers
+
+Version 2.1.5
+================================================================================
+# [HIGH] Access control of items wouldn't take account the access of the release and category
+# [LOW] ARS Latest Release plugin: the double quote is no longer a valid character in Joomla!, changed to single quote
+# [LOW] Misleading default text provided by the Joomla! core in the access level selection drop-down in Joomla! 3.0
+# [LOW] Using a category ID was impossible in the ARS latest release content plugin
+# [LOW] Pre-installation script would run the wrong SQL files on upgrade (normally not causing a problem, but still it's not the intended behaviour)
+# [LOW] "No access URL" not working
+
+Version 2.1.4
+================================================================================
+# [HIGH] Some servers throw a fatal error in the Categories controller
+# [HIGH] Several bugs in the add-on download IDs feature. Now that feature actually works.
+# [MEDIUM] Issues with multilingual sites
+# [MEDIUM] 403 when cancelling an add-on Download ID creation
+# [LOW] Add-on Download IDs not working when put in submenus of another ARS menu item due to Joomla! routing issues
+# [LOW] Could not access XML update stream
+# [LOW] Notices in the front-end release view
+
+Version 2.1.3
+================================================================================
+# [HIGH] Internal server error on ancient versions of PHP 5.3 with broken late static binding implementations
+# [LOW] Notice in the Latest Releases page
+
+Version 2.1.2
+================================================================================
+# [HIGH] The component's menu item was removed if the installation couldn't proceed (too low PHP or Joomla! version)
+# [HIGH] Joomla! doesn't run the database upgrade scripts when upgrading from a very old version or when the #__schemas entry is somehow missing
+# [HIGH] After a failed installation, even if the subsequent installation is reported successful Joomla! does not install the database tables causing a broken installation
+# [MEDIUM] The reason why the installation was aborted is not shown due to a Joomla! bug; worked around
+# [LOW] Menu items to update streams don't work under Joomla! 3
+
+Version 2.1.1
+================================================================================
+# [HIGH] Validation by Download ID was no longer working
+# [HIGH] The remote JSON API wouldn't work
+
+Version 2.1.0
+================================================================================
+~ Reverting router changes. They actually seem to break menu items.
+# [MEDIUM] Router didn't fully support multilingual sites
+# [MEDIUM] Joomla! uses limitstart instead of start query string parameter to browse to the first page, causing the "First page" front-end pagination link to not work
+# [MEDIUM] #93 Master XML update feed not working
+# [MEDIUM] #92 The arslatest plugin would cause a fatal error in the back-end if the Finder (Smart Search) plugin was enabled
+# [LOW] Per-category RSS feeds broken since 2.0.7
+# [LOW] #97 "Failed deleting temp.dat" on Joomla! 3.0
+# [LOW] Bug in ARS router.php (thanks Piotr!)
+# [LOW] Frontend update menu items wouldn't work (thanks Piotr!)
+
+Version 2.0.8
+================================================================================
+# [MEDIUM] Router regression, resulting in broken SEF URLs and pagination issues
+# [MEDIUM] Pagination limits (items per list) in Category and Release views were broken
+
+Version 2.0.7
+================================================================================
++ Added minimum stability option in component Options
++ #91 Latest release content plugin, allows you to display the latest release of a category and links to it and its files in your content items
++ Option to define width of left cpanel column.
++ Enabling web service access to categories, release and items management
+~ Make sure we are no longer using Joomla!'s integrated extension update (it doesn't support stability and Joomla! version compatibility checks)
+# [HIGH] Potential unauthorized access to list of downloads, but without the ability to download anything
+# [LOW] Invalid characters could end up in the XML update stream, causing Joomla! to choke on it
+
+Version 2.0.6
+================================================================================
++ Add context to the content preparation (com_ars.category_description, com_ars.release_description, com_ars.release_notes and com_ars.item_description), allowing developers to create custom content plugins which fire only when processing messages to be displayed in ARS
++ DirectLink allows users to easily download files without having to log in to your site first.
++ Control whether BleedingEdge should create and format changelogs automatically
+~ Improved page title and metadata handling
+# [MEDIUM] Page options not respected in drill-down views (thank you Nikolai!)
+# [MEDIUM] When using PayPlans you had to necessarily select a plan for a category, release or item
+# [MEDIUM] When using PayPlans you could select only one plan for a category, release or item
+# [LOW] Sometimes the interface renders strangely (e.g. when a plugin sets format="")
+
+Version 2.0.6.rc1
+================================================================================
++ Joomla! 3.0.0 compatibility
+~ Made Ordering the default order method in Categories, Releases and Items views in the backend
+# [LOW] File listing would not get reloaded in the new item view
+
+Version 2.0.5
+================================================================================
+# [HIGH] Wrong FOF version bundled with the component
+# [MEDIUM] "No Access URL" didn't have any effect
+# [MEDIUM] Akeeba Strapper wasn't included in the package
+# [LOW] Reference to non-existent backend.js file
+# [LOW] Akeeba Strapper installation status not shown in the post-installation page
+
+Version 2.0.4
+================================================================================
+# [HIGH] Display bug with bundled FOF version
+
+Version 2.0.3
+================================================================================
++ Experimental Joomla! 3.0 support
+# [HIGH] Could not select multiple subscriptions to limit releases
+
+Version 2.0.2
+================================================================================
++ PayPlans integration. Many thanks to Shyam Verma for the original code of this feature.
+# [HIGH] Could not select files from an S3 bucket
+# [HIGH] You could not de-select subscription assignment for categories, releases and items
+# [MEDIUM] Ordering preferences not respected in front-end
+
+Version 2.0.1
+================================================================================
+! LiveUpdate was not included in the installation package
+
+Version 2.0.0
+================================================================================
+! Rewritten to use the FOF framework
++ Support for resumable downloads (Range headers)
+~ Overall stability improvements
+# [LOW] The item alias would include dots and spaces when using files, causing trouble with the router
+# [LOW] The Visual Group feature would not work properly on BleedingEdge Only and Normal Only views
+
+Version 1.1.3
+================================================================================
++ The supported platforms are now output to the update INI stream
+# Content-Disposition should wrap the filename in double quotes when downloading files
+# The BleedingEdge styling preferences where not applied in the Latest Releases view
+
+Version 1.1.2
+================================================================================
+# Visual groups sorting didn't work in the front-end
+# extensionset XML had the wrong types (thanks Peter)
+# Different versions of Joomla! handle client_id and client tags in update streams differently (thanks Peter)
+# Files always uploaded to category's root, not the intended subdirectory (thanks Peter)
+# Would not list S3 bucket contents
+# Could not create S3 subdirectories
+# Could not upload files to S3
+# The listing of S3 files and folders in subdirectories is prefixed with the directory's name
+# Could not delete files from S3
+# Layout issue in Items view
+# The SHA1 and MD5 hashes were not made available in the update INI format, making it impossible to use them in custom implementations
+# A new Bleeding Edge item was attempted to be created every single time a Bleeding Edge category was being accessed
+
+Version 1.1.1
+================================================================================
++ Support for dlid in XML update stream URLs
+~ Increasing the release title maximum length from 20 to 255 characters
+# PHP Warnings thrown when there are no latest downloads to display in the Control Panel
+# Latest downloads module doesn't work when the access to an item is limited by View Access Levels instead of subscription levels
+# Dev releases do not get the correct date (they stick with 0000-00-00 00:00:00)
+# Visual groups in the front-end were grouped by ID, not ordering
+# Copying a release would not copy the items' environment tags
+# You could not use the root of an S3 bucket
+# Joomla! 1.7/2.5 are filtering out special characters from the S3 Access and Secret keys
+# The S3 integration would not work on servers lacking a Certificate Authorities (caceprt.pem) file
+# Ho ho, Joomla! 2.5 is now using client instead of client_id in XML update streams, JUST BECAUSE THEY CAN!
+# The page heading parameters have changed in Joomla! 1.7/2.5 (thanks, Alan!)
+
+Version 1.1
+================================================================================
++ #74 Environments, which can also be used to set the Joomla! version compatibility per item
++ #76 No access URL
++ #77 Make it possible to hide item properties (filesize, md5, sha1) in the front-end
+# "Access Forbidden" message was untranslated in Joomla! 1.6 and later
+# #78 Dots in item aliases cause problem with Joomla! SEF URLs
+# Download ID authentication did not work
+# You could not change the ordering in Joomla! 2.5.0 due to undocumented JavaScript changes in the Joomla! core
+
+Version 1.0.5
+================================================================================
+# Pagination did not work in the front-end
+# Pagination formatting issues in the front end, on Joomla! 1.7
+# Front-end pages included links to ../media for JS files, throwing a browser error (kudos to Davide T. for pointing it out)
+
+Version 1.0.4
+================================================================================
+~ Added index on user_id to the log table to speed up log lookups by username
+~ Updated bundled JavaScript libraries to jQuery 1.7 and jQuery UI 1.8.16
+~ The modules now support template overrides
+~ The INI update stream includes more information (release notes and a "read more" URL)
+! Akeeba Subscriptions 2.x would not be detected unless the no longer necessary Nooku Framework was present
+# The router would screw up under some circumstances, fetching a wrong Itemid if none was defined in the URL
+# JavaScript errors in front-end
+
+Version 1.0.3
+================================================================================
+# Bleeding Edge releases on Amazon S3 would never list any files
+# If you remove and re-upload a file for a Bleeding Edge release it wouldn't be auto-published again
+# It was impossible to delete visual groups
+# Router throwing a fatal error when displaying the Download ID module on the repository page
+# Workaround for Joomla! 1.7.0-1.7.2 updater bug #27023 (ref http://joomlacode.org/gf/project/joomla/tracker/?action=TrackerItemEdit&tracker_id=8103&tracker_item_id=27023)
+
+Version 1.0.2
+================================================================================
++ Plugin events to customise Bleeding Edge releases
++ Plugin events to customise Bleeding Edge items
++ Plugin to set the Bleeding Edge release's maturity based on the directory name
++ Plugin to set the Bleeding Edge item's description to a colorised diff (GitHub-style!) against the previous version of the same file
++ Support for tar.bz2/.tbz/.tbz2 archives in XML update streams
++ Joomla! 1.7 multilingual support
++ Joomla! 1.7 ACL support
++ #11 Plugin to display the Download ID in your site's content
++ #31 Full support for Amazon S3
++ Editor button plugin allows you to link to any ARS Item
++ Visual grouping support
+~ Renamed jquery.js and jqueryui.js to work around some stupid plugins removing all instances of jQuery from the page's source
+~ Replacing DS with / as the directory separator
+~ Improved the installation SQL for older MySQL versions
+# Live Update did not properly support library and file extensions type in Joomla! 1.6/1.7 (patched by Michael Babker)
+# Workarounds for Joomla! 1.6/1.7 bugs which could prevent the component from being installed/unnstalled
+# ARS' router would produce an empty $segments list parsing a malformed URL
+# ARS' router would case a 500 error message to be shown when an item no longer exists; fixed to throw a 404 instead
+# BleedingEdge would always try to add files, even if they were already added, leading to waste of CPU power
+# Update XML shows items in unpublished categories and releases
+# Update INI stream throwing a fatal error under Joomla! 1.7 when there are no updates available
+# Duplicated directory path in INI update stream when the site is inside a directory
+# Duplicated directory path in all of the XML update streams when the site is inside a directory
+# If you had limited access to specific AMBRA.subs/Akeeba Subscriptions it was impossible to unselect all of them again
+# Sorting categories, releases or items by created date caused nothing to be displayed due to a typo in the front-end models
+# Using Apply (Joomla! 1.5) or Save (Joomla! 1.6+) on a new record, didn't display the just saved record, essentialy acting as Save & New
+# Crashes if Akeeba Subscriptions is installed and enabled, but the Nooku Framework "System - Koowa" plugin is disabled or hasn't loaded
+# JavaScript not loading on sites returning the site's web root URL in JURI::base() (thanks Chris for the find!)
+# Release ordering ignored in Latest view
+# Item ordering ignored in Latest view (thank Michael for reporting this)
+# Read on rendering issues in Joomla! 1.7, where quotation marks are auto-replaced with &quot; (known Joomla! 1.7 bug)
+# Released date was unformatted in Latest view under Joomla! 1.7
+# Authentication with username/password fails in Joomla! 1.7 (Thank you Cholalabs Team for the fix!)
+
+Version 1.0.1
+================================================================================
++ Minimum stability level in the Latest Releases view
+~ Massively improved the loading speed of the Log page by optimising slow queries
+~ Simplified the component's Control Panel page
+~ Massively improved the loading speed of the Control Panel by removing statistics queries which took a very long time to complete
+~ Improved rendering engine to properly support template overrides
+~ Removed anti-leech protection
+~ #32 Do not list unpublished Bleeding Edge releases in drop-downs
+~ Using CSS classes instead of inline styles for Bleeding Edge releases' changelogs
+# JParameter is deprecated in Joomla! 1.6/1.7; applying workaround
+# SQL file didn't run on upgade on Joomla! 1.6/1.7; applying workaround
+# Live Update: Using authentication with non-SEF URLs always resulted in an error message that the download of the update package was impossible (thank you Daniel for the heads up!)
+# Filtering by access level in Categories view wouldn't work
+# Bug in access control checks of Bleeding Edge releases
+# Wouldn't load frontend.css due to typo in helpers/include.php
+# Update XML streams would not allow Joomla! 1.7 to pick up any updates
+# Fatal error thrown when accessing the component parameters
+# Live Update: would not reload the update information after installing an update
+# Live Update: would not support package, library and file extension types for Joomla! 1.6/1.7
+
+Version 1.0
+================================================================================
++ Local copy of cacerts.pem allows Live Update and other download requests to work with HTTPS URLs on Windows, CentOS and other servers without a system copy of cacert.pem
++ Referer links in log view now open in new window
++ Live Update: Support for minimum stability to report as an available update
++ Live Update: Support for Akeeba Backup's System Restore Points
+~ Massive speed improvement (2x) in the back-end control panel page for repositories with multiple millions of downloads
+~ Live Update: Using native <button> elements to improve styling
+~ Switched from Google Charts to jqPlot for more interactive, better-looking stats charts
+- Removed map view (unnecessary MySQL load for a near-useless feature)
+# PHP Fatal Error in ambra.php (thanks Alan)
+# mod_arsdownloads.php missing two variable definitions, causing a PHP warning (thanks Alan)
+# Menu parameters wouldn't show up in Joomla! 1.6
+# Non-ASCII characters were not displayed properly in backend list views, even though they were stored correctly in the database
+# Breadcrumbs would throw PHP notices under Joomla! 1.6/1.7
+# Live Update: could interfere with component parameters storage
+# Live Update: Caching of update information would not function properly

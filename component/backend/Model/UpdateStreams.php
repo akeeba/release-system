@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -95,6 +95,14 @@ class UpdateStreams extends DataModel
 		$this->addBehaviour('Modified');
 	}
 
+	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	{
+		$filterOrder = $this->getState('filter_order', 'category');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'ASC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
+	}
+
 	public function check()
 	{
 		$this->assertNotEmpty($this->name, 'ERR_USTREAM_NEEDS_NAME');
@@ -124,6 +132,15 @@ class UpdateStreams extends DataModel
 		$db->setQuery($query);
 		$aliases = $db->loadColumn();
 
+		$numericSuffix = 0;
+		$alias = $this->alias;
+
+		while (in_array($alias, $aliases) && ($numericSuffix < 100))
+		{
+			$alias = $this->alias . '-' . ++$numericSuffix;
+		}
+
+		$this->alias = $alias;
 		$this->assertNotInArray($this->alias, $aliases, 'ERR_USTREAM_NEEDS_UNIQUE_ALIAS');
 
 		// Automaticaly fix the type

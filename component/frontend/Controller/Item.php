@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -70,6 +70,15 @@ class Item extends DataController
 
 		$urlparams = array_merge($additionalParams, $urlparams);
 
+		// Do not cache filterable views
+		$layout = $this->input->getCmd('layout', 'default');
+		$tmpl = $this->input->getCmd('tmpl', '');
+
+		if (($layout == 'modal') && ($tmpl == 'component'))
+		{
+			$cachable = false;
+		}
+
 		parent::display($cachable, $urlparams, $tpl);
 	}
 
@@ -78,6 +87,16 @@ class Item extends DataController
 		// Only apply on HTML views
 		if (!in_array($this->input->getCmd('format', 'html'), ['html', 'feed']))
 		{
+			return;
+		}
+
+		$layout = $this->input->getCmd('layout', 'default');
+		$tmpl = $this->input->getCmd('tmpl', '');
+
+		if (($layout == 'modal') && ($tmpl == 'component'))
+		{
+			$this->onBeforeBrowseModal();
+
 			return;
 		}
 
@@ -108,6 +127,10 @@ class Item extends DataController
 		{
 			$id = $params->get('relid', 0);
 		}
+
+		// Required for caching
+		$this->input->set('relid', null);
+		$this->input->set('release_id', $id);
 
 		try
 		{
@@ -178,6 +201,54 @@ class Item extends DataController
 		// Push the models to the view
 		$this->getView()->setDefaultModel($itemsModel);
 		$this->getView()->setModel('Releases', $releaseModel);
+	}
+
+	public function onBeforeBrowseModal()
+	{
+	}
+
+	/**
+	 * Handles input data transformations before telling the Model to save them.
+	 *
+	 * @param   array  $data
+	 *
+	 * @return  void  The $data array is directly handled
+	 */
+	protected function onBeforeApplySave(&$data)
+	{
+		// If "groups" is a comma separated list of IDs convert to a proper array
+		if (isset($data['groups']) && !is_array($data['groups']))
+		{
+			if (empty($data['groups']))
+			{
+				$data['groups'] = array();
+			}
+
+			if (!is_array($data['groups']))
+			{
+				$data['groups'] = explode(',', $data['groups']);
+				$data['groups'] = array_map(function ($x) {
+					return trim($x);
+				}, $data['groups']);
+			}
+		}
+
+		// If "environments" is a comma separated list of IDs convert to a proper array
+		if (isset($data['environments']) && !is_array($data['environments']))
+		{
+			if (empty($data['environments']))
+			{
+				$data['environments'] = array();
+			}
+
+			if (!is_array($data['environments']))
+			{
+				$data['environments'] = explode(',', $data['environments']);
+				$data['environments'] = array_map(function ($x) {
+					return trim($x);
+				}, $data['environments']);
+			}
+		}
 	}
 
 	public function download()

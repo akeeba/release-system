@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -51,6 +51,9 @@ else
 // Clear everything before starting the output
 @ob_end_clean();
 
+// Tell the client this is an XML file
+@header('Content-type: application/xml');
+
 // Custom header for SiteGround's SuperCacher. The default value caches the
 // output for 5 minutes.
 JFactory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
@@ -58,6 +61,8 @@ JFactory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
 require_once JPATH_SITE . '/components/com_ars/router.php';
 ComArsRouter::$routeRaw  = false;
 ComArsRouter::$routeHtml = false;
+
+$jVersion = new JVersion;
 
 ?><?php echo $tag; ?>
 <!-- Update stream generated automatically by Akeeba Release System on <?= gmdate('Y-m-d H:i:s') ?> GMT -->
@@ -68,7 +73,7 @@ foreach ($this->items as $item):
 	{
 		case 'file':
 			$downloadURL =
-				$rootURL . Router::_('index.php?option=com_ars&view=download&id=' . $item->item_id . $dlid);
+				$rootURL . Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->item_id . $dlid);
 			$basename    = basename($item->filename);
 
 			if (substr(strtolower($basename), -4) == '.zip')
@@ -145,7 +150,13 @@ foreach ($this->items as $item):
 		];
 	}
 
-	foreach ($platforms as $platform):
+	$parsedPlatforms = [
+		'platforms' => [],
+		'php'		=> []
+	];
+
+	foreach ($platforms as $platform)
+	{
 		$platformParts = explode('/', $platform, 2);
 
 		switch (count($platformParts))
@@ -159,23 +170,38 @@ foreach ($this->items as $item):
 				$platformVersion = $platformParts[1];
 				break;
 		}
+
+		if (strtolower($platformName) == 'php')
+		{
+			$parsedPlatforms['php'][] = $platformVersion;
+
+			continue;
+		}
+
+		$parsedPlatforms['platforms'][] = [$platformName, $platformVersion];
+	}
+
+
+
+	foreach ($parsedPlatforms['platforms'] as $platform):
+		list($platformName, $platformVersion) = $platform;
 ?>
 	<update>
-		<name><?php echo $item->name ?></name>
-		<description><?php echo $item->name ?></description>
+		<name><![CDATA[<?php echo $item->name ?>]]></name>
+		<description><![CDATA[<?php echo $item->name ?>]]></description>
 		<element><?php echo $item->element ?></element>
 		<type><?php echo $streamTypeMap[ $item->type ]; ?></type>
 		<version><?php echo $item->version ?></version>
 		<infourl
-			title="<?php echo $item->cat_title . ' ' . $item->version ?>"><?php echo $rootURL . Router::_('index.php?option=com_ars&view=release&id=' . $item->release_id) ?></infourl>
+            title="<?php echo $item->cat_title . ' ' . $item->version ?>"><?php echo $rootURL . Router::_('index.php?option=com_ars&view=Items&release_id=' . $item->release_id) ?></infourl>
 		<downloads>
 			<downloadurl type="full"
-						 format="<?php echo $format ?>"><?php echo htmlentities($downloadURL) ?></downloadurl>
+						 format="<?php echo $format ?>"><?php echo $downloadURL ?></downloadurl>
 		</downloads>
 		<tags>
 			<tag><?php echo $item->maturity ?></tag>
 		</tags>
-		<maintainer><?php echo JFactory::getConfig()->get('sitename'); ?></maintainer>
+		<maintainer><![CDATA[<?php echo JFactory::getConfig()->get('sitename'); ?>]]></maintainer>
 		<maintainerurl><?php echo JURI::base(); ?></maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="<?php echo $platformName ?>" version="<?php echo $platformVersion ?>"/>
@@ -185,6 +211,11 @@ foreach ($this->items as $item):
 			<client><?php echo (int)$item->client_id ?></client>
 		<?php endif; ?>
 		<folder><?php echo empty($item->folder) ? '' : $item->folder ?></folder>
+		<?php if (!empty($parsedPlatforms['php'])): ?>
+		<?php foreach ($parsedPlatforms['php'] as $phpVersion): ?>
+		<ars-phpcompat version="<?php echo $phpVersion ?>" />
+		<?php endforeach; ?>
+		<?php endif; ?>
 	</update>
 	<?php
 	endforeach;

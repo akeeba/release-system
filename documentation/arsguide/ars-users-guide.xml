@@ -11,10 +11,10 @@
       </author>
     </authorgroup>
 
-    <pubdate>December 2013</pubdate>
+    <pubdate>December 2015</pubdate>
 
     <copyright>
-      <year>2013</year>
+      <year>2010-2016</year>
 
       <holder>Akeeba Ltd</holder>
     </copyright>
@@ -2574,6 +2574,113 @@ date="2010-10-10"</programlisting>
             </listitem>
           </varlistentry>
         </variablelist>
+      </section>
+
+      <section xml:id="menu-item-setup">
+        <title>Setting up your menu items for best results</title>
+
+        <para>ARS is a Joomla! component and as such it is limited by the way
+        the front-end SEF (Search Engine Friendly) URL routing works. Due to
+        the ambiguity of the routing in many cases the result you will get
+        might not be the result you would expect but the one dictated by your
+        Joomla! site's menu structure. In here we'll present a fool-proof way
+        to set up your menu items for a software distribution site.</para>
+
+        <para>Before we begin, there is a VERY important thing to keep in
+        mind. The menu items described in this section can either be displayed
+        in your main menu, a secondary menu or even be "hidden". "Hidden" menu
+        items are those that belong to a Menu that is never displayed in the
+        front-end, i.e. there is no menu module pointing to it.
+        Counter-intuitively, "hidden" menu items do participate in Joomla!'s
+        SEF URL routing. We strongly recommend putting your ARS menu structure
+        in a "hidden" menu and creating menu items of the "Alias" type in your
+        regular menus. This will prevent routing ambiguity and ensure that you
+        will ALWAYS have perfect results. For this reason the instructions
+        below describe exactly this process.</para>
+
+        <para>Start by creating a new Menu from <guimenu>Menus</guimenu>,
+        <guisubmenu>Manage</guisubmenu>, <guimenuitem>Add New
+        Menu</guimenuitem>. Use the following information:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Title: <option>ARS Hidden</option></para>
+          </listitem>
+
+          <listitem>
+            <para>Menu Type: <option>ars-hidden</option></para>
+          </listitem>
+
+          <listitem>
+            <para>Description: <option>ARS menu structure, do not
+            publish</option></para>
+          </listitem>
+        </itemizedlist>
+
+        <para>Now we have to create our base menu item for the repository. Go
+        to <guimenu>Menus</guimenu>, <guisubmenu>ARS Hidden</guisubmenu>,
+        <guimenuitem>Add New Menu Item</guimenuitem>. The Menu Item Type must
+        be <option>Entire Repository</option>. Use any Menu Title and Alias
+        you want. Do remember that the alias will become part of all your
+        download links. For example, if you set Alias to download and your
+        site is http://www.example.com then the URL
+        http://www.example.com/download will lead to your download page (list
+        of all ARS categories).</para>
+
+        <para>Once you save that menu item create one menu item for each of
+        your ARS Categories. Each menu item needs the following setup:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>Menu Type: Akeeba Release System, Category View</para>
+          </listitem>
+
+          <listitem>
+            <para>Parent Item: select the menu Entire Repository menu item you
+            created above</para>
+          </listitem>
+        </itemizedlist>
+
+        <note>
+          <para>If you have a multilingual site you will need to <email>repeat
+          that process for every language</email> on your site.</para>
+        </note>
+
+        <para>You may also create BleedingEdge Releases, Normal Releases or
+        Latest Releases menu items under (inside) the Entire Repository menu.
+        If you really want to create a Release View menu item you should put
+        it under the respective Category View menu item for its category –
+        however we don't recommend creating Release View menu items at
+        all!</para>
+
+        <para>Of course, if you have a use for these menu items, you can
+        create menu items for Add-on Download IDs and Latest Releases next to
+        –not under– the Entire Repository menu.</para>
+
+        <important>
+          <para>You may have noticed the absence of any reference to JED
+          Remote XML, XML Master Feed, XML Stream Feed and XML Category Feed
+          menu items. <emphasis role="bold">Do not create such menu items at
+          all</emphasis>! Due to the way Joomla! routing works you may end up
+          with update URLs that have broken download or information
+          URLs.</para>
+        </important>
+
+        <para>Now, how about providing menu items that your site's visitors
+        can use? Simple. Go to the Menus menu and find your regular menu.
+        Hover over it and choose Add new menu item. Now create a new menu item
+        with menu item type System Links, Menu Item Alias. In the Menu Item
+        drop-down choose one of the ARS Hidden menu items.</para>
+
+        <note>
+          <para>When creating Menu Item Alias items the Alias field is
+          ignored. Only the Menu Title is used to display the menu. The actual
+          URL being used for the menu item is defined by the aliases and menu
+          items structure you have set up in the ARS Hidden menu. That's why
+          we need the hidden menu: it lets us define an unambiguous URL
+          structure while alias menu items lets us link to that unambiguous
+          URL structure!</para>
+        </note>
       </section>
     </chapter>
 

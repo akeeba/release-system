@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -14,7 +14,7 @@ $prefix = $item->user_id . ':';
 if ($item->primary)
 {
 	$prefix = '';
-	$class = 'label label-inverse';
+	$class = 'label label-inverse label-primary';
 }
 else
 {

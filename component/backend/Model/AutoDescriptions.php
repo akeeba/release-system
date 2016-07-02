@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -84,6 +84,13 @@ class AutoDescriptions extends DataModel
 		return parent::check();
 	}
 
+	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	{
+		$filterOrder = $this->getState('filter_order', 'category');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'ASC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
+	}
 
 	/**
 	 * Converts the loaded comma-separated list of environments into an array

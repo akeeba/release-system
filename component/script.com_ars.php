@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -71,10 +71,18 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			'components/com_ars/views/view.html.php',
 			'components/com_ars/dispatcher.php',
+			'components/com_ars/views/Releases/tmpl/item.xml',
 
 			'media/com_ars/js/akeebajq.js',
 			'media/com_ars/js/akeebajqui.js',
 
+			// Updates
+			'administrator/components/com_ars/Controller/Updates.php',
+			'administrator/components/com_ars/Model/Updates.php',
+			'administrator/components/com_ars/Model/Statistics.php',
+			'administrator/components/com_ars/assets/stats',
+			'components/com_ars/Model/ExtensionUpdates.php',
+			'cli/ars-update',
 		),
 		'folders' => array(
 			// Moving to FOF 3
@@ -89,6 +97,12 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'administrator/components/com_ars/elements',
 			'administrator/components/com_ars/language',
 
+			// Old Amazon integration
+			'administrator/components/com_ars/Amazon',
+
+			// Usage stats
+			'administrator/components/com_ars/assets/stats',
+
 			'components/com_ars/controllers',
 			'components/com_ars/helpers',
 			'components/com_ars/models',
@@ -102,6 +116,8 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'components/com_ars/views/release',
 
 			'media/com_ars/theme',
+
+
 		)
 	);
 
@@ -135,21 +151,6 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 		</div>
 
 		<?php
-
-		$container = FOF30\Container\Container::getInstance('com_ars');
-
-        /** @var \Akeeba\ReleaseSystem\Admin\Model\Statistics $model */
-        $model  = $container->factory->model('Statistics');
-
-        if (method_exists($model, 'collectStatistics'))
-        {
-            $iframe = $model->collectStatistics(true);
-
-            if ($iframe)
-            {
-                echo $iframe;
-            }
-        }
 	}
 
 	protected function renderPostUninstallation($parent)

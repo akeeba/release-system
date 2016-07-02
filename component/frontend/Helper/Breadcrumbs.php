@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -23,7 +23,7 @@ class Breadcrumbs
 
 		$rootName = null;
 
-		if (!is_object($menuitem) || $menuitem->query['view'] != 'browse')
+		if (!is_object($menuitem) || !in_array(strtolower($menuitem->query['view']), ['browse', 'categories']))
 		{
 			$app = JFactory::getApplication();
 			$pathway = $app->getPathway();
@@ -69,7 +69,7 @@ class Breadcrumbs
 		$menus = JMenu::getInstance('site');
 		$menuitem = $menus->getActive();
 
-		if (!is_object($menuitem) || $menuitem->query['view'] != 'category')
+		if (!is_object($menuitem) || !in_array(strtolower($menuitem->query['view']), ['category', 'releases']))
 		{
 			$app = JFactory::getApplication();
 			$pathway = $app->getPathway();
@@ -105,7 +105,7 @@ class Breadcrumbs
 				$Itemid = empty($Itemid) ? '' : '&Itemid=' . $Itemid;
 
 				$rootName = $name;
-				$rootURI = JRoute::_('index.php?option=com_ars&view=category&id=' . $id . $Itemid);
+				$rootURI = JRoute::_('index.php?option=com_ars&view=Releases&category_id=' . $id . $Itemid);
 			}
 
 			if (!is_null($rootName) && isset($rootURI))
@@ -120,7 +120,7 @@ class Breadcrumbs
 		$menus = JMenu::getInstance('site');
 		$menuitem = $menus->getActive();
 
-		if (!is_object($menuitem) || $menuitem->query['view'] != 'release')
+		if (!is_object($menuitem) || !in_array(strtolower($menuitem->query['view']), ['release', 'items']))
 		{
 			$app = JFactory::getApplication();
 			$pathway = $app->getPathway();
@@ -156,7 +156,7 @@ class Breadcrumbs
 				$Itemid = empty($Itemid) ? '' : '&Itemid=' . $Itemid;
 
 				$rootName = $name;
-				$rootURI = JRoute::_('index.php?option=com_ars&view=release&id=' . $id . $Itemid);
+				$rootURI = JRoute::_('index.php?option=com_ars&view=Items&release_id=' . $id . $Itemid);
 			}
 
 			if (isset($rootName) && isset($rootURI))

@@ -2,7 +2,7 @@
 /**
  * @package    AkeebaReleaseSystem
  * @subpackage plugins.arslink
- * @copyright  Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright  Copyright (c)2010-2016 Nicholas K. Dionysopoulos
  * @license    GNU General Public License version 3, or later
  */
 
@@ -45,7 +45,7 @@ class plgButtonArslink extends JPlugin
 		 * arsSelectItem creates the link tag, sends it to the editor,
 		 * and closes the select frame.
 		 */
-		$js = "
+		$js = <<<JS
 
 
 ;// This comment is intentionally put here to prevent badly written plugins from causing a Javascript error
@@ -53,31 +53,52 @@ class plgButtonArslink extends JPlugin
 		function arsSelectItem(id, title) {
 			var tag = '<a href='+'\"index.php?option=com_ars&amp;view=Item&amp;id='+id+'\">'+title+'</a>';
 			jInsertEditorText(tag, '" . $name . "');
-			SqueezeBox.close();
-		}";
+			jModalClose();
+		};
+
+JS;
 
 		$doc = JFactory::getDocument();
 		$doc->addScriptDeclaration($js);
 
-		$app = JFactory::getApplication();
-		$tmpl = $app->getTemplate();
-		$doc->addStyleDeclaration(".button2-left .arsitem {background: url(templates/$tmpl/images/j_button2_readmore.png) 100% 0 no-repeat;}");
+		$app     = JFactory::getApplication();
+		$tmpl    = $app->getTemplate();
+		$rootURI = JUri::base();
 
-		JHtml::_('behavior.core');
-		JHtml::_('behavior.modal');
+		if ($app->isAdmin())
+		{
+			$rootURI .= '../';
+		}
+
+		$css     = <<<CSS
+.button2-left .arsitem {
+	background: url($rootURI/media/com_ars/icons/ars_logo_16.png) 100% 0 no-repeat;
+}
+#editor-xtd-buttons span.icon-arsitem {
+	display: block;
+	float: left;
+	width: 16px;
+	height: 16px;
+	background: url($rootURI/media/com_ars/icons/ars_logo_16.png) 100% 0 no-repeat;
+}
+CSS;
+
+		$doc->addStyleDeclaration($css);
 
 		/*
-		 * Use the built-in element view to select the article.
+		 * Use the built-in element view to select the ARS item.
 		 * Currently uses blank class.
 		 */
-		$link = 'index.php?option=com_ars&amp;view=Items&amp;layout=modal&amp;tmpl=component';
+		$link =
+			'index.php?option=com_ars&amp;view=Items&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
 
-		$button = new JObject();
-		$button->set('modal', true);
-		$button->set('link', $link);
-		$button->set('text', JText::_('PLG_ARSITEM_BUTTON_ITEM'));
-		$button->set('name', 'arsitem');
-		$button->set('options', "{handler: 'iframe', size: {x: 770, y: 400}}");
+		$button          = new JObject;
+		$button->modal   = true;
+		$button->class   = 'btn';
+		$button->link    = $link;
+		$button->text    = JText::_('PLG_ARSITEM_BUTTON_ITEM');
+		$button->name    = 'arsitem';
+		$button->options = "{handler: 'iframe', size: {x: 770, y: 400}}";
 
 		return $button;
 	}

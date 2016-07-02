@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -38,5 +38,8 @@ class Ini extends Raw
 		// Set the content type to text/plain
 		$document = \JFactory::getDocument();
 		$document->setMimeEncoding('text/plain');
+
+        // Set the content type to text/plain
+        @header('Content-type: text/plain');
 	}
 }

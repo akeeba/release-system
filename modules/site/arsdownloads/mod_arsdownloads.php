@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  * @version   $Id$
  */
@@ -41,14 +41,14 @@ if (!class_exists('MydownloadsModel'))
 
 			foreach ($streams as $stream_id)
 			{
-				$items = $model->getItems($stream_id);
+				$streamItems = $model->getItems($stream_id);
 
-				if (empty($items))
+				if (empty($streamItems))
 				{
 					continue;
 				}
 
-				$i = array_shift($items);
+				$i = array_shift($streamItems);
 
 				// Is the user authorized to download this item?
 				$iFull = $dlModel->find($i->item_id);

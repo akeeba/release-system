@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  @package   AkeebaReleaseSystem
+  @copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos
+  @license   GNU General Public License version 3, or later
+-->
 <form type="browse" show_header="1" show_filters="1" show_pagination="1"
 	  norows_placeholder="COM_ARS_COMMON_NOITEMS_LABEL"
       cssfiles="media://com_ars/css/backend.css">
@@ -6,7 +11,7 @@
 		<header name="ordering" type="Ordering" label="JFIELD_ORDERING_LABEL" sortable="true" tdwith="1%"/>
 		<header name="id" type="RowSelect" label="JGLOBAL_FIELD_ID_LABEL" sortable="true" tdwith="20"/>
 		<header name="title" type="Searchable" label="COM_ARS_CATEGORIES_FIELD_TITLE"/>
-		<header name="vgroup_id" type="Model" label="LBL_CATEGORIES_VGROUP" sortable="true"
+		<header name="vgroup" type="Model" label="LBL_CATEGORIES_VGROUP" sortable="true"
 				model="VisualGroups" key_field="id" value_field="title" translate="false"
 				/>
 

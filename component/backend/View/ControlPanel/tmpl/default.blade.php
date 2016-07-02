@@ -1,7 +1,7 @@
 <?php
 /**
  * package   AkeebaReleaseSystem
- * copyright Copyright (c)2010-2014 Nicholas K. Dionysopoulos
+ * copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos
  * license   GNU General Public License version 3, or later
  */
 
@@ -19,11 +19,7 @@ defined('_JEXEC') or die;
 different order using @yield later on! --}}
 @include('admin:com_ars/ControlPanel/footer')
 @include('admin:com_ars/ControlPanel/graphs')
-@if(class_exists('\\AkeebaStrapper30'))
-    @include('admin:com_ars/ControlPanel/icons')
-@else
-    @include('admin:com_ars/ControlPanel/icons_compat')
-@endif
+@include('admin:com_ars/ControlPanel/icons_compat')
 @include('admin:com_ars/ControlPanel/phpversion')
 
 {{-- Note: I don't pass $this->hasGeoIPPlugin and $this->geoIPPluginNeedsUpdate. This demonstrates how Blade
@@ -34,6 +30,15 @@ subtemplates can view their parent's variables automatically. --}}
 immediately. Alternatively I could wrap this in a @section/@show block or even @section/@stop and use @yield to
 render it. --}}
 @yield('phpVersionWarning', '')
+
+@if($this->needsMenuItem)
+<div class="alert alert-info">
+	<h4>
+		@lang('COM_ARS_MISSING_CATEGORIES_MENU_HEAD')
+	</h4>
+	@lang('COM_ARS_MISSING_CATEGORIES_MENU')
+</div>
+@endif
 
 {{-- This DIV is required to render the update notification, if there is an update available --}}
 <div id="updateNotice"></div>
@@ -56,26 +61,3 @@ render it. --}}
 		@yield('footer')
 	</div>
 </div>
-
-{{ $this->statsIFrame }}
-
-{{-- This Javascript is required to render the update notification, if there is an update available --}}
-<script type="text/javascript">
-	(function($) {
-		$(document).ready(function(){
-			$.ajax('index.php?option=com_ars&view=ControlPanel&task=updateinfo&tmpl=component', {
-				success: function(msg, textStatus, jqXHR)
-				{
-					// Get rid of junk before and after data
-					var match = msg.match(/###([\s\S]*?)###/);
-					data = match[1];
-
-					if (data.length)
-					{
-						$('#updateNotice').html(data);
-					}
-				}
-			})
-		});
-	})(akeeba.jQuery);
-</script>

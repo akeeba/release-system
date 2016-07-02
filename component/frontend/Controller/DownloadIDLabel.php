@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -15,6 +15,20 @@ use FOF30\Controller\DataController;
 
 class DownloadIDLabel extends DownloadIDLabels
 {
+	/**
+	 * Overrides the default display method to add caching support
+	 *
+	 * @param   bool        $cachable  Is this a cacheable view?
+	 * @param   bool|array  $urlparams Registered URL parameters
+	 * @param   null|string $tpl       Sub-template (not really used...)
+	 */
+	public function display($cachable = false, $urlparams = false, $tpl = null)
+	{
+		$cachable = false;
+
+		parent::display($cachable, $urlparams, $tpl);
+	}
+
 	public function __construct(Container $container, array $config = array())
 	{
 		$config['taskPrivileges'] = [

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -80,8 +80,8 @@ class Releases extends DataModel
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
 	}
 
-	/** @var  self|null  Used to handle copies */
-	protected static $recordBeforeCopy = null;
+	/** @var  DataModel\Collection  Used to handle copies */
+	protected static $itemsBeforeCopy = null;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
@@ -179,7 +179,24 @@ class Releases extends DataModel
 			$fltCategory = $logsModel->getState('category', null, 'int');
 		}
 
-		$fltCategory = $this->getState('category_id', $fltCategory, 'int');
+		$fltCategory = $this->getState('category_id', $fltCategory, 'raw');
+
+		if (is_array($fltCategory))
+		{
+			if (isset($fltCategory['method']) && ($fltCategory['method'] == 'exact') && isset($fltCategory['value']))
+			{
+				$fltCategory = (int) $fltCategory['value'];
+			}
+			else
+			{
+				$fltCategory = 0;
+			}
+		}
+		else
+		{
+			$fltCategory = $this->getState('category_id', $fltCategory, 'int');
+		}
+
 		$fltCategory = $this->getState('category', $fltCategory, 'int');
 
 		if ($fltCategory > 0)
@@ -268,17 +285,22 @@ class Releases extends DataModel
 				break;
 		}
 
+		// Default ordering ID descending (latest created release on top)
+		$filterOrder = $this->getState('filter_order', 'id');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'DESC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
+
+		// Order filtering
+		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
+
 		// Latest version filter. Use as $releases->published(1)->latest(true)->get(true)
 		$fltLatest = $this->getState('latest', false, 'bool');
 
 		if ($fltLatest)
 		{
-			// Why just a DESC group by clause? See http://stackoverflow.com/questions/1313120/retrieving-the-last-record-in-each-group
-			$query->group($db->qn('category_id') . ' DESC');
+			$fltOrderBy = 'order';
 		}
-
-		// Order filtering
-		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
 
 		switch ($fltOrderBy)
 		{
@@ -306,6 +328,32 @@ class Releases extends DataModel
 				$this->setState('filter_order', 'ordering');
 				$this->setState('filter_order_Dir', 'ASC');
 				break;
+		}
+	}
+
+	/**
+	 * Implements custom filtering
+	 *
+	 * @param   \JDatabaseQuery  $query           The model query we're operating on
+	 * @param   bool             $overrideLimits  Are we told to override limits?
+	 *
+	 * @return  void
+	 */
+	protected function onAfterBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	{
+		$db = $this->getDbo();
+
+		// Latest version filter. Use as $releases->published(1)->latest(true)->get(true)
+		$fltLatest = $this->getState('latest', false, 'bool');
+
+		if ($fltLatest)
+		{
+			$innerQuery = clone $query;
+			$query = $db->getQuery(true)
+						->select('*')
+						->from('(' . $innerQuery . ') AS ' . $db->qn('#__ars_releases'))
+						// Why just a DESC group by clause? See http://stackoverflow.com/questions/1313120/retrieving-the-last-record-in-each-group
+						->group($db->qn('category_id') . ' DESC');
 		}
 	}
 
@@ -541,9 +589,11 @@ class Releases extends DataModel
 	 */
 	protected function onBeforeCopy()
 	{
-		self::$recordBeforeCopy = $this->getClone();
+		self::$itemsBeforeCopy = clone $this->items;
 
 		$this->onBeforeCopyVersioned();
+
+		$this->enabled = false;
 	}
 
 	/**
@@ -555,12 +605,18 @@ class Releases extends DataModel
 	 */
 	protected function onAfterCopy(Releases &$releaseAfterCopy)
 	{
-		self::$recordBeforeCopy->items->map(function($item) use($releaseAfterCopy) {
+		if (!is_object(self::$itemsBeforeCopy) || !(self::$itemsBeforeCopy instanceof DataModel\Collection))
+		{
+			return;
+		}
+
+		self::$itemsBeforeCopy->map(function($item) use($releaseAfterCopy) {
+			/** @var  Items  $item */
 			$item->copy([
 				'release_id' => $releaseAfterCopy->id
 			]);
 		});
 
-		self::$recordBeforeCopy = null;
+		self::$itemsBeforeCopy = null;
 	}
 }

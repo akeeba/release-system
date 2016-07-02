@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @license   GNU General Public License version 3, or later
+ */
+
 defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Latest\Html $this */
@@ -17,7 +23,7 @@ if (!isset($this->releases[$item->id]))
 /** @var \Akeeba\ReleaseSystem\Site\Model\Releases $release */
 $release = $this->releases[$item->id];
 $released = JFactory::getDate($release->created);
-$release_url = Router::_('index.php?option=com_ars&view=Items&release_id=' . $item->id . '&Itemid=' . $Itemid);
+$release_url = Router::_('index.php?option=com_ars&view=Items&release_id=' . $release->id . '&Itemid=' . $Itemid);
 $authorisedViewLevels = $this->getContainer()->platform->getUser()->getAuthorisedViewLevels();
 
 if (!Filter::filterItem($release, false, $authorisedViewLevels) && !empty($release->redirect_unauth))
@@ -84,7 +90,10 @@ switch ($release->maturity)
 	</dl>
 
 	<table class="table table-striped">
-		@foreach($release->items as $i)
+		@foreach($release->items->filter(function ($item)
+		{
+			return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true);
+		}) as $i)
 		@include('site:com_ars/Latest/item', ['item' => $i, 'Itemid' => $this->Itemid])
 		@endforeach
 	</table>

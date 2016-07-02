@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -19,23 +19,24 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	 * @var array
 	 */
 	public $viewMap = [
-		'browses'    => 'Categories',
-		'browse'     => 'Categories',
-		'categories' => 'Categories',
-		'category'   => 'Releases',
-		'release'    => 'Items',
-		'releases'   => 'Releases',
-		'download'   => 'Item',
-		'downloads'  => 'Item',
-		'Download'   => 'Item',
-		'item'       => 'Item',
-		'items'      => 'Items',
-		'latest'     => 'Latest',
-		'latests'    => 'Latest',
-		'update'     => 'Updates',
-		'updates'    => 'Updates',
-		'dlidlabel'  => 'DownloadIDLabel',
-		'dlidlabels' => 'DownloadIDLabels'
+			'browses'    => 'Categories',
+			'browse'     => 'Categories',
+			'categories' => 'Categories',
+			'category'   => 'Releases',
+			'release'    => 'Items',
+			'releases'   => 'Releases',
+			'download'   => 'Item',
+			'downloads'  => 'Item',
+			'Download'   => 'Item',
+			'item'       => 'Item',
+			'items'      => 'Items',
+			'latest'     => 'Latest',
+			'latests'    => 'Latest',
+			'update'     => 'Update',
+			'updates'    => 'Update',
+			'Updates'    => 'Update',
+			'dlidlabel'  => 'DownloadIDLabel',
+			'dlidlabels' => 'DownloadIDLabels'
 	];
 
 	/** @var   string  The name of the default view, in case none is specified */
@@ -43,27 +44,12 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 	public function onBeforeDispatch()
 	{
-		// Load Akeeba Strapper, if it is installed
-		\JLoader::import('joomla.filesystem.folder');
-
-		$useStrapper = ComponentParams::getParam('usestrapper', 3);
-
-		if (in_array($useStrapper, [1, 3]) && \JFolder::exists(JPATH_SITE . '/media/strapper30'))
-		{
-			@include_once JPATH_SITE . '/media/strapper30/strapper.php';
-
-			if (class_exists('\\AkeebaStrapper30', false))
-			{
-				\AkeebaStrapper30::bootstrap();
-			}
-		}
-
 		// Map the view
 		$this->applyViewMap();
 
 		// Load common CSS and JavaScript
 		\JHtml::_('jquery.framework');
-		$this->container->template->addCSS('media://com_akeebasubs/css/frontend.css', $this->container->mediaVersion);
+		$this->container->template->addCSS('media://com_ars/css/frontend.css', $this->container->mediaVersion);
 	}
 
 	/**
@@ -73,11 +59,11 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	 */
 	public function applyViewMap()
 	{
-		$view = $this->container->input->getCmd('view', 'Browse');
+		$view = $this->container->input->getCmd('view', 'Categories');
 
 		if (empty($view))
 		{
-			$view = 'Browse';
+			$view = 'Categories';
 		}
 
 		if (array_key_exists($view, $this->viewMap))
@@ -87,8 +73,9 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 		if (!in_array($view, $this->viewMap))
 		{
-			$view = 'Browse';
+			$view = 'Categories';
 		}
+
 		$this->container->input->set('view', $view);
 	}
 }

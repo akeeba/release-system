@@ -1,17 +1,25 @@
-/*.txt
+# phpStorm
 /.idea
-/.tx/
-/DESCRIPTION.html
-/RELEASENOTES.html
+
+# Build tools
 /build/bin
 /build/buildlang
 /build/phingext
 /build/tools
+
+# Symlinked files/folders into the component tree
 /component/ars.xml
 /component/cli/*.xml
-/component/language/backend/en-GB
-/component/language/frontend/en-GB
-/modules/site/arsdlid/language/en-GB
-/modules/site/arsdownloads/language/en-GB
+/component/language/*/en-GB
+
+# Symlinked files/folders into the modules tree
+/modules/*/*/language/en-GB
+
+# Symlinked files/folders into the plugns tree
 /plugins/*/*/language/en-GB
+
+# Release files
 /release
+
+# Temporary stuff
+/*.txt

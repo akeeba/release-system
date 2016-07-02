@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @license   GNU General Public License version 3, or later
+ */
+
 defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Items\Html  $this */
@@ -15,7 +21,7 @@ $released   = \JFactory::getDate($this->release->created);
 	</div>
 	@endif
 
-	@include('site:com_ars/Releases/release', ['id' => $this->release->id, 'item' => $this->release, 'Itemid' => $this->Itemid, 'no_link' => true])
+	@include('site:com_ars/Items/release', ['id' => $this->release->id, 'item' => $this->release, 'Itemid' => $this->Itemid, 'no_link' => true])
 
 	<div class="ars-items">
 	@if(count($this->items))

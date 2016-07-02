@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -536,4 +536,22 @@ class ControlPanel extends Model
 		return $ret;
 	}
 
+	/**
+	 * Checks if there is at least one menu entry that shows all the categories.
+	 * This is needed because otherwise JRoute won't find any suitable menu
+	 *
+	 * @return bool
+	 */
+	public static function needsCategoriesMenu()
+	{
+		$db = \JFactory::getDbo();
+
+		$query = $db->getQuery(true)
+				->select('COUNT(id)')
+				->from('#__menu')
+				->where($db->qn('link').' = '.$db->q('index.php?option=com_ars&view=Categories&layout=repository'))
+				->where($db->qn('published').' = '.$db->q(1));
+
+		return !(bool) $db->setQuery($query)->loadResult();
+	}
 }

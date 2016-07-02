@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  @package   AkeebaReleaseSystem
+  @copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos
+  @license   GNU General Public License version 3, or later
+-->
 <form
         validate="true"
         cssfiles="media://com_ars/css/backend.css">

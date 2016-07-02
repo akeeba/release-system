@@ -5,7 +5,7 @@
 	<author>Nicholas K. Dionysopoulos</author>
 	<authorEmail>nicholas@akeebabackup.com</authorEmail>
 	<authorUrl>http://www.akeebabackup.com</authorUrl>
-	<copyright>Copyright (c)2010-2015 Nicholas K. Dionysopoulos</copyright>
+	<copyright>Copyright (c)2010-2016 Nicholas K. Dionysopoulos</copyright>
 	<license>This component in released under the GNU/GPL v3 or later license</license>
 	<version>##VERSION##</version>
 	<description>Akeeba Release System</description>
@@ -47,7 +47,6 @@
 
 		<!-- Back-end files -->
 		<files folder="backend">
-			<folder>Amazon</folder>
 			<folder>assets</folder>
 			<folder>Controller</folder>
 			<folder>Dispatcher</folder>
@@ -56,6 +55,7 @@
 			<folder>Model</folder>
 			<folder>sql</folder>
 			<folder>Toolbar</folder>
+			<folder>vendor</folder>
 			<folder>View</folder>
 
 			<filename>access.xml</filename>

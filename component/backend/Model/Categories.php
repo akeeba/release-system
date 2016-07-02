@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -78,6 +78,13 @@ class Categories extends DataModel
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
 	}
 
+	/**
+	 * Should I turn off pre-save checks? See onBeforeLock for more information.
+	 *
+	 * @var  bool
+	 */
+	protected $ignorePreSaveChecks = false;
+
 	/** @var  self|null  Used to handle copies */
 	protected static $recordBeforeCopy = null;
 
@@ -152,8 +159,11 @@ class Categories extends DataModel
 	{
 		$db = $this->getDbo();
 
-		// Visual Groups filter
-		$fltVgroup = $this->getState('vgroup', null, 'int');
+		// Visual Groups filter. Normally we use vgroup but old requests + frontend menu items use vgroupid.
+		$fltVgroup = $this->getState('vgroupid', null, 'int');
+		$fltVgroup = $this->getState('vgroup', $fltVgroup, 'int');
+		// Noremove the old style visual group filter from the state, if it was set
+		$this->setState('vgroupid', null);
 
 		if ($fltVgroup)
 		{
@@ -211,6 +221,11 @@ class Categories extends DataModel
 			);
 		}
 
+		$filterOrder = $this->getState('filter_order', 'ordering');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'ASC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
+
 		// Order filtering
 		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
 
@@ -245,6 +260,12 @@ class Categories extends DataModel
 
 	public function check()
 	{
+		// Am I told to ignore all pre-save checks?
+		if ($this->ignorePreSaveChecks)
+		{
+			return;
+		}
+
 		$this->assertNotEmpty($this->title, 'COM_ARS_CATEGORY_ERR_NEEDS_TITLE');
 
 		// If the alias is missing, auto-create a new one
@@ -301,7 +322,7 @@ class Categories extends DataModel
 			}
 
 			$s3 = AmazonS3::getInstance();
-			$items = $s3->getBucket('', $check);
+			$items = $s3->getBucket('', $check, null, null, '/', true);
 
 			$this->assertNotEmpty($items, 'COM_ARS_CATEGORY_ERR_S3_DIRECTORY_NOT_EXISTS');
 		}
@@ -422,5 +443,55 @@ class Categories extends DataModel
 		});
 
 		self::$recordBeforeCopy = null;
+	}
+
+	/**
+	 * Runs before locking a row. We use it to turn off checks: one of the checks performed is whether the specified
+	 * directory exists. Since it's possible to delete the directory outside the component this would make it impossible
+	 * to edit the category and set a new directory.
+	 *
+	 * @param   array $ignored
+	 *
+	 * @return  void
+	 */
+	protected function onBeforeLock($ignored = array())
+	{
+		$this->ignorePreSaveChecks = true;
+	}
+
+	/**
+	 * Same concept as onBeforeLock, used when the user presses Cancel
+	 *
+	 * @param   array $ignored
+	 *
+	 * @return  void
+	 */
+	protected function onBeforeUnlock($ignored = array())
+	{
+		$this->ignorePreSaveChecks = true;
+	}
+
+	/**
+	 * Runs after locking a row. We reset the checks. See onBeforeLock for information.
+	 *
+	 * @param   array $ignored
+	 *
+	 * @return  void
+	 */
+	protected function onAfterLock($ignored = array())
+	{
+		$this->ignorePreSaveChecks = false;
+	}
+
+	/**
+	 * Same concept as onAfterLock, used when the user presses Cancel
+	 *
+	 * @param   array $ignored
+	 *
+	 * @return  void
+	 */
+	protected function onAfterUnlock($ignored = array())
+	{
+		$this->ignorePreSaveChecks = false;
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  * @version   $Id$
  */
@@ -375,9 +375,16 @@ function arsBuildRouteHtml(&$query)
 
 			// Get release info
 			$releaseAlias = $release->alias;
-			$catId = $release->category->id;
-			$catAlias = $release->category->alias;
-			$catVgroup = $release->category->vgroup_id;
+			$catId = 0;
+			$catAlias = '';
+			$catVgroup = 0;
+
+			if (is_object($release->category))
+			{
+				$catId = $release->category->id;
+				$catAlias = $release->category->alias;
+				$catVgroup = $release->category->vgroup_id;
+			}
 
 			// Do we have a "category" menu?
 			if ($Itemid)
@@ -1168,14 +1175,33 @@ function arsBuildRouteIni(&$query)
 function arsParseRoute(&$segments)
 {
 	$input = JFactory::getApplication()->input;
+	$config = JFactory::getConfig();
 
 	$format = $input->getCmd('format', null);
 
 	if (is_null($format))
 	{
-		$url = JURI::getInstance()->toString();
-		$ext = substr(strtolower($url), -4);
-		$format = ltrim($ext, '.');
+		// If no format is specified in the URL we first assume it's "html"
+		$format = 'html';
+
+		// If we have SEF URL suffixes enabled we can infer the format from the suffix
+		if ($config->get('sef_suffix', 0))
+		{
+			// Get the last part of the URI path
+			$url = JURI::getInstance()->toString();
+			$basename = basename($url);
+
+			// Lame way to get the extension via string manipulation (shoot me if you will, but this works everywhere)
+			$ext = substr(strtolower($basename), -4);
+			$format = ltrim($ext, '.');
+
+			// If SplFileInfo is available let's prefer it
+			if (class_exists('\\SplFileInfo'))
+			{
+				$info = new \SplFileInfo($basename);
+				$format = $info->getExtension();
+			}
+		}
 	}
 
 	$segments = ArsRouterHelper::preconditionSegments($segments);
@@ -1186,6 +1212,7 @@ function arsParseRoute(&$segments)
 			return arsParseRouteHtml($segments);
 			break;
 
+		// The default is here to catch formats like "zip", "exe" or whatever may be returned by the if-block above.
 		case 'raw':
 		default:
 			return arsParseRouteRaw($segments);

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2015 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
  * @license   GNU General Public License version 3, or later
  */
 
@@ -104,6 +104,10 @@ class Release extends DataController
 		{
 			$id = $params->get('catid', 0);
 		}
+
+		// Required for caching
+		$this->input->set('id', null);
+		$this->input->set('category_id', $id);
 
 		try
 		{

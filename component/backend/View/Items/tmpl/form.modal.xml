@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  @package   AkeebaReleaseSystem
+  @copyright Copyright (c)2010-2016 Nicholas K. Dionysopoulos
+  @license   GNU General Public License version 3, or later
+-->
 <form
         type="browse"
         show_header="1"
@@ -57,7 +62,7 @@
                 />
         <field name="access" type="AccessLevel" sortable="true"/>
         <field name="published" type="Actions"/>
-        <field name="hits" type="Integer"/>
+        <field name="hits" type="Text"/>
         <field name="language" type="Language">
             <option value="*">JALL_LANGUAGE</option>
         </field>
