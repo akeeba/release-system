@@ -72,6 +72,7 @@ class Latest extends Controller
 		/** @var Releases $model */
 		$model = $this->getModel();
 		$model->reset(true)
+		      ->orderby_filter($params->get('rel_orderby', 'order'))
 		      ->published(1)
 		      ->latest(true)
 		      ->access_user($this->container->platform->getUser()->id)
