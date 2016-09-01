@@ -24,6 +24,6 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		// Load common CSS and JavaScript
 		\JHtml::_('jquery.framework');
 		$this->container->template->addCSS('media://com_ars/css/backend.css', $this->container->mediaVersion);
-		$this->container->template->addJS('media://com_ars/js/backend.js', false, false, $this->container->mediaVersion);
+		//$this->container->template->addJS('media://com_ars/js/backend.js', false, false, $this->container->mediaVersion);
 	}
 }
