@@ -139,9 +139,9 @@
         <field name="s3bucket" type="text" default="" label="COM_ARS_CONFIG_S3_BUCKET_LABEL"
                description="COM_ARS_CONFIG_S3_BUCKET_LABEL"/>
 
-        <field name="s3method" type="list" default="s3" label="COM_ARS_CONFIG_S3_METHOD_LABEL"
+        <field name="s3method" type="list" default="v2" label="COM_ARS_CONFIG_S3_METHOD_LABEL"
                description="COM_ARS_CONFIG_S3_METHOD_DESC">
-            <option value="s3">COM_ARS_CONFIG_S3_SIGNATURE_V2</option>
+            <option value="v2">COM_ARS_CONFIG_S3_SIGNATURE_V2</option>
             <option value="v4">COM_ARS_CONFIG_S3_SIGNATURE_V4</option>
         </field>
 
