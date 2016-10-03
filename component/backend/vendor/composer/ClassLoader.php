@@ -54,8 +54,7 @@ class ClassLoader
     private $useIncludePath = false;
     private $classMap = array();
     private $classMapAuthoritative = false;
-
-	private $missingClasses = array();
+    private $missingClasses = array();
 
     public function getPrefixes()
     {
@@ -323,23 +322,20 @@ class ClassLoader
         if (isset($this->classMap[$class])) {
             return $this->classMap[$class];
         }
-	    if ($this->classMapAuthoritative || isset($this->missingClasses[$class]))
-	    {
+        if ($this->classMapAuthoritative || isset($this->missingClasses[$class])) {
             return false;
         }
 
         $file = $this->findFileWithExtension($class, '.php');
 
         // Search for Hack files if we are running on HHVM
-	    if (false === $file && defined('HHVM_VERSION'))
-	    {
+        if (false === $file && defined('HHVM_VERSION')) {
             $file = $this->findFileWithExtension($class, '.hh');
         }
 
-	    if (false === $file)
-	    {
+        if (false === $file) {
             // Remember that this class does not exist.
-		    $this->missingClasses[$class] = true;
+            $this->missingClasses[$class] = true;
         }
 
         return $file;
@@ -404,7 +400,7 @@ class ClassLoader
             return $file;
         }
 
-	    return false;
+        return false;
     }
 }
 
