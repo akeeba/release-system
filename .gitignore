@@ -18,6 +18,9 @@
 # Symlinked files/folders into the plugns tree
 /plugins/*/*/language/en-GB
 
+# Composer managed dependencies (run `composer install` after git pull)
+/component/backend/vendor/akeeba
+
 # Release files
 /release
 
