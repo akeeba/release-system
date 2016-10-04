@@ -11,7 +11,7 @@
         <header name="ars_dlidlabel_id" type="RowSelect" label="JGLOBAL_USERNAME"
                 sortable="true" tdwith="20"/>
         <header name="label" type="Searchable" label="COM_ARS_DLIDLABELS_FIELD_LABEL" sortable="true"/>
-        <header name="user_id" type="Searchable" label="JGLOBAL_USERNAME" sortable="true"/>
+        <header name="user_id" type="Searchable" label="JGLOBAL_USERNAME" sortable="true" searchfieldname="username"/>
         <header name="dlid" type="Searchable" label="COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID" sortable="true"/>
         <header name="enabled" type="Published" label="JPUBLISHED" sortable="true"/>
         <header name="change" type="Field" label="" sortable="false"/>
