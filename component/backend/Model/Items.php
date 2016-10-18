@@ -752,7 +752,7 @@ class Items extends DataModel
 					{
 						$check = substr($folder, 5);
 						$s3 = AmazonS3::getInstance();
-						$items = $s3->getBucket('', $check);
+						$items = $s3->getBucket('', rtrim($check, '/') . '/');
 
 						if (empty($items))
 						{
@@ -1040,7 +1040,7 @@ class Items extends DataModel
 			}
 
 			$s3    = AmazonS3::getInstance();
-			$items = $s3->getBucket('', $directory . '/');
+			$items = $s3->getBucket('', rtrim($directory, '/') . '/');
 
 			if (empty($items))
 			{
@@ -1117,7 +1117,7 @@ class Items extends DataModel
 		if ($useS3)
 		{
 			$s3       = AmazonS3::getInstance();
-			$allFiles = $s3->getBucket('', $directory, null, null, null, true);
+			$allFiles = $s3->getBucket('', rtrim($directory, '/') . '/', null, null, null, true);
 
 			if (!empty($allFiles))
 			{
