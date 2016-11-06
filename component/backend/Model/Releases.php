@@ -435,13 +435,13 @@ class Releases extends DataModel
 
 		foreach ($info as $infoitem)
 		{
-			$versions[] = '*' . $infoitem['version'] . '*';
+			$versions[] = $infoitem['version'];
 			$aliases[] = $infoitem['alias'];
 		}
 
 		$this->assertNotEmpty($this->version, 'COM_RELEASE_ERR_NEEDS_VERSION');
 
-		$this->assertNotInArray('*' . $this->version . '*', $versions, 'COM_RELEASE_ERR_NEEDS_VERSION_UNIQUE');
+		$this->assertNotInArray($this->version, $versions, 'COM_RELEASE_ERR_NEEDS_VERSION_UNIQUE');
 
 		// If the alias is missing, auto-create a new one
 		if (!$this->alias)

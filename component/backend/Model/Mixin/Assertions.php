@@ -54,7 +54,7 @@ trait Assertions
 	 */
 	protected function assertInArray($value, array $validValues, $message)
 	{
-		$this->assert(in_array($value, $validValues), $message);
+		$this->assert(in_array($value, $validValues, true), $message);
 	}
 
 	/**
@@ -69,6 +69,6 @@ trait Assertions
 	 */
 	protected function assertNotInArray($value, array $validValues, $message)
 	{
-		$this->assert(!in_array($value, $validValues), $message);
+		$this->assert(!in_array($value, $validValues, true), $message);
 	}
 }
