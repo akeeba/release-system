@@ -10,13 +10,6 @@
 # Symlinked files/folders into the component tree
 /component/ars.xml
 /component/cli/*.xml
-/component/language/*/en-GB
-
-# Symlinked files/folders into the modules tree
-/modules/*/*/language/en-GB
-
-# Symlinked files/folders into the plugns tree
-/plugins/*/*/language/en-GB
 
 # Composer managed dependencies (run `composer install` after git pull)
 /component/backend/vendor/akeeba
