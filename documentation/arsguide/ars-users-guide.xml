@@ -247,28 +247,6 @@
         Throughout this chapter we assume that you are familiar with these
         instructions and we will try not to duplicate them.</para>
 
-        <note>
-          <para>The language (translation) files are NOT installed
-          automatically. You can download and install them from our <link
-          xlink:href="http://cdn.akeebabackup.com/language/ars/index.html"
-          xmlns:xlink="http://www.w3.org/1999/xlink">language download
-          page</link>. Do note that you will have to install both the
-          component and the language packages for the component to
-          work.</para>
-
-          <para>As noted on that page, Akeeba Ltd only produces the English
-          and Greek language files. All other languages are contributed by
-          third parties. If you spot an error please do not contact Akeeba
-          Ltd; we will be unable to help you. Instead, please go to the <link
-          xlink:href="https://www.transifex.com/projects/p/ars/"
-          xmlns:xlink="http://www.w3.org/1999/xlink">translation project
-          page</link> to find the contact information of the translator.
-          Abandoned languages will show the maintainer being our staff member
-          "nikosdion". In this case you're out of luck; if you want to fix the
-          language package you will need to volunteer to take over the
-          translation project for that language.</para>
-        </note>
-
         <section>
           <title>Installing or manually updating the component and language
           files</title>
@@ -575,16 +553,6 @@
         <note>
           <para>This method was removed in Akeeba Release System 2.3.3</para>
         </note>
-
-        <para>On older versions of Akeeba Release System there is a different
-        update method, if your server supports it. It is called the "Live
-        Update" feature. Whenever you visit the Akeeba Release System Control
-        Panel, it will automatically check for the existence of an updated
-        version and it will notify you. Clicking on the notification allows
-        you to perform a live update without further interaction. Do note that
-        if your server is protected by a firewall you'll have to enable port
-        80 and 443 TCP traffic to www.akeebabackup.com and
-        cdn.akeebabackup.com for this feature to work properly.</para>
       </section>
 
       <section xml:id="requesting-support">
