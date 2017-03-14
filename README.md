@@ -6,9 +6,15 @@ A download manager component for Joomla!, designed for software distribution
 
 Akeeba Release System allows you to distribute software on-line. It is designed to make it easy to provide Joomla! software, generating the necessary XML update stream. 
 
+## Download
+
+Pre-built packages of Akeeba Release System will be made available through [our GitHub repository's Releases page](https://github.com/akeeba/release-system/releases) starting with version 3.2.1.
+
+We do understand the irony in not using itself to distribute it but it's a matter of cost, not a matter of capability. Akeeba Release System is [currently used to distribute Joomla! itself](https://downloads.joomla.org/) and [all of our commercial software](https://www.akeebabackup.com/download.html), so it's safe to say that it's pretty darned robust. 
+
 ## No support - For developers only
 
-This software is provided **WITHOUT ANY KIND OF SUPPORT WHATSOEVER**.
+This software is provided **WITHOUT ANY KIND OF SUPPORT WHATSOEVER**. You are free to consult [the documentation](https://github.com/akeeba/release-system/wiki).
 
 If you are a developer you are free to submit a pull request with your code fix, as long as there is a clear description of what was not working for you, why and how you fixed it. 
  
