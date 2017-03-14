@@ -23,8 +23,6 @@
 		<include name="pkg_*.xml" />
 		<include name="*.txt" />
 		<include name="script.ars.php" />
-
-		<exclude name="plg_ars_tainting*" />
 	</fileset>
 
 	<!--
