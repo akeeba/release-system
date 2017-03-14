@@ -33,21 +33,10 @@
 	====================================================================================================
 	-->
 
-	<target name="documentation" description="The documentation"
-			depends="doc-j-pdf">
+	<target name="documentation" description="The documentation">
+		<echo message="This target is obsolete. The documentation is now in the wiki." />
 	</target>
 
-	<target name="doc-j-pdf" description="Documentation for Joomla! in PDF format">
-		<phingcall target="docbook-pdf">
-			<property name="docs.input" value="ars-users-guide.xml" />
-		</phingcall>
-	</target>
-
-	<target name="doc-j-pdf" description="Documentation for Joomla! in ePub format">
-		<phingcall target="docbook-epub">
-			<property name="docs.input" value="ars-users-guide.xml" />
-		</phingcall>
-	</target>
 	<!--
 	====================================================================================================
 	Tasks - Project management

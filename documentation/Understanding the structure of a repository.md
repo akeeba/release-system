@@ -1,0 +1,9 @@
+Akeeba Release System is designed as a dual-repository, three-level system.
+
+The repository is logically separated to two sub-repositories. By default, they are named "Official Releases" and "Development Releases". Their only difference is the way items are added to them. In "Official Releases" you have to manually go to the back-end, enter an existing "category", create a new "release" and start uploading "items" to it, then publish the lot for your site visitors to see and download. In "Development Releases" you do not have to use your site's back-end. All you need to do is to use FTP to create a new directory, which automatically creates and publishes a new "release", and upload files, which automatically creates and publishes a new "item". The separation is only logical. If you wish to do so, you can display both sub-repositories as a single repository.
+
+The repository follows the standard convention of categorization. Each repository can have one or more "categories". Each category can have one or more "releases". Each release can have one or more "items". The "categories" are the top organization level of your data. Usually you have to create one category per software you want to publish. If you are not interested in publishing software, create one category per general file type. Think of them as article Sections.
+
+Each category has one more "releases". Think of a release as a group of files belonging to the same chronological order. Each release is supposed to supersede the directly previous release (the one with a higher ordering number than itself).
+
+Finally, "items" are what your visitors download. We chose to name them "items" instead of "files" because they can either be physical files stored on your server or links to a remote resource served from a different web server.
