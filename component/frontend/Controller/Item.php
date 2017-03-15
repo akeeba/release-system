@@ -288,6 +288,8 @@ class Item extends DataController
 		{
 			$this->logFailedDownloadAttempt($item->id ? $id : 0);
 
+			$model->logoutUser();
+
 			$noAccessURL = \JComponentHelper::getParams('com_ars')->get('no_access_url', '');
 
 			if ($item->id && $item->redirect_unauth && $item->show_unauth_links)
@@ -321,6 +323,8 @@ class Item extends DataController
 		{
 			$this->logFailedDownloadAttempt($id);
 
+			$model->logoutUser();
+
 			$noAccessURL = \JComponentHelper::getParams('com_ars')->get('no_access_url', '');
 
 			if (isset($release) && $release->id && $release->redirect_unauth && $release->show_unauth_links)
@@ -352,6 +356,8 @@ class Item extends DataController
 		catch (\Exception $e)
 		{
 			$this->logFailedDownloadAttempt($id);
+
+			$model->logoutUser();
 
 			$noAccessURL = \JComponentHelper::getParams('com_ars')->get('no_access_url', '');
 

@@ -1,7 +1,0 @@
-Version 3.2.x
-================================================================================
-- Remove Akeeba Strapper
-- Remove update notifications and statistics collection
-~ Changing the styling of categories, releases and items views
-# [HIGH] Latest release plugin yielded wrong results because the model was reading the ID from the request
-# [LOW] Notice in the Normal and BleedingEdge sub-views

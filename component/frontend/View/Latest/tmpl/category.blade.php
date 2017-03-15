@@ -90,7 +90,7 @@ switch ($release->maturity)
 	</dl>
 
 	<table class="table table-striped">
-		@foreach($release->items->filter(function ($item)
+		@foreach($release->items->sortBy($this->params->get('items_orderby', 'ordering'))->filter(function ($item)
 		{
 			return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true);
 		}) as $i)

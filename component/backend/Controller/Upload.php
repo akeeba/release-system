@@ -78,6 +78,18 @@ class Upload extends Controller
 		$folder = $this->input->getString('folder', '');
 		$file = $this->input->files->get('upload', [], 'raw');
 
+		// Check for an upload error
+		if (isset($file['error']) && $file['error'] !== 0)
+		{
+			$url = 'index.php?option=com_ars&view=upload&task=category&id=' . (int)$categoryId
+			       . '&folder=' . urlencode($folder)
+			       . '&' . \JFactory::getSession()->getFormToken(true) . '=1';
+
+			$this->setRedirect($url, \JText::_('MSG_FILE_NOT_UPLOADED'), 'error');
+
+			return;
+		}
+
 		// Get output directory
 		/** @var \Akeeba\ReleaseSystem\Admin\Model\Upload $model */
 		$model = $this->getModel();

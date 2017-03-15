@@ -2,18 +2,22 @@
 
 A download manager component for Joomla!, designed for software distribution
 
-## NO SUPPORT
+## What does it do?
 
-This software is provided **WITHOUT ANY KIND OF SUPPORT WHATSOEVER**. We have disabled Issues on this repository to stress this. Kindly note that any requests sent to us about this software will not be replied.
+Akeeba Release System allows you to distribute software on-line. It is designed to make it easy to provide Joomla! software, generating the necessary XML update stream. 
+
+## Download
+
+Pre-built packages of Akeeba Release System will be made available through [our GitHub repository's Releases page](https://github.com/akeeba/release-system/releases) starting with version 3.2.1.
+
+We do understand the irony in not using itself to distribute it but it's a matter of cost, not a matter of capability. Akeeba Release System is [currently used to distribute Joomla! itself](https://downloads.joomla.org/) and [all of our commercial software](https://www.akeebabackup.com/download.html), so it's safe to say that it's pretty darned robust. 
+
+## No support - For developers only
+
+This software is provided **WITHOUT ANY KIND OF SUPPORT WHATSOEVER**. You are free to consult [the documentation](https://github.com/akeeba/release-system/wiki).
+
+If you are a developer you are free to submit a pull request with your code fix, as long as there is a clear description of what was not working for you, why and how you fixed it. 
  
-## THIS REPOSITORY IS FOR DEVELOPERS ONLY
-
-No installable ZIP packages will be provided for this software since March 2016. You can build one from the source following the developer instructions in this README.
-
-## INTERNAL PROJECT
-
-This is meant to be an internal software development project for use with our site, akeebabackup.com. As such, future versions of this software will drop any features we do not wish to maintain because we do not intend or anticipate to use on our site.
-
 ## Prerequisites
 
 In order to build the installation packages of this component you will need to have the following tools:
@@ -21,7 +25,7 @@ In order to build the installation packages of this component you will need to h
 * A command line environment. Using Bash under Linux / Mac OS X works best. On Windows you will need to run most tools through an elevated privileges (administrator) command prompt on an NTFS filesystem due to the use of symlinks. Press WIN-X and click on "Command Prompt (Admin)" to launch an elevated command prompt.
 * A PHP CLI binary in your path
 * Command line Git executables
-* PEAR and Phing installed, with the Net_FTP and VersionControl_SVN PEAR packages installed
+* Phing
 * (Optional) libxml and libsxlt command-line tools, only if you intend on building the documentation PDF files
 
 You will also need the following path structure inside a folder on your system
@@ -31,30 +35,6 @@ You will also need the following path structure inside a folder on your system
 * **fof3** [Framework on Framework 3.x](https://github.com/akeeba/fof)
 
 You will need to use the exact folder names specified here.
-
-### Initialising the repository
-
-All of the following commands are to be run from the MAIN directory. Lines
-starting with $ indicate a Mac OS X / Linux / other *NIX system commands. Lines
-starting with > indicate Windows commands. The starting character ($ or >) MUST
-NOT be typed!
-
-1. You will first need to do the initial link with Akeeba Build Tools, running
-   the following command (Mac OS X, Linux, other *NIX systems):
-
-		$ php ../buildfiles/tools/link.php `pwd`
-
-   or, on Windows:
-
-		> php ../buildfiles/tools/link.php %CD%
-
-1. After the initial linking takes place, go inside the build directory:
-
-		$ cd build
-
-   and run the link phing task:
-
-		$ phing link
 
 ### Useful Phing tasks
 

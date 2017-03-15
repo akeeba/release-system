@@ -2,7 +2,7 @@
 /**
  * @package    AkeebaReleaseSystem
  * @subpackage plugins.arsdlid
- * @copyright  Copyright (c)2010-2016 Nicholas K. Dionysopoulos
+ * @copyright  Copyright (c)2010-2017 Nicholas K. Dionysopoulos
  * @license    GNU General Public License version 3, or later
  */
 

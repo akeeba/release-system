@@ -13,9 +13,17 @@ use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Container\Container;
 use FOF30\Controller\Controller;
+use Joomla\Registry\Registry;
 
 class Latest extends Controller
 {
+	/**
+	 * Page parameters
+	 *
+	 * @var  Registry
+	 */
+	public $params;
+
 	public function __construct(Container $container, array $config = array())
 	{
 		// Tell our controller to use the Releases model
@@ -66,23 +74,24 @@ class Latest extends Controller
 	{
 		// Push page parameters to the model
 		/** @var \JApplicationSite $app */
-		$app    = \JFactory::getApplication();
-		$params = $app->getParams('com_ars');
+		$app          = \JFactory::getApplication();
+		$this->params = $app->getParams('com_ars');
 
 		/** @var Releases $model */
 		$model = $this->getModel();
 		$model->reset(true)
+		      ->orderby_filter($this->params->get('rel_orderby', 'order'))
 		      ->published(1)
 		      ->latest(true)
 		      ->access_user($this->container->platform->getUser()->id)
 		      ->category_id(0)
-		      ->maturity($params->get('min_maturity', 'alpha'))
+		      ->maturity($this->params->get('min_maturity', 'alpha'))
 		      ->with(['items']);
 
 		/** @var Categories $categoriesModel */
 		$categoriesModel = $this->getModel('Categories');
 		$categoriesModel->reset(true)
-		                ->orderby_filter($params->get('orderby', 'order'))
+		                ->orderby_filter($this->params->get('orderby', 'order'))
 		                ->published(1)
 		                ->access_user($this->container->platform->getUser()->id)
 		                ->with([]);

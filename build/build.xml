@@ -23,8 +23,6 @@
 		<include name="pkg_*.xml" />
 		<include name="*.txt" />
 		<include name="script.ars.php" />
-
-		<exclude name="plg_ars_tainting*" />
 	</fileset>
 
 	<!--
@@ -33,26 +31,62 @@
 	====================================================================================================
 	-->
 
-	<target name="documentation" description="The documentation"
-			depends="doc-j-pdf">
+	<target name="documentation" description="The documentation">
+		<echo message="This target is obsolete. The documentation is now in the wiki." />
 	</target>
 
-	<target name="doc-j-pdf" description="Documentation for Joomla! in PDF format">
-		<phingcall target="docbook-pdf">
-			<property name="docs.input" value="ars-users-guide.xml" />
-		</phingcall>
-	</target>
-
-	<target name="doc-j-pdf" description="Documentation for Joomla! in ePub format">
-		<phingcall target="docbook-epub">
-			<property name="docs.input" value="ars-users-guide.xml" />
-		</phingcall>
-	</target>
 	<!--
 	====================================================================================================
 	Tasks - Project management
 	====================================================================================================
 	-->
+
+	<target name="release">
+		<!-- Make sure there is a tag that's the same as the version number -->
+		<gittag gitPath="${git.binary}"
+				repository="${dirs.root}"
+				list="true" pattern="${version}"
+				outputProperty="git.tags"
+		/>
+
+		<php function="trim" returnProperty="git.tags">
+			<param value="${git.tags}" />
+		</php>
+
+		<if>
+			<not>
+				<equals arg1="${git.tags}" arg2="${version}" />
+			</not>
+			<then>
+				<fail message="You must tag version ${version} before trying to release it." />
+			</then>
+		</if>
+
+		<!-- Verify the tag. If it can't verify the tag the build fails. -->
+		<gittag gitPath="${git.binary}"
+				repository="${dirs.root}"
+				verify="true"
+				object="${version}"
+				outputProperty="git.verify"
+		/>
+
+		<!-- Make a draft release -->
+		<loadfile property="github.release.body" file="${dirs.root}/RELEASENOTES.md" />
+
+		<GitHubRelease token="${github.token}" organization="${github.organization}" repository="${github.repository}"
+					   tagName="${version}" releaseName="v.${version}" releaseBody="${github.release.body}" draft="1"
+					   propName="github.release.id" />
+
+		<!-- Upload the release files -->
+		<GitHubAsset token="${github.token}" organization="${github.organization}" repository="${github.repository}"
+					 file="${dirs.release}/pkg_ars-${version}.zip"
+					 releaseId="${github.release.id}" />
+
+		<!-- Publish the release -->
+		<GitHubRelease token="${github.token}" organization="${github.organization}" repository="${github.repository}"
+					   tagName="${version}" draft="0" />
+	</target>
+
 
 	<target name="docsdeploy-ars" >
 		<phingcall target="docbook-deploy">
