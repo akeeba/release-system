@@ -8,9 +8,9 @@
         </tags>
 
         <downloads>
-            <downloadurl type="full" format="zip">https://github.com/akeeba/release-system/releases/download/3.2.1/pkg_loginguard-3.2.1.zip</downloadurl>
+            <downloadurl type="full" format="zip">https://github.com/akeeba/release-system/releases/download/3.2.1/pkg_ars-3.2.1.zip</downloadurl>
         </downloads>
-        <infourl title="Akeeba Release System Release Notes">https://github.com/akeeba/loginguard/releases/3.2.1</infourl>
+        <infourl title="Akeeba Release System Release Notes">https://github.com/akeeba/ars/releases/3.2.1</infourl>
 
         <targetplatform name="joomla" version="3.4"/>
         <targetplatform name="joomla" version="3.5"/>
