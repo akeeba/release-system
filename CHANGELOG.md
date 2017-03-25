@@ -1,3 +1,9 @@
+# 3.2.2
+
+**Bug fixes**
+
+* Latest releases returning wrong results. A better SQL query is now used.
+
 # 3.2.1
 
 **Removed features**

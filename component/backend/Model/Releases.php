@@ -346,16 +346,24 @@ class Releases extends DataModel
 		// Latest version filter. Use as $releases->published(1)->latest(true)->get(true)
 		$fltLatest = $this->getState('latest', false, 'bool');
 
-		if ($fltLatest)
+			if ($fltLatest)
 		{
-			$innerQuery = clone $query;
-			$query = $db->getQuery(true)
-						->select('*')
-						->from('(' . $innerQuery . ') AS ' . $db->qn('#__ars_releases'))
-						// Why just a DESC group by clause? See http://stackoverflow.com/questions/1313120/retrieving-the-last-record-in-each-group
-						->group($db->qn('category_id') . ' DESC');
+			$subQuery = $db->getQuery(true)
+				->select($db->qn('r1.id'))
+				->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r1'))
+				->leftJoin($db->qn('#__ars_releases') . ' AS ' . $db->qn('r2') . ' ON ('.
+					$db->qn('r1.category_id') . ' = ' . $db->qn('r2.category_id') . ' AND ' .
+					$db->qn('r1.ordering') . ' > ' . $db->qn('r2.ordering')
+					.')')
+				->where($db->qn('r2.ordering') . ' IS NULL');
+
+			$query->where($db->qn('id') . ' IN(' . $subQuery . ')');
 		}
+
+		//echo $query;die;
 	}
+
+
 
 	/**
 	 * Change the ordering of the records of the table
@@ -417,11 +425,11 @@ class Releases extends DataModel
 		// Get some useful info
 		$db = $this->getDBO();
 		$query = $db->getQuery(true)
-					->select(array(
-						$db->qn('version'),
-						$db->qn('alias')
-					))->from($db->qn('#__ars_releases'))
-					->where($db->qn('category_id') . ' = ' . $db->q($this->category_id));
+			->select(array(
+				$db->qn('version'),
+				$db->qn('alias')
+			))->from($db->qn('#__ars_releases'))
+			->where($db->qn('category_id') . ' = ' . $db->q($this->category_id));
 
 		if ($this->id)
 		{
@@ -514,8 +522,8 @@ class Releases extends DataModel
 		$db = $this->getDbo();
 
 		$query = $db->getQuery(true)
-					->update($db->qn('#__ars_releases'))
-					->set($db->qn('ordering') . ' = ' . $db->qn('ordering') . ' + ' . $db->q(1));
+			->update($db->qn('#__ars_releases'))
+			->set($db->qn('ordering') . ' = ' . $db->qn('ordering') . ' + ' . $db->q(1));
 
 		// Only update releases with the same category (as long as a category is – and it should be!) defined
 		if (isset($dataObject->category_id) && !empty($dataObject->category_id))

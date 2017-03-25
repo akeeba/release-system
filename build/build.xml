@@ -27,16 +27,6 @@
 
 	<!--
 	====================================================================================================
-	Tasks - Documentation
-	====================================================================================================
-	-->
-
-	<target name="documentation" description="The documentation">
-		<echo message="This target is obsolete. The documentation is now in the wiki." />
-	</target>
-
-	<!--
-	====================================================================================================
 	Tasks - Project management
 	====================================================================================================
 	-->
@@ -87,14 +77,17 @@
 					   tagName="${version}" draft="0" />
 	</target>
 
+	<!--
+	====================================================================================================
+	Obsolete
+	====================================================================================================
+	-->
 
-	<target name="docsdeploy-ars" >
-		<phingcall target="docbook-deploy">
-			<property name="docsdeploy.path.source" value="" />
-			<property name="docsdeploy.path.target" value="arsguide" />
-		</phingcall>
+	<target name="docsdeploy">
+		<echo message="The docsdeploy target is obsolete. The documentation is now in the wiki" />
 	</target>
 
-	<target name="docsdeploy"
-			depends="docsdeploy-ars" />
+	<target name="documentation" description="The documentation">
+		<echo message="The documentation target is obsolete. The documentation is now in the wiki" />
+	</target>
 </project>
