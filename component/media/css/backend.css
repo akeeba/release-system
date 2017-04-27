@@ -595,3 +595,8 @@ li.plupload_droptext {
 div#toolbar div#toolbar-back button.btn span.icon-back::before {
     content: "";
 }
+
+/**
+ * Joomla! 3.7 made success buttons fixed width.
+ */
+#toolbar .btn-success { width: auto !important; }
