@@ -10,6 +10,7 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
+use FOF30\Date\Date;
 use FOF30\Model\DataModel;
 use FOF30\Utils\Ip;
 
@@ -158,7 +159,7 @@ class Logs extends DataModel
 		if (empty($this->accessed_on) || ($this->accessed_on == '0000-00-00 00:00:00'))
 		{
 			\JLoader::import('joomla.utilities.date');
-			$date = new \JDate();
+			$date = new Date();
 			$this->accessed_on = $date->toSql();
 		}
 

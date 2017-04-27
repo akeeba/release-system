@@ -7,6 +7,7 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Model\Mixin;
 
+use FOF30\Date\Date;
 use FOF30\Model\DataModel;
 
 defined('_JEXEC') or die;
@@ -53,9 +54,9 @@ trait DateManipulation
 			return $value;
 		}
 
-		$jDate = new \JDate($value);
+		$date = new Date($value);
 
-		$value = $jDate->toSql();
+		$value = $date->toSql();
 
 		return $value;
 	}
@@ -74,8 +75,8 @@ trait DateManipulation
 	{
 		\JLoader::import('joomla.utilities.date');
 
-		$jUp   = new \JDate($publish_up);
-		$jDown = new \JDate($publish_down);
+		$jUp   = new Date($publish_up);
+		$jDown = new Date($publish_down);
 
 		if ($jDown->toUnix() < $jUp->toUnix())
 		{
@@ -85,7 +86,7 @@ trait DateManipulation
 		}
 		elseif ($jDown->toUnix() == $jUp->toUnix())
 		{
-			$jDown        = new \JDate($foreverDate);
+			$jDown        = new Date($foreverDate);
 			$publish_down = $jDown->toSql();
 		}
 
@@ -107,7 +108,7 @@ trait DateManipulation
 
 		if (is_null($uNow))
 		{
-			$jNow = new \JDate();
+			$jNow = new Date();
 			$uNow = $jNow->toUnix();
 		}
 
@@ -120,8 +121,8 @@ trait DateManipulation
 			$publish_down = $this->normaliseDate($row->publish_down, '2038-01-18 00:00:00');
 			$publish_up   = $this->normaliseDate($row->publish_up, '2001-01-01 00:00:00');
 
-			$jDown = new \JDate($publish_down);
-			$jUp   = new \JDate($publish_up);
+			$jDown = new Date($publish_down);
+			$jUp   = new Date($publish_up);
 
 			if (($uNow >= $jDown->toUnix()) && $row->enabled)
 			{

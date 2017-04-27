@@ -1,3 +1,7 @@
+# 3.2.3
+
+! Joomla! 3.7.0 broke the JDate package, effectively ignoring timezones, causing grave errors in date / time calculations and display
+
 # 3.2.2
 
 **Bug fixes**
