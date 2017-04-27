@@ -22,7 +22,7 @@ if (!isset($this->releases[$item->id]))
 
 /** @var \Akeeba\ReleaseSystem\Site\Model\Releases $release */
 $release = $this->releases[$item->id];
-$released = JFactory::getDate($release->created);
+$released = $this->container->platform->getDate($release->created);
 $release_url = Router::_('index.php?option=com_ars&view=Items&release_id=' . $release->id . '&Itemid=' . $Itemid);
 $authorisedViewLevels = $this->getContainer()->platform->getUser()->getAuthorisedViewLevels();
 

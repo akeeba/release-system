@@ -13,7 +13,7 @@ use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Admin\Helper\Format;
 
-$released = JFactory::getDate($item->created);
+$released = $this->container->platform->getDate($item->created);
 
 ?>
 

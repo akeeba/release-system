@@ -9,7 +9,7 @@ defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Items\Html  $this */
 
-$released   = \JFactory::getDate($this->release->created);
+$released   = $this->container->platform->getDate($this->release->created);
 ?>
 
 <div class="item-page{{{ $this->params->get('pageclass_sfx') }}}">
