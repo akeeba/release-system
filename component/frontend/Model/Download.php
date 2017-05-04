@@ -34,7 +34,7 @@ class Download extends Model
 			}
 
 			$this->logoutUser();
-			\JFactory::getApplication()->redirect($item->url, false);
+			$this->container->platform->redirect($item->url);
 
 			return;
 		}
@@ -60,7 +60,7 @@ class Download extends Model
 			}
 
 			$this->logoutUser();
-			\JFactory::getApplication()->redirect($url, false);
+			$this->container->platform->redirect($url);
 
 			return;
 

@@ -396,6 +396,6 @@ class Update extends Controller
 
 		$downloadModel->doDownload($item);
 
-		JFactory::getApplication()->close();
+		$this->container->platform->closeApplication();
 	}
 }

@@ -47,6 +47,7 @@ class Ajax extends Controller
 
 		@ob_end_clean();
 		echo $result;
-		\JFactory::getApplication()->close();
+
+		$this->container->platform->closeApplication();
 	}
 }
