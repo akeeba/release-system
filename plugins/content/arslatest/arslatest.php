@@ -404,7 +404,7 @@ class plgContentArslatest extends JPlugin
 		$installapp = (int) ($this->container->platform->getSessionVar('installapp', null, 'arsjed'));
 
 		// Find the stream ID based on the $installapp key
-		$db    = JFactory::getDbo();
+		$db    = $this->container->db;
 		$query = $db->getQuery(true)
 		            ->select($db->qn('id'))
 		            ->from('#__ars_updatestreams')

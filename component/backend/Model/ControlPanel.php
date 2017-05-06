@@ -10,6 +10,7 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Helper\IniParser;
+use FOF30\Container\Container;
 use FOF30\Database\Installer;
 use FOF30\Date\Date;
 use FOF30\Model\Model;
@@ -545,7 +546,7 @@ class ControlPanel extends Model
 	 */
 	public static function needsCategoriesMenu()
 	{
-		$db = \JFactory::getDbo();
+		$db = Container::getInstance('com_ars')->db;
 
 		$query = $db->getQuery(true)
 				->select('COUNT(id)')

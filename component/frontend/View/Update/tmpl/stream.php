@@ -226,7 +226,7 @@ if (defined('JDEBUG') && JDEBUG && false):
 	?>
 	<debug>
 		<dbqueries>
-			<?php foreach (JFactory::getDbo()->getLog() as $i => $query): ?>
+			<?php foreach ($this->getContainer()->db->getLog() as $i => $query): ?>
 				<query count="<?= $i ?>"><![CDATA[<?= $query ?>]]></query>
 			<?php endforeach; ?>
 		</dbqueries>
