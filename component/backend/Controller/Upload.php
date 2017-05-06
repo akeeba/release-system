@@ -108,7 +108,7 @@ class Upload extends Controller
 		{
 			// When using S3, we are uploading to the temporary directory so that
 			// we can then upload to S3 and remove from our server.
-			$jConfig = \JFactory::getConfig();
+			$jConfig = $this->container->platform->getConfig();
 			$s3Dir = $targetDirectory;
 			$targetDirectory = $jConfig->get('tmp_path', '');
 		}

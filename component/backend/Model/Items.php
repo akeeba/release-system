@@ -801,7 +801,7 @@ class Items extends DataModel
 					$url = $this->url;
 				}
 
-				$config = \JFactory::getConfig();
+				$config = $this->container->platform->getConfig();
 
 				$target = $config->get('tmp_path') . '/temp.dat';
 

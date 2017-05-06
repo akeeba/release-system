@@ -88,7 +88,7 @@ class Html extends BaseView
 			$safe_mode = true;
 		}
 
-		$jconfig        = \JFactory::getConfig();
+		$jconfig        = $this->container->platform->getConfig();
 		$temp           = $jconfig->get('tmp_path', '');
 		$isWritable     = @is_writable($temp) && !$safe_mode;
 		$this->chunking = !$isWritable;
