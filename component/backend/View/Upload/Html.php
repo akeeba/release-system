@@ -93,11 +93,6 @@ class Html extends BaseView
 		$isWritable     = @is_writable($temp) && !$safe_mode;
 		$this->chunking = !$isWritable;
 
-		$document = \JFactory::getDocument();
-
-		// TODO What do I need this for?
-		$document->addScript('http://bp.yahooapis.com/2.4.21/browserplus-min.js');
-
 		return true;
 	}
 }
