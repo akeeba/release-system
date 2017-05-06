@@ -7,11 +7,25 @@
  */
 
 // Protect from unauthorized access
+use FOF30\Container\Container;
+
 defined('_JEXEC') or die();
 
 class plgContentArsdlid extends JPlugin
 {
+	/**
+	 * Cache of user IDs to Download IDs
+	 *
+	 * @var   array
+	 */
 	private static $cache = array();
+
+	/**
+	 * The component container
+	 *
+	 * @var   Container
+	 */
+	protected $container;
 
 	/**
 	 * Should this plugin be allowed to run? True if FOF can be loaded and the ARS component is enabled
@@ -36,6 +50,8 @@ class plgContentArsdlid extends JPlugin
 		{
 			$this->enabled = false;
 		}
+
+		$this->container = Container::getInstance('com_ars');
 	}
 
 
@@ -64,7 +80,8 @@ class plgContentArsdlid extends JPlugin
 	private static function process($match)
 	{
 		$ret = '';
-		$user = JFactory::getUser();
+		$container = \FOF30\Container\Container::getInstance('com_ars');
+		$user = $container->platform->getUser();
 
 		if (!$user->guest)
 		{

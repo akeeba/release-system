@@ -8,6 +8,7 @@
 
 // Protect from unauthorized access
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use FOF30\Container\Container;
 
 defined('_JEXEC') or die();
 
@@ -15,6 +16,12 @@ JLoader::import('joomla.plugin.plugin');
 
 class plgContentArslatest extends JPlugin
 {
+	/**
+	 * The component container
+	 *
+	 * @var   Container
+	 */
+	protected $container;
 
 	/** @var bool Is this category prepared? */
 	private $prepared = false;
@@ -48,6 +55,8 @@ class plgContentArslatest extends JPlugin
 		{
 			$this->enabled = false;
 		}
+
+		$this->container = Container::getInstance('com_ars');
 	}
 
 	/**
@@ -369,7 +378,7 @@ class plgContentArslatest extends JPlugin
 	{
 		static $dlid = '';
 
-		$user = JFactory::getUser();
+		$user = $this->container->platform->getUser();
 
 		if (empty($dlid) && !$user->guest)
 		{
