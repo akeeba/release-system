@@ -7,6 +7,8 @@
  */
 
 // Protect from unauthorized access
+use FOF30\Container\Container;
+
 defined('_JEXEC') or die();
 
 JLoader::import('joomla.plugin.plugin');
@@ -19,6 +21,13 @@ class plgSystemArsjed extends JPlugin
 	 * @var  bool
 	 */
 	private $enabled = true;
+
+	/**
+	 * The component container
+	 *
+	 * @var   Container
+	 */
+	protected $container;
 
 	public function __construct(&$subject, $config = array())
 	{
@@ -35,7 +44,11 @@ class plgSystemArsjed extends JPlugin
 		if (!JComponentHelper::isEnabled('com_ars'))
 		{
 			$this->enabled = false;
+
+			return;
 		}
+
+		$this->container = Container::getInstance('com_ars');
 	}
 
 	public function onAfterInitialise()
@@ -52,9 +65,8 @@ class plgSystemArsjed extends JPlugin
 
 		if (!empty($installapp) && !empty($installat))
 		{
-			$session = JFactory::getSession();
-			$session->set('installat', $installat, 'arsjed');
-			$session->set('installapp', $installapp, 'arsjed');
+			$this->container->platform->setSessionVar('installat', $installat, 'arsjed');
+			$this->container->platform->setSessionVar('installapp', $installapp, 'arsjed');
 		}
 	}
 }

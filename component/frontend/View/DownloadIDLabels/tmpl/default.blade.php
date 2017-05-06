@@ -52,7 +52,7 @@ $options[] = JHtml::_('select.option', '', 'JALL');
         </span>
     </div>
 
-    <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=add&' . JFactory::getSession()->getToken() . '=1&returnurl=' . $returnUrl) }}"
+    <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=add&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}"
        class="btn btn-success">
         <span class="icon icon-white icon-plus"></span>
         @lang('JNEW')
@@ -98,7 +98,7 @@ $options[] = JHtml::_('select.option', '', 'JALL');
                     @if($item->primary)
                         @lang('COM_ARS_DLIDLABELS_LBL_DEFAULT')
                     @else
-                        <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=edit&id=' . $item->ars_dlidlabel_id . '&' . JFactory::getSession()->getToken() . '=1&returnurl=' . $returnUrl) }}">
+                        <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=edit&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}">
                         {{{ $item->label }}}
                         </a>
                     @endif
@@ -108,12 +108,12 @@ $options[] = JHtml::_('select.option', '', 'JALL');
                     @include('site:com_ars/DownloadIDLabels/default_publish', ['item' => $item])
                 </td>
                 <td>
-                    <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabels&task=reset&id=' . $item->ars_dlidlabel_id . '&' . JFactory::getSession()->getToken() . '=1&returnurl=' . $returnUrl) }}"
+                    <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabels&task=reset&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}"
                        class="btn btn-warning" title="@lang('COM_ARS_DLIDLABELS_FIELD_RESET')">
                         <span class="icon icon-white icon-retweet"></span>
                     </a>
                     @unless($item->primary)
-                    <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . JFactory::getSession()->getToken() . '=1&returnurl=' . $returnUrl) }}"
+                    <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}"
                        class="btn btn-danger" title="@lang('COM_ARS_DLIDLABELS_FIELD_TRASH')">
                         <span class="icon icon-white icon-trash"></span>
                     </a>

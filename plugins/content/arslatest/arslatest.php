@@ -54,6 +54,8 @@ class plgContentArslatest extends JPlugin
 		if (!JComponentHelper::isEnabled('com_ars'))
 		{
 			$this->enabled = false;
+
+			return;
 		}
 
 		$this->container = Container::getInstance('com_ars');
@@ -122,9 +124,8 @@ class plgContentArslatest extends JPlugin
 				$ret = $this->parseStreamLink($content);
 				break;
 			case 'installfromweb':
-				$session    = JFactory::getSession();
-				$installat  = $session->get('installat', null, 'arsjed');
-				$installapp = $session->get('installapp', null, 'arsjed');
+				$installat  = $this->container->platform->getSessionVar('installat', null, 'arsjed');
+				$installapp = $this->container->platform->getSessionVar('installapp', null, 'arsjed');
 
 				if (!empty($installapp) && !empty($installat))
 				{
@@ -399,9 +400,8 @@ class plgContentArslatest extends JPlugin
 
 	private function parseIFWLink()
 	{
-		$session    = JFactory::getSession();
-		$installat  = $session->get('installat', null, 'arsjed');
-		$installapp = (int) ($session->get('installapp', null, 'arsjed'));
+		$installat  = $this->container->platform->getSessionVar('installat', null, 'arsjed');
+		$installapp = (int) ($this->container->platform->getSessionVar('installapp', null, 'arsjed'));
 
 		// Find the stream ID based on the $installapp key
 		$db    = JFactory::getDbo();
