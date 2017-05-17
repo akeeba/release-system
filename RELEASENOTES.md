@@ -10,10 +10,8 @@ Akeeba Release System should be compatible with:
 
 ## Changelog
 
-**Removed features**
+**Critical issues**
 
-* Removed translations
-
-**Other changes**
-
-* Detect a failed upload and abort early
+* Joomla! 3.7.0 has a broken System - Page Cache plugin leading to white pages and wrong redirections
+* Joomla! 3.7.0 broke the JDate package, effectively ignoring timezones, causing grave errors in date / time calculations and display
+* Joomla! 3.7 added a fixed width to specific button classes in the toolbar, breaking the page layout
