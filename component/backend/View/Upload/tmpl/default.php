@@ -20,7 +20,7 @@ $this->addCssFile('media://com_ars/css/backend.css');
 		<input type="hidden" name="folder" id="folder"
 		       value="<?php echo isset($this->folder) ? $this->escape($this->folder) : '' ?>"/>
 		<input type="hidden" name="file" id="file" value=""/>
-		<input type="hidden" name="<?php echo JFactory::getSession()->getFormToken(); ?>" value="1"/>
+		<input type="hidden" name="<?php echo $this->container->platform->getToken(true); ?>" value="1"/>
 
 		<h3><?php echo JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL'); ?></h3>
 

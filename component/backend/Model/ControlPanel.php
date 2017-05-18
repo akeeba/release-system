@@ -10,7 +10,9 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Helper\IniParser;
+use FOF30\Container\Container;
 use FOF30\Database\Installer;
+use FOF30\Date\Date;
 use FOF30\Model\Model;
 use JFactory;
 use JRegistry;
@@ -334,8 +336,8 @@ class ControlPanel extends Model
 	 */
 	public function getWeekPopular($itemCount = 5)
 	{
-		$now = JFactory::getDate();
-		$weekAgo = JFactory::getDate(strtotime('-7 days'));
+		$now = $this->container->platform->getDate();
+		$weekAgo = $this->container->platform->getDate(strtotime('-7 days'));
 
 		return $this->getPopular($itemCount, $weekAgo->toSql(), $now->toSql());
 	}
@@ -363,37 +365,37 @@ class ControlPanel extends Model
 				break;
 
 			case 'year':
-				$year_start = JFactory::getDate(date('Y-01-01'));
-				$year_end = JFactory::getDate(date('Y-12-31'));
+				$year_start = $this->container->platform->getDate(date('Y-01-01'));
+				$year_end = $this->container->platform->getDate(date('Y-12-31'));
 
 				$date = $db->q($year_start->toSql()) . " AND " . $db->q($year_end->toSql());
 				break;
 
 			case 'lastmonth':
-				$month_start = JFactory::getDate(strtotime("first day of last month"));
-				$month_end = JFactory::getDate(strtotime("last day of last month"));
+				$month_start = $this->container->platform->getDate(strtotime("first day of last month"));
+				$month_end = $this->container->platform->getDate(strtotime("last day of last month"));
 
 				$date = $db->q($month_start->toSql()) . " AND " . $db->q($month_end->toSql());
 				break;
 
 			case 'month':
-				$month_start = JFactory::getDate(date('Y-m-01'));
-				$month_end = JFactory::getDate(date('Y-m-t'));
+				$month_start = $this->container->platform->getDate(date('Y-m-01'));
+				$month_end = $this->container->platform->getDate(date('Y-m-t'));
 
 				$date = $db->q($month_start->toSql()) . "AND " . $db->q($month_end->toSql());
 				break;
 
 			case 'week':
-				$week_start = JFactory::getDate(strtotime('Sunday last week'));
-				$week_end = JFactory::getDate(strtotime('Monday this week'));
+				$week_start = $this->container->platform->getDate(strtotime('Sunday last week'));
+				$week_end = $this->container->platform->getDate(strtotime('Monday this week'));
 
 				//$date = "DATE(CURRENT_TIMESTAMP) - INTERVAL (DAYOFWEEK(CURRENT_TIMESTAMP) - 1) DAY AND DATE(CURRENT_TIMESTAMP) - INTERVAL (DAYOFWEEK(CURRENT_TIMESTAMP) - 7) DAY";
 				$date = $db->q($week_start->toSql()) . " AND " . $db->q($week_end->toSql());
 				break;
 
 			case 'day':
-				$day_start = JFactory::getDate(date('Y-m-d') . ' 00:00:00');
-				$day_end = JFactory::getDate(date('Y-m-d') . ' 23:59:59');
+				$day_start = $this->container->platform->getDate(date('Y-m-d') . ' 00:00:00');
+				$day_end = $this->container->platform->getDate(date('Y-m-d') . ' 23:59:59');
 
 				$date = $db->q($day_start->toSql()) . " AND " . $db->q($day_end->toSql());
 				break;
@@ -429,17 +431,17 @@ class ControlPanel extends Model
 	{
 		$db = $this->container->db;
 
-		$now = JFactory::getDate();
+		$now = $this->container->platform->getDate();
 
 		// I need to do this since if I'm on March 30th and I go back of a month I would got February 30th
 		// that will we shifted to March 2nd. This is not a bug (!!!) it's the expected behavior of PHP (!!!!!!!)
 		if (date('d') > date('d', strtotime('last day of -1 month')))
 		{
-			$last_month = JFactory::getDate(date('Y-m-d', strtotime('last day of -1 month')));
+			$last_month = $this->container->platform->getDate(date('Y-m-d', strtotime('last day of -1 month')));
 		}
 		else
 		{
-			$last_month = JFactory::getDate(date('Y-m-d', strtotime('-1 month')));
+			$last_month = $this->container->platform->getDate(date('Y-m-d', strtotime('-1 month')));
 		}
 
 		$query = $db->getQuery(true)
@@ -476,17 +478,17 @@ class ControlPanel extends Model
 	{
 		$db = $this->container->db;
 
-		$now = JFactory::getDate();
+		$now = $this->container->platform->getDate();
 
 		// I need to do this since if I'm on March 30th and I go back of a month I would got February 30th
 		// that will we shifted to March 2nd. This is not a bug (!!!) it's the expected behavior of PHP (!!!!!!!)
 		if (date('d') > date('d', strtotime('last day of -1 month')))
 		{
-			$last_month = JFactory::getDate(date('Y-m-d', strtotime('last day of -1 month')));
+			$last_month = $this->container->platform->getDate(date('Y-m-d', strtotime('last day of -1 month')));
 		}
 		else
 		{
-			$last_month = JFactory::getDate(date('Y-m-d', strtotime('-1 month')));
+			$last_month = $this->container->platform->getDate(date('Y-m-d', strtotime('-1 month')));
 		}
 
 		$query = $db->getQuery(true)
@@ -544,7 +546,7 @@ class ControlPanel extends Model
 	 */
 	public static function needsCategoriesMenu()
 	{
-		$db = \JFactory::getDbo();
+		$db = Container::getInstance('com_ars')->db;
 
 		$query = $db->getQuery(true)
 				->select('COUNT(id)')

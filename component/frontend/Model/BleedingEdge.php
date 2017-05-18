@@ -11,6 +11,7 @@ defined('_JEXEC') or die();
 
 use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
 use FOF30\Container\Container;
+use FOF30\Date\Date;
 use FOF30\Model\DataModel\Collection;
 use FOF30\Model\Model;
 
@@ -333,7 +334,7 @@ class BleedingEdge extends Model
 					}
 
 					\JLoader::import('joomla.utilities.date');
-					$jNow = new \JDate();
+					$jNow = new Date();
 
 					$alias = \JApplicationHelper::stringURLSafe($folder);
 
@@ -569,7 +570,7 @@ class BleedingEdge extends Model
 				}
 
 				\JLoader::import('joomla.utilities.date');
-				$jNow = new \JDate();
+				$jNow = new Date();
 				$data = array(
 					'id'          => 0,
 					'release_id'  => $release->id,

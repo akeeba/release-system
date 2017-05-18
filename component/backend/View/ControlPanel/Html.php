@@ -9,6 +9,7 @@ namespace Akeeba\ReleaseSystem\Admin\View\ControlPanel;
 
 use Akeeba\ReleaseSystem\Admin\Helper\Cache;
 use Akeeba\ReleaseSystem\Admin\Model\ControlPanel;
+use FOF30\Date\Date;
 use JComponentHelper;
 use JLoader;
 
@@ -46,10 +47,10 @@ class Html extends \FOF30\View\DataView\Html
 	/** @var  string  Currently installed version of the component */
 	public $currentVersion = '0.0.0';
 
-	/** @var  \JDate  When the odl PHP version will be reported */
+	/** @var  Date  When the odl PHP version will be reported */
 	public $akeebaCommonDatePHP = '';
 
-	/** @var  \JDate  When we are supposed to stop supporting the obsolete PHP version */
+	/** @var  Date  When we are supposed to stop supporting the obsolete PHP version */
 	public $akeebaCommonDateObsolescence = '';
 
 	public $needsMenuItem;
@@ -136,7 +137,7 @@ class Html extends \FOF30\View\DataView\Html
 		$this->geoIPPluginNeedsUpdate = $model->GeoIPDBNeedsUpdate();
 
 		// Information for the PHP version warning
-		$this->akeebaCommonDatePHP = \JFactory::getDate('2015-08-14 00:00:00', 'GMT')->format(\JText::_('DATE_FORMAT_LC1'));
-		$this->akeebaCommonDateObsolescence = \JFactory::getDate('2016-05-14 00:00:00', 'GMT')->format(\JText::_('DATE_FORMAT_LC1'));
+		$this->akeebaCommonDatePHP = $this->container->platform->getDate('2015-08-14 00:00:00', 'GMT')->format(\JText::_('DATE_FORMAT_LC1'));
+		$this->akeebaCommonDateObsolescence = $this->container->platform->getDate('2016-05-14 00:00:00', 'GMT')->format(\JText::_('DATE_FORMAT_LC1'));
 	}
 }

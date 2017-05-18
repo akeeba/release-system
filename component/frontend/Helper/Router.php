@@ -17,18 +17,19 @@ class Router
 {
 	static function _($plainURL)
 	{
-		$config = JFactory::getConfig();
+		$container = \FOF30\Container\Container::getInstance('com_ars');
+		$config    = $container->platform->getConfig();
 		$addSuffix = $config->get('sef_suffix', 0) == 1;
 
 		$url = JRoute::_($plainURL);
 
 		if ($addSuffix)
 		{
-			$uri = new JURI($plainURL);
+			$uri    = new JURI($plainURL);
 			$format = $uri->getVar('format', 'html');
 			$format = strtolower($format);
 
-			if (!in_array($format, array('html', 'raw')))
+			if (!in_array($format, ['html', 'raw']))
 			{
 				// Save any query parameters
 				if (strstr($url, '?'))
@@ -43,11 +44,11 @@ class Router
 				}
 
 				// Remove the suffix
-				$basename = basename($url);
-				$exploded = explode(".", $basename);
+				$basename  = basename($url);
+				$exploded  = explode(".", $basename);
 				$extension = end($exploded);
-				$realbase = basename($url, '.' . $extension);
-				$url = str_replace($basename, $realbase, $url) . $qparams;
+				$realbase  = basename($url, '.' . $extension);
+				$url       = str_replace($basename, $realbase, $url) . $qparams;
 
 				// Add a format parameter
 				$uri = new JURI($url);

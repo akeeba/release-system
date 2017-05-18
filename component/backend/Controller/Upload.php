@@ -13,6 +13,7 @@ defined('_JEXEC') or die();
 use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
 use FOF30\Container\Container;
 use FOF30\Controller\Controller;
+use JText;
 
 class Upload extends Controller
 {
@@ -29,7 +30,7 @@ class Upload extends Controller
 	{
 		if (!$this->checkACL('core.manage'))
 		{
-			throw new \RuntimeException(\JText::_('JERROR_ALERTNOAUTHOR'), 403);
+			throw new \RuntimeException(JText::_('JERROR_ALERTNOAUTHOR'), 403);
 		}
 	}
 
@@ -83,9 +84,9 @@ class Upload extends Controller
 		{
 			$url = 'index.php?option=com_ars&view=upload&task=category&id=' . (int)$categoryId
 			       . '&folder=' . urlencode($folder)
-			       . '&' . \JFactory::getSession()->getFormToken(true) . '=1';
+			       . '&' . $this->container->platform->getToken(true) . '=1';
 
-			$this->setRedirect($url, \JText::_('MSG_FILE_NOT_UPLOADED'), 'error');
+			$this->setRedirect($url, JText::_('MSG_FILE_NOT_UPLOADED'), 'error');
 
 			return;
 		}
@@ -107,7 +108,7 @@ class Upload extends Controller
 		{
 			// When using S3, we are uploading to the temporary directory so that
 			// we can then upload to S3 and remove from our server.
-			$jConfig = \JFactory::getConfig();
+			$jConfig = $this->container->platform->getConfig();
 			$s3Dir = $targetDirectory;
 			$targetDirectory = $jConfig->get('tmp_path', '');
 		}
@@ -128,9 +129,9 @@ class Upload extends Controller
 		{
 			$url = 'index.php?option=com_ars&view=upload&task=category&id=' . (int)$categoryId
 			       . '&folder=' . urlencode($folder)
-			       . '&' . \JFactory::getSession()->getFormToken(true) . '=1';
+			       . '&' . $this->container->platform->getToken(true) . '=1';
 
-			$this->setRedirect($url, \JText::_('MSG_UPLOAD_INVALID_REQUEST'), 'error');
+			$this->setRedirect($url, JText::_('MSG_UPLOAD_INVALID_REQUEST'), 'error');
 
 			return;
 		}
@@ -148,7 +149,7 @@ class Upload extends Controller
 			// The file can't be upload
 			$url = 'index.php?option=com_ars&view=upload&task=category&id=' . (int)$categoryId
 			       . '&folder=' . urlencode($folder)
-			       . '&' . \JFactory::getSession()->getFormToken(true) . '=1';
+			       . '&' . $this->container->platform->getToken(true) . '=1';
 			$this->setRedirect($url);
 
 			return;
@@ -166,12 +167,12 @@ class Upload extends Controller
 		if (!$user->authorise('core.create', 'com_media'))
 		{
 			// File does not exist and user is not authorised to create
-			throw new \RuntimeException(\JText::_('MSG_NO_UPLOAD_RIGHT'), 403);
+			throw new \RuntimeException(JText::_('MSG_NO_UPLOAD_RIGHT'), 403);
 		}
 
 		if (!\JFile::upload($file['tmp_name'], $filePath, false, true))
 		{
-			throw new \RuntimeException(\JText::_('MSG_FILE_NOT_UPLOADED'), 403);
+			throw new \RuntimeException(JText::_('MSG_FILE_NOT_UPLOADED'), 403);
 		}
 
 		if ($useS3)
@@ -196,7 +197,7 @@ class Upload extends Controller
 			{
 				$url = 'index.php?option=com_ars&view=Upload&task=category&id=' . (int)$categoryId
 				       . '&folder=' . urlencode($this->input->getString('folder'))
-				       . '&' . \JFactory::getSession()->getFormToken(true) . '=1';
+				       . '&' . $this->container->platform->getToken(true) . '=1';
 				$this->setRedirect($url, $s3->getError(), 'error');
 
 				return;
@@ -205,8 +206,8 @@ class Upload extends Controller
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id=' . (int)$categoryId
 		       . '&folder=' . urlencode($this->input->getString('folder'))
-		       . '&' . \JFactory::getSession()->getFormToken(true) . '=1';
-		$this->setRedirect($url, \JText::_('MSG_ALL_FILES_UPLOADED'));
+		       . '&' . $this->container->platform->getToken(true) . '=1';
+		$this->setRedirect($url, JText::_('MSG_ALL_FILES_UPLOADED'));
 	}
 
 	/**
@@ -216,7 +217,7 @@ class Upload extends Controller
 	{
 		if (!$this->checkACL('core.delete'))
 		{
-			throw new \RuntimeException(\JText::_('JERROR_ALERTNOAUTHOR'), 403);
+			throw new \RuntimeException(JText::_('JERROR_ALERTNOAUTHOR'), 403);
 		}
 
 		$this->csrfProtection();
@@ -234,17 +235,17 @@ class Upload extends Controller
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id=' . (int)$categoryId
 		       . '&folder=' . urlencode($this->input->getString('folder'))
-		       . '&' . \JFactory::getSession()->getFormToken(true) . '=1';
+		       . '&' . $this->container->platform->getToken(true) . '=1';
 
 		try
 		{
 			$model->delete();
 
-			$this->setRedirect($url, \JText::_('MSG_FILE_DELETED'));
+			$this->setRedirect($url, JText::_('MSG_FILE_DELETED'));
 		}
 		catch (\Exception $e)
 		{
-			$this->setRedirect($url, \JText::_('MSG_FILE_NOT_DELETED'), 'error');
+			$this->setRedirect($url, JText::_('MSG_FILE_NOT_DELETED'), 'error');
 		}
 	}
 
@@ -255,7 +256,7 @@ class Upload extends Controller
 	{
 		if (!$this->checkACL('core.create'))
 		{
-			throw new \RuntimeException(\JText::_('JERROR_ALERTNOAUTHOR'), 403);
+			throw new \RuntimeException(JText::_('JERROR_ALERTNOAUTHOR'), 403);
 		}
 
 		$this->csrfProtection();
@@ -301,11 +302,11 @@ class Upload extends Controller
 
 		$url = 'index.php?option=com_ars&view=upload&task=category&id=' . (int)$categoryId
 		       . '&folder=' . urlencode($this->input->getString('folder'))
-		       . '&' . \JFactory::getSession()->getFormToken(true) . '=1';
+		       . '&' . $this->container->platform->getToken(true) . '=1';
 
 		if ($status)
 		{
-			$this->setRedirect($url, \JText::_('MSG_FOLDER_CREATED'));
+			$this->setRedirect($url, JText::_('MSG_FOLDER_CREATED'));
 
 			return;
 		}

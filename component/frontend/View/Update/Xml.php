@@ -28,8 +28,7 @@ class Xml extends Raw
 			$this->doTask = 'all';
 		}
 
-		$document = \JFactory::getDocument();
-		$document->setMimeEncoding('text/xml');
+		$this->container->platform->getDocument()->setMimeEncoding('text/xml');
 
 		return parent::display($tpl);
 	}

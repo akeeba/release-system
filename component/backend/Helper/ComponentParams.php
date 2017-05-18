@@ -7,6 +7,7 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Helper;
 
+use FOF30\Container\Container;
 use JComponentHelper;
 use JFactory;
 use JLoader;
@@ -18,13 +19,27 @@ defined('_JEXEC') or die;
  */
 abstract class ComponentParams
 {
+	/**
+	 * The component container
+	 *
+	 * @var   Container
+	 */
+	private static $container;
 
 	/**
-	 * Cached component parameters
+	 * Get the component's container
 	 *
-	 * @var \Joomla\Registry\Registry
+	 * @return  Container
 	 */
-	private static $params = null;
+	private static function getContainer()
+	{
+		if (is_null(self::$container))
+		{
+			self::$container = Container::getInstance('com_ars');
+		}
+
+		return self::$container;
+	}
 
 	/**
 	 * Returns the value of a component configuration parameter
@@ -36,14 +51,9 @@ abstract class ComponentParams
 	 */
 	public static function getParam($key, $default = null)
 	{
-		if (!is_object(self::$params))
-		{
-			JLoader::import('joomla.application.component.helper');
+		$container = self::getContainer();
 
-			self::$params = JComponentHelper::getParams('com_ars');
-		}
-
-		return self::$params->get($key, $default);
+		return $container->params->get($key, $default);
 	}
 
 	/**
@@ -68,35 +78,9 @@ abstract class ComponentParams
 	 */
 	public static function setParams(array $params)
 	{
-		if (!is_object(self::$params))
-		{
-			JLoader::import('joomla.application.component.helper');
-			self::$params = JComponentHelper::getParams('com_ars');
-		}
+		$container = self::getContainer();
 
-		foreach ($params as $key => $value)
-		{
-			self::$params->set($key, $value);
-		}
-
-		$db   = JFactory::getDBO();
-		$data = self::$params->toString();
-
-		$sql  = $db->getQuery(true)
-				   ->update($db->qn('#__extensions'))
-				   ->set($db->qn('params') . ' = ' . $db->q($data))
-				   ->where($db->qn('element') . ' = ' . $db->q('com_ars'))
-				   ->where($db->qn('type') . ' = ' . $db->q('component'));
-
-		$db->setQuery($sql);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (\Exception $e)
-		{
-			// Don't sweat if it fails
-		}
+		$container->params->setParams($params);
+		$container->params->save();
 	}
 }

@@ -86,7 +86,7 @@ $this->addJavascriptFile('media://com_ars/js/qui-helpers.js');
 		<input type="hidden" name="task" value="upload"/>
 		<input type="hidden" name="id" value="<?php echo $this->category ?>"/>
 		<input type="hidden" name="folder" value="<?php echo $this->escape($this->folder) ?>"/>
-		<input type="hidden" id="token" name="<?php echo JFactory::getSession()->getFormToken(); ?>" value="1"/>
+		<input type="hidden" id="token" name="<?php echo $this->container->platform->getToken(true); ?>" value="1"/>
 		<input type="hidden" name="format" value="html"/>
 
 		<?php $usize = $this->mediaConfig->get('upload_maxsize') ?>

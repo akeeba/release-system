@@ -201,7 +201,7 @@ foreach ($this->items as $item):
 		<tags>
 			<tag><?php echo $item->maturity ?></tag>
 		</tags>
-		<maintainer><![CDATA[<?php echo JFactory::getConfig()->get('sitename'); ?>]]></maintainer>
+		<maintainer><![CDATA[<?php echo $this->container->platform->getConfig()->get('sitename'); ?>]]></maintainer>
 		<maintainerurl><?php echo JURI::base(); ?></maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="<?php echo $platformName ?>" version="<?php echo $platformVersion ?>"/>
@@ -226,7 +226,7 @@ if (defined('JDEBUG') && JDEBUG && false):
 	?>
 	<debug>
 		<dbqueries>
-			<?php foreach (JFactory::getDbo()->getLog() as $i => $query): ?>
+			<?php foreach ($this->getContainer()->db->getLog() as $i => $query): ?>
 				<query count="<?= $i ?>"><![CDATA[<?= $query ?>]]></query>
 			<?php endforeach; ?>
 		</dbqueries>

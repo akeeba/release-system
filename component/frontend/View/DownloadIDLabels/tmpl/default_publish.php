@@ -14,7 +14,7 @@ $itemId = $this->input->getInt('Itemid') ? '&Itemid=' . $this->input->getInt('It
 $returnUrl = base64_encode(JUri::current());
 $url = JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=' . $task
                  . '&id=' . $item->ars_dlidlabel_id
-                 . '&' . JFactory::getSession()->getFormToken() . '=1'
+                 . '&' . $this->container->platform->getToken(true) . '=1'
                  . '&returnurl=' . $returnUrl . $itemId);
 
 if ($item->enabled)

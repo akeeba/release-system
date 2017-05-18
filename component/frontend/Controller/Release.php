@@ -131,7 +131,7 @@ class Release extends DataController
 
 			if (!empty($noAccessURL))
 			{
-				\JFactory::getApplication()->redirect($noAccessURL);
+				$this->container->platform->redirect($noAccessURL);
 
 				return;
 			}

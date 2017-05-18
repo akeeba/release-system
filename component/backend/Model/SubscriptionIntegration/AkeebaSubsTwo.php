@@ -7,6 +7,8 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
 
+use FOF30\Date\Date;
+
 defined('_JEXEC') or die;
 
 /**
@@ -112,7 +114,7 @@ class AkeebaSubsTwo extends Base
 		\JLoader::import('f0f.include');
 
 		\JLoader::import('joomla.utilities.date');
-		$jNow = new \JDate();
+		$jNow = new Date();
 
 		\JLoader::import('joomla.filesystem.folder');
 		\JLoader::import('joomla.filesystem.file');

@@ -29,8 +29,7 @@ class Update extends Controller
 	 */
 	public function execute($task)
 	{
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
+		$viewType = $this->container->platform->getDocument()->getType();
 		$task     = $this->input->getCmd('task', '');
 		$layout   = $this->input->getCmd('layout', '');
 		$id       = $this->input->getInt('id', null);
@@ -396,6 +395,6 @@ class Update extends Controller
 
 		$downloadModel->doDownload($item);
 
-		JFactory::getApplication()->close();
+		$this->container->platform->closeApplication();
 	}
 }

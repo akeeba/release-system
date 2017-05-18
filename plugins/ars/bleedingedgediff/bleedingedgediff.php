@@ -6,12 +6,20 @@
  */
 
 // Protect from unauthorized access
+use FOF30\Container\Container;
+
 defined('_JEXEC') or die();
 
 class plgArsBleedingedgediff extends JPlugin
 {
-
 	private $_enabled = false;
+
+	/**
+	 * The component container
+	 *
+	 * @var   Container
+	 */
+	protected $container;
 
 	public function __construct(&$subject, $config = array())
 	{
@@ -19,15 +27,18 @@ class plgArsBleedingedgediff extends JPlugin
 
 		// Make sure the Horde_Text_Diff engine can be loaded
 		$file = dirname(__FILE__) . '/bleedingedgediff.diff.php';
+
 		if (!file_exists($file))
 		{
 			$this->_enabled = false;
+
+			return;
 		}
-		else
-		{
-			require_once $file;
-			$this->_enabled = true;
-		}
+
+		require_once $file;
+
+		$this->_enabled = true;
+		$this->container = Container::getInstance('com_ars');
 	}
 
 	public function onNewARSBleedingEdgeItem($info, $data)
@@ -127,7 +138,7 @@ class plgArsBleedingedgediff extends JPlugin
 	 */
 	private function _getCategoryDirectory($category_id)
 	{
-		$db    = JFactory::getDbo();
+		$db    = $this->container->db;
 		$query = $db->getQuery(true)
 		            ->select('*')
 		            ->from($db->qn('#__ars_categories'))
@@ -166,7 +177,7 @@ class plgArsBleedingedgediff extends JPlugin
 		$folder      = $this->_getCategoryDirectory($category_id);
 
 		// Find the previous release
-		$db    = JFactory::getDbo();
+		$db    = $this->container->db;
 		$query = $db->getQuery(true)
 		            ->select('*')
 		            ->from($db->qn('#__ars_releases'))

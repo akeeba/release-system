@@ -10,6 +10,7 @@ defined('_JEXEC') or die();
 /** @var \Akeeba\ReleaseSystem\Site\View\Update\Ini $this */
 
 use Akeeba\ReleaseSystem\Site\Helper\Router;
+use FOF30\Date\Date;
 
 if (!$this->published)
 {
@@ -44,7 +45,7 @@ if (!empty($this->items)):
 	}
 
 	JLoader::import('joomla.utilities.date');
-	$date = new JDate($item->created);
+	$date = new Date($item->created);
 
 	// Process supported environments
 	$envs = [];

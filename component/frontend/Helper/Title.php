@@ -9,6 +9,7 @@ namespace Akeeba\ReleaseSystem\Site\Helper;
 
 defined('_JEXEC') or die;
 
+use FOF30\Container\Container;
 use JText;
 
 abstract class Title
@@ -23,12 +24,13 @@ abstract class Title
 	 */
 	public static function setTitleAndMeta(&$params, $default = '')
 	{
-		$document = \JFactory::getDocument();
+		$container = Container::getInstance('com_ars');
+		$document  = $container->platform->getDocument();
 		/** @var \JApplicationSite $app */
-		$app      = \JFactory::getApplication();
-		$menus    = $app->getMenu();
-		$menu     = $menus->getActive();
-		$title    = null;
+		$app   = \JFactory::getApplication();
+		$menus = $app->getMenu();
+		$menu  = $menus->getActive();
+		$title = null;
 
 		// Set the default value for page_heading
 		if ($menu)

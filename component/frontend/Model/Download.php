@@ -12,6 +12,8 @@ defined('_JEXEC') or die();
 use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use FOF30\Model\Model;
+use JAuthentication;
+use JAuthenticationResponse;
 use JLoader;
 
 class Download extends Model
@@ -34,7 +36,7 @@ class Download extends Model
 			}
 
 			$this->logoutUser();
-			\JFactory::getApplication()->redirect($item->url, false);
+			$this->container->platform->redirect($item->url);
 
 			return;
 		}
@@ -60,7 +62,7 @@ class Download extends Model
 			}
 
 			$this->logoutUser();
-			\JFactory::getApplication()->redirect($url, false);
+			$this->container->platform->redirect($url);
 
 			return;
 
@@ -405,62 +407,47 @@ class Download extends Model
 			}
 		}
 
-		// If the dlid failed, used he legacy username/password pair
-		if (($user_id === 0) && !empty($credentials['username']) && !empty($credentials['password']))
+		if ($user_id == 0)
 		{
-			\JLoader::import('joomla.user.authentication');
-			$options      = array('remember' => false);
-			$authenticate = \JAuthentication::getInstance();
-			$response     = $authenticate->authenticate($credentials, $options);
+			$this->haveLoggedInAUser = false;
 
-			if ($response->status == \JAuthentication::STATUS_SUCCESS)
-			{
-				$user_id = \JUserHelper::getUserId($response->username);
-			}
+			return false;
 		}
 
 		// Log in the user
-		if ($user_id !== 0)
-		{
-			// Mark the user login so we can log him out later on
-			$this->haveLoggedInAUser = true;
+		$user = $this->container->platform->getUser($user_id);
 
-			// This line returns an empty JUser object
-			$newUserObject = new \JUser();
+		// Mark the user login so we can log him out later on
+		$this->haveLoggedInAUser = true;
 
-			// This line FORCE RELOADS the user record.
-			$newUserObject->load($user_id);
+		// Get a fake login response
+		\JLoader::import('joomla.user.authentication');
+		$options = array('remember' => false);
+		$response = new JAuthenticationResponse;
+		$response->status = JAuthentication::STATUS_SUCCESS;
+		$response->type = 'downloadid';
+		$response->username = $user->username;
+		$response->email= $user->email;
+		$response->fullname= $user->name;
 
-			// Mark the user as logged in
-			$newUserObject->block = 0;
-			$newUserObject->set('guest', 0);
+		// Run the login user events
+		$this->container->platform->importPlugin('user');
+		$results = $this->container->platform->runPlugins('onLoginUser', array((array)$response, $options));
 
-			// Register the needed session variables
-			$session = \JFactory::getSession();
-			$session->set('user', $newUserObject);
+		unset($results); // Just to make phpStorm happy
 
-			$db = $this->container->db;
+		// Set the user in the session, effectively logging in the user
+		\JLoader::import('joomla.user.helper');
+		$userid = \JUserHelper::getUserId($response->username);
+		$user = $this->container->platform->getUser($userid);
 
-			// Check to see the the session already exists.
-			$app = \JFactory::getApplication();
-			$app->checkSession();
+		$this->container->platform->setSessionVar('user', $user);
 
-			// Update the user related fields for the Joomla sessions table.
-			$query = $db->getQuery(true)
-						->update($db->qn('#__session'))
-						->set(array(
-							$db->qn('guest') . ' = ' . $db->q($newUserObject->get('guest')),
-							$db->qn('username') . ' = ' . $db->q($newUserObject->get('username')),
-							$db->qn('userid') . ' = ' . (int)$newUserObject->get('id')
-						))->where($db->qn('session_id') . ' = ' . $db->q($session->getId()));
-			$db->setQuery($query);
-			$db->execute();
+		// Update the user's last visit time in the database
+		$user->setLastVisit(time());
+		$user->save();
 
-			// Hit the user last visit field
-			$newUserObject->setLastVisit();
-		}
-
-		return $this->haveLoggedInAUser;
+		return true;
 	}
 
 	/**
@@ -475,25 +462,10 @@ class Download extends Model
 			return false;
 		}
 
-		$my      = $this->container->platform->getUser();
-		$session = \JFactory::getSession();
-		$app     = \JFactory::getApplication();
+		$haveLoggedOut = $this->container->platform->logoutUser();
 
-		// Hit the user last visit field
-		$my->setLastVisit();
+		$this->haveLoggedInAUser = !$haveLoggedOut;
 
-		// Destroy the php session for this user
-		$session->destroy();
-
-		// Force logout all users with that userid
-		$db    = $this->container->db;
-		$query = $db->getQuery(true)
-					->delete($db->qn('#__session'))
-					->where($db->qn('userid') . ' = ' . (int)$my->id)
-					->where($db->qn('client_id') . ' = ' . (int)$app->getClientId());
-		$db->setQuery($query);
-		$db->execute();
-
-		return $this->haveLoggedInAUser;
+		return $haveLoggedOut;
 	}
 }

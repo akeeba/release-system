@@ -36,8 +36,7 @@ class Ini extends Raw
 		$this->envs  = $envs;
 
 		// Set the content type to text/plain
-		$document = \JFactory::getDocument();
-		$document->setMimeEncoding('text/plain');
+		$this->container->platform->getDocument()->setMimeEncoding('text/plain');
 
         // Set the content type to text/plain
         @header('Content-type: text/plain');
