@@ -123,6 +123,58 @@ class Pkg_ArsInstallerScript
 	}
 
 	/**
+	 * Runs after install, update or discover_update. In other words, it executes after Joomla! has finished installing
+	 * or updating your component. This is the last chance you've got to perform any additional installations, clean-up,
+	 * database updates and similar housekeeping functions.
+	 *
+	 * @param   string                       $type   install, update or discover_update
+	 * @param   \JInstallerAdapterComponent  $parent Parent object
+	 */
+	public function postflight($type, $parent)
+	{
+		/**
+		 * Clean the cache after installing the package.
+		 *
+		 * See bug report https://github.com/joomla/joomla-cms/issues/16147
+		 */
+		$conf = \JFactory::getConfig();
+		$clearGroups = array('_system', 'com_modules', 'mod_menu', 'com_plugins', 'com_modules');
+		$cacheClients = array(0, 1);
+
+		foreach ($clearGroups as $group)
+		{
+			foreach ($cacheClients as $client_id)
+			{
+				try
+				{
+					$options = array(
+						'defaultgroup' => $group,
+						'cachebase' => ($client_id) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache')
+					);
+
+					/** @var JCache $cache */
+					$cache = \JCache::getInstance('callback', $options);
+					$cache->clean();
+				}
+				catch (Exception $exception)
+				{
+					$options['result'] = false;
+				}
+
+				// Trigger the onContentCleanCache event.
+				try
+				{
+					JFactory::getApplication()->triggerEvent('onContentCleanCache', $options);
+				}
+				catch (Exception $e)
+				{
+					// Suck it up
+				}
+			}
+		}
+	}
+
+	/**
 	 * Tuns on installation (but not on upgrade). This happens in install and discover_install installation routes.
 	 *
 	 * @param   \JInstallerAdapterPackage  $parent  Parent object

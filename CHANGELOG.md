@@ -1,3 +1,9 @@
+# 3.2.4
+
+**Bug fixes**
+
+* Workaround for Joomla! Backup 16147 (https://github.com/joomla/joomla-cms/issues/16147) - Cannot access component after installation when cache is enabled
+
 # 3.2.3
 
 **Critical issues**
@@ -40,4 +46,4 @@
 **Bug fixes**
 
 * Latest release plugin yielded wrong results because the model was reading the ID from the request
-* Notice in the Normal and BleedingEdge sub-views
+* Notice in the Normal and BleedingEdge sub-views``
