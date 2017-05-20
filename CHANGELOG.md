@@ -2,7 +2,7 @@
 
 **Bug fixes**
 
-* Workaround for Joomla! Backup 16147 (https://github.com/joomla/joomla-cms/issues/16147) - Cannot access component after installation when cache is enabled
+* Workaround for Joomla! Bug 16147 (https://github.com/joomla/joomla-cms/issues/16147) - Cannot access component after installation when cache is enabled
 
 # 3.2.3
 
