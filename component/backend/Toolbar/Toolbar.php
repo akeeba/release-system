@@ -124,21 +124,6 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 		$this->_onBrowseWithCopy();
 	}
 
-	public function onCategoriesBrowse()
-	{
-		$this->_onBrowseWithCopy();
-	}
-
-	public function onReleasesBrowse()
-	{
-		$this->_onBrowseWithCopy();
-	}
-
-	public function onItemsBrowse()
-	{
-		$this->_onBrowseWithCopy();
-	}
-
 	public function onUpdatestreamsBrowse()
 	{
 		$this->_onBrowseWithCopy();
