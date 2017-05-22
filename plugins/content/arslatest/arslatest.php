@@ -155,6 +155,7 @@ class plgContentArslatest extends JPlugin
 		      ->published(1)
 		      ->latest(true)
 		      ->access_user($container->platform->getUser()->id)
+		      ->category_id(0)
 		      ->with(['items', 'category']);
 
 		/** @var \FOF30\Model\DataModel\Collection $releases */
