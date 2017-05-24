@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5.0" method="upgrade" client="site">
-	<name>Akeeba Release System - My Downloads</name>
-	<author>Nicholas K. Dionysopoulos</author>
-	<creationDate>January 2012</creationDate>
-	<copyright>Copyright (c) 2010-2017 Nicholas K. Dionysopoulos</copyright>
-	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL v3 or later</license>
-	<authorEmail>nicholas@dionysopoulos.me</authorEmail>
-	<authorUrl>http://www.akeebabackup.com</authorUrl>
-	<version>1.1</version>
-	<description>MOD_ARSDOWNLOADS_DESC</description>
-	<files>
-		<filename module="mod_arsdownloads">mod_arsdownloads.php</filename>
-		<folder>tmpl</folder>
-	</files>
-	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.mod_arsdownloads.ini</language>
-		<language tag="en-GB">en-GB/en-GB.mod_arsdownloads.sys.ini</language>
-	</languages>
-	<config>
-		<fields name="params">
-			<fieldset name="basic">
-				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-					<option value="0">Never</option>
-				</field>
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="streams" type="text" size="20" default="" label="MOD_ARSDOWNLOADS_OPT_STREAMS_LBL" description="MOD_ARSDOWNLOADS_OPT_STREAMS_DESC" />
-				<field name="pretext" type="textarea" cols="30" rows="5" default="" label="MOD_ARSDOWNLOADS_OPT_PRETEXT_LBL" description="MOD_ARSDOWNLOADS_OPT_PRETEXT_DESC" filter="safehtml" />
-				<field name="posttext" type="textarea" cols="30" rows="5" default="" label="MOD_ARSDOWNLOADS_OPT_POSTTEXT_LBL" description="MOD_ARSDOWNLOADS_OPT_POSTTEXT_DESC" filter="safehtml" />
-			</fieldset>
-		</fields>
-	</config>
+    <name>Akeeba Release System - My Downloads</name>
+    <author>Nicholas K. Dionysopoulos</author>
+    <creationDate>January 2012</creationDate>
+    <copyright>Copyright (c) 2010-2017 Nicholas K. Dionysopoulos</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL v3 or later</license>
+    <authorEmail>nicholas@dionysopoulos.me</authorEmail>
+    <authorUrl>http://www.akeebabackup.com</authorUrl>
+    <version>1.1</version>
+    <description>MOD_ARSDOWNLOADS_DESC</description>
+    <files>
+        <filename module="mod_arsdownloads">mod_arsdownloads.php</filename>
+        <folder>tmpl</folder>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.mod_arsdownloads.ini</language>
+        <language tag="en-GB">en-GB/en-GB.mod_arsdownloads.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="cache" type="list" default="1" label="Caching"
+                       description="Select whether to cache the content of this module">
+                    <option value="0">Never</option>
+                </field>
+                <field name="@spacer" type="spacer" default="" label="" description=""/>
+                <field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix"
+                       description="PARAMMODULECLASSSUFFIX"/>
+                <field name="@spacer" type="spacer" default="" label="" description=""/>
+                <field name="streams" type="text" size="20" default="" label="MOD_ARSDOWNLOADS_OPT_STREAMS_LBL"
+                       description="MOD_ARSDOWNLOADS_OPT_STREAMS_DESC"/>
+                <field name="pretext" type="textarea" cols="30" rows="5" default=""
+                       label="MOD_ARSDOWNLOADS_OPT_PRETEXT_LBL" description="MOD_ARSDOWNLOADS_OPT_PRETEXT_DESC"
+                       filter="safehtml"/>
+                <field name="posttext" type="textarea" cols="30" rows="5" default=""
+                       label="MOD_ARSDOWNLOADS_OPT_POSTTEXT_LBL" description="MOD_ARSDOWNLOADS_OPT_POSTTEXT_DESC"
+                       filter="safehtml"/>
+            </fieldset>
+        </fields>
+    </config>
+
+    <scriptfile>script.php</scriptfile>
+
 </extension>

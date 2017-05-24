@@ -3,6 +3,7 @@
 **Bug fixes**
 
 * Workaround for Joomla! Bug 16147 (https://github.com/joomla/joomla-cms/issues/16147) - Cannot access component after installation when cache is enabled
+* Workaround for Joomla! bug "Sometimes files are not copied on update"
 
 # 3.2.3
 

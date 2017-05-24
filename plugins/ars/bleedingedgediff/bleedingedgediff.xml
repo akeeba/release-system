@@ -1,49 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5.0" type="plugin" group="ars" method="upgrade">
-	<name>Akeeba Release System - Bleeding Edge automatic file diff</name>
-	<author>Nicholas K. Dionysopoulos</author>
-	<authorEmail>nicholas@dionysopoulos.me</authorEmail>
-	<authorUrl>http://www.akeebabackup.com</authorUrl>
-	<copyright>Copyright (c)2010-2017 Nicholas K. Dionysopoulos</copyright>
-	<license>GNU General Public License version 3, or later</license>
-	<creationDate>2011-07-31</creationDate>
-	<version>1.0</version>
-	<description>
-		Automatically generates a colorised unified diff (like what GitHub does)
-		for items automatically created in a Bleeding Edge repository.
-	</description>
-	<files>
-		<filename plugin="bleedingedgediff">bleedingedgediff.php</filename>
-		<filename>bleedingedgediff.diff.php</filename>
-	</files>
-	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.plg_ars_bleedingedgediff.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_ars_bleedingedgediff.sys.ini</language>
-	</languages>
-	<config>
-		<fields name="params">
-			<fieldset name="basic">
-				<field type="textarea" name="validextensions" cols="50" rows="5"
-					label="PLG_ARS_BLEEDINGEDGEDIFF_VALIDEXTENSIONS_LABEL"
-					description="PLG_ARS_BLEEDINGEDGEDIFF_VALIDEXTENSIONS_DESC"
-					default="txt,js,htm,html,css" />
-				<field name="use_description" type="radio" default="0" label="PLG_ARS_BLEEDINGEDGEDIFF_USEDESCRIPTION_LABEL" description="PLG_ARS_BLEEDINGEDGEDIFF_USEDESCRIPTION_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
-				</field>
-				<field type="textarea" name="pretext" cols="50" rows="5"
-					label="PLG_ARS_BLEEDINGEDGEDIFF_PRETEXT_LABEL"
-					description="PLG_ARS_BLEEDINGEDGEDIFF_PRETEXT_DESC"
-					default="" />
-				<field type="textarea" name="midtext" cols="50" rows="5"
-					label="PLG_ARS_BLEEDINGEDGEDIFF_MIDTEXT_LABEL"
-					description="PLG_ARS_BLEEDINGEDGEDIFF_MIDTEXT_DESC"
-					default="" />
-				<field type="textarea" name="posttext" cols="50" rows="5"
-					label="PLG_ARS_BLEEDINGEDGEDIFF_POSTTEXT_LABEL"
-					description="PLG_ARS_BLEEDINGEDGEDIFF_POSTTEXT_DESC"
-					default="" />
-			</fieldset>
-		</fields>
-	</config>
+    <name>Akeeba Release System - Bleeding Edge automatic file diff</name>
+    <author>Nicholas K. Dionysopoulos</author>
+    <authorEmail>nicholas@dionysopoulos.me</authorEmail>
+    <authorUrl>http://www.akeebabackup.com</authorUrl>
+    <copyright>Copyright (c)2010-2017 Nicholas K. Dionysopoulos</copyright>
+    <license>GNU General Public License version 3, or later</license>
+    <creationDate>2011-07-31</creationDate>
+    <version>1.0</version>
+    <description>
+        Automatically generates a colorised unified diff (like what GitHub does)
+        for items automatically created in a Bleeding Edge repository.
+    </description>
+    <files>
+        <filename plugin="bleedingedgediff">bleedingedgediff.php</filename>
+        <filename>bleedingedgediff.diff.php</filename>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_ars_bleedingedgediff.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_ars_bleedingedgediff.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field type="textarea" name="validextensions" cols="50" rows="5"
+                       label="PLG_ARS_BLEEDINGEDGEDIFF_VALIDEXTENSIONS_LABEL"
+                       description="PLG_ARS_BLEEDINGEDGEDIFF_VALIDEXTENSIONS_DESC"
+                       default="txt,js,htm,html,css"/>
+                <field name="use_description" type="radio" default="0"
+                       label="PLG_ARS_BLEEDINGEDGEDIFF_USEDESCRIPTION_LABEL"
+                       description="PLG_ARS_BLEEDINGEDGEDIFF_USEDESCRIPTION_DESC">
+                    <option value="0">JNo</option>
+                    <option value="1">JYes</option>
+                </field>
+                <field type="textarea" name="pretext" cols="50" rows="5"
+                       label="PLG_ARS_BLEEDINGEDGEDIFF_PRETEXT_LABEL"
+                       description="PLG_ARS_BLEEDINGEDGEDIFF_PRETEXT_DESC"
+                       default=""/>
+                <field type="textarea" name="midtext" cols="50" rows="5"
+                       label="PLG_ARS_BLEEDINGEDGEDIFF_MIDTEXT_LABEL"
+                       description="PLG_ARS_BLEEDINGEDGEDIFF_MIDTEXT_DESC"
+                       default=""/>
+                <field type="textarea" name="posttext" cols="50" rows="5"
+                       label="PLG_ARS_BLEEDINGEDGEDIFF_POSTTEXT_LABEL"
+                       description="PLG_ARS_BLEEDINGEDGEDIFF_POSTTEXT_DESC"
+                       default=""/>
+            </fieldset>
+        </fields>
+    </config>
+
+    <scriptfile>script.php</scriptfile>
+
 </extension>

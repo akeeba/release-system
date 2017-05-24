@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5.0" type="plugin" group="content" method="upgrade">
-	<name>PLG_CONTENT_ARSLATEST</name>
-	<author>Nicholas K. Dionysopoulos</author>
-	<authorEmail>nicholas@dionysopoulos.me</authorEmail>
-	<authorUrl>http://www.akeebabackup.com</authorUrl>
-	<copyright>Copyright (c)2010-2017 Nicholas K. Dionysopoulos</copyright>
-	<license>GNU General Public License version 3, or later</license>
-	<creationDate>2012-11-04</creationDate>
-	<version>1.0</version>
-	<description>PLG_CONTENT_ARSLATEST_XML_DESCRIPTION</description>
-	<files>
-		<filename plugin="arslatest">arslatest.php</filename>
-	</files>
-	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.plg_content_arslatest.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_content_arslatest.sys.ini</language>
-	</languages>
+    <name>PLG_CONTENT_ARSLATEST</name>
+    <author>Nicholas K. Dionysopoulos</author>
+    <authorEmail>nicholas@dionysopoulos.me</authorEmail>
+    <authorUrl>http://www.akeebabackup.com</authorUrl>
+    <copyright>Copyright (c)2010-2017 Nicholas K. Dionysopoulos</copyright>
+    <license>GNU General Public License version 3, or later</license>
+    <creationDate>2012-11-04</creationDate>
+    <version>1.0</version>
+    <description>PLG_CONTENT_ARSLATEST_XML_DESCRIPTION</description>
+    <files>
+        <filename plugin="arslatest">arslatest.php</filename>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_content_arslatest.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_content_arslatest.sys.ini</language>
+    </languages>
+
+    <scriptfile>script.php</scriptfile>
+
 </extension>
