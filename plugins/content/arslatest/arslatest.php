@@ -58,7 +58,10 @@ class plgContentArslatest extends JPlugin
 			return;
 		}
 
-		$this->container = Container::getInstance('com_ars');
+		if ($this->enabled)
+		{
+			$this->container = Container::getInstance('com_ars');
+		}
 	}
 
 	/**
