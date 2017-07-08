@@ -6,6 +6,7 @@
 * Workaround for Joomla! bug "Sometimes files are not copied on update"
 * Plugins would throw an error if FOF 3 cannot be loaded.
 * Visual groups were ignored in caching, see gh-114
+* Error COM_ARS_UPDATESTREAM_ERR_JEDID_EMPTY, see gh-111 
 
 # 3.2.3
 

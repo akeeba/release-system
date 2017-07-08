@@ -83,6 +83,9 @@ class UpdateStreams extends DataModel
 			'locked_on'   => 'checked_out_time',
 			'locked_by'   => 'checked_out',
 		];
+		$config['fieldsSkipChecks'] = [
+			'jedid'
+		];
 
 		parent::__construct($container, $config);
 
@@ -159,6 +162,4 @@ class UpdateStreams extends DataModel
 
 		return parent::check();
 	}
-
-
 }
