@@ -42,6 +42,11 @@
 			   source_value="value"
 				/>
 
+		<field name="is_supported" type="Radio" label="COM_ARS_IS_SUPPORTED" default="1" class="btn-group btn-group-yesno">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
+
 		<field name="language" type="Language" label="JFIELD_LANGUAGE_LABEL" default="*" client="site">
 			<option value="*">JALL_LANGUAGE</option>
 		</field>

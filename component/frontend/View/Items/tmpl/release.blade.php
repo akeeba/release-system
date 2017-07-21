@@ -8,6 +8,7 @@
 defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Releases\Html $this */
+/** @var  \Akeeba\ReleaseSystem\Site\Model\Releases $item */
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
@@ -17,7 +18,7 @@ $released = $this->container->platform->getDate($item->created);
 
 ?>
 
-<div class="ars-release-{{{ $item->id }}}">
+<div class="ars-release-{{{ $item->id }}} {{ $this->release->category->is_supported ? 'supported' : 'unsupported' }}">
 	<h4 class="text-muted">
 		{{{ $item->category->title }}}
 		{{{ $item->version }}}

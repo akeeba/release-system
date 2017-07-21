@@ -25,11 +25,12 @@ class Category extends DataController
 	protected function onBeforeAdd()
 	{
 		$this->defaultsForAdd = [
-			'vgroup_id' => 0,
-			'type'      => 'normal',
-			'access'    => 1,
-			'published' => 0,
-			'language'  => '*',
+			'vgroup_id'    => 0,
+			'type'         => 'normal',
+			'access'       => 1,
+			'published'    => 0,
+			'is_supported' => 1,
+			'language'     => '*',
 		];
 
 		foreach ($this->defaultsForAdd as $k => $v)

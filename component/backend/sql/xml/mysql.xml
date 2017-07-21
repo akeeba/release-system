@@ -60,6 +60,7 @@ CREATE TABLE `#__ars_categories` (
     `show_unauth_links` TINYINT NOT NULL DEFAULT '0',
     `redirect_unauth` VARCHAR( 255 ) NOT NULL,
     `published` int(11) NOT NULL DEFAULT '1',
+    `is_supported` TINYINT NOT NULL DEFAULT '1',
 	`language` char(7) NOT NULL DEFAULT '*',
     PRIMARY KEY (`id`),
 	KEY `#___ars_categories_published` (`published`)
@@ -422,6 +423,13 @@ WHERE
 	`ls`.`primary` = 0
 	AND `ls`.`dlid` = ''
 	AND `p`.`primary` = 1
+            ]]></query>
+        </action>
+
+        <action table="#__ars_categories" canfail="0">
+            <condition type="missing" value="is_supported" />
+            <query><![CDATA[
+ALTER TABLE `#__ars_categories` ADD COLUMN `is_supported` TINYINT NOT NULL DEFAULT '1' AFTER `published`;
             ]]></query>
         </action>
     </sql>

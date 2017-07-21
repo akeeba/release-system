@@ -93,6 +93,7 @@ class Latest extends Controller
 		$categoriesModel->reset(true)
 		                ->orderby_filter($this->params->get('orderby', 'order'))
 		                ->published(1)
+		                ->is_supported((bool) $this->params->get('cat_is_supported', false))
 		                ->access_user($this->container->platform->getUser()->id)
 		                ->with([]);
 		$this->getView()->setModel('Categories', $categoriesModel);

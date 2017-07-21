@@ -36,6 +36,7 @@ use FOF30\Model\DataModel;
  * @property  string  $redirect_unauth
  * @property  int     $published
  * @property  string  $language
+ * @property  int     $is_supported
  *
  * Filters:
  *
@@ -64,6 +65,7 @@ use FOF30\Model\DataModel;
  * @method  $this  nobeunpub()          nobeunpub(bool $v)
  * @method  $this  search()             search(string $v)
  * @method  $this  orderby_filter()     orderby_filter(string $orderMethod)
+ * @method  $this  is_supported()       is_supported(bool $v)
  *
  * Relations:
  *
@@ -205,6 +207,14 @@ class Categories extends DataModel
 		elseif ($fltLanguage2)
 		{
 			$query->where($db->qn('language') . ' = ' . $db->q($fltLanguage2));
+		}
+
+		// Allow filtering for only supported categories
+		$fltIsSupported = $this->getState('is_supported', false, 'bool');
+
+		if ($fltIsSupported)
+		{
+			$query->where($db->qn('is_supported') . ' = ' . $db->q(1));
 		}
 
 		// Generic search (matching title or description) filter
