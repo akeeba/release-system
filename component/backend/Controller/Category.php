@@ -24,6 +24,19 @@ class Category extends DataController
 
 	protected function onBeforeAdd()
 	{
+		if (!$this->checkACL('@Add'))
+		{
+			$returnUrl = 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
+
+			$this->setRedirect(
+				$returnUrl,
+				\JText::_('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'),
+				'error'
+			);
+
+			return false;
+		}
+
 		$this->defaultsForAdd = [
 			'vgroup_id' => 0,
 			'type'      => 'normal',
