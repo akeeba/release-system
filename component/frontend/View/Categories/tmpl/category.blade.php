@@ -15,7 +15,7 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 	$category_url = $item->redirect_unauth;
 }
 ?>
-<div class="ars-category-{{{ $id }}} {{ $item->is_supported ? 'supported' : 'unsupported' }}">
+<div class="ars-category-{{{ $id }}} ars-category-{{ $item->is_supported ? 'supported' : 'unsupported' }}">
 
 	<h4 class="{{ $item->type == 'bleedingedge' ? 'warning' : '' }}">
 		<a href="{{ htmlentities($category_url) }}">

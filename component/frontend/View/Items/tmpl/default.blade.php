@@ -23,7 +23,7 @@ $released   = $this->container->platform->getDate($this->release->created);
 
 	@include('site:com_ars/Items/release', ['id' => $this->release->id, 'item' => $this->release, 'Itemid' => $this->Itemid, 'no_link' => true])
 
-	<div class="ars-items {{ $this->release->category->is_supported ? 'supported' : 'unsupported' }}">
+	<div class="ars-items ars-items-{{ $this->release->category->is_supported ? 'supported' : 'unsupported' }}">
 	@if(count($this->items))
 		@foreach($this->items as $item)
 			@include('site:com_ars/Items/item', ['item' => $item, 'Itemid' => $this->Itemid])

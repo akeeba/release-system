@@ -18,7 +18,7 @@ $released = $this->container->platform->getDate($item->created);
 
 ?>
 
-<div class="ars-release-{{{ $item->id }}} {{ $this->release->category->is_supported ? 'supported' : 'unsupported' }}">
+<div class="ars-release-{{{ $item->id }}} ars-release-{{ $this->release->category->is_supported ? 'supported' : 'unsupported' }}">
 	<h4 class="text-muted">
 		{{{ $item->category->title }}}
 		{{{ $item->version }}}
