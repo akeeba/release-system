@@ -9,8 +9,6 @@ namespace Akeeba\ReleaseSystem\Admin\Dispatcher;
 
 defined('_JEXEC') or die;
 
-use Akeeba\ReleaseSystem\Admin\Helper\ComponentParams;
-
 class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 {
 	/** @var   string  The name of the default view, in case none is specified */

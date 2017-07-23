@@ -9,8 +9,8 @@ namespace Akeeba\ReleaseSystem\Admin\Toolbar;
 
 defined('_JEXEC') or die;
 
-use JToolBarHelper;
 use JText;
+use JToolBarHelper;
 
 class Toolbar extends \FOF30\Toolbar\Toolbar
 {

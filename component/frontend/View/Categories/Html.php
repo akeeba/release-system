@@ -10,8 +10,6 @@ namespace Akeeba\ReleaseSystem\Site\View\Categories;
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
-use Akeeba\ReleaseSystem\Site\Helper\Router;
-use Akeeba\ReleaseSystem\Site\Helper\Title;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use FOF30\Model\DataModel\Collection;
 use FOF30\View\View as BaseView;

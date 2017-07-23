@@ -9,8 +9,8 @@ defined('_JEXEC') or die();
 
 /** @var \Akeeba\ReleaseSystem\Site\View\Update\Xml $this */
 
-use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use Akeeba\ReleaseSystem\Site\Helper\Router;
 
 $rootURL    = rtrim(JURI::base(), '/');
 $subpathURL = JURI::base(true);
