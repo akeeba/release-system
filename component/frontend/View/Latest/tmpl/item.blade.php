@@ -11,6 +11,8 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
+use Akeeba\ReleaseSystem\Admin\Helper\Format;
+use Akeeba\ReleaseSystem\Admin\Helper\Select;
 
 $download_url =
 		Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id . '&Itemid=' . $this->Itemid);

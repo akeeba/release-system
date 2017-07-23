@@ -10,6 +10,10 @@ defined('_JEXEC') or die;
 /** @var  \Akeeba\ReleaseSystem\Site\View\Releases\Html $this */
 /** @var  \Akeeba\ReleaseSystem\Site\Model\Releases $item */
 
+use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use Akeeba\ReleaseSystem\Site\Helper\Router;
+use Akeeba\ReleaseSystem\Admin\Helper\Format;
+
 $released = $this->container->platform->getDate($item->created);
 
 ?>

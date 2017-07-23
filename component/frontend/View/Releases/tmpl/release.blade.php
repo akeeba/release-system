@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
+use Akeeba\ReleaseSystem\Admin\Helper\Format;
 
 $released = $this->container->platform->getDate($item->created);
 
