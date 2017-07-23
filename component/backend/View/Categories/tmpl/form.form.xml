@@ -61,4 +61,15 @@
 			   buttons="true"/>
 
 	</fieldset>
+
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC" class="span12">
+
+		<field name="rules" type="Rules" label="JCONFIG_PERMISSIONS_LABEL"
+			   class="inputbox"
+			   filter="rules"
+			   component="com_ars"
+			   section="category"
+				/>
+
+	</fieldset>
 </form>

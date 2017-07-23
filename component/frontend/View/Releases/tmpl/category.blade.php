@@ -15,7 +15,7 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 	$category_url = $item->redirect_unauth;
 }
 ?>
-<div class="ars-category-{{{ $id }}} ars-category-{{ $item->category->is_supported ? 'supported' : 'unsupported' }}">
+<div class="ars-category-{{{ $id }}} ars-category-{{ $item->is_supported ? 'supported' : 'unsupported' }}">
 
 	<h4 class="text-muted">
 		{{{ $item->title }}}

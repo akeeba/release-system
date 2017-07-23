@@ -36,7 +36,7 @@
 			   key_field="id"
 			   value_field="title"
 				/>
-		<field name="version" type="Text"
+		<field name="version" type="AccessAwareReleaseVersion"
 			   url="index.php?option=com_ars&amp;view=Release&amp;id=[ITEM:ID]"/>
 		<field name="maturity" type="GenericList" label="COM_ARS_RELEASES_FIELD_MATURITY">
 			<option value="alpha">COM_ARS_RELEASES_MATURITY_ALPHA</option>

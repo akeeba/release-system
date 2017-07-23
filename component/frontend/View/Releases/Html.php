@@ -50,9 +50,6 @@ class Html extends BaseView
 
 	public function onBeforeBrowse($tpl = null)
 	{
-		// Prevent phpStorm's whining...
-		if ($tpl) {}
-
 		// Load the model
 		/** @var Releases $model */
 		$model = $this->getModel();
