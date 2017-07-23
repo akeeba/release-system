@@ -6,7 +6,6 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
-use Akeeba\ReleaseSystem\Admin\Helper\Format;
 
 $category_url = Router::_('index.php?option=com_ars&view=Releases&category_id=' . $item->id . '&Itemid=' . $Itemid);
 
