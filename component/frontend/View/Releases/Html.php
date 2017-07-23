@@ -11,8 +11,6 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Helper\Breadcrumbs;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
-use Akeeba\ReleaseSystem\Site\Helper\Router;
-use Akeeba\ReleaseSystem\Site\Helper\Title;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Items;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
