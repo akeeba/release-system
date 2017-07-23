@@ -9,7 +9,6 @@ namespace Akeeba\ReleaseSystem\Site\Helper;
 
 defined('_JEXEC') or die;
 
-use JFactory;
 use JRoute;
 use JUri;
 

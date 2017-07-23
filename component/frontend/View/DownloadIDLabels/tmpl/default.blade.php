@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-use Akeeba\ReleaseSystem\Site\Helper\Filter;
-
 /** @var \Akeeba\ReleaseSystem\Site\View\DownloadIDLabels\Html $this */
 
 $itemId = $this->input->getInt('Itemid') ? '&Itemid=' . $this->input->getInt('Itemid') : '';

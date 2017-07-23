@@ -10,11 +10,11 @@ namespace Akeeba\ReleaseSystem\Admin\Helper;
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-use JFilterInput;
-use JRegistry;
-use JLoader;
-use JFolder;
 use JFile;
+use JFilterInput;
+use JFolder;
+use JLoader;
+use JRegistry;
 
 /**
  * Handles the caching of lengthy database operations, irrespective of Joomla!'s cache status
