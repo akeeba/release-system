@@ -63,7 +63,7 @@
         <!--<field name="release.category.title" type="Text"/>-->
         <!--<field name="release.version" type="Text"/>-->
 
-        <field name="title" type="Sortable"
+        <field name="title" type="AccessAwareItemTitle"
                url="index.php?option=com_ars&amp;view=Item&amp;id=[ITEM:ID]"/>
 
         <field name="type" type="GenericList" label="LBL_ITEMS_TYPE">
