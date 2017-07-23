@@ -12,7 +12,9 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Admin\Helper\IniParser;
 use FOF30\Container\Container;
 use FOF30\Database\Installer;
+use FOF30\Date\Date;
 use FOF30\Model\Model;
+use JFactory;
 use JRegistry;
 use JText;
 

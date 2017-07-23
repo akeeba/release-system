@@ -9,6 +9,8 @@ namespace Akeeba\ReleaseSystem\Site\Dispatcher;
 
 defined('_JEXEC') or die;
 
+use Akeeba\ReleaseSystem\Admin\Helper\ComponentParams;
+
 class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 {
 	/**

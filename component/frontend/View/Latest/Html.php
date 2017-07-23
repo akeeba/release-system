@@ -10,6 +10,7 @@ namespace Akeeba\ReleaseSystem\Site\View\Latest;
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use Akeeba\ReleaseSystem\Site\Helper\Title;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Model\DataModel\Collection;

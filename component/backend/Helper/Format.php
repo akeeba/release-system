@@ -8,6 +8,7 @@
 namespace Akeeba\ReleaseSystem\Admin\Helper;
 
 use JHtml;
+use JUri;
 
 defined('_JEXEC') or die;
 

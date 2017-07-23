@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Controller\DownloadIDLabels;
 use FOF30\Container\Container;
+use FOF30\Controller\DataController;
 
 class DownloadIDLabel extends DownloadIDLabels
 {

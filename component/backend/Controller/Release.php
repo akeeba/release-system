@@ -9,6 +9,7 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 defined('_JEXEC') or die;
 
+use Akeeba\ReleaseSystem\Admin\Model\Releases;
 use FOF30\Controller\DataController;
 use FOF30\Controller\Exception\ItemNotFound;
 

@@ -8,6 +8,9 @@
 namespace Akeeba\ReleaseSystem\Admin\Helper;
 
 use FOF30\Container\Container;
+use JComponentHelper;
+use JFactory;
+use JLoader;
 
 defined('_JEXEC') or die;
 
