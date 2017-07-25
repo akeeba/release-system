@@ -24,14 +24,6 @@ class Latest extends Controller
 	 */
 	public $params;
 
-	public function __construct(Container $container, array $config = array())
-	{
-		// Tell our controller to use the Releases model
-		$config['modelName'] = 'Releases';
-
-		parent::__construct($container, $config);
-	}
-
 	/**
 	 * Overrides the default display method to add caching support
 	 *

@@ -1,6 +1,8 @@
 # 3.2.5
 
-(replace me)
+**Bug fixes**
+
+* State bleedover from Categories to Latest view (gh-121 - Thanks @mbabker)
 
 # 3.2.4
 
