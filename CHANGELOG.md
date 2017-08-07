@@ -3,6 +3,7 @@
 **Bug fixes**
 
 * State bleedover from Categories to Latest view (gh-121 - Thanks @mbabker)
+* Typo prevents uploads in subdirectories (gh-117)
 
 # 3.2.4
 
