@@ -6,6 +6,7 @@
 * Typo prevents uploads in subdirectories (gh-117)
 * HTTPS option is not taken into account when creating signed URLs (gh-125)
 * ARS Link editor button plugin didn't display an icon (gh-126)
+* ARS Link editor button plugin didn't work with the default editory due to JavaScript API change (gh-126)
 
 # 3.2.4
 

@@ -50,11 +50,23 @@ class plgButtonArslink extends JPlugin
 
 ;// This comment is intentionally put here to prevent badly written plugins from causing a Javascript error
 // due to missing trailing semicolon and/or newline in their code.
-		function arsSelectItem(id, title) {
-			var tag = '<a href='+'\"index.php?option=com_ars&amp;view=Item&amp;id='+id+'\">'+title+'</a>';
-			jInsertEditorText(tag, '" . $name . "');
-			jModalClose();
-		};
+function arsSelectItem(id, title)
+{
+	var editor = '$name';
+	var tag = '<a href='+'\"index.php?option=com_ars&amp;view=Item&amp;id='+id+'\">'+title+'</a>';
+	
+	/** Use the API, if editor supports it **/
+	if (Joomla && Joomla.editors && Joomla.editors.instances && Joomla.editors.instances.hasOwnProperty(editor))
+	{
+		Joomla.editors.instances[editor].replaceSelection(tag)
+	}
+	else
+    {
+		jInsertEditorText(tag, editor);
+	}
+
+	jModalClose();
+}
 
 JS;
 
@@ -62,7 +74,6 @@ JS;
 		$doc->addScriptDeclaration($js);
 
 		$app     = JFactory::getApplication();
-		$tmpl    = $app->getTemplate();
 		$rootURI = JUri::base();
 
 		if ($app->isAdmin())
@@ -70,7 +81,7 @@ JS;
 			$rootURI .= '../';
 		}
 
-		$css     = <<<CSS
+		$css = <<<CSS
 .button2-left .arsitem {
 	background: url($rootURI/media/com_ars/icons/ars_logo_16_bw.png) 100% 0 no-repeat;
 }
