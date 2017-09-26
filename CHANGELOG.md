@@ -5,6 +5,7 @@
 * State bleedover from Categories to Latest view (gh-121 - Thanks @mbabker)
 * Typo prevents uploads in subdirectories (gh-117)
 * HTTPS option is not taken into account when creating signed URLs (gh-125)
+* ARS Link editor button plugin didn't display an icon (gh-126)
 
 # 3.2.4
 

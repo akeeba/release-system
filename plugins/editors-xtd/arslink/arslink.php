@@ -72,14 +72,15 @@ JS;
 
 		$css     = <<<CSS
 .button2-left .arsitem {
-	background: url($rootURI/media/com_ars/icons/ars_logo_16.png) 100% 0 no-repeat;
+	background: url($rootURI/media/com_ars/icons/ars_logo_16_bw.png) 100% 0 no-repeat;
 }
-#editor-xtd-buttons span.icon-arsitem {
+#editor-xtd-buttons span.icon-arsitem,
+i.icon-arsitem {
 	display: block;
 	float: left;
 	width: 16px;
 	height: 16px;
-	background: url($rootURI/media/com_ars/icons/ars_logo_16.png) 100% 0 no-repeat;
+	background: url($rootURI/media/com_ars/icons/ars_logo_16_bw.png) 0 0 no-repeat;
 }
 CSS;
 
