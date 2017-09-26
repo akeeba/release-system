@@ -4,6 +4,7 @@
 
 * State bleedover from Categories to Latest view (gh-121 - Thanks @mbabker)
 * Typo prevents uploads in subdirectories (gh-117)
+* HTTPS option is not taken into account when creating signed URLs (gh-125)
 
 # 3.2.4
 
