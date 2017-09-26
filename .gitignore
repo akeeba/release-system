@@ -12,7 +12,7 @@
 /component/cli/*.xml
 
 # Composer managed dependencies (run `composer install` after git pull)
-/component/backend/vendor/akeeba
+/component/backend/vendor
 
 # Release files
 /release
