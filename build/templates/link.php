@@ -7,4 +7,5 @@ $symlink_files = array(
 );
 
 $symlink_folders = array(
+	'../translations/ars' => 'translations',
 );

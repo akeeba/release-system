@@ -19,3 +19,9 @@
 
 # Temporary stuff
 /*.txt
+
+# Internal language symlinks
+component/language/*/en-GB
+modules/*/*/language/en-GB
+plugins/*/*/language/en-GB
+translations

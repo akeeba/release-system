@@ -33,6 +33,7 @@ You will also need the following path structure inside a folder on your system
 * **ars** This repository
 * **buildfiles** [Akeeba Build Tools](https://github.com/akeeba/buildfiles)
 * **fof3** [Framework on Framework 3.x](https://github.com/akeeba/fof)
+* **translations** [Akeeba Translations](https://github.com/akeeba/translations)
 
 You will need to use the exact folder names specified here.
 
