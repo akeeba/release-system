@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5.0" type="plugin" group="ars" method="upgrade">
-    <name>Akeeba Release System - Bleeding Edge release maturity</name>
+    <name>PLG_ARS_BLEEDINGEDGMATURITY</name>
     <author>Nicholas K. Dionysopoulos</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>http://www.akeebabackup.com</authorUrl>
@@ -8,14 +8,14 @@
     <license>GNU General Public License version 3, or later</license>
     <creationDate>2011-07-31</creationDate>
     <version>1.0</version>
-    <description>
-        Sets the maturity of Bleeding Edge releases based on the folder name
-        suffix (e.g. _BETA for beta releases, _RC for Release Candidates, etc)
-    </description>
+    <description>PLG_ARS_BLEEDINGEDGMATURITY_XML_DESCRIPTION</description>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_ars_bleedingedgematurity.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_ars_bleedingedgematurity.sys.ini</language>
+    </languages>
     <files>
         <filename plugin="bleedingedgematurity">bleedingedgematurity.php</filename>
     </files>
 
     <scriptfile>script.php</scriptfile>
-
 </extension>
