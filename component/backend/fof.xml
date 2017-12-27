@@ -11,6 +11,7 @@
 			<option name="factoryClass">FOF30\Factory\MagicFactory</option>
 			<option name="scaffolding">0</option>
 			<option name="saveScaffolding">0</option>
+			<option name="rendererClass">FOF30\Render\FEF</option>
 		</container>
 	</common>
 

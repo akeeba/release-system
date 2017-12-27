@@ -8,7 +8,7 @@
 defined('_JEXEC') or die;
 ?>
 @section('footer')
-	<p style="font-size: small" class="well">
+	<p style="font-size: small" class="akeeba-panel--information">
 		<strong>
 			Akeeba Release System &bull;
 			@sprintf('COM_ARS_CPANEL_COPYRIGHT_LABEL', date('Y'))
