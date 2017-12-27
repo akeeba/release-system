@@ -32,6 +32,13 @@ class Pkg_ArsInstallerScript
 	protected $packageName = 'pkg_ars';
 
 	/**
+	 * The name of our component, e.g. com_example. Used for dependency tracking.
+	 *
+	 * @var  string
+	 */
+	protected $componentName = 'com_ars';
+
+	/**
 	 * The minimum PHP version required to install this extension
 	 *
 	 * @var   string
@@ -133,6 +140,15 @@ class Pkg_ArsInstallerScript
 	public function postflight($type, $parent)
 	{
 		/**
+		 * Try to install FEF. We only need to do this in postflight. A failure, while detrimental to the display of the
+		 * extension, is non-fatal to the installation and can be rectified by manual installation of the FEF package.
+		 * We can't use a <file> tag in our package manifest because FEF's package is *supposed* to fail to install if
+		 * a newer version is already installed. This would unfortunately cancel the installation of the entire package,
+		 * so we have to get a bit tricky.
+		 */
+		$this->installOrUpdateFEF($parent);
+
+		/**
 		 * Clean the cache after installing the package.
 		 *
 		 * See bug report https://github.com/joomla/joomla-cms/issues/16147
@@ -211,8 +227,23 @@ class Pkg_ArsInstallerScript
 		class_exists('FOF30\\Utils\\InstallScript');
 		class_exists('FOF30\\Database\\Installer');
 
-		// Remove strapper30 dependency for our package
-		$this->removeDependency('strapper30', $this->packageName);
+		/**
+		 * uninstall() is called before the component is uninstalled. Therefore there is a dependency to FOF 3 which
+		 * prevents FOF 3 from being removed at this point. Therefore we have to remove the dependency before removing
+		 * the component and hope nothing goes wrong.
+		 */
+		$this->removeDependency('fof30', $this->componentName);
+
+		/**
+		 * uninstall() is called before the component is uninstalled. Therefore there is a dependency to FEF which
+		 * prevents FEF from being removed at this point. Therefore we have to remove the dependency before removing
+		 * the component and hope nothing goes wrong.
+		 */
+		$this->removeDependency('file_fef', $this->componentName);
+
+		// The try to uninstall FEF. The uninstallation might fail if there are other extensions depending
+		// on it. That would cause the entire package uninstallation to fail, hence the need for special handling.
+		$this->uninstallFEF($parent);
 
 		// Then try to uninstall the FOF library. The uninstallation might fail if there are other extensions depending
 		// on it. That would cause the entire package uninstallation to fail, hence the need for special handling.
@@ -297,6 +328,82 @@ class Pkg_ArsInstallerScript
 		try
 		{
 			$tmpInstaller->uninstall('library', $id, 0);
+		}
+		catch (\Exception $e)
+		{
+			// We can expect the uninstallation to fail if there are other extensions depending on the FOF library.
+		}
+	}
+
+	/**
+	 * Tries to install or update FEF. The FEF files package installation can fail if there's a newer version
+	 * installed.
+	 *
+	 * @param   \JInstallerAdapterPackage  $parent
+	 */
+	private function installOrUpdateFEF($parent)
+	{
+		// Get the path to the FOF package
+		$sourcePath = $parent->getParent()->getPath('source');
+		$sourcePackage = $sourcePath . '/file_fef.zip';
+
+		// Extract and install the package
+		$package = JInstallerHelper::unpack($sourcePackage);
+		$tmpInstaller  = new JInstaller;
+		$error = null;
+
+		try
+		{
+			$installResult = $tmpInstaller->install($package['dir']);
+		}
+		catch (\Exception $e)
+		{
+			$installResult = false;
+			$error = $e->getMessage();
+		}
+	}
+
+	/**
+	 * Try to uninstall the FEF package. We don't go through the Joomla! package uninstallation since we can expect the
+	 * uninstallation of the FEF library to fail if other software depends on it.
+	 *
+	 * @param   JInstallerAdapterPackage  $parent
+	 */
+	private function uninstallFEF($parent)
+	{
+		// Check dependencies on FOF
+		$dependencyCount = count($this->getDependencies('file_fef'));
+
+		if ($dependencyCount)
+		{
+			$msg = "<p>You have $dependencyCount extension(s) depending on this version of Akeeba FEF. The package cannot be uninstalled unless these extensions are uninstalled first.</p>";
+
+			JLog::add($msg, JLog::WARNING, 'jerror');
+
+			return;
+		}
+
+		$tmpInstaller = new JInstaller;
+
+		$db = $parent->getParent()->getDbo();
+
+		$query = $db->getQuery(true)
+			->select('extension_id')
+			->from('#__extensions')
+			->where('type = ' . $db->quote('file'))
+			->where('element = ' . $db->quote('file_fef'));
+
+		$db->setQuery($query);
+		$id = $db->loadResult();
+
+		if (!$id)
+		{
+			return;
+		}
+
+		try
+		{
+			$tmpInstaller->uninstall('file', $id, 0);
 		}
 		catch (\Exception $e)
 		{

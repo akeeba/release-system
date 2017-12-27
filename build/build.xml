@@ -20,6 +20,7 @@
 		<include name="mod_*.zip" />
 		<include name="plg_*.zip" />
 		<include name="lib_*.zip" />
+		<include name="file_fef*.zip" />
 		<include name="pkg_*.xml" />
 		<include name="*.txt" />
 		<include name="script.ars.php" />
