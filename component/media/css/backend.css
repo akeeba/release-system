@@ -600,3 +600,5 @@ div#toolbar div#toolbar-back button.btn span.icon-back::before {
  * Joomla! 3.7 made success buttons fixed width.
  */
 #toolbar .btn-success { width: auto !important; }
+
+div.joomla-version-3{ padding:0 }

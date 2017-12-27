@@ -54,10 +54,6 @@ render it. --}}
 	</div>
 </div>
 
-<div class="ak_clr"></div>
-
-<div class="row-fluid footer">
-	<div class="span12">
-		@yield('footer')
-	</div>
+<div>
+	@yield('footer')
 </div>
