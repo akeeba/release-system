@@ -83,6 +83,9 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'administrator/components/com_ars/assets/stats',
 			'components/com_ars/Model/ExtensionUpdates.php',
 			'cli/ars-update',
+
+            // Moving to FEF
+            'administrator/components/com_ars/View/views.ini',
 		),
 		'folders' => array(
 			// Moving to FOF 3
