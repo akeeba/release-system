@@ -130,6 +130,14 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 		parent::uninstall($parent);
 	}
 
+	public function postflight($type, $parent)
+	{
+		parent::postflight($type, $parent);
+
+		// Add ourselves to the list of extensions depending on Akeeba FEF
+		$this->addDependency('file_fef', $this->componentName);
+	}
+
 	/**
 	 * Renders the post-installation message
 	 */
