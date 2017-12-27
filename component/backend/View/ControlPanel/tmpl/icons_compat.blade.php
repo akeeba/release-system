@@ -25,32 +25,32 @@ $groups = array('basic', 'tools', 'update');
 
 		<div class="akeeba-grid--small">
 			<a href="index.php?option=com_ars&view=VisualGroups" class="akeeba-action--teal">
-				<span class="akion-ios-gear"></span>
+				<span class="akion-folder"></span>
 				@lang('COM_ARS_TITLE_VISUALGROUPS')
 			</a>
 
 			<a href="index.php?option=com_ars&view=Categories" class="akeeba-action--teal">
-				<span class="akion-ios-gear"></span>
+				<span class="akion-folder"></span>
 				@lang('COM_ARS_TITLE_CATEGORIES')
 			</a>
 
 			<a href="index.php?option=com_ars&view=Releases" class="akeeba-action--teal">
-				<span class="akion-ios-gear"></span>
+				<span class="akion-folder"></span>
 				@lang('COM_ARS_TITLE_RELEASES')
 			</a>
 
-			<a href="index.php?option=com_ars&view=Items" class="akeeba-action--teal">
-				<span class="akion-ios-gear"></span>
+			<a href="index.php?option=com_ars&view=Items" class="akeeba-action--grey">
+				<span class="akion-ios-list"></span>
 				@lang('COM_ARS_TITLE_ITEMS')
 			</a>
 
-			<a href="index.php?option=com_ars&view=Environments" class="akeeba-action--teal">
-				<span class="akion-ios-gear"></span>
+			<a href="index.php?option=com_ars&view=Environments" class="akeeba-action--orange">
+				<span class="akion-grid"></span>
 				@lang('COM_ARS_TITLE_ENVIRONMENTS')
 			</a>
 
-			<a href="index.php?option=com_ars&view=DownloadIDLabels" class="akeeba-action--teal">
-				<span class="akion-ios-gear"></span>
+			<a href="index.php?option=com_ars&view=DownloadIDLabels" class="akeeba-action--red">
+				<span class="akion-lock-combination"></span>
 				@lang('COM_ARS_TITLE_DOWNLOADIDLABELS')
 			</a>
 		</div>
@@ -62,23 +62,23 @@ $groups = array('basic', 'tools', 'update');
 		</header>
 
 		<div class="akeeba-grid--small">
-			<a href="index.php?option=com_ars&view=Uploads" class="akeeba-action--teal">
-				<span class="akion-ios-gear"></span>
+			<a href="index.php?option=com_ars&view=Uploads" class="akeeba-action--green">
+				<span class="akion-upload"></span>
 				@lang('COM_ARS_TITLE_UPLOADS')
 			</a>
 
-			<a href="index.php?option=com_ars&view=AutoDescriptions" class="akeeba-action--teal">
-				<span class="akion-ios-gear"></span>
+			<a href="index.php?option=com_ars&view=AutoDescriptions" class="akeeba-action--grey">
+				<span class="akion-wand"></span>
 				@lang('COM_ARS_TITLE_AUTODESCRIPTIONS')
 			</a>
 
-			<a href="index.php?option=com_ars&view=UpdateStreams" class="akeeba-action--teal">
-				<span class="akion-ios-gear"></span>
+			<a href="index.php?option=com_ars&view=UpdateStreams" class="akeeba-action">
+				<span class="akion-information-circled"></span>
 				@lang('COM_ARS_TITLE_UPDATESTREAMS')
 			</a>
 
 			<a href="index.php?option=com_ars&view=Logs" class="akeeba-action--teal">
-				<span class="akion-ios-gear"></span>
+				<span class="akion-stats-bars"></span>
 				@lang('COM_ARS_TITLE_LOGS')
 			</a>
 		</div>
