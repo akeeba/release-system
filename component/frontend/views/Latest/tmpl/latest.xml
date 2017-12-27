@@ -47,6 +47,13 @@
                 <option value="rcreated">ARS_BROWSE_REPOSITORY_ORDERBY_RCREATED</option>
                 <option value="ordering">ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
             </field>
+
+            <field name="@spacer" type="spacer" default="" label="" description=""/>
+            <field name="cat_is_supported" type="radio" default="0" label="ARS_CATEGORY_IS_SUPPORTED_LBL"
+                   description="ARS_CATEGORY_IS_SUPPORTED_DESC" class="btn-group btn-group-yesno">
+                <option value="0">JNo</option>
+                <option value="1">JYes</option>
+            </field>
         </fieldset>
 
         <fieldset name="advanced" label="COM_ARS_FIELDSET_ADVANCED">

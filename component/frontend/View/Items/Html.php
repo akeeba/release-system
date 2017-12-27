@@ -11,12 +11,11 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Helper\Breadcrumbs;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
-use Akeeba\ReleaseSystem\Site\Helper\Title;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
-use Akeeba\ReleaseSystem\Site\Model\Releases;
 use Akeeba\ReleaseSystem\Site\Model\Items;
+use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Model\DataModel\Collection;
-use FOF30\View\View as BaseView;
+use FOF30\View\DataView\Html as BaseView;
 
 class Html extends BaseView
 {

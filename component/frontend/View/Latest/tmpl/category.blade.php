@@ -56,7 +56,7 @@ switch ($release->maturity)
 
 ?>
 
-<div class="ars-category-{{{ $item->id }}} well">
+<div class="ars-category-{{{ $item->id }}} well ars-category-{{ $item->is_supported ? 'supported' : 'unsupported' }}">
 	<h4 class="{{ $item->type == 'bleedingedge' ? 'warning' : '' }}">
 		<span class="label {{{ $maturityClass }}} pull-right">
 			@lang('COM_ARS_RELEASES_MATURITY_' . $release->maturity)

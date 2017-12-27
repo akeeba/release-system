@@ -11,7 +11,7 @@ echo $this->loadAnyTemplate('admin:com_ars/Upload/default');
 
 $i = 1;
 
-$this->addJavascriptFile('media://com_ars/js/qui-helpers.js');
+$this->addJavascriptFile('media://com_ars/js/gui-helpers.js');
 
 ?>
 

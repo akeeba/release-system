@@ -51,7 +51,10 @@ class plgContentArsdlid extends JPlugin
 			$this->enabled = false;
 		}
 
-		$this->container = Container::getInstance('com_ars');
+		if ($this->enabled)
+		{
+			$this->container = Container::getInstance('com_ars');
+		}
 	}
 
 

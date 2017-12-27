@@ -29,8 +29,9 @@
 	<fieldset name="items">
 		<field name="ordering" type="Ordering" class="input-mini input-sm"/>
 		<field name="id" type="SelectRow"/>
-		<field name="title" type="Sortable"
-			   url="index.php?option=com_ars&amp;view=Category&amp;id=[ITEM:ID]"/>
+		<field name="title" type="AccessAwareTitle"
+			   url="index.php?option=com_ars&amp;view=Category&amp;id=[ITEM:ID]"
+			   permission="com_ars.category.[ITEM:ID]"/>
 		<field name="vgroup_id" type="Model"
 			   model="VisualGroups" key_field="id" value_field="title" translate="false" none="–––"
 			   show_link="true"

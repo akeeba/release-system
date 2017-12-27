@@ -9,8 +9,8 @@ namespace Akeeba\ReleaseSystem\Admin\Toolbar;
 
 defined('_JEXEC') or die;
 
-use JToolBarHelper;
 use JText;
+use JToolBarHelper;
 
 class Toolbar extends \FOF30\Toolbar\Toolbar
 {
@@ -120,21 +120,6 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 	}
 
 	public function onAutoDescriptionsBrowse()
-	{
-		$this->_onBrowseWithCopy();
-	}
-
-	public function onCategoriesBrowse()
-	{
-		$this->_onBrowseWithCopy();
-	}
-
-	public function onReleasesBrowse()
-	{
-		$this->_onBrowseWithCopy();
-	}
-
-	public function onItemsBrowse()
 	{
 		$this->_onBrowseWithCopy();
 	}

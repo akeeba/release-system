@@ -42,6 +42,11 @@
 			   source_value="value"
 				/>
 
+		<field name="is_supported" type="Radio" label="COM_ARS_IS_SUPPORTED" default="1" class="btn-group btn-group-yesno">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
+
 		<field name="language" type="Language" label="JFIELD_LANGUAGE_LABEL" default="*" client="site">
 			<option value="*">JALL_LANGUAGE</option>
 		</field>
@@ -54,6 +59,17 @@
 			   label_placement="none"
 			   filter="JComponentHelper::filterText"
 			   buttons="true"/>
+
+	</fieldset>
+
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC" class="span12">
+
+		<field name="rules" type="Rules" label="JCONFIG_PERMISSIONS_LABEL"
+			   class="inputbox"
+			   filter="rules"
+			   component="com_ars"
+			   section="category"
+				/>
 
 	</fieldset>
 </form>

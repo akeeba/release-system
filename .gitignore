@@ -12,10 +12,16 @@
 /component/cli/*.xml
 
 # Composer managed dependencies (run `composer install` after git pull)
-/component/backend/vendor/akeeba
+/component/backend/vendor
 
 # Release files
 /release
 
 # Temporary stuff
 /*.txt
+
+# Internal language symlinks
+component/language/*/en-GB
+modules/*/*/language/en-GB
+plugins/*/*/language/en-GB
+translations

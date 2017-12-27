@@ -24,12 +24,26 @@ class Category extends DataController
 
 	protected function onBeforeAdd()
 	{
+		if (!$this->checkACL('@Add'))
+		{
+			$returnUrl = 'index.php?option=' . $this->container->componentName . '&view=' . $this->container->inflector->pluralize($this->view) . $this->getItemidURLSuffix();
+
+			$this->setRedirect(
+				$returnUrl,
+				\JText::_('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'),
+				'error'
+			);
+
+			return false;
+		}
+
 		$this->defaultsForAdd = [
-			'vgroup_id' => 0,
-			'type'      => 'normal',
-			'access'    => 1,
-			'published' => 0,
-			'language'  => '*',
+			'vgroup_id'    => 0,
+			'type'         => 'normal',
+			'access'       => 1,
+			'published'    => 0,
+			'is_supported' => 1,
+			'language'     => '*',
 		];
 
 		foreach ($this->defaultsForAdd as $k => $v)

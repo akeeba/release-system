@@ -2,6 +2,7 @@
 defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Categories\Html $this */
+/** @var  \Akeeba\ReleaseSystem\Site\Model\Categories $item */
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
@@ -14,7 +15,7 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 	$category_url = $item->redirect_unauth;
 }
 ?>
-<div class="ars-category-{{{ $id }}}">
+<div class="ars-category-{{{ $id }}} ars-category-{{ $item->is_supported ? 'supported' : 'unsupported' }}">
 
 	<h4 class="{{ $item->type == 'bleedingedge' ? 'warning' : '' }}">
 		<a href="{{ htmlentities($category_url) }}">

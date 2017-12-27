@@ -315,6 +315,6 @@ class AmazonS3 extends \JObject
 	 */
 	public function getAuthenticatedURL($path)
 	{
-		return $this->s3Client->getAuthenticatedURL(self::$bucket, $path, self::$timeForSignedRequests);
+		return $this->s3Client->getAuthenticatedURL(self::$bucket, $path, self::$timeForSignedRequests, self::$useSSL);
 	}
 }

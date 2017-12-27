@@ -20,6 +20,7 @@ use FOF30\Model\DataModel;
  * Fields:
  *
  * @property  int     $id
+ * @property  int     $asset_id
  * @property  string  $title
  * @property  string  $alias
  * @property  string  $description
@@ -36,10 +37,12 @@ use FOF30\Model\DataModel;
  * @property  string  $redirect_unauth
  * @property  int     $published
  * @property  string  $language
+ * @property  int     $is_supported
  *
  * Filters:
  *
  * @method  $this  id()                 id(int $v)
+ * @method  $this  asset_id()           asset_id(int $v)
  * @method  $this  title()              title(string $v)
  * @method  $this  alias()              alias(string $v)
  * @method  $this  description()        description(string $v)
@@ -64,6 +67,7 @@ use FOF30\Model\DataModel;
  * @method  $this  nobeunpub()          nobeunpub(bool $v)
  * @method  $this  search()             search(string $v)
  * @method  $this  orderby_filter()     orderby_filter(string $orderMethod)
+ * @method  $this  is_supported()       is_supported(bool $v)
  *
  * Relations:
  *
@@ -139,6 +143,7 @@ class Categories extends DataModel
 		$this->addBehaviour('Filters');
 		$this->addBehaviour('Created');
 		$this->addBehaviour('Modified');
+		$this->addBehaviour('Assets');
 
 		// Some filters we will have to handle programmatically so we need to exclude them from the behaviour
 		$this->blacklistFilters([
@@ -205,6 +210,14 @@ class Categories extends DataModel
 		elseif ($fltLanguage2)
 		{
 			$query->where($db->qn('language') . ' = ' . $db->q($fltLanguage2));
+		}
+
+		// Allow filtering for only supported categories
+		$fltIsSupported = $this->getState('is_supported', false, 'bool');
+
+		if ($fltIsSupported)
+		{
+			$query->where($db->qn('is_supported') . ' = ' . $db->q(1));
 		}
 
 		// Generic search (matching title or description) filter
@@ -493,5 +506,54 @@ class Categories extends DataModel
 	protected function onAfterUnlock($ignored = array())
 	{
 		$this->ignorePreSaveChecks = false;
+	}
+
+	/**
+	 * Method to return the title to use for the asset table.  In
+	 * tracking the assets a title is kept for each asset so that there is some
+	 * context available in a unified access manager.  Usually this would just
+	 * return $this->title or $this->name or whatever is being used for the
+	 * primary name of the row. If this method is not overridden, the asset name is used.
+	 *
+	 * @return  string  The string to use as the title in the asset table.
+	 *
+	 * @codeCoverageIgnore
+	 */
+	public function getAssetTitle()
+	{
+		return $this->title;
+	}
+
+	/**
+	 * Method to get the parent asset under which to register this one.
+	 * By default, all assets are registered to the ROOT node with ID,
+	 * which will default to 1 if none exists.
+	 * The extended class can define a table and id to lookup.  If the
+	 * asset does not exist it will be created.
+	 *
+	 * @param   DataModel  $model  A model object for the asset parent.
+	 * @param   integer   $id     Id to look up
+	 *
+	 * @return  integer
+	 */
+	public function getAssetParentId($model = null, $id = null)
+	{
+		$db = $this->getDbo();
+
+		// Build the query to get the asset id for the component.
+		$query = $db->getQuery(true)
+			->select($db->quoteName('id'))
+			->from($db->quoteName('#__assets'))
+			->where($db->quoteName('name') . ' = ' . $db->quote('com_ars'));
+
+		// Get the asset id from the database.
+		$db->setQuery($query);
+
+		if ($result = $db->loadResult())
+		{
+			return (int) $result;
+		}
+
+		return parent::getAssetParentId($model, $id);
 	}
 }

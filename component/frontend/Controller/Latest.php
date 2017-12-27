@@ -24,14 +24,6 @@ class Latest extends Controller
 	 */
 	public $params;
 
-	public function __construct(Container $container, array $config = array())
-	{
-		// Tell our controller to use the Releases model
-		$config['modelName'] = 'Releases';
-
-		parent::__construct($container, $config);
-	}
-
 	/**
 	 * Overrides the default display method to add caching support
 	 *
@@ -93,6 +85,7 @@ class Latest extends Controller
 		$categoriesModel->reset(true)
 		                ->orderby_filter($this->params->get('orderby', 'order'))
 		                ->published(1)
+		                ->is_supported((bool) $this->params->get('cat_is_supported', false))
 		                ->access_user($this->container->platform->getUser()->id)
 		                ->with([]);
 		$this->getView()->setModel('Categories', $categoriesModel);

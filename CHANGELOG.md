@@ -1,3 +1,23 @@
+# 3.2.5
+
+**Bug fixes**
+
+* State bleedover from Categories to Latest view (gh-121 - Thanks @mbabker)
+* Typo prevents uploads in subdirectories (gh-117)
+* HTTPS option is not taken into account when creating signed URLs (gh-125)
+* ARS Link editor button plugin didn't display an icon (gh-126)
+* ARS Link editor button plugin didn't work with the default editory due to JavaScript API change (gh-126)
+
+# 3.2.4
+
+**Bug fixes**
+
+* Workaround for Joomla! Bug 16147 (https://github.com/joomla/joomla-cms/issues/16147) - Cannot access component after installation when cache is enabled
+* Workaround for Joomla! bug "Sometimes files are not copied on update"
+* Plugins would throw an error if FOF 3 cannot be loaded.
+* Visual groups were ignored in caching, see gh-114
+* Error COM_ARS_UPDATESTREAM_ERR_JEDID_EMPTY, see gh-111 
+
 # 3.2.3
 
 **Critical issues**
@@ -40,4 +60,4 @@
 **Bug fixes**
 
 * Latest release plugin yielded wrong results because the model was reading the ID from the request
-* Notice in the Normal and BleedingEdge sub-views
+* Notice in the Normal and BleedingEdge sub-views``

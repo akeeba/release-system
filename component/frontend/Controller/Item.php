@@ -414,7 +414,7 @@ class Item extends DataController
 
 			// Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
 			$app->triggerEvent('onAdminToolsThirdpartyException', array(
-				'ARSscraper',
+				'external',
 				\JText::_('COM_ARS_BLOCKED_MESSAGE'),
 				array($extraMessage)
 			),

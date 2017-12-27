@@ -12,6 +12,10 @@ Pre-built packages of Akeeba Release System will be made available through [our 
 
 We do understand the irony in not using itself to distribute it but it's a matter of cost, not a matter of capability. Akeeba Release System is [currently used to distribute Joomla! itself](https://downloads.joomla.org/) and [all of our commercial software](https://www.akeebabackup.com/download.html), so it's safe to say that it's pretty darned robust. 
 
+## Language files
+
+Akeeba Release System comes with English (Great Britain) language built-in. Installation packages for other languages are available [on our language download page](https://cdn.akeebabackup.com/language/ars/index.html).
+
 ## No support - For developers only
 
 This software is provided **WITHOUT ANY KIND OF SUPPORT WHATSOEVER**. You are free to consult [the documentation](https://github.com/akeeba/release-system/wiki).
@@ -33,6 +37,7 @@ You will also need the following path structure inside a folder on your system
 * **ars** This repository
 * **buildfiles** [Akeeba Build Tools](https://github.com/akeeba/buildfiles)
 * **fof3** [Framework on Framework 3.x](https://github.com/akeeba/fof)
+* **translations** [Akeeba Translations](https://github.com/akeeba/translations)
 
 You will need to use the exact folder names specified here.
 
