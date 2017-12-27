@@ -45,11 +45,11 @@ render it. --}}
 
 @yield('geoip', '')
 
-<div class="row-fluid">
-	<div id="cpanel" class="span<?php echo $this->graphsWidth ?>">
+<div class="akeeba-container--50-50">
+	<div>
 		@yield('graphs')
 	</div>
-	<div id="cpanel" class="span<?php echo 12 - $this->graphsWidth ?>">
+	<div>
 		@yield('icons')
 	</div>
 </div>
