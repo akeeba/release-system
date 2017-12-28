@@ -6,6 +6,7 @@
  */
 
 use Akeeba\ReleaseSystem\Admin\Helper\Html;
+use Akeeba\ReleaseSystem\Admin\Helper\Select;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\VisualGroups\Html */
 
@@ -31,7 +32,7 @@ Joomla.orderTable = function () {
 	Joomla.tableOrdering(order, dirn, '');
 }
 
-akeeba.jQuery(document).ready(function($){
+jQuery(document).ready(function($){
     $('#filter-clear').click(function(){
         $('.akeeba-filter-bar input').val('');
         $('#adminForm').submit();
@@ -54,10 +55,7 @@ $this->getContainer()->template->addJSInline($js);
 			</div>
 
 			<div class="akeeba-filter-element akeeba-form-group">
-				<input type="text" name="title" placeholder="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"
-					   id="filter_title"
-					   value="<?php echo $this->escape($this->filters['title']); ?>"
-					   title="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"/>
+				<?php echo Select::published($this->filters['published'], 'published')?>
 			</div>
 
 			<div class="akeeba-filter-element akeeba-form-group">
@@ -124,7 +122,7 @@ $this->getContainer()->template->addJSInline($js);
 			<th>
 				<?php echo \JHtml::_('grid.sort', 'LBL_VGROUPS_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
-            <th>
+            <th width="8%">
 				<?php echo \JHtml::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
 		</tr>
@@ -148,15 +146,15 @@ $this->getContainer()->template->addJSInline($js);
 		if ($this->items):
 			$i = 0;
 			foreach($this->items as $row):
-				$edit = 'index.php?option=com_admintools&view=VisualGroups&task=edit&id='.$row->id;
+				$edit = 'index.php?option=com_ars&view=VisualGroups&task=edit&id='.$row->id;
 				$enabled = $this->container->platform->getUser()->authorise('core.edit.state', 'com_ars')
 				?>
 				<tr>
-					<?php echo Html::ordering($this, 'ordering', $row->ordering)?>
+                    <td><?php echo Html::ordering($this, 'ordering', $row->ordering)?></td>
 					<td><?php echo \JHtml::_('grid.id', ++$i, $row->id); ?></td>
 					<td>
 						<a href="<?php echo $edit?>">
-							<?php echo $row->word?>
+							<?php echo $row->title?>
 						</a>
 					</td>
                     <td>
