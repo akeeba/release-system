@@ -13,6 +13,7 @@ use Akeeba\ReleaseSystem\Admin\Model\Items;
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
 use FOF30\Container\Container;
 use JHtml;
+use JText;
 
 defined('_JEXEC') or die;
 
@@ -316,16 +317,14 @@ abstract class Select
 		else
 		{
 			$temp = '';
-
 			foreach ($attribs as $key => $value)
 			{
 				$temp .= $key . ' = "' . $value . '"';
 			}
-
 			$attribs = $temp;
 		}
 
-		return JHTML::_('select.genericlist', $list, $name, $attribs, 'value', 'text', $selected, $idTag);
+		return JHtml::_('FEFHelper.select.genericlist', $list, $name, $attribs, 'value', 'text', $selected, $idTag);
 	}
 
 	/**
@@ -614,6 +613,113 @@ abstract class Select
 		$model = $container->factory->model('Items')->tmpInstance();
 
 		$options = $model->getFilesOptions($release_id, $item_id);
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function booleanlist($name, $attribs = null, $selected = null, $showEmpty = true)
+	{
+		$options = array();
+
+		if($showEmpty)
+		{
+			$options[] = JHtml::_('FEFHelper.select.option', '-1', '---');
+		}
+
+		$options[] = JHtml::_('FEFHelper.select.option', '0', JText::_('JNO'));
+		$options[] = JHtml::_('FEFHelper.select.option', '1', JText::_('JYES'));
+
+		return self::genericlist($options, $name, $attribs, $selected, $name);
+	}
+
+	public static function booleanradio($name, $selected, array $attribs = array())
+	{
+		if (empty($attribs))
+		{
+			$attribs = array('class' => 'akeeba-form-group--radio');
+		}
+		else
+		{
+			if (isset($attribs['class']))
+			{
+				$attribs['class'] .= ' akeeba-form-group--radio';
+			}
+			else
+			{
+				$attribs['class'] = 'akeeba-form-group--radio';
+			}
+
+			$temp = '';
+			foreach ($attribs as $key => $value)
+			{
+				$temp .= $key . ' = "' . $value . '"';
+			}
+			$attribs = $temp;
+		}
+
+		$checked_1 = $selected ? '' : 'checked ';
+		$checked_2 = $selected ? 'checked ' : '';
+
+		$html  = '<div '.$attribs.'>';
+		$html .= 	'<label>';
+		$html .= 		'<input type="radio" name="'.$name.'" '.$checked_1.'id="'.$name .'-1" value="0">';
+		$html .= 		JText::_('JNO');
+		$html .= 	'</label>';
+		$html .= 	'<label>';
+		$html .= 		'<input type="radio" name="'.$name.'" '.$checked_2.'id="'.$name .'-2" value="1">';
+		$html .= 		JText::_('JYES');
+		$html .= 	'</label>';
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	public static function booleanswitch($name, $selected, array $attribs = array())
+	{
+		if (empty($attribs))
+		{
+			$attribs = array('class' => 'akeeba-toggle');
+		}
+		else
+		{
+			if (isset($attribs['class']))
+			{
+				$attribs['class'] .= ' akeeba-toggle';
+			}
+			else
+			{
+				$attribs['class'] = 'akeeba-toggle';
+			}
+		}
+
+		$temp = '';
+
+		foreach ($attribs as $key => $value)
+		{
+			$temp .= $key . ' = "' . $value . '"';
+		}
+
+		$attribs = $temp;
+
+		$checked_1 = $selected ? '' : 'checked ';
+		$checked_2 = $selected ? 'checked ' : '';
+
+		$html  = '<div '.$attribs.'>';
+		$html .= 	'<input type="radio" class="radio-yes" name="'.$name.'" '.$checked_2.'id="'.$name .'-2" value="1">';
+		$html .=	'<label for="'.$name.'-2" class="green">'.JText::_('JYES').'</label>';
+		$html .=	'<input type="radio" class="radio-no" name="'.$name.'" '.$checked_1.'id="'.$name .'-1" value="0">';
+		$html .= 	'<label for="'.$name.'-1" class="red">'.JText::_('JNO').'</label>';
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	public static function published($selected = null, $id = 'enabled', $attribs = array())
+	{
+		$options = array();
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . JText::_('COM_ADMINTOOLS_LBL_COMMON_SELECTPUBLISHSTATE') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', 0, JText::_('JUNPUBLISHED'));
+		$options[] = JHtml::_('FEFHelper.select.option', 1, JText::_('JPUBLISHED'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}

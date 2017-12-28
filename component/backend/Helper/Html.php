@@ -10,6 +10,7 @@ namespace Akeeba\ReleaseSystem\Admin\Helper;
 use FOF30\Container\Container;
 use FOF30\View\DataView\DataViewInterface;
 use FOF30\View\DataView\Raw;
+use JHtml;
 use JText;
 
 defined('_JEXEC') or die;
