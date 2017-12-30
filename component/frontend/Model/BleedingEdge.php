@@ -77,7 +77,7 @@ class BleedingEdge extends Model
 			// If it is stored on S3 make sure there are files stored with the given directory prefix
 			$check = substr($folder, 5);
 			$s3 = AmazonS3::getInstance();
-			$items = $s3->getBucket('', $check . '/');
+			$items = $s3->getBucket('', $check . '/', null, null, '\0', false);
 
 			if (empty($items))
 			{
@@ -182,7 +182,7 @@ class BleedingEdge extends Model
 					{
 						$check = substr($folder, 5);
 						$s3 = AmazonS3::getInstance();
-						$items = $s3->getBucket('', $check . '/');
+						$items = $s3->getBucket('', $check . '/', null, null, '\0', false);
 						$exists = !empty($items);
 					}
 					else
