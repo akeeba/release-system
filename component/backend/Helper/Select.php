@@ -11,8 +11,10 @@ use Akeeba\ReleaseSystem\Admin\Model\Categories;
 use Akeeba\ReleaseSystem\Admin\Model\Environments;
 use Akeeba\ReleaseSystem\Admin\Model\Items;
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
+use Akeeba\ReleaseSystem\Admin\Model\VisualGroups;
 use FOF30\Container\Container;
 use JHtml;
+use JLanguageHelper;
 use JText;
 
 defined('_JEXEC') or die;
@@ -717,9 +719,65 @@ abstract class Select
 	public static function published($selected = null, $id = 'enabled', $attribs = array())
 	{
 		$options = array();
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . JText::_('COM_ADMINTOOLS_LBL_COMMON_SELECTPUBLISHSTATE') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . JText::_('COM_ARS_LBL_COMMON_SELECTPUBLISHSTATE') . ' -');
 		$options[] = JHtml::_('FEFHelper.select.option', 0, JText::_('JUNPUBLISHED'));
 		$options[] = JHtml::_('FEFHelper.select.option', 1, JText::_('JPUBLISHED'));
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function vgroups($id, $selected = null, $attribs = array())
+	{
+		/** @var VisualGroups $model */
+		$model = self::getContainer()->factory->model('VisualGroups')->tmpInstance();
+		$items = $model->get(true);
+
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- '.JText::_('LBL_CATEGORIES_VGROUP').' -');
+
+		// Build the field options.
+		if (count($items))
+		{
+			foreach ($items as $item)
+			{
+				$options[] = JHtml::_('FEFHelper.select.option', $item->id, $item->title);
+			}
+		}
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function languages($id, $selected = null, $attribs = array(), $client = 'site')
+	{
+		if ($client != 'site' && $client != 'administrator')
+		{
+			$client = 'site';
+		}
+
+		$languages = JLanguageHelper::createLanguageList($selected, constant('JPATH_' . strtoupper($client)), true, true);
+
+		if (count($languages) > 1)
+		{
+			usort(
+				$languages,
+				function ($a, $b)
+				{
+					return strcmp($a['value'], $b['value']);
+				}
+			);
+		}
+
+		$options[] = JHtml::_('FEFHelper.select.option', '*', JText::_('JALL_LANGUAGE'));
+		$options = array_merge($options, $languages);
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function categoryType($id, $selected = null, $attribs = array())
+	{
+		$options = array();
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . JText::_('COM_ARS_LBL_COMMON_SELECTCATTYPE') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', 'normal', JText::_('COM_ARS_CATEGORIES_TYPE_NORMAL'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'bleedingedge', JText::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
