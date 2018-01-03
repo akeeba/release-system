@@ -167,7 +167,7 @@ class Categories extends DataModel
 		// Visual Groups filter. Normally we use vgroup but old requests + frontend menu items use vgroupid.
 		$fltVgroup = $this->getState('vgroupid', null, 'int');
 		$fltVgroup = $this->getState('vgroup', $fltVgroup, 'int');
-		// Noremove the old style visual group filter from the state, if it was set
+		// Now remove the old style visual group filter from the state, if it was set
 		$this->setState('vgroupid', null);
 
 		if ($fltVgroup)
