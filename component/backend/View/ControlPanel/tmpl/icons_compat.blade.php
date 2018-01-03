@@ -1,10 +1,8 @@
 <?php
 /**
- * package   AkeebaSubs
- * copyright Copyright (c)2010 Nicholas K. Dionysopoulos
- * license   GNU General Public License version 3, or later
- *
- * This file renders the control panel icons when Akeeba Strapper is not available or not loaded
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
