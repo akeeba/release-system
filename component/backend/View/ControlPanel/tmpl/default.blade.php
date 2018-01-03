@@ -1,8 +1,8 @@
 <?php
 /**
- * package   AkeebaReleaseSystem
- * copyright Copyright (c)2010-2017 Nicholas K. Dionysopoulos
- * license   GNU General Public License version 3, or later
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
  */
 
 /** @var  \Akeeba\ReleaseSystem\Admin\View\ControlPanel\Html  $this */

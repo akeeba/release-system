@@ -1,3 +1,9 @@
+# 3.2.6
+
+**Bug fixes**
+
+* List of files not rendered for Amazon S3 categories 
+
 # 3.2.5
 
 **Bug fixes**
