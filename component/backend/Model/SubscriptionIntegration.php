@@ -88,8 +88,8 @@ class SubscriptionIntegration extends Model
 			foreach ($temp as $k => $v)
 			{
 				$ret[] = [
-					'key' => $k,
-					'value' => $v
+					'value' => $k,
+					'text' => $v
 				];
 			}
 		}

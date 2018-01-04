@@ -54,5 +54,4 @@ class Category extends DataController
 			}
 		}
 	}
-
 }
