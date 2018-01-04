@@ -11,6 +11,7 @@ use Akeeba\ReleaseSystem\Admin\Model\Categories;
 use Akeeba\ReleaseSystem\Admin\Model\Environments;
 use Akeeba\ReleaseSystem\Admin\Model\Items;
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
+use Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
 use Akeeba\ReleaseSystem\Admin\Model\VisualGroups;
 use FOF30\Container\Container;
 use JHtml;
@@ -780,6 +781,14 @@ abstract class Select
 		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . JText::_('COM_ARS_LBL_COMMON_SELECTCATTYPE') . ' -');
 		$options[] = JHtml::_('FEFHelper.select.option', 'normal', JText::_('COM_ARS_CATEGORIES_TYPE_NORMAL'));
 		$options[] = JHtml::_('FEFHelper.select.option', 'bleedingedge', JText::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE'));
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function subscriptionGroups($id, $selected = null, $attribs = array())
+	{
+		$options[] = JHtml::_('FEFHelper.select.option', '', JText::_('COM_ARS_COMMON_SELECT_GENERIC'));
+		$options = array_merge($options, SubscriptionIntegration::getGroupsForSelect());
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
