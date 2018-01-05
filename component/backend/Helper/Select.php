@@ -485,7 +485,7 @@ abstract class Select
 		$items = $categoriesModel->nobeunpub(1)->get(true);
 
 		$options   = array();
-		$options[] = JHTML::_('FEFHelper.select.option', 0, '- ' . \JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -');
+		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -');
 
 		if (count($items))
 		{
@@ -789,6 +789,17 @@ abstract class Select
 	{
 		$options[] = JHtml::_('FEFHelper.select.option', '', JText::_('COM_ARS_COMMON_SELECT_GENERIC'));
 		$options = array_merge($options, SubscriptionIntegration::getGroupsForSelect());
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function maturity($id, $selected = null, $attribs = array())
+	{
+		$options[] = JHtml::_('FEFHelper.select.option', '', JText::_('COM_ARS_RELEASES_MATURITY_SELECT'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'alpha', JText::_('COM_ARS_RELEASES_MATURITY_ALPHA'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'beta', JText::_('COM_ARS_RELEASES_MATURITY_BETA'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'rc', JText::_('COM_ARS_RELEASES_MATURITY_RC'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'stable', JText::_('COM_ARS_RELEASES_MATURITY_STABLE'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
