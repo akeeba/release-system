@@ -384,7 +384,7 @@ class Categories extends DataModel
 	 *
 	 * @return  void
 	 */
-	function onBeforeDelete(&$oid)
+	public function onBeforeDelete(&$oid)
 	{
 		$joins = array(
 			array(
@@ -555,5 +555,37 @@ class Categories extends DataModel
 		}
 
 		return parent::getAssetParentId($model, $id);
+	}
+
+	/**
+	 * Helper function to force eager loading of the whole set. In this way we can perform lookup on fields without the
+	 * need to setup the whole relationship on the model
+	 *
+	 * @param $id
+	 * @param $field
+	 *
+	 * @return null|string
+	 */
+	public static function forceEagerLoad($id, $field)
+	{
+		static $cache;
+
+		if (!$cache)
+		{
+			$container = Container::getInstance('com_ars');
+			$db = $container->db;
+
+			$query = $db->getQuery(true)
+				->select('*')
+				->from($db->qn('#__ars_categories'));
+			$cache = $db->setQuery($query)->loadObjectList('id');
+		}
+
+		if (!isset($cache[$id]) || !isset($cache[$id]->$field))
+		{
+			return null;
+		}
+
+		return $cache[$id]->$field;
 	}
 }

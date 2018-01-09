@@ -18,7 +18,7 @@ use JText;
 
 defined('_JEXEC') or die;
 
-class Html
+abstract class Html
 {
 	/**
 	 * The component container
