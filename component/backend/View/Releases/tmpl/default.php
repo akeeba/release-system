@@ -7,6 +7,7 @@
 
 use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Akeeba\ReleaseSystem\Admin\Model\Categories;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\Releases\Html */
 
@@ -195,7 +196,7 @@ $this->getContainer()->template->addJSInline($js);
                         <?php echo \JHtml::_('grid.id', ++$i, $row->id); ?>
                     </td>
                     <td>
-                        <?php echo $row->category->title?>
+                        <?php echo Categories::forceEagerLoad($row->category_id, 'title')?>
                     </td>
 					<td>
                         <?php if ($edit):?>
