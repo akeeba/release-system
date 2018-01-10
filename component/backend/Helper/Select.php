@@ -12,6 +12,7 @@ use Akeeba\ReleaseSystem\Admin\Model\Environments;
 use Akeeba\ReleaseSystem\Admin\Model\Items;
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
 use Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
+use Akeeba\ReleaseSystem\Admin\Model\UpdateStreams;
 use Akeeba\ReleaseSystem\Admin\Model\VisualGroups;
 use FOF30\Container\Container;
 use JHtml;
@@ -400,6 +401,28 @@ abstract class Select
 		return \JHtml::image($base_folder . '/media/com_ars/environments/' . $items[ $id ]->icon, $items[ $id ]->title, $attribs);
 	}
 
+	public static function environments($id, $selected = null, $attribs = array())
+	{
+		$container = Container::getInstance('com_ars');
+
+		/** @var Environments $environmentsModel */
+		$environmentsModel = $container->factory->model('Environments')->tmpInstance();
+		$items = $environmentsModel->get(true);
+
+		$options   = array();
+		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_ITEMS_ENVIRONMENT_SELECT') . ' -');
+
+		if (count($items))
+		{
+			foreach ($items as $item)
+			{
+				$options[] = JHTML::_('FEFHelper.select.option', $item->id, $item->title);
+			}
+		}
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
 	public static function releases($selected = null, $id = 'release', $attribs = array(), $category_id = null)
 	{
 		$container = Container::getInstance('com_ars');
@@ -495,6 +518,28 @@ abstract class Select
 			foreach ($items as $item)
 			{
 				$options[] = JHTML::_('FEFHelper.select.option', $item->id, $item->title);
+			}
+		}
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function updatestreams($id, $selected = null, $attribs = array())
+	{
+		$container = Container::getInstance('com_ars');
+
+		/** @var UpdateStreams $streamModel */
+		$streamModel = $container->factory->model('UpdateStreams')->tmpInstance();
+		$items = $streamModel->get(true);
+
+		$options = array();
+		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_ITEMS_UPDATESTREAM_SELECT') . ' -');
+
+		if (count($items))
+		{
+			foreach ($items as $item)
+			{
+				$options[] = JHTML::_('FEFHelper.select.option', $item->id, $item->name);
 			}
 		}
 
