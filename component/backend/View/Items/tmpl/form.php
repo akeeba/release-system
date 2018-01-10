@@ -147,6 +147,13 @@ defined('_JEXEC') or die();
 </section>
 
 <script type="text/javascript">
+    if(typeof(akeeba) == 'undefined') {
+        var akeeba = {};
+    }
+    if(typeof(akeeba.jQuery) == 'undefined') {
+        akeeba.jQuery = jQuery.noConflict();
+    }
+
 	var arsItems = {};
 
 	arsItems.onTypeChange = function (e)
@@ -155,7 +162,6 @@ defined('_JEXEC') or die();
 		{
 			arsItems.showHideRows();
 		})(akeeba.jQuery);
-		/**/
 	};
 
 	arsItems.populateFiles = function(forceSelected)
@@ -248,14 +254,14 @@ defined('_JEXEC') or die();
 	arsItems.showHideRows = function(populateFiles)
 	{
 		(function ($) {
-			$('#filename').parent().parent().hide();
-			$('#url').parent().parent().hide();
+			$('#filename').parent().hide();
+			$('#url').parent().hide();
 
-			currentType = $('#type').val();
+			var currentType = $('#type').val();
 
 			if (currentType == 'file')
 			{
-				$('#filename').parent().parent().show();
+				$('#filename').parent().show();
 				$('#filename').attr('disabled', 'disabled');
 
 				if ((populateFiles === undefined) || populateFiles)
@@ -265,7 +271,7 @@ defined('_JEXEC') or die();
 			}
 			else
 			{
-				$('#url').parent().parent().show();
+				$('#url').parent().show();
 			}
 		})(akeeba.jQuery);
 	};
