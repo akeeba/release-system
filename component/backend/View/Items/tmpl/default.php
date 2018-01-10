@@ -218,7 +218,12 @@ $this->getContainer()->template->addJSInline($js);
                         <?php echo $type ?>
                     </td>
                     <td>
-                        <?php ?>
+                    <?php
+                        foreach ($row->environments as $environment)
+                        {
+                            echo Select::environmentIcon($environment);
+                        }
+                    ?>
                     </td>
                     <td>
                         <?php echo Html::accessLevel($row->access) ?>
