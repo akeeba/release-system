@@ -10,7 +10,7 @@ use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use Akeeba\ReleaseSystem\Admin\Model\Categories;
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
 
-/** @var $this \Akeeba\ReleaseSystem\Admin\View\Categories\Html */
+/** @var $this \Akeeba\ReleaseSystem\Admin\View\Items\Html */
 
 defined('_JEXEC') or die;
 
@@ -43,12 +43,24 @@ $this->getContainer()->template->addJSInline($js);
 
 	<section class="akeeba-panel--33-66 akeeba-filter-bar-container">
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
+            <div class="akeeba-filter-element akeeba-form-group">
+				<?php echo Select::categories($this->filters['category'], 'category', array(), 0)?>
+            </div>
+
+            <div class="akeeba-filter-element akeeba-form-group">
+				<?php echo Select::releases($this->filters['release'], 'release')?>
+            </div>
+
 			<div class="akeeba-filter-element akeeba-form-group">
 				<input type="text" name="title" placeholder="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"
 					   id="filter_title"
 					   value="<?php echo $this->escape($this->filters['title']); ?>"
 					   title="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"/>
 			</div>
+
+            <div class="akeeba-filter-element akeeba-form-group">
+				<?php echo Select::itemType('type', $this->filters['type'])?>
+            </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
 				<?php echo JHtml::_('access.level', 'access', $this->filters['access']);?>
@@ -136,7 +148,7 @@ $this->getContainer()->template->addJSInline($js);
 				<?php echo \JHtml::_('grid.sort', 'LBL_ITEMS_TYPE', 'type', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_ITEMS_ENVIRONMENTS', 'environments', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo JText::_('LBL_ITEMS_ENVIRONMENTS'); ?>
             </th>
             <th>
 				<?php echo \JHtml::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->order_Dir, $this->order, 'browse'); ?>
