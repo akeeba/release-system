@@ -109,16 +109,6 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 		$this->renderSubmenu();
 	}
 
-	public function onUploads()
-	{
-		$option = $this->container->componentName;
-
-		JToolBarHelper::title(JText::_($option) . ' &ndash; <small>' . JText::_('COM_ARS_TITLE_UPLOADS') . '</small>', str_replace('com_', '', $option));
-		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
-
-		$this->renderSubmenu();
-	}
-
 	public function onAutoDescriptionsBrowse()
 	{
 		$this->_onBrowseWithCopy();

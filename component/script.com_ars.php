@@ -85,6 +85,8 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'cli/ars-update',
 
             // Moving to FEF
+            'administrator/components/com_ars/Controller/Upload.php',
+            'administrator/components/com_ars/Model/Upload.php',
             'administrator/components/com_ars/View/views.ini',
 		),
 		'folders' => array(
@@ -120,7 +122,8 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			'media/com_ars/theme',
 
-
+			// Moving to FEF
+            'administrator/components/com_ars/View/Upload',
 		)
 	);
 
