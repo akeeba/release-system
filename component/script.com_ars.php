@@ -90,6 +90,7 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
             'administrator/components/com_ars/View/views.ini',
 			'administrator/components/com_ars/View/Categories/tmpl/form.form.xml',
 			'administrator/components/com_ars/View/Categories/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/Environments/tmpl/form.default.xml',
             'administrator/components/com_ars/View/Items/tmpl/form.form.xml',
             'administrator/components/com_ars/View/Items/tmpl/default_environments.php',
             'administrator/components/com_ars/View/Items/tmpl/form.default.xml',
