@@ -88,6 +88,15 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
             'administrator/components/com_ars/Controller/Upload.php',
             'administrator/components/com_ars/Model/Upload.php',
             'administrator/components/com_ars/View/views.ini',
+			'administrator/components/com_ars/View/Categories/tmpl/form.form.xml',
+			'administrator/components/com_ars/View/Categories/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/Items/tmpl/form.form.xml',
+            'administrator/components/com_ars/View/Items/tmpl/default_environments.php',
+            'administrator/components/com_ars/View/Items/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/Releases/tmpl/form.form.xml',
+            'administrator/components/com_ars/View/Releases/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/VisualGroups/tmpl/form.form.xml',
+            'administrator/components/com_ars/View/VisualGroups/tmpl/form.default.xml',
 		),
 		'folders' => array(
 			// Moving to FOF 3
@@ -123,6 +132,7 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'media/com_ars/theme',
 
 			// Moving to FEF
+            'administrator/components/com_ars/Form',
             'administrator/components/com_ars/View/Upload',
 		)
 	);
