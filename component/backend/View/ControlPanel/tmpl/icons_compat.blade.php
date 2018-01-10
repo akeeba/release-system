@@ -60,11 +60,6 @@ $groups = array('basic', 'tools', 'update');
 		</header>
 
 		<div class="akeeba-grid--small">
-			<a href="index.php?option=com_ars&view=Uploads" class="akeeba-action--green">
-				<span class="akion-upload"></span>
-				@lang('COM_ARS_TITLE_UPLOADS')
-			</a>
-
 			<a href="index.php?option=com_ars&view=AutoDescriptions" class="akeeba-action--grey">
 				<span class="akion-wand"></span>
 				@lang('COM_ARS_TITLE_AUTODESCRIPTIONS')
