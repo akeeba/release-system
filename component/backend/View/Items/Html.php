@@ -48,8 +48,14 @@ class Html extends BaseView
 
 		// Construct the array of sorting fields
 		$this->sortFields = array(
+			'ordering' 	 		=> JText::_('LBL_VGROUPS_TITLE'),
+			'release' 	 		=> JText::_('LBL_ITEMS_RELEASE'),
 			'title' 	 		=> JText::_('LBL_VGROUPS_TITLE'),
-			'published' 	 	=> JText::_('JPUBLISHED')
+			'type'	 	 		=> JText::_('LBL_ITEMS_TYPE'),
+			'access'	 	 	=> JText::_('JFIELD_ACCESS_LABEL'),
+			'published' 	 	=> JText::_('JPUBLISHED'),
+			'hits'		 	 	=> JText::_('JGLOBAL_HITS'),
+			'language'	 	 	=> JText::_('JFIELD_LANGUAGE_LABEL')
 		);
 	}
 }

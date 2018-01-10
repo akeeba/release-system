@@ -136,7 +136,7 @@ $this->getContainer()->template->addJSInline($js);
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
 			</th>
 			<th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_ITEMS_CATEGORY', 'category', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo JText::_('LBL_ITEMS_CATEGORY'); ?>
 			</th>
             <th>
 				<?php echo \JHtml::_('grid.sort', 'LBL_ITEMS_RELEASE', 'release', $this->order_Dir, $this->order, 'browse'); ?>
