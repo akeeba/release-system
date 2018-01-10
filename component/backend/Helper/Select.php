@@ -470,17 +470,22 @@ abstract class Select
 
 		array_unshift($options, JHtml::_('FEFHelper.select.option', 0, '- ' . \JText::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL') . ' -'));
 
-		return $options;
+		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
-	public static function categories($selected = null, $id = 'category', $attribs = array())
+	public static function categories($selected = null, $id = 'category', $attribs = array(), $nobeunpub = 1)
 	{
 		$container = Container::getInstance('com_ars');
 
 		/** @var Categories $categoriesModel */
 		$categoriesModel = $container->factory->model('Categories')->tmpInstance();
 
-		$items = $categoriesModel->nobeunpub(1)->get(true);
+		if ($nobeunpub)
+		{
+			$categoriesModel->nobeunpub(1);
+		}
+
+		$items = $categoriesModel->get(true);
 
 		$options   = array();
 		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -');
@@ -667,6 +672,16 @@ abstract class Select
 		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . JText::_('COM_ARS_LBL_COMMON_SELECTCATTYPE') . ' -');
 		$options[] = JHtml::_('FEFHelper.select.option', 'normal', JText::_('COM_ARS_CATEGORIES_TYPE_NORMAL'));
 		$options[] = JHtml::_('FEFHelper.select.option', 'bleedingedge', JText::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE'));
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function itemType($id, $selected = null, $attribs = array())
+	{
+		$options = array();
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . JText::_('LBL_ITEMS_TYPE_SELECT') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', 'link', JText::_('LBL_ITEMS_TYPE_LINK'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'file', JText::_('LBL_ITEMS_TYPE_FILE'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
