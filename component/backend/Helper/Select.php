@@ -15,8 +15,11 @@ use Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
 use Akeeba\ReleaseSystem\Admin\Model\UpdateStreams;
 use Akeeba\ReleaseSystem\Admin\Model\VisualGroups;
 use FOF30\Container\Container;
+use JFile;
+use JFolder;
 use JHtml;
 use JLanguageHelper;
+use JPath;
 use JText;
 
 defined('_JEXEC') or die;
@@ -748,6 +751,87 @@ abstract class Select
 		$options[] = JHtml::_('FEFHelper.select.option', 'beta', JText::_('COM_ARS_RELEASES_MATURITY_BETA'));
 		$options[] = JHtml::_('FEFHelper.select.option', 'rc', JText::_('COM_ARS_RELEASES_MATURITY_RC'));
 		$options[] = JHtml::_('FEFHelper.select.option', 'stable', JText::_('COM_ARS_RELEASES_MATURITY_STABLE'));
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
+	public static function imageList($id, $selected, $path, $attribs = array())
+	{
+		$options  = array();
+		$filter   = '\.png$|\.gif$|\.jpg$|\.bmp$|\.ico$|\.jpeg$|\.psd$|\.eps$';
+		$exclude  = false;
+		$stripExt = false;
+
+		if (!is_dir($path))
+		{
+			$path = JPATH_ROOT . '/' . $path;
+		}
+
+		$path = JPath::clean($path);
+
+		// Prepend some default options based on field attributes.
+		if (isset($attribs['hideNone']))
+		{
+			unset($attribs['hideNone']);
+		}
+		else
+		{
+			$options[] = JHtml::_('FEFHelper.select.option', '-1', JText::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $id)));
+		}
+
+		if (isset($attribs['hideDefault']))
+		{
+			unset($attribs['hideDefault']);
+		}
+		else
+		{
+			$options[] = JHtml::_('FEFHelper.select.option', '', JText::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $id)));
+		}
+
+		if (isset($attribs['filter']))
+		{
+			$filter = $attribs['filter'];
+			unset($attribs['filter']);
+		}
+
+		if (isset($attribs['exclude']))
+		{
+			$exclude = true;
+			unset($attribs['exclude']);
+		}
+
+		if (isset($attribs['stripExt']))
+		{
+			$stripExt = true;
+			unset($attribs['stripExt']);
+		}
+
+		// Get a list of files in the search path with the given filter.
+		$files = JFolder::files($path, $filter);
+
+		// Build the options list from the list of files.
+		if (is_array($files))
+		{
+			foreach ($files as $file)
+			{
+				// Check to see if the file is in the exclude mask.
+				if ($exclude)
+				{
+					if (preg_match(chr(1) . $exclude . chr(1), $file))
+					{
+						continue;
+					}
+				}
+
+				// If the extension is to be stripped, do it.
+				if ($stripExt)
+				{
+					$file = JFile::stripExt($file);
+				}
+
+				$options[] = JHtml::_('FEFHelper.select.option', $file, $file);
+			}
+		}
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
