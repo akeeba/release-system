@@ -150,6 +150,130 @@ abstract class Html
 			'</span>';
 	}
 
+	public static function renderUserRepeatable($userid, array $attribs = array())
+	{
+		static $userCache = array();
+
+		// Initialise
+		$show_username = isset($attribs['hide_username']) ? false : true;
+		$show_email    = isset($attribs['hide_email']) ? false : true;
+		$show_name     = isset($attribs['hide_name']) ? false : true;
+		$show_id       = isset($attribs['hide_id']) ? false : true;
+		$show_avatar   = isset($attribs['hide_avatar']) ? false : true;
+		$show_link     = isset($attribs['show_link']) ? true : false;
+		$link_url      = isset($attribs['link_url']) ? $attribs['link_url'] : null;
+		$avatar_method = isset($attribs['avatar_method']) ? $attribs['avatar_method'] : 'gravatar';
+		$avatar_size   = isset($attribs['avatar_size']) ? $attribs['avatar_size'] : 64;
+		$class         = '';
+
+		$key = is_numeric($userid) ? $userid : 'empty';
+		$key = ($key == 0) ? 'zero' : $key;
+
+		if (!array_key_exists($key, $userCache))
+		{
+			$userCache[$key] = static::getContainer()->platform->getUser($userid);
+		}
+
+		$user = $userCache[$key];
+
+		if (!$link_url && static::getContainer()->platform->isBackend())
+		{
+			$link_url = 'index.php?option=com_users&task=user.edit&id='.$userid;
+		}
+		elseif (!$link_url)
+		{
+			// If no link is defined in the front-end, we can't create a
+			// default link. Therefore, show no link.
+			$show_link = false;
+		}
+
+		// Get the avatar image, if necessary
+		$avatar_url = '';
+
+		if ($show_avatar)
+		{
+			if ($avatar_method == 'plugin')
+			{
+				// Use the user plugins to get an avatar
+				static::getContainer()->platform->importPlugin('user');
+				$jResponse = static::getContainer()->platform->runPlugins('onUserAvatar', array($user, $avatar_size));
+
+				if (!empty($jResponse))
+				{
+					foreach ($jResponse as $response)
+					{
+						if ($response)
+						{
+							$avatar_url = $response;
+						}
+					}
+				}
+
+				if (empty($avatar_url))
+				{
+					$show_avatar = false;
+				}
+			}
+			else
+			{
+				// Fall back to the Gravatar method
+				$md5 = md5($user->email);
+				$scheme = \JUri::getInstance()->getScheme();
+
+				if ($scheme == 'http')
+				{
+					$avatar_url = 'http://www.gravatar.com/avatar/' . $md5 . '.jpg?s=' . $avatar_size . '&d=mm';
+				}
+				else
+				{
+					$avatar_url = 'https://secure.gravatar.com/avatar/' . $md5 . '.jpg?s=' . $avatar_size . '&d=mm';
+				}
+			}
+		}
+
+		// Generate the HTML
+		$html = '<div ' . $class . '>';
+
+		if ($show_avatar)
+		{
+			$html .= '<img src="' . $avatar_url . '" align="left" class="fof-usersfield-avatar" />';
+		}
+
+		if ($show_link)
+		{
+			$html .= '<a href="' . $link_url . '">';
+		}
+
+		if ($show_username)
+		{
+			$html .= '<span class="fof-usersfield-username">' . $user->username	. '</span>';
+		}
+
+		if ($show_id)
+		{
+			$html .= '<span class="fof-usersfield-id">' . $user->id	. '</span>';
+		}
+
+		if ($show_name)
+		{
+			$html .= '<span class="fof-usersfield-name">' . $user->name	. '</span>';
+		}
+
+		if ($show_email)
+		{
+			$html .= '<span class="fof-usersfield-email">' . $user->email . '</span>';
+		}
+
+		if ($show_link)
+		{
+			$html .= '</a>';
+		}
+
+		$html .= '</div>';
+
+		return $html;
+	}
+
 	public static function rules($value, $assetField, $modelName, $component, $section = 'component')
 	{
 		/**
