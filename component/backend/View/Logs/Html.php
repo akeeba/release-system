@@ -27,9 +27,7 @@ class Html extends BaseView
 
 	protected function onBeforeBrowse()
 	{
-		parent::onBeforeBrowse();
-
-		$hash = 'arsitems';
+		$hash = 'ars'.$this->getName();
 
 		// ...ordering
 		$platform        = $this->container->platform;
@@ -38,24 +36,26 @@ class Html extends BaseView
 		$this->order_Dir = $platform->getUserStateFromRequest($hash . 'filter_order_Dir', 'filter_order_Dir', $input, 'DESC');
 
 		// ...filter state
-		$this->filters['title'] 	 	  = $platform->getUserStateFromRequest($hash . 'filter_title', 'title', $input);
-		$this->filters['category'] 	 	  = $platform->getUserStateFromRequest($hash . 'filter_category', 'category', $input);
-		$this->filters['release'] 	 	  = $platform->getUserStateFromRequest($hash . 'filter_release', 'release', $input);
-		$this->filters['type'] 	 	  	  = $platform->getUserStateFromRequest($hash . 'filter_type', 'type', $input);
-		$this->filters['published']	 	  = $platform->getUserStateFromRequest($hash . 'filter_published', 'published', $input);
-		$this->filters['access']	 	  = $platform->getUserStateFromRequest($hash . 'filter_access', 'access', $input);
-		$this->filters['language']	 	  = $platform->getUserStateFromRequest($hash . 'filter_language', 'language', $input);
+		$this->filters['itemtext'] 	 	  = $platform->getUserStateFromRequest($hash . 'filter_itemtext', 'itemtext', $input);
+		$this->filters['usertext'] 	 	  = $platform->getUserStateFromRequest($hash . 'filter_usertext', 'usertext', $input);
+		$this->filters['referer'] 	 	  = $platform->getUserStateFromRequest($hash . 'filter_referer', 'referer', $input);
+		$this->filters['ip'] 	 	  	  = $platform->getUserStateFromRequest($hash . 'filter_ip', 'ip', $input);
+		$this->filters['country']	 	  = $platform->getUserStateFromRequest($hash . 'filter_country', 'country', $input);
+		$this->filters['authorized']	  = $platform->getUserStateFromRequest($hash . 'filter_authorized', 'authorized', $input);
+		$this->filters['version']	 	  = $platform->getUserStateFromRequest($hash . 'filter_version', 'version', $input);
+		$this->filters['category']	 	  = $platform->getUserStateFromRequest($hash . 'filter_category', 'category', $input);
 
 		// Construct the array of sorting fields
 		$this->sortFields = array(
-			'ordering' 	 		=> JText::_('LBL_VGROUPS_TITLE'),
-			'release' 	 		=> JText::_('LBL_ITEMS_RELEASE'),
-			'title' 	 		=> JText::_('LBL_VGROUPS_TITLE'),
-			'type'	 	 		=> JText::_('LBL_ITEMS_TYPE'),
-			'access'	 	 	=> JText::_('JFIELD_ACCESS_LABEL'),
-			'published' 	 	=> JText::_('JPUBLISHED'),
-			'hits'		 	 	=> JText::_('JGLOBAL_HITS'),
-			'language'	 	 	=> JText::_('JFIELD_LANGUAGE_LABEL')
+			'itemtext' 	 		=> JText::_('LBL_LOGS_ITEM'),
+			'usertext' 	 		=> JText::_('LBL_LOGS_USER'),
+			'accessed_on' 		=> JText::_('LBL_LOGS_ACCESSED'),
+			'referer'	 		=> JText::_('LBL_LOGS_REFERER'),
+			'ip'	 	 		=> JText::_('LBL_LOGS_IP'),
+			'country' 		 	=> JText::_('LBL_LOGS_COUNTRY'),
+			'authorized'		=> JText::_('LBL_LOGS_AUTHORIZED'),
 		);
+
+		parent::onBeforeBrowse();
 	}
 }
