@@ -14,6 +14,18 @@ use FOF30\Date\Date;
 use FOF30\Model\DataModel;
 use FOF30\Utils\Ip;
 
+/**
+ * @property int	$id
+ * @property int	$user_id
+ * @property int	$item_id
+ * @property string	$accessed_on
+ * @property string	$referer
+ * @property string	$ip
+ * @property string	$country
+ * @property int	$authorized
+ *
+ * @property-read Items	$item
+ */
 class Logs extends DataModel
 {
 	use Mixin\Assertions;
