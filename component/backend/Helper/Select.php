@@ -371,6 +371,16 @@ abstract class Select
 		return $options;
 	}
 
+	public static function countryDecode($country)
+	{
+		if (isset(static::$countries[$country]))
+		{
+			return static::$countries[$country];
+		}
+
+		return '---';
+	}
+
 	/**
 	 * Renders the environment icon using an internal cache
 	 *
