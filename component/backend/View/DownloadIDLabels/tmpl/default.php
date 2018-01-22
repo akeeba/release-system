@@ -162,7 +162,7 @@ $this->getContainer()->template->addJSInline($js);
 			foreach($this->items as $row):
 				$link       = 'index.php?option=com_ars&view=DownloadIDLabel&task=edit&id='.$row->ars_dlidlabel_id;
 			    $resetLink  = 'index.php?option=com_ars&view=DownloadIDLabels&task=reset&id='.$row->ars_dlidlabel_id;
-			    $resetLink .= $this->getContainer()->platform->getToken(true).'=1';
+			    $resetLink .= '&'.$this->getContainer()->platform->getToken(true).'=1';
 				$enabled    = $this->container->platform->getUser()->authorise('core.edit.state', 'com_ars');
 
                 $label = '<a href="'.$link.'">'.$row->label.'</a>';
