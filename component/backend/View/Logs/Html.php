@@ -27,7 +27,7 @@ class Html extends BaseView
 
 	protected function onBeforeBrowse()
 	{
-		$hash = 'ars'.$this->getName();
+		$hash = 'ars'.strtolower($this->getName());
 
 		// ...ordering
 		$platform        = $this->container->platform;

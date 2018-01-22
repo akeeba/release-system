@@ -29,7 +29,7 @@ class Html extends BaseView
 	{
 		parent::onBeforeBrowse();
 
-		$hash = 'arsitems';
+		$hash = 'ars'.strtolower($this->getName());
 
 		// ...ordering
 		$platform        = $this->container->platform;
