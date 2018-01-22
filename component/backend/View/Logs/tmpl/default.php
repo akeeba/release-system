@@ -43,6 +43,45 @@ $this->getContainer()->template->addJSInline($js);
 
 	<section class="akeeba-panel--33-66 akeeba-filter-bar-container">
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
+            <div class="akeeba-filter-element akeeba-form-group">
+                <input type="text" name="itemtext" placeholder="<?php echo \JText::_('LBL_LOGS_ITEM'); ?>"
+                       id="filter_itemtext"
+                       value="<?php echo $this->escape($this->filters['itemtext']); ?>"
+                       title="<?php echo \JText::_('LBL_LOGS_ITEM'); ?>"/>
+            </div>
+
+            <div class="akeeba-filter-element akeeba-form-group">
+                <input type="text" name="usertext" placeholder="<?php echo \JText::_('LBL_LOGS_USER'); ?>"
+                       id="filter_usertext"
+                       value="<?php echo $this->escape($this->filters['usertext']); ?>"
+                       title="<?php echo \JText::_('LBL_LOGS_USER'); ?>"/>
+            </div>
+
+            <div class="akeeba-filter-element akeeba-form-group">
+                <input type="text" name="referer" placeholder="<?php echo \JText::_('LBL_LOGS_REFERER'); ?>"
+                       id="filter_referer"
+                       value="<?php echo $this->escape($this->filters['referer']); ?>"
+                       title="<?php echo \JText::_('LBL_LOGS_REFERER'); ?>"/>
+            </div>
+
+            <div class="akeeba-filter-element akeeba-form-group">
+                <input type="text" name="ip" placeholder="<?php echo \JText::_('LBL_LOGS_IP'); ?>"
+                       id="filter_ip"
+                       value="<?php echo $this->escape($this->filters['ip']); ?>"
+                       title="<?php echo \JText::_('LBL_LOGS_IP'); ?>"/>
+            </div>
+
+            <div class="akeeba-filter-element akeeba-form-group">
+                <?php echo Select::booleanlist('authorized', array(), $this->filters['authorized'])?>
+            </div>
+
+            <div class="akeeba-filter-element akeeba-form-group">
+				<?php echo Select::categories($this->filters['category'], 'category')?>
+            </div>
+
+            <div class="akeeba-filter-element akeeba-form-group">
+				<?php echo Select::releases($this->filters['version'], 'version')?>
+            </div>
 
 			<div class="akeeba-filter-element akeeba-form-group">
 				<button class="akeeba-btn--grey akeeba-btn--icon-only akeeba-btn--small akeeba-hidden-phone" onclick="this.form.submit();" title="<?php echo \JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
@@ -143,7 +182,6 @@ $this->getContainer()->template->addJSInline($js);
 			foreach($this->items as $row):
                 $i++;
 				/** @var \Akeeba\ReleaseSystem\Admin\Model\Logs $row */
-				$enabled = '';
 				?>
 				<tr>
                     <td>

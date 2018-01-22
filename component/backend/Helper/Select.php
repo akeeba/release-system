@@ -579,7 +579,7 @@ abstract class Select
 
 		if($showEmpty)
 		{
-			$options[] = JHtml::_('FEFHelper.select.option', '-1', '---');
+			$options[] = JHtml::_('FEFHelper.select.option', '', '---');
 		}
 
 		$options[] = JHtml::_('FEFHelper.select.option', '0', JText::_('JNO'));
