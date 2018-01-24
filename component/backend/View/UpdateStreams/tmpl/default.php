@@ -187,7 +187,7 @@ $this->getContainer()->template->addJSInline($js);
                     <td>
 						<a href="<?php echo $link; ?>">
                             <?php echo $row->name ?><br/>
-                            <span class="">(<?php echo $row->alias; ?>)</span>
+                            <span class="small">(<?php echo $row->alias; ?>)</span>
                         </a>
                     </td>
                     <td>
