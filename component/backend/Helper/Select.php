@@ -539,6 +539,19 @@ abstract class Select
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
+	public static function updateTypes($id, $selected, array $attribs = array())
+	{
+		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_UPDATES_TYPE') . ' -');
+		$options[] = JHTML::_('FEFHelper.select.option', 'components', \JText::_('LBL_UPDATETYPES_COMPONENTS'));
+		$options[] = JHTML::_('FEFHelper.select.option', 'libraries', \JText::_('LBL_UPDATETYPES_LIBRARIES'));
+		$options[] = JHTML::_('FEFHelper.select.option', 'modules', \JText::_('LBL_UPDATETYPES_MODULES'));
+		$options[] = JHTML::_('FEFHelper.select.option', 'packages', \JText::_('LBL_UPDATETYPES_PACKAGES'));
+		$options[] = JHTML::_('FEFHelper.select.option', 'plugins', \JText::_('LBL_UPDATETYPES_PLUGINS'));
+		$options[] = JHTML::_('FEFHelper.select.option', 'templates', \JText::_('LBL_UPDATETYPES_TEMPLATES	'));
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
 	public static function updatestreams($id, $selected = null, $attribs = array())
 	{
 		$container = Container::getInstance('com_ars');
