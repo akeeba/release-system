@@ -114,7 +114,7 @@ class UpdateStreams extends DataModel
 		if (!$this->alias)
 		{
 			\JLoader::import('joomla.filter.input');
-			$alias = str_replace(' ', '-', strtolower($this->name));
+			$alias = str_replace(' ', '-', strtolower($this->getFieldValue('name')));
 			$this->alias = (string)preg_replace('/[^A-Z0-9_-]/i', '', $alias);
 		}
 

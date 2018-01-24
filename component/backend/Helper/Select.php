@@ -539,6 +539,15 @@ abstract class Select
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
+	public static function client_id($id, $selected, array $attribs = array())
+	{
+		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_RELEASES_CLIENT_ID') . ' -');
+		$options[] = JHTML::_('FEFHelper.select.option', '1', \JText::_('LBL_CLIENTID_BACKEND'));
+		$options[] = JHTML::_('FEFHelper.select.option', '0', \JText::_('LBL_CLIENTID_FRONTEND'));
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
+
 	public static function updateTypes($id, $selected, array $attribs = array())
 	{
 		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_UPDATES_TYPE') . ' -');
@@ -547,7 +556,7 @@ abstract class Select
 		$options[] = JHTML::_('FEFHelper.select.option', 'modules', \JText::_('LBL_UPDATETYPES_MODULES'));
 		$options[] = JHTML::_('FEFHelper.select.option', 'packages', \JText::_('LBL_UPDATETYPES_PACKAGES'));
 		$options[] = JHTML::_('FEFHelper.select.option', 'plugins', \JText::_('LBL_UPDATETYPES_PLUGINS'));
-		$options[] = JHTML::_('FEFHelper.select.option', 'templates', \JText::_('LBL_UPDATETYPES_TEMPLATES	'));
+		$options[] = JHTML::_('FEFHelper.select.option', 'templates', \JText::_('LBL_UPDATETYPES_TEMPLATES'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
