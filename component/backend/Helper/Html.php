@@ -73,6 +73,29 @@ abstract class Html
 		return '<span>'.$lang.'</span>';
 	}
 
+	public static function decodeUpdateType($value)
+	{
+		switch ($value)
+		{
+			case 'components':
+				return JText::_('LBL_UPDATETYPES_COMPONENTS');
+			case 'libraries':
+				return JText::_('LBL_UPDATETYPES_LIBRARIES');
+			case 'modules':
+				return JText::_('LBL_UPDATETYPES_MODULES');
+			case 'packages':
+				return JText::_('LBL_UPDATETYPES_PACKAGES');
+			case 'plugins':
+				return JText::_('LBL_UPDATETYPES_PLUGINS');
+			case 'files':
+				return JText::_('LBL_UPDATETYPES_FILES');
+			case 'templates':
+				return JText::_('LBL_UPDATETYPES_TEMPLATES');
+			default:
+				return '';
+		}
+	}
+
 	public static function ordering(Raw $view, $orderingField, $orderingValue)
 	{
 		$ordering = $view->getLists()->order == $orderingField;
