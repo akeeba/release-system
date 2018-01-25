@@ -44,46 +44,35 @@ $this->getContainer()->template->addJSInline($js);
 	<section class="akeeba-panel--33-66 akeeba-filter-bar-container">
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::categories($this->filters['category'], 'category', array(), 0)?>
+				<?php echo Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()'], 0)?>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::releases($this->filters['release'], 'release')?>
+				<?php echo Select::releases($this->filters['release'], 'release', ['onchange' => 'document.adminForm.submit()'])?>
             </div>
 
 			<div class="akeeba-filter-element akeeba-form-group">
 				<input type="text" name="title" placeholder="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"
-					   id="filter_title"
+					   id="filter_title" onchange="document.adminForm.submit()"
 					   value="<?php echo $this->escape($this->filters['title']); ?>"
 					   title="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"/>
 			</div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::itemType('type', $this->filters['type'])?>
+				<?php echo Select::itemType('type', $this->filters['type'], ['onchange' => 'document.adminForm.submit()'])?>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo JHtml::_('access.level', 'access', $this->filters['access']);?>
+				<?php echo JHtml::_('access.level', 'access', $this->filters['access'], ['onchange' => 'document.adminForm.submit()']);?>
             </div>
 
 			<div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::published($this->filters['published'], 'published')?>
+				<?php echo Select::published($this->filters['published'], 'published', ['onchange' => 'document.adminForm.submit()'])?>
 			</div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::languages('language', $this->filters['language'])?>
+				<?php echo Select::languages('language', $this->filters['language'], ['onchange' => 'document.adminForm.submit()'])?>
             </div>
-
-			<div class="akeeba-filter-element akeeba-form-group">
-				<button class="akeeba-btn--grey akeeba-btn--icon-only akeeba-btn--small akeeba-hidden-phone" onclick="this.form.submit();" title="<?php echo \JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
-					<span class="akion-search"></span>
-				</button>
-
-				<button id="filter-clear" class="akeeba-btn--grey akeeba-hidden-phone" type="button"
-						title="<?php echo \JText::_('JSEARCH_FILTER_CLEAR'); ?>">
-					<span class="icon-remove"></span>
-				</button>
-			</div>
 		</div>
 
 		<div class="akeeba-filter-bar akeeba-filter-bar--right">

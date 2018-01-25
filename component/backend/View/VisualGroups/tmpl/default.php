@@ -32,12 +32,6 @@ Joomla.orderTable = function () {
 	Joomla.tableOrdering(order, dirn, '');
 }
 
-jQuery(document).ready(function($){
-    $('#filter-clear').click(function(){
-        $('.akeeba-filter-bar input').val('');
-        $('#adminForm').submit();
-    })
-})
 JS;
 
 $this->getContainer()->template->addJSInline($js);
@@ -49,24 +43,13 @@ $this->getContainer()->template->addJSInline($js);
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
 			<div class="akeeba-filter-element akeeba-form-group">
 				<input type="text" name="title" placeholder="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"
-					   id="filter_title"
+					   id="filter_title" onchange="document.adminForm.submit()"
 					   value="<?php echo $this->escape($this->filters['title']); ?>"
 					   title="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"/>
 			</div>
 
 			<div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::published($this->filters['published'], 'published')?>
-			</div>
-
-			<div class="akeeba-filter-element akeeba-form-group">
-				<button class="akeeba-btn--grey akeeba-btn--icon-only akeeba-btn--small akeeba-hidden-phone" onclick="this.form.submit();" title="<?php echo \JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
-					<span class="akion-search"></span>
-				</button>
-
-				<button id="filter-clear" class="akeeba-btn--grey akeeba-hidden-phone" type="button"
-						title="<?php echo \JText::_('JSEARCH_FILTER_CLEAR'); ?>">
-					<span class="icon-remove"></span>
-				</button>
+				<?php echo Select::published($this->filters['published'], 'published', ['onchange' => 'document.adminForm.submit()'])?>
 			</div>
 		</div>
 
