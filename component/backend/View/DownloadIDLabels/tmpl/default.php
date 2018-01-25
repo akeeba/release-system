@@ -44,35 +44,24 @@ $this->getContainer()->template->addJSInline($js);
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
             <div class="akeeba-filter-element akeeba-form-group">
                 <input type="text" name="label" placeholder="<?php echo \JText::_('COM_ARS_DLIDLABELS_FIELD_LABEL'); ?>"
-                       id="filter_label"
+                       id="filter_label" onchange="document.adminForm.submit()"
                        value="<?php echo $this->escape($this->filters['label']); ?>"
                        title="<?php echo \JText::_('COM_ARS_DLIDLABELS_FIELD_LABEL'); ?>"/>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
                 <input type="text" name="username" placeholder="<?php echo \JText::_('JGLOBAL_USERNAME'); ?>"
-                       id="filter_username"
+                       id="filter_username" onchange="document.adminForm.submit()"
                        value="<?php echo $this->escape($this->filters['username']); ?>"
                        title="<?php echo \JText::_('JGLOBAL_USERNAME'); ?>"/>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
                 <input type="text" name="dlid" placeholder="<?php echo \JText::_('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID'); ?>"
-                       id="filter_dlid"
+                       id="filter_dlid" onchange="document.adminForm.submit()"
                        value="<?php echo $this->escape($this->filters['dlid']); ?>"
                        title="<?php echo \JText::_('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID'); ?>"/>
             </div>
-
-			<div class="akeeba-filter-element akeeba-form-group">
-                <button class="akeeba-btn--grey akeeba-btn--icon-only akeeba-btn--small akeeba-hidden-phone" onclick="this.form.submit();" title="<?php echo \JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
-					<span class="akion-search"></span>
-				</button>
-
-				<button id="filter-clear" class="akeeba-btn--grey akeeba-hidden-phone" type="button"
-						title="<?php echo \JText::_('JSEARCH_FILTER_CLEAR'); ?>">
-					<span class="icon-remove"></span>
-				</button>
-			</div>
 		</div>
 
 		<div class="akeeba-filter-bar akeeba-filter-bar--right">

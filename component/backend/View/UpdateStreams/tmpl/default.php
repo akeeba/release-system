@@ -53,39 +53,28 @@ $this->getContainer()->template->addJSInline($js);
 
             <div class="akeeba-filter-element akeeba-form-group">
                 <input type="text" name="name" placeholder="<?php echo \JText::_('LBL_UPDATES_NAME'); ?>"
-                       id="filter_name"
+                       id="filter_name" onchange="document.adminForm.submit()"
                        value="<?php echo $this->escape($this->filters['name']); ?>"
                        title="<?php echo \JText::_('LBL_UPDATES_NAME'); ?>"/>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
                 <input type="text" name="element" placeholder="<?php echo \JText::_('LBL_UPDATES_ELEMENT'); ?>"
-                       id="filter_element"
+                       id="filter_element" onchange="document.adminForm.submit()"
                        value="<?php echo $this->escape($this->filters['element']); ?>"
                        title="<?php echo \JText::_('LBL_UPDATES_ELEMENT'); ?>"/>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <?php echo Select::updateTypes('type', $this->filters['type'])?>
+                <?php echo Select::updateTypes('type', $this->filters['type'], ['onchange' => 'document.adminForm.submit()'])?>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::categories($this->filters['category'], 'category')?>
+				<?php echo Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()'])?>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <?php echo Select::published($this->filters['published'], 'published')?>
-            </div>
-
-            <div class="akeeba-filter-element akeeba-form-group">
-                <button class="akeeba-btn--grey akeeba-btn--icon-only akeeba-btn--small akeeba-hidden-phone" onclick="this.form.submit();" title="<?php echo \JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
-                    <span class="akion-search"></span>
-                </button>
-
-                <button id="filter-clear" class="akeeba-btn--grey akeeba-hidden-phone" type="button"
-                        title="<?php echo \JText::_('JSEARCH_FILTER_CLEAR'); ?>">
-                    <span class="icon-remove"></span>
-                </button>
+                <?php echo Select::published($this->filters['published'], 'published', ['onchange' => 'document.adminForm.submit()'])?>
             </div>
         </div>
 

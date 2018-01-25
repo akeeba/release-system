@@ -45,54 +45,43 @@ $this->getContainer()->template->addJSInline($js);
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
             <div class="akeeba-filter-element akeeba-form-group">
                 <input type="text" name="itemtext" placeholder="<?php echo \JText::_('LBL_LOGS_ITEM'); ?>"
-                       id="filter_itemtext"
+                       id="filter_itemtext" onchange="document.adminForm.submit()"
                        value="<?php echo $this->escape($this->filters['itemtext']); ?>"
                        title="<?php echo \JText::_('LBL_LOGS_ITEM'); ?>"/>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
                 <input type="text" name="usertext" placeholder="<?php echo \JText::_('LBL_LOGS_USER'); ?>"
-                       id="filter_usertext"
+                       id="filter_usertext" onchange="document.adminForm.submit()"
                        value="<?php echo $this->escape($this->filters['usertext']); ?>"
                        title="<?php echo \JText::_('LBL_LOGS_USER'); ?>"/>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
                 <input type="text" name="referer" placeholder="<?php echo \JText::_('LBL_LOGS_REFERER'); ?>"
-                       id="filter_referer"
+                       id="filter_referer" onchange="document.adminForm.submit()"
                        value="<?php echo $this->escape($this->filters['referer']); ?>"
                        title="<?php echo \JText::_('LBL_LOGS_REFERER'); ?>"/>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
                 <input type="text" name="ip" placeholder="<?php echo \JText::_('LBL_LOGS_IP'); ?>"
-                       id="filter_ip"
+                       id="filter_ip" onchange="document.adminForm.submit()"
                        value="<?php echo $this->escape($this->filters['ip']); ?>"
                        title="<?php echo \JText::_('LBL_LOGS_IP'); ?>"/>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <?php echo Select::booleanlist('authorized', array(), $this->filters['authorized'])?>
+                <?php echo Select::booleanlist('authorized', ['onchange' => 'document.adminForm.submit()'], $this->filters['authorized'])?>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::categories($this->filters['category'], 'category')?>
+				<?php echo Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()'])?>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::releases($this->filters['version'], 'version')?>
+				<?php echo Select::releases($this->filters['version'], 'version', ['onchange' => 'document.adminForm.submit()'])?>
             </div>
-
-			<div class="akeeba-filter-element akeeba-form-group">
-				<button class="akeeba-btn--grey akeeba-btn--icon-only akeeba-btn--small akeeba-hidden-phone" onclick="this.form.submit();" title="<?php echo \JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
-					<span class="akion-search"></span>
-				</button>
-
-				<button id="filter-clear" class="akeeba-btn--grey akeeba-hidden-phone" type="button"
-						title="<?php echo \JText::_('JSEARCH_FILTER_CLEAR'); ?>">
-					<span class="icon-remove"></span>
-				</button>
-			</div>
 		</div>
 
 		<div class="akeeba-filter-bar akeeba-filter-bar--right">

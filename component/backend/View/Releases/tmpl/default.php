@@ -45,32 +45,23 @@ $this->getContainer()->template->addJSInline($js);
 			<div class="akeeba-filter-element akeeba-form-group">
 
                 <div class="akeeba-filter-element akeeba-form-group">
-                    <?php echo Select::categories($this->filters['category_id'], 'category_id') ?>
+                    <?php echo Select::categories($this->filters['category_id'], 'category_id', ['onchange' => 'document.adminForm.submit()']) ?>
                 </div>
 
                 <div class="akeeba-filter-element akeeba-form-group">
                     <input type="text" name="version" placeholder="<?php echo \JText::_('COM_ARS_RELEASES_FIELD_VERSION'); ?>"
-                           id="filter_title"
+                           id="filter_title" onchange="document.adminForm.submit()"
                            value="<?php echo $this->escape($this->filters['version']); ?>"
                            title="<?php echo \JText::_('COM_ARS_RELEASES_FIELD_VERSION'); ?>"/>
                 </div>
 
                 <div class="akeeba-filter-element akeeba-form-group">
-					<?php echo Select::maturity('maturity', $this->filters['maturity']) ?>
+					<?php echo Select::maturity('maturity', $this->filters['maturity'], ['onchange' => 'document.adminForm.submit()']) ?>
                 </div>
 
 				<div class="akeeba-filter-element akeeba-form-group">
-					<?php echo JHtml::_('access.level', 'access', $this->filters['access']);?>
+					<?php echo JHtml::_('access.level', 'access', $this->filters['access'], ['onchange' => 'document.adminForm.submit()']);?>
                 </div>
-
-				<button class="akeeba-btn--grey akeeba-btn--icon-only akeeba-btn--small akeeba-hidden-phone" onclick="this.form.submit();" title="<?php echo \JText::_('JSEARCH_FILTER_SUBMIT'); ?>">
-					<span class="akion-search"></span>
-				</button>
-
-				<button id="filter-clear" class="akeeba-btn--grey akeeba-hidden-phone" type="button"
-						title="<?php echo \JText::_('JSEARCH_FILTER_CLEAR'); ?>">
-					<span class="icon-remove"></span>
-				</button>
 			</div>
 		</div>
 
