@@ -236,8 +236,13 @@ class Releases extends DataModel
 
 		if ($fltNoBEUnpub)
 		{
-			// Filter this table
-			$query->where($db->qn('published') . ' != ' . $db->q(0));
+			$published = $this->getState('published', '');
+
+			if ($published != '')
+			{
+				// Filter this table
+				$query->where($db->qn('published') . ' = ' . $db->q($published));
+			}
 
 			// Filter the categories table, too
 			$this->whereHas('category', function(\JDatabaseQuery $subQuery) use($db) {

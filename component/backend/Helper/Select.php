@@ -450,6 +450,8 @@ abstract class Select
 
 		if (empty($category_id))
 		{
+			// We want all releases, but avoid the ones belonging to unpublished Bleeding Edge categories
+			$model->published(null);
 			$model->setState('nobeunpub', 1);
 		}
 
