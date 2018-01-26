@@ -425,13 +425,13 @@ abstract class Select
 		$items = $environmentsModel->get(true);
 
 		$options   = array();
-		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_ITEMS_ENVIRONMENT_SELECT') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_ITEMS_ENVIRONMENT_SELECT') . ' -');
 
 		if (count($items))
 		{
 			foreach ($items as $item)
 			{
-				$options[] = JHTML::_('FEFHelper.select.option', $item->id, $item->title);
+				$options[] = JHtml::_('FEFHelper.select.option', $item->id, $item->title);
 			}
 		}
 
@@ -528,13 +528,13 @@ abstract class Select
 		$items = $categoriesModel->get(true);
 
 		$options   = array();
-		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -');
 
 		if (count($items))
 		{
 			foreach ($items as $item)
 			{
-				$options[] = JHTML::_('FEFHelper.select.option', $item->id, $item->title);
+				$options[] = JHtml::_('FEFHelper.select.option', $item->id, $item->title);
 			}
 		}
 
@@ -543,22 +543,22 @@ abstract class Select
 
 	public static function client_id($id, $selected, array $attribs = array())
 	{
-		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_RELEASES_CLIENT_ID') . ' -');
-		$options[] = JHTML::_('FEFHelper.select.option', '1', \JText::_('LBL_CLIENTID_BACKEND'));
-		$options[] = JHTML::_('FEFHelper.select.option', '0', \JText::_('LBL_CLIENTID_FRONTEND'));
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_RELEASES_CLIENT_ID') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', '1', \JText::_('LBL_CLIENTID_BACKEND'));
+		$options[] = JHtml::_('FEFHelper.select.option', '0', \JText::_('LBL_CLIENTID_FRONTEND'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
 	public static function updateTypes($id, $selected, array $attribs = array())
 	{
-		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_UPDATES_TYPE') . ' -');
-		$options[] = JHTML::_('FEFHelper.select.option', 'components', \JText::_('LBL_UPDATETYPES_COMPONENTS'));
-		$options[] = JHTML::_('FEFHelper.select.option', 'libraries', \JText::_('LBL_UPDATETYPES_LIBRARIES'));
-		$options[] = JHTML::_('FEFHelper.select.option', 'modules', \JText::_('LBL_UPDATETYPES_MODULES'));
-		$options[] = JHTML::_('FEFHelper.select.option', 'packages', \JText::_('LBL_UPDATETYPES_PACKAGES'));
-		$options[] = JHTML::_('FEFHelper.select.option', 'plugins', \JText::_('LBL_UPDATETYPES_PLUGINS'));
-		$options[] = JHTML::_('FEFHelper.select.option', 'templates', \JText::_('LBL_UPDATETYPES_TEMPLATES'));
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_UPDATES_TYPE') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', 'components', \JText::_('LBL_UPDATETYPES_COMPONENTS'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'libraries', \JText::_('LBL_UPDATETYPES_LIBRARIES'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'modules', \JText::_('LBL_UPDATETYPES_MODULES'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'packages', \JText::_('LBL_UPDATETYPES_PACKAGES'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'plugins', \JText::_('LBL_UPDATETYPES_PLUGINS'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'templates', \JText::_('LBL_UPDATETYPES_TEMPLATES'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
@@ -572,13 +572,13 @@ abstract class Select
 		$items = $streamModel->get(true);
 
 		$options = array();
-		$options[] = JHTML::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_ITEMS_UPDATESTREAM_SELECT') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_ITEMS_UPDATESTREAM_SELECT') . ' -');
 
 		if (count($items))
 		{
 			foreach ($items as $item)
 			{
-				$options[] = JHTML::_('FEFHelper.select.option', $item->id, $item->name);
+				$options[] = JHtml::_('FEFHelper.select.option', $item->id, $item->name);
 			}
 		}
 
