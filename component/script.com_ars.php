@@ -88,6 +88,8 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
             'administrator/components/com_ars/Controller/Upload.php',
             'administrator/components/com_ars/Model/Upload.php',
             'administrator/components/com_ars/View/views.ini',
+			'administrator/components/com_ars/View/AutoDescriptions/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/AutoDescriptions/tmpl/form.form.xml',
 			'administrator/components/com_ars/View/Categories/tmpl/form.form.xml',
 			'administrator/components/com_ars/View/Categories/tmpl/form.default.xml',
             'administrator/components/com_ars/View/DownloadIDLabels/tmpl/form.default.xml',

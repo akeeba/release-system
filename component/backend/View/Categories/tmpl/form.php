@@ -8,7 +8,7 @@
 use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 
-/** @var \Akeeba\ReleaseSystem\Admin\View\VisualGroups\Html $this */
+/** @var \Akeeba\ReleaseSystem\Admin\View\Categories\Html $this */
 
 defined('_JEXEC') or die;
 
