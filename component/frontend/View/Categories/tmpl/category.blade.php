@@ -29,21 +29,21 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 		</a>
 	</h4>
 	<p>
-		<button class="btn btn-link" type="button" data-toggle="collapse"
+		<button class="akeeba-btn--small" type="button" data-toggle="collapse"
 				data-target="#ars-category-{{{ $id }}}-info" aria-expanded="false"
 				aria-controls="ars-category-{{{ $id }}}-info">
-			<span class="glyphicon glyphicon-info-sign"></span>
+			<span class="akion-information-circled"></span>
 			@lang('COM_ARS_RELEASES_MOREINFO')
 		</button>
 
-		<a href="{{ htmlentities($category_url) }}" class="btn btn-link">
-			<span class="glyphicon glyphicon-folder-open"></span>
+		<a href="{{ htmlentities($category_url) }}" class="akeeba-btn--small--dark">
+			<span class="akion-folder"></span>
 			@lang('COM_ARS_CATEGORIES_AVAILABLEVERSIONS')
 		</a>
 	</p>
 
 	<div class="collapse" id="ars-category-{{{ $id }}}-info">
-		<div class="ars-browse-category well">
+		<div class="ars-browse-category akeeba-panel--info">
 			<div class="ars-category-description">
 				{{ Format::preProcessMessage($item->description, 'com_ars.category_description') }}
 			</div>
