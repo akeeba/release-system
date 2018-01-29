@@ -14,7 +14,7 @@ $prefix = $item->user_id . ':';
 if ($item->primary)
 {
 	$prefix = '';
-	$class = 'label label-inverse label-primary';
+	$class = 'akeeba-label--grey';
 }
 else
 {

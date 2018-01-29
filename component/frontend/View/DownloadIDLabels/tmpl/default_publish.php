@@ -19,24 +19,24 @@ $url = JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=' . $task
 
 if ($item->enabled)
 {
-	$btnStyle = 'btn-success';
-	$btnIcon = 'icon-eye-open';
+	$btnStyle = 'akeeba-btn--green--small';
+	$btnIcon = 'akion-checkmark';
 	$btnTitle = JText::_('JPUBLISHED');
 }
 else
 {
-	$btnStyle = 'btn-danger';
-	$btnIcon = 'icon-eye-close';
+	$btnStyle = 'akeeba-btn--red--small';
+	$btnIcon = 'akion-close';
 	$btnTitle = JText::_('JUNPUBLISHED');
 }
 
 if ($item->primary): ?>
-	<a class="btn btn-default" href="#" disabled="disabled" title="<?php echo $btnTitle ?>">
-		<span class="icon icon-white icon-eye-open"></span>
+	<a class="akeeba-btn--grey--small" href="#" disabled="disabled" title="<?php echo $btnTitle ?>">
+		<span class="akion-checkmark"></span>
 	</a>
 <?php else: ?>
 	<a class="btn btn-default <?php echo $btnStyle ?>" href="<?php echo $url ?>" title="<?php echo $btnTitle ?>">
-		<span class="icon icon-white <?php echo $btnIcon?>"></span>
+		<span class="<?php echo $btnIcon?>"></span>
 	</a>
 <?php
 endif;
