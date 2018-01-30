@@ -60,8 +60,13 @@ if (typeof(akeeba.jQuery) === 'undefined')
 	akeeba.jQuery = window.jQuery;
 }
 
-akeeba.jQuery(document).ready(function(){
+akeeba.jQuery(document).ready(function($){
     akeeba.fef.tabs();
+
+    $('.release-info-toggler').off().on('click', function(){
+        var target = $(this).data('target');
+        $(target).slideToggle();
+    })
 });
 JS;
 
@@ -82,40 +87,30 @@ $this->getContainer()->template->addJSInline($js);
 	<p>
 		<strong>@lang('LBL_RELEASES_RELEASEDON')</strong>:
 		@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))
-		<button class="akeeba-btn--dark--small" type="button" data-toggle="collapse"
-				data-target="#ars-release-{{{ $item->id }}}-info" aria-expanded="false"
-				aria-controls="ars-release-{{{ $item->id }}}-info">
+		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
+				data-target="#ars-release-{{{ $item->id }}}-info">
 			<span class="akion-information-circled"></span>
 			@lang('COM_ARS_RELEASES_MOREINFO')
 		</button>
 	</p>
-	<p>&nbsp;</p>
 
-	<div id="ars-release-{{{ $item->id }}}-info" class="akeeba-panel--info collapse">
-		<dl class="dl-horizontal ars-release-properties">
-			<dt>
-				@lang('COM_ARS_RELEASES_FIELD_MATURITY')
-			</dt>
-			<dd>
-				@lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($item->maturity))
-			</dd>
-
-			<dt>
-				@lang('LBL_RELEASES_RELEASEDON')
-			</dt>
-			<dd>
-				@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))
-			</dd>
-
-			@if($this->params->get('show_downloads', 1))
-				<dt>
-					@lang('LBL_RELEASES_HITS')
-				</dt>
-				<dd>
-					@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
-				</dd>
-			@endif
-		</dl>
+	<div id="ars-release-{{{ $item->id }}}-info" class="akeeba-panel--info" style="display: none;">
+		<table class="ars-release-properties akeeba-table--striped">
+			<tr>
+				<td>@lang('COM_ARS_RELEASES_FIELD_MATURITY')</td>
+				<td>@lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($item->maturity))</td>
+			</tr>
+			<tr>
+				<td>@lang('LBL_RELEASES_RELEASEDON')</td>
+				<td>@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))</td>
+			</tr>
+		@if($this->params->get('show_downloads', 1))
+			<tr>
+				<td>@lang('LBL_RELEASES_HITS')</td>
+				<td>@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)</td>
+			</tr>
+		@endif
+		</table>
 
 		<div class="akeeba-tabs">
 			<label for="reltabs-{{ $item->id }}-desc" class="active">
