@@ -869,4 +869,35 @@ abstract class Select
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
+
+	/**
+	 * Static function to get a select list of all access levels. We have to copy Joomla code since it will force the
+	 * usage of Bootstrap classes, instead of using our FEFHelper to create the options.
+	 *
+	 * @param       $id
+	 * @param null  $selected
+	 * @param array $attribs
+	 *
+	 * @return string
+	 */
+	public static function accessLevel($id, $selected = null, $attribs = array())
+	{
+		$container = static::getContainer();
+
+		$db = $container->db;
+		$query = $db->getQuery(true)
+			->select($db->qn('a.id', 'value') . ', ' . $db->qn('a.title', 'text'))
+			->from($db->qn('#__viewlevels', 'a'))
+			->group($db->qn(array('a.id', 'a.title', 'a.ordering')))
+			->order($db->qn('a.ordering') . ' ASC')
+			->order($db->qn('title') . ' ASC');
+
+		// Get the options.
+		$db->setQuery($query);
+		$options = $db->loadObjectList();
+
+		array_unshift($options, JHtml::_('FEFHelper.select.option', '', JText::_('COM_ARS_COMMON_SHOW_ALL_LEVELS')));
+
+		return self::genericlist($options, $id, $attribs, $selected, $id);
+	}
 }

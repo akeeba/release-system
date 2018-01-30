@@ -60,7 +60,7 @@ $this->getContainer()->template->addJSInline($js);
                 </div>
 
 				<div class="akeeba-filter-element akeeba-form-group">
-					<?php echo JHtml::_('access.level', 'access', $this->filters['access'], ['onchange' => 'document.adminForm.submit()']);?>
+					<?php echo Select::accessLevel('access', $this->filters['access'], ['onchange' => 'document.adminForm.submit()']);?>
                 </div>
 			</div>
 		</div>

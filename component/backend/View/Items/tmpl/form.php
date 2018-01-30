@@ -90,7 +90,7 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
                     <label for="access"><?php echo JText::_('JFIELD_ACCESS_LABEL'); ?></label>
 
-					<?php echo JHtml::_('access.level', 'access', $item->access);?>
+					<?php echo Select::accessLevel('access', $item->access); ?>
                 </div>
 
                 <div class="akeeba-form-group">
