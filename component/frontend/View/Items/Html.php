@@ -43,6 +43,10 @@ class Html extends BaseView
 	/** @var  \JMenuNode  The active menu item */
 	public $menu;
 
+	public $downloadId;
+	public $directlink;
+	public $directlink_extensions;
+
 	public function onBeforeBrowse($tpl = null)
 	{
 		// Prevent phpStorm's whining...

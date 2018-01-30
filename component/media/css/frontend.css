@@ -34,3 +34,4 @@
 div[class^="ars-release"] h4 {padding-bottom: 10px;}
 div[class^="ars-release"] h4 a{text-decoration: none;}
 div[class^="ars-category"] h4 a{text-decoration: none}
+div[class^="ars-item"] h4 a{text-decoration: none}
