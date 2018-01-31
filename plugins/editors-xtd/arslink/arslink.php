@@ -110,7 +110,7 @@ CSS;
 		$button->link    = $link;
 		$button->text    = JText::_('PLG_ARSITEM_BUTTON_ITEM');
 		$button->name    = 'arsitem';
-		$button->options = "{handler: 'iframe', size: {x: 770, y: 400}}";
+		$button->options = "{handler: 'iframe', size: {x: 800, y: 400}}";
 
 		return $button;
 	}

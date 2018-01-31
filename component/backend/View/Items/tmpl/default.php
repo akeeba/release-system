@@ -172,6 +172,8 @@ $this->getContainer()->template->addJSInline($js);
 		if ($this->items):
 			$i = 0;
 			$user = $this->getContainer()->platform->getUser();
+
+			/** @var \Akeeba\ReleaseSystem\Admin\Model\Items $row */
 			foreach($this->items as $row):
                 $type = $row->type == 'link' ? JText::_('LBL_ITEMS_TYPE_LINK') : JText::_('LBL_ITEMS_TYPE_FILE');
 
@@ -179,7 +181,7 @@ $this->getContainer()->template->addJSInline($js);
 				$edit = $user->authorise('core.admin') || $user->authorise('core.edit', 'com_ars.category.'.$category_id);
 				$link = 'index.php?option=com_ars&view=Item&id='.$row->id;
 
-				$enabled = $this->container->platform->getUser()->authorise('core.edit.state', 'com_ars')
+				$enabled = $user->authorise('core.edit.state', 'com_ars')
 				?>
 				<tr>
                     <td>
