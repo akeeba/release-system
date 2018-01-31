@@ -113,6 +113,8 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
             'components/com_ars/View/DownloadIDLabels/Form.php',
             'components/com_ars/View/DownloadIDLabels/tmpl/form.form.xml',
+            'components/com_ars/View/Items/Form.php',
+            'components/com_ars/View/Items/tmpl/form.modal.xml',
 		),
 		'folders' => array(
 			// Moving to FOF 3
