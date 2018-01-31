@@ -22,9 +22,8 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 }
 ?>
 <div class="ars-category-{{{ $id }}} ars-category-{{ $item->is_supported ? 'supported' : 'unsupported' }}">
-
 	<h3 class="text-muted">
 		{{{ $item->title }}}
 	</h3>
 </div>
-<div class="clearfix"></div>
+

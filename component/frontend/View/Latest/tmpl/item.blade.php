@@ -23,7 +23,6 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 }
 ?>
 
-
 <tr>
 	<td>
 		<a href="{{ htmlentities($download_url) }}" rel="nofollow">
@@ -31,7 +30,7 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 		</a>
 	</td>
 	<td width="25%">
-		<a href="{{ htmlentities($download_url) }}" rel="nofollow" class="btn btn-small">
+		<a href="{{ htmlentities($download_url) }}" rel="nofollow" class="akeeba-btn--primary--small">
 			<span class="icon icon-download"></span>
 			@lang('LBL_ITEM_DOWNLOAD')
 		</a>

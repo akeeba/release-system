@@ -32,28 +32,4 @@ defined('_JEXEC') or die;
 		</div>
 	@endif
 	</div>
-
-	<form id="ars-pagination" action="{{ \JURI::getInstance()->toString() }}" method="post">
-		<input type="hidden" name="option" value="com_ars" />
-		<input type="hidden" name="view" value="Releases" />
-		<input type="hidden" name="category_id" value="{{{ $this->category->id }}}" />
-
-		@if ($this->params->get('show_pagination', 1))
-			@if($this->pagination->pagesTotal > 1)
-			<div class="pagination">
-
-				@if($this->params->get('show_pagination_results', 1))
-				<p class="counter">
-					{{ $this->pagination->getPagesCounter() }}
-				</p>
-				@endif
-
-				{{ $this->pagination->getPagesLinks() }}
-			</div>
-
-			@endif
-		@lang('ARS_RELEASES_PER_PAGE')
-		{{ $this->pagination->getLimitBox() }}
-		@endif
-	</form>
 </div>

@@ -34,37 +34,37 @@ if (!Filter::filterItem($release, false, $authorisedViewLevels) && !empty($relea
 switch ($release->maturity)
 {
 	case 'stable':
-		$maturityClass = 'label-success';
+		$maturityClass = 'akeeba-label--green--small';
 		break;
 
 	case 'rc':
-		$maturityClass = 'label-info';
+		$maturityClass = 'akeeba-label--teal--small';
 		break;
 
 	case 'beta':
-		$maturityClass = 'label-warning';
+		$maturityClass = 'akeeba-label--orange--small';
 		break;
 
 	case 'alpha':
-		$maturityClass = 'label-important';
+		$maturityClass = 'akeeba-label--red--small';
 		break;
 
 	default:
-		$maturityClass = 'label-inverse';
+		$maturityClass = 'akeeba-label--dark--small';
 		break;
 }
 
 ?>
 
-<div class="ars-category-{{{ $item->id }}} well ars-category-{{ $item->is_supported ? 'supported' : 'unsupported' }}">
+<div class="ars-category-{{{ $item->id }}} ars-category-{{ $item->is_supported ? 'supported' : 'unsupported' }}">
 	<h4 class="{{ $item->type == 'bleedingedge' ? 'warning' : '' }}">
-		<span class="label {{{ $maturityClass }}} pull-right">
-			@lang('COM_ARS_RELEASES_MATURITY_' . $release->maturity)
-		</span>
-
 		<a href="{{ htmlentities($release_url) }}">
 			{{{ $item->title }}} {{{ $release->version }}}
 		</a>
+
+		<span class="{{{ $maturityClass }}}">
+			@lang('COM_ARS_RELEASES_MATURITY_' . $release->maturity)
+		</span>
 	</h4>
 
 	<div class="ars-latest-category">
@@ -73,23 +73,24 @@ switch ($release->maturity)
 		</div>
 	</div>
 
-	<dl class="dl-horizontal ars-release-properties">
-		<dt>
-			@lang('COM_ARS_RELEASES_FIELD_MATURITY')
-		</dt>
-		<dd>
-			@lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($release->maturity))
-		</dd>
+	<table class="akeeba-table--striped">
+		<tr>
+			<td>
+				@lang('COM_ARS_RELEASES_FIELD_MATURITY')
+			</td>
+			<td colspan="2">
+				@lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($release->maturity))
+			</td>
+		</tr>
+		<tr>
+			<td>
+				@lang('LBL_RELEASES_RELEASEDON')
+			</td>
+			<td colspan="2">
+				@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))
+			</td>
+		</tr>
 
-		<dt>
-			@lang('LBL_RELEASES_RELEASEDON')
-		</dt>
-		<dd>
-			@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))
-		</dd>
-	</dl>
-
-	<table class="table table-striped">
 		@foreach($release->items->sortBy($this->params->get('items_orderby', 'ordering'))->filter(function ($item)
 		{
 			return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true);
@@ -98,8 +99,8 @@ switch ($release->maturity)
 		@endforeach
 	</table>
 
-	<p class="readmore">
-		<a href="{{ htmlentities($release_url) }}">
+	<p style="margin-top:15px">
+		<a href="{{ htmlentities($release_url) }}" class="akeeba-btn--primary">
 			@lang('LBL_RELEASE_VIEWITEMS')
 		</a>
 	</p>

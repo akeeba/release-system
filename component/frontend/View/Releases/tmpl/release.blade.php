@@ -95,7 +95,7 @@ $this->getContainer()->template->addJSInline($js);
 	</p>
 
 	<div id="ars-release-{{{ $item->id }}}-info" class="akeeba-panel--info" style="display: none;">
-		<table class="ars-release-properties akeeba-table--striped">
+		<table class="ars-release-properties akeeba-table--striped" style="margin-bottom:15px">
 			<tr>
 				<td>@lang('COM_ARS_RELEASES_FIELD_MATURITY')</td>
 				<td>@lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($item->maturity))</td>
@@ -131,7 +131,7 @@ $this->getContainer()->template->addJSInline($js);
 		</div>
 
 		@if(!isset($no_link) || !$no_link)
-			<p style="margin-top: 10px;">
+			<p style="margin-top: 15px;">
 				<a href="{{ htmlentities($release_url) }}" class="akeeba-btn--primary">
 					@lang('LBL_RELEASE_VIEWITEMS')
 				</a>
