@@ -9,7 +9,7 @@ defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Items\Html  $this */
 
-$released   = $this->container->platform->getDate($this->release->created);
+$released = $this->container->platform->getDate($this->release->created);
 ?>
 
 <div class="item-page{{{ $this->params->get('pageclass_sfx') }}}">
@@ -34,28 +34,4 @@ $released   = $this->container->platform->getDate($this->release->created);
 		</div>
 	@endif
 	</div>
-
-	<form id="ars-pagination" action="{{ \JURI::getInstance()->toString() }}" method="post">
-		<input type="hidden" name="option" value="com_ars" />
-		<input type="hidden" name="view" value="Items" />
-		<input type="hidden" name="release_id" value="{{{ $this->release->id }}}" />
-
-		@if ($this->params->get('show_pagination', 1))
-			@if($this->pagination->pagesTotal > 1)
-			<div class="pagination">
-
-				@if($this->params->get('show_pagination_results', 1))
-				<p class="counter">
-					{{ $this->pagination->getPagesCounter() }}
-				</p>
-				@endif
-
-				{{ $this->pagination->getPagesLinks() }}
-			</div>
-
-			@endif
-		@lang('ARS_ITEMS_PER_PAGE')
-		{{ $this->pagination->getLimitBox() }}
-		@endif
-	</form>
 </div>

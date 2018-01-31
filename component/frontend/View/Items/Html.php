@@ -46,12 +46,10 @@ class Html extends BaseView
 	public $downloadId;
 	public $directlink;
 	public $directlink_extensions;
+	public $directlink_description;
 
 	public function onBeforeBrowse($tpl = null)
 	{
-		// Prevent phpStorm's whining...
-		if ($tpl) {}
-
 		// Load the model
 		/** @var Items $model */
 		$model = $this->getModel();
@@ -103,23 +101,21 @@ class Html extends BaseView
 				$directlink_extensions = $temp;
 			}
 
-			$this->directlink_extensions = $directlink_extensions;
-
+			$this->directlink_extensions  = $directlink_extensions;
 			$this->directlink_description = $params->get('directlink_description', \JText::_('COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_DEFAULT'));
 		}
 
 		// Get the ordering
-		$this->order = $model->getState('filter_order', 'id', 'cmd');
+		$this->order 	 = $model->getState('filter_order', 'id', 'cmd');
 		$this->order_Dir = $model->getState('filter_order_Dir', 'DESC', 'cmd');
 
 		// Assign data to the view
-		$this->pagination = new \JPagination($model->count(), $model->limitstart, $model->limit);
-		$this->release = $this->getModel('Releases');
+		$this->release 	  = $this->getModel('Releases');
 
 		// Pass page params
 		$this->params = $params;
 		$this->Itemid = $this->input->getInt('Itemid', 0);
-		$this->menu = $app->getMenu()->getActive();
+		$this->menu   = $app->getMenu()->getActive();
 
 		return true;
 	}

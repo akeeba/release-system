@@ -166,9 +166,9 @@ $this->getContainer()->template->addJSInline($js);
 		</table>
 
 		@unless(empty($item->description))
-			<div class="ars-item-description small">
+			<p class="ars-item-description small">
 				<?php echo Format::preProcessMessage($item->description, 'com_ars.item_description'); ?>
-			</div>
+			</p>
 		@endunless
 
 		<div style="margin-top: 10px;">
