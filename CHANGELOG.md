@@ -1,4 +1,8 @@
-# 3.2.6
+# 4.0.0
+
+**Other changes**
+
+* Rewritten interface using our Akeeba Frontend Framework (FEF).
 
 **Bug fixes**
 
