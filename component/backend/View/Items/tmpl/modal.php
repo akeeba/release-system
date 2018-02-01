@@ -9,33 +9,13 @@ use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use Akeeba\ReleaseSystem\Admin\Model\Categories;
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
+use FOF30\Utils\FEFHelper\Html as FEFHtml;
 
 defined('_JEXEC') or die();
 
 /** @var Akeeba\ReleaseSystem\Admin\View\Items\Html $this */
 
-$escapedOrder = addslashes($this->order);
-$js = <<< JS
-
-;// This comment is intentionally put here to prevent badly written plugins from causing a Javascript error
-// due to missing trailing semicolon and/or newline in their code.
-Joomla.orderTable = function () {
-	var table = document.getElementById("sortTable");
-	var direction = document.getElementById("directionTable");
-	var order = table.options[table.selectedIndex].value;
-	if (order != '$escapedOrder')
-	{
-		var dirn = 'asc';
-	}
-	else
-	{
-		var dirn = direction.options[direction.selectedIndex].value;
-	}
-	Joomla.tableOrdering(order, dirn, '');
-}
-
-JS;
-
+$js = FEFHtml::jsOrderingBackend($this->order);
 $this->getContainer()->template->addJSInline($js);
 
 $function = $this->input->getCmd('function', 'arsSelectItem');
@@ -83,43 +63,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
             </div>
         </div>
 
-        <div class="akeeba-filter-bar akeeba-filter-bar--right">
-            <div class="akeeba-filter-element akeeba-form-group">
-                <label for="limit" class="element-invisible">
-					<?php echo \JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?>
-                </label>
-				<?php echo $this->pagination->getLimitBox(); ?>
-            </div>
-
-            <div class="akeeba-filter-element akeeba-form-group">
-                <label for="directionTable" class="element-invisible">
-					<?php echo \JText::_('JFIELD_ORDERING_DESC'); ?>
-                </label>
-                <select name="directionTable" id="directionTable" class="input-medium custom-select" onchange="Joomla.orderTable()">
-                    <option value="">
-						<?php echo \JText::_('JFIELD_ORDERING_DESC'); ?>
-                    </option>
-                    <option value="asc" <?php echo ($this->order_Dir == 'asc') ? 'selected="selected"' : ""; ?>>
-						<?php echo \JText::_('JGLOBAL_ORDER_ASCENDING'); ?>
-                    </option>
-                    <option value="desc" <?php echo ($this->order_Dir == 'desc') ? 'selected="selected"' : ""; ?>>
-						<?php echo \JText::_('JGLOBAL_ORDER_DESCENDING'); ?>
-                    </option>
-                </select>
-            </div>
-
-            <div class="akeeba-filter-element akeeba-form-group">
-                <label for="sortTable" class="element-invisible">
-					<?php echo \JText::_('JGLOBAL_SORT_BY'); ?>
-                </label>
-                <select name="sortTable" id="sortTable" class="input-medium custom-select" onchange="Joomla.orderTable()">
-                    <option value="">
-						<?php echo \JText::_('JGLOBAL_SORT_BY'); ?>
-                    </option>
-					<?php echo \JHtml::_('select.options', $this->sortFields, 'value', 'text', $this->order); ?>
-                </select>
-            </div>
-        </div>
+		<?php echo FEFHtml::selectOrderingBackend($this->getPagination(), $this->sortFields, $this->order, $this->order_Dir)?>
 
     </section>
 
