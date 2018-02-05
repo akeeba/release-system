@@ -7,6 +7,7 @@
 **Bug fixes**
 
 * List of files not rendered for Amazon S3 categories 
+* Link Created by ARS Item Button is wrong (gh-129)
 
 # 3.2.5
 
