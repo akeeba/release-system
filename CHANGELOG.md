@@ -1,8 +1,13 @@
-# 3.2.6
+# 4.0.0
+
+**Other changes**
+
+* Rewritten interface using our Akeeba Frontend Framework (FEF).
 
 **Bug fixes**
 
 * List of files not rendered for Amazon S3 categories 
+* Link Created by ARS Item Button is wrong (gh-129)
 
 # 3.2.5
 

@@ -53,7 +53,7 @@ class plgButtonArslink extends JPlugin
 function arsSelectItem(id, title)
 {
 	var editor = '$name';
-	var tag = '<a href='+'\"index.php?option=com_ars&amp;view=Item&amp;id='+id+'\">'+title+'</a>';
+	var tag = '<a href='+'\"index.php?option=com_ars&amp;view=Item&amp;task=download&amp;format=raw&amp;id='+id+'\">'+title+'</a>';
 	
 	/** Use the API, if editor supports it **/
 	if (Joomla && Joomla.editors && Joomla.editors.instances && Joomla.editors.instances.hasOwnProperty(editor))
