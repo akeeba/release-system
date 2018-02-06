@@ -53,7 +53,7 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
                     <label for="published"><?php echo JText::_('JPUBLISHED'); ?></label>
 
-					<?php echo Select::booleanswitch('published', $item->published)?>
+					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'published', $item->published);?>
                 </div>
             </div>
 
@@ -67,7 +67,7 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
                     <label for="show_unauth_links"><?php echo JText::_('COM_ARS_COMMON_SHOW_UNAUTH_LINKS'); ?></label>
 
-					<?php echo Select::booleanswitch('show_unauth_links', $item->show_unauth_links)?>
+					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'show_unauth_links', $item->show_unauth_links);?>
                 </div>
 
                 <div class="akeeba-form-group">

@@ -32,7 +32,7 @@ $item = $this->getItem();
                 <?php echo JText::_('JPUBLISHED'); ?>
             </label>
 
-            <?php echo Select::booleanswitch('enabled', $item->enabled)?>
+			<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'enabled', $item->enabled);?>
         </div>
 
         <div class="akeeba-form-group--pull-right">

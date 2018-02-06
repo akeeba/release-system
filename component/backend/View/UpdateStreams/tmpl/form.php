@@ -97,7 +97,7 @@ $item = $this->getItem();
 						<?php echo JText::_('JPUBLISHED'); ?>
                     </label>
 
-                    <?php echo Select::booleanswitch('published', $item->published)?>
+					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'published', $item->published);?>
                 </div>
             </div>
         </div>
