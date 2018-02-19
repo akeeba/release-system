@@ -10,6 +10,7 @@
 
 * List of files not rendered for Amazon S3 categories 
 * Link Created by ARS Item Button is wrong (gh-129)
+* Unpublishing a Download ID in the front-end redirects you to some other page, not the one you were in.
 
 # 3.2.5
 

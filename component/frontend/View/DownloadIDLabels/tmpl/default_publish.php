@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 $task = $item->enabled ? 'unpublish' : 'publish';
 $itemId = $this->input->getInt('Itemid') ? '&Itemid=' . $this->input->getInt('Itemid') : '';
-$returnUrl = base64_encode(JUri::current());
+$returnUrl = base64_encode(JUri::getInstance()->toString());
 $url = JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=' . $task
                  . '&id=' . $item->ars_dlidlabel_id
                  . '&' . $this->container->platform->getToken(true) . '=1'
