@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -172,74 +172,6 @@ class ControlPanel extends Model
 
 		$db->setQuery($sql);
 		$db->execute();
-	}
-
-	/**
-	 * Get an array of icon definitions for the Control Panel
-	 *
-	 * @return array
-	 */
-	public function getIconDefinitions()
-	{
-		return $this->loadIconDefinitions(JPATH_COMPONENT_ADMINISTRATOR . '/View');
-	}
-
-	/**
-	 * Loads the icon definitions form the views.ini file
-	 *
-	 * @param   string  $path  Where the views.ini file can be found
-	 *
-	 * @return  array
-	 */
-	private function loadIconDefinitions($path)
-	{
-		$ret = array();
-
-		if (!@file_exists($path . '/views.ini'))
-		{
-			return $ret;
-		}
-
-		$ini_data = IniParser::parse_ini_file($path . '/views.ini', true);
-
-		if (!empty($ini_data))
-		{
-			foreach ($ini_data as $view => $def)
-			{
-				if (array_key_exists('hidden', $def))
-				{
-					if (in_array(strtolower($def['hidden']), array('true', 'yes', 'on', '1')))
-					{
-						continue;
-					}
-				}
-
-				$task = array_key_exists('task', $def) ? $def['task'] : null;
-				$ret[$def['group']][] = $this->_makeIconDefinition($def['icon'], JText::_($def['label']), $view, $task);
-			}
-		}
-
-		return $ret;
-	}
-
-	/**
-	 * Creates an icon definition entry
-	 *
-	 * @param   string  $iconFile  The file name of the icon on the GUI button
-	 * @param   string  $label     The label below the GUI button
-	 * @param   string  $view      The view to use when the button is clicked
-	 * @param   string  $task      The task to use when the button is clicked
-	 *
-	 * @return  array  The icon definition array
-	 */
-	public function _makeIconDefinition($iconFile, $label, $view = null, $task = null)
-	{
-		return array(
-			'icon'  => $iconFile,
-			'label' => $label,
-			'view'  => $view,
-			'task'  => $task
-		);
 	}
 
 	/**

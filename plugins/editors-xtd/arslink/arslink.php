@@ -2,7 +2,7 @@
 /**
  * @package    AkeebaReleaseSystem
  * @subpackage plugins.arslink
- * @copyright  Copyright (c)2010-2017 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license    GNU General Public License version 3, or later
  */
 
@@ -53,7 +53,7 @@ class plgButtonArslink extends JPlugin
 function arsSelectItem(id, title)
 {
 	var editor = '$name';
-	var tag = '<a href='+'\"index.php?option=com_ars&amp;view=Item&amp;id='+id+'\">'+title+'</a>';
+	var tag = '<a href='+'\"index.php?option=com_ars&amp;view=Item&amp;task=download&amp;format=raw&amp;id='+id+'\">'+title+'</a>';
 	
 	/** Use the API, if editor supports it **/
 	if (Joomla && Joomla.editors && Joomla.editors.instances && Joomla.editors.instances.hasOwnProperty(editor))
@@ -110,7 +110,7 @@ CSS;
 		$button->link    = $link;
 		$button->text    = JText::_('PLG_ARSITEM_BUTTON_ITEM');
 		$button->name    = 'arsitem';
-		$button->options = "{handler: 'iframe', size: {x: 770, y: 400}}";
+		$button->options = "{handler: 'iframe', size: {x: 800, y: 400}}";
 
 		return $button;
 	}

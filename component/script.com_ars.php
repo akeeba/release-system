@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -83,6 +83,38 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'administrator/components/com_ars/assets/stats',
 			'components/com_ars/Model/ExtensionUpdates.php',
 			'cli/ars-update',
+
+            // Moving to FEF
+            'administrator/components/com_ars/Controller/Upload.php',
+            'administrator/components/com_ars/Model/Upload.php',
+            'administrator/components/com_ars/View/views.ini',
+			'administrator/components/com_ars/View/AutoDescriptions/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/AutoDescriptions/tmpl/form.form.xml',
+			'administrator/components/com_ars/View/Categories/tmpl/form.form.xml',
+			'administrator/components/com_ars/View/Categories/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/DownloadIDLabels/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/DownloadIDLabels/tmpl/form.form.xml',
+            'administrator/components/com_ars/View/DownloadIDLabels/tmpl/default_dlid.php',
+            'administrator/components/com_ars/View/Environments/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/Environments/tmpl/form.form.xml',
+            'administrator/components/com_ars/View/Items/tmpl/form.form.xml',
+            'administrator/components/com_ars/View/Items/tmpl/default_environments.php',
+            'administrator/components/com_ars/View/Items/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/Items/tmpl/form.modal.xml',
+            'administrator/components/com_ars/View/Logs/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/Logs/tmpl/default_item.php',
+            'administrator/components/com_ars/View/Releases/tmpl/form.form.xml',
+            'administrator/components/com_ars/View/Releases/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/UpdateStreams/tmpl/default_links.php',
+            'administrator/components/com_ars/View/UpdateStreams/tmpl/form.default.xml',
+            'administrator/components/com_ars/View/UpdateStreams/tmpl/form.form.xml',
+            'administrator/components/com_ars/View/VisualGroups/tmpl/form.form.xml',
+            'administrator/components/com_ars/View/VisualGroups/tmpl/form.default.xml',
+
+            'components/com_ars/View/DownloadIDLabels/Form.php',
+            'components/com_ars/View/DownloadIDLabels/tmpl/form.form.xml',
+            'components/com_ars/View/Items/Form.php',
+            'components/com_ars/View/Items/tmpl/form.modal.xml',
 		),
 		'folders' => array(
 			// Moving to FOF 3
@@ -117,7 +149,9 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			'media/com_ars/theme',
 
-
+			// Moving to FEF
+            'administrator/components/com_ars/Form',
+            'administrator/components/com_ars/View/Upload',
 		)
 	);
 
@@ -128,6 +162,14 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 		$this->removeObsoleteUpdateSites($parent);
 
 		parent::uninstall($parent);
+	}
+
+	public function postflight($type, $parent)
+	{
+		parent::postflight($type, $parent);
+
+		// Add ourselves to the list of extensions depending on Akeeba FEF
+		$this->addDependency('file_fef', $this->componentName);
 	}
 
 	/**

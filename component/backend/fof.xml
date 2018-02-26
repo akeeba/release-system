@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   @package   AkeebaReleaseSystem
-  @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+  @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
   @license   GNU General Public License version 3, or later
 -->
 <fof>
@@ -11,6 +11,7 @@
 			<option name="factoryClass">FOF30\Factory\MagicFactory</option>
 			<option name="scaffolding">0</option>
 			<option name="saveScaffolding">0</option>
+			<option name="rendererClass">FOF30\Render\FEF</option>
 		</container>
 	</common>
 

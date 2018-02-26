@@ -1,13 +1,14 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Releases\Html $this */
+/** @var  \Akeeba\ReleaseSystem\Site\Model\Releases $item */
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
@@ -27,25 +28,49 @@ if (!Filter::filterItem($item, false, $authorisedViewLevels) && !empty($item->re
 switch ($item->maturity)
 {
 	case 'stable':
-		$maturityClass = 'label-success';
+		$maturityClass = 'akeeba-label--green--small';
 		break;
 
 	case 'rc':
-		$maturityClass = 'label-info';
+		$maturityClass = 'akeeba-label--teal--small';
 		break;
 
 	case 'beta':
-		$maturityClass = 'label-warning';
+		$maturityClass = 'akeeba-label--orange--small';
 		break;
 
 	case 'alpha':
-		$maturityClass = 'label-important';
+		$maturityClass = 'akeeba-label--red--small';
 		break;
 
 	default:
-		$maturityClass = 'label-inverse';
+		$maturityClass = 'akeeba-label--dark--small';
 		break;
 }
+
+
+$js = <<<JS
+if (typeof(akeeba) == 'undefined')
+{
+	var akeeba = {};
+}
+
+if (typeof(akeeba.jQuery) === 'undefined')
+{
+	akeeba.jQuery = window.jQuery;
+}
+
+akeeba.jQuery(document).ready(function($){
+    akeeba.fef.tabs();
+
+    $('.release-info-toggler').off().on('click', function(){
+        var target = $(this).data('target');
+        $(target).slideToggle();
+    })
+});
+JS;
+
+$this->getContainer()->template->addJSInline($js);
 
 ?>
 
@@ -55,63 +80,59 @@ switch ($item->maturity)
 			@lang('COM_ARS_RELEASES_VERSION')
 			{{{ $item->version }}}
 		</a>
-		<span class="label {{{ $maturityClass }}}">
+		<span class="{{{ $maturityClass }}}">
 			@lang('COM_ARS_RELEASES_MATURITY_' . $item->maturity)
 		</span>
 	</h4>
 	<p>
 		<strong>@lang('LBL_RELEASES_RELEASEDON')</strong>:
 		@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))
-		<button class="btn btn-link" type="button" data-toggle="collapse"
-				data-target="#ars-release-{{{ $item->id }}}-info" aria-expanded="false"
-				aria-controls="ars-release-{{{ $item->id }}}-info">
-			<span class="glyphicon glyphicon-info-sign"></span>
+		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
+				data-target="#ars-release-{{{ $item->id }}}-info">
+			<span class="akion-information-circled"></span>
 			@lang('COM_ARS_RELEASES_MOREINFO')
 		</button>
 	</p>
-	<p>&nbsp;</p>
 
-	<div id="ars-release-{{{ $item->id }}}-info" class="well collapse">
-		<dl class="dl-horizontal ars-release-properties">
-			<dt>
-				@lang('COM_ARS_RELEASES_FIELD_MATURITY')
-			</dt>
-			<dd>
-				@lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($item->maturity))
-			</dd>
+	<div id="ars-release-{{{ $item->id }}}-info" class="akeeba-panel--info" style="display: none;">
+		<table class="ars-release-properties akeeba-table--striped" style="margin-bottom:15px">
+			<tr>
+				<td>@lang('COM_ARS_RELEASES_FIELD_MATURITY')</td>
+				<td>@lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($item->maturity))</td>
+			</tr>
+			<tr>
+				<td>@lang('LBL_RELEASES_RELEASEDON')</td>
+				<td>@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))</td>
+			</tr>
+		@if($this->params->get('show_downloads', 1))
+			<tr>
+				<td>@lang('LBL_RELEASES_HITS')</td>
+				<td>@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)</td>
+			</tr>
+		@endif
+		</table>
 
-			<dt>
-				@lang('LBL_RELEASES_RELEASEDON')
-			</dt>
-			<dd>
-				@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))
-			</dd>
+		<div class="akeeba-tabs">
+			<label for="reltabs-{{ $item->id }}-desc" class="active">
+				@lang('COM_ARS_RELEASE_DESCRIPTION_LABEL')
+			</label>
 
-			@if($this->params->get('show_downloads', 1))
-				<dt>
-					@lang('LBL_RELEASES_HITS')
-				</dt>
-				<dd>
-					@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
-				</dd>
-			@endif
-		</dl>
+			<section id="reltabs-{{ $item->id }}-desc">
+				{{ Format::preProcessMessage($item->description, 'com_ars.release_description') }}
+			</section>
 
-		@jhtml('bootstrap.startTabSet', 'ars-reltabs-' . $item->id, ['active' => "reltabs-{$item->id}-desc"])
+			<label for="reltabs-{{ $item->id }}-notes">
+				@lang('COM_ARS_RELEASE_NOTES_LABEL')
+			</label>
 
-		@jhtml('bootstrap.addTab', 'ars-reltabs-' . $item->id, "reltabs-{$item->id}-desc", JText::_('COM_ARS_RELEASE_DESCRIPTION_LABEL'))
-		{{ Format::preProcessMessage($item->description, 'com_ars.release_description') }}
-		@jhtml('bootstrap.endTab')
-
-		@jhtml('bootstrap.addTab', 'ars-reltabs-' . $item->id, "reltabs-{$item->id}-notes", JText::_('COM_ARS_RELEASE_NOTES_LABEL'))
-		{{ Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
-		@jhtml('bootstrap.endTab')
-
-		@jhtml('bootstrap.endTabSet')
+			<section id=reltabs-{{ $item->id }}-notes"">
+				{{ Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
+			</section>
+		</div>
 
 		@if(!isset($no_link) || !$no_link)
-			<p class="readmore">
-				<a href="{{ htmlentities($release_url) }}" class="btn btn-primary">
+			<p style="margin-top: 15px;">
+				<a href="{{ htmlentities($release_url) }}" class="akeeba-btn--primary">
 					@lang('LBL_RELEASE_VIEWITEMS')
 				</a>
 			</p>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   @package   AkeebaReleaseSystem
-  @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+  @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
   @license   GNU General Public License version 3, or later
 -->
 <config addfieldpath="/administrator/components/com_ars/elements">
@@ -95,20 +95,6 @@
 
     <fieldset name="backend" label="COM_ARS_CONFIG_BACKEND_HEADER_LABEL"
               description="COM_ARS_CONFIG_BACKEND_HEADER_DESC" addformpath="/administrator/components/com_ars/elements">
-
-        <field name="graphswidth" type="list" default="8"
-               label="COM_ARS_CONFIG_BACKEND_GRAPHSWIDTH_LABEL"
-               description="COM_ARS_CONFIG_BACKEND_GRAPHSWIDTH_LABEL">
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-        </field>
 
         <field name="banUnauth" type="radio" default="0"
                label="COM_ARS_CONFIG_BAN_FAILED_LABEL"

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -94,6 +94,8 @@ class Html extends BaseView
 		$this->params = $app->getParams();
 		$this->Itemid = $this->input->getInt('Itemid', 0);
 		$this->menu = $app->getMenu()->getActive();
+
+		$this->addJavascriptFile('media://fef/js/tabs.min.js');
 
 		return true;
 	}

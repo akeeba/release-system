@@ -1,3 +1,18 @@
+# 4.0.0
+
+**New**
+
+* Rewritten interface using our Akeeba Frontend Framework (FEF).
+* Warn the user if either FOF or FEF is not installed.
+* Warn the user about incompatible versions of PHP, use of eAccelerator on PHP 5.4 and use of HHVM.
+
+**Bug fixes**
+
+* List of files not rendered for Amazon S3 categories 
+* Link Created by ARS Item Button is wrong (gh-129)
+* Unpublishing a Download ID in the front-end redirects you to some other page, not the one you were in.
+* Accessing the Update view without specifying a valid format (xml or ini) should result in the XML feed being returned, not an error page 
+
 # 3.2.5
 
 **Bug fixes**

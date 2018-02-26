@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -752,7 +752,7 @@ class Items extends DataModel
 					{
 						$check = substr($folder, 5);
 						$s3 = AmazonS3::getInstance();
-						$items = $s3->getBucket('', rtrim($check, '/') . '/');
+						$items = $s3->getBucket('', rtrim($check, '/') . '/', null, null, '\0', false);
 
 						if (empty($items))
 						{
@@ -1040,7 +1040,7 @@ class Items extends DataModel
 			}
 
 			$s3    = AmazonS3::getInstance();
-			$items = $s3->getBucket('', rtrim($directory, '/') . '/');
+			$items = $s3->getBucket('', rtrim($directory, '/') . '/', null, null, '\0', false);
 
 			if (empty($items))
 			{
@@ -1117,7 +1117,7 @@ class Items extends DataModel
 		if ($useS3)
 		{
 			$s3       = AmazonS3::getInstance();
-			$allFiles = $s3->getBucket('', rtrim($directory, '/') . '/', null, null, null, true);
+			$allFiles = $s3->getBucket('', rtrim($directory, '/') . '/', null, null, '\0', true);
 
 			if (!empty($allFiles))
 			{

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -88,8 +88,8 @@ class SubscriptionIntegration extends Model
 			foreach ($temp as $k => $v)
 			{
 				$ret[] = [
-					'key' => $k,
-					'value' => $v
+					'value' => $k,
+					'text' => $v
 				];
 			}
 		}

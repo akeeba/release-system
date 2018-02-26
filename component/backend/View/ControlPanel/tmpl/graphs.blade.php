@@ -1,8 +1,8 @@
 <?php
 /**
- * package   AkeebaSubs
- * copyright Copyright (c)2010 Nicholas K. Dionysopoulos
- * license   GNU General Public License version 3, or later
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
@@ -70,76 +70,79 @@ JS;
 	@js('media://com_ars/js/jqplot.highlighter.min.js')
 	@js('media://com_ars/js/jquery.colorhelpers.min.js')
 
-	<h3>
-		@lang('COM_ARS_CPANEL_DLSTATSMONTHLY_LABEL')
-	</h3>
+	<div class="akeeba-panel--info">
+		<header class="akeeba-block-header">
+			<h3>@lang('COM_ARS_CPANEL_DLSTATSMONTHLY_LABEL')</h3>
+		</header>
 
-	<div id="mdrChart"></div>
+		<div id="mdrChart"></div>
+	</div>
 
-	<h3>
-		@lang('COM_ARS_CPANEL_DLSTATSDETAILS_LABEL')
-	</h3>
+	<div class="akeeba-panel--info">
+		<header class="akeeba-block-header">
+			<h3>@lang('COM_ARS_CPANEL_DLSTATSDETAILS_LABEL')</h3>
+		</header>
 
-	<table border="0" width="100%" class="table table-striped">
-		<tr>
-			<td class="dlstats-label">
-				@lang('COM_ARS_CPANEL_DL_EVER_LABEL')
-			</td>
-			<td>
-				<?php echo number_format($this->downloadsEver, 0) ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="dlstats-label">
-				@lang('COM_ARS_CPANEL_DL_THISMONTH_LABEL')
-			</td>
-			<td>
-				<?php echo number_format($this->downloadsMonth, 0) ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="dlstats-label">
-				@lang('COM_ARS_CPANEL_DL_THISWEEK_LABEL')
-			</td>
-			<td>
-				<?php echo number_format($this->downloadsWeek, 0) ?>
-			</td>
-		</tr>
-	</table>
+		<table class="akeeba-table--striped">
+			<tr>
+				<td class="dlstats-label">
+					@lang('COM_ARS_CPANEL_DL_EVER_LABEL')
+				</td>
+				<td>
+					<?php echo number_format($this->downloadsEver, 0) ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="dlstats-label">
+					@lang('COM_ARS_CPANEL_DL_THISMONTH_LABEL')
+				</td>
+				<td>
+					<?php echo number_format($this->downloadsMonth, 0) ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="dlstats-label">
+					@lang('COM_ARS_CPANEL_DL_THISWEEK_LABEL')
+				</td>
+				<td>
+					<?php echo number_format($this->downloadsWeek, 0) ?>
+				</td>
+			</tr>
+		</table>
+	</div>
 
-	<div style="clear: both;">&nbsp;</div>
+	<div class="akeeba-panel--info">
+		<header class="akeeba-block-header">
+			<h3>@lang('COM_ARS_CPANEL_POPULAR_WEEK_LABEL')</h3>
+		</header>
 
-	<h3>
-		@lang('COM_ARS_CPANEL_POPULAR_WEEK_LABEL')
-	</h3>
-
-	<?php if (empty($this->popularInWeek)): ?>
-	<p>
-		@lang('COM_ARS_COMMON_NOITEMS_LABEL')
-	</p>
-	<?php else: ?>
-	@foreach($this->popularInWeek as $item)
-		<div class="dlpopular">
-			<div class="dlbasic">
-				<a class="dltitle"
-				   href="index.php?option=com_ars&view=download&id=<?php echo (int)$item->item_id ?>">
-					{{{ $item->title }}}
-				</a>
-				<span class="dltimes">
-					{{ (int) $item->dl }}
-				</span>
+		<?php if (empty($this->popularInWeek)): ?>
+		<p>
+			@lang('COM_ARS_COMMON_NOITEMS_LABEL')
+		</p>
+		<?php else: ?>
+		@foreach($this->popularInWeek as $item)
+			<div class="dlpopular">
+				<div class="dlbasic">
+					<a class="dltitle"
+					   href="index.php?option=com_ars&view=download&id=<?php echo (int)$item->item_id ?>">
+						{{{ $item->title }}}
+					</a>
+					<span class="dltimes">
+						{{ (int) $item->dl }}
+					</span>
+				</div>
+				<div class="dladvanced">
+					<span class="dlcategory">
+						{{{ $item->category }}}
+					</span>
+					<span class="dlversion">
+						{{{ $item->version }}}
+					</span>
+				</div>
 			</div>
-			<div class="dladvanced">
-				<span class="dlcategory">
-					{{{ $item->category }}}
-				</span>
-				<span class="dlversion">
-					{{{ $item->version }}}
-				</span>
-			</div>
-		</div>
-	@endforeach
-	<?php endif; ?>
-
-	@inlineJs($js)
+		@endforeach
+		<?php endif; ?>
+	</div>
+		@inlineJs($js)
 @stop

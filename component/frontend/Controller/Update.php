@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -33,6 +33,13 @@ class Update extends Controller
 		$task     = $this->input->getCmd('task', '');
 		$layout   = $this->input->getCmd('layout', '');
 		$id       = $this->input->getInt('id', null);
+		$format   = $this->input->getCmd('format', 'html');
+
+		// If we're told to render this view as HTML it's a routing error, so let's fall back to an XML update stream
+		if (!in_array($format, ['xml', 'ini']))
+		{
+			$this->input->set('format', 'xml');
+		}
 
 		// Check for menu items bearing layout instead of task
 		if ((empty($task) || ($task == 'main') && !empty($layout)))
@@ -121,6 +128,17 @@ class Update extends Controller
 		$this->input->set('task', $task);
 
 		parent::execute($task);
+
+		/**
+		 * If the CMS application is reporting that the requested rendering format was HTML this was the result of a
+		 * routing error. In this case we have already internally used the XML format. However, if we return execution
+		 * to the CMS it will end up rendering our XML document as the component output of an HTML page. The only way
+		 * to work around this is to forcibly exit the CMS application.
+		 */
+		if (!in_array($format, ['xml', 'ini']))
+		{
+			$this->container->platform->closeApplication();
+		}
 	}
 
 	/**

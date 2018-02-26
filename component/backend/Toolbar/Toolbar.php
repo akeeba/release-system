@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -104,16 +104,6 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 		}
 
 		JToolBarHelper::divider();
-		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
-
-		$this->renderSubmenu();
-	}
-
-	public function onUploads()
-	{
-		$option = $this->container->componentName;
-
-		JToolBarHelper::title(JText::_($option) . ' &ndash; <small>' . JText::_('COM_ARS_TITLE_UPLOADS') . '</small>', str_replace('com_', '', $option));
 		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
 
 		$this->renderSubmenu();

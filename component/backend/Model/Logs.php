@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -14,6 +14,18 @@ use FOF30\Date\Date;
 use FOF30\Model\DataModel;
 use FOF30\Utils\Ip;
 
+/**
+ * @property int	$id
+ * @property int	$user_id
+ * @property int	$item_id
+ * @property string	$accessed_on
+ * @property string	$referer
+ * @property string	$ip
+ * @property string	$country
+ * @property int	$authorized
+ *
+ * @property-read Items	$item
+ */
 class Logs extends DataModel
 {
 	use Mixin\Assertions;
@@ -130,6 +142,8 @@ class Logs extends DataModel
 							  ->where($db->qn('release_id') . ' = ' . $db->q($fltVersion));
 			$db->setQuery($query_outer);
 			$ids    = $db->loadColumn();
+			// Add an always false clause so we won't have SQL errors in case of an empty set
+			$ids[] = '-1';
 			$clause = '(' . implode(", ", $ids) . ')';
 
 			$query->where($db->qn('item_id') . ' IN ' . $clause);

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -17,9 +17,6 @@ defined('_JEXEC') or die;
 
 class Html extends \FOF30\View\DataView\Html
 {
-	/** @var  array  GUI icon definitions */
-	public $iconDefinitions = [];
-
 	/** @var  array  Popular downloads this week */
 	public $popularInWeek = [];
 
@@ -66,9 +63,6 @@ class Html extends \FOF30\View\DataView\Html
 	{
 		/** @var ControlPanel $model */
 		$model = $this->getModel();
-
-		// Icon definitions
-		$this->iconDefinitions = $model->getIconDefinitions();
 
 		// Get the cache
 		$cache = new Cache();

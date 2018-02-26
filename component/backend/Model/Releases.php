@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -236,8 +236,13 @@ class Releases extends DataModel
 
 		if ($fltNoBEUnpub)
 		{
-			// Filter this table
-			$query->where($db->qn('published') . ' != ' . $db->q(0));
+			$published = $this->getState('published', '');
+
+			if ($published != '')
+			{
+				// Filter this table
+				$query->where($db->qn('published') . ' = ' . $db->q($published));
+			}
 
 			// Filter the categories table, too
 			$this->whereHas('category', function(\JDatabaseQuery $subQuery) use($db) {
@@ -382,6 +387,38 @@ class Releases extends DataModel
 		}
 
 		return parent::reorder($where);
+	}
+
+	/**
+	 * Helper function to force eager loading of the whole set. In this way we can perform lookup on fields without the
+	 * need to setup the whole relationship on the model
+	 *
+	 * @param $id
+	 * @param $field
+	 *
+	 * @return null|string
+	 */
+	public static function forceEagerLoad($id, $field)
+	{
+		static $cache;
+
+		if (!$cache)
+		{
+			$container = Container::getInstance('com_ars');
+			$db = $container->db;
+
+			$query = $db->getQuery(true)
+						->select('*')
+						->from($db->qn('#__ars_releases'));
+			$cache = $db->setQuery($query)->loadObjectList('id');
+		}
+
+		if (!isset($cache[$id]) || !isset($cache[$id]->$field))
+		{
+			return null;
+		}
+
+		return $cache[$id]->$field;
 	}
 
 	/**

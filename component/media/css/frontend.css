@@ -12,7 +12,7 @@
 .ars-devrelease-changelog-added		{color: #006600; font-weight: bold;}
 .ars-devrelease-changelog-removed	{color: #660000}
 .ars-devrelease-changelog-bugfix	{color: #000066;}
-.ars-devrelease-changelog-minor		{color: #ccc; font-style: italics;}
+.ars-devrelease-changelog-minor		{color: #ccc; font-style: italic;}
 .ars-devrelease-changelog-important	{color: red; background: yellow; font-weight: bold;}
 .ars-devrelease-changelog-default	{color: #666666}
 
@@ -30,3 +30,9 @@
 .ars-diff-context			{ color: #999; font-style: italic; }
 .ars-diff-added				{ background-color: #00ff00; }
 .ars-diff-deleted			{ background-color: #ff0000; color: white; }
+
+div[class^="ars-release"] h4 {padding-bottom: 10px;}
+div[class^="ars-release"] h4 a{text-decoration: none;}
+div[class^="ars-category"] h4 {padding-bottom: 10px}
+div[class^="ars-category"] h4 a{text-decoration: none}
+div[class^="ars-item"] h4 a{text-decoration: none}

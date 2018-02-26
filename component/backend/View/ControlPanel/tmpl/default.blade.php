@@ -1,8 +1,8 @@
 <?php
 /**
- * package   AkeebaReleaseSystem
- * copyright Copyright (c)2010-2017 Nicholas K. Dionysopoulos
- * license   GNU General Public License version 3, or later
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
  */
 
 /** @var  \Akeeba\ReleaseSystem\Admin\View\ControlPanel\Html  $this */
@@ -32,7 +32,7 @@ render it. --}}
 @yield('phpVersionWarning', '')
 
 @if($this->needsMenuItem)
-<div class="alert alert-info">
+<div class="akeeba-block--info">
 	<h4>
 		@lang('COM_ARS_MISSING_CATEGORIES_MENU_HEAD')
 	</h4>
@@ -45,19 +45,15 @@ render it. --}}
 
 @yield('geoip', '')
 
-<div class="row-fluid">
-	<div id="cpanel" class="span<?php echo $this->graphsWidth ?>">
+<div class="akeeba-container--50-50">
+	<div>
 		@yield('graphs')
 	</div>
-	<div id="cpanel" class="span<?php echo 12 - $this->graphsWidth ?>">
+	<div>
 		@yield('icons')
 	</div>
 </div>
 
-<div class="ak_clr"></div>
-
-<div class="row-fluid footer">
-	<div class="span12">
-		@yield('footer')
-	</div>
+<div>
+	@yield('footer')
 </div>

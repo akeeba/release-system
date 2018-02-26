@@ -600,3 +600,33 @@ div#toolbar div#toolbar-back button.btn span.icon-back::before {
  * Joomla! 3.7 made success buttons fixed width.
  */
 #toolbar .btn-success { width: auto !important; }
+
+div.joomla-version-3{ padding:0 }
+
+div.akeeba-filter-bar--right{
+	text-align: right;
+}
+
+div.akeeba-filter-element {
+	display: inline-block;
+	margin-right: 0.5em;
+}
+
+div.akeeba-filter-element button[class*=--icon-only]+button[class*=--icon-only] {
+	margin-left: 0;
+}
+
+div.akeeba-filter-element button[class*=--icon-only] [class*=akion-] {
+	margin: 0;
+	vertical-align: baseline;
+}
+
+div.akeeba-filter-bar select.custom-select{
+	min-width: 0;
+	max-width: 115px;
+}
+
+.joomla-version-3 .akeeba-filter-joomlacalendarfix {
+	vertical-align: middle;
+	padding-top: 0.35em;
+}

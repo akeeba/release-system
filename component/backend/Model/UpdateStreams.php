@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -114,7 +114,7 @@ class UpdateStreams extends DataModel
 		if (!$this->alias)
 		{
 			\JLoader::import('joomla.filter.input');
-			$alias = str_replace(' ', '-', strtolower($this->name));
+			$alias = str_replace(' ', '-', strtolower($this->getFieldValue('name')));
 			$this->alias = (string)preg_replace('/[^A-Z0-9_-]/i', '', $alias);
 		}
 

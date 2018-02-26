@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010 Nicholas K. Dionysopoulos
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -51,6 +51,28 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 	$directLink = false;
 }
 
+$js = <<<JS
+if (typeof(akeeba) == 'undefined')
+{
+	var akeeba = {};
+}
+
+if (typeof(akeeba.jQuery) === 'undefined')
+{
+	akeeba.jQuery = window.jQuery;
+}
+
+akeeba.jQuery(document).ready(function($){
+    akeeba.fef.tabs();
+
+    $('.release-info-toggler').off().on('click', function(){
+        var target = $(this).data('target');
+        $(target).slideToggle();
+    })
+});
+JS;
+
+$this->getContainer()->template->addJSInline($js);
 ?>
 
 <div class="ars-item-{{{ $item->id }}}">
@@ -67,99 +89,100 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 		</p>
 	@endunless
 	<p>
-		<span class="glyphicon glyphicon-file"></span>
 		<a href="{{ htmlentities($download_url) }}">
 			<code>{{{ basename(($item->type == 'file') ? $item->filename : $item->url) }}}</code>
 		</a>
 
-		<a href="{{ htmlentities($download_url) }}" class="btn btn-link">
-			<span class="glyphicon glyphicon-download-alt"></span>
+		<a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary--small">
+			<span class="akion-ios-cloud-download"></span>
 			@lang('LBL_ITEM_DOWNLOAD')
 		</a>
 
-		<button class="btn btn-link" type="button" data-toggle="collapse"
-				data-target="#ars-item-{{{ $item->id }}}-info" aria-expanded="false"
-				aria-controls="ars-item-{{{ $item->id }}}-info">
-			<span class="glyphicon glyphicon-info-sign"></span>
+		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
+				data-target="#ars-item-{{{ $item->id }}}-info">
+			<span class="akion-information-circled"></span>
 			@lang('COM_ARS_RELEASES_MOREINFO')
 		</button>
 	</p>
-	<p>&nbsp;</p>
 
-	<div id="ars-item-{{{ $item->id }}}-info" class="well collapse">
-		<dl class="dl-horizontal ars-release-properties">
+	<div id="ars-item-{{{ $item->id }}}-info" class="akeeba-panel--info" style="display: none">
+		<table class="akeeba-table--striped ars-release-properties">
 			@unless(!$this->params->get('show_downloads', 1))
-				<dt>
-					@lang('LBL_ITEMS_HITS')
-				</dt>
-				<dd>
-					@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
-				</dd>
+				<tr>
+					<td>
+						@lang('LBL_ITEMS_HITS')
+					</td>
+					<td>
+						@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
+					</td>
+				</tr>
 			@endunless
 
 			@unless(empty($item->filesize) || !$this->params->get('show_filesize',1))
-				<dt>
-					@lang('LBL_ITEMS_FILESIZE')
-				</dt>
-				<dd>
-					{{ Format::sizeFormat($item->filesize) }}
-				</dd>
+				<tr>
+					<td>
+						@lang('LBL_ITEMS_FILESIZE')
+					</td>
+					<td>
+						{{ Format::sizeFormat($item->filesize) }}
+					</td>
+				</tr>
 			@endunless
 
 			@unless(empty($item->md5) || !$this->params->get('show_md5',1))
-				<dt>
-					@lang('LBL_ITEMS_MD5')
-				</dt>
-				<dd>
-					{{{ $item->md5 }}}
-				</dd>
+				<tr>
+					<td>
+						@lang('LBL_ITEMS_MD5')
+					</td>
+					<td>
+						{{{ $item->md5 }}}
+					</td>
+				</tr>
 			@endunless
 
 			@unless(empty($item->sha1) || !$this->params->get('show_sha1',1))
-				<dt>
-					@lang('LBL_ITEMS_SHA1')
-				</dt>
-				<dd>
-					{{{ $item->sha1 }}}
-				</dd>
+				<tr>
+					<td>
+						@lang('LBL_ITEMS_SHA1')
+					</td>
+					<td>
+						{{{ $item->sha1 }}}
+					</td>
+				</tr>
 			@endunless
 
 			@unless(empty($item->environments) || !$this->params->get('show_environments',1))
-				<dt>
-					@lang('LBL_ITEMS_ENVIRONMENTS')
-				</dt>
-				<dd>
-					@foreach($item->environments as $environment)
-						{{ Select::environmentIcon($environment) }}
-					@endforeach
-				</dd>
+				<tr>
+					<td>
+						@lang('LBL_ITEMS_ENVIRONMENTS')
+					</td>
+					<td>
+						@foreach($item->environments as $environment)
+							{{ Select::environmentIcon($environment) }}
+						@endforeach
+					</td>
+				</tr>
 			@endunless
-		</dl>
+		</table>
 
 		@unless(empty($item->description))
-			<div class="ars-item-description well small">
+			<p class="ars-item-description small">
 				<?php echo Format::preProcessMessage($item->description, 'com_ars.item_description'); ?>
-			</div>
+			</p>
 		@endunless
 
-		<div>
-			<div class="pull-left">
-				<p class="readmore">
-					<a href="{{ htmlentities($download_url) }}" class="btn btn-primary">
-						@lang('LBL_ITEM_DOWNLOAD')
-					</a>
-				</p>
-			</div>
+		<div style="margin-top: 10px;">
+			<p>
+				<a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary">
+					@lang('LBL_ITEM_DOWNLOAD')
+				</a>
+			</p>
 			@unless(!$directLink)
-				<div class="pull-left">
-					&nbsp;
-					<a rel="nofollow" href="{{ htmlentities($directLinkURL) }}"
-					   class="directlink hasTip" title="{{{ $this->directlink_description }}}">
-						@lang('COM_ARS_LBL_ITEM_DIRECTLINK')
-					</a>
-				</div>
+				<a rel="nofollow" href="{{ htmlentities($directLinkURL) }}"
+				   class="directlink hasTip" title="{{{ $this->directlink_description }}}">
+					@lang('COM_ARS_LBL_ITEM_DIRECTLINK')
+				</a>
 			@endunless
-			<div class="clearfix"></div>
 		</div>
 	</div>
 </div>

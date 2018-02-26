@@ -1,8 +1,8 @@
 <?php
 /**
- * package   AkeebaReleaseSystem
- * copyright Copyright (c)2010 Nicholas K. Dionysopoulos
- * license   GNU General Public License version 3, or later
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
@@ -22,41 +22,34 @@ $options[] = JHtml::_('select.option', '', 'JALL');
 
 ?>
 
-<div class="alert alert-info">
+<div class="akeeba-block--info">
     @sprintf('COM_ARS_DLIDLABELS_MASTERDLID', Filter::myDownloadID())
 </div>
 
-<form name="arsDownloadID" action="{{ htmlentities($formURI) }}" method="post">
-    <input type="hidden" name="task" value="browse" />
-
-    <div class="form form-inline form-search well well-small well-sm">
-        <span class="form-group">
+<form name="arsDownloadID" action="{{ htmlentities($formURI) }}" method="post" class="akeeba-form--inline">
+        <div class="akeeba-form-group">
             <label for="enabled">
                 @lang('JSEARCH_FILTER_LABEL')
             </label>
             @jhtml('select.genericlist', $options, 'enabled', ['onchange' => 'this.form.submit()', 'class' => 'form-control'], 'value', 'text', $this->getModel()->getState('enabled'), false, true)
-        </span>
+        </div>
 
-        <span class="form-group">
-            <span class="input-group">
-                <input type="text" name="label" value="{{ $this->getModel()->getState('label') }}"
-                       placeholder="@lang('COM_ARS_DLIDLABELS_FIELD_LABEL')"
-                       class="span4 search-query form-control"/>
+        <div class="akeeba-form-group">
+            <input type="text" name="label" value="{{ $this->getModel()->getState('label') }}"
+                   placeholder="@lang('COM_ARS_DLIDLABELS_FIELD_LABEL')" />
+        </div>
 
-                <span class="input-group-btn">
-                    <button type="submit" class="btn btn-default">
-                        <span class="icon icon-search"></span>
-                    </button>
-                </span>
-            </span>
-        </span>
+    <div class="akeeba-form-group--actions">
+        <button type="submit" class="akeeba-btn--primary--small">
+            <span class="akion-search"></span>
+        </button>
+
+        <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=add&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}"
+           class="akeeba-btn--primary--small">
+            <span class="akion-plus-circled"></span>
+            @lang('JNEW')
+        </a>
     </div>
-
-    <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=add&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}"
-       class="btn btn-success">
-        <span class="icon icon-white icon-plus"></span>
-        @lang('JNEW')
-    </a>
 
     <div class="btn-group pull-right">
         {{ $this->pagination->getLimitBox() }}
@@ -109,13 +102,13 @@ $options[] = JHtml::_('select.option', '', 'JALL');
                 </td>
                 <td>
                     <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabels&task=reset&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}"
-                       class="btn btn-warning" title="@lang('COM_ARS_DLIDLABELS_FIELD_RESET')">
-                        <span class="icon icon-white icon-retweet"></span>
+                       class="akeeba-btn--orange--small" title="@lang('COM_ARS_DLIDLABELS_FIELD_RESET')">
+                        <span class="akion-refresh"></span>
                     </a>
                     @unless($item->primary)
                     <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}"
-                       class="btn btn-danger" title="@lang('COM_ARS_DLIDLABELS_FIELD_TRASH')">
-                        <span class="icon icon-white icon-trash"></span>
+                       class="akeeba-btn--red--small" title="@lang('COM_ARS_DLIDLABELS_FIELD_TRASH')">
+                        <span class="akion-trash-b"></span>
                     </a>
                     @endunless
                 </td>
@@ -130,4 +123,6 @@ $options[] = JHtml::_('select.option', '', 'JALL');
         @endif
         </tbody>
     </table>
+
+    <input type="hidden" name="task" value="browse" />
 </form>
