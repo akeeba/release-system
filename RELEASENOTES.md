@@ -14,10 +14,15 @@ Akeeba Release System comes with English (Great Britain) language built-in. Inst
 
 ## Changelog
 
+**New**
+
+* Rewritten interface using our Akeeba Frontend Framework (FEF).
+* Warn the user if either FOF or FEF is not installed.
+* Warn the user about incompatible versions of PHP, use of eAccelerator on PHP 5.4 and use of HHVM.
+
 **Bug fixes**
 
-* State bleedover from Categories to Latest view (gh-121 - Thanks @mbabker)
-* Typo prevents uploads in subdirectories (gh-117)
-* HTTPS option is not taken into account when creating signed URLs (gh-125)
-* ARS Link editor button plugin didn't display an icon (gh-126)
-* ARS Link editor button plugin didn't work with the default editory due to JavaScript API change (gh-126)
+* List of files not rendered for Amazon S3 categories 
+* Link Created by ARS Item Button is wrong (gh-129)
+* Unpublishing a Download ID in the front-end redirects you to some other page, not the one you were in.
+* Accessing the Update view without specifying a valid format (xml or ini) should result in the XML feed being returned, not an error page 
