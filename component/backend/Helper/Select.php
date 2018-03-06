@@ -422,7 +422,10 @@ abstract class Select
 
 		/** @var Environments $environmentsModel */
 		$environmentsModel = $container->factory->model('Environments')->tmpInstance();
-		$items = $environmentsModel->get(true);
+		$items = $environmentsModel
+			->filter_order('title')
+			->filter_order_Dir('ASC')
+			->get(true);
 
 		$options   = array();
 		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_ITEMS_ENVIRONMENT_SELECT') . ' -');
@@ -457,7 +460,10 @@ abstract class Select
 			$model->setState('nobeunpub', 1);
 		}
 
-		$items = $model->get(true);
+		$items = $model
+			->filter_order('version')
+			->filter_order_Dir('ASC')
+			->get(true);
 
 		$options = array();
 
@@ -525,7 +531,10 @@ abstract class Select
 			$categoriesModel->nobeunpub(1);
 		}
 
-		$items = $categoriesModel->get(true);
+		$items = $categoriesModel
+			->filter_order('title')
+			->filter_order_Dir('ASC')
+			->get(true);
 
 		$options   = array();
 		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -');
@@ -569,7 +578,10 @@ abstract class Select
 
 		/** @var UpdateStreams $streamModel */
 		$streamModel = $container->factory->model('UpdateStreams')->tmpInstance();
-		$items = $streamModel->get(true);
+		$items = $streamModel
+			->filter_order('name')
+			->filter_order_Dir('ASC')
+			->get(true);
 
 		$options = array();
 		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_ITEMS_UPDATESTREAM_SELECT') . ' -');
@@ -626,7 +638,10 @@ abstract class Select
 	{
 		/** @var VisualGroups $model */
 		$model = self::getContainer()->factory->model('VisualGroups')->tmpInstance();
-		$items = $model->get(true);
+		$items = $model
+			->filter_order('title')
+			->filter_order_Dir('ASC')
+			->get(true);
 
 		$options[] = JHtml::_('FEFHelper.select.option', '', '- '.JText::_('LBL_CATEGORIES_VGROUP').' -');
 

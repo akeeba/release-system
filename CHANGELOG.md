@@ -1,3 +1,9 @@
+# 4.0.1
+
+**Other changes**
+
+* gh-139 Sort selection lists
+
 # 4.0.0
 
 **New**
