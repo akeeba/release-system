@@ -16,7 +16,7 @@
 			<condition type="missing" value=""/>
 			<query><![CDATA[
 CREATE TABLE IF NOT EXISTS `#__akeeba_common` (
-	`key` varchar(192) NOT NULL,
+	`key` varchar(190) NOT NULL,
 	`value` longtext NOT NULL,
 	PRIMARY KEY (`key`)
 ) DEFAULT COLLATE utf8_general_ci CHARSET=utf8;
@@ -33,7 +33,7 @@ ALTER TABLE `#__akeeba_common` MODIFY COLUMN `value` longtext COLLATE utf8mb4_un
 		<action table="#__akeeba_common" canfail="1">
 			<condition type="true" />
 			<query><![CDATA[
-ALTER TABLE `#__akeeba_common` MODIFY COLUMN `key` varchar(192) COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__akeeba_common` MODIFY COLUMN `key` varchar(190) COLLATE utf8_unicode_ci NOT NULL;
 			]]></query>
 		</action>
 	</sql>
