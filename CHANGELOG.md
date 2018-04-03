@@ -1,4 +1,8 @@
-# 4.0.1
+# 4.1.0
+
+**New**
+
+* gh-141 Additional file hashes
 
 **Other changes**
 
