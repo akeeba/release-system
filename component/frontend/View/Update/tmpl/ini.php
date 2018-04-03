@@ -26,6 +26,7 @@ if (!empty($subpathURL) && ($subpathURL != '/'))
 }
 
 if (!empty($this->items)):
+	/** @var \Akeeba\ReleaseSystem\Site\Model\Items $item */
 	$item         = array_shift($this->items);
 
 	$moreURL = $rootURL .
@@ -110,6 +111,15 @@ releasenotes="<?php echo str_replace("\n", '', str_replace("\r", '', JHtml::_('c
 infourl="<?php echo $moreURL ?>"
 md5="<?php echo $item->md5 ?>"
 sha1="<?php echo $item->sha1 ?>"
+<?php if (!empty($item->sha256)): ?>
+sha256="<?php echo $item->sha256 ?>"
+<?php endif; ?>
+<?php if (!empty($item->sha384)): ?>
+sha384="<?php echo $item->sha384 ?>"
+<?php endif; ?>
+<?php if (!empty($item->sha512)): ?>
+sha512="<?php echo $item->sha512 ?>"
+<?php endif; ?>
 platforms="<?php echo implode(',', $platformKeys) ?>"
 <?php else: ?>
 ; Live Update provision file
