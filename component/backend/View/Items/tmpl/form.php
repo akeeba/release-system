@@ -74,6 +74,24 @@ $item = $this->getItem();
                 </div>
 
                 <div class="akeeba-form-group">
+                    <label for="sha256"><?php echo JText::_('LBL_ITEMS_SHA256'); ?></label>
+
+                    <input type="text" name="sha256" id="sha256" value="<?php echo $this->escape($item->sha256); ?>" />
+                </div>
+
+                <div class="akeeba-form-group">
+                    <label for="sha384"><?php echo JText::_('LBL_ITEMS_SHA384'); ?></label>
+
+                    <input type="text" name="sha384" id="sha384" value="<?php echo $this->escape($item->sha384); ?>" />
+                </div>
+
+                <div class="akeeba-form-group">
+                    <label for="sha512"><?php echo JText::_('LBL_ITEMS_SHA512'); ?></label>
+
+                    <input type="text" name="sha512" id="sha512" value="<?php echo $this->escape($item->sha512); ?>" />
+                </div>
+
+                <div class="akeeba-form-group">
                     <label for="hits"><?php echo JText::_('JGLOBAL_HITS'); ?></label>
 
                     <input type="text" name="hits" id="hits" value="<?php echo $this->escape($item->hits); ?>" />

@@ -72,6 +72,27 @@
             <option value="1">JYes</option>
         </field>
 
+        <field name="show_sha256" type="radio" default="1"
+               label="COM_ARS_CONFIG_SHOW_SHA256_LABEL"
+               description="COM_ARS_CONFIG_SHOW_SHA256_DESC">
+            <option value="0">JNo</option>
+            <option value="1">JYes</option>
+        </field>
+
+        <field name="show_sha384" type="radio" default="1"
+               label="COM_ARS_CONFIG_SHOW_SHA384_LABEL"
+               description="COM_ARS_CONFIG_SHOW_SHA384_DESC">
+            <option value="0">JNo</option>
+            <option value="1">JYes</option>
+        </field>
+
+        <field name="show_sha512" type="radio" default="1"
+               label="COM_ARS_CONFIG_SHOW_SHA512_LABEL"
+               description="COM_ARS_CONFIG_SHOW_SHA512_DESC">
+            <option value="0">JNo</option>
+            <option value="1">JYes</option>
+        </field>
+
         <field name="show_environments" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_LABEL"
                description="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_DESC">

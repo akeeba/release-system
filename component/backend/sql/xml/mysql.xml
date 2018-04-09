@@ -116,6 +116,9 @@ CREATE TABLE `#__ars_items` (
     `updatestream` BIGINT(20) UNSIGNED DEFAULT NULL,
     `md5` varchar(32) DEFAULT NULL,
     `sha1` varchar(64) DEFAULT NULL,
+    `sha256` varchar(64) DEFAULT NULL,
+    `sha384` varchar(96) DEFAULT NULL,
+    `sha512` varchar(128) DEFAULT NULL,
     `filesize` int(10) unsigned DEFAULT NULL,
     `groups` varchar(255) DEFAULT NULL,
     `hits` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
@@ -438,6 +441,27 @@ ALTER TABLE `#__ars_categories` ADD COLUMN `is_supported` TINYINT NOT NULL DEFAU
             <condition type="missing" value="asset_id" />
             <query><![CDATA[
 ALTER TABLE `#__ars_categories` ADD COLUMN `asset_id` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.' AFTER `id`;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="0">
+            <condition type="missing" value="sha256" />
+            <query><![CDATA[
+ALTER TABLE `#__ars_items` ADD COLUMN `sha256` varchar(64) DEFAULT NULL AFTER `sha1`;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="0">
+            <condition type="missing" value="sha384" />
+            <query><![CDATA[
+ALTER TABLE `#__ars_items` ADD COLUMN `sha384` varchar(96) DEFAULT NULL AFTER `sha256`;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="0">
+            <condition type="missing" value="sha512" />
+            <query><![CDATA[
+ALTER TABLE `#__ars_items` ADD COLUMN `sha512` varchar(128) DEFAULT NULL AFTER `sha384`;
             ]]></query>
         </action>
     </sql>

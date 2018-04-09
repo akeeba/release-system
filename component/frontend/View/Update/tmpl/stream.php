@@ -205,6 +205,21 @@ foreach ($this->items as $item):
 		<maintainerurl><?php echo JURI::base(); ?></maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="<?php echo $platformName ?>" version="<?php echo $platformVersion ?>"/>
+		<?php if (!empty($item->md5)): ?>
+		<md5><?php echo $this->escape($item->md5) ?></md5>
+		<?php endif; ?>
+		<?php if (!empty($item->sha1)): ?>
+		<sha1><?php echo $this->escape($item->sha1) ?></sha1>
+		<?php endif; ?>
+		<?php if (!empty($item->sha256)): ?>
+		<sha256><?php echo $this->escape($item->sha256) ?></sha256>
+		<?php endif; ?>
+		<?php if (!empty($item->sha384)): ?>
+		<sha384><?php echo $this->escape($item->sha384) ?></sha384>
+		<?php endif; ?>
+		<?php if (!empty($item->sha512)): ?>
+		<sha512><?php echo $this->escape($item->sha512) ?></sha512>
+		<?php endif; ?>
 		<?php if (($platformName == 'joomla') && (version_compare($platformVersion, '2.5', 'lt'))): ?>
 			<client_id><?php echo (int)$item->client_id ?></client_id>
 		<?php else: ?>
