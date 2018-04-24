@@ -76,6 +76,7 @@ class Logs extends DataModel
 
 		$fltItemText = $this->getState('itemtext', null, 'string');
 		$fltUserText = $this->getState('usertext', null, 'string');
+		$fltUserId   = $this->getState('user_id', null, 'int');
 		$fltCategory = $this->getState('category', null, 'int');
 		$fltVersion  = $this->getState('version', null, 'int');
 
@@ -96,7 +97,18 @@ class Logs extends DataModel
 			}
 		}
 
-		if ($fltUserText)
+		if ($fltUserId)
+		{
+			if (is_array($fltUserId))
+			{
+				$query->where($db->qn('user_id') . ' IN(' . implode(',', array_map([$db, 'q'], $fltUserId)) . ')');
+			}
+			else
+			{
+				$query->where($db->qn('user_id') . ' = ' . $db->q($fltUserId));
+			}
+		}
+		elseif ($fltUserText)
 		{
 			// This extra query approach is required for performance on very large log tables (multiple millions of rows)
 			$userIDs = $this->getUsers($fltUserText);

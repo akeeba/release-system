@@ -7,6 +7,7 @@
 **Other changes**
 
 * gh-139 Sort selection lists
+* Filter ARS logs by user_id (required for data export on our site)
 
 # 4.0.0
 
