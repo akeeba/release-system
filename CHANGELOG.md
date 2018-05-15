@@ -9,6 +9,10 @@
 * gh-139 Sort selection lists
 * Filter ARS logs by user_id (required for data export on our site)
 
+**Bug fixes**
+
+* Creating or editing a category would apply an unexpected filter in the Browse view
+
 # 4.0.0
 
 **New**

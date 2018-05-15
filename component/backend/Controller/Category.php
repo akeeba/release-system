@@ -9,6 +9,7 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 defined('_JEXEC') or die;
 
+use Akeeba\ReleaseSystem\Admin\View\Categories\Html;
 use FOF30\Controller\DataController;
 
 class Category extends DataController
@@ -46,9 +47,14 @@ class Category extends DataController
 			'language'     => '*',
 		];
 
+		/** @var Html $view */
+		$dataModel = $this->getModel();
+
 		foreach ($this->defaultsForAdd as $k => $v)
 		{
-			if ($stateValue = $this->getModel()->getState($k, $v))
+			$stateValue = $dataModel->getState($k);
+
+			if (!is_null($stateValue))
 			{
 				$this->defaultsForAdd[$k] = $stateValue;
 			}
