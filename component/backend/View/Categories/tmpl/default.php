@@ -13,7 +13,7 @@ use FOF30\Utils\FEFHelper\Html as FEFHtml;
 
 defined('_JEXEC') or die;
 
-$js = FEFHtml::jsOrderingBackend($this->order);
+$js = FEFHtml::jsOrderingBackend($this->lists->order);
 $this->getContainer()->template->addJSInline($js);
 
 ?>
@@ -49,7 +49,7 @@ $this->getContainer()->template->addJSInline($js);
             </div>
 		</div>
 
-		<?php echo FEFHtml::selectOrderingBackend($this->getPagination(), $this->sortFields, $this->order, $this->order_Dir)?>
+		<?php echo FEFHtml::selectOrderingBackend($this->getPagination(), $this->sortFields, $this->lists->order, $this->lists->order_Dir)?>
 
 	</section>
 
@@ -63,22 +63,22 @@ $this->getContainer()->template->addJSInline($js);
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
 			</th>
 			<th>
-				<?php echo \JHtml::_('grid.sort', 'COM_ARS_CATEGORIES_FIELD_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo \JHtml::_('grid.sort', 'COM_ARS_CATEGORIES_FIELD_TITLE', 'title', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_CATEGORIES_VGROUP', 'vg_title', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo \JHtml::_('grid.sort', 'LBL_CATEGORIES_VGROUP', 'vg_title', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'COM_ARS_CATEGORIES_FIELD_TYPE', 'type', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo \JHtml::_('grid.sort', 'COM_ARS_CATEGORIES_FIELD_TYPE', 'type', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo \JHtml::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
             </th>
             <th width="8%">
-				<?php echo \JHtml::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo \JHtml::_('grid.sort', 'JPUBLISHED', 'published', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'JFIELD_LANGUAGE_LABEL', 'language', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo \JHtml::_('grid.sort', 'JFIELD_LANGUAGE_LABEL', 'language', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
             </th>
 		</tr>
 		</thead>
@@ -158,8 +158,8 @@ $this->getContainer()->template->addJSInline($js);
 		<input type="hidden" name="view" id="view" value="Categories"/>
 		<input type="hidden" name="boxchecked" id="boxchecked" value="0"/>
 		<input type="hidden" name="task" id="task" value="browse"/>
-		<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->escape($this->order); ?>"/>
-		<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->escape($this->order_Dir); ?>"/>
+		<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->escape($this->lists->order); ?>"/>
+		<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->escape($this->lists->order_Dir); ?>"/>
 		<input type="hidden" name="<?php echo $this->container->platform->getToken(true); ?>" value="1"/>
 	</div>
 </form>

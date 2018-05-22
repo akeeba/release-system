@@ -151,6 +151,39 @@ $this->getContainer()->template->addJSInline($js);
 				</tr>
 			@endunless
 
+			@unless(empty($item->sha256) || !$this->params->get('show_sha256',1))
+				<tr>
+					<td>
+						@lang('LBL_ITEMS_SHA256')
+					</td>
+					<td>
+						{{{ $item->sha256 }}}
+					</td>
+				</tr>
+			@endunless
+
+			@unless(empty($item->sha384) || !$this->params->get('show_sha384',1))
+				<tr>
+					<td>
+						@lang('LBL_ITEMS_SHA384')
+					</td>
+					<td>
+						{{{ $item->sha384 }}}
+					</td>
+				</tr>
+			@endunless
+
+			@unless(empty($item->sha512) || !$this->params->get('show_sha512',1))
+				<tr>
+					<td>
+						@lang('LBL_ITEMS_SHA512')
+					</td>
+					<td>
+						{{{ $item->sha512 }}}
+					</td>
+				</tr>
+			@endunless
+
 			@unless(empty($item->environments) || !$this->params->get('show_environments',1))
 				<tr>
 					<td>

@@ -31,6 +31,9 @@ use JText;
  * @property  int     $updatestream
  * @property  string  $md5
  * @property  string  $sha1
+ * @property  string  $sha256
+ * @property  string  $sha384
+ * @property  string  $sha512
  * @property  int     $filesize
  * @property  string  $groups
  * @property  int     $hits
@@ -720,7 +723,7 @@ class Items extends DataModel
 		}
 
 		// Check for MD5 and SHA1 existence
-		if (empty($this->md5) || empty($this->sha1) || empty($this->filesize))
+		if (empty($this->md5) || empty($this->sha1) || empty($this->sha256) || empty($this->sha384) || empty($this->sha512) || empty($this->filesize))
 		{
 			if ($this->type == 'file')
 			{
@@ -861,6 +864,21 @@ class Items extends DataModel
 					{
 						$this->sha1 = hash_file('sha1', $filename);
 					}
+
+					if (empty($this->sha256))
+					{
+						$this->sha256 = hash_file('sha256', $filename);
+					}
+
+					if (empty($this->sha384))
+					{
+						$this->sha384 = hash_file('sha384', $filename);
+					}
+
+					if (empty($this->sha512))
+					{
+						$this->sha512 = hash_file('sha512', $filename);
+					}
 				}
 				else
 				{
@@ -873,6 +891,8 @@ class Items extends DataModel
 					{
 						$this->sha1 = sha1_file($filename);
 					}
+
+					// NOTE: You're crap outta luck for better checksums in this case, sorry
 				}
 
 				if (empty($this->filesize))
