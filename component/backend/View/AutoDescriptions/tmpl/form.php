@@ -12,6 +12,8 @@ use Akeeba\ReleaseSystem\Admin\Helper\Select;
 
 defined('_JEXEC') or die;
 
+JHtml::_('formbehavior.chosen', '#environments');
+
 /** @var \Akeeba\ReleaseSystem\Admin\Model\AutoDescriptions $item */
 $item = $this->getItem();
 ?>
@@ -42,7 +44,7 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
                     <label for="environments"><?php echo JText::_('LBL_ITEMS_ENVIRONMENTS'); ?></label>
 
-                    <?php echo Select::environments('environments', $item->environments)?>
+                    <?php echo Select::environments('environments', $item->environments, ['multiple' => 'multiple'])?>
                 </div>
 
                 <div class="akeeba-form-group">

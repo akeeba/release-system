@@ -1,3 +1,9 @@
+# 4.1.1
+
+**Bug fixes**
+
+* Automatic Descriptions does not allow selection of multiple environments
+
 # 4.1.0
 
 **New**
