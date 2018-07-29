@@ -69,6 +69,9 @@ $this->getContainer()->template->addJSInline($js);
 	<table class="akeeba-table akeeba-table--striped" id="itemsList">
 		<thead>
 		<tr>
+			<th width="32">
+				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+			</th>
             <th>
 				<?php echo \JHtml::_('grid.sort', 'LBL_LOGS_ITEM', 'item_id', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
@@ -115,6 +118,9 @@ $this->getContainer()->template->addJSInline($js);
 				/** @var \Akeeba\ReleaseSystem\Admin\Model\Logs $row */
 				?>
 				<tr>
+					<td>
+                        <?php echo \JHtml::_('grid.id', ++$i, $row->id); ?>
+                    </td>
                     <td>
                         <strong><?php echo $this->escape($row->item->release->category->title) ?></strong>
                         <em><?php echo $this->escape($row->item->release->version) ?></em>
