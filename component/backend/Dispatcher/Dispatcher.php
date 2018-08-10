@@ -32,6 +32,8 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 	public function onBeforeDispatch()
 	{
+		$this->onBeforeDispatchViewAliases();
+
 		// Render submenus as drop-down navigation bars powered by Bootstrap
 		$this->container->renderer->setOption('linkbar_style', 'classic');
 
