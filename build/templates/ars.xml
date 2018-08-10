@@ -42,8 +42,7 @@
 	<!-- Administrator back-end section -->
 	<administration>
 		<!-- Administration menu -->
-		<menu view="cpanel"
-			img="../media/com_ars/icons/ars_logo_16.png">COM_ARS</menu>
+		<menu>COM_ARS</menu>
 
 		<!-- Back-end files -->
 		<files folder="backend">

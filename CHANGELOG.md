@@ -4,6 +4,10 @@
 
 * Automatic Descriptions does not allow selection of multiple environments
 
+**Other changes**
+
+* Joomla! 3.9 backend Components menu item compatibility
+
 # 4.1.0
 
 **New**
