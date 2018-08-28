@@ -49,8 +49,8 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
         $useFEF   = $this->container->params->get('load_fef', 3);
         $fefReset = $this->container->params->get('fef_reset', 3);
 
-        $this->container->renderer->setOption('load_fef', in_array($useFEF, [2,3]));
-        $this->container->renderer->setOption('fef_reset', in_array($fefReset, [2,3]));
+        $this->container->renderer->setOption('load_fef', in_array($useFEF, [1,3]));
+        $this->container->renderer->setOption('fef_reset', in_array($fefReset, [1,3]));
         $this->container->renderer->setOption('linkbar_style', 'classic');
 
 		// Load common CSS and JavaScript
