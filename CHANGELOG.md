@@ -1,3 +1,15 @@
+# 4.1.1
+
+**Other changes**
+
+* Joomla! 3.9 backend Components menu item compatibility
+
+
+**Bug fixes**
+
+* Automatic Descriptions does not allow selection of multiple environments
+* gh-155 Do not display unpublished Items in Latest view
+
 # 4.1.0
 
 **New**

@@ -93,6 +93,8 @@ switch ($release->maturity)
 
 		@foreach($release->items->sortBy($this->params->get('items_orderby', 'ordering'))->filter(function ($item)
 		{
+			if (!$item->enabled) return false;
+
 			return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true);
 		}) as $i)
 		@include('site:com_ars/Latest/item', ['item' => $i, 'Itemid' => $this->Itemid])

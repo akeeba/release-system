@@ -350,15 +350,17 @@ class Releases extends DataModel
 
 		// Latest version filter. Use as $releases->published(1)->latest(true)->get(true)
 		$fltLatest = $this->getState('latest', false, 'bool');
+		$fltPublished = $this->getState('published', '');
 
-			if ($fltLatest)
+		if ($fltLatest)
 		{
 			$subQuery = $db->getQuery(true)
 				->select($db->qn('r1.id'))
 				->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r1'))
 				->leftJoin($db->qn('#__ars_releases') . ' AS ' . $db->qn('r2') . ' ON ('.
 					$db->qn('r1.category_id') . ' = ' . $db->qn('r2.category_id') . ' AND ' .
-					$db->qn('r1.ordering') . ' > ' . $db->qn('r2.ordering')
+					$db->qn('r1.ordering') . ' > ' . $db->qn('r2.ordering') .
+					($fltPublished !== '' ? (' AND ' . $db->qn('r2.published') . ' = ' . $db->q($fltPublished)) : '')
 					.')')
 				->where($db->qn('r2.ordering') . ' IS NULL');
 
