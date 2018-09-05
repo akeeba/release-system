@@ -1,3 +1,9 @@
+# 4.1.2
+
+**Bug fixes**
+
+* [HIGH] Automatic item descriptions cannot save multiple Environments
+
 # 4.1.1
 
 **Other changes**

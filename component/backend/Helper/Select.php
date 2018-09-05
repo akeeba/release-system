@@ -416,7 +416,7 @@ abstract class Select
 		return \JHtml::image($base_folder . '/media/com_ars/environments/' . $items[ $id ]->icon, $items[ $id ]->title, $attribs);
 	}
 
-	public static function environments($id, $selected = null, $attribs = array())
+	public static function environments($id, $selected = null, $attribs = array(), $name = null)
 	{
 		$container = Container::getInstance('com_ars');
 
@@ -438,7 +438,12 @@ abstract class Select
 			}
 		}
 
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		if (empty($name))
+		{
+			$name = $id;
+		}
+
+		return self::genericlist($options, $name, $attribs, $selected, $id);
 	}
 
 	public static function releases($selected = null, $id = 'release', $attribs = array(), $category_id = null)

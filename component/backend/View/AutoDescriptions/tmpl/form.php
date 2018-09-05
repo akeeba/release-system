@@ -44,7 +44,7 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
                     <label for="environments"><?php echo JText::_('LBL_ITEMS_ENVIRONMENTS'); ?></label>
 
-                    <?php echo Select::environments('environments', $item->environments, ['multiple' => 'multiple'])?>
+                    <?php echo Select::environments('environments', $item->environments, ['multiple' => 'multiple'], 'environments[]')?>
                 </div>
 
                 <div class="akeeba-form-group">
