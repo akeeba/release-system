@@ -1,3 +1,9 @@
+# 4.1.3
+
+**Bug fixes**
+
+* [MEDIUM] Fixed JavaScript error on manual creation of a new Item
+
 # 4.1.2
 
 **Bug fixes**
