@@ -2,6 +2,7 @@
 
 **Bug fixes**
 
+* [HIGH] Update streams lack a "type" attribute for files hosted externally 
 * [MEDIUM] Fixed JavaScript error on manual creation of a new Item
 
 # 4.1.2

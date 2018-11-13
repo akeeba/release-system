@@ -75,44 +75,6 @@ foreach ($this->items as $item):
 			$downloadURL =
 				$rootURL . Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->item_id . $dlid);
 			$basename    = basename($item->filename);
-
-			if (substr(strtolower($basename), -4) == '.zip')
-			{
-				$format = 'zip';
-			}
-			elseif (substr(strtolower($basename), -4) == '.tgz')
-			{
-				$format = 'tgz';
-			}
-			elseif (substr(strtolower($basename), -7) == '.tar.gz')
-			{
-				$format = 'tgz';
-			}
-			elseif (substr(strtolower($basename), -4) == '.tar')
-			{
-				$format = 'tar';
-			}
-			elseif (substr(strtolower($basename), -8) == '.tar.bz2')
-			{
-				$format = 'tbz2';
-			}
-			elseif (substr(strtolower($basename), -4) == '.tbz')
-			{
-				$format = 'tbz2';
-			}
-			elseif (substr(strtolower($basename), -5) == '.tbz2')
-			{
-				$format = 'tbz2';
-			}
-			else
-			{
-				$format = 'UNSUPPORTED';
-			}
-
-			if ($format != 'UNSUPPORTED')
-			{
-				$downloadURL .= '&amp;dummy=my.' . $format;
-			}
 			break;
 
 		case 'link':
@@ -120,6 +82,44 @@ foreach ($this->items as $item):
 			$downloadURL = $item->url;
 			$basename    = basename($item->url);
 			break;
+	}
+
+	if (substr(strtolower($basename), -4) == '.zip')
+	{
+		$format = 'zip';
+	}
+    elseif (substr(strtolower($basename), -4) == '.tgz')
+	{
+		$format = 'tgz';
+	}
+    elseif (substr(strtolower($basename), -7) == '.tar.gz')
+	{
+		$format = 'tgz';
+	}
+    elseif (substr(strtolower($basename), -4) == '.tar')
+	{
+		$format = 'tar';
+	}
+    elseif (substr(strtolower($basename), -8) == '.tar.bz2')
+	{
+		$format = 'tbz2';
+	}
+    elseif (substr(strtolower($basename), -4) == '.tbz')
+	{
+		$format = 'tbz2';
+	}
+    elseif (substr(strtolower($basename), -5) == '.tbz2')
+	{
+		$format = 'tbz2';
+	}
+	else
+	{
+		$format = 'UNSUPPORTED';
+	}
+
+	if ($format != 'UNSUPPORTED')
+	{
+		$downloadURL .= '&amp;dummy=my.' . $format;
 	}
 
 	if (!empty($item->environments) && is_array($item->environments))
