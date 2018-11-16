@@ -1,15 +1,14 @@
-# 4.1.3
-
-**Bug fixes**
-
-* [HIGH] Update streams lack a "type" attribute for files hosted externally 
-* [MEDIUM] Fixed JavaScript error on manual creation of a new Item
-
 # 4.1.2
+
+**Other changes**
+
+* Removing checksums from the update stream by default to work around Joomla 3.9 bugs related to extension updates.
 
 **Bug fixes**
 
 * [HIGH] Automatic item descriptions cannot save multiple Environments
+* [HIGH] Update streams lack a "type" attribute for files hosted externally  
+* [MEDIUM] Fixed JavaScript error on manual creation of a new Item
 
 # 4.1.1
 

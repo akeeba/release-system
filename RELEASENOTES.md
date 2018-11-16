@@ -5,17 +5,17 @@ We are developing, testing and using Akeeba Release System using the latest vers
 * PHP 7.2
 
 Akeeba Release System should be compatible with:
-* Joomla! 3.4, 3.5, 3.6, 3.7, 3.8
-* PHP 5.4, 5.5, 5.6, 7.0, 7.1, 7.2.
+* Joomla! 3.4, 3.5, 3.6, 3.7, 3.8, 3.9
+* PHP 5.4, 5.5, 5.6, 7.0, 7.1, 7.2, 7.3.
 
 ## Changelog
 
 **Other changes**
 
-* Joomla! 3.9 backend Components menu item compatibility
-
+* Removing checksums from the update stream by default to work around Joomla 3.9 bugs related to extension updates.
 
 **Bug fixes**
 
-* Automatic Descriptions does not allow selection of multiple environments
-* gh-155 Do not display unpublished Items in Latest view
+* [HIGH] Automatic item descriptions cannot save multiple Environments
+* [HIGH] Update streams lack a "type" attribute for files hosted externally 
+* [MEDIUM] Fixed JavaScript error on manual creation of a new Item
