@@ -12,8 +12,9 @@ defined('_JEXEC') or die();
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 
-$rootURL    = rtrim(JURI::base(), '/');
-$subpathURL = JURI::base(true);
+$rootURL       = rtrim(JURI::base(), '/');
+$subpathURL    = JURI::base(true);
+$showChecksums = isset($this->showChecksums) ? $this->showChecksums : false;
 
 if (!empty($subpathURL) && ($subpathURL != '/'))
 {
@@ -75,44 +76,6 @@ foreach ($this->items as $item):
 			$downloadURL =
 				$rootURL . Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->item_id . $dlid);
 			$basename    = basename($item->filename);
-
-			if (substr(strtolower($basename), -4) == '.zip')
-			{
-				$format = 'zip';
-			}
-			elseif (substr(strtolower($basename), -4) == '.tgz')
-			{
-				$format = 'tgz';
-			}
-			elseif (substr(strtolower($basename), -7) == '.tar.gz')
-			{
-				$format = 'tgz';
-			}
-			elseif (substr(strtolower($basename), -4) == '.tar')
-			{
-				$format = 'tar';
-			}
-			elseif (substr(strtolower($basename), -8) == '.tar.bz2')
-			{
-				$format = 'tbz2';
-			}
-			elseif (substr(strtolower($basename), -4) == '.tbz')
-			{
-				$format = 'tbz2';
-			}
-			elseif (substr(strtolower($basename), -5) == '.tbz2')
-			{
-				$format = 'tbz2';
-			}
-			else
-			{
-				$format = 'UNSUPPORTED';
-			}
-
-			if ($format != 'UNSUPPORTED')
-			{
-				$downloadURL .= '&amp;dummy=my.' . $format;
-			}
 			break;
 
 		case 'link':
@@ -120,6 +83,44 @@ foreach ($this->items as $item):
 			$downloadURL = $item->url;
 			$basename    = basename($item->url);
 			break;
+	}
+
+	if (substr(strtolower($basename), -4) == '.zip')
+	{
+		$format = 'zip';
+	}
+    elseif (substr(strtolower($basename), -4) == '.tgz')
+	{
+		$format = 'tgz';
+	}
+    elseif (substr(strtolower($basename), -7) == '.tar.gz')
+	{
+		$format = 'tgz';
+	}
+    elseif (substr(strtolower($basename), -4) == '.tar')
+	{
+		$format = 'tar';
+	}
+    elseif (substr(strtolower($basename), -8) == '.tar.bz2')
+	{
+		$format = 'tbz2';
+	}
+    elseif (substr(strtolower($basename), -4) == '.tbz')
+	{
+		$format = 'tbz2';
+	}
+    elseif (substr(strtolower($basename), -5) == '.tbz2')
+	{
+		$format = 'tbz2';
+	}
+	else
+	{
+		$format = 'UNSUPPORTED';
+	}
+
+	if ($format != 'UNSUPPORTED')
+	{
+		$downloadURL .= '&amp;dummy=my.' . $format;
 	}
 
 	if (!empty($item->environments) && is_array($item->environments))
@@ -205,21 +206,24 @@ foreach ($this->items as $item):
 		<maintainerurl><?php echo JURI::base(); ?></maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="<?php echo $platformName ?>" version="<?php echo $platformVersion ?>"/>
-		<?php if (!empty($item->md5)): ?>
-		<md5><?php echo $this->escape($item->md5) ?></md5>
-		<?php endif; ?>
-		<?php if (!empty($item->sha1)): ?>
-		<sha1><?php echo $this->escape($item->sha1) ?></sha1>
-		<?php endif; ?>
-		<?php if (!empty($item->sha256)): ?>
-		<sha256><?php echo $this->escape($item->sha256) ?></sha256>
-		<?php endif; ?>
-		<?php if (!empty($item->sha384)): ?>
-		<sha384><?php echo $this->escape($item->sha384) ?></sha384>
-		<?php endif; ?>
-		<?php if (!empty($item->sha512)): ?>
-		<sha512><?php echo $this->escape($item->sha512) ?></sha512>
-		<?php endif; ?>
+		<?php if ($showChecksums): ?>
+			<?php if (!empty($item->md5)): ?>
+				<md5><?php echo $this->escape($item->md5) ?></md5>
+			<?php endif; ?>
+			<?php if (!empty($item->sha1)): ?>
+				<sha1><?php echo $this->escape($item->sha1) ?></sha1>
+			<?php endif; ?>
+			<?php if (!empty($item->sha256)): ?>
+				<sha256><?php echo $this->escape($item->sha256) ?></sha256>
+			<?php endif; ?>
+			<?php if (!empty($item->sha384)): ?>
+				<sha384><?php echo $this->escape($item->sha384) ?></sha384>
+			<?php endif; ?>
+			<?php if (!empty($item->sha512)): ?>
+				<sha512><?php echo $this->escape($item->sha512) ?></sha512>
+			<?php endif; ?>
+		<?php endif; // $showChecksums
+		?>
 		<?php if (($platformName == 'joomla') && (version_compare($platformVersion, '2.5', 'lt'))): ?>
 			<client_id><?php echo (int)$item->client_id ?></client_id>
 		<?php else: ?>

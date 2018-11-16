@@ -11,6 +11,8 @@ defined('_JEXEC') or die();
 
 /** @var Akeeba\ReleaseSystem\Admin\View\Items\Html $this */
 
+$this->getContainer()->template->addJS('media://com_ars/js/gui-helpers.js');
+
 /** @var \Akeeba\ReleaseSystem\Admin\Model\Items $item */
 $item = $this->getItem();
 ?>

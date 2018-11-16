@@ -19,6 +19,12 @@ class Xml extends Raw
 
 	public $published = false;
 
+	public $updates_name = '';
+	public $updates_desc = '';
+	public $category = 0;
+	public $envs = [];
+	public $showChecksums = false;
+
 	public function display($tpl = null)
 	{
 		$task     = $this->getModel()->getState('task', 'all');
@@ -62,11 +68,12 @@ class Xml extends Raw
 		{
 			foreach ($rawenvs as $env)
 			{
-				$envs[ $env->id ] = $env;
+				$envs[$env->id] = $env;
 			}
 		}
 
-		$this->envs  = $envs;
+		$this->envs          = $envs;
+		$this->showChecksums = $this->container->params->get('show_checksums', 0) == 1;
 		$this->setLayout('stream');
 	}
 

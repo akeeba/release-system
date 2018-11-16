@@ -17,6 +17,15 @@
                label="COM_ARS_CONFIG_UPDATES_DESC_LABEL"
                description="COM_ARS_CONFIG_UPDATES_DESC_DESC"
         />
+
+        <field name="show_checksums" type="radio" default="0"
+               label="COM_ARS_CONFIG_UPDATES_SHOW_CHECKSUMS_LABEL"
+               description="COM_ARS_CONFIG_UPDATES_SHOW_CHECKSUMS_DESC"
+               class="switcher btn-group"
+        >
+            <option value="0">JNo</option>
+            <option value="1">JYes</option>
+        </field>
     </fieldset>
 
     <fieldset name="frontend" label="COM_ARS_CONFIG_FRONTEND_HEADER_LABEL"
@@ -27,14 +36,18 @@
 
         <field name="begenchangelog" type="radio" default="1"
                label="COM_ARS_CONFIG_BEGENCHANGELOG_LABEL"
-               description="COM_ARS_CONFIG_BEGENCHANGELOG_DESC">
+               description="COM_ARS_CONFIG_BEGENCHANGELOG_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
         <field name="becolorisechangelog" type="radio" default="1"
                label="COM_ARS_CONFIG_BECOLORISECHANGELOG_LABEL"
-               description="COM_ARS_CONFIG_BECOLORISECHANGELOG_DESC">
+               description="COM_ARS_CONFIG_BECOLORISECHANGELOG_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
@@ -46,63 +59,81 @@
 
         <field name="show_downloads" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_DOWNLOADS_LABEL"
-               description="COM_ARS_CONFIG_SHOW_DOWNLOADS_DESC">
+               description="COM_ARS_CONFIG_SHOW_DOWNLOADS_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
         <field name="show_filesize" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_FILESIZE_LABEL"
-               description="COM_ARS_CONFIG_SHOW_FILESIZE_DESC">
+               description="COM_ARS_CONFIG_SHOW_FILESIZE_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
         <field name="show_md5" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_MD5_LABEL"
-               description="COM_ARS_CONFIG_SHOW_MD5_DESC">
+               description="COM_ARS_CONFIG_SHOW_MD5_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
         <field name="show_sha1" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_SHA1_LABEL"
-               description="COM_ARS_CONFIG_SHOW_SHA1_DESC">
+               description="COM_ARS_CONFIG_SHOW_SHA1_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
         <field name="show_sha256" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_SHA256_LABEL"
-               description="COM_ARS_CONFIG_SHOW_SHA256_DESC">
+               description="COM_ARS_CONFIG_SHOW_SHA256_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
         <field name="show_sha384" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_SHA384_LABEL"
-               description="COM_ARS_CONFIG_SHOW_SHA384_DESC">
+               description="COM_ARS_CONFIG_SHOW_SHA384_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
         <field name="show_sha512" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_SHA512_LABEL"
-               description="COM_ARS_CONFIG_SHOW_SHA512_DESC">
+               description="COM_ARS_CONFIG_SHOW_SHA512_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
         <field name="show_environments" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_LABEL"
-               description="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_DESC">
+               description="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
         <field name="show_directlink" type="radio" default="1"
                label="COM_ARS_CONFIG_SHOW_DIRECTLINK_LABEL"
-               description="COM_ARS_CONFIG_SHOW_DIRECTLINK_DESC">
+               description="COM_ARS_CONFIG_SHOW_DIRECTLINK_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
@@ -137,7 +168,9 @@
 
         <field name="banUnauth" type="radio" default="0"
                label="COM_ARS_CONFIG_BAN_FAILED_LABEL"
-               description="COM_ARS_CONFIG_BAN_FAILED_DESC">
+               description="COM_ARS_CONFIG_BAN_FAILED_DESC"
+               class="switcher btn-group"
+        >
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
