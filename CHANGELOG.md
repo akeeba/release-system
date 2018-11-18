@@ -1,3 +1,9 @@
+# 4.1.3
+
+**Bug fixes**
+
+* [HIGH] Update streams add dummy.zip to files hosted externally   
+
 # 4.1.2
 
 **Other changes**

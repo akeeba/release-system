@@ -118,7 +118,7 @@ foreach ($this->items as $item):
 		$format = 'UNSUPPORTED';
 	}
 
-	if ($format != 'UNSUPPORTED')
+	if (($format != 'UNSUPPORTED') && ($item->itemtype == 'file'))
 	{
 		$downloadURL .= '&amp;dummy=my.' . $format;
 	}
