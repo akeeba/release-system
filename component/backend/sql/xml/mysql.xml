@@ -238,7 +238,7 @@ CREATE TABLE `#__ars_dlidlabels` (
 ) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
             <query>
-                INSERT INTO `#__ars_environments` ((`id`, `title`, `xmltitle`)
+                INSERT INTO `#__ars_environments` (`id`, `title`, `xmltitle`)
                 VALUES
                     (1, 'Joomla! 1.5', 'joomla/1.5'),
                     (2, 'Joomla! 1.6', 'joomla/1.6'),
