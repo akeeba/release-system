@@ -32,7 +32,6 @@
 	<!-- Media files -->
 	<media destination="com_ars" folder="media">
 		<folder>css</folder>
-		<folder>environments</folder>
 		<folder>icons</folder>
 		<folder>js</folder>
 		<folder>plugins</folder>

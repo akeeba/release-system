@@ -10,7 +10,6 @@ defined('_JEXEC') or die;
 /** @var  \Akeeba\ReleaseSystem\Admin\View\ControlPanel\Html  $this */
 
 $lang = JFactory::getLanguage();
-$icons_root = JURI::base() . 'components/com_ars/assets/images/';
 
 $groups = array('basic', 'tools', 'update');
 

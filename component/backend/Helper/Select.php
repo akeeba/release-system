@@ -413,7 +413,10 @@ abstract class Select
 			$base_folder = rtrim(substr($base_folder, 0, - 13), '/');
 		}
 
-		return \JHtml::image($base_folder . '/media/com_ars/environments/' . $items[ $id ]->icon, $items[ $id ]->title, $attribs);
+		return <<< HTML
+<span class="akeeba-label--teal ars-environment-icon">{$items[$id]->title}</span>
+HTML;
+
 	}
 
 	public static function environments($id, $selected = null, $attribs = array(), $name = null)

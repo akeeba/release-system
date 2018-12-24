@@ -152,6 +152,9 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			// Moving to FEF
             'administrator/components/com_ars/Form',
             'administrator/components/com_ars/View/Upload',
+
+			// Environment icons
+			'media/com_ars/environments',
 		)
 	);
 

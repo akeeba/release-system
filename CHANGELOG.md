@@ -1,4 +1,8 @@
-# 4.1.3
+# 4.2.0
+
+**Other changes**
+
+* Removed environment icons (they are now printed as text labels)
 
 **Bug fixes**
 

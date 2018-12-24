@@ -29,12 +29,6 @@ defined('_JEXEC') or die;
                     <span><?php echo JText::_('LBL_ENVIRONMENT_XMLTITLE_TIP') ?></span>
                 </div>
 
-                <div class="akeeba-form-group">
-                    <label for="icon"><?php echo JText::_('LBL_ENVIRONMENT_ICON'); ?></label>
-
-                    <?php echo Select::imageList('icon', $this->item->icon, 'media/com_ars/environments', array('hideDefault' => true))?>
-                </div>
-
             </div>
         </div>
 

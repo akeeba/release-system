@@ -354,6 +354,11 @@ div.editform-row > option { display: block; float: left; min-width: 90px; height
 .status-rc { color: #333333; font-style: italic; }
 .status-stable { color: #008000; font-weight: bold; }
 
+/**
+ * Items
+ */
+.ars-environment-icon { margin-right: 0.5em !important; }
+
 /*
  * Uploads
  */

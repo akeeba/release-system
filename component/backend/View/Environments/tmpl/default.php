@@ -40,9 +40,6 @@ $this->getContainer()->template->addJSInline($js);
 			<th>
 				<?php echo \JHtml::_('grid.sort', 'LBL_VGROUPS_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
-            <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_ENVIRONMENTS_ICON', 'icon', $this->order_Dir, $this->order, 'browse'); ?>
-            </th>
 		</tr>
 		</thead>
 		<tfoot>
@@ -74,9 +71,6 @@ $this->getContainer()->template->addJSInline($js);
 							<?php echo $row->title?>
 						</a>
 					</td>
-                    <td>
-                        <?php echo JHtml::image('media/com_ars/environments/'.$row->icon, null);?>
-                    </td>
 				</tr>
 			<?php
 			endforeach;
