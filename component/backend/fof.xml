@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  @package   AkeebaReleaseSystem
-  @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
-  @license   GNU General Public License version 3, or later
--->
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
 <fof>
 	<common>
 		<container>

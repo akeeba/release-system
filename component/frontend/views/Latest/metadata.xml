@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
+
 <metadata>
         <view title="ARS_VIEW_LATEST_TITLE">
 			<message><![CDATA[ARS_VIEW_LATEST_DESC]]></message>
