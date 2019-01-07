@@ -1,5 +1,38 @@
 <!-- Akeeba Release System update provisioning XML stream -->
 <updates>
+    <!-- Version 4.2.0 Stable -->
+    <update>
+        <version>4.2.0</version>
+        <tags>
+            <tag>stable</tag>
+        </tags>
+
+        <downloads>
+            <downloadurl type="full" format="zip">
+                https://github.com/akeeba/release-system/releases/download/4.2.0/pkg_ars-4.2.0.zip
+            </downloadurl>
+        </downloads>
+        <infourl title="Akeeba Release System Release Notes">https://github.com/akeeba/release-system/releases/4.2.0
+        </infourl>
+
+        <targetplatform name="joomla" version="3.8"/>
+        <targetplatform name="joomla" version="3.9"/>
+
+        <php_minimum>7.2.0</php_minimum>
+
+        <ars-phpcompat version="7.2"/>
+        <ars-phpcompat version="7.3"/>
+
+        <name>Akeeba Release System package</name>
+        <description>Akeeba Release System - A download manager component for Joomla!, designed for software distribution</description>
+        <element>pkg_ars</element>
+        <type>package</type>
+        <maintainer>Akeeba Ltd</maintainer>
+        <maintainerurl>https://www.akeebabackup.com</maintainerurl>
+        <section>Updates</section>
+        <client>0</client>
+    </update>
+
     <!-- Version 4.1.2 Stable -->
     <update>
         <version>4.1.2</version>
