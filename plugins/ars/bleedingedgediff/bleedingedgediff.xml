@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
+
 <extension version="2.5.0" type="plugin" group="ars" method="upgrade">
     <name>Akeeba Release System - Bleeding Edge automatic file diff</name>
     <author>Nicholas K. Dionysopoulos</author>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  @package   AkeebaReleaseSystem
-  @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
-  @license   GNU General Public License version 3, or later
--->
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
 <schema>
     <!-- Metadata -->
     <meta>
@@ -215,7 +215,6 @@ CREATE TABLE `#__ars_environments` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL DEFAULT '',
   `xmltitle` varchar(20) NOT NULL DEFAULT '1.0',
-  `icon` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
@@ -239,35 +238,50 @@ CREATE TABLE `#__ars_dlidlabels` (
 ) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
             <query>
-                INSERT INTO `#__ars_environments` (`id`, `title`, `xmltitle`, `icon`)
+                INSERT INTO `#__ars_environments` (`id`, `title`, `xmltitle`)
                 VALUES
-                (1, 'Joomla! 1.5', 'joomla/1.5', 'ars-joomla15.png'),
-                (2, 'Joomla! 1.6', 'joomla/1.6', 'ars-joomla16.png'),
-                (3, 'Joomla! 1.7', 'joomla/1.7', 'ars-joomla17.png'),
-                (4, 'Joomla! 2.5', 'joomla/2.5', 'ars-joomla25.png'),
-                (5, 'Joomla! 3.x', 'joomla/3', 'ars-joomla3x.png'),
-                (6, 'Joomla! 3.0', 'joomla/3.0', 'ars-joomla30.png'),
-                (7, 'Joomla! 3.1', 'joomla/3.1', 'ars-joomla31.png'),
-                (8, 'Joomla! 3.2', 'joomla/3.2', 'ars-joomla32.png'),
-                (9, 'Joomla! 3.3', 'joomla/3.3', 'ars-joomla33.png'),
-                (10, 'Joomla! 3.4', 'joomla/3.4', 'ars-joomla34.png'),
-                (11, 'Joomla! 3.5', 'joomla/3.5', 'ars-joomla35.png'),
-                (12, 'Linux (32-bit)', 'linux/x86', 'ars-linux32.png'),
-                (13, 'Linux (64-bit)', 'linux/x86-64', 'ars-linux64.png'),
-                (14, 'Mac OS X', 'macosx/10', 'ars-macosx.png'),
-                (15, 'WHMCS 4.5.2', 'whmcs/4.5.2', 'ars-whmcs452.png'),
-                (16, 'Windows 7', 'win/7', 'ars-win7.png'),
-                (17, 'Windows XP', 'win/xp', 'ars-winxp.png'),
-                (18, 'WordPress 3.2+', 'wordpress/3', 'ars-wp32plus.png'),
-                (19, 'WordPress 4.x', 'wordpress/4', 'ars-wordpress.png'),
-                (20, 'ePub', 'epub/3.0', 'epub.png'),
-                (21, 'PDF', 'pdf/1.5', 'pdf.png'),
-                (22, 'PHP 5.2', 'php/5.2', 'php-52x.png'),
-                (23, 'PHP 5.3', 'php/5.3', 'php-53x.png'),
-                (24, 'PHP 5.4', 'php/5.4', 'php-54x.png'),
-                (25, 'PHP 5.5', 'php/5.5', 'php-55x.png'),
-                (26, 'PHP 5.6', 'php/5.6', 'php-56x.png'),
-                (27, 'PHP 7.0', 'php/7.0', 'php-70x.png');
+                    (1, 'Joomla! 1.5', 'joomla/1.5'),
+                    (2, 'Joomla! 1.6', 'joomla/1.6'),
+                    (3, 'Joomla! 1.7', 'joomla/1.7'),
+                    (4, 'Joomla! 2.5', 'joomla/2.5'),
+                    (5, 'Joomla! 3.x', 'joomla/3'),
+                    (6, 'Joomla! 3.0', 'joomla/3.0'),
+                    (7, 'Joomla! 3.1', 'joomla/3.1'),
+                    (8, 'Joomla! 3.2', 'joomla/3.2'),
+                    (9, 'Joomla! 3.3', 'joomla/3.3'),
+                    (10, 'Joomla! 3.4', 'joomla/3.4'),
+                    (11, 'Joomla! 3.5', 'joomla/3.5'),
+                    (28, 'Joomla! 3.6', 'joomla/3.6'),
+                    (29, 'Joomla! 3.7', 'joomla/3.7'),
+                    (30, 'Joomla! 3.8', 'joomla/3.8'),
+                    (31, 'Joomla! 3.9', 'joomla/3.9'),
+                    (32, 'Joomla! 4.0', 'joomla/4.0'),
+                    (33, 'Joomla! 4.1', 'joomla/4.1'),
+                    (12, 'Linux (32-bit)', 'linux/x86'),
+                    (13, 'Linux (64-bit)', 'linux/x86-64'),
+                    (14, 'macOS', 'macosx/10'),
+                    (15, 'WHMCS 4.5.2', 'whmcs/4.5.2'),
+                    (16, 'Windows 7', 'win/7'),
+                    (17, 'Windows XP', 'win/xp'),
+                    (34, 'Windows 8', 'win/8'),
+                    (35, 'Windows 10', 'win/10'),
+                    (18, 'WordPress 3.2+', 'wordpress/3'),
+                    (19, 'WordPress 4.x', 'wordpress/4'),
+                    (36, 'WordPress 5.x', 'wordpress/5'),
+                    (37, 'ClassicPress 1.x', 'classicpress/1'),
+                    (20, 'ePub', 'epub/3.0'),
+                    (21, 'PDF', 'pdf/1.5'),
+                    (22, 'PHP 5.2', 'php/5.2'),
+                    (23, 'PHP 5.3', 'php/5.3'),
+                    (24, 'PHP 5.4', 'php/5.4'),
+                    (25, 'PHP 5.5', 'php/5.5'),
+                    (26, 'PHP 5.6', 'php/5.6'),
+                    (27, 'PHP 7.0', 'php/7.0'),
+                    (38, 'PHP 7.1', 'php/7.1'),
+                    (39, 'PHP 7.2', 'php/7.2'),
+                    (40, 'PHP 7.3', 'php/7.3'),
+                    (41, 'PHP 8.0', 'php/8.0')
+                ;
             </query>
         </action>
 
@@ -462,6 +476,13 @@ ALTER TABLE `#__ars_items` ADD COLUMN `sha384` varchar(96) DEFAULT NULL AFTER `s
             <condition type="missing" value="sha512" />
             <query><![CDATA[
 ALTER TABLE `#__ars_items` ADD COLUMN `sha512` varchar(128) DEFAULT NULL AFTER `sha384`;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="0">
+            <condition type="missing" operator="not" value="icon" />
+            <query><![CDATA[
+ALTER TABLE `#___ars_environments` DROP COLUMN `icon`;
             ]]></query>
         </action>
     </sql>

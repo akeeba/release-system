@@ -1,3 +1,13 @@
+# 4.2.0
+
+**Other changes**
+
+* Removed environment icons (they are now printed as text labels)
+
+**Bug fixes**
+
+* [HIGH] Update streams add dummy.zip to files hosted externally   
+
 # 4.1.2
 
 **Other changes**

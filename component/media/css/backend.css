@@ -1,9 +1,8 @@
 /*
-	Akeeba Release System User Interface CSS
-	Copyright (c)2010-2017 Nicholas K. Dionysopoulos <nicholas@dionysopoulos.me>
-	Released under the GNU General Public License, version 3 or later
-	$Id$
-*/
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
 
 .icon-ars {
     background-image: url(../icons/ars_logo_16.png);
@@ -353,6 +352,11 @@ div.editform-row > option { display: block; float: left; min-width: 90px; height
 .status-beta { color: #cc8833 }
 .status-rc { color: #333333; font-style: italic; }
 .status-stable { color: #008000; font-weight: bold; }
+
+/**
+ * Items
+ */
+.ars-environment-icon { margin-right: 0.5em !important; }
 
 /*
  * Uploads

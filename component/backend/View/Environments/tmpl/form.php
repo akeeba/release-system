@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -27,12 +27,6 @@ defined('_JEXEC') or die;
 
                     <input type="text" name="xmltitle" id="xmltitle" value="<?php echo $this->escape($this->item->xmltitle); ?>" />
                     <span><?php echo JText::_('LBL_ENVIRONMENT_XMLTITLE_TIP') ?></span>
-                </div>
-
-                <div class="akeeba-form-group">
-                    <label for="icon"><?php echo JText::_('LBL_ENVIRONMENT_ICON'); ?></label>
-
-                    <?php echo Select::imageList('icon', $this->item->icon, 'media/com_ars/environments', array('hideDefault' => true))?>
                 </div>
 
             </div>

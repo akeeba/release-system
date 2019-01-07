@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -10,7 +10,6 @@ defined('_JEXEC') or die;
 /** @var  \Akeeba\ReleaseSystem\Admin\View\ControlPanel\Html  $this */
 
 $lang = JFactory::getLanguage();
-$icons_root = JURI::base() . 'components/com_ars/assets/images/';
 
 $groups = array('basic', 'tools', 'update');
 

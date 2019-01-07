@@ -1,8 +1,8 @@
 <?php
 /**
- *  @package  	AkeebaReleaseSystem
- *  @copyright	Copyright (c)2010-2017 Nicholas K. Dionysopoulos
- *  @license   	GNU General Public License version 3, or later
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
  */
 
 namespace Akeeba\ReleaseSystem\Admin\View\Environments;
@@ -42,8 +42,7 @@ class Html extends BaseView
 
 		// Construct the array of sorting fields
 		$this->sortFields = array(
-			'title'		=> JText::_('LBL_VGROUPS_TITLE'),
-			'icon' 	 	=> JText::_('LBL_ENVIRONMENTS_ICON')
+			'title'		=> JText::_('LBL_VGROUPS_TITLE')
 		);
 	}
 }

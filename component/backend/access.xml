@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  @package   AkeebaReleaseSystem
-  @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
-  @license   GNU General Public License version 3, or later
--->
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
 <access component="com_ars">
 	<section name="component">
 		<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />

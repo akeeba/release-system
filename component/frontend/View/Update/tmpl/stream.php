@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2018 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -118,7 +118,7 @@ foreach ($this->items as $item):
 		$format = 'UNSUPPORTED';
 	}
 
-	if ($format != 'UNSUPPORTED')
+	if (($format != 'UNSUPPORTED') && ($item->itemtype == 'file'))
 	{
 		$downloadURL .= '&amp;dummy=my.' . $format;
 	}
