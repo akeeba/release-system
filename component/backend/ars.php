@@ -8,7 +8,7 @@
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-if (version_compare(PHP_VERSION, '5.4.0', 'lt'))
+if (version_compare(PHP_VERSION, '7.2.0', 'lt'))
 {
 	(include_once __DIR__ . '/View/wrongphp.php') or die('Your PHP version is too old for this component.');
 
