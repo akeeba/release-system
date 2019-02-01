@@ -5,6 +5,9 @@
  * @license   GNU General Public License version 3, or later
  */
 
+// Protect from unauthorized access
+defined('_JEXEC') or die();
+
 /** @var Throwable $e */
 /** @var string $title */
 /** @var bool $isPro */

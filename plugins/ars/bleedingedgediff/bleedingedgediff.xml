@@ -21,6 +21,8 @@
     <files>
         <filename plugin="bleedingedgediff">bleedingedgediff.php</filename>
         <filename>bleedingedgediff.diff.php</filename>
+        <filename>.htaccess</filename>
+        <filename>web.config</filename>
     </files>
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.plg_ars_bleedingedgediff.ini</language>

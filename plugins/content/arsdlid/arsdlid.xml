@@ -17,6 +17,8 @@
     <description>PLG_CONTENT_ARSDLID_DESCRIPTION</description>
     <files>
         <filename plugin="arsdlid">arsdlid.php</filename>
+        <filename>.htaccess</filename>
+        <filename>web.config</filename>
     </files>
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.plg_content_arsdlid.ini</language>

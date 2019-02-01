@@ -17,6 +17,8 @@
     <description>PLG_SYSTEM_ARSJED_XML_DESCRIPTION</description>
     <files>
         <filename plugin="arsjed">arsjed.php</filename>
+        <filename>.htaccess</filename>
+        <filename>web.config</filename>
     </files>
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.plg_system_arsjed.ini</language>

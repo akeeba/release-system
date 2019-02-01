@@ -17,6 +17,8 @@
     <description>MOD_ARSDLID_DESC</description>
     <files>
         <filename module="mod_arsdlid">mod_arsdlid.php</filename>
+        <filename>.htaccess</filename>
+        <filename>web.config</filename>
         <folder>tmpl</folder>
     </files>
     <languages folder="language">

@@ -1,3 +1,9 @@
+# 4.2.1
+
+**Other changes**
+
+* Protection of all component and plugin folders against direct web access
+
 # 4.2.0
 
 **Other changes**

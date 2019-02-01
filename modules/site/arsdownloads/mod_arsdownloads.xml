@@ -17,6 +17,8 @@
     <description>MOD_ARSDOWNLOADS_DESC</description>
     <files>
         <filename module="mod_arsdownloads">mod_arsdownloads.php</filename>
+        <filename>.htaccess</filename>
+        <filename>web.config</filename>
         <folder>tmpl</folder>
     </files>
     <languages folder="language">
