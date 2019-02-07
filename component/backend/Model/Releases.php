@@ -280,7 +280,7 @@ class Releases extends DataModel
 		switch ($fltMaturity)
 		{
 			case 'beta':
-				$query->where($db->qn('maturity') . ' IN (' . $db->q('beta'), ',' . $db->q('rc') . ',' . $db->q('stable') . ')');
+				$query->where($db->qn('maturity') . ' IN (' . $db->q('beta') . ',' . $db->q('rc') . ',' . $db->q('stable') . ')');
 				break;
 			case 'rc':
 				$query->where($db->qn('maturity') . ' IN (' . $db->q('rc') . ',' . $db->q('stable') . ')');

@@ -4,6 +4,10 @@
 
 * Protection of all component and plugin folders against direct web access
 
+**Bug fixes**
+
+* [MEDIUM] Releases: filter by Maturity was broken for the "Beta" option
+
 # 4.2.0
 
 **Other changes**
