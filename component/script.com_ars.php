@@ -155,6 +155,9 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			// Environment icons
 			'media/com_ars/environments',
+
+			// Common tables (they're installed by FOF)
+			'administrator/components/com_ars/sql/common',
 		)
 	);
 

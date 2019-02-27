@@ -7,6 +7,7 @@
 **Bug fixes**
 
 * [MEDIUM] Releases: filter by Maturity was broken for the "Beta" option
+* [LOW] Unused common tables folder 
 
 # 4.2.0
 
