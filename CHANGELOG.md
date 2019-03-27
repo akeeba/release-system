@@ -3,6 +3,7 @@
 **Other changes**
 
 * Protection of all component and plugin folders against direct web access
+* Update for new FOF 3 behavior regarding backend and frontend caching
 
 **Bug fixes**
 

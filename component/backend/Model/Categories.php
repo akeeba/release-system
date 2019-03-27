@@ -81,6 +81,11 @@ class Categories extends DataModel
 	use Mixin\VersionedCopy {
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
 	}
+	use Mixin\ClearCacheAfterActions
+	{
+		Mixin\ClearCacheAfterActions::onAfterCopy as onAfterCopyCacheClean;
+	}
+
 
 	/**
 	 * Should I turn off pre-save checks? See onBeforeLock for more information.
@@ -454,6 +459,8 @@ class Categories extends DataModel
 				'category_id' => $categoryAfterCopy->id
 			]);
 		});
+
+		$this->onAfterCopyCacheClean($categoryAfterCopy);
 
 		self::$recordBeforeCopy = null;
 	}

@@ -9,6 +9,7 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\ReleaseSystem\Admin\Model\Mixin\ClearCacheAfterActions;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 
@@ -78,6 +79,10 @@ class Releases extends DataModel
 	use Mixin\Assertions;
 	use Mixin\VersionedCopy {
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
+	}
+	use Mixin\ClearCacheAfterActions
+	{
+		Mixin\ClearCacheAfterActions::onAfterCopy as onAfterCopyCacheClean;
 	}
 
 	/** @var  DataModel\Collection  Used to handle copies */
@@ -665,5 +670,7 @@ class Releases extends DataModel
 		});
 
 		self::$itemsBeforeCopy = null;
+
+		$this->onAfterCopyCacheClean($releaseAfterCopy);
 	}
 }

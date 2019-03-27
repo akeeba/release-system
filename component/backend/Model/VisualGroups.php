@@ -48,6 +48,7 @@ use FOF30\Model\DataModel;
 class VisualGroups extends DataModel
 {
 	use Mixin\Assertions;
+	use Mixin\ClearCacheAfterActions;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
