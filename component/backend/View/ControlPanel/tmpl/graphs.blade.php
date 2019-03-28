@@ -10,17 +10,20 @@ defined('_JEXEC') or die;
 /** @var  \Akeeba\ReleaseSystem\Admin\View\ControlPanel\Html $this */
 
 $pointsJavascript = '';
+$min = null;
+$max = null;
 
 foreach ($this->monthlyDailyReport as $pointDate => $pointDownloads)
 {
+	$min            = is_null($min) ? $pointDate : $min;
+	$max            = $pointDate;
 	$pointDate      = $this->escape($pointDate);
-	$pointDownloads = (int)$pointDownloads;
+	$pointDownloads = (int) $pointDownloads;
 
 	$pointsJavascript .= <<< JS
 dlPoints.push(['$pointDate', parseInt('$pointDownloads' * 100) * 1 / 100]);
 
 JS;
-
 }
 
 $js = <<< JS
@@ -36,8 +39,9 @@ akeeba.jQuery(document).ready(function ($)
 		show:         true,
 		axes:         {
 			xaxis: {
-				renderer:     $.jqplot.DateAxisRenderer,
-				tickInterval: '1 week'
+			    min:          '{$min}',
+			    max:          '{$max}',
+				renderer:     $.jqplot.DateAxisRenderer
 			},
 			yaxis: {min: 0, tickOptions: {formatString: '%u'}}
 		},

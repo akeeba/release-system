@@ -408,27 +408,18 @@ class ControlPanel extends Model
 	{
 		$db = $this->container->db;
 
-		$now = $this->container->platform->getDate();
-
-		// I need to do this since if I'm on March 30th and I go back of a month I would got February 30th
-		// that will we shifted to March 2nd. This is not a bug (!!!) it's the expected behavior of PHP (!!!!!!!)
-		if (date('d') > date('d', strtotime('last day of -1 month')))
-		{
-			$last_month = $this->container->platform->getDate(date('Y-m-d', strtotime('last day of -1 month')));
-		}
-		else
-		{
-			$last_month = $this->container->platform->getDate(date('Y-m-d', strtotime('-1 month')));
-		}
+		$now        = $this->container->platform->getDate();
+		$last_month = $this->container->platform->getDate();
+		$last_month->sub(new \DateInterval('P35D'));
 
 		$query = $db->getQuery(true)
-					->select(array(
-						'DATE(' . $db->qn('accessed_on') . ') AS ' . $db->qn('day'),
-						'COUNT(*) AS ' . $db->qn('dl')
-					))
-					->from($db->qn('#__ars_log'))
-					->where($db->qn('accessed_on') . ' BETWEEN ' . $db->q($last_month->toSql()) . ' AND ' . $db->q($now->toSql()))
-					->order($db->qn('accessed_on') . ' ASC');
+			->select([
+				'DATE(' . $db->qn('accessed_on') . ') AS ' . $db->qn('day'),
+				'COUNT(*) AS ' . $db->qn('dl'),
+			])
+			->from($db->qn('#__ars_log'))
+			->where($db->qn('accessed_on') . ' BETWEEN ' . $db->q($last_month->toSql()) . ' AND ' . $db->q($now->toSql()))
+			->order($db->qn('accessed_on') . ' ASC');
 
 		if ($db->name == 'postgresql')
 		{
@@ -444,12 +435,12 @@ class ControlPanel extends Model
 
 		if (is_null($data))
 		{
-			$data = array();
+			$data = [];
 		}
 
 		$nowParts = getdate();
-		$today = mktime(0, 0, 0, $nowParts['mon'], $nowParts['mday'], $nowParts['year']);
-		$ret = array();
+		$today    = mktime(0, 0, 0, $nowParts['mon'], $nowParts['mday'], $nowParts['year']);
+		$ret      = [];
 
 		for ($i = 30; $i >= 0; $i--)
 		{
