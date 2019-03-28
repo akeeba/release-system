@@ -56,7 +56,7 @@ trait ClearCacheAfterActions
 		CacheCleaner::clearCacheGroups(['com_ars']);
 	}
 
-	protected function onAfterDelete($id)
+	protected function onAfterDelete(&$id)
 	{
 		CacheCleaner::clearCacheGroups(['com_ars']);
 	}
