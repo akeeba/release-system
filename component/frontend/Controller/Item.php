@@ -283,6 +283,21 @@ class Item extends DataController
 			{
 				throw new \Exception('Filtering failed');
 			}
+
+			if (!$item->published)
+			{
+				throw new \Exception('Item unpublished');
+			}
+
+			if (!$item->release->published)
+			{
+				throw new \Exception('Release unpublished');
+			}
+
+			if (!$item->release->category->published)
+			{
+				throw new \Exception('Category unpublished');
+			}
 		}
 		catch (\Exception $e)
 		{

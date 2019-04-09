@@ -8,6 +8,7 @@
 
 **Bug fixes**
 
+* [HIGH] Unpublished items or items in unpublished releases or categories could be downloaded
 * [MEDIUM] Releases: filter by Maturity was broken for the "Beta" option
 * [LOW] Unused common tables folder 
 
