@@ -8,12 +8,12 @@
 <extension type="module" version="2.5.0" method="upgrade" client="site">
     <name>Akeeba Release System - Download ID</name>
     <author>Nicholas K. Dionysopoulos</author>
-    <creationDate>April 2011</creationDate>
+    <creationDate>2019-04-22</creationDate>
     <copyright>Copyright (c) 2010-2017 Nicholas K. Dionysopoulos</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL v3 or later</license>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>http://www.akeebabackup.com</authorUrl>
-    <version>1.0</version>
+    <version>4.2.1</version>
     <description>MOD_ARSDLID_DESC</description>
     <files>
         <filename module="mod_arsdlid">mod_arsdlid.php</filename>
