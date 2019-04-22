@@ -12,8 +12,8 @@
     <authorUrl>http://www.akeebabackup.com</authorUrl>
     <copyright>Copyright (c)2010-2017 Nicholas K. Dionysopoulos</copyright>
     <license>GNU General Public License version 3, or later</license>
-    <creationDate>2011-07-31</creationDate>
-    <version>1.0</version>
+    <creationDate>2019-04-22</creationDate>
+    <version>4.2.1</version>
     <description>
         Automatically generates a colorised unified diff (like what GitHub does)
         for items automatically created in a Bleeding Edge repository.
@@ -21,6 +21,8 @@
     <files>
         <filename plugin="bleedingedgediff">bleedingedgediff.php</filename>
         <filename>bleedingedgediff.diff.php</filename>
+        <filename>.htaccess</filename>
+        <filename>web.config</filename>
     </files>
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.plg_ars_bleedingedgediff.ini</language>

@@ -12,8 +12,8 @@
     <authorUrl>http://www.akeebabackup.com</authorUrl>
     <copyright>Copyright (c)2010-2017 Nicholas K. Dionysopoulos</copyright>
     <license>GNU General Public License version 3, or later</license>
-    <creationDate>2011-07-31</creationDate>
-    <version>1.0</version>
+    <creationDate>2019-04-22</creationDate>
+    <version>4.2.1</version>
     <description>PLG_ARS_BLEEDINGEDGMATURITY_XML_DESCRIPTION</description>
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.plg_ars_bleedingedgematurity.ini</language>
@@ -21,6 +21,8 @@
     </languages>
     <files>
         <filename plugin="bleedingedgematurity">bleedingedgematurity.php</filename>
+        <filename>.htaccess</filename>
+        <filename>web.config</filename>
     </files>
 
     <scriptfile>script.php</scriptfile>

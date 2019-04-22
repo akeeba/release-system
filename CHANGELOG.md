@@ -1,3 +1,17 @@
+# 4.2.1
+
+**Other changes**
+
+* Protection of all component and plugin folders against direct web access
+* Update for new FOF 3 behavior regarding backend and frontend caching
+* Slightly less wonky backend downloads graph
+
+**Bug fixes**
+
+* [HIGH] Unpublished items or items in unpublished releases or categories could be downloaded
+* [MEDIUM] Releases: filter by Maturity was broken for the "Beta" option
+* [LOW] Unused common tables folder 
+
 # 4.2.0
 
 **Other changes**

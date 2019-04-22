@@ -12,11 +12,13 @@
     <authorUrl>http://www.akeebabackup.com</authorUrl>
     <copyright>Copyright (c)2010-2017 Nicholas K. Dionysopoulos</copyright>
     <license>GNU General Public License version 3, or later</license>
-    <creationDate>2012-11-04</creationDate>
-    <version>1.0</version>
+    <creationDate>2019-04-22</creationDate>
+    <version>4.2.1</version>
     <description>PLG_CONTENT_ARSLATEST_XML_DESCRIPTION</description>
     <files>
         <filename plugin="arslatest">arslatest.php</filename>
+        <filename>.htaccess</filename>
+        <filename>web.config</filename>
     </files>
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.plg_content_arslatest.ini</language>

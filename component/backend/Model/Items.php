@@ -98,6 +98,7 @@ class Items extends DataModel
 	use Mixin\VersionedCopy {
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
 	}
+	use Mixin\ClearCacheAfterActions;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.

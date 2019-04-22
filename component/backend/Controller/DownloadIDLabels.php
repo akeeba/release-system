@@ -9,10 +9,10 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 defined('_JEXEC') or die;
 
+use FOF30\Container\Container;
 use FOF30\Controller\DataController;
 use FOF30\Controller\Exception\ItemNotFound;
 use FOF30\Controller\Exception\TaskNotFound;
-use FOF30\Utils\CacheCleaner;
 
 class DownloadIDLabels extends DataController
 {
@@ -238,35 +238,13 @@ class DownloadIDLabels extends DataController
 		$this->onBeforeEdit();
 	}
 
-	protected function onAfterPublish()
-	{
-		// After touching a Download ID I have to clear the cache, otherwise I won't see the changes
-		CacheCleaner::clearCacheGroups(array('com_ars'));
-
-		return true;
-	}
-
 	protected function onBeforeUnpublish()
 	{
 		$this->onBeforeEdit();
 	}
 
-	protected function onAfterUnpublish()
-	{
-		// After touching a Download ID I have to clear the cache, otherwise I won't see the changes
-		CacheCleaner::clearCacheGroups(array('com_ars'));
-
-		return true;
-	}
-
 	protected function onBeforeRemove()
 	{
 		$this->onBeforeEdit();
-	}
-
-	protected function onAfterRemove()
-	{
-		// After deleting a Download ID I have to clear the cache, otherwise I won't see the changes
-		CacheCleaner::clearCacheGroups(array('com_ars'));
 	}
 }

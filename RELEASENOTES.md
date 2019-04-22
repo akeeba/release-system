@@ -13,8 +13,12 @@ Akeeba Release System should be compatible with:
 
 **Other changes**
 
-* Removed environment icons (they are now printed as text labels)
+* Protection of all component and plugin folders against direct web access
+* Update for new FOF 3 behavior regarding backend and frontend caching
+* Slightly less wonky backend downloads graph
 
 **Bug fixes**
 
-* [HIGH] Update streams add dummy.zip to files hosted externally   
+* [HIGH] Unpublished items or items in unpublished releases or categories could be downloaded
+* [MEDIUM] Releases: filter by Maturity was broken for the "Beta" option
+* [LOW] Unused common tables folder 

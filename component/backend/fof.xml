@@ -15,6 +15,14 @@
 		</container>
 	</common>
 
+	<backend>
+		<view name="*">
+			<config>
+				<option name="cacheableTasks"></option>
+			</config>
+		</view>
+	</backend>
+
 	<frontend>
 		<container>
 			<option name="factoryClass">FOF30\Factory\BasicFactory</option>

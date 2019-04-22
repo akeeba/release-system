@@ -8,15 +8,17 @@
 <extension type="module" version="2.5.0" method="upgrade" client="site">
     <name>Akeeba Release System - My Downloads</name>
     <author>Nicholas K. Dionysopoulos</author>
-    <creationDate>January 2012</creationDate>
+    <creationDate>2019-04-22</creationDate>
     <copyright>Copyright (c) 2010-2017 Nicholas K. Dionysopoulos</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL v3 or later</license>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>http://www.akeebabackup.com</authorUrl>
-    <version>1.1</version>
+    <version>4.2.1</version>
     <description>MOD_ARSDOWNLOADS_DESC</description>
     <files>
         <filename module="mod_arsdownloads">mod_arsdownloads.php</filename>
+        <filename>.htaccess</filename>
+        <filename>web.config</filename>
         <folder>tmpl</folder>
     </files>
     <languages folder="language">
