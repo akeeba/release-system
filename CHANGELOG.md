@@ -1,3 +1,9 @@
+# 4.2.2
+
+**Bug fixes**
+
+* [LOW] Default access for Category is blank which would make the category invisible in the front-end (gh-147) 
+
 # 4.2.1
 
 **Other changes**

@@ -47,14 +47,9 @@ class Category extends DataController
 			'language'     => '*',
 		];
 
-		/** @var Html $view */
-		$dataModel = $this->getModel();
-
 		foreach ($this->defaultsForAdd as $k => $v)
 		{
-			$stateValue = $dataModel->getState($k);
-
-			if (!is_null($stateValue))
+			if ($stateValue = $this->getModel()->getState($k, $v))
 			{
 				$this->defaultsForAdd[$k] = $stateValue;
 			}
