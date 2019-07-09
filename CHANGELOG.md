@@ -2,6 +2,7 @@
 
 **Bug fixes**
 
+* [HIGH] Cannot change the update stream of an item through the UI
 * [LOW] Default access for Category is blank which would make the category invisible in the front-end (gh-147) 
 
 # 4.2.1

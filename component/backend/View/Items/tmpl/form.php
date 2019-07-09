@@ -140,7 +140,7 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
                     <label for="updatestream"><?php echo JText::_('LBL_ITEMS_UPDATESTREAM'); ?></label>
 
-					<?php echo Select::updatestreams('updatestream[]', $item->updatestream)?>
+					<?php echo Select::updatestreams('updatestream', $item->updatestream)?>
                 </div>
 
                 <div class="akeeba-form-group">
