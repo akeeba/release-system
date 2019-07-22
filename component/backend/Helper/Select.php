@@ -576,6 +576,7 @@ HTML;
 		$options[] = JHtml::_('FEFHelper.select.option', 'packages', \JText::_('LBL_UPDATETYPES_PACKAGES'));
 		$options[] = JHtml::_('FEFHelper.select.option', 'plugins', \JText::_('LBL_UPDATETYPES_PLUGINS'));
 		$options[] = JHtml::_('FEFHelper.select.option', 'templates', \JText::_('LBL_UPDATETYPES_TEMPLATES'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'files', \JText::_('LBL_UPDATETYPES_FILES'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
