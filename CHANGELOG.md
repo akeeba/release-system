@@ -1,5 +1,9 @@
 # 4.2.2
 
+**Other changes**
+
+* Better download URLs in XML update streams
+
 **Bug fixes**
 
 * [HIGH] Cannot change the update stream of an item through the UI

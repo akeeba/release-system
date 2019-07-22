@@ -11,6 +11,8 @@ defined('_JEXEC') or die();
 
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 $rootURL       = rtrim(JURI::base(), '/');
 $subpathURL    = JURI::base(true);
@@ -60,8 +62,8 @@ else
 JFactory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
 
 require_once JPATH_SITE . '/components/com_ars/router.php';
-ComArsRouter::$routeRaw  = false;
-ComArsRouter::$routeHtml = false;
+//ComArsRouter::$routeRaw  = false;
+//ComArsRouter::$routeHtml = false;
 
 $jVersion = new JVersion;
 
@@ -115,12 +117,27 @@ foreach ($this->items as $item):
 	}
 	else
 	{
-		$format = 'UNSUPPORTED';
+		$fileNameParts = explode('.', $basename);
+		$format        = array_pop($fileNameParts);
 	}
 
-	if (($format != 'UNSUPPORTED') && ($item->itemtype == 'file'))
+	if ($item->itemtype == 'file')
 	{
-		$downloadURL .= '&amp;dummy=my.' . $format;
+		$dlUri = Uri::getInstance($downloadURL);
+
+		if (Factory::getConfig()->get('sef_suffix', 0) == 1)
+		{
+			$pathParts = explode('.', $dlUri->getPath());
+
+			if ((count($pathParts) > 1) && (array_pop($pathParts) == 'raw'))
+			{
+				$dlUri->setPath(implode('.', $pathParts));
+			}
+		}
+
+		$dlUri->setVar('format', 'raw');
+		$dlUri->setVar('dummy', 'my.' . $format);
+		$downloadURL = $dlUri->toString();
 	}
 
 	if (!empty($item->environments) && is_array($item->environments))
@@ -194,10 +211,14 @@ foreach ($this->items as $item):
 		<type><?php echo $streamTypeMap[ $item->type ]; ?></type>
 		<version><?php echo $item->version ?></version>
 		<infourl
-            title="<?php echo $item->cat_title . ' ' . $item->version ?>"><?php echo $rootURL . Router::_('index.php?option=com_ars&view=Items&release_id=' . $item->release_id) ?></infourl>
+				title="<?php echo $item->cat_title . ' ' . $item->version ?>">
+			<![CDATA[<?php echo $rootURL . Router::_('index.php?option=com_ars&view=Items&release_id=' . $item->release_id) ?>
+			]]>
+		</infourl>
 		<downloads>
 			<downloadurl type="full"
-						 format="<?php echo $format ?>"><?php echo $downloadURL ?></downloadurl>
+						 format="<?php echo $format ?>"><![CDATA[<?php echo $downloadURL ?>]]>
+			</downloadurl>
 		</downloads>
 		<tags>
 			<tag><?php echo $item->maturity ?></tag>
