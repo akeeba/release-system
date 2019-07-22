@@ -8,12 +8,12 @@
 <extension version="2.5.0" type="plugin" group="editors-xtd" method="upgrade">
     <name>PLG_EDITORS-XTD_ARSLINK</name>
     <author>Nicholas K. Dionysopoulos / AkeebaBackup.com</author>
-    <creationDate>2019-04-22</creationDate>
+    <creationDate>2019-07-22</creationDate>
     <copyright>Copyright (C) 2010-2017 Nicholas K. Dionysopoulos / AkeebaBackup.com. All rights reserved.</copyright>
     <license>GNU General Public License version 3 or later</license>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>www.akeebabackup.com</authorUrl>
-    <version>4.2.1</version>
+    <version>4.2.2</version>
     <description>PLG_ARSLINK_XML_DESCRIPTION</description>
     <files>
         <filename plugin="arslink">arslink.php</filename>

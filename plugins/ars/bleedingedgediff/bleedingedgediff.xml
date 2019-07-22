@@ -12,8 +12,8 @@
     <authorUrl>http://www.akeebabackup.com</authorUrl>
     <copyright>Copyright (c)2010-2017 Nicholas K. Dionysopoulos</copyright>
     <license>GNU General Public License version 3, or later</license>
-    <creationDate>2019-04-22</creationDate>
-    <version>4.2.1</version>
+    <creationDate>2019-07-22</creationDate>
+    <version>4.2.2</version>
     <description>
         Automatically generates a colorised unified diff (like what GitHub does)
         for items automatically created in a Bleeding Edge repository.
