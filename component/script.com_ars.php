@@ -158,6 +158,9 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			// Common tables (they're installed by FOF)
 			'administrator/components/com_ars/sql/common',
+
+			// Unused files
+			'administrator/components/com_ars/Helper/IniParser.php',
 		)
 	);
 

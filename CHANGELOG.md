@@ -1,3 +1,9 @@
+# 4.2.3
+
+**Other changes**
+
+* Remove unused INI parser helper class
+
 # 4.2.2
 
 **Other changes**
