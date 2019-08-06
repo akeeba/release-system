@@ -3,6 +3,7 @@
 **Other changes**
 
 * Remove unused INI parser helper class
+* Work towards future PHP 7.4 support
 
 # 4.2.2
 
