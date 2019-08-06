@@ -9,12 +9,10 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 
 defined('_JEXEC') or die;
 
-use Akeeba\ReleaseSystem\Admin\Helper\IniParser;
 use FOF30\Container\Container;
 use FOF30\Database\Installer;
 use FOF30\Model\Model;
 use JRegistry;
-use JText;
 
 class ControlPanel extends Model
 {
