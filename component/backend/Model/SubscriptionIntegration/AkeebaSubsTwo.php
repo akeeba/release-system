@@ -46,8 +46,6 @@ class AkeebaSubsTwo extends Base
 			return false;
 		}
 
-		\JLoader::import('joomla.filesystem.folder');
-
 		// Akeeba Subscriptions 5.0+ does not have the admin views folder any more
 		if (!\JFolder::exists(JPATH_ADMINISTRATOR . '/components/' . $this->componentName . '/views'))
 		{
@@ -74,10 +72,6 @@ class AkeebaSubsTwo extends Base
 		if (is_null($theList))
 		{
 			$theList = array();
-
-			\JLoader::import('joomla.filesystem.folder');
-			\JLoader::import('joomla.filesystem.file');
-			\JLoader::import('f0f.include');
 
 			$rawList = \F0FModel::getTmpInstance('Levels', 'AkeebasubsModel')
 							   ->enabled('')
@@ -111,13 +105,6 @@ class AkeebaSubsTwo extends Base
 			return [];
 		}
 
-		\JLoader::import('f0f.include');
-
-		\JLoader::import('joomla.utilities.date');
-		$jNow = new Date();
-
-		\JLoader::import('joomla.filesystem.folder');
-		\JLoader::import('joomla.filesystem.file');
 		$rawList = \F0FModel::getTmpInstance('Subscriptions', 'AkeebasubsModel', array('table' => 'subscriptions', 'input' => array('option' => 'com_akeebasubs')))
 						   ->enabled(1)
 						   ->user_id($user_id)

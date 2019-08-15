@@ -46,8 +46,6 @@ class AkeebaSubsFive extends Base
 			return false;
 		}
 
-		\JLoader::import('joomla.filesystem.folder');
-
 		// Akeeba Subscriptions 5.0+ does not have the admin views folder any more
 		if (\JFolder::exists(JPATH_ADMINISTRATOR . '/components/' . $this->componentName . '/views'))
 		{

@@ -184,7 +184,6 @@ class Logs extends DataModel
 
 		if (empty($this->accessed_on) || ($this->accessed_on == '0000-00-00 00:00:00'))
 		{
-			\JLoader::import('joomla.utilities.date');
 			$date = new Date();
 			$this->accessed_on = $date->toSql();
 		}

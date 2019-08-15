@@ -15,8 +15,6 @@ use Joomla\String\StringHelper;
 
 defined('_JEXEC') or die();
 
-JLoader::import('joomla.plugin.plugin');
-
 class plgContentArslatest extends CMSPlugin
 {
 	/**
@@ -52,8 +50,6 @@ class plgContentArslatest extends CMSPlugin
 		}
 
 		// Do not run if Akeeba Subscriptions is not enabled
-		JLoader::import('joomla.application.component.helper');
-
 		if (!ComponentHelper::isEnabled('com_ars'))
 		{
 			$this->enabled = false;

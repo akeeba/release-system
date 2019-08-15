@@ -10,7 +10,6 @@ namespace Akeeba\ReleaseSystem\Admin\View\ControlPanel;
 use Akeeba\ReleaseSystem\Admin\Helper\Cache;
 use Akeeba\ReleaseSystem\Admin\Model\ControlPanel;
 use FOF30\Date\Date;
-use JLoader;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 
@@ -93,7 +92,6 @@ class Html extends \FOF30\View\DataView\Html
 		$cache->save();
 
 		// Get chart area width
-		JLoader::import('joomla.application.component.helper');
 		$params = ComponentHelper::getParams('com_ars');
 		$width  = $params->get('graphswidth', 8);
 

@@ -113,7 +113,6 @@ class UpdateStreams extends DataModel
 		// If the alias is missing, auto-create a new one
 		if (!$this->alias)
 		{
-			\JLoader::import('joomla.filter.input');
 			$alias = str_replace(' ', '-', strtolower($this->getFieldValue('name')));
 			$this->alias = (string)preg_replace('/[^A-Z0-9_-]/i', '', $alias);
 		}

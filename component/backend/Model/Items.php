@@ -658,7 +658,6 @@ class Items extends DataModel
 				break;
 		}
 
-		\JLoader::import('joomla.filter.filterinput');
 		$filter = InputFilter::getInstance(null, null, 1, 1);
 
 		// Filter the description using a safe HTML filter
@@ -751,8 +750,6 @@ class Items extends DataModel
 
 				if (!empty($folder))
 				{
-					\JLoader::import('joomla.filesystem.folder');
-
 					if (!\JFolder::exists($folder))
 					{
 						$folder = JPATH_ROOT . '/' . $folder;
@@ -803,7 +800,6 @@ class Items extends DataModel
 
 					if ($data !== false)
 					{
-						\JLoader::import('joomla.filesystem.file');
 						$result = \JFile::write($target, $data);
 					}
 
@@ -820,8 +816,6 @@ class Items extends DataModel
 
 			if (!empty($filename) && is_file($filename))
 			{
-				\JLoader::import('joomla.filesystem.file');
-
 				if (!\JFile::exists($filename))
 				{
 					$filename = null;

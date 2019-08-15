@@ -272,7 +272,6 @@ class Categories extends DataModel
 		// If the alias is missing, auto-create a new one
 		if (!$this->alias)
 		{
-			\JLoader::import('joomla.filter.input');
 			$alias = str_replace(' ', '-', strtolower($this->title));
 			$this->alias = (string)preg_replace('/[^A-Z0-9_-]/i', '', $alias);
 		}
@@ -297,8 +296,6 @@ class Categories extends DataModel
 		$this->assertNotInArray($this->alias, $aliases, 'COM_ARS_CATEGORY_ERR_NEEDS_UNIQUE_SLUG');
 
 		// Check directory
-		\JLoader::import('joomla.filesystem.folder');
-
 		$this->directory = rtrim($this->directory, '/');
 
 		$check = trim($this->directory);

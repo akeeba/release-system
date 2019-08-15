@@ -16,8 +16,6 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 }
 
 // Do not run if Akeeba Subscriptions is not enabled
-JLoader::import('joomla.application.component.helper');
-
 if (!ComponentHelper::isEnabled('com_ars'))
 {
 	return;

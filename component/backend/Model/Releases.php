@@ -499,8 +499,6 @@ class Releases extends DataModel
 		// If the alias is missing, auto-create a new one
 		if (!$this->alias)
 		{
-			\JLoader::import('joomla.filter.input');
-
 			// Get the category title
 			/** @var Categories $catModel */
 			$catModel = $this->container->factory->model('Categories')->tmpInstance();
@@ -523,7 +521,6 @@ class Releases extends DataModel
 			$this->maturity = 'beta';
 		}
 
-		\JLoader::import('joomla.filter.filterinput');
 		$filter = InputFilter::getInstance(null, null, 1, 1);
 
 		// Filter the description using a safe HTML filter

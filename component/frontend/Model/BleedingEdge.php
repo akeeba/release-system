@@ -172,7 +172,6 @@ class BleedingEdge extends Model
 			$first_release = null;
 		}
 
-		\JLoader::import('joomla.filesystem.file');
 		$first_changelog = array();
 
 		/** @var Releases $first_release */
@@ -236,7 +235,6 @@ class BleedingEdge extends Model
 						$this_changelog = '';
 					}
 
-					\JLoader::import('joomla.utilities.date');
 					$jNow = new Date();
 
 					$alias = ApplicationHelper::stringURLSafe($folder);
@@ -415,7 +413,6 @@ class BleedingEdge extends Model
 					continue;
 				}
 
-				\JLoader::import('joomla.utilities.date');
 				$jNow = new Date();
 				$data = array(
 					'id'          => 0,
@@ -493,7 +490,6 @@ class BleedingEdge extends Model
 
 		$notes = '';
 
-		\JLoader::import('joomla.application.component.helper');
 		$params = ComponentHelper::getParams('com_ars');
 
 		$generate_changelog = $params->get('begenchangelog', 1);

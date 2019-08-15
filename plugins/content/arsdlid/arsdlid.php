@@ -46,8 +46,6 @@ class plgContentArsdlid extends CMSPlugin
 		}
 
 		// Do not run if Akeeba Subscriptions is not enabled
-		JLoader::import('joomla.application.component.helper');
-
 		if (!ComponentHelper::isEnabled('com_ars'))
 		{
 			$this->enabled = false;

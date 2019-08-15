@@ -46,14 +46,10 @@ abstract class Base implements IntegrationInterface
 			return false;
 		}
 
-		\JLoader::import('joomla.filesystem.folder');
-
 		if (!\JFolder::exists(JPATH_ROOT . '/components/' . $this->componentName))
 		{
 			return false;
 		}
-
-		\JLoader::import('cms.application.component.helper');
 
 		if (!ComponentHelper::getComponent('com_akeebasubs', true)->enabled)
 		{

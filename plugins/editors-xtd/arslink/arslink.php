@@ -14,8 +14,6 @@ use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die;
 
-JLoader::import('joomla.plugin.plugin');
-
 /**
  * Editor ARS link buton
  */

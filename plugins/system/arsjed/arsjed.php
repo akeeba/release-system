@@ -13,8 +13,6 @@ use Joomla\CMS\Plugin\CMSPlugin;
 
 defined('_JEXEC') or die();
 
-JLoader::import('joomla.plugin.plugin');
-
 class plgSystemArsjed extends CMSPlugin
 {
 	/**
@@ -41,8 +39,6 @@ class plgSystemArsjed extends CMSPlugin
 		}
 
 		// Do not run if Akeeba Subscriptions is not enabled
-		JLoader::import('joomla.application.component.helper');
-
 		if (ComponentHelper::isEnabled('com_ars'))
 		{
 			$this->enabled = false;

@@ -50,7 +50,6 @@ if (!empty($this->items)):
 			break;
 	}
 
-	JLoader::import('joomla.utilities.date');
 	$date = new Date($item->created);
 
 	// Process supported environments

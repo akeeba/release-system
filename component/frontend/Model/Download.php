@@ -42,9 +42,6 @@ class Download extends Model
 			return;
 		}
 
-		\JLoader::import('joomla.filesystem.folder');
-		\JLoader::import('joomla.filesystem.file');
-
 		$folder = $item->release->category->directory;
 
 		if (!\JFolder::exists($folder))
@@ -398,7 +395,6 @@ class Download extends Model
 		$this->haveLoggedInAUser = true;
 
 		// Get a fake login response
-		\JLoader::import('joomla.user.authentication');
 		$options = array('remember' => false);
 		$response = new JAuthenticationResponse;
 		$response->status = JAuthentication::STATUS_SUCCESS;
@@ -414,7 +410,6 @@ class Download extends Model
 		unset($results); // Just to make phpStorm happy
 
 		// Set the user in the session, effectively logging in the user
-		\JLoader::import('joomla.user.helper');
 		$userid = UserHelper::getUserId($response->username);
 		$user   = $this->container->platform->getUser($userid);
 

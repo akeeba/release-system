@@ -148,7 +148,7 @@ class plgArsBleedingedgediff extends CMSPlugin
 		$category = $db->loadObject();
 
 		$folder = $category->directory;
-		JLoader::import('joomla.filesystem.folder');
+
 		if (!JFolder::exists($folder))
 		{
 			$folder = JPATH_ROOT . '/' . $folder;
