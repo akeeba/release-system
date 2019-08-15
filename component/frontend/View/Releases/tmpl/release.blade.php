@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Admin\Helper\Format;
+use Joomla\CMS\Language\Text;
 
 $released = $this->container->platform->getDate($item->created);
 
@@ -86,7 +87,7 @@ $this->getContainer()->template->addJSInline($js);
 	</h4>
 	<p>
 		<strong>@lang('LBL_RELEASES_RELEASEDON')</strong>:
-		@jhtml('date', $released, JText::_('DATE_FORMAT_LC1'))
+		@jhtml('date', $released, Text::_('DATE_FORMAT_LC1'))
 		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
 				data-target="#ars-release-{{{ $item->id }}}-info">
 			<span class="akion-information-circled"></span>
@@ -102,7 +103,7 @@ $this->getContainer()->template->addJSInline($js);
 			</tr>
 			<tr>
 				<td>@lang('LBL_RELEASES_RELEASEDON')</td>
-				<td>@jhtml('date', $released, JText::_('DATE_FORMAT_LC1'))</td>
+				<td>@jhtml('date', $released, Text::_('DATE_FORMAT_LC1'))</td>
 			</tr>
 		@if($this->params->get('show_downloads', 1))
 			<tr>

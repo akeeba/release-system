@@ -5,6 +5,8 @@
  * @license   GNU General Public License version 3, or later
  */
 
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Admin\Model\DownloadIDLabels  $item  The model */
@@ -20,14 +22,14 @@ $url = JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=' . $task
 if ($item->enabled)
 {
 	$btnStyle = 'akeeba-btn--green--small';
-	$btnIcon = 'akion-checkmark';
-	$btnTitle = JText::_('JPUBLISHED');
+	$btnIcon  = 'akion-checkmark';
+	$btnTitle = Text::_('JPUBLISHED');
 }
 else
 {
 	$btnStyle = 'akeeba-btn--red--small';
-	$btnIcon = 'akion-close';
-	$btnTitle = JText::_('JUNPUBLISHED');
+	$btnIcon  = 'akion-close';
+	$btnTitle = Text::_('JUNPUBLISHED');
 }
 
 if ($item->primary): ?>

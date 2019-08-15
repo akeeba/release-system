@@ -10,7 +10,7 @@ namespace Akeeba\ReleaseSystem\Admin\View\DownloadIDLabels;
 defined('_JEXEC') or die;
 
 use FOF30\View\DataView\Html as BaseView;
-use JText;
+use Joomla\CMS\Language\Text;
 
 class Html extends BaseView
 {
@@ -47,11 +47,11 @@ class Html extends BaseView
 
 		// Construct the array of sorting fields
 		$this->sortFields = array(
-			'ars_dlidlabel_id' 	=> 'ID',
-			'label' 			=> JText::_('COM_ARS_DLIDLABELS_FIELD_LABEL'),
-			'username' 			=> JText::_('JGLOBAL_USERNAME'),
-			'dlid' 				=> JText::_('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID'),
-			'enabled'	 	 	=> JText::_('JPUBLISHED'),
+			'ars_dlidlabel_id' => 'ID',
+			'label'            => Text::_('COM_ARS_DLIDLABELS_FIELD_LABEL'),
+			'username'         => Text::_('JGLOBAL_USERNAME'),
+			'dlid'             => Text::_('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID'),
+			'enabled'          => Text::_('JPUBLISHED'),
 		);
 	}
 }

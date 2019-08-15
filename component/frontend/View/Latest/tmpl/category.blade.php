@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Admin\Helper\Format;
+use Joomla\CMS\Language\Text;
 
 // Do I have a release?
 if (!isset($this->releases[$item->id]))
@@ -87,7 +88,7 @@ switch ($release->maturity)
 				@lang('LBL_RELEASES_RELEASEDON')
 			</td>
 			<td colspan="2">
-				@jhtml('date', $released, JText::_('DATE_FORMAT_LC2'))
+				@jhtml('date', $released, Text::_('DATE_FORMAT_LC2'))
 			</td>
 		</tr>
 

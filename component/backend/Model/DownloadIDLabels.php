@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 use FOF30\Utils\CacheCleaner;
+use Joomla\CMS\Language\Text;
 
 /**
  * Model for add-on Download IDs
@@ -109,7 +110,7 @@ class DownloadIDLabels extends DataModel
 	{
 		if ($this->primary)
 		{
-			throw new \RuntimeException(\JText::_('COM_ARS_DLIDLABELS_ERR_CANTDELETEDEFAULT'));
+			throw new \RuntimeException(Text::_('COM_ARS_DLIDLABELS_ERR_CANTDELETEDEFAULT'));
 		}
 	}
 
@@ -198,7 +199,7 @@ class DownloadIDLabels extends DataModel
 	{
 		if ($this->primary)
 		{
-			throw new \RuntimeException(\JText::_("COM_ARS_DLIDLABELS_ERR_CANTUNPUBLISHDEFAULT"));
+			throw new \RuntimeException(Text::_("COM_ARS_DLIDLABELS_ERR_CANTUNPUBLISHDEFAULT"));
 		}
 	}
 }

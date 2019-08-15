@@ -9,8 +9,8 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 defined('_JEXEC') or die;
 
-use Akeeba\ReleaseSystem\Admin\View\Categories\Html;
 use FOF30\Controller\DataController;
+use Joomla\CMS\Language\Text;
 
 class Category extends DataController
 {
@@ -31,7 +31,7 @@ class Category extends DataController
 
 			$this->setRedirect(
 				$returnUrl,
-				\JText::_('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'),
+				Text::_('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'),
 				'error'
 			);
 

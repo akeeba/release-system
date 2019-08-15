@@ -8,6 +8,7 @@
 use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\Language\Text;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\Categories\Html */
 
@@ -22,10 +23,10 @@ $this->getContainer()->template->addJSInline($js);
 	<section class="akeeba-panel--33-66 akeeba-filter-bar-container">
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
 			<div class="akeeba-filter-element akeeba-form-group">
-				<input type="text" name="title" placeholder="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"
+				<input type="text" name="title" placeholder="<?php echo Text::_('LBL_VGROUPS_TITLE'); ?>"
 					   id="filter_title" onchange="document.adminForm.submit()"
 					   value="<?php echo $this->escape($this->filters['title']); ?>"
-					   title="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"/>
+					   title="<?php echo Text::_('LBL_VGROUPS_TITLE'); ?>" />
 			</div>
 
             <div class="akeeba-filter-element akeeba-form-group">
@@ -93,7 +94,7 @@ $this->getContainer()->template->addJSInline($js);
 		<?php if (!count($this->items)):?>
 			<tr>
 				<td colspan="11">
-					<?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL')?>
+					<?php echo Text::_('COM_ARS_COMMON_NOITEMS_LABEL') ?>
 				</td>
 			</tr>
 		<?php endif;?>
@@ -101,7 +102,7 @@ $this->getContainer()->template->addJSInline($js);
 		if ($this->items):
 			$i = 0;
 			foreach($this->items as $row):
-                $type = $row->type == 'normal' ? JText::_('COM_ARS_CATEGORIES_TYPE_NORMAL') : JText::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE');
+				$type = $row->type == 'normal' ? Text::_('COM_ARS_CATEGORIES_TYPE_NORMAL') : Text::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE');
 				$edit = 'index.php?option=com_ars&view=Category&id='.$row->id;
 				$enabled = $this->container->platform->getUser()->authorise('core.edit.state', 'com_ars')
 				?>

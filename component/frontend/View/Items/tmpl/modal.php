@@ -9,6 +9,7 @@ use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
 
@@ -65,10 +66,10 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="title" placeholder="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"
-                       id="filter_title" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['title']); ?>"
-                       title="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"/>
+				<input type="text" name="title" placeholder="<?php echo Text::_('LBL_VGROUPS_TITLE'); ?>"
+					   id="filter_title" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['title']); ?>"
+					   title="<?php echo Text::_('LBL_VGROUPS_TITLE'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
@@ -91,35 +92,35 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
         <div class="akeeba-filter-bar akeeba-filter-bar--right">
             <div class="akeeba-filter-element akeeba-form-group">
                 <label for="limit" class="element-invisible">
-					<?php echo \JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?>
+	                <?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?>
                 </label>
 				<?php echo $this->pagination->getLimitBox(); ?>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
                 <label for="directionTable" class="element-invisible">
-					<?php echo \JText::_('JFIELD_ORDERING_DESC'); ?>
+	                <?php echo Text::_('JFIELD_ORDERING_DESC'); ?>
                 </label>
                 <select name="directionTable" id="directionTable" class="input-medium custom-select" onchange="Joomla.orderTable()">
                     <option value="">
-						<?php echo \JText::_('JFIELD_ORDERING_DESC'); ?>
+	                    <?php echo Text::_('JFIELD_ORDERING_DESC'); ?>
                     </option>
                     <option value="asc" <?php echo ($this->order_Dir == 'asc') ? 'selected="selected"' : ""; ?>>
-						<?php echo \JText::_('JGLOBAL_ORDER_ASCENDING'); ?>
+	                    <?php echo Text::_('JGLOBAL_ORDER_ASCENDING'); ?>
                     </option>
                     <option value="desc" <?php echo ($this->order_Dir == 'desc') ? 'selected="selected"' : ""; ?>>
-						<?php echo \JText::_('JGLOBAL_ORDER_DESCENDING'); ?>
+	                    <?php echo Text::_('JGLOBAL_ORDER_DESCENDING'); ?>
                     </option>
                 </select>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
                 <label for="sortTable" class="element-invisible">
-					<?php echo \JText::_('JGLOBAL_SORT_BY'); ?>
+	                <?php echo Text::_('JGLOBAL_SORT_BY'); ?>
                 </label>
                 <select name="sortTable" id="sortTable" class="input-medium custom-select" onchange="Joomla.orderTable()">
                     <option value="">
-						<?php echo \JText::_('JGLOBAL_SORT_BY'); ?>
+	                    <?php echo Text::_('JGLOBAL_SORT_BY'); ?>
                     </option>
 					<?php echo \JHtml::_('select.options', $this->sortFields, 'value', 'text', $this->order); ?>
                 </select>
@@ -138,7 +139,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
                 <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
             </th>
             <th>
-				<?php echo JText::_('LBL_ITEMS_CATEGORY'); ?>
+	            <?php echo Text::_('LBL_ITEMS_CATEGORY'); ?>
             </th>
             <th>
 				<?php echo \JHtml::_('grid.sort', 'LBL_ITEMS_RELEASE', 'release', $this->order_Dir, $this->order, 'browse'); ?>
@@ -150,7 +151,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
 				<?php echo \JHtml::_('grid.sort', 'LBL_ITEMS_TYPE', 'type', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo JText::_('LBL_ITEMS_ENVIRONMENTS'); ?>
+	            <?php echo Text::_('LBL_ITEMS_ENVIRONMENTS'); ?>
             </th>
             <th>
 				<?php echo \JHtml::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->order_Dir, $this->order, 'browse'); ?>
@@ -177,7 +178,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
 		<?php if (!count($this->items)):?>
             <tr>
                 <td colspan="11">
-					<?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL')?>
+	                <?php echo Text::_('COM_ARS_COMMON_NOITEMS_LABEL') ?>
                 </td>
             </tr>
 		<?php endif;?>
@@ -187,7 +188,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
 
 			/** @var \Akeeba\ReleaseSystem\Admin\Model\Items $row */
 			foreach($this->items as $row):
-				$type = $row->type == 'link' ? JText::_('LBL_ITEMS_TYPE_LINK') : JText::_('LBL_ITEMS_TYPE_FILE');
+				$type = $row->type == 'link' ? Text::_('LBL_ITEMS_TYPE_LINK') : Text::_('LBL_ITEMS_TYPE_FILE');
 
 				$category_id = Releases::forceEagerLoad($row->release_id, 'category_id');
 				$link = 'index.php?option=com_ars&view=Item&id='.$row->id;

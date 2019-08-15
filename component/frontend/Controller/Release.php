@@ -14,6 +14,7 @@ use Akeeba\ReleaseSystem\Site\Model\BleedingEdge;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Controller\DataController;
+use Joomla\CMS\Language\Text;
 
 class Release extends DataController
 {
@@ -24,7 +25,7 @@ class Release extends DataController
 
 		if (!in_array($format, ['html', 'feed']) && !($this->checkACL('core.manage') || $this->checkACL('core.admin')))
 		{
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		if ($task == 'default')
@@ -136,7 +137,7 @@ class Release extends DataController
 				return;
 			}
 
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		// Filter the releases by this category

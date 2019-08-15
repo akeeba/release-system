@@ -8,6 +8,7 @@
 use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
 
@@ -20,9 +21,9 @@ $this->getContainer()->template->addJSInline($js);
 ?>
 
 <div class="akeeba-block--info">
-    <?php echo JText::_('LBL_UPDATESTREAMS_ALLLINKS_INTRO') ?>
+	<?php echo Text::_('LBL_UPDATESTREAMS_ALLLINKS_INTRO') ?>
     <a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=all&format=xml" target="_blank">
-        <?php echo JText::_('LBL_UPDATESTREAMS_ALLLINKS') ?>
+	    <?php echo Text::_('LBL_UPDATESTREAMS_ALLLINKS') ?>
     </a>
 </div>
 
@@ -32,17 +33,17 @@ $this->getContainer()->template->addJSInline($js);
         <div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="name" placeholder="<?php echo \JText::_('LBL_UPDATES_NAME'); ?>"
-                       id="filter_name" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['name']); ?>"
-                       title="<?php echo \JText::_('LBL_UPDATES_NAME'); ?>"/>
+				<input type="text" name="name" placeholder="<?php echo Text::_('LBL_UPDATES_NAME'); ?>"
+					   id="filter_name" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['name']); ?>"
+					   title="<?php echo Text::_('LBL_UPDATES_NAME'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="element" placeholder="<?php echo \JText::_('LBL_UPDATES_ELEMENT'); ?>"
-                       id="filter_element" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['element']); ?>"
-                       title="<?php echo \JText::_('LBL_UPDATES_ELEMENT'); ?>"/>
+				<input type="text" name="element" placeholder="<?php echo Text::_('LBL_UPDATES_ELEMENT'); ?>"
+					   id="filter_element" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['element']); ?>"
+					   title="<?php echo Text::_('LBL_UPDATES_ELEMENT'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
@@ -81,7 +82,7 @@ $this->getContainer()->template->addJSInline($js);
 				<?php echo \JHtml::_('grid.sort', 'LBL_UPDATES_ELEMENT', 'element', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo JText::_('LBL_UPDATESTREAMS_LINKS')?>
+	            <?php echo Text::_('LBL_UPDATESTREAMS_LINKS') ?>
             </th>
             <th>
 				<?php echo \JHtml::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
@@ -99,7 +100,7 @@ $this->getContainer()->template->addJSInline($js);
 		<?php if (!count($this->items)):?>
             <tr>
                 <td colspan="11">
-					<?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL')?>
+	                <?php echo Text::_('COM_ARS_COMMON_NOITEMS_LABEL') ?>
                 </td>
             </tr>
 		<?php endif;?>

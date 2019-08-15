@@ -9,10 +9,10 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 defined('_JEXEC') or die;
 
-use FOF30\Container\Container;
 use FOF30\Controller\DataController;
 use FOF30\Controller\Exception\ItemNotFound;
 use FOF30\Controller\Exception\TaskNotFound;
+use Joomla\CMS\Language\Text;
 
 class DownloadIDLabels extends DataController
 {
@@ -37,7 +37,7 @@ class DownloadIDLabels extends DataController
 
 			if (($user->id <= 0) || $user->guest)
 			{
-				throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+				throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 			}
 
 			$this->input->set('user_id', $user->id);
@@ -61,7 +61,7 @@ class DownloadIDLabels extends DataController
 			if ($model->getId() != reset($ids))
 			{
 				$key = strtoupper($this->container->componentName . '_ERR_' . $model->getName() . '_NOTFOUND');
-				throw new ItemNotFound(\JText::_($key), 404);
+				throw new ItemNotFound(Text::_($key), 404);
 			}
 		}
 
@@ -98,7 +98,7 @@ class DownloadIDLabels extends DataController
 	{
 		if ($this->container->platform->isFrontend() && $this->container->platform->getUser()->guest)
 		{
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 	}
 
@@ -131,13 +131,13 @@ class DownloadIDLabels extends DataController
 			if ($model->getId() != reset($ids))
 			{
 				$key = strtoupper($this->container->componentName . '_ERR_' . $model->getName() . '_NOTFOUND');
-				throw new ItemNotFound(\JText::_($key), 404);
+				throw new ItemNotFound(Text::_($key), 404);
 			}
 		}
 
 		if ($model->primary)
 		{
-			throw new \RuntimeException(\JText::_('COM_ARS_DLIDLABELS_ERR_CANTEDITDEFAULT'), 403);
+			throw new \RuntimeException(Text::_('COM_ARS_DLIDLABELS_ERR_CANTEDITDEFAULT'), 403);
 		}
 
 		if (!$this->container->platform->isFrontend())
@@ -147,7 +147,7 @@ class DownloadIDLabels extends DataController
 
 		if ($model->user_id != $this->container->platform->getUser()->id)
 		{
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		$this->layout = 'form';
@@ -179,13 +179,13 @@ class DownloadIDLabels extends DataController
 			if ($model->getId() != reset($ids))
 			{
 				$key = strtoupper($this->container->componentName . '_ERR_' . $model->getName() . '_NOTFOUND');
-				throw new ItemNotFound(\JText::_($key), 404);
+				throw new ItemNotFound(Text::_($key), 404);
 			}
 		}
 
 		if ($model->user_id != $this->container->platform->getUser()->id)
 		{
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		$this->layout = 'form';
@@ -208,7 +208,7 @@ class DownloadIDLabels extends DataController
 	{
 		if ($this->container->platform->getUser()->guest)
 		{
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 	}
 

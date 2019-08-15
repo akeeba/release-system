@@ -13,7 +13,7 @@ use AkeebaGeoipProvider;
 use FOF30\Container\Container;
 use FOF30\Controller\Controller;
 use FOF30\Controller\Mixin\PredefinedTaskList;
-use JText;
+use Joomla\CMS\Language\Text;
 
 class ControlPanel extends Controller
 {
@@ -67,7 +67,7 @@ class ControlPanel extends Controller
 
 		if ($result === true)
 		{
-			$msg = JText::_('COM_ARS_GEOIP_MSG_DOWNLOADEDGEOIPDATABASE');
+			$msg = Text::_('COM_ARS_GEOIP_MSG_DOWNLOADEDGEOIPDATABASE');
 			$this->setRedirect($url, $msg);
 		}
 		else

@@ -9,6 +9,7 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use FOF30\Controller\Controller;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -22,7 +23,7 @@ class Ajax extends Controller
 		// Make sure this is a raw view
 		if ($this->input->getCmd('format', 'html') != 'raw')
 		{
-			$this->container->platform->raiseError(403, \JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+			$this->container->platform->raiseError(403, Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
 		}
 
 		// Make sure the user has the create, edit or edit.own ACL privilege
@@ -34,7 +35,7 @@ class Ajax extends Controller
 			!$user->authorise('core.edit.own', 'com_ars')
 		)
 		{
-			$this->container->platform->raiseError(403, \JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+			$this->container->platform->raiseError(403, Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
 		}
 
 		// Get the information from the request

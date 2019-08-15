@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 use JHtml;
-use JText;
+use Joomla\CMS\Language\Text;
 
 /**
  * Model for download items
@@ -1002,7 +1002,7 @@ class Items extends DataModel
 	public function getFilesOptions($release_id, $item_id = 0)
 	{
 		$options   = array();
-		$options[] = JHtml::_('select.option', '', '- ' . JText::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
+		$options[] = JHtml::_('select.option', '', '- ' . Text::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
 
 		// Try to figure out a directory
 		$directory = null;

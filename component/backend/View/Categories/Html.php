@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Model\Categories;
 use FOF30\View\DataView\Html as BaseView;
-use JText;
+use Joomla\CMS\Language\Text;
 
 class Html extends BaseView
 {
@@ -43,8 +43,8 @@ class Html extends BaseView
 
 		// Construct the array of sorting fields
 		$this->sortFields = array(
-			'title' 	 		=> JText::_('LBL_VGROUPS_TITLE'),
-			'published' 	 	=> JText::_('JPUBLISHED')
+			'title'     => Text::_('LBL_VGROUPS_TITLE'),
+			'published' => Text::_('JPUBLISHED'),
 		);
 	}
 }

@@ -10,7 +10,7 @@ namespace Akeeba\ReleaseSystem\Admin\View\Releases;
 defined('_JEXEC') or die;
 
 use FOF30\View\DataView\Html as BaseView;
-use JText;
+use Joomla\CMS\Language\Text;
 
 class Html extends BaseView
 {
@@ -47,12 +47,12 @@ class Html extends BaseView
 
 		// Construct the array of sorting fields
 		$this->sortFields = array(
-			'category_id' 		=> JText::_('COM_ARS_RELEASES_FIELD_CATEGORY'),
-			'version' 			=> JText::_('COM_ARS_RELEASES_FIELD_VERSION'),
-			'maturity' 			=> JText::_('COM_ARS_RELEASES_FIELD_MATURITY'),
-			'published' 	 	=> JText::_('JPUBLISHED'),
-			'hits' 	 			=> JText::_('JGLOBAL_HITS'),
-			'language' 			=> JText::_('JFIELD_LANGUAGE_LABEL'),
+			'category_id' => Text::_('COM_ARS_RELEASES_FIELD_CATEGORY'),
+			'version'     => Text::_('COM_ARS_RELEASES_FIELD_VERSION'),
+			'maturity'    => Text::_('COM_ARS_RELEASES_FIELD_MATURITY'),
+			'published'   => Text::_('JPUBLISHED'),
+			'hits'        => Text::_('JGLOBAL_HITS'),
+			'language'    => Text::_('JFIELD_LANGUAGE_LABEL'),
 		);
 	}
 }

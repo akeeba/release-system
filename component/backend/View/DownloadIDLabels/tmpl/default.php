@@ -7,6 +7,7 @@
 
 use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\Language\Text;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\DownloadIDLabels\Html */
 
@@ -21,24 +22,25 @@ $this->getContainer()->template->addJSInline($js);
 	<section class="akeeba-panel--33-66 akeeba-filter-bar-container">
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="label" placeholder="<?php echo \JText::_('COM_ARS_DLIDLABELS_FIELD_LABEL'); ?>"
-                       id="filter_label" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['label']); ?>"
-                       title="<?php echo \JText::_('COM_ARS_DLIDLABELS_FIELD_LABEL'); ?>"/>
+				<input type="text" name="label" placeholder="<?php echo Text::_('COM_ARS_DLIDLABELS_FIELD_LABEL'); ?>"
+					   id="filter_label" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['label']); ?>"
+					   title="<?php echo Text::_('COM_ARS_DLIDLABELS_FIELD_LABEL'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="username" placeholder="<?php echo \JText::_('JGLOBAL_USERNAME'); ?>"
-                       id="filter_username" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['username']); ?>"
-                       title="<?php echo \JText::_('JGLOBAL_USERNAME'); ?>"/>
+				<input type="text" name="username" placeholder="<?php echo Text::_('JGLOBAL_USERNAME'); ?>"
+					   id="filter_username" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['username']); ?>"
+					   title="<?php echo Text::_('JGLOBAL_USERNAME'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="dlid" placeholder="<?php echo \JText::_('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID'); ?>"
-                       id="filter_dlid" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['dlid']); ?>"
-                       title="<?php echo \JText::_('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID'); ?>"/>
+				<input type="text" name="dlid"
+					   placeholder="<?php echo Text::_('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID'); ?>"
+					   id="filter_dlid" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['dlid']); ?>"
+					   title="<?php echo Text::_('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID'); ?>" />
             </div>
 		</div>
 
@@ -65,7 +67,7 @@ $this->getContainer()->template->addJSInline($js);
 				<?php echo \JHtml::_('grid.sort', 'JPUBLISHED', 'enabled', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo JText::_('COM_ARS_DLIDLABELS_FIELD_RESET') ?>
+	            <?php echo Text::_('COM_ARS_DLIDLABELS_FIELD_RESET') ?>
             </th>
 		</tr>
 		</thead>
@@ -80,7 +82,7 @@ $this->getContainer()->template->addJSInline($js);
 		<?php if (!count($this->items)):?>
 			<tr>
 				<td colspan="11">
-					<?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL')?>
+					<?php echo Text::_('COM_ARS_COMMON_NOITEMS_LABEL') ?>
 				</td>
 			</tr>
 		<?php endif;?>
@@ -100,7 +102,7 @@ $this->getContainer()->template->addJSInline($js);
 
 				if ($row->label == '_MAIN_' || $row->primary)
                 {
-                    $label = '<span class="akeeba-label--green">'.JText::_('COM_ARS_DLIDLABELS_LBL_DEFAULT').'</span>';
+	                $label = '<span class="akeeba-label--green">' . Text::_('COM_ARS_DLIDLABELS_LBL_DEFAULT') . '</span>';
                 }
 
                 $dlprefix = $row->user_id.':';
@@ -133,7 +135,7 @@ $this->getContainer()->template->addJSInline($js);
                     <td>
                         <a href="<?php echo $resetLink?>" class="akeeba-btn--orange--small">
                             <span class="akion-refresh"></span>
-							<?php echo JText::_('COM_ARS_DLIDLABELS_FIELD_RESET')?>
+	                        <?php echo Text::_('COM_ARS_DLIDLABELS_FIELD_RESET') ?>
                         </a>
                     </td>
 				</tr>

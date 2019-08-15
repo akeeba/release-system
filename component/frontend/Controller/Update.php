@@ -17,6 +17,7 @@ use Akeeba\ReleaseSystem\Site\Model\Update as UpdateModel;
 use Akeeba\ReleaseSystem\Site\View\Update\Ini;
 use FOF30\Controller\Controller;
 use JFactory;
+use Joomla\CMS\Language\Text;
 
 class Update extends Controller
 {
@@ -56,7 +57,7 @@ class Update extends Controller
 			}
 			elseif (($viewType == 'ini') && empty($id))
 			{
-				throw new \RuntimeException(\JText::_('ARS_ERR_NOUPDATESOURCE'), 500);
+				throw new \RuntimeException(Text::_('ARS_ERR_NOUPDATESOURCE'), 500);
 			}
 			elseif ($viewType == 'ini')
 			{
@@ -64,7 +65,7 @@ class Update extends Controller
 			}
 			elseif (($viewType == 'raw') && empty($id))
 			{
-				throw new \RuntimeException(\JText::_('ARS_ERR_NOUPDATESOURCE'), 500);
+				throw new \RuntimeException(Text::_('ARS_ERR_NOUPDATESOURCE'), 500);
 			}
 			elseif ($viewType == 'raw')
 			{
@@ -179,7 +180,7 @@ class Update extends Controller
 
 		if (empty($cat))
 		{
-			throw new \RuntimeException(\JText::_('ARS_ERR_NOUPDATESOURCE'), 500);
+			throw new \RuntimeException(Text::_('ARS_ERR_NOUPDATESOURCE'), 500);
 		}
 
 		// Required for caching
@@ -382,7 +383,7 @@ class Update extends Controller
 		}
 		catch (\Exception $e)
 		{
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		// Log in a user if I have to
@@ -399,7 +400,7 @@ class Update extends Controller
 				'item_id'    => $downloadItem->item_id
 			]);
 
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		$item->save([

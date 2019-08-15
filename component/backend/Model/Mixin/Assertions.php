@@ -7,6 +7,8 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Model\Mixin;
 
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 
 /**
@@ -17,8 +19,8 @@ trait Assertions
 	/**
 	 * Make sure $condition is true or throw a RuntimeException with the $message language string
 	 *
-	 * @param   bool    $condition  The condition which must be true
-	 * @param   string  $message    The language key for the message to throw
+	 * @param   bool   $condition The condition which must be true
+	 * @param   string $message   The language key for the message to throw
 	 *
 	 * @throws  \RuntimeException
 	 */
@@ -26,15 +28,15 @@ trait Assertions
 	{
 		if (!$condition)
 		{
-			throw new \RuntimeException(\JText::_($message));
+			throw new \RuntimeException(Text::_($message));
 		}
 	}
 
 	/**
 	 * Assert that $value is not empty or throw a RuntimeException with the $message language string
 	 *
-	 * @param   mixed   $value    The value to check
-	 * @param   string  $message  The language key for the message to throw
+	 * @param   mixed  $value   The value to check
+	 * @param   string $message The language key for the message to throw
 	 *
 	 * @throws  \RuntimeException
 	 */

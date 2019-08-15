@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Joomla\CMS\Language\Text;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\Environments\Html $this */
 
@@ -17,16 +17,16 @@ defined('_JEXEC') or die;
         <div class="akeeba-container--50-50">
             <div>
                 <div class="akeeba-form-group">
-                    <label for="title"><?php echo JText::_('LBL_ENVIRONMENTS_TITLE'); ?></label>
+					<label for="title"><?php echo Text::_('LBL_ENVIRONMENTS_TITLE'); ?></label>
 
                     <input type="text" name="title" id="title" value="<?php echo $this->escape($this->item->title); ?>" />
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="xmltitle"><?php echo JText::_('LBL_ENVIRONMENT_XMLTITLE'); ?></label>
+					<label for="xmltitle"><?php echo Text::_('LBL_ENVIRONMENT_XMLTITLE'); ?></label>
 
                     <input type="text" name="xmltitle" id="xmltitle" value="<?php echo $this->escape($this->item->xmltitle); ?>" />
-                    <span><?php echo JText::_('LBL_ENVIRONMENT_XMLTITLE_TIP') ?></span>
+					<span><?php echo Text::_('LBL_ENVIRONMENT_XMLTITLE_TIP') ?></span>
                 </div>
 
             </div>

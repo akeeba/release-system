@@ -8,6 +8,7 @@
 use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\Language\Text;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\Logs\Html */
 
@@ -22,31 +23,31 @@ $this->getContainer()->template->addJSInline($js);
 	<section class="akeeba-panel--33-66 akeeba-filter-bar-container">
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="itemtext" placeholder="<?php echo \JText::_('LBL_LOGS_ITEM'); ?>"
-                       id="filter_itemtext" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['itemtext']); ?>"
-                       title="<?php echo \JText::_('LBL_LOGS_ITEM'); ?>"/>
+				<input type="text" name="itemtext" placeholder="<?php echo Text::_('LBL_LOGS_ITEM'); ?>"
+					   id="filter_itemtext" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['itemtext']); ?>"
+					   title="<?php echo Text::_('LBL_LOGS_ITEM'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="usertext" placeholder="<?php echo \JText::_('LBL_LOGS_USER'); ?>"
-                       id="filter_usertext" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['usertext']); ?>"
-                       title="<?php echo \JText::_('LBL_LOGS_USER'); ?>"/>
+				<input type="text" name="usertext" placeholder="<?php echo Text::_('LBL_LOGS_USER'); ?>"
+					   id="filter_usertext" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['usertext']); ?>"
+					   title="<?php echo Text::_('LBL_LOGS_USER'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="referer" placeholder="<?php echo \JText::_('LBL_LOGS_REFERER'); ?>"
-                       id="filter_referer" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['referer']); ?>"
-                       title="<?php echo \JText::_('LBL_LOGS_REFERER'); ?>"/>
+				<input type="text" name="referer" placeholder="<?php echo Text::_('LBL_LOGS_REFERER'); ?>"
+					   id="filter_referer" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['referer']); ?>"
+					   title="<?php echo Text::_('LBL_LOGS_REFERER'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="ip" placeholder="<?php echo \JText::_('LBL_LOGS_IP'); ?>"
-                       id="filter_ip" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['ip']); ?>"
-                       title="<?php echo \JText::_('LBL_LOGS_IP'); ?>"/>
+				<input type="text" name="ip" placeholder="<?php echo Text::_('LBL_LOGS_IP'); ?>"
+					   id="filter_ip" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['ip']); ?>"
+					   title="<?php echo Text::_('LBL_LOGS_IP'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
@@ -79,7 +80,7 @@ $this->getContainer()->template->addJSInline($js);
 				<?php echo \JHtml::_('grid.sort', 'LBL_LOGS_USER', 'user_id', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo JText::_('LBL_LOGS_ACCESSED'); ?>
+	            <?php echo Text::_('LBL_LOGS_ACCESSED'); ?>
             </th>
             <th>
 				<?php echo \JHtml::_('grid.sort', 'LBL_LOGS_REFERER', 'referer', $this->order_Dir, $this->order, 'browse'); ?>
@@ -106,7 +107,7 @@ $this->getContainer()->template->addJSInline($js);
 		<?php if (!count($this->items)):?>
 			<tr>
 				<td colspan="11">
-					<?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL')?>
+					<?php echo Text::_('COM_ARS_COMMON_NOITEMS_LABEL') ?>
 				</td>
 			</tr>
 		<?php endif;?>

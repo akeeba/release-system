@@ -6,6 +6,7 @@
  */
 
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Joomla\CMS\Language\Text;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\DownloadIDLabels\Html $this */
 
@@ -15,13 +16,13 @@ defined('_JEXEC') or die;
 $item = $this->getItem();
 
 ?>
-<h3><?php echo JText::_('COM_ARS_DLIDLABELS_GROUP_BASIC') ?></h3>
+<h3><?php echo Text::_('COM_ARS_DLIDLABELS_GROUP_BASIC') ?></h3>
 <section class="akeeba-panel">
     <form action="index.php" method="post" name="adminForm" id="adminForm" class="akeeba-form--horizontal">
 
         <div class="akeeba-form-group">
             <label for="label">
-                <?php echo JText::_('COM_ARS_DLIDLABELS_FIELD_LABEL'); ?>
+	            <?php echo Text::_('COM_ARS_DLIDLABELS_FIELD_LABEL'); ?>
             </label>
 
             <input type="text" name="label" id="label" value="<?php echo $this->escape($item->label); ?>" />
@@ -29,7 +30,7 @@ $item = $this->getItem();
 
         <div class="akeeba-form-group">
             <label for="title">
-                <?php echo JText::_('JPUBLISHED'); ?>
+	            <?php echo Text::_('JPUBLISHED'); ?>
             </label>
 
 			<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'enabled', $item->enabled);?>

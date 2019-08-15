@@ -11,6 +11,7 @@ defined('_JEXEC') or die();
 
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use Joomla\CMS\Language\Text;
 
 $rootURL    = rtrim(JURI::base(), '/');
 $subpathURL = JURI::base(true);
@@ -55,7 +56,7 @@ if (substr($url, -4) != '.xml')
 }
 ?>
 	<category name="<?php echo ucfirst($category)?>"
-			  description="<?php echo JText::_('LBL_UPDATETYPES_' . strtoupper($category)); ?>"
+			  description="<?php echo Text::_('LBL_UPDATETYPES_' . strtoupper($category)); ?>"
 			  category="<?php echo $category ?>" ref="<?php echo $url ?>" />
 <?php endforeach ?>
 </extensionset>

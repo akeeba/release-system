@@ -9,6 +9,7 @@ use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use Akeeba\ReleaseSystem\Admin\Model\Categories;
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\Language\Text;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\Releases\Html */
 
@@ -29,10 +30,11 @@ $this->getContainer()->template->addJSInline($js);
                 </div>
 
                 <div class="akeeba-filter-element akeeba-form-group">
-                    <input type="text" name="version" placeholder="<?php echo \JText::_('COM_ARS_RELEASES_FIELD_VERSION'); ?>"
-                           id="filter_title" onchange="document.adminForm.submit()"
-                           value="<?php echo $this->escape($this->filters['version']); ?>"
-                           title="<?php echo \JText::_('COM_ARS_RELEASES_FIELD_VERSION'); ?>"/>
+					<input type="text" name="version"
+						   placeholder="<?php echo Text::_('COM_ARS_RELEASES_FIELD_VERSION'); ?>"
+						   id="filter_title" onchange="document.adminForm.submit()"
+						   value="<?php echo $this->escape($this->filters['version']); ?>"
+						   title="<?php echo Text::_('COM_ARS_RELEASES_FIELD_VERSION'); ?>" />
                 </div>
 
                 <div class="akeeba-filter-element akeeba-form-group">
@@ -92,7 +94,7 @@ $this->getContainer()->template->addJSInline($js);
 		<?php if (!count($this->items)):?>
 			<tr>
 				<td colspan="11">
-					<?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL')?>
+					<?php echo Text::_('COM_ARS_COMMON_NOITEMS_LABEL') ?>
 				</td>
 			</tr>
 		<?php endif;?>
@@ -101,21 +103,21 @@ $this->getContainer()->template->addJSInline($js);
 			$i = 0;
 		    $user = $this->getContainer()->platform->getUser();
 			foreach($this->items as $row):
-                $maturity = JText::_('COM_ARS_RELEASES_MATURITY_ALPHA');
+				$maturity = Text::_('COM_ARS_RELEASES_MATURITY_ALPHA');
 
 			    switch ($row->maturity)
                 {
 					case 'alpha':
-					    $maturity = JText::_('COM_ARS_RELEASES_MATURITY_ALPHA');
+						$maturity = Text::_('COM_ARS_RELEASES_MATURITY_ALPHA');
 						break;
                     case 'beta':
-						$maturity = JText::_('COM_ARS_RELEASES_MATURITY_BETA');
+	                    $maturity = Text::_('COM_ARS_RELEASES_MATURITY_BETA');
                         break;
                     case 'rc':
-						$maturity = JText::_('COM_ARS_RELEASES_MATURITY_RC');
+	                    $maturity = Text::_('COM_ARS_RELEASES_MATURITY_RC');
                         break;
                     case 'stable':
-						$maturity = JText::_('COM_ARS_RELEASES_MATURITY_STABLE');
+	                    $maturity = Text::_('COM_ARS_RELEASES_MATURITY_STABLE');
                         break;
                 }
 

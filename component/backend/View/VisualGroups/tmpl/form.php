@@ -5,6 +5,8 @@
  * @license   GNU General Public License version 3, or later
  */
 
+use Joomla\CMS\Language\Text;
+
 /** @var \Akeeba\ReleaseSystem\Admin\View\VisualGroups\Html $this */
 
 defined('_JEXEC') or die;
@@ -18,7 +20,7 @@ $item = $this->getItem();
             <div>
                 <div class="akeeba-form-group">
                     <label for="title">
-                        <?php echo JText::_('LBL_VGROUPS_TITLE'); ?>
+	                    <?php echo Text::_('LBL_VGROUPS_TITLE'); ?>
                     </label>
 
                     <input type="text" name="title" id="title" value="<?php echo $this->escape($item->title); ?>" />
@@ -26,7 +28,7 @@ $item = $this->getItem();
 
                 <div class="akeeba-form-group">
                     <label for="title">
-						<?php echo JText::_('JPUBLISHED'); ?>
+	                    <?php echo Text::_('JPUBLISHED'); ?>
                     </label>
 
 					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'published', $item->published);?>
@@ -34,7 +36,7 @@ $item = $this->getItem();
 
                 <div class="akeeba-form-group">
                     <label for="description">
-						<?php echo \JText::_('LBL_VGROUPS_DESCRIPTION'); ?>
+	                    <?php echo Text::_('LBL_VGROUPS_DESCRIPTION'); ?>
                     </label>
 
 					<?php echo JEditor::getInstance($this->container->platform->getConfig()->get('editor', 'tinymce'))->display('description', $item->description, '97%', '200', '50', '20', true); ?>

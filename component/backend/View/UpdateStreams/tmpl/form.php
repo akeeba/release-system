@@ -6,6 +6,7 @@
  */
 
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Joomla\CMS\Language\Text;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\UpdateStreams\Html $this */
 
@@ -17,12 +18,12 @@ $item = $this->getItem();
 ?>
 <section class="akeeba-panel">
     <form action="index.php" method="post" name="adminForm" id="adminForm" class="akeeba-form--horizontal">
-        <h3><?php echo JText::_('LBL_ARS_UPDATESTREAMS_BASIC')?></h3>
+		<h3><?php echo Text::_('LBL_ARS_UPDATESTREAMS_BASIC') ?></h3>
         <div class="akeeba-container--50-50">
             <div>
                 <div class="akeeba-form-group">
                     <label for="name">
-                        <?php echo JText::_('LBL_UPDATES_NAME'); ?>
+	                    <?php echo Text::_('LBL_UPDATES_NAME'); ?>
                     </label>
 
                     <input type="text" name="name" id="name" value="<?php echo $this->escape($item->name); ?>" />
@@ -30,7 +31,7 @@ $item = $this->getItem();
 
                 <div class="akeeba-form-group">
                     <label for="alias">
-						<?php echo JText::_('JFIELD_ALIAS_LABEL'); ?>
+	                    <?php echo Text::_('JFIELD_ALIAS_LABEL'); ?>
                     </label>
 
                     <input type="text" name="alias" id="alias" value="<?php echo $this->escape($item->alias); ?>" />
@@ -38,7 +39,7 @@ $item = $this->getItem();
 
                 <div class="akeeba-form-group">
                     <label for="type">
-						<?php echo JText::_('LBL_UPDATES_TYPE'); ?>
+	                    <?php echo Text::_('LBL_UPDATES_TYPE'); ?>
                     </label>
 
                     <?php echo Select::updateTypes('type', $item->type) ?>
@@ -46,7 +47,7 @@ $item = $this->getItem();
 
                 <div class="akeeba-form-group">
                     <label for="category">
-						<?php echo JText::_('COM_ARS_RELEASES_FIELD_CATEGORY'); ?>
+	                    <?php echo Text::_('COM_ARS_RELEASES_FIELD_CATEGORY'); ?>
                     </label>
 
 					<?php echo Select::categories($item->category, 'category') ?>
@@ -54,7 +55,7 @@ $item = $this->getItem();
 
                 <div class="akeeba-form-group">
                     <label for="packname">
-						<?php echo JText::_('LBL_UPDATES_PACKNAME'); ?>
+	                    <?php echo Text::_('LBL_UPDATES_PACKNAME'); ?>
                     </label>
 
                     <input type="text" name="packname" id="packname" value="<?php echo $this->escape($item->packname); ?>" />
@@ -62,7 +63,7 @@ $item = $this->getItem();
 
                 <div class="akeeba-form-group">
                     <label for="element">
-						<?php echo JText::_('LBL_UPDATES_ELEMENT'); ?>
+	                    <?php echo Text::_('LBL_UPDATES_ELEMENT'); ?>
                     </label>
 
                     <input type="text" name="element" id="element" value="<?php echo $this->escape($item->element); ?>" />
@@ -70,7 +71,7 @@ $item = $this->getItem();
 
                 <div class="akeeba-form-group">
                     <label for="client_id">
-						<?php echo JText::_('LBL_RELEASES_CLIENT_ID'); ?>
+	                    <?php echo Text::_('LBL_RELEASES_CLIENT_ID'); ?>
                     </label>
 
 					<?php echo Select::client_id('client_id', $item->client_id) ?>
@@ -78,7 +79,7 @@ $item = $this->getItem();
 
                 <div class="akeeba-form-group">
                     <label for="folder">
-						<?php echo JText::_('LBL_UPDATES_FOLDER'); ?>
+	                    <?php echo Text::_('LBL_UPDATES_FOLDER'); ?>
                     </label>
 
                     <input type="text" name="folder" id="folder" value="<?php echo $this->escape($item->folder); ?>" />
@@ -86,7 +87,7 @@ $item = $this->getItem();
 
                 <div class="akeeba-form-group">
                     <label for="jedid">
-						<?php echo JText::_('LBL_UPDATES_JEDID'); ?>
+	                    <?php echo Text::_('LBL_UPDATES_JEDID'); ?>
                     </label>
 
                     <input type="text" name="jedid" id="jedid" value="<?php echo $this->escape($item->jedid); ?>" />
@@ -94,7 +95,7 @@ $item = $this->getItem();
 
                 <div class="akeeba-form-group">
                     <label for="published">
-						<?php echo JText::_('JPUBLISHED'); ?>
+	                    <?php echo Text::_('JPUBLISHED'); ?>
                     </label>
 
 					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'published', $item->published);?>

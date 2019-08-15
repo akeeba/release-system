@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Model\UpdateStreams;
 use FOF30\View\DataView\Html as BaseView;
-use JText;
+use Joomla\CMS\Language\Text;
 
 class Html extends BaseView
 {
@@ -51,11 +51,11 @@ class Html extends BaseView
 
 		// Construct the array of sorting fields
 		$this->sortFields = array(
-			'name' 		=> JText::_('LBL_UPDATES_NAME'),
-			'type' 		=> JText::_('LBL_UPDATES_TYPE'),
-			'category'	=> JText::_('COM_ARS_RELEASES_FIELD_CATEGORY'),
-			'element' 	=> JText::_('LBL_UPDATES_ELEMENT'),
-			'published'	=> JText::_('JPUBLISHED'),
+			'name'      => Text::_('LBL_UPDATES_NAME'),
+			'type'      => Text::_('LBL_UPDATES_TYPE'),
+			'category'  => Text::_('COM_ARS_RELEASES_FIELD_CATEGORY'),
+			'element'   => Text::_('LBL_UPDATES_ELEMENT'),
+			'published' => Text::_('JPUBLISHED'),
 		);
 	}
 }

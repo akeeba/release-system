@@ -10,6 +10,7 @@ use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use Akeeba\ReleaseSystem\Admin\Model\Categories;
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
 
@@ -40,10 +41,10 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="title" placeholder="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"
-                       id="filter_title" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['title']); ?>"
-                       title="<?php echo \JText::_('LBL_VGROUPS_TITLE'); ?>"/>
+				<input type="text" name="title" placeholder="<?php echo Text::_('LBL_VGROUPS_TITLE'); ?>"
+					   id="filter_title" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['title']); ?>"
+					   title="<?php echo Text::_('LBL_VGROUPS_TITLE'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
@@ -77,7 +78,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
                 <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
             </th>
             <th>
-				<?php echo JText::_('LBL_ITEMS_CATEGORY'); ?>
+	            <?php echo Text::_('LBL_ITEMS_CATEGORY'); ?>
             </th>
             <th>
 				<?php echo \JHtml::_('grid.sort', 'LBL_ITEMS_RELEASE', 'release', $this->order_Dir, $this->order, 'browse'); ?>
@@ -89,7 +90,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
 				<?php echo \JHtml::_('grid.sort', 'LBL_ITEMS_TYPE', 'type', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo JText::_('LBL_ITEMS_ENVIRONMENTS'); ?>
+	            <?php echo Text::_('LBL_ITEMS_ENVIRONMENTS'); ?>
             </th>
             <th>
 				<?php echo \JHtml::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->order_Dir, $this->order, 'browse'); ?>
@@ -116,7 +117,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
 		<?php if (!count($this->items)):?>
             <tr>
                 <td colspan="11">
-					<?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL')?>
+	                <?php echo Text::_('COM_ARS_COMMON_NOITEMS_LABEL') ?>
                 </td>
             </tr>
 		<?php endif;?>
@@ -126,7 +127,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
 
 			/** @var \Akeeba\ReleaseSystem\Admin\Model\Items $row */
 			foreach($this->items as $row):
-				$type = $row->type == 'link' ? JText::_('LBL_ITEMS_TYPE_LINK') : JText::_('LBL_ITEMS_TYPE_FILE');
+				$type = $row->type == 'link' ? Text::_('LBL_ITEMS_TYPE_LINK') : Text::_('LBL_ITEMS_TYPE_FILE');
 
 				$category_id = Releases::forceEagerLoad($row->release_id, 'category_id');
 				$link = 'index.php?option=com_ars&view=Item&id='.$row->id;

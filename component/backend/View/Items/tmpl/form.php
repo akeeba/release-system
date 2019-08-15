@@ -6,6 +6,7 @@
  */
 
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
 
@@ -18,83 +19,83 @@ $item = $this->getItem();
 ?>
 <section class="akeeba-panel">
     <form action="index.php" method="post" name="adminForm" id="adminForm" class="akeeba-form--horizontal">
-        <h3><?php echo JText::_('COM_ARS_RELEASE_BASIC_LABEL')?></h3>
+		<h3><?php echo Text::_('COM_ARS_RELEASE_BASIC_LABEL') ?></h3>
         <div class="akeeba-container--50-50">
             <div>
                 <div class="akeeba-form-group">
-                    <label for="release_id"><?php echo JText::_('LBL_ITEMS_RELEASE'); ?></label>
+					<label for="release_id"><?php echo Text::_('LBL_ITEMS_RELEASE'); ?></label>
 
 					<?php echo Select::releases($item->release_id, 'release_id')?>
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="title"><?php echo JText::_('LBL_ITEMS_TITLE'); ?></label>
+					<label for="title"><?php echo Text::_('LBL_ITEMS_TITLE'); ?></label>
 
                     <input type="text" name="title" id="title" value="<?php echo $this->escape($item->title); ?>" />
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="alias"><?php echo JText::_('COM_ARS_RELEASES_FIELD_ALIAS'); ?></label>
+					<label for="alias"><?php echo Text::_('COM_ARS_RELEASES_FIELD_ALIAS'); ?></label>
 
                     <input type="text" name="alias" id="alias" value="<?php echo $this->escape($item->alias); ?>" />
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="type"><?php echo JText::_('LBL_ITEMS_TYPE'); ?></label>
+					<label for="type"><?php echo Text::_('LBL_ITEMS_TYPE'); ?></label>
 
 					<?php echo Select::itemType('type', $item->type, array('onchange' => 'arsItems.onTypeChange();'))?>
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="filename"><?php echo JText::_('LBL_ITEMS_FILE'); ?></label>
+					<label for="filename"><?php echo Text::_('LBL_ITEMS_FILE'); ?></label>
 
                     <select id="filename" name="filename"></select>
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="url"><?php echo JText::_('LBL_ITEMS_LINK'); ?></label>
+					<label for="url"><?php echo Text::_('LBL_ITEMS_LINK'); ?></label>
 
                     <input type="text" name="url" id="url" value="<?php echo $this->escape($item->url); ?>" />
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="filesize"><?php echo JText::_('LBL_ITEMS_FILESIZE'); ?></label>
+					<label for="filesize"><?php echo Text::_('LBL_ITEMS_FILESIZE'); ?></label>
 
                     <input type="text" name="filesize" id="filesize" value="<?php echo $this->escape($item->filesize); ?>" />
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="md5"><?php echo JText::_('LBL_ITEMS_MD5'); ?></label>
+					<label for="md5"><?php echo Text::_('LBL_ITEMS_MD5'); ?></label>
 
                     <input type="text" name="md5" id="md5" value="<?php echo $this->escape($item->md5); ?>" />
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="sha1"><?php echo JText::_('LBL_ITEMS_SHA1'); ?></label>
+					<label for="sha1"><?php echo Text::_('LBL_ITEMS_SHA1'); ?></label>
 
                     <input type="text" name="sha1" id="sha1" value="<?php echo $this->escape($item->sha1); ?>" />
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="sha256"><?php echo JText::_('LBL_ITEMS_SHA256'); ?></label>
+					<label for="sha256"><?php echo Text::_('LBL_ITEMS_SHA256'); ?></label>
 
                     <input type="text" name="sha256" id="sha256" value="<?php echo $this->escape($item->sha256); ?>" />
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="sha384"><?php echo JText::_('LBL_ITEMS_SHA384'); ?></label>
+					<label for="sha384"><?php echo Text::_('LBL_ITEMS_SHA384'); ?></label>
 
                     <input type="text" name="sha384" id="sha384" value="<?php echo $this->escape($item->sha384); ?>" />
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="sha512"><?php echo JText::_('LBL_ITEMS_SHA512'); ?></label>
+					<label for="sha512"><?php echo Text::_('LBL_ITEMS_SHA512'); ?></label>
 
                     <input type="text" name="sha512" id="sha512" value="<?php echo $this->escape($item->sha512); ?>" />
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="hits"><?php echo JText::_('JGLOBAL_HITS'); ?></label>
+					<label for="hits"><?php echo Text::_('JGLOBAL_HITS'); ?></label>
 
                     <input type="text" name="hits" id="hits" value="<?php echo $this->escape($item->hits); ?>" />
                 </div>
@@ -102,49 +103,49 @@ $item = $this->getItem();
 
             <div>
                 <div class="akeeba-form-group">
-                    <label for="published"><?php echo JText::_('JPUBLISHED'); ?></label>
+					<label for="published"><?php echo Text::_('JPUBLISHED'); ?></label>
 
 					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'published', $item->published);?>
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="access"><?php echo JText::_('JFIELD_ACCESS_LABEL'); ?></label>
+					<label for="access"><?php echo Text::_('JFIELD_ACCESS_LABEL'); ?></label>
 
 					<?php echo Select::accessLevel('access', $item->access); ?>
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="show_unauth_links"><?php echo JText::_('COM_ARS_COMMON_SHOW_UNAUTH_LINKS'); ?></label>
+					<label for="show_unauth_links"><?php echo Text::_('COM_ARS_COMMON_SHOW_UNAUTH_LINKS'); ?></label>
 
 					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'show_unauth_links', $item->show_unauth_links);?>
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="redirect_unauth"><?php echo JText::_('COM_ARS_COMMON_REDIRECT_UNAUTH'); ?></label>
+					<label for="redirect_unauth"><?php echo Text::_('COM_ARS_COMMON_REDIRECT_UNAUTH'); ?></label>
 
                     <input type="text" name="redirect_unauth" id="redirect_unauth" value="<?php echo $this->escape($item->redirect_unauth); ?>" />
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="groups"><?php echo JText::_('COM_ARS_COMMON_CATEGORIES_GROUPS_LABEL'); ?></label>
+					<label for="groups"><?php echo Text::_('COM_ARS_COMMON_CATEGORIES_GROUPS_LABEL'); ?></label>
 
 					<?php echo Select::subscriptionGroups('groups[]', $item->groups, array('multiple' => true))?>
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="environments"><?php echo JText::_('LBL_ITEMS_ENVIRONMENTS'); ?></label>
+					<label for="environments"><?php echo Text::_('LBL_ITEMS_ENVIRONMENTS'); ?></label>
 
 					<?php echo Select::environments('environments[]', $item->environments, array('multiple' => true))?>
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="updatestream"><?php echo JText::_('LBL_ITEMS_UPDATESTREAM'); ?></label>
+					<label for="updatestream"><?php echo Text::_('LBL_ITEMS_UPDATESTREAM'); ?></label>
 
 					<?php echo Select::updatestreams('updatestream', $item->updatestream)?>
                 </div>
 
                 <div class="akeeba-form-group">
-                    <label for="language"><?php echo JText::_('JFIELD_LANGUAGE_LABEL'); ?></label>
+					<label for="language"><?php echo Text::_('JFIELD_LANGUAGE_LABEL'); ?></label>
 
 					<?php echo Select::languages('language', $item->language)?>
                 </div>

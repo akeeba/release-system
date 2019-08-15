@@ -10,11 +10,10 @@ namespace Akeeba\ReleaseSystem\Admin\Helper;
 use FOF30\Container\Container;
 use FOF30\Form\Field\GenericList;
 use FOF30\Model\DataModel;
-use FOF30\View\DataView\DataViewInterface;
 use FOF30\View\DataView\Raw;
 use JHelperUsergroups;
 use JHtml;
-use JText;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
@@ -63,7 +62,7 @@ abstract class Html
 			return '';
 		}
 
-		$lang = \JText::_('JALL');
+		$lang = Text::_('JALL');
 
 		if (isset($languages[$value]))
 		{
@@ -78,19 +77,19 @@ abstract class Html
 		switch ($value)
 		{
 			case 'components':
-				return JText::_('LBL_UPDATETYPES_COMPONENTS');
+				return Text::_('LBL_UPDATETYPES_COMPONENTS');
 			case 'libraries':
-				return JText::_('LBL_UPDATETYPES_LIBRARIES');
+				return Text::_('LBL_UPDATETYPES_LIBRARIES');
 			case 'modules':
-				return JText::_('LBL_UPDATETYPES_MODULES');
+				return Text::_('LBL_UPDATETYPES_MODULES');
 			case 'packages':
-				return JText::_('LBL_UPDATETYPES_PACKAGES');
+				return Text::_('LBL_UPDATETYPES_PACKAGES');
 			case 'plugins':
-				return JText::_('LBL_UPDATETYPES_PLUGINS');
+				return Text::_('LBL_UPDATETYPES_PLUGINS');
 			case 'files':
-				return JText::_('LBL_UPDATETYPES_FILES');
+				return Text::_('LBL_UPDATETYPES_FILES');
 			case 'templates':
-				return JText::_('LBL_UPDATETYPES_TEMPLATES');
+				return Text::_('LBL_UPDATETYPES_TEMPLATES');
 			default:
 				return '';
 		}
@@ -118,7 +117,7 @@ abstract class Html
 
 			if (!$hasAjaxOrderingSupport['saveOrder'])
 			{
-				$disabledLabel = JText::_('JORDERINGDISABLED');
+				$disabledLabel    = Text::_('JORDERINGDISABLED');
 				$disableClassName = 'inactive tip-top';
 			}
 
@@ -166,7 +165,7 @@ abstract class Html
 
 		$options = $defaultOptions;
 
-		array_unshift($options, JHtml::_('select.option', '', JText::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
+		array_unshift($options, JHtml::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
 
 		return '<span ' . ($id ? $id : '') . ' class="'. $class . '">' .
 			htmlspecialchars(GenericList::getOptionName($options, $value), ENT_COMPAT, 'UTF-8') .
@@ -356,7 +355,7 @@ abstract class Html
 		$html = array();
 
 		// Description
-		$html[] = '<p class="rule-desc">' . JText::_('JLIB_RULES_SETTINGS_DESC') . '</p>';
+		$html[] = '<p class="rule-desc">' . Text::_('JLIB_RULES_SETTINGS_DESC') . '</p>';
 
 		// Begin tabs
 		$html[] = '<div id="permissions-sliders" class="tabbable tabs-left">';
@@ -402,11 +401,11 @@ abstract class Html
 			$html[] = '<tr>';
 
 			$html[] = '<th class="actions" id="actions-th' . $group->value . '">';
-			$html[] = '<span class="acl-action">' . JText::_('JLIB_RULES_ACTION') . '</span>';
+			$html[] = '<span class="acl-action">' . Text::_('JLIB_RULES_ACTION') . '</span>';
 			$html[] = '</th>';
 
 			$html[] = '<th class="settings" id="settings-th' . $group->value . '">';
-			$html[] = '<span class="acl-action">' . JText::_('JLIB_RULES_SELECT_SETTING') . '</span>';
+			$html[] = '<span class="acl-action">' . Text::_('JLIB_RULES_SELECT_SETTING') . '</span>';
 			$html[] = '</th>';
 
 			// The calculated setting is not shown for the root group of global configuration.
@@ -415,7 +414,7 @@ abstract class Html
 			if ($canCalculateSettings)
 			{
 				$html[] = '<th id="aclactionth' . $group->value . '">';
-				$html[] = '<span class="acl-action">' . JText::_('JLIB_RULES_CALCULATED_SETTING') . '</span>';
+				$html[] = '<span class="acl-action">' . Text::_('JLIB_RULES_CALCULATED_SETTING') . '</span>';
 				$html[] = '</th>';
 			}
 
@@ -428,8 +427,8 @@ abstract class Html
 				$html[] = '<tr>';
 				$html[] = '<td headers="actions-th' . $group->value . '">';
 				$html[] = '<label for="' . $assetField . '_' . $action->name . '_' . $group->value . '" class="hasTooltip" title="'
-					. htmlspecialchars(JText::_($action->title) . ' ' . JText::_($action->description), ENT_COMPAT, 'UTF-8') . '">';
-				$html[] = JText::_($action->title);
+					. htmlspecialchars(Text::_($action->title) . ' ' . Text::_($action->description), ENT_COMPAT, 'UTF-8') . '">';
+				$html[] = Text::_($action->title);
 				$html[] = '</label>';
 				$html[] = '</td>';
 
@@ -437,7 +436,7 @@ abstract class Html
 
 				$html[] = '<select class="input-small" name="' . $assetField . '[' . $action->name . '][' . $group->value . ']" id="' . $assetField . '_' . $action->name
 					. '_' . $group->value . '" title="'
-					. JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', JText::_($action->title), trim($group->text)) . '">';
+					. Text::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', Text::_($action->title), trim($group->text)) . '">';
 
 				$inheritedRule = \JAccess::checkGroup($group->value, $action->name, $assetId);
 
@@ -448,10 +447,10 @@ abstract class Html
 
 				// The parent group has "Not Set", all children can rightly "Inherit" from that.
 				$html[] = '<option value=""' . ($assetRule === null ? ' selected="selected"' : '') . '>'
-					. JText::_(empty($group->parent_id) && empty($component) ? 'JLIB_RULES_NOT_SET' : 'JLIB_RULES_INHERITED') . '</option>';
-				$html[] = '<option value="1"' . ($assetRule === true ? ' selected="selected"' : '') . '>' . JText::_('JLIB_RULES_ALLOWED')
+					. Text::_(empty($group->parent_id) && empty($component) ? 'JLIB_RULES_NOT_SET' : 'JLIB_RULES_INHERITED') . '</option>';
+				$html[] = '<option value="1"' . ($assetRule === true ? ' selected="selected"' : '') . '>' . Text::_('JLIB_RULES_ALLOWED')
 					. '</option>';
-				$html[] = '<option value="0"' . ($assetRule === false ? ' selected="selected"' : '') . '>' . JText::_('JLIB_RULES_DENIED')
+				$html[] = '<option value="0"' . ($assetRule === false ? ' selected="selected"' : '') . '>' . Text::_('JLIB_RULES_DENIED')
 					. '</option>';
 
 				$html[] = '</select>&#160; ';
@@ -459,7 +458,7 @@ abstract class Html
 				// If this asset's rule is allowed, but the inherited rule is deny, we have a conflict.
 				if (($assetRule === true) && ($inheritedRule === false))
 				{
-					$html[] = JText::_('JLIB_RULES_CONFLICT');
+					$html[] = Text::_('JLIB_RULES_CONFLICT');
 				}
 
 				$html[] = '</td>';
@@ -477,28 +476,28 @@ abstract class Html
 					{
 						if ($inheritedRule === null)
 						{
-							$html[] = '<span class="label label-important">' . JText::_('JLIB_RULES_NOT_ALLOWED') . '</span>';
+							$html[] = '<span class="label label-important">' . Text::_('JLIB_RULES_NOT_ALLOWED') . '</span>';
 						}
 						elseif ($inheritedRule === true)
 						{
-							$html[] = '<span class="label label-success">' . JText::_('JLIB_RULES_ALLOWED') . '</span>';
+							$html[] = '<span class="label label-success">' . Text::_('JLIB_RULES_ALLOWED') . '</span>';
 						}
 						elseif ($inheritedRule === false)
 						{
 							if ($assetRule === false)
 							{
-								$html[] = '<span class="label label-important">' . JText::_('JLIB_RULES_NOT_ALLOWED') . '</span>';
+								$html[] = '<span class="label label-important">' . Text::_('JLIB_RULES_NOT_ALLOWED') . '</span>';
 							}
 							else
 							{
-								$html[] = '<span class="label"><i class="icon-lock icon-white"></i> ' . JText::_('JLIB_RULES_NOT_ALLOWED_LOCKED')
+								$html[] = '<span class="label"><i class="icon-lock icon-white"></i> ' . Text::_('JLIB_RULES_NOT_ALLOWED_LOCKED')
 									. '</span>';
 							}
 						}
 					}
 					elseif (!empty($component))
 					{
-						$html[] = '<span class="label label-success"><i class="icon-lock icon-white"></i> ' . JText::_('JLIB_RULES_ALLOWED_ADMIN')
+						$html[] = '<span class="label label-success"><i class="icon-lock icon-white"></i> ' . Text::_('JLIB_RULES_ALLOWED_ADMIN')
 							. '</span>';
 					}
 					else
@@ -507,17 +506,17 @@ abstract class Html
 						// The admin rights can be changed.
 						if ($action->name === 'core.admin')
 						{
-							$html[] = '<span class="label label-success">' . JText::_('JLIB_RULES_ALLOWED') . '</span>';
+							$html[] = '<span class="label label-success">' . Text::_('JLIB_RULES_ALLOWED') . '</span>';
 						}
 						elseif ($inheritedRule === false)
 						{
 							// Other actions cannot be changed.
 							$html[] = '<span class="label label-important"><i class="icon-lock icon-white"></i> '
-								. JText::_('JLIB_RULES_NOT_ALLOWED_ADMIN_CONFLICT') . '</span>';
+								. Text::_('JLIB_RULES_NOT_ALLOWED_ADMIN_CONFLICT') . '</span>';
 						}
 						else
 						{
-							$html[] = '<span class="label label-success"><i class="icon-lock icon-white"></i> ' . JText::_('JLIB_RULES_ALLOWED_ADMIN')
+							$html[] = '<span class="label label-success"><i class="icon-lock icon-white"></i> ' . Text::_('JLIB_RULES_ALLOWED_ADMIN')
 								. '</span>';
 						}
 					}
@@ -538,11 +537,11 @@ abstract class Html
 
 		if ($section == 'component' || $section == null)
 		{
-			$html[] = JText::_('JLIB_RULES_SETTING_NOTES');
+			$html[] = Text::_('JLIB_RULES_SETTING_NOTES');
 		}
 		else
 		{
-			$html[] = JText::_('JLIB_RULES_SETTING_NOTES_ITEM');
+			$html[] = Text::_('JLIB_RULES_SETTING_NOTES_ITEM');
 		}
 
 		$html[] = '</div>';

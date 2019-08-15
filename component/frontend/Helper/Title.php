@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
 use JText;
+use Joomla\CMS\Language\Text;
 
 abstract class Title
 {
@@ -39,7 +40,7 @@ abstract class Title
 		}
 		else
 		{
-			$params->def('page_heading', JText::_($default));
+			$params->def('page_heading', Text::_($default));
 		}
 
 		// Set the document title
@@ -48,7 +49,7 @@ abstract class Title
 
 		if ($title == $sitename)
 		{
-			$title = JText::_($default);
+			$title = Text::_($default);
 		}
 
 		if (empty($title))
@@ -57,11 +58,11 @@ abstract class Title
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
 		{
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
 		{
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 
 		$document->setTitle($title);

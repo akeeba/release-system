@@ -10,7 +10,7 @@ namespace Akeeba\ReleaseSystem\Admin\View\AutoDescriptions;
 defined('_JEXEC') or die;
 
 use FOF30\View\DataView\Html as BaseView;
-use JText;
+use Joomla\CMS\Language\Text;
 
 class Html extends BaseView
 {
@@ -45,10 +45,10 @@ class Html extends BaseView
 
 		// Construct the array of sorting fields
 		$this->sortFields = array(
-			'title' 	 	=> JText::_('LBL_VGROUPS_TITLE'),
-			'published' 	=> JText::_('JPUBLISHED'),
-			'packname' 	 	=> JText::_('LBL_AUTODESC_PACKNAME'),
-			'category' 	 	=> JText::_('LBL_AUTODESC_CATEGORY'),
+			'title'     => Text::_('LBL_VGROUPS_TITLE'),
+			'published' => Text::_('JPUBLISHED'),
+			'packname'  => Text::_('LBL_AUTODESC_PACKNAME'),
+			'category'  => Text::_('LBL_AUTODESC_CATEGORY'),
 		);
 	}
 }

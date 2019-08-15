@@ -6,6 +6,7 @@
  */
 
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\Language\Text;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\Environments\Html */
 
@@ -20,10 +21,10 @@ $this->getContainer()->template->addJSInline($js);
 	<section class="akeeba-panel--33-66 akeeba-filter-bar-container">
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
 			<div class="akeeba-filter-element akeeba-form-group">
-				<input type="text" name="search" placeholder="<?php echo \JText::_('LBL_ENVIRONMENTS_TITLE'); ?>"
+				<input type="text" name="search" placeholder="<?php echo Text::_('LBL_ENVIRONMENTS_TITLE'); ?>"
 					   id="filter_title" onchange="document.adminForm.submit()"
 					   value="<?php echo $this->escape($this->filters['title']); ?>"
-					   title="<?php echo \JText::_('LBL_ENVIRONMENTS_TITLE'); ?>"/>
+					   title="<?php echo Text::_('LBL_ENVIRONMENTS_TITLE'); ?>" />
 			</div>
 		</div>
 
@@ -53,7 +54,7 @@ $this->getContainer()->template->addJSInline($js);
 		<?php if (!count($this->items)):?>
 			<tr>
 				<td colspan="6">
-					<?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL')?>
+					<?php echo Text::_('COM_ARS_COMMON_NOITEMS_LABEL') ?>
 				</td>
 			</tr>
 		<?php endif;?>

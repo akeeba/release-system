@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Joomla\CMS\Language\Text;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\DownloadIDLabels\Html $this */
 
@@ -25,7 +25,7 @@ $userField->value = $item->user_id;
             <div>
                 <div class="akeeba-form-group">
                     <label for="label">
-                        <?php echo JText::_('COM_ARS_DLIDLABELS_FIELD_LABEL'); ?>
+	                    <?php echo Text::_('COM_ARS_DLIDLABELS_FIELD_LABEL'); ?>
                     </label>
 
                     <input type="text" name="label" id="label" value="<?php echo $this->escape($item->label); ?>" />
@@ -33,7 +33,7 @@ $userField->value = $item->user_id;
 
                 <div class="akeeba-form-group">
                     <label for="label">
-                        <?php echo JText::_('COM_ARS_DLIDLABELS_FIELD_USER_ID'); ?>
+	                    <?php echo Text::_('COM_ARS_DLIDLABELS_FIELD_USER_ID'); ?>
                     </label>
 
                     <?php echo $userField->input; ?>
@@ -41,7 +41,7 @@ $userField->value = $item->user_id;
 
                 <div class="akeeba-form-group">
                     <label for="title">
-						<?php echo JText::_('JPUBLISHED'); ?>
+	                    <?php echo Text::_('JPUBLISHED'); ?>
                     </label>
 
 					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'enabled', $item->enabled);?>

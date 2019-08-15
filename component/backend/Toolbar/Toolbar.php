@@ -9,7 +9,7 @@ namespace Akeeba\ReleaseSystem\Admin\Toolbar;
 
 defined('_JEXEC') or die;
 
-use JText;
+use Joomla\CMS\Language\Text;
 use JToolBarHelper;
 
 class Toolbar extends \FOF30\Toolbar\Toolbar
@@ -47,7 +47,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 
 		$option = $this->container->componentName;
 
-		JToolBarHelper::title(JText::_($option), str_replace('com_', '', $option));
+		JToolBarHelper::title(Text::_($option), str_replace('com_', '', $option));
 
 		JToolBarHelper::preferences($option);
 	}
@@ -58,7 +58,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 
 		// Set toolbar title
 		$subtitle_key = $option . '_TITLE_ENVIRONMENTS';
-		JToolBarHelper::title(JText::_($option) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', str_replace('com_', '', $option));
+		JToolBarHelper::title(Text::_($option) . ' &ndash; <small>' . Text::_($subtitle_key) . '</small>', str_replace('com_', '', $option));
 
 		// Add toolbar buttons
 		if ($this->perms->create)
@@ -78,7 +78,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 
 		if ($this->perms->delete)
 		{
-			$msg = JText::_($option . '_CONFIRM_DELETE');
+			$msg = Text::_($option . '_CONFIRM_DELETE');
 			JToolBarHelper::deleteList($msg);
 		}
 
@@ -94,11 +94,11 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 
 		// Set toolbar title
 		$subtitle_key = $option . '_TITLE_LOGS';
-		JToolBarHelper::title(JText::_($option) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', str_replace('com_', '', $option));
+		JToolBarHelper::title(Text::_($option) . ' &ndash; <small>' . Text::_($subtitle_key) . '</small>', str_replace('com_', '', $option));
 
 		if ($this->perms->delete)
 		{
-			$msg = JText::_($option . '_CONFIRM_DELETE');
+			$msg = Text::_($option . '_CONFIRM_DELETE');
 
 			JToolBarHelper::deleteList($msg);
 		}
@@ -126,7 +126,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 
 		// Set toolbar title
 		$subtitle_key = $option . '_TITLE_' . $view;
-		JToolBarHelper::title(JText::_($option) . ' &ndash; <small>' . JText::_($subtitle_key) . '</small>', str_replace('com_', '', $option));
+		JToolBarHelper::title(Text::_($option) . ' &ndash; <small>' . Text::_($subtitle_key) . '</small>', str_replace('com_', '', $option));
 
 		// Add toolbar buttons
 		if ($this->perms->create)
@@ -159,7 +159,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 
 		if ($this->perms->delete)
 		{
-			$msg = JText::_($option . '_CONFIRM_DELETE');
+			$msg = Text::_($option . '_CONFIRM_DELETE');
 
 			JToolBarHelper::deleteList($msg);
 		}

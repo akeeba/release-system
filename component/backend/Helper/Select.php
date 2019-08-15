@@ -19,8 +19,8 @@ use JFile;
 use JFolder;
 use JHtml;
 use JLanguageHelper;
+use Joomla\CMS\Language\Text;
 use JPath;
-use JText;
 
 defined('_JEXEC') or die;
 
@@ -431,7 +431,7 @@ HTML;
 			->get(true);
 
 		$options   = array();
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_ITEMS_ENVIRONMENT_SELECT') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_ITEMS_ENVIRONMENT_SELECT') . ' -');
 
 		if (count($items))
 		{
@@ -522,7 +522,7 @@ HTML;
 			}
 		}
 
-		array_unshift($options, JHtml::_('FEFHelper.select.option', 0, '- ' . \JText::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL') . ' -'));
+		array_unshift($options, JHtml::_('FEFHelper.select.option', 0, '- ' . Text::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL') . ' -'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
@@ -545,7 +545,7 @@ HTML;
 			->get(true);
 
 		$options   = array();
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -');
 
 		if (count($items))
 		{
@@ -560,23 +560,23 @@ HTML;
 
 	public static function client_id($id, $selected, array $attribs = array())
 	{
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_RELEASES_CLIENT_ID') . ' -');
-		$options[] = JHtml::_('FEFHelper.select.option', '1', \JText::_('LBL_CLIENTID_BACKEND'));
-		$options[] = JHtml::_('FEFHelper.select.option', '0', \JText::_('LBL_CLIENTID_FRONTEND'));
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_RELEASES_CLIENT_ID') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', '1', Text::_('LBL_CLIENTID_BACKEND'));
+		$options[] = JHtml::_('FEFHelper.select.option', '0', Text::_('LBL_CLIENTID_FRONTEND'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
 	public static function updateTypes($id, $selected, array $attribs = array())
 	{
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_UPDATES_TYPE') . ' -');
-		$options[] = JHtml::_('FEFHelper.select.option', 'components', \JText::_('LBL_UPDATETYPES_COMPONENTS'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'libraries', \JText::_('LBL_UPDATETYPES_LIBRARIES'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'modules', \JText::_('LBL_UPDATETYPES_MODULES'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'packages', \JText::_('LBL_UPDATETYPES_PACKAGES'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'plugins', \JText::_('LBL_UPDATETYPES_PLUGINS'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'templates', \JText::_('LBL_UPDATETYPES_TEMPLATES'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'files', \JText::_('LBL_UPDATETYPES_FILES'));
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_UPDATES_TYPE') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', 'components', Text::_('LBL_UPDATETYPES_COMPONENTS'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'libraries', Text::_('LBL_UPDATETYPES_LIBRARIES'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'modules', Text::_('LBL_UPDATETYPES_MODULES'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'packages', Text::_('LBL_UPDATETYPES_PACKAGES'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'plugins', Text::_('LBL_UPDATETYPES_PLUGINS'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'templates', Text::_('LBL_UPDATETYPES_TEMPLATES'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'files', Text::_('LBL_UPDATETYPES_FILES'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
@@ -592,8 +592,8 @@ HTML;
 			->filter_order_Dir('ASC')
 			->get(true);
 
-		$options = array();
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . \JText::_('LBL_ITEMS_UPDATESTREAM_SELECT') . ' -');
+		$options   = array();
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_ITEMS_UPDATESTREAM_SELECT') . ' -');
 
 		if (count($items))
 		{
@@ -627,18 +627,18 @@ HTML;
 			$options[] = JHtml::_('FEFHelper.select.option', '', '---');
 		}
 
-		$options[] = JHtml::_('FEFHelper.select.option', '0', JText::_('JNO'));
-		$options[] = JHtml::_('FEFHelper.select.option', '1', JText::_('JYES'));
+		$options[] = JHtml::_('FEFHelper.select.option', '0', Text::_('JNO'));
+		$options[] = JHtml::_('FEFHelper.select.option', '1', Text::_('JYES'));
 
 		return self::genericlist($options, $name, $attribs, $selected, $name);
 	}
 
 	public static function published($selected = null, $id = 'enabled', $attribs = array())
 	{
-		$options = array();
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . JText::_('COM_ARS_LBL_COMMON_SELECTPUBLISHSTATE') . ' -');
-		$options[] = JHtml::_('FEFHelper.select.option', 0, JText::_('JUNPUBLISHED'));
-		$options[] = JHtml::_('FEFHelper.select.option', 1, JText::_('JPUBLISHED'));
+		$options   = array();
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('COM_ARS_LBL_COMMON_SELECTPUBLISHSTATE') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', 0, Text::_('JUNPUBLISHED'));
+		$options[] = JHtml::_('FEFHelper.select.option', 1, Text::_('JPUBLISHED'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
@@ -652,7 +652,7 @@ HTML;
 			->filter_order_Dir('ASC')
 			->get(true);
 
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- '.JText::_('LBL_CATEGORIES_VGROUP').' -');
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_CATEGORIES_VGROUP') . ' -');
 
 		// Build the field options.
 		if (count($items))
@@ -686,47 +686,47 @@ HTML;
 			);
 		}
 
-		$options[] = JHtml::_('FEFHelper.select.option', '*', JText::_('JALL_LANGUAGE'));
-		$options = array_merge($options, $languages);
+		$options[] = JHtml::_('FEFHelper.select.option', '*', Text::_('JALL_LANGUAGE'));
+		$options   = array_merge($options, $languages);
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
 	public static function categoryType($id, $selected = null, $attribs = array())
 	{
-		$options = array();
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . JText::_('COM_ARS_LBL_COMMON_SELECTCATTYPE') . ' -');
-		$options[] = JHtml::_('FEFHelper.select.option', 'normal', JText::_('COM_ARS_CATEGORIES_TYPE_NORMAL'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'bleedingedge', JText::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE'));
+		$options   = array();
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('COM_ARS_LBL_COMMON_SELECTCATTYPE') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', 'normal', Text::_('COM_ARS_CATEGORIES_TYPE_NORMAL'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'bleedingedge', Text::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
 	public static function itemType($id, $selected = null, $attribs = array())
 	{
-		$options = array();
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . JText::_('LBL_ITEMS_TYPE_SELECT') . ' -');
-		$options[] = JHtml::_('FEFHelper.select.option', 'link', JText::_('LBL_ITEMS_TYPE_LINK'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'file', JText::_('LBL_ITEMS_TYPE_FILE'));
+		$options   = array();
+		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_ITEMS_TYPE_SELECT') . ' -');
+		$options[] = JHtml::_('FEFHelper.select.option', 'link', Text::_('LBL_ITEMS_TYPE_LINK'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'file', Text::_('LBL_ITEMS_TYPE_FILE'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
 	public static function subscriptionGroups($id, $selected = null, $attribs = array())
 	{
-		$options[] = JHtml::_('FEFHelper.select.option', '', JText::_('COM_ARS_COMMON_SELECT_GENERIC'));
-		$options = array_merge($options, SubscriptionIntegration::getGroupsForSelect());
+		$options[] = JHtml::_('FEFHelper.select.option', '', Text::_('COM_ARS_COMMON_SELECT_GENERIC'));
+		$options   = array_merge($options, SubscriptionIntegration::getGroupsForSelect());
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
 	public static function maturity($id, $selected = null, $attribs = array())
 	{
-		$options[] = JHtml::_('FEFHelper.select.option', '', JText::_('COM_ARS_RELEASES_MATURITY_SELECT'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'alpha', JText::_('COM_ARS_RELEASES_MATURITY_ALPHA'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'beta', JText::_('COM_ARS_RELEASES_MATURITY_BETA'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'rc', JText::_('COM_ARS_RELEASES_MATURITY_RC'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'stable', JText::_('COM_ARS_RELEASES_MATURITY_STABLE'));
+		$options[] = JHtml::_('FEFHelper.select.option', '', Text::_('COM_ARS_RELEASES_MATURITY_SELECT'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'alpha', Text::_('COM_ARS_RELEASES_MATURITY_ALPHA'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'beta', Text::_('COM_ARS_RELEASES_MATURITY_BETA'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'rc', Text::_('COM_ARS_RELEASES_MATURITY_RC'));
+		$options[] = JHtml::_('FEFHelper.select.option', 'stable', Text::_('COM_ARS_RELEASES_MATURITY_STABLE'));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
@@ -752,7 +752,7 @@ HTML;
 		}
 		else
 		{
-			$options[] = JHtml::_('FEFHelper.select.option', '-1', JText::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $id)));
+			$options[] = JHtml::_('FEFHelper.select.option', '-1', Text::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $id)));
 		}
 
 		if (isset($attribs['hideDefault']))
@@ -761,7 +761,7 @@ HTML;
 		}
 		else
 		{
-			$options[] = JHtml::_('FEFHelper.select.option', '', JText::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $id)));
+			$options[] = JHtml::_('FEFHelper.select.option', '', Text::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $id)));
 		}
 
 		if (isset($attribs['filter']))
@@ -838,7 +838,7 @@ HTML;
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 
-		array_unshift($options, JHtml::_('FEFHelper.select.option', '', JText::_('COM_ARS_COMMON_SHOW_ALL_LEVELS')));
+		array_unshift($options, JHtml::_('FEFHelper.select.option', '', Text::_('COM_ARS_COMMON_SHOW_ALL_LEVELS')));
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}

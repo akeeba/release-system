@@ -10,7 +10,7 @@ namespace Akeeba\ReleaseSystem\Admin\View\Logs;
 defined('_JEXEC') or die;
 
 use FOF30\View\DataView\Html as BaseView;
-use JText;
+use Joomla\CMS\Language\Text;
 
 class Html extends BaseView
 {
@@ -47,13 +47,13 @@ class Html extends BaseView
 
 		// Construct the array of sorting fields
 		$this->sortFields = array(
-			'itemtext' 	 		=> JText::_('LBL_LOGS_ITEM'),
-			'usertext' 	 		=> JText::_('LBL_LOGS_USER'),
-			'accessed_on' 		=> JText::_('LBL_LOGS_ACCESSED'),
-			'referer'	 		=> JText::_('LBL_LOGS_REFERER'),
-			'ip'	 	 		=> JText::_('LBL_LOGS_IP'),
-			'country' 		 	=> JText::_('LBL_LOGS_COUNTRY'),
-			'authorized'		=> JText::_('LBL_LOGS_AUTHORIZED'),
+			'itemtext'    => Text::_('LBL_LOGS_ITEM'),
+			'usertext'    => Text::_('LBL_LOGS_USER'),
+			'accessed_on' => Text::_('LBL_LOGS_ACCESSED'),
+			'referer'     => Text::_('LBL_LOGS_REFERER'),
+			'ip'          => Text::_('LBL_LOGS_IP'),
+			'country'     => Text::_('LBL_LOGS_COUNTRY'),
+			'authorized'  => Text::_('LBL_LOGS_AUTHORIZED'),
 		);
 
 		parent::onBeforeBrowse();

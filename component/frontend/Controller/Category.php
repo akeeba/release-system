@@ -10,6 +10,7 @@ namespace Akeeba\ReleaseSystem\Site\Controller;
 defined('_JEXEC') or die;
 
 use FOF30\Controller\DataController;
+use Joomla\CMS\Language\Text;
 
 class Category extends DataController
 {
@@ -20,7 +21,7 @@ class Category extends DataController
 
 		if (!in_array($format, ['html', 'feed']) && !($this->checkACL('core.manage') || $this->checkACL('core.admin')))
 		{
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		if ($task == 'default')

@@ -11,6 +11,7 @@ defined('_JEXEC') or die();
 
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use Joomla\CMS\Language\Text;
 
 $rootURL    = rtrim(JURI::base(), '/');
 $subpathURL = JURI::base(true);
@@ -52,7 +53,8 @@ $streamTypeMap = array(
 //@header('Content-type: application/xml');
 ?><?php echo $tag; ?>
 <!-- Update stream generated automatically by Akeeba Release System on <?=gmdate('Y-m-d H:i:s')?> -->
-<extensionset category="<?php echo ucfirst($this->category)?>" name="<?php echo ucfirst($this->category)?>" description="<?php echo JText::_('LBL_UPDATETYPES_'.strtoupper($this->category)); ?>">
+<extensionset category="<?php echo ucfirst($this->category) ?>" name="<?php echo ucfirst($this->category) ?>"
+			  description="<?php echo Text::_('LBL_UPDATETYPES_' . strtoupper($this->category)); ?>">
 <?php
 if(!empty($this->items)) foreach($this->items as $item):
 $url = $rootURL . Router::_('index.php?option=com_ars&view=update&format=xml&task=stream&id=' . $item->id . $dlid);

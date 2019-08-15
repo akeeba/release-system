@@ -16,6 +16,7 @@ use Akeeba\ReleaseSystem\Site\Model\Items;
 use Akeeba\ReleaseSystem\Site\Model\Logs;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Controller\DataController;
+use Joomla\CMS\Language\Text;
 
 class Item extends DataController
 {
@@ -26,7 +27,7 @@ class Item extends DataController
 
 		if (($format == 'json') && !($this->checkACL('core.manage') || $this->checkACL('core.admin')))
 		{
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		// For the HTML view we only allow browse and download
@@ -159,7 +160,7 @@ class Item extends DataController
 				return;
 			}
 
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		try
@@ -188,7 +189,7 @@ class Item extends DataController
 				return;
 			}
 
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		// Filter the releases by this category
@@ -319,7 +320,7 @@ class Item extends DataController
 				return;
 			}
 
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 
@@ -354,7 +355,7 @@ class Item extends DataController
 				return;
 			}
 
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		// The category must be accessible
@@ -388,7 +389,7 @@ class Item extends DataController
 				return;
 			}
 
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		// Hit the item
@@ -430,7 +431,7 @@ class Item extends DataController
 			// Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
 			$app->triggerEvent('onAdminToolsThirdpartyException', array(
 				'external',
-				\JText::_('COM_ARS_BLOCKED_MESSAGE'),
+				Text::_('COM_ARS_BLOCKED_MESSAGE'),
 				array($extraMessage)
 			),
 				true

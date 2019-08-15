@@ -5,8 +5,9 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use FOF30\Utils\FEFHelper\Html as FEFHtml;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\Language\Text;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\AutoDescriptions\Html */
 
@@ -21,17 +22,17 @@ $this->getContainer()->template->addJSInline($js);
 	<section class="akeeba-panel--33-66 akeeba-filter-bar-container">
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
 			<div class="akeeba-filter-element akeeba-form-group">
-				<input type="text" name="title" placeholder="<?php echo \JText::_('LBL_AUTODESC_TITLE'); ?>"
+				<input type="text" name="title" placeholder="<?php echo Text::_('LBL_AUTODESC_TITLE'); ?>"
 					   id="filter_title" onchange="document.adminForm.submit()"
 					   value="<?php echo $this->escape($this->filters['title']); ?>"
-					   title="<?php echo \JText::_('LBL_AUTODESC_TITLE'); ?>"/>
+					   title="<?php echo Text::_('LBL_AUTODESC_TITLE'); ?>" />
 			</div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                <input type="text" name="packname" placeholder="<?php echo \JText::_('LBL_AUTODESC_PACKNAME'); ?>"
-                       id="filter_packname" onchange="document.adminForm.submit()"
-                       value="<?php echo $this->escape($this->filters['packname']); ?>"
-                       title="<?php echo \JText::_('LBL_AUTODESC_PACKNAME'); ?>"/>
+				<input type="text" name="packname" placeholder="<?php echo Text::_('LBL_AUTODESC_PACKNAME'); ?>"
+					   id="filter_packname" onchange="document.adminForm.submit()"
+					   value="<?php echo $this->escape($this->filters['packname']); ?>"
+					   title="<?php echo Text::_('LBL_AUTODESC_PACKNAME'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
@@ -78,7 +79,7 @@ $this->getContainer()->template->addJSInline($js);
 		<?php if (!count($this->items)):?>
 			<tr>
 				<td colspan="11">
-					<?php echo JText::_('COM_ARS_COMMON_NOITEMS_LABEL')?>
+					<?php echo Text::_('COM_ARS_COMMON_NOITEMS_LABEL') ?>
 				</td>
 			</tr>
 		<?php endif;?>

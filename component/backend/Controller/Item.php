@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use FOF30\Container\Container;
 use FOF30\Controller\DataController;
 use FOF30\Controller\Exception\ItemNotFound;
+use Joomla\CMS\Language\Text;
 
 class Item extends DataController
 {
@@ -39,7 +40,7 @@ class Item extends DataController
 			{
 				$message = $data['id'] ? 'JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED' : 'JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED';
 
-				throw new \RuntimeException(\JText::_($message), 403);
+				throw new \RuntimeException(Text::_($message), 403);
 			}
 		}
 
@@ -93,13 +94,13 @@ class Item extends DataController
 			if ($model->getId() != reset($ids))
 			{
 				$key = strtoupper($this->container->componentName . '_ERR_' . $model->getName() . '_NOTFOUND');
-				throw new ItemNotFound(\JText::_($key), 404);
+				throw new ItemNotFound(Text::_($key), 404);
 			}
 		}
 
 		if (!$this->container->platform->getUser()->authorise('core.delete', $this->container->componentName . '.category.' . $model->release->category_id))
 		{
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 403);
 		}
 	}
 
@@ -116,13 +117,13 @@ class Item extends DataController
 			if ($model->getId() != reset($ids))
 			{
 				$key = strtoupper($this->container->componentName . '_ERR_' . $model->getName() . '_NOTFOUND');
-				throw new ItemNotFound(\JText::_($key), 404);
+				throw new ItemNotFound(Text::_($key), 404);
 			}
 		}
 
 		if (!$this->container->platform->getUser()->authorise('core.edit', $this->container->componentName . '.category.' . $model->release->category_id))
 		{
-			throw new \RuntimeException(\JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 	}
 }
