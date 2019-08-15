@@ -44,10 +44,6 @@ else
 // Clear everything before starting the output
 @ob_end_clean();
 
-// Custom header for SiteGround's SuperCacher. The default value caches the
-// output for 5 minutes.
-Factory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
-
 require_once JPATH_SITE . '/components/com_ars/router.php';
 ComArsRouter::$routeRaw  = false;
 ComArsRouter::$routeHtml = false;

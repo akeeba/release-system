@@ -99,11 +99,6 @@ if (!empty($this->items)):
 	}
 
 	@ob_end_clean();
-
-	// Custom header for SiteGround's SuperCacher. The default value caches the
-	// output for 5 minutes.
-	Factory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
-
 	?>
 ; Live Update provision file
 ; Generated on <?= gmdate('Y-m-d H:i:s') ?> GMT
