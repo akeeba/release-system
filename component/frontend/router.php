@@ -100,7 +100,6 @@ function arsBuildRouteHtml(&$query)
 	$id       = ArsRouterHelper::getAndPop($query, 'id');
 	$Itemid   = ArsRouterHelper::getAndPop($query, 'Itemid');
 	$language = ArsRouterHelper::getAndPop($query, 'language', $currentLang);
-	$vgroupid = ArsRouterHelper::getAndPop($query, 'vgroupid');
 
 	// The id in the Releases view is called category_id
 	if ($view == 'Releases')
@@ -123,7 +122,6 @@ function arsBuildRouteHtml(&$query)
 		'layout'   => $layout,
 		'id'       => $id,
 		'language' => $language,
-		'vgroupid' => $vgroupid,
 	];
 
 	switch ($view)
@@ -262,7 +260,7 @@ function arsBuildRouteHtml(&$query)
 				}
 			}
 
-			// TODO Cache category aliases and vgroup ID
+		// TODO Cache category aliases
 			// Get category alias
 			/** @var \Akeeba\ReleaseSystem\Site\Model\Categories $category */
 			$category = $container->factory->model('Categories')->tmpInstance();
@@ -276,7 +274,6 @@ function arsBuildRouteHtml(&$query)
 			}
 
 			$catAlias    = $category->alias;
-			$catVgroupId = $category->vgroup_id;
 
 			if (empty($Itemid))
 			{
@@ -284,13 +281,6 @@ function arsBuildRouteHtml(&$query)
 				$options = $queryOptions;
 				unset($options['id']);
 				$params = ['catid' => $id];
-
-				// Does the category have a visual group?  If so, let's add that to the query options
-
-				if ($catVgroupId)
-				{
-					$options['vgroupid'] = $catVgroupId;
-				}
 
 				$possibleViews = ['category', 'Releases'];
 
@@ -318,12 +308,6 @@ function arsBuildRouteHtml(&$query)
 						'option'   => 'com_ars', 'view' => 'Categories', 'layout' => 'repository',
 						'language' => $language,
 					];
-
-					// Does the category have a visual group?  If so, let's add that to the query options
-					if ($catVgroupId)
-					{
-						$options['vgroupid'] = $catVgroupId;
-					}
 
 					$possibleViews = ['browse', 'browses', 'Categories'];
 
@@ -361,7 +345,7 @@ function arsBuildRouteHtml(&$query)
 
 		case 'release':
 		case 'Items':
-			// TODO Cache category IDs and release alias per release, get category aliases and vgroup IDs from category cache
+			// TODO Cache category IDs and release alias per release, get category aliases from category cache
 			// Get release info
 			/** @var \Akeeba\ReleaseSystem\Site\Model\Releases $release */
 			$release = $container->factory->model('Releases')->tmpInstance();
@@ -378,13 +362,11 @@ function arsBuildRouteHtml(&$query)
 			$releaseAlias = $release->alias;
 			$catId        = 0;
 			$catAlias     = '';
-			$catVgroup    = 0;
 
 			if (is_object($release->category))
 			{
 				$catId     = $release->category->id;
 				$catAlias  = $release->category->alias;
-				$catVgroup = $release->category->vgroup_id;
 			}
 
 			// Do we have a "category" menu?
@@ -430,14 +412,6 @@ function arsBuildRouteHtml(&$query)
 				$options = ['view' => 'Category', 'option' => 'com_ars', 'language' => $language];
 				$params  = ['catid' => $catId];
 
-				// Does the category have a visual group?  If so, let's add that to the query options
-				$catVgroupId = $catVgroup;
-
-				if ($catVgroupId)
-				{
-					$options['vgroupid'] = $catVgroupId;
-				}
-
 				$possibleViews = ['release', 'Items'];
 
 				foreach ($possibleViews as $possibleView)
@@ -463,12 +437,6 @@ function arsBuildRouteHtml(&$query)
 				{
 					// Nah. Let's find a browse menu item.
 					$options = ['view' => 'browses', 'option' => 'com_ars', 'language' => $language];
-
-					// Does the category have a visual group?  If so, let's add that to the query options
-					if ($catVgroupId)
-					{
-						$options['vgroupid'] = $catVgroupId;
-					}
 
 					$possibleViews = ['browse', 'browses', 'Categories'];
 
@@ -554,7 +522,6 @@ function arsBuildRouteRaw(&$query)
 
 	// Get category alias
 	$catAlias = $release->category->alias;
-	$catVgroupId = $release->category->vgroup_id;
 
 	if ($Itemid)
 	{
@@ -621,11 +588,6 @@ function arsBuildRouteRaw(&$query)
 		$options = array('option' => 'com_ars', 'view' => 'Items');
 		$params = array('relid' => $release->id);
 
-		if ($catVgroupId)
-		{
-			$options['vgroupid'] = $catVgroupId;
-		}
-
 		$possibleViews = ['Items', 'release'];
 		$menu = null;
 
@@ -649,11 +611,6 @@ function arsBuildRouteRaw(&$query)
 		{
 			$options = array('option' => 'com_ars', 'view' => 'category');
 			$params = array('catid' => $release->category_id);
-
-			if ($catVgroupId)
-			{
-				$options['vgroupid'] = $catVgroupId;
-			}
 
 			$possibleViews = ['Releases', 'category'];
 
@@ -679,11 +636,6 @@ function arsBuildRouteRaw(&$query)
 		if (!is_object($menu))
 		{
 			$options = array('view' => 'browses', 'option' => 'com_ars');
-
-			if ($catVgroupId)
-			{
-				$options['vgroupid'] = $catVgroupId;
-			}
 
 			$possibleViews = ['Categories', 'browse', 'browses'];
 			$menu = null;

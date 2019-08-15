@@ -34,12 +34,6 @@ $item = $this->getItem();
                 </div>
 
                 <div class="akeeba-form-group">
-					<label for="vgroup_id"><?php echo Text::_('LBL_CATEGORIES_VGROUP'); ?></label>
-
-                    <?php echo Select::vgroups('vgroup_id', $item->vgroup_id)?>
-                </div>
-
-                <div class="akeeba-form-group">
 					<label for="type"><?php echo Text::_('COM_ARS_CATEGORIES_FIELD_TYPE'); ?></label>
 
 					<?php echo Select::categoryType('type', $item->type)?>

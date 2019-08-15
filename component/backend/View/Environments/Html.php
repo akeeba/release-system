@@ -42,7 +42,7 @@ class Html extends BaseView
 
 		// Construct the array of sorting fields
 		$this->sortFields = array(
-			'title' => Text::_('LBL_VGROUPS_TITLE'),
+			'title' => Text::_('LBL_ENVIRONMENTS_TITLE'),
 		);
 	}
 }

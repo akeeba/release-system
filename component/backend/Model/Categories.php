@@ -26,7 +26,6 @@ use FOF30\Model\DataModel;
  * @property  string  $type
  * @property  array   $groups
  * @property  string  $directory
- * @property  int     $vgroup_id
  * @property  string  $created
  * @property  string  $modified
  * @property  int     $checked_out
@@ -48,7 +47,6 @@ use FOF30\Model\DataModel;
  * @method  $this  type()               type(string $v)
  * @method  $this  groups()             groups(string $v)
  * @method  $this  directory()          directory(string $v)
- * @method  $this  vgroup()             vgroup(int $v)
  * @method  $this  created()            created(string $v)
  * @method  $this  created_by()         created_by(int $v)
  * @method  $this  modified()           modified(string $v)
@@ -123,7 +121,6 @@ class Categories extends DataModel
 		$config['fieldsSkipChecks'] = [
 			'description',
 			'groups',
-			'vgroup_id',
 			'show_unauth_links',
 			'redirect_unauth',
 			'language',
@@ -138,7 +135,6 @@ class Categories extends DataModel
 		parent::__construct($container, $config);
 
 		// Relations
-		$this->belongsTo('visualGroup', 'VisualGroups', 'vgroup_id', 'id');
 		$this->hasMany('releases', 'Releases', 'id', 'category_id');
 
 		$this->with(['visualGroup']);
@@ -151,7 +147,6 @@ class Categories extends DataModel
 
 		// Some filters we will have to handle programmatically so we need to exclude them from the behaviour
 		$this->blacklistFilters([
-			'vgroup_id',
 			'language'
 		]);
 	}
@@ -167,17 +162,6 @@ class Categories extends DataModel
 	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
 	{
 		$db = $this->getDbo();
-
-		// Visual Groups filter. Normally we use vgroup but old requests + frontend menu items use vgroupid.
-		$fltVgroup = $this->getState('vgroupid', null, 'int');
-		$fltVgroup = $this->getState('vgroup', $fltVgroup, 'int');
-		// Now remove the old style visual group filter from the state, if it was set
-		$this->setState('vgroupid', null);
-
-		if ($fltVgroup)
-		{
-			$query->where($db->qn('vgroup_id') . ' = ' . $db->q($fltVgroup));
-		}
 
 		// Access by user filter (unless we are asked to display unauthorized links for this category)
 		$fltAccessUser = $this->getState('access_user', null, 'int');

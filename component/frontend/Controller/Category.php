@@ -61,7 +61,6 @@ class Category extends DataController
 			'format'      => 'CMD',
 			'layout'      => 'CMD',
 			'id'          => 'INT',
-			'vgroupid'    => 'INT',
 		);
 
 		$urlparams = array_merge($additionalParams, $urlparams);

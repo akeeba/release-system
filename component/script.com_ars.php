@@ -118,6 +118,7 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			// Version 5 -- Rolling internal release
 			'administrator/components/com_ars/Helper/AmazonS3.php',
+			'administrator/components/com_ars/Model/VisualGroups.php',
 		),
 		'folders' => array(
 			// Moving to FOF 3
@@ -168,7 +169,10 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			// Version 5 -- Rolling internal release
 			'administrator/components/com_ars/assets',
 			'administrator/components/com_ars/vendor',
+
 			'administrator/components/com_ars/Controller/Mixin',
+
+			'administrator/components/com_ars/View/VisualGroups',
 		)
 	);
 

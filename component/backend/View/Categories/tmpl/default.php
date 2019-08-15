@@ -22,17 +22,6 @@ $this->getContainer()->template->addJSInline($js);
 
 	<section class="akeeba-panel--33-66 akeeba-filter-bar-container">
 		<div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
-			<div class="akeeba-filter-element akeeba-form-group">
-				<input type="text" name="title" placeholder="<?php echo Text::_('LBL_VGROUPS_TITLE'); ?>"
-					   id="filter_title" onchange="document.adminForm.submit()"
-					   value="<?php echo $this->escape($this->filters['title']); ?>"
-					   title="<?php echo Text::_('LBL_VGROUPS_TITLE'); ?>" />
-			</div>
-
-            <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::vgroups('vgroup', $this->filters['vgroup'], ['onchange' => 'document.adminForm.submit()'])?>
-            </div>
-
             <div class="akeeba-filter-element akeeba-form-group">
 				<?php echo Select::categoryType('type', $this->filters['type'], ['onchange' => 'document.adminForm.submit()'])?>
             </div>
@@ -65,9 +54,6 @@ $this->getContainer()->template->addJSInline($js);
 			</th>
 			<th>
 				<?php echo \JHtml::_('grid.sort', 'COM_ARS_CATEGORIES_FIELD_TITLE', 'title', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
-			</th>
-            <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_CATEGORIES_VGROUP', 'vg_title', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>
 			</th>
             <th>
 				<?php echo \JHtml::_('grid.sort', 'COM_ARS_CATEGORIES_FIELD_TYPE', 'type', $this->lists->order_Dir, $this->lists->order, 'browse'); ?>

@@ -39,7 +39,7 @@ $this->getContainer()->template->addJSInline($js);
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
 			</th>
 			<th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_VGROUPS_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo \JHtml::_('grid.sort', 'LBL_ENVIRONMENTS_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
 		</tr>
 		</thead>

@@ -66,10 +66,10 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<input type="text" name="title" placeholder="<?php echo Text::_('LBL_VGROUPS_TITLE'); ?>"
+				<input type="text" name="title" placeholder="<?php echo Text::_('LBL_ITEMS_TITLE'); ?>"
 					   id="filter_title" onchange="document.adminForm.submit()"
 					   value="<?php echo $this->escape($this->filters['title']); ?>"
-					   title="<?php echo Text::_('LBL_VGROUPS_TITLE'); ?>" />
+					   title="<?php echo Text::_('LBL_ITEMS_TITLE'); ?>" />
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">

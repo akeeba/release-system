@@ -31,9 +31,6 @@ class Html extends BaseView
 	/** @var  \JPagination  Pagination object */
 	public $pagination;
 
-	/** @var  array Visual groups */
-	public $vgroups;
-
 	/** @var  int  Active menu item ID */
 	public $Itemid;
 
@@ -55,8 +52,6 @@ class Html extends BaseView
 			return Filter::filterItem($item, true);
 		});
 
-		$visualGroups = Filter::getCategoriesPerVisualGroup($this->items);
-
 		// Add RSS links
 		/** @var \JApplicationSite $app */
 		$app = \JFactory::getApplication();
@@ -69,7 +64,6 @@ class Html extends BaseView
 
 		// Assign data to the view
 		$this->pagination = new \JPagination($model->count(), $model->limitstart, $model->limit);
-		$this->vgroups = $visualGroups;
 
 		// Pass page params
 		$this->params = $app->getParams();

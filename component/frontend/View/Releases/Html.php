@@ -37,9 +37,6 @@ class Html extends BaseView
 	/** @var  \JPagination  Pagination object */
 	public $pagination;
 
-	/** @var  array Visual groups */
-	public $vgroups;
-
 	/** @var  int  Active menu item ID */
 	public $Itemid;
 

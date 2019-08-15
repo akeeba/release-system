@@ -11,13 +11,6 @@
             <![CDATA[ARS_BROWSE_BLEEDINGEDGE_DESC]]>
         </message>
     </layout>
-    <fields name="request">
-        <fieldset name="request">
-            <field name="vgroupid" type="sql" default="" label="COM_ARS_COMMON_VGROUP_SELECT_LABEL" description=""
-                   query="SELECT '' AS `id`, 'All' AS `title` UNION SELECT `id`, `title` FROM `#__ars_vgroups`"
-                   key_field="id" value_field="title"/>
-        </fieldset>
-    </fields>
     <fields name="params">
         <fieldset name="basic" label="COM_ARS_FIELDSET_BASIC">
             <field name="grouping" type="hidden" default="normal"/>

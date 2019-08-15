@@ -23,9 +23,6 @@ class Html extends BaseView
 	/** @var  Releases[]  An array of releases, indexed by category ID */
 	public $releases;
 
-	/** @var  array Visual groups */
-	public $vgroups;
-
 	/** @var  int  Active menu item ID */
 	public $Itemid;
 
@@ -52,8 +49,6 @@ class Html extends BaseView
 		{
 			return Filter::filterItem($item, true);
 		});
-
-		$this->vgroups = Filter::getCategoriesPerVisualGroup($this->categories);
 
 		/** @var Releases $releasesModel */
 		$releasesModel = $this->getModel();

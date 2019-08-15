@@ -39,7 +39,6 @@ class Category extends DataController
 		}
 
 		$this->defaultsForAdd = [
-			'vgroup_id'    => 0,
 			'type'         => 'normal',
 			'access'       => 1,
 			'published'    => 0,

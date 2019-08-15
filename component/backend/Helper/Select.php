@@ -643,29 +643,6 @@ HTML;
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
-	public static function vgroups($id, $selected = null, $attribs = array())
-	{
-		/** @var VisualGroups $model */
-		$model = self::getContainer()->factory->model('VisualGroups')->tmpInstance();
-		$items = $model
-			->filter_order('title')
-			->filter_order_Dir('ASC')
-			->get(true);
-
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_CATEGORIES_VGROUP') . ' -');
-
-		// Build the field options.
-		if (count($items))
-		{
-			foreach ($items as $item)
-			{
-				$options[] = JHtml::_('FEFHelper.select.option', $item->id, $item->title);
-			}
-		}
-
-		return self::genericlist($options, $id, $attribs, $selected, $id);
-	}
-
 	public static function languages($id, $selected = null, $attribs = array(), $client = 'site')
 	{
 		if ($client != 'site' && $client != 'administrator')

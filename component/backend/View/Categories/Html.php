@@ -37,13 +37,11 @@ class Html extends BaseView
 		$this->filters['title'] 	 	  = $model->getState('title');
 		$this->filters['published']	 	  = $model->getState('published');
 		$this->filters['type']			  = $model->getState('type');
-		$this->filters['vgroup']	 	  = $model->getState('vgroup');
 		$this->filters['access']	 	  = $model->getState('access');
 		$this->filters['language']	 	  = $model->getState('language');
 
 		// Construct the array of sorting fields
 		$this->sortFields = array(
-			'title'     => Text::_('LBL_VGROUPS_TITLE'),
 			'published' => Text::_('JPUBLISHED'),
 		);
 	}
