@@ -6,6 +6,8 @@
  */
 
 // no direct access
+use Joomla\CMS\Factory;
+
 defined('_JEXEC') or die();
 
 // Load FOF if not already loaded
@@ -226,8 +228,8 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 	 */
 	private function warnAboutJSNPowerAdmin()
 	{
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true)
+		$db            = Factory::getDbo();
+		$query         = $db->getQuery(true)
 					->select('COUNT(*)')
 					->from($db->qn('#__extensions'))
 					->where($db->qn('type') . ' = ' . $db->q('component'))

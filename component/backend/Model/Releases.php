@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Admin\Model\Mixin\ClearCacheAfterActions;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
+use Joomla\CMS\Filter\InputFilter;
 
 /**
  * Model for Releases
@@ -523,7 +524,7 @@ class Releases extends DataModel
 		}
 
 		\JLoader::import('joomla.filter.filterinput');
-		$filter = \JFilterInput::getInstance(null, null, 1, 1);
+		$filter = InputFilter::getInstance(null, null, 1, 1);
 
 		// Filter the description using a safe HTML filter
 		if (!empty($this->description))

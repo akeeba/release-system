@@ -7,6 +7,8 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
 
+use Joomla\CMS\Component\ComponentHelper;
+
 defined('_JEXEC') or die;
 
 /**
@@ -53,7 +55,7 @@ abstract class Base implements IntegrationInterface
 
 		\JLoader::import('cms.application.component.helper');
 
-		if (!\JComponentHelper::getComponent('com_akeebasubs', true)->enabled)
+		if (!ComponentHelper::getComponent('com_akeebasubs', true)->enabled)
 		{
 			return false;
 		}

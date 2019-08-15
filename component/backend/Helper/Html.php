@@ -13,7 +13,12 @@ use FOF30\Model\DataModel;
 use FOF30\View\DataView\Raw;
 use JHelperUsergroups;
 use JHtml;
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\UserGroupsHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die;
 
@@ -47,7 +52,7 @@ abstract class Html
 
 		if (!$languages)
 		{
-			$db = \JFactory::getDbo();
+			$db = Factory::getDbo();
 
 			$query = $db->getQuery(true)
 				->select('*')
@@ -165,7 +170,7 @@ abstract class Html
 
 		$options = $defaultOptions;
 
-		array_unshift($options, JHtml::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
+		array_unshift($options, HTMLHelper::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
 
 		return '<span ' . ($id ? $id : '') . ' class="'. $class . '">' .
 			htmlspecialchars(GenericList::getOptionName($options, $value), ENT_COMPAT, 'UTF-8') .
@@ -239,8 +244,8 @@ abstract class Html
 			else
 			{
 				// Fall back to the Gravatar method
-				$md5 = md5($user->email);
-				$scheme = \JUri::getInstance()->getScheme();
+				$md5    = md5($user->email);
+				$scheme = Uri::getInstance()->getScheme();
 
 				if ($scheme == 'http')
 				{
@@ -307,10 +312,10 @@ abstract class Html
 		 *
 		 * @return  string  The input field's HTML for this field type
 		 */
-		JHtml::_('bootstrap.tooltip');
+		HTMLHelper::_('bootstrap.tooltip');
 
 		// Get the actions for the asset.
-		$actions = \JAccess::getActions($component, $section);
+		$actions = Access::getActions($component, $section);
 
 		// Get the explicit rules for this asset.
 		if ($section == 'component')
@@ -346,7 +351,7 @@ abstract class Html
 		// Full width format.
 
 		// Get the rules for just this asset (non-recursive).
-		$assetRules = \JAccess::getAssetRules($assetId, true);
+		$assetRules = Access::getAssetRules($assetId, true);
 
 		// Get the available user groups.
 		$groups = self::getUserGroups();
@@ -438,7 +443,7 @@ abstract class Html
 					. '_' . $group->value . '" title="'
 					. Text::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', Text::_($action->title), trim($group->text)) . '">';
 
-				$inheritedRule = \JAccess::checkGroup($group->value, $action->name, $assetId);
+				$inheritedRule = Access::checkGroup($group->value, $action->name, $assetId);
 
 				// Get the actual setting for the action for this group.
 				$assetRule = $assetRules->allow($action->name, $group->value);
@@ -472,7 +477,7 @@ abstract class Html
 					// This is where we show the current effective settings considering currrent group, path and cascade.
 					// Check whether this is a component or global. Change the text slightly.
 
-					if (\JAccess::checkGroup($group->value, 'core.admin', $assetId) !== true)
+					if (Access::checkGroup($group->value, 'core.admin', $assetId) !== true)
 					{
 						if ($inheritedRule === null)
 						{
@@ -551,7 +556,7 @@ abstract class Html
 
 	protected static function getUserGroups()
 	{
-		$options = JHelperUsergroups::getInstance()->getAll();
+		$options = UserGroupsHelper::getInstance()->getAll();
 
 		foreach ($options as &$option)
 		{

@@ -7,10 +7,13 @@
 
 // Protect from unauthorized access
 use FOF30\Container\Container;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\String\StringHelper;
 
 defined('_JEXEC') or die();
 
-class plgContentArsdlid extends JPlugin
+class plgContentArsdlid extends CMSPlugin
 {
 	/**
 	 * Cache of user IDs to Download IDs
@@ -45,7 +48,7 @@ class plgContentArsdlid extends JPlugin
 		// Do not run if Akeeba Subscriptions is not enabled
 		JLoader::import('joomla.application.component.helper');
 
-		if (!JComponentHelper::isEnabled('com_ars'))
+		if (!ComponentHelper::isEnabled('com_ars'))
 		{
 			$this->enabled = false;
 		}
@@ -65,7 +68,7 @@ class plgContentArsdlid extends JPlugin
 		}
 
 		// Check whether the plugin should process or not
-		if (\JString::strpos($article->text, 'downloadid') === false)
+		if (StringHelper::strpos($article->text, 'downloadid') === false)
 		{
 			return true;
 		}

@@ -11,9 +11,11 @@ defined('_JEXEC') or die();
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use FOF30\Model\Model;
-use JAuthentication;
-use JAuthenticationResponse;
-use JLoader;
+use Joomla\CMS\Authentication\Authentication as JAuthentication;
+use Joomla\CMS\Authentication\AuthenticationResponse as JAuthenticationResponse;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\User\UserHelper;
 
 class Download extends Model
 {
@@ -108,8 +110,7 @@ class Download extends Model
 		}
 
 		// Import ARS plugins
-		\JLoader::import('joomla.plugin.helper');
-		\JPluginHelper::importPlugin('ars');
+		PluginHelper::importPlugin('ars');
 
 		// Call any plugins to post-process the download file parameters
 		$object = array(
@@ -121,7 +122,7 @@ class Download extends Model
 			'filesize'    => $filesize
 		);
 
-		$app      = \JFactory::getApplication();
+		$app      = Factory::getApplication();
 		$retArray = $app->triggerEvent('onARSBeforeSendFile', array($object));
 
 		if (!empty($retArray))
@@ -359,8 +360,7 @@ class Download extends Model
 		}
 
 		// This is Joomla!'s login and user helpers
-		\JPluginHelper::importPlugin('user');
-		JLoader::import('joomla.user.helper');
+		PluginHelper::importPlugin('user');
 
 		// Get the query parameters
 		$dlid                    = $this->input->getString('dlid', null);
@@ -415,8 +415,8 @@ class Download extends Model
 
 		// Set the user in the session, effectively logging in the user
 		\JLoader::import('joomla.user.helper');
-		$userid = \JUserHelper::getUserId($response->username);
-		$user = $this->container->platform->getUser($userid);
+		$userid = UserHelper::getUserId($response->username);
+		$user   = $this->container->platform->getUser($userid);
 
 		$this->container->platform->setSessionVar('user', $user);
 

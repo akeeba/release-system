@@ -7,7 +7,8 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Helper;
 
-use JHtml;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die;
 
@@ -25,11 +26,11 @@ abstract class Format
 	public static function preProcessMessage($message, $context = 'com_ars.message')
 	{
 		// Parse [SITE]
-		$site_url = \JUri::base();
-		$message = str_replace('[SITE]', $site_url, $message);
+		$site_url = Uri::base();
+		$message  = str_replace('[SITE]', $site_url, $message);
 
 		// Run content plug-ins
-		$message = JHTML::_('content.prepare', $message, null, $context);
+		$message = HTMLHelper::_('content.prepare', $message, null, $context);
 
 		// Return the value
 		return $message;

@@ -13,14 +13,14 @@ use Akeeba\ReleaseSystem\Admin\Model\Items;
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
 use Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
 use Akeeba\ReleaseSystem\Admin\Model\UpdateStreams;
-use Akeeba\ReleaseSystem\Admin\Model\VisualGroups;
 use FOF30\Container\Container;
 use JFile;
 use JFolder;
-use JHtml;
-use JLanguageHelper;
+use Joomla\CMS\Filesystem\Path as JPath;
+use Joomla\CMS\HTML\HTMLHelper as JHtml;
+use Joomla\CMS\Language\LanguageHelper as JLanguageHelper;
 use Joomla\CMS\Language\Text;
-use JPath;
+use Joomla\CMS\Uri\Uri as JUri;
 
 defined('_JEXEC') or die;
 
@@ -406,7 +406,7 @@ abstract class Select
 			return '';
 		}
 
-		$base_folder = rtrim(\JUri::base(), '/');
+		$base_folder = rtrim(JUri::base(), '/');
 
 		if (substr($base_folder, - 13) == 'administrator')
 		{

@@ -8,17 +8,20 @@
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\Uri\Uri;
 
 /** @var \Akeeba\ReleaseSystem\Site\View\DownloadIDLabels\Html $this */
 
-$itemId = $this->input->getInt('Itemid') ? '&Itemid=' . $this->input->getInt('Itemid') : '';
-$formURI = JRoute::_('index.php?option=com_ars&view=DownloadIDLabels' . $itemId);
-$returnUrl = base64_encode(JUri::getInstance()->toString());
+$itemId    = $this->input->getInt('Itemid') ? '&Itemid=' . $this->input->getInt('Itemid') : '';
+$formURI   = Route::_('index.php?option=com_ars&view=DownloadIDLabels' . $itemId);
+$returnUrl = base64_encode(Uri::getInstance()->toString());
 
-$options = [];
-$options[] = JHtml::_('select.option', '1', 'JPUBLISHED');
-$options[] = JHtml::_('select.option', '0', 'JUNPUBLISHED');
-$options[] = JHtml::_('select.option', '', 'JALL');
+$options   = [];
+$options[] = HTMLHelper::_('select.option', '1', 'JPUBLISHED');
+$options[] = HTMLHelper::_('select.option', '0', 'JUNPUBLISHED');
+$options[] = HTMLHelper::_('select.option', '', 'JALL');
 
 ?>
 
@@ -44,7 +47,7 @@ $options[] = JHtml::_('select.option', '', 'JALL');
             <span class="akion-search"></span>
         </button>
 
-        <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=add&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}"
+        <a href="@route('index.php?option=com_ars&view=DownloadIDLabel&task=add&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
            class="akeeba-btn--primary--small">
             <span class="akion-plus-circled"></span>
             @lang('JNEW')
@@ -91,7 +94,7 @@ $options[] = JHtml::_('select.option', '', 'JALL');
                     @if($item->primary)
                         @lang('COM_ARS_DLIDLABELS_LBL_DEFAULT')
                     @else
-                        <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabel&task=edit&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}">
+                        <a href="@route('index.php?option=com_ars&view=DownloadIDLabel&task=edit&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)">
                         {{{ $item->label }}}
                         </a>
                     @endif
@@ -101,13 +104,13 @@ $options[] = JHtml::_('select.option', '', 'JALL');
                     @include('site:com_ars/DownloadIDLabels/default_publish', ['item' => $item])
                 </td>
                 <td>
-                    <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabels&task=reset&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}"
+                    <a href="@route('index.php?option=com_ars&view=DownloadIDLabels&task=reset&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
                        class="akeeba-btn--orange--small" title="@lang('COM_ARS_DLIDLABELS_FIELD_RESET')">
                         <span class="akion-refresh"></span>
                     </a>
                     @unless($item->primary)
-                    <a href="{{ JRoute::_('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl) }}"
-                       class="akeeba-btn--red--small" title="@lang('COM_ARS_DLIDLABELS_FIELD_TRASH')">
+                        <a href="@route::_('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
+                           class="akeeba-btn--red--small" title="@lang('COM_ARS_DLIDLABELS_FIELD_TRASH')">
                         <span class="akion-trash-b"></span>
                     </a>
                     @endunless

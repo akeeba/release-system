@@ -10,11 +10,10 @@ namespace Akeeba\ReleaseSystem\Admin\Helper;
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-use JFile;
-use JFilterInput;
-use JFolder;
-use JLoader;
-use JRegistry;
+use Joomla\CMS\Filesystem\File as JFile;
+use Joomla\CMS\Filesystem\Folder as JFolder;
+use Joomla\CMS\Filter\InputFilter as JFilterInput;
+use Joomla\Registry\Registry as JRegistry;
 
 /**
  * Handles the caching of lengthy database operations, irrespective of Joomla!'s cache status
@@ -53,13 +52,10 @@ class Cache
 		$this->cachePath = JPATH_CACHE . '/com_ars/' . $domain . '.ini';
 
 		// Create a new registry
-		$this->registry = JRegistry::getInstance('arscache');
+		$this->registry = new JRegistry();
 
 		// Load the registry
 		$this->hasCache = true;
-
-		JLoader::import('joomla.filesystem.folder');
-		JLoader::import('joomla.filesystem.file');
 
 		if (JFolder::exists(dirname($this->cachePath)))
 		{

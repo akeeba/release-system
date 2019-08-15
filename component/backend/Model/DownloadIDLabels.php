@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 use FOF30\Utils\CacheCleaner;
+use Joomla\CMS\Crypt\Crypt;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -168,7 +169,7 @@ class DownloadIDLabels extends DataModel
 		{
 			while (empty($this->dlid))
 			{
-				$this->dlid = md5(\JCrypt::genRandomBytes(64));
+				$this->dlid = md5(Crypt::genRandomBytes(64));
 
 				// Do I have another primary?
 				$query = $db->getQuery(true)

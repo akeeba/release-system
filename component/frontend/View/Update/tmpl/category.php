@@ -12,9 +12,10 @@ defined('_JEXEC') or die();
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
-$rootURL    = rtrim(JURI::base(), '/');
-$subpathURL = JURI::base(true);
+$rootURL    = rtrim(Uri::base(), '/');
+$subpathURL = Uri::base(true);
 
 if (!empty($subpathURL) && ($subpathURL != '/'))
 {

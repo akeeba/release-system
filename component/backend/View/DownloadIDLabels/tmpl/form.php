@@ -5,6 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\DownloadIDLabels\Html $this */
@@ -44,7 +45,7 @@ $userField->value = $item->user_id;
 	                    <?php echo Text::_('JPUBLISHED'); ?>
                     </label>
 
-					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'enabled', $item->enabled);?>
+	                <?php echo HTMLHelper::_('FEFHelper.select.booleanswitch', 'enabled', $item->enabled); ?>
                 </div>
             </div>
         </div>

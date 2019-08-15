@@ -7,6 +7,7 @@
 
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\AutoDescriptions\Html */
@@ -55,16 +56,16 @@ $this->getContainer()->template->addJSInline($js);
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
 			</th>
 			<th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_AUTODESC_CATEGORY', 'category', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo HTMLHelper::_('grid.sort', 'LBL_AUTODESC_CATEGORY', 'category', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_AUTODESC_PACKNAME', 'packname', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_AUTODESC_PACKNAME', 'packname', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_AUTODESC_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_AUTODESC_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th width="8%">
-				<?php echo \JHtml::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
 		</tr>
 		</thead>
@@ -93,7 +94,7 @@ $this->getContainer()->template->addJSInline($js);
 				?>
 				<tr>
                     <td>
-                        <?php echo \JHtml::_('grid.id', ++$i, $row->id); ?>
+	                    <?php echo HTMLHelper::_('grid.id', ++$i, $row->id); ?>
                     </td>
                     <td>
                         <?php echo $row->categoryObject->title ?>
@@ -107,7 +108,7 @@ $this->getContainer()->template->addJSInline($js);
                         </a>
                     </td>
 					<td>
-						<?php echo JHTML::_('jgrid.published', $row->published, $i, '', $enabled, 'cb')?>
+						<?php echo HTMLHelper::_('jgrid.published', $row->published, $i, '', $enabled, 'cb') ?>
                     </td>
 				</tr>
 			<?php

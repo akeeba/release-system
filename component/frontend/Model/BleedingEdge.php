@@ -13,6 +13,10 @@ use FOF30\Container\Container;
 use FOF30\Date\Date;
 use FOF30\Model\DataModel\Collection;
 use FOF30\Model\Model;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 
 class BleedingEdge extends Model
 {
@@ -235,7 +239,7 @@ class BleedingEdge extends Model
 					\JLoader::import('joomla.utilities.date');
 					$jNow = new Date();
 
-					$alias = \JApplicationHelper::stringURLSafe($folder);
+					$alias = ApplicationHelper::stringURLSafe($folder);
 
 					$data = array(
 						'id'          => 0,
@@ -256,8 +260,7 @@ class BleedingEdge extends Model
 					// this information.
 
 					// -- Load plugins
-					\JLoader::import('joomla.plugin.helper');
-					\JPluginHelper::importPlugin('ars');
+					PluginHelper::importPlugin('ars');
 
 					// -- Setup information data
 					$infoData = array(
@@ -271,7 +274,7 @@ class BleedingEdge extends Model
 					);
 
 					// -- Trigger the plugin event
-					$app = \JFactory::getApplication();
+					$app       = Factory::getApplication();
 					$jResponse = $app->triggerEvent('onNewARSBleedingEdgeRelease', array(
 						$infoData,
 						$data
@@ -432,8 +435,7 @@ class BleedingEdge extends Model
 				// event of ars plugins so that they have the chance to modify
 				// this information.
 				// -- Load plugins
-				\JLoader::import('joomla.plugin.helper');
-				\JPluginHelper::importPlugin('ars');
+				PluginHelper::importPlugin('ars');
 				// -- Setup information data
 				$infoData = array(
 					'folder'     => $folder,
@@ -442,7 +444,7 @@ class BleedingEdge extends Model
 					'release'    => $release
 				);
 				// -- Trigger the plugin event
-				$app = \JFactory::getApplication();
+				$app       = Factory::getApplication();
 				$jResponse = $app->triggerEvent('onNewARSBleedingEdgeItem', array(
 					$infoData,
 					$data
@@ -492,7 +494,7 @@ class BleedingEdge extends Model
 		$notes = '';
 
 		\JLoader::import('joomla.application.component.helper');
-		$params = \JComponentHelper::getParams('com_ars');
+		$params = ComponentHelper::getParams('com_ars');
 
 		$generate_changelog = $params->get('begenchangelog', 1);
 		$colorise_changelog = $params->get('becolorisechangelog', 1);

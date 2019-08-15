@@ -9,10 +9,10 @@ namespace Akeeba\ReleaseSystem\Site\Helper;
 
 defined('_JEXEC') or die;
 
-use JFactory;
-use JMenu;
-use JRegistry;
-use JRoute;
+use Joomla\CMS\Factory as JFactory;
+use Joomla\CMS\Menu\AbstractMenu as JMenu;
+use Joomla\CMS\Router\Route as JRoute;
+use Joomla\Registry\Registry as JRegistry;
 
 class Breadcrumbs
 {

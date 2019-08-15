@@ -11,11 +11,13 @@ defined('_JEXEC') or die();
 
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use Joomla\CMS\Profiler\Profiler;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Version;
 
-$rootURL       = rtrim(JURI::base(), '/');
-$subpathURL    = JURI::base(true);
+$rootURL       = rtrim(Uri::base(), '/');
+$subpathURL    = Uri::base(true);
 $showChecksums = isset($this->showChecksums) ? $this->showChecksums : false;
 
 if (!empty($subpathURL) && ($subpathURL != '/'))
@@ -59,13 +61,13 @@ else
 
 // Custom header for SiteGround's SuperCacher. The default value caches the
 // output for 5 minutes.
-JFactory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
+Factory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
 
 require_once JPATH_SITE . '/components/com_ars/router.php';
 //ComArsRouter::$routeRaw  = false;
 //ComArsRouter::$routeHtml = false;
 
-$jVersion = new JVersion;
+$jVersion = new Version;
 
 ?><?php echo $tag; ?>
 <!-- Update stream generated automatically by Akeeba Release System on <?= gmdate('Y-m-d H:i:s') ?> GMT -->
@@ -224,7 +226,7 @@ foreach ($this->items as $item):
 			<tag><?php echo $item->maturity ?></tag>
 		</tags>
 		<maintainer><![CDATA[<?php echo $this->container->platform->getConfig()->get('sitename'); ?>]]></maintainer>
-		<maintainerurl><?php echo JURI::base(); ?></maintainerurl>
+		<maintainerurl><?php echo Uri::base(); ?></maintainerurl>
 		<section>Updates</section>
 		<targetplatform name="<?php echo $platformName ?>" version="<?php echo $platformVersion ?>"/>
 		<?php if ($showChecksums): ?>
@@ -271,7 +273,7 @@ if (defined('JDEBUG') && JDEBUG && false):
 			<?php endforeach; ?>
 		</dbqueries>
 		<profile>
-			<?php foreach (JProfiler::getInstance('Application')->getBuffer() as $mark): ?>
+			<?php foreach (Profiler::getInstance('Application')->getBuffer() as $mark): ?>
 				<mark><?= $mark ?></mark>
 			<?php endforeach; ?>
 		</profile>

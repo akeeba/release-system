@@ -9,6 +9,7 @@ namespace Akeeba\ReleaseSystem\Admin\Dispatcher;
 
 use FOF30\Container\Container;
 use FOF30\Dispatcher\Mixin\ViewAliases;
+use Joomla\CMS\HTML\HTMLHelper;
 
 defined('_JEXEC') or die;
 
@@ -46,7 +47,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
         $this->container->renderer->setOption('linkbar_style', 'classic');
 
 		// Load common CSS and JavaScript
-		\JHtml::_('jquery.framework');
+		HTMLHelper::_('jquery.framework');
 		$this->container->template->addCSS('media://com_ars/css/backend.css', $this->container->mediaVersion);
 	}
 }

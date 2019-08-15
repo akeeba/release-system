@@ -16,6 +16,8 @@ use Akeeba\ReleaseSystem\Site\Model\Items;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Model\DataModel\Collection;
 use FOF30\View\DataView\Html as BaseView;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Pagination\Pagination;
 
 class Html extends BaseView
 {
@@ -77,15 +79,15 @@ class Html extends BaseView
 
 		// Add RSS links
 		/** @var \JApplicationSite $app */
-		$app = \JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Get the ordering
 		$this->order = $model->getState('filter_order', 'id', 'cmd');
 		$this->order_Dir = $model->getState('filter_order_Dir', 'DESC', 'cmd');
 
 		// Assign data to the view
-		$this->pagination = new \JPagination($model->count(), $model->limitstart, $model->limit);
-		$this->category = $this->getModel('Categories');
+		$this->pagination = new Pagination($model->count(), $model->limitstart, $model->limit);
+		$this->category   = $this->getModel('Categories');
 
 		// Pass page params
 		$this->params = $app->getParams();

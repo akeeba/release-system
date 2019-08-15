@@ -14,6 +14,8 @@ use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Model\DataModel\Collection;
 use FOF30\View\DataView\Html as BaseView;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 class Html extends BaseView
 {
@@ -67,13 +69,13 @@ class Html extends BaseView
 
 		// Add RSS links
 		/** @var \JApplicationSite $app */
-		$app = \JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		// Pass page params
-		$this->params = $app->getParams();
-		$this->cparams = \JComponentHelper::getParams('com_ars');
-		$this->Itemid = $this->input->getInt('Itemid', 0);
-		$this->menu = $app->getMenu()->getActive();
+		$this->params  = $app->getParams();
+		$this->cparams = ComponentHelper::getParams('com_ars');
+		$this->Itemid  = $this->input->getInt('Itemid', 0);
+		$this->menu    = $app->getMenu()->getActive();
 
 		return true;
 	}

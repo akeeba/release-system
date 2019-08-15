@@ -6,6 +6,10 @@
  */
 
 // Protect from unauthorized access
+use Joomla\CMS\Factory;
+use Joomla\CMS\Menu\AbstractMenu;
+use Joomla\CMS\Uri\Uri;
+
 defined('_JEXEC') or die();
 
 if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
@@ -76,7 +80,7 @@ function arsBuildRouteHtml(&$query)
 
 	if (is_null($currentLang))
 	{
-		$jLang       = JFactory::getLanguage();
+		$jLang       = Factory::getLanguage();
 		$currentLang = $jLang->getTag();
 	}
 
@@ -92,7 +96,7 @@ function arsBuildRouteHtml(&$query)
 	}
 
 	$container = \FOF30\Container\Container::getInstance('com_ars');
-	$menus     = JMenu::getInstance('site');
+	$menus     = AbstractMenu::getInstance('site');
 
 	$view     = ArsRouterHelper::getAndPop($query, 'view', 'browses');
 	$task     = ArsRouterHelper::getAndPop($query, 'task');
@@ -500,7 +504,7 @@ function arsBuildRouteRaw(&$query)
 	$id = ArsRouterHelper::getAndPop($query, 'id');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
 
-	$menus = JMenu::getInstance('site');
+	$menus = AbstractMenu::getInstance('site');
 
 	// Get download item info
 	/** @var \Akeeba\ReleaseSystem\Site\Model\Items $download */
@@ -692,11 +696,11 @@ function arsBuildRouteXml(&$query)
 	if (!empty($Itemid))
 	{
 		// Get the specified menu
-		$menus = JMenu::getInstance('site');
+		$menus    = AbstractMenu::getInstance('site');
 		$menuitem = $menus->getItem($Itemid);
 
 		// Analyze URL
-		$uri = new JUri($menuitem->link);
+		$uri    = new Uri($menuitem->link);
 		$option = $uri->getVar('option');
 
 		// Sanity check
@@ -872,7 +876,7 @@ function arsBuildRouteXml(&$query)
 
 		case 'stream':
 			// TODO Cache this?
-			$db = JFactory::getDBO();
+			$db      = Factory::getDBO();
 			$dbquery = $db->getQuery(true)
 						  ->select(array(
 							  $db->qn('type'),
@@ -1019,11 +1023,11 @@ function arsBuildRouteIni(&$query)
 	if (!empty($Itemid))
 	{
 		// Get the specified menu
-		$menus = JMenu::getInstance('site');
+		$menus    = AbstractMenu::getInstance('site');
 		$menuitem = $menus->getItem($Itemid);
 
 		// Analyze URL
-		$uri = new JUri($menuitem->link);
+		$uri    = new Uri($menuitem->link);
 		$option = $uri->getVar('option');
 
 		// Sanity check
@@ -1076,7 +1080,7 @@ function arsBuildRouteIni(&$query)
 	}
 
 	// TODO cache this?
-	$db = JFactory::getDBO();
+	$db      = Factory::getDBO();
 	$dbquery = $db->getQuery(true)
 				  ->select(array(
 					  $db->qn('type'),
@@ -1129,7 +1133,7 @@ function arsParseRoute(&$segments)
 {
 	$container = \FOF30\Container\Container::getInstance('com_ars');
 
-	$input = JFactory::getApplication()->input;
+	$input  = Factory::getApplication()->input;
 	$config = $container->platform->getConfig();
 
 	$format = $input->getCmd('format', null);
@@ -1143,7 +1147,7 @@ function arsParseRoute(&$segments)
 		if ($config->get('sef_suffix', 0))
 		{
 			// Get the last part of the URI path
-			$url = JURI::getInstance()->toString();
+			$url      = Uri::getInstance()->toString();
 			$basename = basename($url);
 
 			// Lame way to get the extension via string manipulation (shoot me if you will, but this works everywhere)
@@ -1186,8 +1190,8 @@ function arsParseRoute(&$segments)
 function arsParseRouteHtml(&$segments)
 {
 	$query = array();
-	$menus = JMenu::getInstance('site');
-	$menu = $menus->getActive();
+	$menus = AbstractMenu::getInstance('site');
+	$menu  = $menus->getActive();
 
 	if (!is_null($menu) && count($segments))
 	{
@@ -1233,7 +1237,7 @@ function arsParseRouteHtml(&$segments)
 				$root = array_pop($segments);
 
 				// Load the category
-				$db = JFactory::getDBO();
+				$db      = Factory::getDBO();
 				$dbquery = $db->getQuery(true)
 							  ->select('*')
 							  ->from($db->qn('#__ars_categories'))
@@ -1261,7 +1265,7 @@ function arsParseRouteHtml(&$segments)
 				$root = array_pop($segments);
 
 				// Load the release
-				$db = JFactory::getDBO();
+				$db = Factory::getDBO();
 
 				$dbquery = $db->getQuery(true)
 							  ->select(array(
@@ -1373,7 +1377,7 @@ function arsParseRouteHtml(&$segments)
 			$relalias = array_pop($segments);
 		}
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		if ($relalias && $catalias)
 		{
@@ -1409,7 +1413,7 @@ function arsParseRouteHtml(&$segments)
 		}
 		elseif ($catalias && is_null($relalias))
 		{
-			$db = JFactory::getDBO();
+			$db = Factory::getDBO();
 
 			$dbquery = $db->getQuery(true)
 						  ->select('*')
@@ -1471,11 +1475,11 @@ function arsParseRouteHtml(&$segments)
 
 function arsParseRouteRaw(&$segments)
 {
-	$query = array();
-	$menus = JMenu::getInstance('site');
-	$menu = $menus->getActive();
-	$query['view'] = 'Item';
-	$query['task'] = 'download';
+	$query           = array();
+	$menus           = AbstractMenu::getInstance('site');
+	$menu            = $menus->getActive();
+	$query['view']   = 'Item';
+	$query['task']   = 'download';
 	$query['format'] = 'raw';
 
 	if (is_null($menu))
@@ -1488,7 +1492,7 @@ function arsParseRouteRaw(&$segments)
 		$root = array_pop($segments);
 
 		// Load the release
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		$dbquery = $db->getQuery(true)
 					  ->select(array(
@@ -1539,8 +1543,8 @@ function arsParseRouteRaw(&$segments)
 		$itemalias = null;
 		$catalias = null;
 		$catid = null;
-		$relalias = null;
-		$relid = null;
+		$relalias    = null;
+		$relid       = null;
 
 		if (empty($view) || in_array($view, ['Categories', 'browse', 'browses']))
 		{
@@ -1560,7 +1564,7 @@ function arsParseRouteRaw(&$segments)
 			$relid = $params->get('relid', 0);
 		}
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		$dbquery = $db->getQuery(true)
 					  ->select(array(
@@ -1631,14 +1635,14 @@ function arsParseRouteXml(&$segments)
 	$query['view'] = 'Update';
 	$query['format'] = 'xml';
 
-	$menus = JMenu::getInstance('site');
+	$menus    = AbstractMenu::getInstance('site');
 	$menuitem = $menus->getActive();
 
 	// Analyze the current Itemid
 	if (!empty($menuitem))
 	{
 		// Analyze URL
-		$uri = new JURI($menuitem->link);
+		$uri    = new Uri($menuitem->link);
 		$option = $uri->getVar('option');
 
 		// Sanity check
@@ -1735,8 +1739,8 @@ function arsParseRouteXml(&$segments)
 	else
 	{
 		$query['task'] = 'stream';
-		$db = JFactory::getDBO();
-		$dbquery = $db->getQuery(true)
+		$db            = Factory::getDBO();
+		$dbquery       = $db->getQuery(true)
 					  ->select('*')
 					  ->from($db->qn('#__ars_updatestreams'))
 					  ->where($db->qn('alias') . ' = ' . $db->q($stream))
@@ -1774,7 +1778,7 @@ function arsParseRouteIni(&$segments)
 
 	$query['task'] = 'stream';
 
-	$db = JFactory::getDBO();
+	$db      = Factory::getDBO();
 	$dbquery = $db->getQuery(true)
 				  ->select('*')
 				  ->from($db->qn('#__ars_updatestreams'))

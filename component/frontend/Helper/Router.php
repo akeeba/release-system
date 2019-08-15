@@ -9,8 +9,8 @@ namespace Akeeba\ReleaseSystem\Site\Helper;
 
 defined('_JEXEC') or die;
 
-use JRoute;
-use JUri;
+use Joomla\CMS\Router\Route as JRoute;
+use Joomla\CMS\Uri\Uri as JUri;
 
 class Router
 {

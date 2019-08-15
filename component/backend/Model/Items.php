@@ -11,8 +11,11 @@ defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
-use JHtml;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\User\User;
 
 /**
  * Model for download items
@@ -223,7 +226,7 @@ class Items extends DataModel
 		{
 			$user = $this->container->platform->getUser($fltAccessUser);
 
-			if (!is_object($user) || !($user instanceof \JUser))
+			if (!is_object($user) || !($user instanceof User))
 			{
 				$access_levels = array(-1);
 			}
@@ -656,7 +659,7 @@ class Items extends DataModel
 		}
 
 		\JLoader::import('joomla.filter.filterinput');
-		$filter = \JFilterInput::getInstance(null, null, 1, 1);
+		$filter = InputFilter::getInstance(null, null, 1, 1);
 
 		// Filter the description using a safe HTML filter
 		if (!empty($this->description))
@@ -809,8 +812,7 @@ class Items extends DataModel
 				else
 				{
 					// Use Joomla!'s download helper
-					\JLoader::import('joomla.installer.helper');
-					\JInstallerHelper::downloadPackage($url, $target);
+					InstallerHelper::downloadPackage($url, $target);
 				}
 
 				$filename = $target;
@@ -1002,7 +1004,7 @@ class Items extends DataModel
 	public function getFilesOptions($release_id, $item_id = 0)
 	{
 		$options   = array();
-		$options[] = JHtml::_('select.option', '', '- ' . Text::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
+		$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
 
 		// Try to figure out a directory
 		$directory = null;
@@ -1085,7 +1087,7 @@ class Items extends DataModel
 
 		foreach ($useFiles as $file)
 		{
-			$options[] = JHTML::_('select.option', $file, $file);
+			$options[] = HTMLHelper::_('select.option', $file, $file);
 		}
 
 		return $options;

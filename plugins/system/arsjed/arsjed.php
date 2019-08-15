@@ -7,12 +7,15 @@
 
 // Protect from unauthorized access
 use FOF30\Container\Container;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 defined('_JEXEC') or die();
 
 JLoader::import('joomla.plugin.plugin');
 
-class plgSystemArsjed extends JPlugin
+class plgSystemArsjed extends CMSPlugin
 {
 	/**
 	 * Should this plugin be allowed to run? True if FOF can be loaded and the ARS component is enabled
@@ -40,7 +43,7 @@ class plgSystemArsjed extends JPlugin
 		// Do not run if Akeeba Subscriptions is not enabled
 		JLoader::import('joomla.application.component.helper');
 
-		if (!JComponentHelper::isEnabled('com_ars'))
+		if (ComponentHelper::isEnabled('com_ars'))
 		{
 			$this->enabled = false;
 
@@ -60,7 +63,7 @@ class plgSystemArsjed extends JPlugin
 			return true;
 		}
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		$installat = base64_decode($app->input->get('installat', null, 'base64'));
 		$installapp = $app->input->get('installapp', null, 'int');

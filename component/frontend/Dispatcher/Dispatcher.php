@@ -7,6 +7,8 @@
 
 namespace Akeeba\ReleaseSystem\Site\Dispatcher;
 
+use Joomla\CMS\HTML\HTMLHelper;
+
 defined('_JEXEC') or die;
 
 class Dispatcher extends \FOF30\Dispatcher\Dispatcher
@@ -17,24 +19,24 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	 * @var array
 	 */
 	public $viewMap = [
-			'browses'    => 'Categories',
-			'browse'     => 'Categories',
-			'categories' => 'Categories',
-			'category'   => 'Releases',
-			'release'    => 'Items',
-			'releases'   => 'Releases',
-			'download'   => 'Item',
-			'downloads'  => 'Item',
-			'Download'   => 'Item',
-			'item'       => 'Item',
-			'items'      => 'Items',
-			'latest'     => 'Latest',
-			'latests'    => 'Latest',
-			'update'     => 'Update',
-			'updates'    => 'Update',
-			'Updates'    => 'Update',
-			'dlidlabel'  => 'DownloadIDLabel',
-			'dlidlabels' => 'DownloadIDLabels'
+		'browses'    => 'Categories',
+		'browse'     => 'Categories',
+		'categories' => 'Categories',
+		'category'   => 'Releases',
+		'release'    => 'Items',
+		'releases'   => 'Releases',
+		'download'   => 'Item',
+		'downloads'  => 'Item',
+		'Download'   => 'Item',
+		'item'       => 'Item',
+		'items'      => 'Items',
+		'latest'     => 'Latest',
+		'latests'    => 'Latest',
+		'update'     => 'Update',
+		'updates'    => 'Update',
+		'Updates'    => 'Update',
+		'dlidlabel'  => 'DownloadIDLabel',
+		'dlidlabels' => 'DownloadIDLabels'
 	];
 
 	/** @var   string  The name of the default view, in case none is specified */
@@ -45,16 +47,16 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		// Map the view
 		$this->applyViewMap();
 
-        // Renderer options (0=none, 1=frontend, 2=backend, 3=both)
-        $useFEF   = $this->container->params->get('load_fef', 3);
-        $fefReset = $this->container->params->get('fef_reset', 3);
+		// Renderer options (0=none, 1=frontend, 2=backend, 3=both)
+		$useFEF   = $this->container->params->get('load_fef', 3);
+		$fefReset = $this->container->params->get('fef_reset', 3);
 
-        $this->container->renderer->setOption('load_fef', in_array($useFEF, [1,3]));
-        $this->container->renderer->setOption('fef_reset', in_array($fefReset, [1,3]));
-        $this->container->renderer->setOption('linkbar_style', 'classic');
+		$this->container->renderer->setOption('load_fef', in_array($useFEF, [1,3]));
+		$this->container->renderer->setOption('fef_reset', in_array($fefReset, [1,3]));
+		$this->container->renderer->setOption('linkbar_style', 'classic');
 
 		// Load common CSS and JavaScript
-		\JHtml::_('jquery.framework');
+		HTMLHelper::_('jquery.framework');
 		$this->container->template->addCSS('media://com_ars/css/frontend.css', $this->container->mediaVersion);
 	}
 

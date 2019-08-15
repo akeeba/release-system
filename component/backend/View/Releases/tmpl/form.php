@@ -6,6 +6,8 @@
  */
 
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Joomla\CMS\Editor\Editor;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\VisualGroups\Html $this */
@@ -53,7 +55,7 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
 					<label for="published"><?php echo Text::_('JPUBLISHED'); ?></label>
 
-					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'published', $item->published);?>
+	                <?php echo HTMLHelper::_('FEFHelper.select.booleanswitch', 'published', $item->published); ?>
                 </div>
             </div>
 
@@ -67,7 +69,7 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
 					<label for="show_unauth_links"><?php echo Text::_('COM_ARS_COMMON_SHOW_UNAUTH_LINKS'); ?></label>
 
-					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'show_unauth_links', $item->show_unauth_links);?>
+	                <?php echo HTMLHelper::_('FEFHelper.select.booleanswitch', 'show_unauth_links', $item->show_unauth_links); ?>
                 </div>
 
                 <div class="akeeba-form-group">
@@ -85,7 +87,7 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
 					<label for="created"><?php echo Text::_('COM_ARS_RELEASES_FIELD_RELEASED'); ?></label>
 
-					<?php echo JHtml::calendar($item->created, 'created', 'created')?>
+	                <?php echo HTMLHelper::calendar($item->created, 'created', 'created') ?>
                 </div>
 
                 <div class="akeeba-form-group">
@@ -98,11 +100,11 @@ $item = $this->getItem();
 
         <div class="akeeba-container--50-50">
             <div>
-				<?php echo JEditor::getInstance($this->container->platform->getConfig()->get('editor', 'tinymce'))
+	            <?php echo Editor::getInstance($this->container->platform->getConfig()->get('editor', 'tinymce'))
 					->display('description', $item->description, '97%', '200', '50', '20', true); ?>
             </div>
             <div>
-				<?php echo JEditor::getInstance($this->container->platform->getConfig()->get('editor', 'tinymce'))
+	            <?php echo Editor::getInstance($this->container->platform->getConfig()->get('editor', 'tinymce'))
 					->display('notes', $item->notes, '97%', '200', '50', '20', true); ?>
             </div>
         </div>

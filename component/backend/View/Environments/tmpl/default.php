@@ -6,6 +6,7 @@
  */
 
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\Environments\Html */
@@ -39,7 +40,7 @@ $this->getContainer()->template->addJSInline($js);
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
 			</th>
 			<th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_ENVIRONMENTS_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo HTMLHelper::_('grid.sort', 'LBL_ENVIRONMENTS_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
 		</tr>
 		</thead>
@@ -66,7 +67,7 @@ $this->getContainer()->template->addJSInline($js);
 				$enabled = $this->container->platform->getUser()->authorise('core.edit.state', 'com_ars')
 				?>
 				<tr>
-					<td><?php echo \JHtml::_('grid.id', ++$i, $row->id); ?></td>
+					<td><?php echo HTMLHelper::_('grid.id', ++$i, $row->id); ?></td>
 					<td>
 						<a href="<?php echo $edit?>">
 							<?php echo $row->title?>

@@ -16,7 +16,7 @@ use Akeeba\ReleaseSystem\Site\Model\Logs;
 use Akeeba\ReleaseSystem\Site\Model\Update as UpdateModel;
 use Akeeba\ReleaseSystem\Site\View\Update\Ini;
 use FOF30\Controller\Controller;
-use JFactory;
+use Joomla\CMS\Factory as JFactory;
 use Joomla\CMS\Language\Text;
 
 class Update extends Controller

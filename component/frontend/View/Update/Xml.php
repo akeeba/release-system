@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Model\Environments;
 use FOF30\View\DataView\Raw;
-use JComponentHelper;
+use Joomla\CMS\Component\ComponentHelper as JComponentHelper;
 
 class Xml extends Raw
 {

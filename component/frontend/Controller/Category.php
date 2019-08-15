@@ -10,6 +10,7 @@ namespace Akeeba\ReleaseSystem\Site\Controller;
 defined('_JEXEC') or die;
 
 use FOF30\Controller\DataController;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 class Category extends DataController
@@ -78,7 +79,7 @@ class Category extends DataController
 
 		// Push page parameters to the model
 		/** @var \JApplicationSite $app */
-		$app    = \JFactory::getApplication();
+		$app    = Factory::getApplication();
 		$params = $app->getParams('com_ars');
 
 		/** @var \Akeeba\ReleaseSystem\Site\Model\Categories $model */

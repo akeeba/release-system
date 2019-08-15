@@ -8,6 +8,7 @@
 use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\Logs\Html */
@@ -74,25 +75,25 @@ $this->getContainer()->template->addJSInline($js);
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
 			</th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_LOGS_ITEM', 'item_id', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_LOGS_ITEM', 'item_id', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_LOGS_USER', 'user_id', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_LOGS_USER', 'user_id', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
 	            <?php echo Text::_('LBL_LOGS_ACCESSED'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_LOGS_REFERER', 'referer', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_LOGS_REFERER', 'referer', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_LOGS_IP', 'ip', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_LOGS_IP', 'ip', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_LOGS_COUNTRY', 'country', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_LOGS_COUNTRY', 'country', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_LOGS_AUTHORIZED', 'authorized', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_LOGS_AUTHORIZED', 'authorized', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
 		</tr>
 		</thead>
@@ -120,7 +121,7 @@ $this->getContainer()->template->addJSInline($js);
 				?>
 				<tr>
 					<td>
-                        <?php echo \JHtml::_('grid.id', ++$i, $row->id); ?>
+						<?php echo HTMLHelper::_('grid.id', ++$i, $row->id); ?>
                     </td>
                     <td>
                         <strong><?php echo $this->escape($row->item->release->category->title) ?></strong>
@@ -147,7 +148,7 @@ $this->getContainer()->template->addJSInline($js);
                         <?php echo Select::countryDecode($row->country)?>
                     </td>
                     <td>
-						<?php echo JHTML::_('jgrid.published', $row->authorized, $i, '', false, 'cb')?>
+	                    <?php echo HTMLHelper::_('jgrid.published', $row->authorized, $i, '', false, 'cb') ?>
                     </td>
 				</tr>
 			<?php

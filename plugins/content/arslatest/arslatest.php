@@ -8,12 +8,16 @@
 // Protect from unauthorized access
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use FOF30\Container\Container;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Router\Route;
+use Joomla\String\StringHelper;
 
 defined('_JEXEC') or die();
 
 JLoader::import('joomla.plugin.plugin');
 
-class plgContentArslatest extends JPlugin
+class plgContentArslatest extends CMSPlugin
 {
 	/**
 	 * The component container
@@ -50,7 +54,7 @@ class plgContentArslatest extends JPlugin
 		// Do not run if Akeeba Subscriptions is not enabled
 		JLoader::import('joomla.application.component.helper');
 
-		if (!JComponentHelper::isEnabled('com_ars'))
+		if (!ComponentHelper::isEnabled('com_ars'))
 		{
 			$this->enabled = false;
 
@@ -80,7 +84,7 @@ class plgContentArslatest extends JPlugin
 
 		$text = is_object($row) ? $row->text : $row;
 
-		if (\JString::strpos($row->text, 'arslatest') !== false)
+		if (StringHelper::strpos($row->text, 'arslatest') !== false)
 		{
 			if (!$this->prepared)
 			{
@@ -309,7 +313,7 @@ class plgContentArslatest extends JPlugin
 			return '';
 		}
 
-		$link      = JRoute::_('index.php?option=com_ars&view=Items&release_id=' . $release->id);
+		$link      = Route::_('index.php?option=com_ars&view=Items&release_id=' . $release->id);
         $container = \FOF30\Container\Container::getInstance('com_ars');
 
         $authorisedViewLevels = $container->platform->getUser()->getAuthorisedViewLevels();
@@ -365,7 +369,7 @@ class plgContentArslatest extends JPlugin
 			return '';
 		}
 
-		$link = JRoute::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id);
+		$link = Route::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id);
 
         $container = \FOF30\Container\Container::getInstance('com_ars');
 
@@ -395,7 +399,7 @@ class plgContentArslatest extends JPlugin
 			$url .= '&dlid=' . $dlid;
 		}
 
-		$link = JRoute::_($url, false);
+		$link = Route::_($url, false);
 
 		return $link;
 	}

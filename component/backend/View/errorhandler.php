@@ -6,6 +6,9 @@
  */
 
 // Protect from unauthorized access
+use Joomla\CMS\Application\SiteApplication;
+use Joomla\Registry\Factory;
+
 defined('_JEXEC') or die();
 
 /** @var Throwable $e */
@@ -14,9 +17,9 @@ defined('_JEXEC') or die();
 
 $code         = $e->getCode();
 $code         = !empty($code) ? $code : 500;
-$app          = \JFactory::getApplication();
-$isFrontend   = $app instanceof JApplicationSite;
-$hideTheError = $isFrontend && !(defined('JDEBUG') && (JDEBUG == 1)) && !JFactory::getUser()->authorise('core.admin');
+$app          = Factory::getApplication();
+$isFrontend   = $app instanceof SiteApplication;
+$hideTheError = $isFrontend && !(defined('JDEBUG') && (JDEBUG == 1)) && !Factory::getUser()->authorise('core.admin');
 $isPro        = !isset($isPro) ? false : $isPro;
 
 // 403 and 404 are re-thrown
@@ -127,23 +130,23 @@ if (!$isFrontend)
     </tr>
     <tr>
         <td>Database driver name</td>
-        <td><?php echo JFactory::getDbo()->getName() ?></td>
+		<td><?php echo Factory::getDbo()->getName() ?></td>
     </tr>
     <tr>
         <td>Database driver type</td>
-        <td><?php echo JFactory::getDbo()->getServerType() ?></td>
+		<td><?php echo Factory::getDbo()->getServerType() ?></td>
     </tr>
     <tr>
         <td>Database server version</td>
-        <td><?php echo JFactory::getDbo()->getVersion() ?></td>
+		<td><?php echo Factory::getDbo()->getVersion() ?></td>
     </tr>
     <tr>
         <td>Database collation</td>
-        <td><?php echo JFactory::getDbo()->getCollation()?></td>
+		<td><?php echo Factory::getDbo()->getCollation() ?></td>
     </tr>
     <tr>
         <td>Database connection collation</td>
-        <td><?php echo JFactory::getDbo()->getConnectionCollation()?></td>
+		<td><?php echo Factory::getDbo()->getConnectionCollation() ?></td>
     </tr>
     <tr>
         <td>PHP Memory limit</td>

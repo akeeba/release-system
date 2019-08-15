@@ -5,6 +5,9 @@
  * @license   GNU General Public License version 3, or later
  */
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+
 defined('_JEXEC') or die();
 
 if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
@@ -15,7 +18,7 @@ if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/inclu
 // Do not run if Akeeba Subscriptions is not enabled
 JLoader::import('joomla.application.component.helper');
 
-if (!JComponentHelper::isEnabled('com_ars'))
+if (!ComponentHelper::isEnabled('com_ars'))
 {
 	return;
 }
@@ -94,5 +97,5 @@ $items = $model->getItems($streamsArray);
 
 if (!empty($items))
 {
-	require JModuleHelper::getLayoutPath('mod_arsdownloads', $params->get('layout', 'default'));
+	require ModuleHelper::getLayoutPath('mod_arsdownloads', $params->get('layout', 'default'));
 }

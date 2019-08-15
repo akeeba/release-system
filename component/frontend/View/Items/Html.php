@@ -16,6 +16,7 @@ use Akeeba\ReleaseSystem\Site\Model\Items;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Model\DataModel\Collection;
 use FOF30\View\DataView\Html as BaseView;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 class Html extends BaseView
@@ -120,8 +121,8 @@ class Html extends BaseView
 		});
 
 		/** @var \JApplicationSite $app */
-		$app = \JFactory::getApplication();
-		$user = $this->container->platform->getUser();
+		$app    = Factory::getApplication();
+		$user   = $this->container->platform->getUser();
 		$params = $app->getParams();
 
 		// Add Breadcrumbs

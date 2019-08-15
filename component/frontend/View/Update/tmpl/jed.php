@@ -11,9 +11,12 @@ defined('_JEXEC') or die();
 
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Version;
 
-$rootURL    = rtrim(JURI::base(), '/');
-$subpathURL = JURI::base(true);
+$rootURL    = rtrim(Uri::base(), '/');
+$subpathURL = Uri::base(true);
 
 if (!empty($subpathURL) && ($subpathURL != '/'))
 {
@@ -43,13 +46,13 @@ else
 
 // Custom header for SiteGround's SuperCacher. The default value caches the
 // output for 5 minutes.
-JFactory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
+Factory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
 
 require_once JPATH_SITE . '/components/com_ars/router.php';
 ComArsRouter::$routeRaw  = false;
 ComArsRouter::$routeHtml = false;
 
-$jVersion = new JVersion;
+$jVersion = new Version;
 
 ?><?php echo $tag; ?>
 <!-- Update stream generated automatically by Akeeba Release System on <?= gmdate('Y-m-d H:i:s') ?> GMT -->

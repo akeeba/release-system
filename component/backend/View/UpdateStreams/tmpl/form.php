@@ -6,6 +6,7 @@
  */
 
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\UpdateStreams\Html $this */
@@ -98,7 +99,7 @@ $item = $this->getItem();
 	                    <?php echo Text::_('JPUBLISHED'); ?>
                     </label>
 
-					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'published', $item->published);?>
+	                <?php echo HTMLHelper::_('FEFHelper.select.booleanswitch', 'published', $item->published); ?>
                 </div>
             </div>
         </div>

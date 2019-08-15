@@ -6,6 +6,12 @@
  */
 
 // no direct access
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
+
 defined('_JEXEC') or die;
 
 JLoader::import('joomla.plugin.plugin');
@@ -13,7 +19,7 @@ JLoader::import('joomla.plugin.plugin');
 /**
  * Editor ARS link buton
  */
-class plgButtonArslink extends JPlugin
+class plgButtonArslink extends CMSPlugin
 {
 	/**
 	 * Constructor
@@ -34,9 +40,12 @@ class plgButtonArslink extends JPlugin
 	/**
 	 * Display the button
 	 *
-	 * @return array A four element array of (article_id, article_title, category_id, object)
+	 * @param string $name
+	 *
+	 * @return object
+	 * @throws Exception
 	 */
-	function onDisplay($name)
+	function onDisplay(string $name): object
 	{
 		/*
 		 * Javascript to insert the link
@@ -69,13 +78,13 @@ function arsSelectItem(id, title)
 
 JS;
 
-		$doc = JFactory::getDocument();
+		$doc = Factory::getDocument();
 		$doc->addScriptDeclaration($js);
 
-		$app     = JFactory::getApplication();
-		$rootURI = JUri::base();
+		$app     = Factory::getApplication();
+		$rootURI = Uri::base();
 
-		if ($app->isAdmin())
+		if ($app->isClient('administrator'))
 		{
 			$rootURI .= '../';
 		}
@@ -101,16 +110,15 @@ CSS;
 		 * Currently uses blank class.
 		 */
 		$link =
-			'index.php?option=com_ars&amp;view=Items&amp;layout=modal&amp;tmpl=component&amp;' . JSession::getFormToken() . '=1';
+			'index.php?option=com_ars&amp;view=Items&amp;layout=modal&amp;tmpl=component&amp;' . Session::getFormToken() . '=1';
 
-		$button          = new JObject;
-		$button->modal   = true;
-		$button->class   = 'btn';
-		$button->link    = $link;
-		$button->text    = JText::_('PLG_ARSITEM_BUTTON_ITEM');
-		$button->name    = 'arsitem';
-		$button->options = "{handler: 'iframe', size: {x: 800, y: 400}}";
-
-		return $button;
+		return (object) [
+			'modal'   => true,
+			'class'   => 'btn',
+			'link'    => $link,
+			'text'    => Text::_('PLG_ARSITEM_BUTTON_ITEM'),
+			'name'    => 'arsitem',
+			'options' => "{handler: 'iframe', size: {x: 800, y: 400}}",
+		];
 	}
 }

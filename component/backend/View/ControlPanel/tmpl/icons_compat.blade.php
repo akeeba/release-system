@@ -5,11 +5,13 @@
  * @license   GNU General Public License version 3, or later
  */
 
+use Joomla\Registry\Factory;
+
 defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Admin\View\ControlPanel\Html  $this */
 
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 
 $groups = array('basic', 'tools', 'update');
 

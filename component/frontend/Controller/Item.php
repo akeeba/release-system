@@ -16,6 +16,8 @@ use Akeeba\ReleaseSystem\Site\Model\Items;
 use Akeeba\ReleaseSystem\Site\Model\Logs;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Controller\DataController;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 class Item extends DataController
@@ -103,7 +105,7 @@ class Item extends DataController
 
 		// Get the page parameters
 		/** @var \JApplicationSite $app */
-		$app    = \JFactory::getApplication();
+		$app    = Factory::getApplication();
 		$params = $app->getParams('com_ars');
 
 		// Push the page params to the Items model
@@ -146,7 +148,7 @@ class Item extends DataController
 		}
 		catch (\Exception $e)
 		{
-			$noAccessURL = \JComponentHelper::getParams('com_ars')->get('no_access_url', '');
+			$noAccessURL = ComponentHelper::getParams('com_ars')->get('no_access_url', '');
 
 			if ($releaseModel->id && $releaseModel->redirect_unauth && $releaseModel->show_unauth_links)
 			{
@@ -175,7 +177,7 @@ class Item extends DataController
 		}
 		catch (\Exception $e)
 		{
-			$noAccessURL = \JComponentHelper::getParams('com_ars')->get('no_access_url', '');
+			$noAccessURL = ComponentHelper::getParams('com_ars')->get('no_access_url', '');
 
 			if ($releaseModel->category->id && $releaseModel->category->redirect_unauth && $releaseModel->category->show_unauth_links)
 			{
@@ -257,8 +259,8 @@ class Item extends DataController
 		$id = $this->input->getInt('id', null);
 
 		// Get the page parameters
-		$app    = \JFactory::getApplication();
-		$params = \JComponentHelper::getParams('com_ars');
+		$app    = Factory::getApplication();
+		$params = ComponentHelper::getParams('com_ars');
 
 		/** @var Download $model */
 		$model = $this->getModel('Download');
@@ -306,7 +308,7 @@ class Item extends DataController
 
 			$model->logoutUser();
 
-			$noAccessURL = \JComponentHelper::getParams('com_ars')->get('no_access_url', '');
+			$noAccessURL = ComponentHelper::getParams('com_ars')->get('no_access_url', '');
 
 			if ($item->id && $item->redirect_unauth && $item->show_unauth_links)
 			{
@@ -341,7 +343,7 @@ class Item extends DataController
 
 			$model->logoutUser();
 
-			$noAccessURL = \JComponentHelper::getParams('com_ars')->get('no_access_url', '');
+			$noAccessURL = ComponentHelper::getParams('com_ars')->get('no_access_url', '');
 
 			if (isset($release) && $release->id && $release->redirect_unauth && $release->show_unauth_links)
 			{
@@ -375,7 +377,7 @@ class Item extends DataController
 
 			$model->logoutUser();
 
-			$noAccessURL = \JComponentHelper::getParams('com_ars')->get('no_access_url', '');
+			$noAccessURL = ComponentHelper::getParams('com_ars')->get('no_access_url', '');
 
 			if (isset($category) && $category->id && $category->redirect_unauth && $category->show_unauth_links)
 			{
@@ -421,8 +423,8 @@ class Item extends DataController
 		);
 
 		/** @var \JApplicationSite $app */
-		$app    = \JFactory::getApplication();
-		$params = \JComponentHelper::getParams('com_ars');
+		$app    = Factory::getApplication();
+		$params = ComponentHelper::getParams('com_ars');
 
 		if ($params->get('banUnauth', 0))
 		{

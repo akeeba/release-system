@@ -14,6 +14,8 @@ use Akeeba\ReleaseSystem\Site\Model\BleedingEdge;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Controller\DataController;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 class Release extends DataController
@@ -84,7 +86,7 @@ class Release extends DataController
 
 		// Get the page parameters
 		/** @var \JApplicationSite $app */
-		$app    = \JFactory::getApplication();
+		$app    = Factory::getApplication();
 		$params = $app->getParams('com_ars');
 
 		// Push the page params to the Releases model
@@ -123,7 +125,7 @@ class Release extends DataController
 		}
 		catch (\Exception $e)
 		{
-			$noAccessURL = \JComponentHelper::getParams('com_ars')->get('no_access_url', '');
+			$noAccessURL = ComponentHelper::getParams('com_ars')->get('no_access_url', '');
 
 			if ($categoryModel->id && $categoryModel->redirect_unauth && $categoryModel->show_unauth_links)
 			{

@@ -9,6 +9,7 @@ use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
@@ -122,7 +123,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
                     <option value="">
 	                    <?php echo Text::_('JGLOBAL_SORT_BY'); ?>
                     </option>
-					<?php echo \JHtml::_('select.options', $this->sortFields, 'value', 'text', $this->order); ?>
+	                <?php echo HTMLHelper::_('select.options', $this->sortFields, 'value', 'text', $this->order); ?>
                 </select>
             </div>
         </div>
@@ -142,28 +143,28 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
 	            <?php echo Text::_('LBL_ITEMS_CATEGORY'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_ITEMS_RELEASE', 'release', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_ITEMS_RELEASE', 'release', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_ITEMS_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_ITEMS_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_ITEMS_TYPE', 'type', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_ITEMS_TYPE', 'type', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
 	            <?php echo Text::_('LBL_ITEMS_ENVIRONMENTS'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th width="8%">
-				<?php echo \JHtml::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'JGLOBAL_HITS', 'hits', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JGLOBAL_HITS', 'hits', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'JFIELD_LANGUAGE_LABEL', 'language', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JFIELD_LANGUAGE_LABEL', 'language', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
         </tr>
         </thead>
@@ -198,7 +199,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
 						<?php echo Html::ordering($this, 'ordering', $row->ordering)?>
                     </td>
                     <td>
-						<?php echo \JHtml::_('grid.id', ++$i, $row->id); ?>
+	                    <?php echo HTMLHelper::_('grid.id', ++$i, $row->id); ?>
                     </td>
                     <td>
 						<?php echo Categories::forceEagerLoad($category_id, 'title'); ?>
@@ -226,7 +227,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
 						<?php echo Html::accessLevel($row->access) ?>
                     </td>
                     <td>
-						<?php echo JHTML::_('jgrid.published', $row->published, $i, '', false, 'cb')?>
+	                    <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, '', false, 'cb') ?>
                     </td>
                     <td>
 						<?php echo $row->hits; ?>

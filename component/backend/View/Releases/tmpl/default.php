@@ -9,6 +9,7 @@ use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use Akeeba\ReleaseSystem\Admin\Model\Categories;
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\Releases\Html */
@@ -61,25 +62,25 @@ $this->getContainer()->template->addJSInline($js);
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
 			</th>
 			<th>
-				<?php echo \JHtml::_('grid.sort', 'COM_ARS_RELEASES_FIELD_CATEGORY', 'category_id', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo HTMLHelper::_('grid.sort', 'COM_ARS_RELEASES_FIELD_CATEGORY', 'category_id', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'COM_ARS_RELEASES_FIELD_VERSION', 'version', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'COM_ARS_RELEASES_FIELD_VERSION', 'version', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'COM_ARS_RELEASES_FIELD_MATURITY', 'maturity', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'COM_ARS_RELEASES_FIELD_MATURITY', 'maturity', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th width="8%">
-				<?php echo \JHtml::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'JGLOBAL_HITS', 'hits', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JGLOBAL_HITS', 'hits', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'JFIELD_LANGUAGE_LABEL', 'language', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JFIELD_LANGUAGE_LABEL', 'language', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
 		</tr>
 		</thead>
@@ -130,7 +131,7 @@ $this->getContainer()->template->addJSInline($js);
                         <?php echo Html::ordering($this, 'ordering', $row->ordering)?>
                     </td>
 					<td>
-                        <?php echo \JHtml::_('grid.id', ++$i, $row->id); ?>
+						<?php echo HTMLHelper::_('grid.id', ++$i, $row->id); ?>
                     </td>
                     <td>
                         <?php echo Categories::forceEagerLoad($row->category_id, 'title')?>
@@ -151,7 +152,7 @@ $this->getContainer()->template->addJSInline($js);
                         <?php echo Html::accessLevel($row->access) ?>
                     </td>
                     <td>
-						<?php echo JHTML::_('jgrid.published', $row->published, $i, '', $enabled, 'cb')?>
+	                    <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, '', $enabled, 'cb') ?>
                     </td>
                     <td>
                         <?php echo $row->hits; ?>

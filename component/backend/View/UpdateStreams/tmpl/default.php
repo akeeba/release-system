@@ -8,7 +8,9 @@
 use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die();
 
@@ -22,7 +24,7 @@ $this->getContainer()->template->addJSInline($js);
 
 <div class="akeeba-block--info">
 	<?php echo Text::_('LBL_UPDATESTREAMS_ALLLINKS_INTRO') ?>
-    <a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=all&format=xml" target="_blank">
+	<a href="<?php echo Uri::root() ?>index.php?option=com_ars&view=update&task=all&format=xml" target="_blank">
 	    <?php echo Text::_('LBL_UPDATESTREAMS_ALLLINKS') ?>
     </a>
 </div>
@@ -70,22 +72,22 @@ $this->getContainer()->template->addJSInline($js);
                 <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_UPDATES_NAME', 'name', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_UPDATES_NAME', 'name', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_UPDATES_TYPE', 'type', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_UPDATES_TYPE', 'type', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'COM_ARS_RELEASES_FIELD_CATEGORY', 'category', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'COM_ARS_RELEASES_FIELD_CATEGORY', 'category', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'LBL_UPDATES_ELEMENT', 'element', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'LBL_UPDATES_ELEMENT', 'element', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
 	            <?php echo Text::_('LBL_UPDATESTREAMS_LINKS') ?>
             </th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
         </tr>
         </thead>
@@ -116,7 +118,7 @@ $this->getContainer()->template->addJSInline($js);
 				?>
                 <tr>
                     <td>
-						<?php echo \JHtml::_('grid.id', ++$i, $row->id); ?>
+	                    <?php echo HTMLHelper::_('grid.id', ++$i, $row->id); ?>
                     </td>
                     <td>
 						<a href="<?php echo $link; ?>">
@@ -134,17 +136,21 @@ $this->getContainer()->template->addJSInline($js);
 						<?php echo $row->element; ?>
                     </td>
                     <td>
-                        <a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&format=ini&id=<?php echo $row->id ?>" target="_blank">INI</a>
+						<a href="<?php echo Uri::root() ?>index.php?option=com_ars&view=update&format=ini&id=<?php echo $row->id ?>"
+						   target="_blank">INI</a>
                         &bull;
-                        <a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=stream&format=xml&id=<?php echo $row->id ?>" target="_blank">XML</a>
+						<a href="<?php echo Uri::root() ?>index.php?option=com_ars&view=update&task=stream&format=xml&id=<?php echo $row->id ?>"
+						   target="_blank">XML</a>
                         &bull;
-                        <a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=jed&format=xml&id=<?php echo $row->id ?>" target="_blank">JED</a>
+						<a href="<?php echo Uri::root() ?>index.php?option=com_ars&view=update&task=jed&format=xml&id=<?php echo $row->id ?>"
+						   target="_blank">JED</a>
                         &bull;
-                        <a href="<?php echo JURI::root() ?>index.php?option=com_ars&view=update&task=download&format=raw&id=<?php echo $row->id ?>" target="_blank">D/L</a>
+						<a href="<?php echo Uri::root() ?>index.php?option=com_ars&view=update&task=download&format=raw&id=<?php echo $row->id ?>"
+						   target="_blank">D/L</a>
 
                     </td>
                     <td>
-						<?php echo JHTML::_('jgrid.published', $row->enabled, $i, '', $enabled, 'cb')?>
+	                    <?php echo HTMLHelper::_('jgrid.published', $row->enabled, $i, '', $enabled, 'cb') ?>
                     </td>
                 </tr>
 			<?php

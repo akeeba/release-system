@@ -7,6 +7,7 @@
 
 use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\DownloadIDLabels\Html */
@@ -55,16 +56,16 @@ $this->getContainer()->template->addJSInline($js);
 				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
 			</th>
 			<th>
-				<?php echo \JHtml::_('grid.sort', 'COM_ARS_DLIDLABELS_FIELD_LABEL', 'label', $this->order_Dir, $this->order, 'browse'); ?>
+				<?php echo HTMLHelper::_('grid.sort', 'COM_ARS_DLIDLABELS_FIELD_LABEL', 'label', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'JGLOBAL_USERNAME', 'user_id', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JGLOBAL_USERNAME', 'user_id', $this->order_Dir, $this->order, 'browse'); ?>
 			</th>
             <th>
-				<?php echo \JHtml::_('grid.sort', 'COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID', 'dlid', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID', 'dlid', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th width="8%">
-				<?php echo \JHtml::_('grid.sort', 'JPUBLISHED', 'enabled', $this->order_Dir, $this->order, 'browse'); ?>
+	            <?php echo HTMLHelper::_('grid.sort', 'JPUBLISHED', 'enabled', $this->order_Dir, $this->order, 'browse'); ?>
             </th>
             <th>
 	            <?php echo Text::_('COM_ARS_DLIDLABELS_FIELD_RESET') ?>
@@ -116,7 +117,7 @@ $this->getContainer()->template->addJSInline($js);
 				?>
 				<tr>
 					<td>
-                        <?php echo \JHtml::_('grid.id', ++$i, $row->ars_dlidlabel_id); ?>
+						<?php echo HTMLHelper::_('grid.id', ++$i, $row->ars_dlidlabel_id); ?>
                     </td>
                     <td>
                         <?php echo $label; ?>
@@ -130,7 +131,7 @@ $this->getContainer()->template->addJSInline($js);
                         </span>
                     </td>
                     <td>
-						<?php echo JHTML::_('jgrid.published', $row->enabled, $i, '', $enabled, 'cb')?>
+	                    <?php echo HTMLHelper::_('jgrid.published', $row->enabled, $i, '', $enabled, 'cb') ?>
                     </td>
                     <td>
                         <a href="<?php echo $resetLink?>" class="akeeba-btn--orange--small">

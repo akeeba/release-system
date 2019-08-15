@@ -6,13 +6,15 @@
  */
 
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Joomla\CMS\Editor\Editor;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\AutoDescriptions\Html $this */
 
 defined('_JEXEC') or die;
 
-JHtml::_('formbehavior.chosen', '#environments');
+HTMLHelper::_('formbehavior.chosen', '#environments');
 
 /** @var \Akeeba\ReleaseSystem\Admin\Model\AutoDescriptions $item */
 $item = $this->getItem();
@@ -50,12 +52,12 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
 					<label for="published"><?php echo Text::_('JPUBLISHED'); ?></label>
 
-					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'published', $item->published);?>
+	                <?php echo HTMLHelper::_('FEFHelper.select.booleanswitch', 'published', $item->published); ?>
                 </div>
             </div>
 
             <div>
-				<?php echo JEditor::getInstance($this->container->platform->getConfig()->get('editor', 'tinymce'))
+	            <?php echo Editor::getInstance($this->container->platform->getConfig()->get('editor', 'tinymce'))
                             ->display('description', $item->description, '97%', '200', '50', '20', true); ?>
             </div>
         </div>

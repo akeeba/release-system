@@ -6,6 +6,7 @@
  */
 
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\DownloadIDLabels\Html $this */
@@ -33,7 +34,7 @@ $item = $this->getItem();
 	            <?php echo Text::_('JPUBLISHED'); ?>
             </label>
 
-			<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'enabled', $item->enabled);?>
+	        <?php echo HTMLHelper::_('FEFHelper.select.booleanswitch', 'enabled', $item->enabled); ?>
         </div>
 
         <div class="akeeba-form-group--pull-right">

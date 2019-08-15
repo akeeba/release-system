@@ -13,6 +13,7 @@ use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Container\Container;
 use FOF30\Controller\Controller;
+use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
 class Latest extends Controller
@@ -66,7 +67,7 @@ class Latest extends Controller
 	{
 		// Push page parameters to the model
 		/** @var \JApplicationSite $app */
-		$app          = \JFactory::getApplication();
+		$app          = Factory::getApplication();
 		$this->params = $app->getParams('com_ars');
 
 		/** @var Releases $model */

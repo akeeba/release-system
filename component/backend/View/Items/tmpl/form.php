@@ -6,6 +6,8 @@
  */
 
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Joomla\CMS\Editor\Editor;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
@@ -105,7 +107,7 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
 					<label for="published"><?php echo Text::_('JPUBLISHED'); ?></label>
 
-					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'published', $item->published);?>
+	                <?php echo HTMLHelper::_('FEFHelper.select.booleanswitch', 'published', $item->published); ?>
                 </div>
 
                 <div class="akeeba-form-group">
@@ -117,7 +119,7 @@ $item = $this->getItem();
                 <div class="akeeba-form-group">
 					<label for="show_unauth_links"><?php echo Text::_('COM_ARS_COMMON_SHOW_UNAUTH_LINKS'); ?></label>
 
-					<?php echo JHtml::_('FEFHelper.select.booleanswitch', 'show_unauth_links', $item->show_unauth_links);?>
+	                <?php echo HTMLHelper::_('FEFHelper.select.booleanswitch', 'show_unauth_links', $item->show_unauth_links); ?>
                 </div>
 
                 <div class="akeeba-form-group">
@@ -154,7 +156,7 @@ $item = $this->getItem();
 
         <div class="akeeba-container--100">
             <div>
-				<?php echo JEditor::getInstance($this->container->platform->getConfig()->get('editor', 'tinymce'))
+	            <?php echo Editor::getInstance($this->container->platform->getConfig()->get('editor', 'tinymce'))
 					->display('description', $item->description, '97%', '200', '50', '20', true); ?>
             </div>
         </div>

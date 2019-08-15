@@ -6,6 +6,13 @@
  */
 
 // no direct access
+use Joomla\CMS\Application\ApplicationHelper as JApplicationHelper;
+use Joomla\CMS\Cache\Cache as JCache;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Installer\Installer as JInstaller;
+use Joomla\CMS\Installer\InstallerHelper as JInstallerHelper;
+use Joomla\CMS\Log\Log as JLog;
+
 defined('_JEXEC') or die();
 
 class Pkg_ArsInstallerScript
@@ -139,8 +146,8 @@ class Pkg_ArsInstallerScript
 		 *
 		 * See bug report https://github.com/joomla/joomla-cms/issues/16147
 		 */
-		$conf = \JFactory::getConfig();
-		$clearGroups = array('_system', 'com_modules', 'mod_menu', 'com_plugins', 'com_modules');
+		$conf         = Factory::getConfig();
+		$clearGroups  = array('_system', 'com_modules', 'mod_menu', 'com_plugins', 'com_modules');
 		$cacheClients = array(0, 1);
 
 		foreach ($clearGroups as $group)
@@ -155,7 +162,7 @@ class Pkg_ArsInstallerScript
 					);
 
 					/** @var JCache $cache */
-					$cache = \JCache::getInstance('callback', $options);
+					$cache = JCache::getInstance('callback', $options);
 					$cache->clean();
 				}
 				catch (Exception $exception)
@@ -166,7 +173,7 @@ class Pkg_ArsInstallerScript
 				// Trigger the onContentCleanCache event.
 				try
 				{
-					JFactory::getApplication()->triggerEvent('onContentCleanCache', $options);
+					Factory::getApplication()->triggerEvent('onContentCleanCache', $options);
 				}
 				catch (Exception $e)
 				{
@@ -402,7 +409,7 @@ class Pkg_ArsInstallerScript
 	 */
 	private function enableExtensions()
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		foreach ($this->extensionsToEnable as $ext)
 		{
@@ -420,7 +427,7 @@ class Pkg_ArsInstallerScript
 	 */
 	private function enableExtension($type, $name, $client = 1, $group = null)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$query = $db->getQuery(true)
 					->update('#__extensions')
@@ -472,7 +479,7 @@ class Pkg_ArsInstallerScript
 	 */
 	protected function getDependencies($package)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$query = $db->getQuery(true)
 		            ->select($db->qn('value'))
@@ -505,7 +512,7 @@ class Pkg_ArsInstallerScript
 	 */
 	protected function setDependencies($package, array $dependencies)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		$query = $db->getQuery(true)
 		            ->delete('#__akeeba_common')

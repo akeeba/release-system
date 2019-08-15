@@ -10,6 +10,7 @@ namespace Akeeba\ReleaseSystem\Site\Helper;
 defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
+use Joomla\CMS\Factory;
 use JText;
 use Joomla\CMS\Language\Text;
 
@@ -28,7 +29,7 @@ abstract class Title
 		$container = Container::getInstance('com_ars');
 		$document  = $container->platform->getDocument();
 		/** @var \JApplicationSite $app */
-		$app   = \JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$menus = $app->getMenu();
 		$menu  = $menus->getActive();
 		$title = null;
@@ -56,13 +57,13 @@ abstract class Title
 		{
 			$title = $sitename;
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		elseif ($app->get('sitename_pagetitles', 0) == 1)
 		{
-			$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		elseif ($app->get('sitename_pagetitles', 0) == 2)
 		{
-			$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
 
 		$document->setTitle($title);

@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use FOF30\Container\Container;
 use FOF30\Database\Installer;
 use FOF30\Model\Model;
+use Joomla\CMS\Uri\Uri;
 use JRegistry;
 
 class ControlPanel extends Model
@@ -116,7 +117,7 @@ class ControlPanel extends Model
 		$params->loadString($rawparams, 'JSON');
 
 		$siteURL_stored = $params->get('siteurl', '');
-		$siteURL_target = str_replace('/administrator', '', \JUri::base());
+		$siteURL_target = str_replace('/administrator', '', Uri::base());
 
 		if ($siteURL_target != $siteURL_stored)
 		{

@@ -7,10 +7,11 @@
 
 // Protect from unauthorized access
 use FOF30\Container\Container;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 defined('_JEXEC') or die();
 
-class plgArsBleedingedgediff extends JPlugin
+class plgArsBleedingedgediff extends CMSPlugin
 {
 	private $_enabled = false;
 

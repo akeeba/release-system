@@ -5,6 +5,10 @@
  * @license   GNU General Public License version 3, or later
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Menu\AbstractMenu;
+use Joomla\CMS\Plugin\PluginHelper;
+
 defined('_JEXEC') or die;
 
 class ArsRouterHelper
@@ -34,7 +38,7 @@ class ArsRouterHelper
 	 */
 	public static function findMenu($qoptions = array(), $params = null)
 	{
-		$input = JFactory::getApplication()->input;
+		$input = Factory::getApplication()->input;
 
 		// Convert $qoptions to an object
 		if (empty($qoptions) || !is_array($qoptions))
@@ -42,7 +46,7 @@ class ArsRouterHelper
 			$qoptions = array();
 		}
 
-		$menus    = JMenu::getInstance('site');
+		$menus    = AbstractMenu::getInstance('site');
 		$menuitem = $menus->getActive();
 
 		// First check the current menu item (fastest shortcut!)
@@ -72,16 +76,16 @@ class ArsRouterHelper
 
 		// Filter by language, if required
 		/** @var JApplicationSite $app */
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		if ($app->getLanguageFilter())
 		{
-			$lang_filter_plugin = JPluginHelper::getPlugin('system', 'languagefilter');
+			$lang_filter_plugin = PluginHelper::getPlugin('system', 'languagefilter');
 			$lang_filter_params = new JRegistry($lang_filter_plugin->params);
 			if ($lang_filter_params->get('remove_default_prefix'))
 			{
 				// Get default site language
-				$lg       = JFactory::getLanguage();
+				$lg       = Factory::getLanguage();
 				$langCode = $lg->getTag();
 			}
 			else
@@ -157,7 +161,7 @@ class ArsRouterHelper
 
 		if (!is_null($params))
 		{
-			$menus = JMenu::getInstance('site');
+			$menus = AbstractMenu::getInstance('site');
 			$check = $menu->params instanceof JRegistry ? $menu->params : $menus->getParams($menu->id);
 
 			foreach ($params as $key => $value)

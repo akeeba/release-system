@@ -11,14 +11,19 @@ defined('_JEXEC') or die();
 
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use FOF30\Date\Date;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Version;
 
 if (!$this->published)
 {
 	die();
 }
 
-$rootURL    = rtrim(JURI::base(), '/');
-$subpathURL = JURI::base(true);
+$rootURL    = rtrim(Uri::base(), '/');
+$subpathURL = Uri::base(true);
 
 if (!empty($subpathURL) && ($subpathURL != '/'))
 {
@@ -30,7 +35,7 @@ if (!empty($this->items)):
 	$item         = array_shift($this->items);
 
 	$moreURL = $rootURL .
-		str_replace('&amp;', '&', JRoute::_('index.php?option=com_ars&view=Items&release_id=' . $item->release_id));
+		str_replace('&amp;', '&', Route::_('index.php?option=com_ars&view=Items&release_id=' . $item->release_id));
 
 	switch ($item->itemtype)
 	{
@@ -65,7 +70,7 @@ if (!empty($this->items)):
 	}
 	else
 	{
-		$jVersion = new JVersion();
+		$jVersion  = new Version();
 		$platforms = [
 			'joomla/' . $jVersion->RELEASE,
 			'php/' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION
@@ -98,7 +103,7 @@ if (!empty($this->items)):
 
 	// Custom header for SiteGround's SuperCacher. The default value caches the
 	// output for 5 minutes.
-	JFactory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
+	Factory::getApplication()->setHeader('X-Akeeba-Expire-After', 300);
 
 	?>
 ; Live Update provision file
@@ -107,7 +112,7 @@ software="<?php echo $item->cat_title ?>"
 version="<?php echo $item->version; ?>"
 link="<?php echo $downloadURL; ?>"
 date="<?php echo $date->format('Y-m-d'); ?>"
-releasenotes="<?php echo str_replace("\n", '', str_replace("\r", '', JHtml::_('content.prepare', $item->release_notes))); ?>"
+	releasenotes="<?php echo str_replace("\n", '', str_replace("\r", '', HTMLHelper::_('content.prepare', $item->release_notes))); ?>"
 infourl="<?php echo $moreURL ?>"
 md5="<?php echo $item->md5 ?>"
 sha1="<?php echo $item->sha1 ?>"
