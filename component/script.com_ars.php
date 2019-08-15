@@ -120,7 +120,10 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			// Version 5 -- Rolling internal release
 			'administrator/components/com_ars/Helper/AmazonS3.php',
+
 			'administrator/components/com_ars/Model/VisualGroups.php',
+			'administrator/components/com_ars/Model/SubscriptionIntegration/AkeebaSubsTwo.php',
+			'administrator/components/com_ars/Model/SubscriptionIntegration/PayPlans.php',
 		),
 		'folders' => array(
 			// Moving to FOF 3
