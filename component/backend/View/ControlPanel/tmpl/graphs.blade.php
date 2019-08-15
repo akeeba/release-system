@@ -90,14 +90,6 @@ JS;
 		<table class="akeeba-table--striped">
 			<tr>
 				<td class="dlstats-label">
-					@lang('COM_ARS_CPANEL_DL_EVER_LABEL')
-				</td>
-				<td>
-					<?php echo number_format($this->downloadsEver, 0) ?>
-				</td>
-			</tr>
-			<tr>
-				<td class="dlstats-label">
 					@lang('COM_ARS_CPANEL_DL_THISMONTH_LABEL')
 				</td>
 				<td>
@@ -115,38 +107,5 @@ JS;
 		</table>
 	</div>
 
-	<div class="akeeba-panel--info">
-		<header class="akeeba-block-header">
-			<h3>@lang('COM_ARS_CPANEL_POPULAR_WEEK_LABEL')</h3>
-		</header>
-
-		<?php if (empty($this->popularInWeek)): ?>
-		<p>
-			@lang('COM_ARS_COMMON_NOITEMS_LABEL')
-		</p>
-		<?php else: ?>
-		@foreach($this->popularInWeek as $item)
-			<div class="dlpopular">
-				<div class="dlbasic">
-					<a class="dltitle"
-					   href="index.php?option=com_ars&view=download&id=<?php echo (int)$item->item_id ?>">
-						{{{ $item->title }}}
-					</a>
-					<span class="dltimes">
-						{{ (int) $item->dl }}
-					</span>
-				</div>
-				<div class="dladvanced">
-					<span class="dlcategory">
-						{{{ $item->category }}}
-					</span>
-					<span class="dlversion">
-						{{{ $item->version }}}
-					</span>
-				</div>
-			</div>
-		@endforeach
-		<?php endif; ?>
-	</div>
-		@inlineJs($js)
+	@inlineJs($js)
 @stop

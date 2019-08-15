@@ -67,17 +67,6 @@ class Html extends \FOF30\View\DataView\Html
 		// Get the cache
 		$cache = new Cache();
 
-		// Popular This Week
-		$popularWeek = $cache->getValue('popularweek');
-
-		if (empty($popularWeek))
-		{
-			$popularWeek = json_encode($model->getWeekPopular());
-			$cache->setValue('popularweek', $popularWeek);
-		}
-
-		$this->popularInWeek = json_decode($popularWeek);
-
 		// Download details (Downloads per Month, Week, All Time)
 		$dldetails = $cache->getValue('dldetails');
 
@@ -86,7 +75,6 @@ class Html extends \FOF30\View\DataView\Html
 			$cache->setValue('dldetails', json_encode([
 				'dlmonth' => $model->getNumDownloads('month'),
 				'dlweek'  => $model->getNumDownloads('week'),
-				'dlever'  => $model->getNumDownloads('alltime'),
 			]));
 		}
 
