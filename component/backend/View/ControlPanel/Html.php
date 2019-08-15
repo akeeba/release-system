@@ -18,17 +18,11 @@ defined('_JEXEC') or die;
 
 class Html extends \FOF30\View\DataView\Html
 {
-	/** @var  array  Popular downloads this week */
-	public $popularInWeek = [];
-
 	/** @var  int  Total number of downloads this month */
 	public $downloadsMonth = 0;
 
 	/** @var  int  Total number of downloads this week */
 	public $downloadsWeek = 0;
-
-	/** @var  int  Total number of downloads (for all time) */
-	public $downloadsEver = 0;
 
 	/** @var  array  Information to plot the downloads per day for the past month */
 	public $monthlyDailyReport = [];
@@ -83,7 +77,6 @@ class Html extends \FOF30\View\DataView\Html
 
 		$this->downloadsMonth = $dldetails['dlmonth'];
 		$this->downloadsWeek  = $dldetails['dlweek'];
-		$this->downloadsEver  = $dldetails['dlever'];
 
 		// -- Monthly-Daily downloads report
 		$mdReport = $cache->getValue('mdreport');

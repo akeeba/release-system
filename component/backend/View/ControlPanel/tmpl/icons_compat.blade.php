@@ -21,11 +21,6 @@ $groups = array('basic', 'tools', 'update');
 		</header>
 
 		<div class="akeeba-grid--small">
-			<a href="index.php?option=com_ars&view=VisualGroups" class="akeeba-action--teal">
-				<span class="akion-folder"></span>
-				@lang('COM_ARS_TITLE_VISUALGROUPS')
-			</a>
-
 			<a href="index.php?option=com_ars&view=Categories" class="akeeba-action--teal">
 				<span class="akion-folder"></span>
 				@lang('COM_ARS_TITLE_CATEGORIES')
