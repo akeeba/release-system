@@ -12,11 +12,12 @@ defined('_JEXEC') or die;
 use AkeebaGeoipProvider;
 use FOF30\Container\Container;
 use FOF30\Controller\Controller;
+use FOF30\Controller\Mixin\PredefinedTaskList;
 use JText;
 
 class ControlPanel extends Controller
 {
-	use Mixin\PredefinedTaskList;
+	use PredefinedTaskList;
 
 	public function __construct(Container $container, array $config = array())
 	{
