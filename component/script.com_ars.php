@@ -115,6 +115,8 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
             'components/com_ars/View/DownloadIDLabels/tmpl/form.form.xml',
             'components/com_ars/View/Items/Form.php',
             'components/com_ars/View/Items/tmpl/form.modal.xml',
+
+			// Version 5 -- Rolling internal release
 		),
 		'folders' => array(
 			// Moving to FOF 3
@@ -161,6 +163,9 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			// Unused files
 			'administrator/components/com_ars/Helper/IniParser.php',
+
+			// Version 5 -- Rolling internal release
+			'administrator/components/com_ars/assets',
 		)
 	);
 
