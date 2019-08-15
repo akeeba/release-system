@@ -9,7 +9,6 @@ namespace Akeeba\ReleaseSystem\Site\Model;
 
 defined('_JEXEC') or die();
 
-use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use FOF30\Model\Model;
 use JAuthentication;
@@ -45,28 +44,6 @@ class Download extends Model
 		\JLoader::import('joomla.filesystem.file');
 
 		$folder = $item->release->category->directory;
-
-		$potentialPrefix = substr($folder, 0, 5);
-		$potentialPrefix = strtolower($potentialPrefix);
-		$useS3           = $potentialPrefix == 's3://';
-
-		if ($useS3)
-		{
-			$filename = substr($folder, 5) . '/' . $item->filename;
-			$s3       = AmazonS3::getInstance();
-			$url      = $s3->getAuthenticatedURL($filename);
-
-			if (@ob_get_length() !== false)
-			{
-				@ob_end_clean();
-			}
-
-			$this->logoutUser();
-			$this->container->platform->redirect($url);
-
-			return;
-
-		}
 
 		if (!\JFolder::exists($folder))
 		{

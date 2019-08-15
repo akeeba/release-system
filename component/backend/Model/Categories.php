@@ -9,7 +9,6 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 
 defined('_JEXEC') or die;
 
-use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
 use Akeeba\ReleaseSystem\Admin\Model\Mixin;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
@@ -318,40 +317,15 @@ class Categories extends DataModel
 
 		$this->directory = rtrim($this->directory, '/');
 
-		if ($this->directory == 's3:')
-		{
-			$this->directory = 's3://';
-		}
-
 		$check = trim($this->directory);
 
 		$this->assertNotEmpty($check, 'COM_ARS_CATEGORY_ERR_NEEDS_DIRECTORY');
 
-		$potentialPrefix = substr($check, 0, 5);
-		$potentialPrefix = strtolower($potentialPrefix);
-
-		if ($potentialPrefix == 's3://')
+		if (!\JFolder::exists($this->directory))
 		{
-			$check = substr($check, 5);
+			$directory = JPATH_SITE . '/' . $this->directory;
 
-			if (!empty($check))
-			{
-				$check .= '/';
-			}
-
-			$s3 = AmazonS3::getInstance();
-			$items = $s3->getBucket('', $check, null, null, '/', true);
-
-			$this->assertNotEmpty($items, 'COM_ARS_CATEGORY_ERR_S3_DIRECTORY_NOT_EXISTS');
-		}
-		else
-		{
-			if (!\JFolder::exists($this->directory))
-			{
-				$directory = JPATH_SITE . '/' . $this->directory;
-
-				$this->assert(\JFolder::exists($directory), 'COM_ARS_CATEGORY_ERR_DIRECTORY_NOT_EXISTS');
-			}
+			$this->assert(\JFolder::exists($directory), 'COM_ARS_CATEGORY_ERR_DIRECTORY_NOT_EXISTS');
 		}
 
 		// Automaticaly fix the type

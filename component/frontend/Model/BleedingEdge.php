@@ -9,7 +9,6 @@ namespace Akeeba\ReleaseSystem\Site\Model;
 
 defined('_JEXEC') or die();
 
-use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
 use FOF30\Container\Container;
 use FOF30\Date\Date;
 use FOF30\Model\DataModel\Collection;
@@ -68,35 +67,14 @@ class BleedingEdge extends Model
 		// Store folder
 		$folder = $this->category->directory;
 
-		// Check for categories stored in Amazon S3
-		$potentialPrefix = substr($folder, 0, 5);
-		$potentialPrefix = strtolower($potentialPrefix);
-
-		if ($potentialPrefix == 's3://')
+		// If it is stored locally, make sure the folder exists
+		if (!\JFolder::exists($folder))
 		{
-			// If it is stored on S3 make sure there are files stored with the given directory prefix
-			$check = substr($folder, 5);
-			$s3 = AmazonS3::getInstance();
-			$items = $s3->getBucket('', $check . '/', null, null, '\0', false);
-
-			if (empty($items))
-			{
-				return;
-			}
-		}
-		else
-		{
-			// If it is stored locally, make sure the folder exists
-			\JLoader::import('joomla.filesystem.folder');
+			$folder = JPATH_ROOT . '/' . $folder;
 
 			if (!\JFolder::exists($folder))
 			{
-				$folder = JPATH_ROOT . '/' . $folder;
-
-				if (!\JFolder::exists($folder))
-				{
-					return;
-				}
+				return;
 			}
 		}
 
@@ -132,13 +110,6 @@ class BleedingEdge extends Model
 			return;
 		}
 
-		// Check for possible use of Amazon S3
-		$potentialPrefix = substr($this->category->directory, 0, 5);
-		$potentialPrefix = strtolower($potentialPrefix);
-		$useS3 = ($potentialPrefix == 's3://');
-
-		\JLoader::import('joomla.filesystem.folder');
-
 		$known_folders = array();
 
 		// Make sure published releases do exist
@@ -154,41 +125,23 @@ class BleedingEdge extends Model
 				$mustScanFolder = true;
 				$folder = null;
 
-				if ($useS3)
+				$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
+
+				if ($folderName === false)
 				{
-					$folder = $this->folder . '/' . $release->version;
-					$known_folders[] = $release->version;
+					$mustScanFolder = false;
 				}
 				else
 				{
-					$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
-
-					if ($folderName === false)
-					{
-						$mustScanFolder = false;
-					}
-					else
-					{
-						$known_folders[] = $folderName;
-						$folder = $this->folder . '/' . $folderName;
-					}
+					$known_folders[] = $folderName;
+					$folder          = $this->folder . '/' . $folderName;
 				}
 
 				$exists = false;
 
 				if ($mustScanFolder)
 				{
-					if ($useS3)
-					{
-						$check = substr($folder, 5);
-						$s3 = AmazonS3::getInstance();
-						$items = $s3->getBucket('', $check . '/', null, null, '\0', false);
-						$exists = !empty($items);
-					}
-					else
-					{
-						$exists = \JFolder::exists($folder);
-					}
+					$exists = \JFolder::exists($folder);
 				}
 
 				if (!$exists)
@@ -225,24 +178,10 @@ class BleedingEdge extends Model
 
 			$hasChangelog = false;
 
-			if ($useS3)
+			if (\JFile::exists($changelog))
 			{
-				$s3 = AmazonS3::getInstance();
-				$response = $s3->getObject(substr($changelog, 5));
-				$hasChangelog = $response !== false;
-
-				if ($hasChangelog)
-				{
-					$first_changelog = $response;
-				}
-			}
-			else
-			{
-				if (\JFile::exists($changelog))
-				{
-					$hasChangelog = true;
-					$first_changelog = @file_get_contents($changelog);
-				}
+				$hasChangelog    = true;
+				$first_changelog = @file_get_contents($changelog);
 			}
 
 			if ($hasChangelog)
@@ -259,33 +198,7 @@ class BleedingEdge extends Model
 		}
 
 		// Get a list of all folders
-		if ($useS3)
-		{
-			$allFolders = array();
-			$everything = $this->_listS3Contents($this->folder);
-			$dirLength = strlen($this->folder) - 5;
-
-			if (count($everything))
-			{
-				foreach ($everything as $path => $info)
-				{
-					if (!array_key_exists('size', $info) && (substr($path, -1) == '/'))
-					{
-						if (substr($path, 0, $dirLength) == substr($this->folder, 5))
-						{
-							$path = substr($path, $dirLength);
-						}
-
-						$path = trim($path, '/');
-						$allFolders[] = $path;
-					}
-				}
-			}
-		}
-		else
-		{
-			$allFolders = \JFolder::folders($this->folder);
-		}
+		$allFolders = \JFolder::folders($this->folder);
 
 		if (!empty($allFolders))
 		{
@@ -301,24 +214,10 @@ class BleedingEdge extends Model
 					$hasChangelog = false;
 					$this_changelog = '';
 
-					if ($useS3)
+					if (\JFile::exists($changelog))
 					{
-						$s3 = AmazonS3::getInstance();
-						$response = $s3->getObject(substr($changelog, 5));
-						$hasChangelog = $response !== false;
-
-						if ($hasChangelog)
-						{
-							$this_changelog = $response;
-						}
-					}
-					else
-					{
-						if (\JFile::exists($changelog))
-						{
-							$hasChangelog = true;
-							$this_changelog = @file_get_contents($changelog);
-						}
+						$hasChangelog   = true;
+						$this_changelog = @file_get_contents($changelog);
 					}
 
 					if ($hasChangelog)
@@ -438,35 +337,19 @@ class BleedingEdge extends Model
 			return;
 		}
 
-		$potentialPrefix = substr($this->folder, 0, 5);
-		$potentialPrefix = strtolower($potentialPrefix);
-		$useS3 = ($potentialPrefix == 's3://');
-
 		// Safe fallback
-		$folderName = $release->version;
+		$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
 
-		if ($useS3)
+		if ($folderName === false)
 		{
-			// On S3 it's always the version-as-folder, otherwise it'd take FOREVER to scan S3
-			$folder = $this->folder . '/' . $release->version;
-			$known_folders[] = $release->version;
+			// Normally this shouldn't happen!
+			return;
 		}
 		else
 		{
-			$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
-
-			if ($folderName === false)
-			{
-				// Normally this shouldn't happen!
-				return;
-			}
-			else
-			{
-				$known_folders[] = $folderName;
-				$folder = $this->folder . '/' . $folderName;
-			}
+			$known_folders[] = $folderName;
+			$folder          = $this->folder . '/' . $folderName;
 		}
-
 		// Do we have a changelog?
 		if (empty($release->notes))
 		{
@@ -474,24 +357,10 @@ class BleedingEdge extends Model
 			$hasChangelog = false;
 			$this_changelog = '';
 
-			if ($useS3)
+			if (\JFile::exists($changelog))
 			{
-				$s3 = AmazonS3::getInstance();
-				$response = $s3->getObject(substr($changelog, 5));
-				$hasChangelog = $response !== false;
-
-				if ($hasChangelog)
-				{
-					$this_changelog = $response;
-				}
-			}
-			else
-			{
-				if (\JFile::exists($changelog))
-				{
-					$hasChangelog = true;
-					$this_changelog = @file_get_contents($changelog);
-				}
+				$hasChangelog   = true;
+				$this_changelog = @file_get_contents($changelog);
 			}
 
 			if ($hasChangelog)
@@ -508,33 +377,7 @@ class BleedingEdge extends Model
 
 		$known_items = array();
 
-		if ($useS3)
-		{
-			$files = array();
-			$everything = $this->_listS3Contents($folder);
-			$dirLength = strlen($folder) - 5;
-
-			if (count($everything))
-			{
-				foreach ($everything as $path => $info)
-				{
-					if (array_key_exists('size', $info) && (substr($path, -1) != '/'))
-					{
-						if (substr($path, 0, $dirLength) == substr($folder, 5))
-						{
-							$path = substr($path, $dirLength);
-						}
-
-						$path = trim($path, '/');
-						$files[] = $path;
-					}
-				}
-			}
-		}
-		else
-		{
-			$files = \JFolder::files($folder);
-		}
+		$files = \JFolder::files($folder);
 
 		if ($release->items->count())
 		{
@@ -719,31 +562,6 @@ class BleedingEdge extends Model
 		}
 
 		return "<span class=\"ars-devrelease-changelog-$style\">$line</span>";
-	}
-
-	private function _listS3Contents($path = null)
-	{
-		static $lastDirectory = null;
-		static $lastListing = array();
-
-		$directory = substr($path, 5);
-
-		if ($lastDirectory != $directory)
-		{
-			if ($directory == '/')
-			{
-				$directory = null;
-			}
-			else
-			{
-				$directory = trim($directory, '/') . '/';
-			}
-
-			$s3 = AmazonS3::getInstance();
-			$lastListing = $s3->getBucket('', $directory, null, null, '/', true);
-		}
-
-		return $lastListing;
 	}
 
 	private function getReleaseFolder($folder, $version, $alias, $maturity)

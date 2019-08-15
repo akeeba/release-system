@@ -45,14 +45,12 @@
 
 		<!-- Back-end files -->
 		<files folder="backend">
-			<folder>assets</folder>
 			<folder>Controller</folder>
 			<folder>Dispatcher</folder>
 			<folder>Helper</folder>
 			<folder>Model</folder>
 			<folder>sql</folder>
 			<folder>Toolbar</folder>
-			<folder>vendor</folder>
 			<folder>View</folder>
 
 			<filename>access.xml</filename>

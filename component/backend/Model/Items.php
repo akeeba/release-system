@@ -9,7 +9,6 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 
 defined('_JEXEC') or die;
 
-use Akeeba\ReleaseSystem\Admin\Helper\AmazonS3;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 use JHtml;
@@ -749,46 +748,21 @@ class Items extends DataModel
 
 				if (!empty($folder))
 				{
-					$potentialPrefix = substr($folder, 0, 5);
-					$potentialPrefix = strtolower($potentialPrefix);
+					\JLoader::import('joomla.filesystem.folder');
 
-					if ($potentialPrefix == 's3://')
+					if (!\JFolder::exists($folder))
 					{
-						$check = substr($folder, 5);
-						$s3 = AmazonS3::getInstance();
-						$items = $s3->getBucket('', rtrim($check, '/') . '/', null, null, '\0', false);
-
-						if (empty($items))
-						{
-							$folder = null;
-
-							return false;
-						}
-						else
-						{
-							// Get a signed URL
-							$s3 = AmazonS3::getInstance();
-							$url = $s3->getAuthenticatedURL(rtrim(substr($folder, 5), '/') . '/' . ltrim($filename, '/'));
-						}
-					}
-					else
-					{
-						\JLoader::import('joomla.filesystem.folder');
+						$folder = JPATH_ROOT . '/' . $folder;
 
 						if (!\JFolder::exists($folder))
 						{
-							$folder = JPATH_ROOT . '/' . $folder;
-
-							if (!\JFolder::exists($folder))
-							{
-								$folder = null;
-							}
+							$folder = null;
 						}
+					}
 
-						if (!empty($folder))
-						{
-							$filename = $folder . '/' . $filename;
-						}
+					if (!empty($folder))
+					{
+						$filename = $folder . '/' . $filename;
 					}
 				}
 			}
@@ -1047,44 +1021,13 @@ class Items extends DataModel
 		// Get which directory to use
 		$directory = $release->category->directory;
 
-		$potentialPrefix = substr($directory, 0, 5);
-		$potentialPrefix = strtolower($potentialPrefix);
-		$useS3           = ($potentialPrefix == 's3://');
-
-		if ($useS3)
+		if (!\JFolder::exists($directory))
 		{
-			$directory = substr($directory, 5);
-
-			if ($directory === false)
-			{
-				$directory = '';
-			}
-
-			$s3    = AmazonS3::getInstance();
-			$items = $s3->getBucket('', rtrim($directory, '/') . '/', null, null, '\0', false);
-
-			if (empty($items))
-			{
-				$directory = null;
-			}
-
-			if (empty($directory))
-			{
-				$directory = '/';
-			}
-		}
-		else
-		{
-			\JLoader::import('joomla.filesystem.folder');
+			$directory = JPATH_ROOT . '/' . $directory;
 
 			if (!\JFolder::exists($directory))
 			{
-				$directory = JPATH_ROOT . '/' . $directory;
-
-				if (!\JFolder::exists($directory))
-				{
-					$directory = null;
-				}
+				$directory = null;
 			}
 		}
 
@@ -1134,48 +1077,6 @@ class Items extends DataModel
 
 		// Produce a list of files and remove the items in the $files array
 		$useFiles = array();
-
-		if ($useS3)
-		{
-			$s3       = AmazonS3::getInstance();
-			$allFiles = $s3->getBucket('', rtrim($directory, '/') . '/', null, null, '\0', true);
-
-			if (!empty($allFiles))
-			{
-				foreach ($allFiles as $aFile => $info)
-				{
-					$aFile = ltrim(substr($aFile, strlen($directory)), '/');
-
-					if (in_array($aFile, $files))
-					{
-						continue;
-					}
-
-					$useFiles[] = $aFile;
-				}
-			}
-		}
-		else
-		{
-			$allFiles = \JFolder::files($directory, '.', 3, true);
-			$root     = str_replace('\\', '/', $directory);
-
-			if (!empty($allFiles))
-			{
-				foreach ($allFiles as $aFile)
-				{
-					$aFile = str_replace('\\', '/', $aFile);
-					$aFile = ltrim(substr($aFile, strlen($root)), '/');
-
-					if (in_array($aFile, $files))
-					{
-						continue;
-					}
-
-					$useFiles[] = $aFile;
-				}
-			}
-		}
 
 		if (empty($useFiles))
 		{
