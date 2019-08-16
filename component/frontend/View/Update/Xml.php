@@ -76,23 +76,4 @@ class Xml extends Raw
 		$this->showChecksums = $this->container->params->get('show_checksums', 0) == 1;
 		$this->setLayout('stream');
 	}
-
-	protected function onBeforeJed(): void
-	{
-		/** @var Environments $envmodel */
-		$envmodel = $this->container->factory->model('Environments')->tmpInstance();
-		$rawenvs  = $envmodel->get(true);
-		$envs     = array();
-
-		if (!empty($rawenvs))
-		{
-			foreach ($rawenvs as $env)
-			{
-				$envs[ $env->id ] = $env;
-			}
-		}
-
-		$this->envs  = $envs;
-		$this->setLayout('jed');
-	}
 }

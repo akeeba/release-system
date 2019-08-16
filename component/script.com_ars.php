@@ -132,6 +132,10 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'components/com_ars/Helper/Title.php',
 
 			'components/com_ars/Model/VisualGroups.php',
+
+			'components/com_ars/View/Update/tmpl/jed.php',
+
+			'components/com_ars/views/Update/tmpl/jed.xml',
 		),
 		'folders' => array(
 			// Moving to FOF 3

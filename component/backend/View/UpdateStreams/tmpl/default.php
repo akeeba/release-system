@@ -142,9 +142,6 @@ $this->getContainer()->template->addJSInline($js);
 						<a href="<?php echo Uri::root() ?>index.php?option=com_ars&view=update&task=stream&format=xml&id=<?php echo $row->id ?>"
 						   target="_blank">XML</a>
                         &bull;
-						<a href="<?php echo Uri::root() ?>index.php?option=com_ars&view=update&task=jed&format=xml&id=<?php echo $row->id ?>"
-						   target="_blank">JED</a>
-                        &bull;
 						<a href="<?php echo Uri::root() ?>index.php?option=com_ars&view=update&task=download&format=raw&id=<?php echo $row->id ?>"
 						   target="_blank">D/L</a>
 

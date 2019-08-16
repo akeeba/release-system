@@ -247,47 +247,6 @@ class Update extends Controller
 	}
 
 	/**
-	 * Generates the JED listing update XML file
-	 *
-	 * @throws \RuntimeException
-	 * @throws \Exception
-	 */
-	public function jed(): void
-	{
-		$id = $this->input->getInt('id', 0);
-
-		if ($id == 0)
-		{
-			// Do we have a menu item parameter?
-			/** @var \JApplicationSite $app */
-			$app    = JFactory::getApplication();
-			$params = $app->getParams('com_ars');
-			$id     = $params->get('streamid', 0);
-		}
-
-		// Required for caching
-		$this->input->set('id', $id);
-
-		/** @var UpdateModel $model */
-		$model           = $this->getModel();
-		$view            = $this->getView();
-		$view->items     = $model->getItems($id);
-		$view->published = $model->getPublished($id);
-
-		$registeredURLParams = [
-			'option' => 'CMD',
-			'view'   => 'CMD',
-			'task'   => 'CMD',
-			'format' => 'CMD',
-			'layout' => 'CMD',
-			'id'     => 'INT',
-			'dlid'   => 'STRING',
-		];
-
-		$this->display(true, $registeredURLParams);
-	}
-
-	/**
 	 * Show an INI formatted update stream
 	 *
 	 * @throws \RuntimeException
