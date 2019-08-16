@@ -7,7 +7,7 @@
 
 // Protect from unauthorized access
 use Joomla\CMS\Application\SiteApplication;
-use Joomla\Registry\Factory;
+use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die();
 

@@ -23,9 +23,10 @@ class Html extends BaseView
 	/** @var  array	Sorting order options */
 	public $sortFields = [];
 
+	/** @var array Current values of user filters */
 	public $filters = [];
 
-	protected function onBeforeBrowse()
+	protected function onBeforeBrowse(): void
 	{
 		$hash = 'ars'.strtolower($this->getName());
 

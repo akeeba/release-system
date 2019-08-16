@@ -130,7 +130,7 @@ $this->getContainer()->template->addJSInline($js);
                         <small><?php echo $this->escape($row->item->title) ?></small>
                     </td>
 					<td>
-						<?php echo Html::renderUserRepeatable($row->user_id)?>
+						<?php echo Html::renderUserRepeatable((int) ($row->user_id)) ?>
                     </td>
                     <td>
                     <?php

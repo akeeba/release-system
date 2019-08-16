@@ -36,7 +36,7 @@ abstract class Html
 	 *
 	 * @return  Container
 	 */
-	private static function getContainer()
+	private static function getContainer(): Container
 	{
 		if (is_null(self::$container))
 		{
@@ -46,7 +46,7 @@ abstract class Html
 		return self::$container;
 	}
 
-	public static function language($value)
+	public static function language(string $value): string
 	{
 		static $languages;
 
@@ -74,10 +74,10 @@ abstract class Html
 			$lang = $languages[$value]->title;
 		}
 
-		return '<span>'.$lang.'</span>';
+		return '<span>' . $lang . '</span>';
 	}
 
-	public static function decodeUpdateType($value)
+	public static function decodeUpdateType(string $value): string
 	{
 		switch ($value)
 		{
@@ -100,14 +100,14 @@ abstract class Html
 		}
 	}
 
-	public static function ordering(Raw $view, $orderingField, $orderingValue)
+	public static function ordering(Raw $view, string $orderingField, string $orderingValue): string
 	{
 		$ordering = $view->getLists()->order == $orderingField;
-		$class = 'input-mini';
-		$icon = 'icon-menu';
+		$class    = 'input-mini';
+		$icon     = 'icon-menu';
 
 		// Default inactive ordering
-		$html  = '<span class="sortable-handler inactive" >';
+		$html = '<span class="sortable-handler inactive" >';
 		$html .= '<span class="' . $icon . '"></span>';
 		$html .= '</span>';
 
@@ -115,7 +115,7 @@ abstract class Html
 		if ($view->getPerms()->editstate)
 		{
 			$disableClassName = '';
-			$disabledLabel = '';
+			$disabledLabel    = '';
 
 			// DO NOT REMOVE! It will initialize Joomla libraries and javascript functions
 			$hasAjaxOrderingSupport = $view->hasAjaxOrderingSupport();
@@ -128,14 +128,14 @@ abstract class Html
 
 			$orderClass = $ordering ? 'order-enabled' : 'order-disabled';
 
-			$html  = '<div class="' . $orderClass . '">';
-			$html .= 	'<span class="sortable-handler ' . $disableClassName . '" title="' . $disabledLabel . '" rel="tooltip">';
-			$html .= 		'<span class="' . $icon . '"></span>';
-			$html .= 	'</span>';
+			$html = '<div class="' . $orderClass . '">';
+			$html .= '<span class="sortable-handler ' . $disableClassName . '" title="' . $disabledLabel . '" rel="tooltip">';
+			$html .= '<span class="' . $icon . '"></span>';
+			$html .= '</span>';
 
 			if ($ordering)
 			{
-				$joomla35IsBroken = version_compare(JVERSION, '3.5.0', 'ge') ? 'style="display: none"': '';
+				$joomla35IsBroken = version_compare(JVERSION, '3.5.0', 'ge') ? 'style="display: none"' : '';
 
 				$html .= '<input type="text" name="order[]" ' . $joomla35IsBroken . ' size="5" class="' . $class . ' text-area-order" value="' . $orderingValue . '" />';
 			}
@@ -146,7 +146,7 @@ abstract class Html
 		return $html;
 	}
 
-	public static function accessLevel($value, array $fieldOptions = array())
+	public static function accessLevel(string $value, array $fieldOptions = []): string
 	{
 		/** @var array|null The select options coming from the access levels of the site */
 		static $defaultOptions = null;
@@ -172,14 +172,14 @@ abstract class Html
 
 		array_unshift($options, HTMLHelper::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
 
-		return '<span ' . ($id ? $id : '') . ' class="'. $class . '">' .
+		return '<span ' . ($id ? $id : '') . ' class="' . $class . '">' .
 			htmlspecialchars(GenericList::getOptionName($options, $value), ENT_COMPAT, 'UTF-8') .
 			'</span>';
 	}
 
-	public static function renderUserRepeatable($userid, array $attribs = array())
+	public static function renderUserRepeatable(int $userid, array $attribs = []): string
 	{
-		static $userCache = array();
+		static $userCache = [];
 
 		// Initialise
 		$show_username = isset($attribs['hide_username']) ? false : true;
@@ -205,7 +205,7 @@ abstract class Html
 
 		if (!$link_url && static::getContainer()->platform->isBackend())
 		{
-			$link_url = 'index.php?option=com_users&task=user.edit&id='.$userid;
+			$link_url = 'index.php?option=com_users&task=user.edit&id=' . $userid;
 		}
 		elseif (!$link_url)
 		{
@@ -223,7 +223,7 @@ abstract class Html
 			{
 				// Use the user plugins to get an avatar
 				static::getContainer()->platform->importPlugin('user');
-				$jResponse = static::getContainer()->platform->runPlugins('onUserAvatar', array($user, $avatar_size));
+				$jResponse = static::getContainer()->platform->runPlugins('onUserAvatar', [$user, $avatar_size]);
 
 				if (!empty($jResponse))
 				{
@@ -273,17 +273,17 @@ abstract class Html
 
 		if ($show_username)
 		{
-			$html .= '<span class="fof-usersfield-username">' . $user->username	. '</span>';
+			$html .= '<span class="fof-usersfield-username">' . $user->username . '</span>';
 		}
 
 		if ($show_id)
 		{
-			$html .= '<span class="fof-usersfield-id">' . $user->id	. '</span>';
+			$html .= '<span class="fof-usersfield-id">' . $user->id . '</span>';
 		}
 
 		if ($show_name)
 		{
-			$html .= '<span class="fof-usersfield-name">' . $user->name	. '</span>';
+			$html .= '<span class="fof-usersfield-name">' . $user->name . '</span>';
 		}
 
 		if ($show_email)
@@ -301,7 +301,7 @@ abstract class Html
 		return $html;
 	}
 
-	public static function rules($value, $assetField, $modelName, $component, $section = 'component')
+	public static function rules(string $value, string $assetField, string $modelName, string $component, string $section = 'component'): string
 	{
 		/**
 		 * At the timing of this writing (2013-12-03), the Joomla "rules" field is buggy. When you are
@@ -339,7 +339,7 @@ abstract class Html
 			// If there is no assetId (let's say we are dealing with a new record), let's ask the table
 			// to give it to us. Here you should implement your logic (ie getting default permissions from
 			// the component or from the category)
-			if(!$assetId)
+			if (!$assetId)
 			{
 				/** @var DataModel $table */
 				$table   = self::getContainer()->factory->model($modelName)->tmpInstance();
@@ -357,7 +357,7 @@ abstract class Html
 		$groups = self::getUserGroups();
 
 		// Prepare output
-		$html = array();
+		$html = [];
 
 		// Description
 		$html[] = '<p class="rule-desc">' . Text::_('JLIB_RULES_SETTINGS_DESC') . '</p>';
@@ -554,7 +554,7 @@ abstract class Html
 		return implode("\n", $html);
 	}
 
-	protected static function getUserGroups()
+	protected static function getUserGroups(): array
 	{
 		$options = UserGroupsHelper::getInstance()->getAll();
 

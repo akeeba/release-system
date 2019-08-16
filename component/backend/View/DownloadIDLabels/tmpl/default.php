@@ -123,7 +123,7 @@ $this->getContainer()->template->addJSInline($js);
                         <?php echo $label; ?>
                     </td>
 					<td>
-                        <?php echo Html::renderUserRepeatable($row->user_id)?>
+						<?php echo Html::renderUserRepeatable((int) ($row->user_id)) ?>
 					</td>
                     <td>
                         <span class="<?php echo $dlclass ?>">

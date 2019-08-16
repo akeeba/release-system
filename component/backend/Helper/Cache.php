@@ -41,7 +41,7 @@ class Cache
 	 * @param   string  $domain  The cache domain
 	 * @param   int     $ttl     Cache time in seconds, default 900 seconds (15 minutes)
 	 */
-	public function __construct($domain = 'cpanelstats', $ttl = 900)
+	public function __construct(string $domain = 'cpanelstats', int $ttl = 900)
 	{
 		// Get the domain
 		$filter       = JFilterInput::getInstance();
@@ -104,7 +104,7 @@ class Cache
 	 *
 	 * @return mixed|null
 	 */
-	public function getValue($key, $default = null)
+	public function getValue(string $key, $default = null)
 	{
 		if (!$this->hasCache)
 		{
@@ -122,7 +122,7 @@ class Cache
 	 *
 	 * @return  void
 	 */
-	public function setValue($key, $value)
+	public function setValue(string $key, $value): void
 	{
 		if (!$this->hasCache)
 		{
@@ -137,17 +137,15 @@ class Cache
 	 *
 	 * @return  void
 	 */
-	public function save()
+	public function save(): void
 	{
 		if (!$this->hasCache)
 		{
 			return;
 		}
-		else
-		{
-			$serialized = $this->registry->toString('INI');
 
-			JFile::write($this->cachePath, $serialized);
-		}
+		$serialized = $this->registry->toString('INI');
+
+		JFile::write($this->cachePath, $serialized);
 	}
 }

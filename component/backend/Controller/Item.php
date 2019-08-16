@@ -16,7 +16,7 @@ use Joomla\CMS\Language\Text;
 
 class Item extends DataController
 {
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
 		parent::__construct($container, $config);
 
@@ -26,7 +26,7 @@ class Item extends DataController
 		}
 	}
 
-	protected function onBeforeApplySave(&$data)
+	protected function onBeforeApplySave(array &$data): bool
 	{
 		if ($data['release_id'])
 		{
@@ -47,17 +47,19 @@ class Item extends DataController
 		// When you deselect all items Chosen doesn't return any items in the request :(
 		if (!isset($data['groups']))
 		{
-			$data['groups'] = array();
+			$data['groups'] = [];
 		}
 
 		// Save as above *sigh*
 		if (!isset($data['environments']))
 		{
-			$data['environments'] = array();
+			$data['environments'] = [];
 		}
+
+		return true;
 	}
 
-	protected function onBeforeAdd()
+	protected function onBeforeAdd(): bool
 	{
 		$this->defaultsForAdd = [
 			'release_id' => 0,
@@ -76,12 +78,14 @@ class Item extends DataController
 		{
 			if ($stateValue = $this->getModel()->getState($k, $v))
 			{
-				$this->defaultsForAdd[ $k ] = $stateValue;
+				$this->defaultsForAdd[$k] = $stateValue;
 			}
 		}
+
+		return true;
 	}
 
-	protected function onBeforeDelete()
+	protected function onBeforeDelete(): bool
 	{
 		/** @var \Akeeba\ReleaseSystem\Admin\Model\Items $model */
 		$model = $this->getModel()->savestate(false);
@@ -102,9 +106,11 @@ class Item extends DataController
 		{
 			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 403);
 		}
+
+		return true;
 	}
 
-	protected function onBeforeEdit()
+	protected function onBeforeEdit(): bool
 	{
 		/** @var \Akeeba\ReleaseSystem\Admin\Model\Items $model */
 		$model = $this->getModel()->savestate(false);
@@ -125,5 +131,7 @@ class Item extends DataController
 		{
 			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
+
+		return true;
 	}
 }

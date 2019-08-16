@@ -9,43 +9,59 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 
 defined('_JEXEC') or die;
 
-use Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration\IntegrationInterface;
 use FOF30\Container\Container;
+use FOF30\Model\DataModel;
 use FOF30\Model\Model;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\Folder;
 
 /**
  * Used to filter by subscription level
  */
 class SubscriptionIntegration extends Model
 {
-	/** @var  IntegrationInterface  Integration object */
-	protected $integration = null;
-
 	/** @var  array  Cached of subscription levels per user ID */
 	protected $userGroups = [];
 
-	/**
-	 * Constructs the model. Also sets the protected $integration property to the object of the active integration (or
-	 * null if none is available).
-	 *
-	 * @param   Container  $container  The component's DI container
-	 * @param   array      $config     Configuration overrides
-	 */
-	public function __construct(Container $container, array $config = array())
-	{
-		parent::__construct($container, $config);
+	/** @var bool|null Do I have a compatible Akeeba Subscriptions version? */
+	protected $hasAkeebaSubs;
 
-		$this->integration = $this->getIntegration();
-	}
+	/** @var array|null Cached subscription groups */
+	protected $cachedGroups;
 
 	/**
-	 * Do I have an integration with a subscriptions extension / service?
+	 * Is the Akeeba Subscriptions integration available for this site?
 	 *
-	 * @return  bool  True if I have an integration
+	 * @return  bool  True if available
 	 */
-	public function hasIntegration()
+	public function hasIntegration(): bool
 	{
-		return is_object($this->integration);
+		if (!is_null($this->hasAkeebaSubs))
+		{
+			return $this->hasAkeebaSubs;
+		}
+
+		$this->hasAkeebaSubs = false;
+
+		if (!Folder::exists(JPATH_ROOT . '/components/com_akeebasubs'))
+		{
+			return false;
+		}
+
+		if (!ComponentHelper::getComponent('com_akeebasubs', true)->enabled)
+		{
+			return false;
+		}
+
+		// Akeeba Subscriptions 5.0+ does not have the admin views folder any more
+		if (Folder::exists(JPATH_ADMINISTRATOR . '/components/com_akeebasubs/views'))
+		{
+			return false;
+		}
+
+		$this->hasAkeebaSubs = true;
+
+		return true;
 	}
 
 	/**
@@ -53,60 +69,33 @@ class SubscriptionIntegration extends Model
 	 *
 	 * @return  array
 	 */
-	public function getGroups()
+	public function getGroups(): array
 	{
-		static $cached = null;
-
-		if (!is_object($this->integration))
+		if (!$this->hasIntegration())
 		{
 			return [];
 		}
 
-		if (is_null($cached))
+		if (!is_null($this->cachedGroups))
 		{
-			$cached = $this->integration->getAllGroups();
+			return $this->cachedGroups;
 		}
 
-		return $cached;
-	}
+		$this->cachedGroups = $this->getAllGroups();
 
-	/**
-	 * Returns a list of subscription groups / levels in a format suitable for selection lists
-	 *
-	 * @return  array
-	 */
-	static function getGroupsForSelect()
-	{
-		/** @var self $instance */
-		$instance = Container::getInstance('com_ars')->factory->model('SubscriptionIntegration');
-
-		$ret = [];
-		$temp = $instance->getGroups();
-
-		if (!empty($temp))
-		{
-			foreach ($temp as $k => $v)
-			{
-				$ret[] = [
-					'value' => $k,
-					'text' => $v
-				];
-			}
-		}
-
-		return $ret;
+		return $this->cachedGroups;
 	}
 
 	/**
 	 * Returns a list of subscription groups/levels the current user belongs to
 	 *
-	 * @param   int  $user_id  User ID to check. Leave null to use current logged-in user.
+	 * @param int $user_id User ID to check. Leave null to use current logged-in user.
 	 *
 	 * @return  array  Array of integers: the subscription levels the user belongs to
 	 */
-	public function getUserGroups($user_id = null)
+	public function getUserGroups(?int $user_id = null): array
 	{
-		if (!is_object($this->integration))
+		if (!$this->hasIntegration())
 		{
 			return [];
 		}
@@ -124,63 +113,105 @@ class SubscriptionIntegration extends Model
 
 		if (!isset($this->userGroups[$user_id]))
 		{
-			$this->userGroups[$user_id] = $this->integration->getGroupsForUser($user_id);
+			$this->userGroups[$user_id] = $this->getGroupsForUser($user_id);
 		}
 
 		return $this->userGroups[$user_id];
 	}
 
 	/**
-	 * Looks for integrations with subscription extensions and returns the one you need to use
+	 * Returns a list of subscription groups / levels in a format suitable for selection lists
 	 *
-	 * @return  IntegrationInterface|null
+	 * @return  array
 	 */
-	protected function getIntegration()
+	public static function getGroupsForSelect(): array
 	{
-		/** @var IntegrationInterface $integration */
-		$integration = null;
+		/** @var self $instance */
+		$instance = Container::getInstance('com_ars')->factory->model('SubscriptionIntegration');
 
-		$dh = new \DirectoryIterator(__DIR__ . '/SubscriptionIntegration');
+		$ret  = [];
+		$temp = $instance->getGroups();
 
-		/** @var \DirectoryIterator $file */
-		foreach ($dh as $file)
+		if (!empty($temp))
 		{
-			if (!$file->isFile())
+			foreach ($temp as $k => $v)
 			{
-				continue;
-			}
-
-			if ($file->getExtension() != 'php')
-			{
-				continue;
-			}
-
-			if (in_array($file->getBasename('.php'), ['IntegrationInterface', 'Base']))
-			{
-				continue;
-			}
-
-			$className = '\\Akeeba\\ReleaseSystem\\Admin\\Model\\SubscriptionIntegration\\' . $file->getBasename('.php');
-
-			if (!class_exists($className))
-			{
-				continue;
-			}
-
-			/** @var IntegrationInterface $o */
-			$o = new $className;
-
-			if (!$o->isAvailable())
-			{
-				continue;
-			}
-
-			if (!is_object($integration) || ($o->getPriority() < $integration->getPriority()))
-			{
-				$integration = $o;
+				$ret[] = [
+					'value' => $k,
+					'text'  => $v,
+				];
 			}
 		}
 
-		return $integration;
+		return $ret;
+	}
+
+	/**
+	 * Returns a list of all possible subscription levels. The return is an array of arrays in the format:
+	 * [
+	 *    1 => 'Description for first level',
+	 *    2 => 'Description for second level',
+	 *    ...
+	 * ]
+	 *
+	 * @return  array
+	 */
+	private function getAllGroups(): array
+	{
+		static $theList = null;
+
+		if (is_null($theList))
+		{
+			$theList = [];
+
+			$container = Container::getInstance('com_akeebasubs');
+
+			/** @var DataModel $levelsModel */
+			$levelsModel = $container->factory->model('Levels')->tmpInstance();
+			$list        = $levelsModel->get(true);
+
+			if ($list->count())
+			{
+				foreach ($list as $item)
+				{
+					$theList[$item->akeebasubs_level_id] = $item->title;
+				}
+			}
+		}
+
+		return $theList;
+	}
+
+	/**
+	 * Returns a list of all currently active subscription levels for a specific Joomla! user ID. The return is an array
+	 * of integers, e.g. [1, 2, 5, 8]
+	 *
+	 * @return  array
+	 */
+	private function getGroupsForUser(?int $user_id): array
+	{
+		// If we are not logged in we don't have any active subscriptions.
+		if (empty($user_id))
+		{
+			return [];
+		}
+
+		$container = Container::getInstance('com_akeebasubs');
+		/** @var DataModel $subscriptionsModel */
+		$subscriptionsModel = $container->factory->model('Subscriptions')->tmpInstance();
+		/** @var DataModel\Collection $rawList */
+		$rawList = $subscriptionsModel->enabled(1)->user_id($user_id)->get(true);
+
+		$theList = [];
+
+		if ($rawList->count())
+		{
+			foreach ($rawList as $item)
+			{
+				$theList[] = $item->akeebasubs_level_id;
+			}
+		}
+
+		return array_unique($theList);
 	}
 }

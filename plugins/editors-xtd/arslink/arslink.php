@@ -38,12 +38,15 @@ class plgButtonArslink extends CMSPlugin
 	/**
 	 * Display the button
 	 *
+	 * Yes, I know JObject is deprecated. However, button elements are SUPPOSED to return a JObject because Joomla tries
+	 * to run get() against the returned object when rendering the buttons. Groan.
+	 *
 	 * @param string $name
 	 *
-	 * @return object
+	 * @return JObject
 	 * @throws Exception
 	 */
-	function onDisplay(string $name): object
+	function onDisplay(string $name): JObject
 	{
 		/*
 		 * Javascript to insert the link
@@ -110,7 +113,7 @@ CSS;
 		$link =
 			'index.php?option=com_ars&amp;view=Items&amp;layout=modal&amp;tmpl=component&amp;' . Session::getFormToken() . '=1';
 
-		return (object) [
+		$props = [
 			'modal'   => true,
 			'class'   => 'btn',
 			'link'    => $link,
@@ -118,5 +121,7 @@ CSS;
 			'name'    => 'arsitem',
 			'options' => "{handler: 'iframe', size: {x: 800, y: 400}}",
 		];
+
+		return new JObject($props);
 	}
 }

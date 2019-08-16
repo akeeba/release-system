@@ -12,30 +12,33 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Admin\Model\Mixin;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
+use FOF30\Model\Mixin\Assertions;
+use FOF30\Model\Mixin\ImplodedArrays;
+use JDatabaseQuery;
 
 /**
  * Model for the download Categories
  *
  * Fields:
  *
- * @property  int     $id
- * @property  int     $asset_id
- * @property  string  $title
- * @property  string  $alias
- * @property  string  $description
- * @property  string  $type
- * @property  array   $groups
- * @property  string  $directory
- * @property  string  $created
- * @property  string  $modified
- * @property  int     $checked_out
- * @property  string  $checked_out_time
- * @property  int     $access
- * @property  bool    $show_unauth_links
- * @property  string  $redirect_unauth
- * @property  int     $published
- * @property  string  $language
- * @property  int     $is_supported
+ * @property  int        $id
+ * @property  int        $asset_id
+ * @property  string     $title
+ * @property  string     $alias
+ * @property  string     $description
+ * @property  string     $type
+ * @property  array      $groups
+ * @property  string     $directory
+ * @property  string     $created
+ * @property  string     $modified
+ * @property  int        $checked_out
+ * @property  string     $checked_out_time
+ * @property  int        $access
+ * @property  bool       $show_unauth_links
+ * @property  string     $redirect_unauth
+ * @property  int        $published
+ * @property  string     $language
+ * @property  int        $is_supported
  *
  * Filters:
  *
@@ -68,14 +71,14 @@ use FOF30\Model\DataModel;
  *
  * Relations:
  *
- * @property  VisualGroups  $visualGroup  The visual group this category belongs to
- * @property  Releases[]    $releases     The releases of this category
+ * @property  Releases[] $releases     The releases of this category
  */
 class Categories extends DataModel
 {
-	use Mixin\ImplodedArrays;
-	use Mixin\Assertions;
-	use Mixin\VersionedCopy {
+	use ImplodedArrays;
+	use Assertions;
+	use Mixin\VersionedCopy
+	{
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
 	}
 	use Mixin\ClearCacheAfterActions
@@ -97,19 +100,19 @@ class Categories extends DataModel
 	/**
 	 * Public constructor. Overrides the parent constructor.
 	 *
-	 * @see DataModel::__construct()
-	 *
-	 * @param   Container  $container  The configuration variables to this model
-	 * @param   array      $config     Configuration values for this model
+	 * @param Container $container The configuration variables to this model
+	 * @param array     $config    Configuration values for this model
 	 *
 	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
+	 * @see DataModel::__construct()
+	 *
 	 */
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
-		$config['tableName'] = '#__ars_categories';
+		$config['tableName']   = '#__ars_categories';
 		$config['idFieldName'] = 'id';
 		$config['aliasFields'] = [
-			'slug' 	      => 'alias',
+			'slug'        => 'alias',
 			'enabled'     => 'published',
 			'created_on'  => 'created',
 			'modified_on' => 'modified',
@@ -147,19 +150,19 @@ class Categories extends DataModel
 
 		// Some filters we will have to handle programmatically so we need to exclude them from the behaviour
 		$this->blacklistFilters([
-			'language'
+			'language',
 		]);
 	}
 
 	/**
 	 * Implements custom filtering
 	 *
-	 * @param   \JDatabaseQuery  $query           The model query we're operating on
-	 * @param   bool             $overrideLimits  Are we told to override limits?
+	 * @param JDatabaseQuery $query          The model query we're operating on
+	 * @param bool           $overrideLimits Are we told to override limits?
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	protected function onBeforeBuildQuery(JDatabaseQuery &$query, bool $overrideLimits = false): void
 	{
 		$db = $this->getDbo();
 
@@ -169,10 +172,10 @@ class Categories extends DataModel
 		if (!is_null($fltAccessUser))
 		{
 			$access_levels = $this->container->platform->getUser($fltAccessUser)->getAuthorisedViewLevels();
-			$access_levels = array_map(array($db, 'quote'), $access_levels);
+			$access_levels = array_map([$db, 'quote'], $access_levels);
 			$query->where(
 				'(' .
-				'('. $db->qn('access') . ' IN (' . implode(',', $access_levels) . ')) OR (' .
+				'(' . $db->qn('access') . ' IN (' . implode(',', $access_levels) . ')) OR (' .
 				$db->qn('show_unauth_links') . ' = ' . $db->q(1)
 				. '))'
 			);
@@ -188,7 +191,7 @@ class Categories extends DataModel
 		}
 
 		// Language filter
-		$fltLanguage = $this->getState('language', null, 'cmd');
+		$fltLanguage  = $this->getState('language', null, 'cmd');
 		$fltLanguage2 = $this->getState('language2', null, 'string');
 
 		if ($fltLanguage && ($fltLanguage != '*'))
@@ -222,7 +225,7 @@ class Categories extends DataModel
 			);
 		}
 
-		$filterOrder = $this->getState('filter_order', 'ordering');
+		$filterOrder    = $this->getState('filter_order', 'ordering');
 		$filterOrderDir = $this->getState('filter_order_Dir', 'ASC');
 		$this->setState('filter_order', $filterOrder);
 		$this->setState('filter_order_Dir', $filterOrderDir);
@@ -259,12 +262,12 @@ class Categories extends DataModel
 		}
 	}
 
-	public function check()
+	public function check(): self
 	{
 		// Am I told to ignore all pre-save checks?
 		if ($this->ignorePreSaveChecks)
 		{
-			return;
+			return $this;
 		}
 
 		$this->assertNotEmpty($this->title, 'COM_ARS_CATEGORY_ERR_NEEDS_TITLE');
@@ -272,18 +275,18 @@ class Categories extends DataModel
 		// If the alias is missing, auto-create a new one
 		if (!$this->alias)
 		{
-			$alias = str_replace(' ', '-', strtolower($this->title));
-			$this->alias = (string)preg_replace('/[^A-Z0-9_-]/i', '', $alias);
+			$alias       = str_replace(' ', '-', strtolower($this->title));
+			$this->alias = (string) preg_replace('/[^A-Z0-9_-]/i', '', $alias);
 		}
 
 		// If no alias could be auto-generated, fail
 		$this->assertNotEmpty($this->alias, 'COM_ARS_CATEGORY_ERR_NEEDS_SLUG');
 
 		// Check alias for uniqueness
-		$db = $this->getDBO();
+		$db    = $this->getDBO();
 		$query = $db->getQuery(true)
-					->select($db->qn('alias'))
-					->from($db->qn('#__ars_categories'));
+			->select($db->qn('alias'))
+			->from($db->qn('#__ars_categories'));
 
 		if ($this->id)
 		{
@@ -310,7 +313,7 @@ class Categories extends DataModel
 		}
 
 		// Automaticaly fix the type
-		if (!in_array($this->type, array('normal', 'bleedingedge')))
+		if (!in_array($this->type, ['normal', 'bleedingedge']))
 		{
 			$this->type = 'normal';
 		}
@@ -340,21 +343,21 @@ class Categories extends DataModel
 	 * Checks if we are allowed to delete this record. If there are releases linked to this category then the deletion
 	 * will fails with a RuntimeException.
 	 *
-	 * @param   int  $oid  The numeric ID of the category to delete
+	 * @param int $oid The numeric ID of the category to delete
 	 *
 	 * @return  void
 	 */
-	public function onBeforeDelete(&$oid)
+	public function onBeforeDelete(int &$oid): void
 	{
-		$joins = array(
-			array(
+		$joins = [
+			[
 				'label'     => 'version',
 				'name'      => '#__ars_releases',
 				'idfield'   => 'id',
 				'idalias'   => 'rel_id',
-				'joinfield' => 'category_id'
-			)
-		);
+				'joinfield' => 'category_id',
+			],
+		];
 
 		$this->canDelete($oid, $joins);
 	}
@@ -362,11 +365,11 @@ class Categories extends DataModel
 	/**
 	 * Converts the loaded comma-separated list of subscription levels into an array
 	 *
-	 * @param   string  $value  The comma-separated list
+	 * @param string|array $value The comma-separated list
 	 *
 	 * @return  array  The exploded array
 	 */
-	protected function getGroupsAttribute($value)
+	protected function getGroupsAttribute($value): array
 	{
 		return $this->getAttributeForImplodedArray($value);
 	}
@@ -374,11 +377,11 @@ class Categories extends DataModel
 	/**
 	 * Converts the array of subscription levels into a comma separated list
 	 *
-	 * @param   array  $value  The array of values
+	 * @param array|string $value The array of values
 	 *
 	 * @return  string  The imploded comma-separated list
 	 */
-	protected function setGroupsAttribute($value)
+	protected function setGroupsAttribute($value): string
 	{
 		return $this->setAttributeForImplodedArray($value);
 	}
@@ -391,7 +394,7 @@ class Categories extends DataModel
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeCopy()
+	protected function onBeforeCopy(): void
 	{
 		self::$recordBeforeCopy = $this->getClone();
 
@@ -405,13 +408,13 @@ class Categories extends DataModel
 	 * The map() method runs the callback on each one of them. Our callback calls copy() on each item to copy it,
 	 * passing it the new category ID at the same time.
 	 *
-	 * @param   Categories  $categoryAfterCopy  The new (copied) category
+	 * @param Categories $categoryAfterCopy The new (copied) category
 	 */
-	protected function onAfterCopy(Categories &$categoryAfterCopy)
+	protected function onAfterCopy(Categories &$categoryAfterCopy): void
 	{
-		self::$recordBeforeCopy->releases->map(function($release) use($categoryAfterCopy) {
+		self::$recordBeforeCopy->releases->map(function ($release) use ($categoryAfterCopy) {
 			$release->copy([
-				'category_id' => $categoryAfterCopy->id
+				'category_id' => $categoryAfterCopy->id,
 			]);
 		});
 
@@ -425,11 +428,11 @@ class Categories extends DataModel
 	 * directory exists. Since it's possible to delete the directory outside the component this would make it impossible
 	 * to edit the category and set a new directory.
 	 *
-	 * @param   array $ignored
+	 * @param array $ignored
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeLock($ignored = array())
+	protected function onBeforeLock(array $ignored = []): void
 	{
 		$this->ignorePreSaveChecks = true;
 	}
@@ -437,11 +440,11 @@ class Categories extends DataModel
 	/**
 	 * Same concept as onBeforeLock, used when the user presses Cancel
 	 *
-	 * @param   array $ignored
+	 * @param array $ignored
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeUnlock($ignored = array())
+	protected function onBeforeUnlock(array $ignored = []): void
 	{
 		$this->ignorePreSaveChecks = true;
 	}
@@ -449,11 +452,11 @@ class Categories extends DataModel
 	/**
 	 * Runs after locking a row. We reset the checks. See onBeforeLock for information.
 	 *
-	 * @param   array $ignored
+	 * @param array $ignored
 	 *
 	 * @return  void
 	 */
-	protected function onAfterLock($ignored = array())
+	protected function onAfterLock(array $ignored = []): void
 	{
 		$this->ignorePreSaveChecks = false;
 	}
@@ -461,11 +464,11 @@ class Categories extends DataModel
 	/**
 	 * Same concept as onAfterLock, used when the user presses Cancel
 	 *
-	 * @param   array $ignored
+	 * @param array $ignored
 	 *
 	 * @return  void
 	 */
-	protected function onAfterUnlock($ignored = array())
+	protected function onAfterUnlock(array $ignored = []): void
 	{
 		$this->ignorePreSaveChecks = false;
 	}
@@ -481,7 +484,7 @@ class Categories extends DataModel
 	 *
 	 * @codeCoverageIgnore
 	 */
-	public function getAssetTitle()
+	public function getAssetTitle(): string
 	{
 		return $this->title;
 	}
@@ -493,8 +496,8 @@ class Categories extends DataModel
 	 * The extended class can define a table and id to lookup.  If the
 	 * asset does not exist it will be created.
 	 *
-	 * @param   DataModel  $model  A model object for the asset parent.
-	 * @param   integer   $id     Id to look up
+	 * @param DataModel $model A model object for the asset parent.
+	 * @param integer   $id    Id to look up
 	 *
 	 * @return  integer
 	 */
@@ -528,14 +531,14 @@ class Categories extends DataModel
 	 *
 	 * @return null|string
 	 */
-	public static function forceEagerLoad($id, $field)
+	public static function forceEagerLoad(int $id, string $field): ?string
 	{
 		static $cache;
 
 		if (!$cache)
 		{
 			$container = Container::getInstance('com_ars');
-			$db = $container->db;
+			$db        = $container->db;
 
 			$query = $db->getQuery(true)
 				->select('*')

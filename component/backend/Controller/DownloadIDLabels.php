@@ -29,7 +29,7 @@ class DownloadIDLabels extends DataController
 	 *
 	 * @throws  TaskNotFound  When the task is not found
 	 */
-	public function execute($task)
+	public function execute($task): ?bool
 	{
 		if ($this->container->platform->isFrontend())
 		{
@@ -46,7 +46,12 @@ class DownloadIDLabels extends DataController
 		return parent::execute($task);
 	}
 
-	public function reset()
+	/**
+	 * Reset the default Download ID
+	 *
+	 * @throws \Exception
+	 */
+	public function reset(): void
 	{
 		$this->csrfProtection();
 
@@ -94,31 +99,35 @@ class DownloadIDLabels extends DataController
 		}
 	}
 
-	protected function onBeforeBrowse()
+	protected function onBeforeBrowse(): bool
 	{
 		if ($this->container->platform->isFrontend() && $this->container->platform->getUser()->guest)
 		{
 			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
+
+		return true;
 	}
 
-	protected function onBeforeAdd()
+	protected function onBeforeAdd(): bool
 	{
 		if ($this->container->platform->isFrontend())
 		{
 			$this->layout = 'form';
 		}
+
+		return true;
 	}
 
 	/**
 	 * Edit view permissions check. Overridden to make sure a user won't try
 	 * editing another user's add-on Download IDs.
 	 *
-	 * @return  void
+	 * @return  bool
 	 *
 	 * @throws  \RuntimeException
 	 */
-	protected function onBeforeEdit()
+	protected function onBeforeEdit(): bool
 	{
 		/** @var \Akeeba\ReleaseSystem\Admin\Model\DownloadIDLabels $model */
 		$model = $this->getModel()->savestate(false);
@@ -142,7 +151,7 @@ class DownloadIDLabels extends DataController
 
 		if (!$this->container->platform->isFrontend())
 		{
-			return;
+			return true;
 		}
 
 		if ($model->user_id != $this->container->platform->getUser()->id)
@@ -151,21 +160,23 @@ class DownloadIDLabels extends DataController
 		}
 
 		$this->layout = 'form';
+
+		return true;
 	}
 
 	/**
 	 * Edit view permissions check. Overridden to make sure a user won't try
 	 * editing another user's add-on Download IDs.
 	 *
-	 * @return  void
+	 * @return  bool
 	 *
 	 * @throws  \RuntimeException
 	 */
-	protected function onBeforeReset()
+	protected function onBeforeReset(): bool
 	{
 		if (!$this->container->platform->isFrontend())
 		{
-			return;
+			return true;
 		}
 
 		/** @var \Akeeba\ReleaseSystem\Admin\Model\DownloadIDLabels $model */
@@ -189,30 +200,34 @@ class DownloadIDLabels extends DataController
 		}
 
 		$this->layout = 'form';
+
+		return true;
 	}
 
 	/**
 	 * Read view permissions check. Overridden to make sure a user won't try
 	 * reading another user's add-on Download IDs.
 	 *
-	 * @return  void
+	 * @return  bool
 	 *
 	 * @throws  \RuntimeException
 	 */
-	protected function onBeforeRead()
+	protected function onBeforeRead(): bool
 	{
-		$this->onBeforeReset();
+		return $this->onBeforeReset();
 	}
 
-	protected function onBeforeCancel()
+	protected function onBeforeCancel(): bool
 	{
 		if ($this->container->platform->getUser()->guest)
 		{
 			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
+
+		return true;
 	}
 
-	protected function onBeforeSave()
+	protected function onBeforeSave(): bool
 	{
 		$this->getModel()->savestate(0);
 
@@ -229,22 +244,21 @@ class DownloadIDLabels extends DataController
 			}
 		}
 
-
-		$this->onBeforeReset();
+		return $this->onBeforeReset();
 	}
 
-	protected function onBeforePublish()
+	protected function onBeforePublish(): bool
 	{
-		$this->onBeforeEdit();
+		return $this->onBeforeEdit();
 	}
 
-	protected function onBeforeUnpublish()
+	protected function onBeforeUnpublish(): bool
 	{
-		$this->onBeforeEdit();
+		return $this->onBeforeEdit();
 	}
 
-	protected function onBeforeRemove()
+	protected function onBeforeRemove(): bool
 	{
-		$this->onBeforeEdit();
+		return $this->onBeforeEdit();
 	}
 }

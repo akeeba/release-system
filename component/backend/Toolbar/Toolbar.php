@@ -19,7 +19,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 	 *
 	 * @return  array  A list of all views, in the order to be displayed in the toolbar submenu
 	 */
-	protected function getMyViews()
+	protected function getMyViews(): array
 	{
 		$views = array(
 			'ControlPanel',
@@ -33,7 +33,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 		return $views;
 	}
 
-	public function onBrowse()
+	public function onBrowse(): void
 	{
 		parent::onBrowse();
 
@@ -41,7 +41,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 		JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_ars');
 	}
 
-	public function onControlPanels()
+	public function onControlPanels(): void
 	{
 		$this->renderSubmenu();
 
@@ -52,7 +52,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 		JToolBarHelper::preferences($option);
 	}
 
-	public function onEnvironmentsBrowse()
+	public function onEnvironmentsBrowse(): void
 	{
 		$option = $this->container->componentName;
 
@@ -88,7 +88,7 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 		$this->renderSubmenu();
 	}
 
-	public function onLogsBrowse()
+	public function onLogsBrowse(): void
 	{
 		$option = $this->container->componentName;
 
@@ -109,17 +109,17 @@ class Toolbar extends \FOF30\Toolbar\Toolbar
 		$this->renderSubmenu();
 	}
 
-	public function onAutoDescriptionsBrowse()
+	public function onAutoDescriptionsBrowse(): void
 	{
 		$this->_onBrowseWithCopy();
 	}
 
-	public function onUpdatestreamsBrowse()
+	public function onUpdatestreamsBrowse(): void
 	{
 		$this->_onBrowseWithCopy();
 	}
 
-	public function _onBrowseWithCopy()
+	public function _onBrowseWithCopy(): void
 	{
 		$option = $this->container->componentName;
 		$view = $this->container->input->getCmd('view', 'ControlPanel');

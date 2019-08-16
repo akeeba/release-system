@@ -12,6 +12,9 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Admin\Model\Mixin\ClearCacheAfterActions;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
+use FOF30\Model\Mixin\Assertions;
+use FOF30\Model\Mixin\ImplodedArrays;
+use JDatabaseQuery;
 use Joomla\CMS\Filter\InputFilter;
 
 /**
@@ -76,8 +79,8 @@ use Joomla\CMS\Filter\InputFilter;
  **/
 class Releases extends DataModel
 {
-	use Mixin\ImplodedArrays;
-	use Mixin\Assertions;
+	use ImplodedArrays;
+	use Assertions;
 	use Mixin\VersionedCopy {
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
 	}
@@ -161,12 +164,12 @@ class Releases extends DataModel
 	/**
 	 * Implements custom filtering
 	 *
-	 * @param   \JDatabaseQuery  $query           The model query we're operating on
-	 * @param   bool             $overrideLimits  Are we told to override limits?
+	 * @param JDatabaseQuery $query          The model query we're operating on
+	 * @param   bool         $overrideLimits Are we told to override limits?
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	protected function onBeforeBuildQuery(JDatabaseQuery &$query, bool $overrideLimits = false): void
 	{
 		$db = $this->getDbo();
 
@@ -233,7 +236,7 @@ class Releases extends DataModel
 			);
 
 			// Filter the categories table, too
-			$this->whereHas('category', function(\JDatabaseQuery $subQuery) use($access_levels, $db) {
+			$this->whereHas('category', function (JDatabaseQuery $subQuery) use ($access_levels, $db) {
 				$subQuery->where($db->qn('access') . ' IN (' . implode(',', $access_levels) . ')');
 			});
 		}
@@ -251,7 +254,7 @@ class Releases extends DataModel
 			}
 
 			// Filter the categories table, too
-			$this->whereHas('category', function(\JDatabaseQuery $subQuery) use($db) {
+			$this->whereHas('category', function (JDatabaseQuery $subQuery) use ($db) {
 				$subQuery->where('NOT(' . $db->qn('published') . ' = ' . $db->q('0') . ' AND ' .
 					$db->qn('type') . '=' . $db->q('bleedingedge') . ')');
 			});
@@ -266,7 +269,7 @@ class Releases extends DataModel
 			$query->where($db->qn('language') . ' IN (' . $db->q('*') . ',' . $db->q($fltLanguage) . ')');
 
 			// Filter the categories table, too
-			$this->whereHas('category', function(\JDatabaseQuery $subQuery) use($db, $fltLanguage) {
+			$this->whereHas('category', function (JDatabaseQuery $subQuery) use ($db, $fltLanguage) {
 				$subQuery->where($db->qn('language') . ' IN (' . $db->q('*') . ',' . $db->q($fltLanguage) . ')');
 			});
 		}
@@ -276,7 +279,7 @@ class Releases extends DataModel
 			$query->where($db->qn('language') . ' = ' . $db->q($fltLanguage2));
 
 			// Filter the categories table, too
-			$this->whereHas('category', function(\JDatabaseQuery $subQuery) use($db, $fltLanguage2) {
+			$this->whereHas('category', function (JDatabaseQuery $subQuery) use ($db, $fltLanguage2) {
 				$subQuery->where($db->qn('language') . ' = ' . $db->q($fltLanguage2));
 			});
 		}
@@ -345,12 +348,12 @@ class Releases extends DataModel
 	/**
 	 * Implements custom filtering
 	 *
-	 * @param   \JDatabaseQuery  $query           The model query we're operating on
-	 * @param   bool             $overrideLimits  Are we told to override limits?
+	 * @param JDatabaseQuery $query          The model query we're operating on
+	 * @param   bool         $overrideLimits Are we told to override limits?
 	 *
 	 * @return  void
 	 */
-	protected function onAfterBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	protected function onAfterBuildQuery(JDatabaseQuery &$query, bool $overrideLimits = false): void
 	{
 		$db = $this->getDbo();
 
@@ -406,7 +409,7 @@ class Releases extends DataModel
 	 *
 	 * @return null|string
 	 */
-	public static function forceEagerLoad($id, $field)
+	public static function forceEagerLoad(int $id, string $field)
 	{
 		static $cache;
 
@@ -434,7 +437,7 @@ class Releases extends DataModel
 	 *
 	 * @return string
 	 */
-	private function getReorderWhere()
+	private function getReorderWhere(): string
 	{
 		$where = array();
 
@@ -463,7 +466,7 @@ class Releases extends DataModel
 		}
 	}
 
-	public function check()
+	public function check(): self
 	{
 		$this->assertNotEmpty($this->category_id, 'COM_RELEASE_ERR_NEEDS_CATEGORY');
 
@@ -552,11 +555,11 @@ class Releases extends DataModel
 	/**
 	 * Reorders the entire releases array on inserting a new object and sets the current ordering to 1
 	 *
-	 * @param   \stdClass  $dataObject
+	 * @param object $dataObject
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeCreate(&$dataObject)
+	protected function onBeforeCreate(object &$dataObject): void
 	{
 		$dataObject->ordering = 1;
 		$this->ordering = 1;
@@ -591,7 +594,7 @@ class Releases extends DataModel
 	 *
 	 * @return  void
 	 */
-	function onBeforeDelete(&$oid)
+	function onBeforeDelete(int &$oid): void
 	{
 		$joins = array(
 			array(
@@ -609,11 +612,11 @@ class Releases extends DataModel
 	/**
 	 * Converts the loaded comma-separated list of subscription levels into an array
 	 *
-	 * @param   string  $value  The comma-separated list
+	 * @param string|array $value The comma-separated list or an array if it's already converted.
 	 *
 	 * @return  array  The exploded array
 	 */
-	protected function getGroupsAttribute($value)
+	protected function getGroupsAttribute($value): array
 	{
 		return $this->getAttributeForImplodedArray($value);
 	}
@@ -625,7 +628,7 @@ class Releases extends DataModel
 	 *
 	 * @return  string  The imploded comma-separated list
 	 */
-	protected function setGroupsAttribute($value)
+	protected function setGroupsAttribute(array $value): string
 	{
 		return $this->setAttributeForImplodedArray($value);
 	}
@@ -637,7 +640,7 @@ class Releases extends DataModel
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeCopy()
+	protected function onBeforeCopy(): void
 	{
 		self::$itemsBeforeCopy = clone $this->items;
 
@@ -649,11 +652,13 @@ class Releases extends DataModel
 	/**
 	 * Runs after copying a Release
 	 *
-	 * @see  Categories::onAfterCopy  for the concept
+	 * @param Releases $releaseAfterCopy
 	 *
 	 * @return  void
+	 *@see  Categories::onAfterCopy  for the concept
+	 *
 	 */
-	protected function onAfterCopy(Releases &$releaseAfterCopy)
+	protected function onAfterCopy(Releases &$releaseAfterCopy): void
 	{
 		if (!is_object(self::$itemsBeforeCopy) || !(self::$itemsBeforeCopy instanceof DataModel\Collection))
 		{

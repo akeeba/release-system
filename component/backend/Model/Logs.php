@@ -12,7 +12,9 @@ defined('_JEXEC') or die;
 use FOF30\Container\Container;
 use FOF30\Date\Date;
 use FOF30\Model\DataModel;
+use FOF30\Model\Mixin\Assertions;
 use FOF30\Utils\Ip;
+use JDatabaseQuery;
 
 /**
  * @property int	$id
@@ -28,7 +30,7 @@ use FOF30\Utils\Ip;
  */
 class Logs extends DataModel
 {
-	use Mixin\Assertions;
+	use Assertions;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
@@ -65,12 +67,12 @@ class Logs extends DataModel
 	/**
 	 * Implements custom filtering
 	 *
-	 * @param   \JDatabaseQuery  $query           The model query we're operating on
-	 * @param   bool             $overrideLimits  Are we told to override limits?
+	 * @param JDatabaseQuery $query          The model query we're operating on
+	 * @param   bool         $overrideLimits Are we told to override limits?
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	protected function onBeforeBuildQuery(JDatabaseQuery &$query, bool $overrideLimits = false): void
 	{
 		$db = $this->getDbo();
 
@@ -167,7 +169,7 @@ class Logs extends DataModel
 		$this->setState('filter_order_Dir', $filterOrderDir);
 	}
 
-	public function check()
+	public function check(): self
 	{
 		if (empty($this->user_id))
 		{
@@ -218,7 +220,7 @@ class Logs extends DataModel
 	 *
 	 * @return array|null
 	 */
-	private function getUsers($frag)
+	private function getUsers(string $frag): ?array
 	{
 		$db = $this->getDBO();
 
@@ -242,7 +244,7 @@ class Logs extends DataModel
 	 *
 	 * @return array|null
 	 */
-	private function getItems($frag)
+	private function getItems(string $frag): ?array
 	{
 		$db    = $this->getDBO();
 		$qfrag = $db->q("%" . $frag . "%");

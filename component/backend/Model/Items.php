@@ -11,6 +11,10 @@ defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
+use FOF30\Model\Mixin\Assertions;
+use FOF30\Model\Mixin\ImplodedArrays;
+use FOF30\Model\Mixin\JsonData;
+use JDatabaseQuery;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Installer\InstallerHelper;
@@ -94,9 +98,9 @@ use Joomla\CMS\User\User;
  **/
 class Items extends DataModel
 {
-	use Mixin\ImplodedArrays;
-	use Mixin\Assertions;
-	use Mixin\JsonData;
+	use ImplodedArrays;
+	use Assertions;
+	use JsonData;
 	use Mixin\VersionedCopy {
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
 	}
@@ -176,12 +180,12 @@ class Items extends DataModel
 	/**
 	 * Implements custom filtering
 	 *
-	 * @param   \JDatabaseQuery  $query           The model query we're operating on
-	 * @param   bool             $overrideLimits  Are we told to override limits?
+	 * @param JDatabaseQuery $query          The model query we're operating on
+	 * @param   bool         $overrideLimits Are we told to override limits?
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	protected function onBeforeBuildQuery(JDatabaseQuery &$query, bool $overrideLimits = false): void
 	{
 		$db = $this->getDbo();
 
@@ -190,7 +194,7 @@ class Items extends DataModel
 		if ($fltCategory > 0)
 		{
 			// Filter the categories table, too
-			$this->whereHas('release', function(\JDatabaseQuery $subQuery) use($db, $fltCategory) {
+			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $fltCategory) {
 				$subQuery->where($db->qn('category_id') . ' = ' . $db->q($fltCategory));
 			});
 		}
@@ -282,7 +286,7 @@ class Items extends DataModel
 
 			$categories = array_map(array($db, 'quote'), $categories);
 
-			$this->whereHas('release', function(\JDatabaseQuery $subQuery) use($db, $access_levels, $categories) {
+			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $access_levels, $categories) {
 				$subQuery->where($db->qn('category_id') . ' IN (' . implode(',', $categories) . ')');
 				$subQuery->where($db->qn('access') . ' IN (' . implode(',', $access_levels) . ')');
 			});
@@ -323,7 +327,7 @@ class Items extends DataModel
 				}
 			}
 
-			$this->whereHas('release', function(\JDatabaseQuery $subQuery) use($db, $fltLanguage, $categories) {
+			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $fltLanguage, $categories) {
 				$categories = array_map(array($db, 'quote'), $categories);
 
 				$subQuery->where($db->qn('language') . ' IN (' . $db->q('*') . ',' . $db->q($fltLanguage) . ')');
@@ -361,7 +365,7 @@ class Items extends DataModel
 				}
 			}
 
-			$this->whereHas('release', function(\JDatabaseQuery $subQuery) use($db, $fltLanguage2, $categories) {
+			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $fltLanguage2, $categories) {
 				$categories = array_map(array($db, 'quote'), $categories);
 
 				$subQuery->where($db->qn('language') . ' = ' . $db->q($fltLanguage2));
@@ -431,7 +435,7 @@ class Items extends DataModel
 	 *
 	 * @return  string
 	 */
-	private function getReorderWhere()
+	private function getReorderWhere(): string
 	{
 		$where        = array();
 		$fltCategory  = $this->getState('category', null, 'int');
@@ -476,7 +480,7 @@ class Items extends DataModel
 		}
 	}
 
-	public function check()
+	public function check(): self
 	{
 		$this->assertNotEmpty($this->release_id, 'ERR_ITEM_NEEDS_CATEGORY');
 
@@ -896,7 +900,7 @@ class Items extends DataModel
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeCopy()
+	protected function onBeforeCopy(): void
 	{
 		$this->onBeforeCopyVersioned();
 
@@ -910,7 +914,7 @@ class Items extends DataModel
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeCreate(&$dataObject)
+	protected function onBeforeCreate(object &$dataObject): void
 	{
 		$dataObject->ordering = 1;
 		$this->ordering = 1;
@@ -940,11 +944,11 @@ class Items extends DataModel
 	/**
 	 * Converts the loaded comma-separated list of subscription levels into an array
 	 *
-	 * @param   string  $value  The comma-separated list
+	 * @param string|array $value The comma-separated list or an already converted array
 	 *
 	 * @return  array  The exploded array
 	 */
-	protected function getGroupsAttribute($value)
+	protected function getGroupsAttribute($value): array
 	{
 		return $this->getAttributeForImplodedArray($value);
 	}
@@ -952,11 +956,11 @@ class Items extends DataModel
 	/**
 	 * Converts the array of subscription levels into a comma separated list
 	 *
-	 * @param   array  $value  The array of values
+	 * @param array|string $value The array of values or an already converted string
 	 *
 	 * @return  string  The imploded comma-separated list
 	 */
-	protected function setGroupsAttribute($value)
+	protected function setGroupsAttribute($value): string
 	{
 		return $this->setAttributeForImplodedArray($value);
 	}
@@ -965,11 +969,11 @@ class Items extends DataModel
 	/**
 	 * Converts the loaded JSON-encoded list of environments into an array
 	 *
-	 * @param   string  $value  The comma-separated list
+	 * @param string|array $value The comma-separated list
 	 *
 	 * @return  array  The exploded array
 	 */
-	protected function getEnvironmentsAttribute($value)
+	protected function getEnvironmentsAttribute($value): array
 	{
 		return $this->getAttributeForJson($value);
 	}
@@ -977,11 +981,11 @@ class Items extends DataModel
 	/**
 	 * Converts the array of environments into a JSON-encoded string
 	 *
-	 * @param   array  $value  The array of values
+	 * @param array|string $value The array of values
 	 *
 	 * @return  string  The imploded comma-separated list
 	 */
-	protected function setEnvironmentsAttribute($value)
+	protected function setEnvironmentsAttribute($value): string
 	{
 		return $this->setAttributeForJson($value);
 	}
@@ -995,7 +999,7 @@ class Items extends DataModel
 	 *
 	 * @return  array  Array of JHtml options.
 	 */
-	public function getFilesOptions($release_id, $item_id = 0)
+	public function getFilesOptions(int $release_id, int $item_id = 0): array
 	{
 		$options   = array();
 		$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('LBL_ITEMS_FILENAME_SELECT') . ' -');

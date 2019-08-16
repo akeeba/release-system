@@ -8,6 +8,7 @@
 namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Exception;
 use FOF30\Controller\Controller;
 use Joomla\CMS\Language\Text;
 
@@ -15,7 +16,12 @@ defined('_JEXEC') or die;
 
 class Ajax extends Controller
 {
-	function getFiles()
+	/**
+	 * Returns the HTML select element with the files for the selected release
+	 *
+	 * @throws Exception
+	 */
+	function getFiles(): void
 	{
 		// Token check
 		$this->csrfProtection();
@@ -44,7 +50,7 @@ class Ajax extends Controller
 		$selected   = $this->input->getString('selected', '');
 
 		// Return the HTML list of files
-		$result = Select::getFiles($selected, $release_id, $item_id, 'filename', array('onchange' => 'arsItems.onFileChange();'));
+		$result = Select::getFiles($selected, $release_id, $item_id, 'filename', ['onchange' => 'arsItems.onFileChange();']);
 
 		@ob_end_clean();
 		echo $result;

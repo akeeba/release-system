@@ -11,27 +11,30 @@ defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
+use FOF30\Model\DataModel\Exception\NoTableColumns;
+use FOF30\Model\Mixin\Assertions;
+use JDatabaseQuery;
 
 /**
  * Model Akeeba\ReleaseSystem\Admin\Model\UpdateStreams
  *
  * Fields:
  *
- * @property  int     $id
- * @property  string  $name
- * @property  string  $alias
- * @property  string  $type
- * @property  string  $element
- * @property  int     $category
- * @property  string  $packname
- * @property  int     $client_id
- * @property  string  $folder
- * @property  int     $jedid
- * @property  string  $created
- * @property  string  $modified
- * @property  int     $checked_out
- * @property  string  $checked_out_time
- * @property  int     $published
+ * @property  int        $id
+ * @property  string     $name
+ * @property  string     $alias
+ * @property  string     $type
+ * @property  string     $element
+ * @property  int        $category
+ * @property  string     $packname
+ * @property  int        $client_id
+ * @property  string     $folder
+ * @property  int        $jedid
+ * @property  string     $created
+ * @property  string     $modified
+ * @property  int        $checked_out
+ * @property  string     $checked_out_time
+ * @property  int        $published
  *
  * Filters:
  *
@@ -55,28 +58,28 @@ use FOF30\Model\DataModel;
  *
  * Relations:
  *
- * @property  Categories  $categoryObject
+ * @property  Categories $categoryObject
  *
  */
 class UpdateStreams extends DataModel
 {
-	use Mixin\Assertions;
+	use Assertions;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
 	 *
+	 * @param Container $container The configuration variables to this model
+	 * @param array     $config    Configuration values for this model
+	 *
+	 * @throws NoTableColumns
 	 * @see DataModel::__construct()
 	 *
-	 * @param   Container  $container  The configuration variables to this model
-	 * @param   array      $config     Configuration values for this model
-	 *
-	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
 	 */
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
-		$config['tableName'] = '#__ars_updatestreams';
-		$config['idFieldName'] = 'id';
-		$config['aliasFields'] = [
+		$config['tableName']        = '#__ars_updatestreams';
+		$config['idFieldName']      = 'id';
+		$config['aliasFields']      = [
 			'enabled'     => 'published',
 			'created_on'  => 'created',
 			'modified_on' => 'modified',
@@ -84,7 +87,7 @@ class UpdateStreams extends DataModel
 			'locked_by'   => 'checked_out',
 		];
 		$config['fieldsSkipChecks'] = [
-			'jedid'
+			'jedid',
 		];
 
 		parent::__construct($container, $config);
@@ -98,33 +101,33 @@ class UpdateStreams extends DataModel
 		$this->addBehaviour('Modified');
 	}
 
-	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	protected function onBeforeBuildQuery(JDatabaseQuery &$query, bool $overrideLimits = false): void
 	{
-		$filterOrder = $this->getState('filter_order', 'category');
+		$filterOrder    = $this->getState('filter_order', 'category');
 		$filterOrderDir = $this->getState('filter_order_Dir', 'ASC');
 		$this->setState('filter_order', $filterOrder);
 		$this->setState('filter_order_Dir', $filterOrderDir);
 	}
 
-	public function check()
+	public function check(): self
 	{
 		$this->assertNotEmpty($this->name, 'ERR_USTREAM_NEEDS_NAME');
 
 		// If the alias is missing, auto-create a new one
 		if (!$this->alias)
 		{
-			$alias = str_replace(' ', '-', strtolower($this->getFieldValue('name')));
-			$this->alias = (string)preg_replace('/[^A-Z0-9_-]/i', '', $alias);
+			$alias       = str_replace(' ', '-', strtolower($this->getFieldValue('name')));
+			$this->alias = (string) preg_replace('/[^A-Z0-9_-]/i', '', $alias);
 		}
 
 		// If no alias could be auto-generated, fail
 		$this->assertNotEmpty($this->alias, 'ERR_USTREAM_NEEDS_ALIAS');
 
 		// Check alias for uniqueness
-		$db = $this->getDBO();
+		$db    = $this->getDBO();
 		$query = $db->getQuery(true)
-					->select($db->qn('alias'))
-					->from($db->qn('#__ars_updatestreams'));
+			->select($db->qn('alias'))
+			->from($db->qn('#__ars_updatestreams'));
 
 		if ($this->id)
 		{
@@ -135,7 +138,7 @@ class UpdateStreams extends DataModel
 		$aliases = $db->loadColumn();
 
 		$numericSuffix = 0;
-		$alias = $this->alias;
+		$alias         = $this->alias;
 
 		while (in_array($alias, $aliases) && ($numericSuffix < 100))
 		{
@@ -146,7 +149,7 @@ class UpdateStreams extends DataModel
 		$this->assertNotInArray($this->alias, $aliases, 'ERR_USTREAM_NEEDS_UNIQUE_ALIAS');
 
 		// Automaticaly fix the type
-		if (!in_array($this->type, array('components', 'libraries', 'modules', 'packages', 'plugins', 'files', 'templates')))
+		if (!in_array($this->type, ['components', 'libraries', 'modules', 'packages', 'plugins', 'files', 'templates']))
 		{
 			$this->type = 'components';
 		}

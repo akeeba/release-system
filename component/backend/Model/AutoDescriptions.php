@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Admin\Model\Mixin;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
+use FOF30\Model\Mixin\ImplodedArrays;
 
 /**
  * Model for automatic item descriptions
@@ -42,7 +43,7 @@ use FOF30\Model\DataModel;
  */
 class AutoDescriptions extends DataModel
 {
-	use Mixin\ImplodedArrays;
+	use ImplodedArrays;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.

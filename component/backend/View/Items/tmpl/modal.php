@@ -34,7 +34,7 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
     <section class="akeeba-panel--33-66 akeeba-filter-bar-container">
         <div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()'], 0)?>
+	            <?php echo Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()'], false) ?>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">

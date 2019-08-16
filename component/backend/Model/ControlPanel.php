@@ -22,7 +22,7 @@ class ControlPanel extends Model
 	 *
 	 * @return  boolean  False = not installed, True = installed
 	 */
-	public function hasGeoIPPlugin()
+	public function hasGeoIPPlugin(): bool
 	{
 		static $result = null;
 
@@ -50,7 +50,7 @@ class ControlPanel extends Model
 	 *
 	 * @return  boolean
 	 */
-	public function GeoIPDBNeedsUpdate($maxAge = 15)
+	public function GeoIPDBNeedsUpdate(int $maxAge = 15): bool
 	{
 		$needsUpdate = false;
 
@@ -85,8 +85,9 @@ class ControlPanel extends Model
 	 * data and runs the appropriate SQL scripts if necessary.
 	 *
 	 * @return  $this
+	 * @throws \Exception
 	 */
-	public function checkAndFixDatabase()
+	public function checkAndFixDatabase(): self
 	{
 		$db = $this->container->platform->getDbo();
 
@@ -101,7 +102,7 @@ class ControlPanel extends Model
 	 *
 	 * @return  $this
 	 */
-	public function saveMagicVariables()
+	public function saveMagicVariables(): self
 	{
 		// Store the URL to this site
 		$db = $this->container->platform->getDbo();
@@ -141,7 +142,7 @@ class ControlPanel extends Model
 	 *
 	 * @return  int
 	 */
-	public function getNumDownloads($interval)
+	public function getNumDownloads(string $interval): int
 	{
 		$db = $this->container->db;
 
@@ -211,15 +212,16 @@ class ControlPanel extends Model
 
 		$db->setQuery($query);
 
-		return $db->loadResult();
+		return (int) ($db->loadResult());
 	}
 
 	/**
 	 * Returns the data for the monthly-daily report of downloads
 	 *
 	 * @return  array  In the format [[date => numberOfDownloads], ...]
+	 * @throws \Exception
 	 */
-	public function getMonthlyStats()
+	public function getMonthlyStats(): array
 	{
 		$db = $this->container->db;
 
@@ -280,7 +282,7 @@ class ControlPanel extends Model
 	 *
 	 * @return bool
 	 */
-	public static function needsCategoriesMenu()
+	public static function needsCategoriesMenu(): bool
 	{
 		$db = Container::getInstance('com_ars')->db;
 

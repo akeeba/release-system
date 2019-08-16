@@ -9,6 +9,7 @@ defined('_JEXEC') or die();
 
 /** @var \Akeeba\ReleaseSystem\Site\View\Update\Ini $this */
 
+use Akeeba\ReleaseSystem\Admin\Helper\Format;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use FOF30\Date\Date;
 use Joomla\CMS\Factory;
@@ -106,7 +107,7 @@ software="<?php echo $item->cat_title ?>"
 version="<?php echo $item->version; ?>"
 link="<?php echo $downloadURL; ?>"
 date="<?php echo $date->format('Y-m-d'); ?>"
-	releasenotes="<?php echo str_replace("\n", '', str_replace("\r", '', HTMLHelper::_('content.prepare', $item->release_notes))); ?>"
+	releasenotes="<?php echo str_replace("\n", '', str_replace("\r", '', Format::preProcessMessage($item->release_notes))); ?>"
 infourl="<?php echo $moreURL ?>"
 md5="<?php echo $item->md5 ?>"
 sha1="<?php echo $item->sha1 ?>"

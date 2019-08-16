@@ -124,7 +124,7 @@ $this->getContainer()->template->addJSInline($js);
 						@lang('LBL_ITEMS_FILESIZE')
 					</td>
 					<td>
-						{{ Format::sizeFormat($item->filesize) }}
+                        {{ Format::sizeFormat((int)($item->filesize)) }}
 					</td>
 				</tr>
 			@endunless

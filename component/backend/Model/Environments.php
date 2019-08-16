@@ -11,11 +11,14 @@ defined('_JEXEC') or die;
 
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
+use FOF30\Model\Mixin\Assertions;
+use FOF30\Model\Mixin\ImplodedArrays;
+use JDatabaseQuery;
 
 class Environments extends DataModel
 {
-	use Mixin\ImplodedArrays;
-	use Mixin\Assertions;
+	use ImplodedArrays;
+	use Assertions;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
@@ -45,12 +48,12 @@ class Environments extends DataModel
 	/**
 	 * Implements custom filtering
 	 *
-	 * @param   \JDatabaseQuery  $query           The model query we're operating on
-	 * @param   bool             $overrideLimits  Are we told to override limits?
+	 * @param JDatabaseQuery $query          The model query we're operating on
+	 * @param   bool         $overrideLimits Are we told to override limits?
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	protected function onBeforeBuildQuery(JDatabaseQuery &$query, bool $overrideLimits = false): void
 	{
 		$db = $this->getDbo();
 

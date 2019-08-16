@@ -23,7 +23,7 @@ abstract class Format
 	 *
 	 * @return string The processed message
 	 */
-	public static function preProcessMessage($message, $context = 'com_ars.message')
+	public static function preProcessMessage(string $message, string $context = 'com_ars.message'): string
 	{
 		// Parse [SITE]
 		$site_url = Uri::base();
@@ -36,7 +36,7 @@ abstract class Format
 		return $message;
 	}
 
-	public static function sizeFormat($filesize)
+	public static function sizeFormat(int $filesize): string
 	{
 		if ($filesize > 1073741824)
 		{

@@ -49,11 +49,12 @@ class Html extends \FOF30\View\DataView\Html
 	/**
 	 * Executes before rendering the 'main' task's view template
 	 *
-	 * @param   string|null  $tpl  Currently unused
+	 * @param string|null $tpl Currently unused
 	 *
 	 * @return  void
+	 * @throws \Exception
 	 */
-	protected function onBeforeMain($tpl = null)
+	protected function onBeforeMain($tpl = null): void
 	{
 		/** @var ControlPanel $model */
 		$model = $this->getModel();

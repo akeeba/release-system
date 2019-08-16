@@ -31,7 +31,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		];
 	}
 
-	public function onBeforeDispatch()
+	public function onBeforeDispatch(): bool
 	{
 		$this->onBeforeDispatchViewAliases();
 
@@ -49,5 +49,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		// Load common CSS and JavaScript
 		HTMLHelper::_('jquery.framework');
 		$this->container->template->addCSS('media://com_ars/css/backend.css', $this->container->mediaVersion);
+
+		return true;
 	}
 }

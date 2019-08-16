@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 
 class Release extends DataController
 {
-	protected function onBeforeApplySave(&$data)
+	protected function onBeforeApplySave(array &$data): bool
 	{
 		if ($data['category_id'])
 		{
@@ -34,9 +34,11 @@ class Release extends DataController
 		{
 			$data['groups'] = array();
 		}
+
+		return true;
 	}
 
-	protected function onBeforeAdd()
+	protected function onBeforeAdd(): bool
 	{
 		$this->defaultsForAdd = [
 			'category_id' => 0,
@@ -53,9 +55,11 @@ class Release extends DataController
 				$this->defaultsForAdd[$k] = $stateValue;
 			}
 		}
+
+		return true;
 	}
 
-	protected function onBeforeDelete()
+	protected function onBeforeDelete(): bool
 	{
 		/** @var \Akeeba\ReleaseSystem\Admin\Model\Releases $model */
 		$model = $this->getModel()->savestate(false);
@@ -76,9 +80,11 @@ class Release extends DataController
 		{
 			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 403);
 		}
+
+		return true;
 	}
 
-	protected function onBeforeEdit()
+	protected function onBeforeEdit(): bool
 	{
 		/** @var \Akeeba\ReleaseSystem\Admin\Model\Releases $model */
 		$model = $this->getModel()->savestate(false);
@@ -99,5 +105,7 @@ class Release extends DataController
 		{
 			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
+
+		return true;
 	}
 }

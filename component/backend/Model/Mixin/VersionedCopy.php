@@ -7,6 +7,8 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Model\Mixin;
 
+use JDatabaseDriver;
+
 defined('_JEXEC') or die;
 
 /**
@@ -14,13 +16,13 @@ defined('_JEXEC') or die;
  */
 trait VersionedCopy
 {
-	protected function onBeforeCopy()
+	protected function onBeforeCopy(): void
 	{
 		/** @var \FOF30\Model\DataModel $this */
 
 		// If the old title is versioned, remove the copy number
 		$oldTitle = $this->title;
-		$parts = explode(' (', $oldTitle);
+		$parts    = explode(' (', $oldTitle);
 
 		if (count($parts))
 		{
@@ -38,22 +40,23 @@ trait VersionedCopy
 		}
 
 		// Get all titles which are like ours plus a version string
-		$db    = $this->getDBO();
+		/** @var JDatabaseDriver $db */
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
-					->select($db->qn($this->getFieldAlias('title')))
-					->from($db->qn($this->getTableName()))
-					->where($db->qn($this->getFieldAlias('title')) . ' LIKE ' . $db->q($oldTitle . ' (%)'))
-					->order($db->qn($this->getKeyName()) . ' ASC');
+			->select($db->qn($this->getFieldAlias('title')))
+			->from($db->qn($this->getTableName()))
+			->where($db->qn($this->getFieldAlias('title')) . ' LIKE ' . $db->q($oldTitle . ' (%)'))
+			->order($db->qn($this->getKeyName()) . ' ASC');
 
 		$db->setQuery($query);
-		$titles = $db->loadColumn();
+		$titles      = $db->loadColumn();
 		$lastVersion = 1;
 
 		// If we have versioned titles take the number from the last one and increment it by one
 		if (!empty($titles))
 		{
-			$title = array_pop($titles);
-			$parts = explode(' (', $title);
+			$title       = array_pop($titles);
+			$parts       = explode(' (', $title);
 			$lastVersion = (int) rtrim(array_pop($parts), ')');
 			$lastVersion++;
 		}
@@ -61,11 +64,11 @@ trait VersionedCopy
 		$this->title = $oldTitle . ' (' . $lastVersion . ')';
 
 		// Also reset the alias and the created / modified / locked fields
-		$this->alias = '';
-		$this->locked_by = 0;
-		$this->locked_on = $this->getDbo()->getNullDate();
-		$this->created_by = 0;
-		$this->created_on = $this->locked_on;
+		$this->alias       = '';
+		$this->locked_by   = 0;
+		$this->locked_on   = $db->getNullDate();
+		$this->created_by  = 0;
+		$this->created_on  = $this->locked_on;
 		$this->modified_by = 0;
 		$this->modified_on = $this->locked_on;
 	}

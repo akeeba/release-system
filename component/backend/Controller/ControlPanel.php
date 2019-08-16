@@ -10,6 +10,7 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 defined('_JEXEC') or die;
 
 use AkeebaGeoipProvider;
+use Exception;
 use FOF30\Container\Container;
 use FOF30\Controller\Controller;
 use FOF30\Controller\Mixin\PredefinedTaskList;
@@ -19,7 +20,7 @@ class ControlPanel extends Controller
 {
 	use PredefinedTaskList;
 
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
 		parent::__construct($container, $config);
 
@@ -29,19 +30,23 @@ class ControlPanel extends Controller
 	/**
 	 * Runs before the main task, used to perform housekeeping function automatically
 	 */
-	protected function onBeforeMain()
+	protected function onBeforeMain(): bool
 	{
 		/** @var \Akeeba\ReleaseSystem\Admin\Model\ControlPanel $model */
 		$model = $this->getModel();
 		$model
 			->checkAndFixDatabase()
 			->saveMagicVariables();
+
+		return true;
 	}
 
 	/**
 	 * Update the GeoIP database
+	 *
+	 * @throws Exception
 	 */
-	public function updategeoip()
+	public function updategeoip(): void
 	{
 		if ($this->csrfProtection)
 		{
@@ -60,7 +65,7 @@ class ControlPanel extends Controller
 			}
 		}
 
-		$geoip = new AkeebaGeoipProvider();
+		$geoip  = new AkeebaGeoipProvider();
 		$result = $geoip->updateDatabase();
 
 		$url = 'index.php?option=com_ars';

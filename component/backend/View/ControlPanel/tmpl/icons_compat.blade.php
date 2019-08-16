@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Joomla\Registry\Factory;
+use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die;
 

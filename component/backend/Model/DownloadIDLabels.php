@@ -9,9 +9,12 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\ReleaseSystem\Admin\Model\Mixin\ClearCacheAfterActions;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
+use FOF30\Model\Mixin\Assertions;
 use FOF30\Utils\CacheCleaner;
+use JDatabaseQuery;
 use Joomla\CMS\Crypt\Crypt;
 use Joomla\CMS\Language\Text;
 
@@ -42,7 +45,8 @@ use Joomla\CMS\Language\Text;
  */
 class DownloadIDLabels extends DataModel
 {
-	use Mixin\Assertions;
+	use Assertions;
+	use ClearCacheAfterActions;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
@@ -70,12 +74,12 @@ class DownloadIDLabels extends DataModel
 	/**
 	 * Implements custom filtering
 	 *
-	 * @param   \JDatabaseQuery  $query           The model query we're operating on
-	 * @param   bool             $overrideLimits  Are we told to override limits?
+	 * @param JDatabaseQuery $query          The model query we're operating on
+	 * @param   bool         $overrideLimits Are we told to override limits?
 	 *
 	 * @return  void
 	 */
-	protected function onBeforeBuildQuery(\JDatabaseQuery &$query, $overrideLimits = false)
+	protected function onBeforeBuildQuery(JDatabaseQuery &$query, bool $overrideLimits = false): void
 	{
 		$db = $this->getDbo();
 
@@ -107,7 +111,7 @@ class DownloadIDLabels extends DataModel
 		}
 	}
 
-	protected function onBeforeDelete(&$id)
+	protected function onBeforeDelete(&$id): void
 	{
 		if ($this->primary)
 		{
@@ -115,19 +119,7 @@ class DownloadIDLabels extends DataModel
 		}
 	}
 
-	protected function onAfterDelete(&$id)
-	{
-		// After adding/deleting a Download ID I have to clear the cache, otherwise I won't see the changes
-		CacheCleaner::clearCacheGroups(array('com_ars'));
-	}
-
-	protected function onAfterSave()
-	{
-		// After adding/deleting a Download ID I have to clear the cache, otherwise I won't see the changes
-		CacheCleaner::clearCacheGroups(array('com_ars'));
-	}
-
-	public function check()
+	public function check(): self
 	{
 		if ($this->container->platform->isFrontend())
 		{
@@ -196,7 +188,7 @@ class DownloadIDLabels extends DataModel
 		return parent::check();
 	}
 
-	protected function onBeforeUnpublish()
+	protected function onBeforeUnpublish(): void
 	{
 		if ($this->primary)
 		{
