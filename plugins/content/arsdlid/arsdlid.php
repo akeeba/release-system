@@ -6,6 +6,7 @@
  */
 
 // Protect from unauthorized access
+use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use FOF30\Container\Container;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
@@ -25,7 +26,7 @@ class plgContentArsdlid extends CMSPlugin
 	/**
 	 * The component container
 	 *
-	 * @var   Container
+	 * @var   Container|null
 	 */
 	protected $container;
 
@@ -72,7 +73,7 @@ class plgContentArsdlid extends CMSPlugin
 		}
 
 		// Make sure our auto-loader is set up and ready
-		\FOF30\Container\Container::getInstance('com_ars');
+		Container::getInstance('com_ars');
 
 		// Search for this tag in the content
 		$regex = "#{[\s]*downloadid[\s]*}#s";
@@ -80,17 +81,17 @@ class plgContentArsdlid extends CMSPlugin
 		$article->text = preg_replace_callback($regex, array('self', 'process'), $article->text);
 	}
 
-	private static function process($match)
+	private static function process(array $match): string
 	{
-		$ret = '';
-		$container = \FOF30\Container\Container::getInstance('com_ars');
-		$user = $container->platform->getUser();
+		$ret       = '';
+		$container = Container::getInstance('com_ars');
+		$user      = $container->platform->getUser();
 
 		if (!$user->guest)
 		{
 			if (!isset(self::$cache[$user->id]))
 			{
-				self::$cache[$user->id] = \Akeeba\ReleaseSystem\Site\Helper\Filter::myDownloadID();
+				self::$cache[$user->id] = Filter::myDownloadID();
 			}
 
 			$ret = self::$cache[$user->id];

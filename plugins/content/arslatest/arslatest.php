@@ -7,6 +7,7 @@
 
 // Protect from unauthorized access
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Container\Container;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
@@ -105,7 +106,7 @@ class plgContentArslatest extends CMSPlugin
 	/**
 	 * preg_match callback to process each match
 	 */
-	private function process($match)
+	private function process(array $match): string
 	{
 		$ret = '';
 
@@ -146,7 +147,7 @@ class plgContentArslatest extends CMSPlugin
 	/**
 	 * Inisialises the arrays.
 	 */
-	private function initialise()
+	private function initialise(): void
 	{
 		// Make sure our auto-loader is set up and ready
 		$container = \FOF30\Container\Container::getInstance('com_ars');
@@ -183,7 +184,7 @@ class plgContentArslatest extends CMSPlugin
 		$this->prepared = true;
 	}
 
-	private function analyzeString($string)
+	private function analyzeString(string $string): array
 	{
 		$op      = '';
 		$content = '';
@@ -247,9 +248,9 @@ class plgContentArslatest extends CMSPlugin
 	/**
 	 * @param   string  $content
 	 *
-	 * @return  \Akeeba\ReleaseSystem\Admin\Model\Releases
+	 * @return  Releases
 	 */
-	private function getLatestRelease($content)
+	private function getLatestRelease(string $content): Releases
 	{
 		$release = null;
 
@@ -283,7 +284,7 @@ class plgContentArslatest extends CMSPlugin
 	 *
 	 * @return  string
 	 */
-	private function parseRelease($content)
+	private function parseRelease(string $content): string
 	{
 		$release = $this->getLatestRelease($content);
 
@@ -300,7 +301,7 @@ class plgContentArslatest extends CMSPlugin
 	 *
 	 * @return  string
 	 */
-	private function parseReleaseLink($content)
+	private function parseReleaseLink(string $content): string
 	{
 		$release = $this->getLatestRelease($content);
 
@@ -328,7 +329,7 @@ class plgContentArslatest extends CMSPlugin
 	 *
 	 * @return  string
 	 */
-	private function parseItemLink($content, $pattern)
+	private function parseItemLink(string $content, string $pattern): string
 	{
 		$release = $this->getLatestRelease($content);
 
@@ -377,7 +378,7 @@ class plgContentArslatest extends CMSPlugin
 		return $link;
 	}
 
-	private function parseStreamLink($content)
+	private function parseStreamLink(string $content): string
 	{
 		static $dlid = '';
 
@@ -400,7 +401,12 @@ class plgContentArslatest extends CMSPlugin
 		return $link;
 	}
 
-	private function parseIFWLink()
+	/**
+	 * Provide the Install from Web link
+	 *
+	 * @return string
+	 */
+	private function parseIFWLink(): string
 	{
 		$installat  = $this->container->platform->getSessionVar('installat', null, 'arsjed');
 		$installapp = (int) ($this->container->platform->getSessionVar('installapp', null, 'arsjed'));
