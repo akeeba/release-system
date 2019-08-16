@@ -128,6 +128,10 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'administrator/components/com_ars/Model/Mixin/JsonData.php',
 
 			'administrator/components/com_ars/Model/VisualGroups.php',
+
+			'components/com_ars/Helper/Title.php',
+
+			'components/com_ars/Model/VisualGroups.php',
 		),
 		'folders' => array(
 			// Moving to FOF 3

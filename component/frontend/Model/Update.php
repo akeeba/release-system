@@ -13,7 +13,7 @@ use FOF30\Model\Model;
 
 class Update extends Model
 {
-	public function getCategoryItems($category)
+	public function getCategoryItems(string $category): ?array
 	{
 		$db = $this->container->db;
 
@@ -76,7 +76,7 @@ class Update extends Model
 		return $items;
 	}
 
-	public function getItems($id)
+	public function getItems(int $id): ?array
 	{
 		$db = $this->container->db;
 
@@ -134,7 +134,7 @@ class Update extends Model
 		return $ret;
 	}
 
-	public function getPublished($id)
+	public function getPublished(int $id): ?array
 	{
 		$db = $this->container->db;
 

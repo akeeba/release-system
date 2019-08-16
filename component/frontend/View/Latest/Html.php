@@ -37,7 +37,7 @@ class Html extends BaseView
 	/** @var  \JRegistry */
 	public $cparams;
 
-	public function onBeforeMain($tpl = null)
+	public function onBeforeMain($tpl = null): void
 	{
 		// Prevent phpStorm's whining...
 		if ($tpl) {}

@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 
 class Category extends DataController
 {
-	public function execute($task)
+	public function execute($task): void
 	{
 		// If we're using the JSON API we need a manager
 		$format = $this->input->getCmd('format', 'html');
@@ -46,7 +46,7 @@ class Category extends DataController
 	 * @param   bool|array  $urlparams Registered URL parameters
 	 * @param   null|string $tpl       Sub-template (not really used...)
 	 */
-	public function display($cachable = false, $urlparams = false, $tpl = null)
+	public function display($cachable = false, $urlparams = false, $tpl = null): void
 	{
 		$cachable = true;
 
@@ -69,7 +69,7 @@ class Category extends DataController
 		parent::display($cachable, $urlparams, $tpl);
 	}
 
-	public function onBeforeBrowse()
+	public function onBeforeBrowse(): void
 	{
 		// Apply one of the allowed layouts
 		if (!in_array($this->layout, ['normal', 'bleedingedge', 'repository']))

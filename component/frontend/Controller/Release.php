@@ -20,7 +20,7 @@ use Joomla\CMS\Language\Text;
 
 class Release extends DataController
 {
-	public function execute($task)
+	public function execute($task): void
 	{
 		// If we're using the JSON API we need a manager
 		$format = $this->input->getCmd('format', 'html');
@@ -76,7 +76,7 @@ class Release extends DataController
 		parent::display($cachable, $urlparams, $tpl);
 	}
 
-	public function onBeforeBrowse()
+	public function onBeforeBrowse(): void
 	{
 		// Only apply on HTML views
 		if (!in_array($this->input->getCmd('format', 'html'), ['html', 'feed']))

@@ -55,7 +55,7 @@ class Latest extends Controller
 		parent::display($cachable, $urlparams, $tpl);
 	}
 
-	public function execute($task)
+	public function execute($task): void
 	{
 		$task         = 'main';
 		$this->layout = 'latest';
@@ -63,7 +63,7 @@ class Latest extends Controller
 		return parent::execute($task);
 	}
 
-	public function onBeforeMain()
+	public function onBeforeMain(): void
 	{
 		// Push page parameters to the model
 		/** @var \JApplicationSite $app */

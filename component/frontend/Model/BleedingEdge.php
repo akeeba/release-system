@@ -9,13 +9,13 @@ namespace Akeeba\ReleaseSystem\Site\Model;
 
 defined('_JEXEC') or die();
 
-use FOF30\Container\Container;
 use FOF30\Date\Date;
 use FOF30\Model\DataModel\Collection;
 use FOF30\Model\Model;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Plugin\PluginHelper;
 
 class BleedingEdge extends Model
@@ -44,39 +44,27 @@ class BleedingEdge extends Model
 	/**
 	 * Sets the category we are operating on
 	 *
-	 * @param Categories|integer $cat A category table or a numeric category ID
+	 * @param Categories|integer $catId A category table or a numeric category ID
 	 *
 	 * @return void
 	 */
-	protected function setCategory($cat)
+	protected function setCategory(int $catId): void
 	{
 		// Initialise
-		$this->category = null;
-		$this->category_id = null;
-		$this->folder = null;
-
-		if ($cat instanceof Categories)
-		{
-			$this->category = $cat;
-			$this->category_id = $cat->id;
-		}
-		elseif (is_numeric($cat))
-		{
-			$this->category_id = (int)$cat;
-			$container = Container::getInstance('com_ars');
-			$this->category = $container->factory->model('Categories')->tmpInstance();
-			$this->category->find($this->category_id);
-		}
+		$this->folder      = null;
+		$this->category_id = (int) $catId;
+		$this->category    = $this->container->factory->model('Categories')->tmpInstance();
+		$this->category->find($this->category_id);
 
 		// Store folder
 		$folder = $this->category->directory;
 
 		// If it is stored locally, make sure the folder exists
-		if (!\JFolder::exists($folder))
+		if (!Folder::exists($folder))
 		{
 			$folder = JPATH_ROOT . '/' . $folder;
 
-			if (!\JFolder::exists($folder))
+			if (!Folder::exists($folder))
 			{
 				return;
 			}
@@ -88,13 +76,14 @@ class BleedingEdge extends Model
 	/**
 	 * Scan a bleeding edge category
 	 *
-	 * @param   Categories  $category  The category to scan
+	 * @param Categories $category The category to scan
 	 *
 	 * @return  void
+	 * @throws \Exception
 	 */
-	public function scanCategory(Categories $category)
+	public function scanCategory(Categories $category): void
 	{
-		$this->setCategory($category);
+		$this->setCategory($category->id);
 
 		// Can't proceed without a category
 		if (empty($this->category))
@@ -114,11 +103,12 @@ class BleedingEdge extends Model
 			return;
 		}
 
-		$known_folders = array();
+		$known_folders = [];
 
 		// Make sure published releases do exist
 		if (!empty($category->releases))
 		{
+			/** @var Releases $release */
 			foreach ($category->releases as $release)
 			{
 				if (!$release->published)
@@ -127,11 +117,11 @@ class BleedingEdge extends Model
 				}
 
 				$mustScanFolder = true;
-				$folder = null;
+				$folder         = null;
 
 				$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
 
-				if ($folderName === false)
+				if (is_null($folderName))
 				{
 					$mustScanFolder = false;
 				}
@@ -150,21 +140,17 @@ class BleedingEdge extends Model
 
 				if (!$exists)
 				{
-					$release->published = 0;
-
-					$tmp = $release->tmpInstance();
-					$tmp->load($release->id);
-					$tmp->save($release);
+					$release->save([
+						'published' => 0,
+					]);
 				}
 				else
 				{
-					$tmpRelease = $release->tmpInstance();
-					$tmpRelease->bind($release);
-					$this->checkFiles($tmpRelease);
+					$this->checkFiles($release);
 				}
 			}
 
-			/** @var Collection $category->releases */
+			/** @var Collection $category ->releases */
 			$first_release = $category->releases->first();
 		}
 		else
@@ -172,7 +158,7 @@ class BleedingEdge extends Model
 			$first_release = null;
 		}
 
-		$first_changelog = array();
+		$first_changelog = [];
 
 		/** @var Releases $first_release */
 		if (is_object($first_release))
@@ -195,7 +181,7 @@ class BleedingEdge extends Model
 				}
 				else
 				{
-					$first_changelog = array();
+					$first_changelog = [];
 				}
 			}
 		}
@@ -214,7 +200,7 @@ class BleedingEdge extends Model
 
 					$changelog = $this->folder . '/' . $folder . '/' . 'CHANGELOG';
 
-					$hasChangelog = false;
+					$hasChangelog   = false;
 					$this_changelog = '';
 
 					if (\JFile::exists($changelog))
@@ -239,7 +225,7 @@ class BleedingEdge extends Model
 
 					$alias = ApplicationHelper::stringURLSafe($folder);
 
-					$data = array(
+					$data = [
 						'id'          => 0,
 						'category_id' => $this->category_id,
 						'version'     => $folder,
@@ -251,7 +237,7 @@ class BleedingEdge extends Model
 						'access'      => $this->category->access,
 						'published'   => 1,
 						'created'     => $jNow->toSql(),
-					);
+					];
 
 					// Before saving the release, call the onNewARSBleedingEdgeRelease()
 					// event of ars plugins so that they have the chance to modify
@@ -261,22 +247,22 @@ class BleedingEdge extends Model
 					PluginHelper::importPlugin('ars');
 
 					// -- Setup information data
-					$infoData = array(
+					$infoData = [
 						'folder'          => $folder,
 						'category_id'     => $this->category_id,
 						'category'        => $this->category,
 						'has_changelog'   => $hasChangelog,
 						'changelog_file'  => $changelog,
 						'changelog'       => $this_changelog,
-						'first_changelog' => $first_changelog
-					);
+						'first_changelog' => $first_changelog,
+					];
 
 					// -- Trigger the plugin event
 					$app       = Factory::getApplication();
-					$jResponse = $app->triggerEvent('onNewARSBleedingEdgeRelease', array(
+					$jResponse = $app->triggerEvent('onNewARSBleedingEdgeRelease', [
 						$infoData,
-						$data
-					));
+						$data,
+					]);
 
 					// -- Merge response
 					if (is_array($jResponse))
@@ -307,7 +293,7 @@ class BleedingEdge extends Model
 		}
 	}
 
-	public function checkFiles(Releases $release)
+	public function checkFiles(Releases $release): void
 	{
 		if (!$release->id)
 		{
@@ -341,21 +327,20 @@ class BleedingEdge extends Model
 		// Safe fallback
 		$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
 
-		if ($folderName === false)
+		if (is_null($folderName))
 		{
 			// Normally this shouldn't happen!
 			return;
 		}
-		else
-		{
-			$known_folders[] = $folderName;
-			$folder          = $this->folder . '/' . $folderName;
-		}
+
+		$known_folders[] = $folderName;
+		$folder          = $this->folder . '/' . $folderName;
+
 		// Do we have a changelog?
 		if (empty($release->notes))
 		{
-			$changelog = $folder . '/CHANGELOG';
-			$hasChangelog = false;
+			$changelog      = $folder . '/CHANGELOG';
+			$hasChangelog   = false;
 			$this_changelog = '';
 
 			if (\JFile::exists($changelog))
@@ -366,9 +351,9 @@ class BleedingEdge extends Model
 
 			if ($hasChangelog)
 			{
-				$first_changelog = array();
-				$notes = $this->coloriseChangelog($this_changelog, $first_changelog);
-				$release->notes = $notes;
+				$first_changelog = [];
+				$notes           = $this->coloriseChangelog($this_changelog, $first_changelog);
+				$release->notes  = $notes;
 
 				$release->save();
 			}
@@ -376,7 +361,7 @@ class BleedingEdge extends Model
 
 		$release->getRelations()->rebase($release);
 
-		$known_items = array();
+		$known_items = [];
 
 		$files = \JFolder::files($folder);
 
@@ -414,7 +399,7 @@ class BleedingEdge extends Model
 				}
 
 				$jNow = new Date();
-				$data = array(
+				$data = [
 					'id'          => 0,
 					'release_id'  => $release->id,
 					'description' => '',
@@ -425,8 +410,8 @@ class BleedingEdge extends Model
 					'hits'        => '0',
 					'published'   => '1',
 					'created'     => $jNow->toSql(),
-					'access'      => '1'
-				);
+					'access'      => '1',
+				];
 
 				// Before saving the item, call the onNewARSBleedingEdgeItem()
 				// event of ars plugins so that they have the chance to modify
@@ -434,18 +419,18 @@ class BleedingEdge extends Model
 				// -- Load plugins
 				PluginHelper::importPlugin('ars');
 				// -- Setup information data
-				$infoData = array(
+				$infoData = [
 					'folder'     => $folder,
 					'file'       => $file,
 					'release_id' => $release->id,
-					'release'    => $release
-				);
+					'release'    => $release,
+				];
 				// -- Trigger the plugin event
 				$app       = Factory::getApplication();
-				$jResponse = $app->triggerEvent('onNewARSBleedingEdgeItem', array(
+				$jResponse = $app->triggerEvent('onNewARSBleedingEdgeItem', [
 					$infoData,
-					$data
-				));
+					$data,
+				]);
 				// -- Merge response
 				if (is_array($jResponse))
 				{
@@ -479,7 +464,7 @@ class BleedingEdge extends Model
 		}
 	}
 
-	private function coloriseChangelog(&$this_changelog, $first_changelog = array())
+	private function coloriseChangelog(&$this_changelog, array $first_changelog = []): string
 	{
 		$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
 
@@ -522,36 +507,36 @@ class BleedingEdge extends Model
 		return $notes;
 	}
 
-	private function colorise($line)
+	private function colorise(string $line): string
 	{
-		$line = trim($line);
+		$line      = trim($line);
 		$line_type = substr($line, 0, 1);
 
 		switch ($line_type)
 		{
 			case '+':
 				$style = 'added';
-				$line = trim(substr($line, 1));
+				$line  = trim(substr($line, 1));
 				break;
 
 			case '-':
 				$style = 'removed';
-				$line = trim(substr($line, 1));
+				$line  = trim(substr($line, 1));
 				break;
 
 			case '#':
 				$style = 'bugfix';
-				$line = trim(substr($line, 1));
+				$line  = trim(substr($line, 1));
 				break;
 
 			case '~':
 				$style = 'minor';
-				$line = trim(substr($line, 1));
+				$line  = trim(substr($line, 1));
 				break;
 
 			case '!':
 				$style = 'important';
-				$line = trim(substr($line, 1));
+				$line  = trim(substr($line, 1));
 				break;
 
 			default:
@@ -562,19 +547,19 @@ class BleedingEdge extends Model
 		return "<span class=\"ars-devrelease-changelog-$style\">$line</span>";
 	}
 
-	private function getReleaseFolder($folder, $version, $alias, $maturity)
+	private function getReleaseFolder(string $folder, string $version, string $alias, string $maturity): ?string
 	{
 		$maturityLower = strtolower($maturity);
 		$maturityUpper = strtoupper($maturity);
 
-		$candidates = array(
+		$candidates = [
 			$alias,
 			$version,
 			$version . '_' . $maturityUpper,
 			$version . '_' . $maturityLower,
 			$alias . '_' . $maturityUpper,
 			$alias . '_' . $maturityLower,
-		);
+		];
 
 		foreach ($candidates as $candidate)
 		{
@@ -586,6 +571,6 @@ class BleedingEdge extends Model
 			}
 		}
 
-		return false;
+		return null;
 	}
 }

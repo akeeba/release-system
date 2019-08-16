@@ -16,7 +16,7 @@ class Ini extends Raw
 {
 	public $items = array();
 
-	protected function onBeforeIni($tpl = null)
+	protected function onBeforeIni($tpl = null): void
 	{
 		$this->setLayout('ini');
 

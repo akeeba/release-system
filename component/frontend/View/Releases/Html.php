@@ -42,10 +42,10 @@ class Html extends BaseView
 	/** @var  int  Active menu item ID */
 	public $Itemid;
 
-	/** @var  \JMenuNode  The active menu item */
+	/** @var  object  The active menu item */
 	public $menu;
 
-	public function onBeforeBrowse($tpl = null)
+	public function onBeforeBrowse($tpl = null): void
 	{
 		// Load the model
 		/** @var Releases $model */

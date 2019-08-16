@@ -14,20 +14,6 @@ use FOF30\Container\Container;
 
 class DownloadIDLabel extends DownloadIDLabels
 {
-	/**
-	 * Overrides the default display method to add caching support
-	 *
-	 * @param   bool        $cachable  Is this a cacheable view?
-	 * @param   bool|array  $urlparams Registered URL parameters
-	 * @param   null|string $tpl       Sub-template (not really used...)
-	 */
-	public function display($cachable = false, $urlparams = false, $tpl = null)
-	{
-		$cachable = false;
-
-		parent::display($cachable, $urlparams, $tpl);
-	}
-
 	public function __construct(Container $container, array $config = array())
 	{
 		$config['taskPrivileges'] = [
@@ -41,5 +27,19 @@ class DownloadIDLabel extends DownloadIDLabels
 		parent::__construct($container, $config);
 
 		$this->input->set('user_id', $this->container->platform->getUser()->id);
+	}
+
+	/**
+	 * Overrides the default display method to add caching support
+	 *
+	 * @param bool        $cachable  Is this a cacheable view?
+	 * @param bool|array  $urlparams Registered URL parameters
+	 * @param null|string $tpl       Sub-template (not really used...)
+	 */
+	public function display($cachable = false, $urlparams = false, $tpl = null): void
+	{
+		$cachable = false;
+
+		parent::display($cachable, $urlparams, $tpl);
 	}
 }

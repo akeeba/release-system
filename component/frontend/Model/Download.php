@@ -26,7 +26,7 @@ class Download extends Model
 	 */
 	protected $haveLoggedInAUser = false;
 
-	public function doDownload(Items $item)
+	public function doDownload(Items $item): void
 	{
 		// If it's a link we just have to redirect users
 		if ($item->type == 'link')
@@ -71,7 +71,7 @@ class Download extends Model
 
 		if (class_exists('finfo'))
 		{
-			$fInfo = new \finfo(FILEINFO_MIME_TYPE);
+			$fInfo     = new \finfo(FILEINFO_MIME_TYPE);
 			$mime_type = $fInfo->file($filename);
 		}
 
@@ -110,17 +110,17 @@ class Download extends Model
 		PluginHelper::importPlugin('ars');
 
 		// Call any plugins to post-process the download file parameters
-		$object = array(
+		$object = [
 			'rawentry'    => $item,
 			'filename'    => $filename,
 			'basename'    => $basename,
 			'header_file' => $header_file,
 			'mimetype'    => $mime_type,
-			'filesize'    => $filesize
-		);
+			'filesize'    => $filesize,
+		];
 
 		$app      = Factory::getApplication();
-		$retArray = $app->triggerEvent('onARSBeforeSendFile', array($object));
+		$retArray = $app->triggerEvent('onARSBeforeSendFile', [$object]);
 
 		if (!empty($retArray))
 		{
@@ -131,7 +131,7 @@ class Download extends Model
 					continue;
 				}
 
-				$ret         = (object)$ret;
+				$ret         = (object) $ret;
 				$filename    = $ret->filename;
 				$basename    = $ret->basename;
 				$header_file = $ret->header_file;
@@ -232,7 +232,7 @@ class Download extends Model
 				// Notify of filesize, if this info is available
 				if ($filesize > 0)
 				{
-					header('Content-Length: ' . (int)$filesize);
+					header('Content-Length: ' . (int) $filesize);
 				}
 			}
 
@@ -273,14 +273,14 @@ class Download extends Model
 			// Notify of filesize, if this info is available
 			if ($filesize > 0)
 			{
-				header('Content-Length: ' . (int)$filesize);
+				header('Content-Length: ' . (int) $filesize);
 			}
 
 			@readfile($filename);
 		}
 
 		// Call any plugins to post-process the file download
-		$object = array(
+		$object = [
 			'rawentry'    => $item,
 			'filename'    => $filename,
 			'basename'    => $basename,
@@ -290,9 +290,9 @@ class Download extends Model
 			'resumable'   => $isResumable,
 			'range_start' => $seek_start,
 			'range_end'   => $seek_end,
-		);
+		];
 
-		$ret = $app->triggerEvent('onARSAfterSendFile', array($object));
+		$ret = $app->triggerEvent('onARSAfterSendFile', [$object]);
 
 		if (!empty($ret))
 		{
@@ -308,39 +308,16 @@ class Download extends Model
 		$this->logoutUser();
 	}
 
-	private function get_mime_type($filename)
+	private function get_mime_type(string $filename): string
 	{
-		$mimePath = JPATH_ADMINISTRATOR . '/components/com_ars/assets/mime';
-		$fileext  = substr(strrchr($filename, '.'), 1);
+		$type = @mime_content_type($filename);
 
-		if (empty($fileext))
+		if ($type === false)
 		{
-			return (false);
+			$type = 'application/octet-stream';
 		}
 
-		$regex = "/^([\w\+\-\.\/]+)\s+(\w+\s)*($fileext\s)/i";
-		$lines = file($mimePath . "/mime.types");
-
-		foreach ($lines as $line)
-		{
-			// Skip comments
-			if (substr($line, 0, 1) == '#')
-			{
-				continue;
-			}
-
-			$line = rtrim($line) . " ";
-
-			// No match to the extension?
-			if (!preg_match($regex, $line, $matches))
-			{
-				continue;
-			}
-
-			return ($matches[1]);
-		}
-
-		return 'application/octet-stream'; // no match at all
+		return $type;
 	}
 
 	/**
@@ -348,7 +325,7 @@ class Download extends Model
 	 *
 	 * @return  boolean  True if a user was logged in
 	 */
-	public function loginUser()
+	public function loginUser(): bool
 	{
 		// No need to log in a user if the user is already logged in
 		if (!$this->container->platform->getUser()->guest)
@@ -356,29 +333,22 @@ class Download extends Model
 			return false;
 		}
 
-		// This is Joomla!'s login and user helpers
-		PluginHelper::importPlugin('user');
+		$dlid = Filter::reformatDownloadID($this->input->getString('dlid', ''));
 
-		// Get the query parameters
-		$dlid                    = $this->input->getString('dlid', null);
-		$credentials             = array();
-		$credentials['username'] = $this->input->getUsername('username', '');
-		$credentials['password'] = $this->input->get('password', '', 'raw', 3);
-
-		// Initialise
-		$user_id = 0;
-
-		// First attempt to log in by download ID
-		if (!empty($dlid))
+		if (empty($dlid))
 		{
-			try
-			{
-				$user_id = Filter::getUserFromDownloadID($dlid)->id;
-			}
-			catch (\Exception $exc)
-			{
-				$user_id = 0;
-			}
+			$this->haveLoggedInAUser = false;
+
+			return false;
+		}
+
+		try
+		{
+			$user_id = Filter::getUserFromDownloadID($dlid)->id;
+		}
+		catch (\Exception $exc)
+		{
+			$user_id = 0;
 		}
 
 		if ($user_id == 0)
@@ -395,19 +365,17 @@ class Download extends Model
 		$this->haveLoggedInAUser = true;
 
 		// Get a fake login response
-		$options = array('remember' => false);
-		$response = new JAuthenticationResponse;
-		$response->status = JAuthentication::STATUS_SUCCESS;
-		$response->type = 'downloadid';
+		$options            = ['remember' => false];
+		$response           = new JAuthenticationResponse;
+		$response->status   = JAuthentication::STATUS_SUCCESS;
+		$response->type     = 'downloadid';
 		$response->username = $user->username;
-		$response->email= $user->email;
-		$response->fullname= $user->name;
+		$response->email    = $user->email;
+		$response->fullname = $user->name;
 
 		// Run the login user events
 		$this->container->platform->importPlugin('user');
-		$results = $this->container->platform->runPlugins('onLoginUser', array((array)$response, $options));
-
-		unset($results); // Just to make phpStorm happy
+		$this->container->platform->runPlugins('onLoginUser', [(array) $response, $options]);
 
 		// Set the user in the session, effectively logging in the user
 		$userid = UserHelper::getUserId($response->username);
@@ -427,7 +395,7 @@ class Download extends Model
 	 *
 	 * @return  boolean  True if a user was logged out
 	 */
-	public function logoutUser()
+	public function logoutUser(): bool
 	{
 		if (!$this->haveLoggedInAUser)
 		{

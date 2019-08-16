@@ -25,7 +25,7 @@ class Xml extends Raw
 	public $envs = [];
 	public $showChecksums = false;
 
-	public function display($tpl = null)
+	public function display($tpl = null): bool
 	{
 		$task     = $this->getModel()->getState('task', 'all');
 
@@ -39,7 +39,7 @@ class Xml extends Raw
 		return parent::display($tpl);
 	}
 
-	protected function onBeforeAll()
+	protected function onBeforeAll(): void
 	{
 		$params             = JComponentHelper::getParams('com_ars');
 
@@ -49,7 +49,7 @@ class Xml extends Raw
 		$this->setLayout('all');
 	}
 
-	protected function onBeforeCategory()
+	protected function onBeforeCategory(): void
 	{
 		$category       = $this->input->getCmd('id', '');
 		$this->category = $category;
@@ -57,7 +57,7 @@ class Xml extends Raw
 		$this->setLayout('category');
 	}
 
-	protected function onBeforeStream()
+	protected function onBeforeStream(): void
 	{
 		/** @var Environments $envmodel */
 		$envmodel = $this->container->factory->model('Environments')->tmpInstance();
@@ -77,7 +77,7 @@ class Xml extends Raw
 		$this->setLayout('stream');
 	}
 
-	protected function onBeforeJed()
+	protected function onBeforeJed(): void
 	{
 		/** @var Environments $envmodel */
 		$envmodel = $this->container->factory->model('Environments')->tmpInstance();

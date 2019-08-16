@@ -55,7 +55,7 @@ class Html extends BaseView
 
 	public $filters = [];
 
-	protected function onBeforeBrowseModal($tpl = null)
+	protected function onBeforeBrowseModal($tpl = null): void
 	{
 		parent::onBeforeBrowse();
 
@@ -95,7 +95,7 @@ class Html extends BaseView
 		);
 	}
 
-	public function onBeforeBrowse($tpl = null)
+	public function onBeforeBrowse($tpl = null): void
 	{
 		$this->addJavascriptFile('media://fef/js/tabs.min.js');
 
@@ -107,7 +107,7 @@ class Html extends BaseView
 		{
 			$this->onBeforeBrowseModal();
 
-			return true;
+			return;
 		}
 
 		// Load the model
@@ -176,7 +176,5 @@ class Html extends BaseView
 		$this->params = $params;
 		$this->Itemid = $this->input->getInt('Itemid', 0);
 		$this->menu   = $app->getMenu()->getActive();
-
-		return true;
 	}
 }

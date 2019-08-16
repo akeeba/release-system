@@ -9,14 +9,15 @@ namespace Akeeba\ReleaseSystem\Site\Helper;
 
 defined('_JEXEC') or die;
 
+use FOF30\Container\Container;
 use Joomla\CMS\Router\Route as JRoute;
 use Joomla\CMS\Uri\Uri as JUri;
 
 class Router
 {
-	static function _($plainURL)
+	static function _(string $plainURL): string
 	{
-		$container = \FOF30\Container\Container::getInstance('com_ars');
+		$container = Container::getInstance('com_ars');
 		$config    = $container->platform->getConfig();
 		$addSuffix = $config->get('sef_suffix', 0) == 1;
 

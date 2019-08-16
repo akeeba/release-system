@@ -39,7 +39,7 @@ class Html extends BaseView
 	/** @var  object  The active menu item */
 	public $menu;
 
-	public function onBeforeBrowse($tpl = null)
+	public function onBeforeBrowse($tpl = null): void
 	{
 		// Prevent phpStorm's whining...
 		if ($tpl) {}

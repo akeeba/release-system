@@ -24,11 +24,11 @@ class Update extends Controller
 	/**
 	 * Determines the task from the layout and view format
 	 *
-	 * @param   string  $task  The task to execute
+	 * @param string $task The task to execute
 	 *
 	 * @return  void
 	 */
-	public function execute($task)
+	public function execute($task): void
 	{
 		$viewType = $this->container->platform->getDocument()->getType();
 		$task     = $this->input->getCmd('task', '');
@@ -145,9 +145,9 @@ class Update extends Controller
 	/**
 	 * Show all updates
 	 */
-	public function all()
+	public function all(): void
 	{
-		$registeredURLParams = array(
+		$registeredURLParams = [
 			'option' => 'CMD',
 			'view'   => 'CMD',
 			'task'   => 'CMD',
@@ -155,7 +155,7 @@ class Update extends Controller
 			'layout' => 'CMD',
 			'id'     => 'CMD',
 			'dlid'   => 'STRING',
-		);
+		];
 
 		$this->display(true, $registeredURLParams);
 	}
@@ -163,9 +163,10 @@ class Update extends Controller
 	/**
 	 * Show updates for a category
 	 *
-	 * @throws  \RuntimeException
+	 * @throws \RuntimeException
+	 * @throws \Exception
 	 */
-	public function category()
+	public function category(): void
 	{
 		$cat = $this->input->getCmd('id', '');
 
@@ -191,7 +192,7 @@ class Update extends Controller
 		$view        = $this->getView();
 		$view->items = $model->getCategoryItems($cat);
 
-		$registeredURLParams = array(
+		$registeredURLParams = [
 			'option' => 'CMD',
 			'view'   => 'CMD',
 			'task'   => 'CMD',
@@ -199,7 +200,7 @@ class Update extends Controller
 			'layout' => 'CMD',
 			'id'     => 'INT',
 			'dlid'   => 'STRING',
-		);
+		];
 
 		$this->display(true, $registeredURLParams);
 	}
@@ -208,8 +209,9 @@ class Update extends Controller
 	 * Show an update stream
 	 *
 	 * @throws \RuntimeException
+	 * @throws \Exception
 	 */
-	public function stream()
+	public function stream(): void
 	{
 		$id = $this->input->getInt('id', 0);
 
@@ -231,7 +233,7 @@ class Update extends Controller
 		$view->items     = $model->getItems($id);
 		$view->published = $model->getPublished($id);
 
-		$registeredURLParams = array(
+		$registeredURLParams = [
 			'option' => 'CMD',
 			'view'   => 'CMD',
 			'task'   => 'CMD',
@@ -239,7 +241,7 @@ class Update extends Controller
 			'layout' => 'CMD',
 			'id'     => 'INT',
 			'dlid'   => 'STRING',
-		);
+		];
 
 		$this->display(true, $registeredURLParams);
 	}
@@ -248,8 +250,9 @@ class Update extends Controller
 	 * Generates the JED listing update XML file
 	 *
 	 * @throws \RuntimeException
+	 * @throws \Exception
 	 */
-	public function jed()
+	public function jed(): void
 	{
 		$id = $this->input->getInt('id', 0);
 
@@ -271,7 +274,7 @@ class Update extends Controller
 		$view->items     = $model->getItems($id);
 		$view->published = $model->getPublished($id);
 
-		$registeredURLParams = array(
+		$registeredURLParams = [
 			'option' => 'CMD',
 			'view'   => 'CMD',
 			'task'   => 'CMD',
@@ -279,7 +282,7 @@ class Update extends Controller
 			'layout' => 'CMD',
 			'id'     => 'INT',
 			'dlid'   => 'STRING',
-		);
+		];
 
 		$this->display(true, $registeredURLParams);
 	}
@@ -288,8 +291,9 @@ class Update extends Controller
 	 * Show an INI formatted update stream
 	 *
 	 * @throws \RuntimeException
+	 * @throws \Exception
 	 */
-	public function ini()
+	public function ini(): void
 	{
 		$id = $this->input->getInt('id', 0);
 
@@ -306,13 +310,13 @@ class Update extends Controller
 		$this->input->set('id', $id);
 
 		/** @var UpdateModel $model */
-		$model           = $this->getModel();
+		$model = $this->getModel();
 		/** @var Ini $view */
 		$view            = $this->getView();
 		$view->items     = $model->getItems($id);
 		$view->published = $model->getPublished($id);
 
-		$registeredURLParams = array(
+		$registeredURLParams = [
 			'option' => 'CMD',
 			'view'   => 'CMD',
 			'task'   => 'CMD',
@@ -320,7 +324,7 @@ class Update extends Controller
 			'layout' => 'CMD',
 			'id'     => 'INT',
 			'dlid'   => 'STRING',
-		);
+		];
 
 		$this->display(true, $registeredURLParams);
 	}
@@ -329,8 +333,9 @@ class Update extends Controller
 	 * Downloads the latest version of a software given its update stream ID
 	 *
 	 * @throws \RuntimeException
+	 * @throws \Exception
 	 */
-	public function download()
+	public function download(): void
 	{
 		$id = $this->input->getInt('id', 0);
 
@@ -397,19 +402,19 @@ class Update extends Controller
 		{
 			$log->create([
 				'authorized' => 0,
-				'item_id'    => $downloadItem->item_id
+				'item_id'    => $downloadItem->item_id,
 			]);
 
 			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
 		$item->save([
-			'hits' => ++$item->hits
+			'hits' => ++$item->hits,
 		]);
 
 		$log->create([
 			'item_id'    => $downloadItem->item_id,
-			'authorized' => 1
+			'authorized' => 1,
 		]);
 
 		$downloadModel->doDownload($item);

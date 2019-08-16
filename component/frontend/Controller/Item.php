@@ -22,7 +22,7 @@ use Joomla\CMS\Language\Text;
 
 class Item extends DataController
 {
-	public function execute($task)
+	public function execute($task): void
 	{
 		// If we're using the JSON API we need a manager
 		$format = $this->input->getCmd('format', 'html');
@@ -47,9 +47,9 @@ class Item extends DataController
 	/**
 	 * Overrides the default display method to add caching support
 	 *
-	 * @param   bool         $cachable   Is this a cacheable view?
-	 * @param   bool|array   $urlparams  Registered URL parameters
-	 * @param   null|string  $tpl        Sub-template (not really used...)
+	 * @param bool        $cachable  Is this a cacheable view?
+	 * @param bool|array  $urlparams Registered URL parameters
+	 * @param null|string $tpl       Sub-template (not really used...)
 	 */
 	public function display($cachable = false, $urlparams = false, $tpl = null)
 	{
@@ -60,7 +60,7 @@ class Item extends DataController
 			$urlparams = [];
 		}
 
-		$additionalParams = array(
+		$additionalParams = [
 			'option'     => 'CMD',
 			'view'       => 'CMD',
 			'task'       => 'CMD',
@@ -69,13 +69,13 @@ class Item extends DataController
 			'release_id' => 'INT',
 			'id'         => 'INT',
 			'dlid'       => 'STRING',
-		);
+		];
 
 		$urlparams = array_merge($additionalParams, $urlparams);
 
 		// Do not cache filterable views
 		$layout = $this->input->getCmd('layout', 'default');
-		$tmpl = $this->input->getCmd('tmpl', '');
+		$tmpl   = $this->input->getCmd('tmpl', '');
 
 		if (($layout == 'modal') && ($tmpl == 'component'))
 		{
@@ -85,7 +85,7 @@ class Item extends DataController
 		parent::display($cachable, $urlparams, $tpl);
 	}
 
-	public function onBeforeBrowse()
+	public function onBeforeBrowse(): void
 	{
 		// Only apply on HTML views
 		if (!in_array($this->input->getCmd('format', 'html'), ['html', 'feed']))
@@ -94,7 +94,7 @@ class Item extends DataController
 		}
 
 		$layout = $this->input->getCmd('layout', 'default');
-		$tmpl = $this->input->getCmd('tmpl', '');
+		$tmpl   = $this->input->getCmd('tmpl', '');
 
 		if (($layout == 'modal') && ($tmpl == 'component'))
 		{
@@ -112,16 +112,16 @@ class Item extends DataController
 		/** @var Releases $releaseModel */
 		$releaseModel = $this->getModel('Releases');
 		$releaseModel
-							 ->orderby_filter($params->get('rel_orderby', 'order'))
-							 ->category_id(0)
-							 ->access_user($this->container->platform->getUser()->id);
+			->orderby_filter($params->get('rel_orderby', 'order'))
+			->category_id(0)
+			->access_user($this->container->platform->getUser()->id);
 
 		/** @var Items $itemsModel */
 		$itemsModel = $this->getModel();
 		$itemsModel
-						   ->orderby_filter($params->get('items_orderby', 'order'))
-						   ->release_id(0)
-						   ->access_user($this->container->platform->getUser()->id);
+			->orderby_filter($params->get('items_orderby', 'order'))
+			->release_id(0)
+			->access_user($this->container->platform->getUser()->id);
 
 		// Get the release ID
 		$id = $this->input->getInt('release_id', 0);
@@ -206,25 +206,26 @@ class Item extends DataController
 		$this->getView()->setModel('Releases', $releaseModel);
 	}
 
-	public function onBeforeBrowseModal()
+	public function onBeforeBrowseModal(): void
 	{
+		// Intentionally left blank to prevent onBeforeBrowse from kicking in
 	}
 
 	/**
 	 * Handles input data transformations before telling the Model to save them.
 	 *
-	 * @param   array  $data
+	 * @param array $data
 	 *
 	 * @return  void  The $data array is directly handled
 	 */
-	protected function onBeforeApplySave(&$data)
+	protected function onBeforeApplySave(array &$data): void
 	{
 		// If "groups" is a comma separated list of IDs convert to a proper array
 		if (isset($data['groups']) && !is_array($data['groups']))
 		{
 			if (empty($data['groups']))
 			{
-				$data['groups'] = array();
+				$data['groups'] = [];
 			}
 
 			if (!is_array($data['groups']))
@@ -241,7 +242,7 @@ class Item extends DataController
 		{
 			if (empty($data['environments']))
 			{
-				$data['environments'] = array();
+				$data['environments'] = [];
 			}
 
 			if (!is_array($data['environments']))
@@ -254,7 +255,12 @@ class Item extends DataController
 		}
 	}
 
-	public function download()
+	/**
+	 * Downloads an item to the user's browser
+	 *
+	 * @throws \Exception
+	 */
+	public function download(): void
 	{
 		$id = $this->input->getInt('id', null);
 
@@ -396,14 +402,14 @@ class Item extends DataController
 
 		// Hit the item
 		$item->save([
-			'hits' => ++$item->hits
+			'hits' => ++$item->hits,
 		]);
 
 		// Log the download
-		$log->create(array(
+		$log->create([
 				'item_id'    => $id,
-				'authorized' => 1
-			)
+				'authorized' => 1,
+			]
 		);
 
 		// Download the item
@@ -412,14 +418,21 @@ class Item extends DataController
 		$this->container->platform->closeApplication();
 	}
 
-	private function logFailedDownloadAttempt($id)
+	/**
+	 * Log a failed download attempt for the given item ID
+	 *
+	 * @param int $id
+	 *
+	 * @throws \Exception
+	 */
+	private function logFailedDownloadAttempt(int $id): void
 	{
 		$log = $this->getModel('Logs');
 
-		$log->create(array(
+		$log->create([
 				'item_id'    => $id,
-				'authorized' => 0
-			)
+				'authorized' => 0,
+			]
 		);
 
 		/** @var \JApplicationSite $app */
@@ -431,12 +444,12 @@ class Item extends DataController
 			$extraMessage = $id ? 'Item : ' . $id : '';
 
 			// Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
-			$app->triggerEvent('onAdminToolsThirdpartyException', array(
-				'external',
-				Text::_('COM_ARS_BLOCKED_MESSAGE'),
-				array($extraMessage)
-			),
-				true
+			$app->triggerEvent('onAdminToolsThirdpartyException', [
+					'external',
+					Text::_('COM_ARS_BLOCKED_MESSAGE'),
+					[$extraMessage],
+					true,
+				]
 			);
 		}
 	}

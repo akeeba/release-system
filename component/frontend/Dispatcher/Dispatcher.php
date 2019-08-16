@@ -42,7 +42,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	/** @var   string  The name of the default view, in case none is specified */
 	public $defaultView = 'Categories';
 
-	public function onBeforeDispatch()
+	public function onBeforeDispatch(): void
 	{
 		// Map the view
 		$this->applyViewMap();
@@ -65,7 +65,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	 *
 	 * @return  void
 	 */
-	public function applyViewMap()
+	public function applyViewMap(): void
 	{
 		$view = $this->container->input->getCmd('view', 'Categories');
 
