@@ -108,7 +108,7 @@ $this->getContainer()->template->addJSInline($js);
 		<?php if (!count($this->items)):?>
 			<tr>
 				<td colspan="11">
-					<?php echo Text::_('COM_ARS_COMMON_NOITEMS_LABEL') ?>
+					<?php echo Text::_('COM_ARS_COMMON_NORECORDS') ?>
 				</td>
 			</tr>
 		<?php endif;?>

@@ -120,7 +120,7 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
         @else
             <tr>
                 <td colspan="10">
-                    @lang('COM_ARS_COMMON_NOITEMS_LABEL')
+                    @lang('COM_ARS_COMMON_NORECORDS')
                 </td>
             </tr>
         @endif

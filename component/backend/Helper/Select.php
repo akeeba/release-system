@@ -384,7 +384,7 @@ HTML;
 
 	}
 
-	public static function environments(string $id, ?string $selected = null, array $attribs = [], ?string $name = null): string
+	public static function environments(string $id, $selected = null, array $attribs = [], ?string $name = null): string
 	{
 		$container = Container::getInstance('com_ars');
 
@@ -414,7 +414,7 @@ HTML;
 		return self::genericlist($options, $name, $attribs, $selected, $id);
 	}
 
-	public static function releases(?string $selected = null, string $id = 'release', array $attribs = [], ?int $category_id = null): string
+	public static function releases($selected = null, string $id = 'release', array $attribs = [], ?int $category_id = null): string
 	{
 		$container = Container::getInstance('com_ars');
 
@@ -492,7 +492,7 @@ HTML;
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
-	public static function categories(?string $selected = null, string $id = 'category', array $attribs = [], bool $nobeunpub = true): string
+	public static function categories($selected = null, string $id = 'category', array $attribs = [], bool $nobeunpub = true): string
 	{
 		$container = Container::getInstance('com_ars');
 
