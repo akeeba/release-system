@@ -211,7 +211,23 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			'administrator/components/com_ars/Model/SubscriptionIntegration',
 
+			'administrator/components/com_ars/View/AutoDescriptions/tmpl',
+			'administrator/components/com_ars/View/Categories/tmpl',
+			'administrator/components/com_ars/View/ControlPanel/tmpl',
+			'administrator/components/com_ars/View/DownloadIDLabels/tmpl',
+			'administrator/components/com_ars/View/Environments/tmpl',
+			'administrator/components/com_ars/View/Items/tmpl',
+			'administrator/components/com_ars/View/Logs/tmpl',
+			'administrator/components/com_ars/View/Releases/tmpl',
+			'administrator/components/com_ars/View/UpdateStreams/tmpl',
 			'administrator/components/com_ars/View/VisualGroups',
+
+			'components/com_ars/View/Categories/tmpl',
+			'components/com_ars/View/DownloadIDLabels/tmpl',
+			'components/com_ars/View/Items/tmpl',
+			'components/com_ars/View/Latest/tmpl',
+			'components/com_ars/View/Releases/tmpl',
+			'components/com_ars/View/Update/tmpl',
 		],
 	];
 
