@@ -5,6 +5,8 @@
  * @license   GNU General Public License version 3, or later
  */
 
+use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use FOF30\Container\Container;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 
@@ -24,10 +26,10 @@ if (!ComponentHelper::isEnabled('com_ars'))
 if (!class_exists('Akeeba\\ReleaseSystem\\Site\\Helper\\Filter'))
 {
 	// This has the side-effect of initialising our auto-loader
-	\FOF30\Container\Container::getInstance('com_ars');
+	Container::getInstance('com_ars');
 }
 
-$dlid = \Akeeba\ReleaseSystem\Site\Helper\Filter::myDownloadID();
+$dlid = Filter::myDownloadID();
 
 if (!is_null($dlid))
 {

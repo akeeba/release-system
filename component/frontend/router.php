@@ -6,6 +6,7 @@
  */
 
 // Protect from unauthorized access
+use FOF30\Container\Container;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Menu\AbstractMenu;
 use Joomla\CMS\Uri\Uri;
@@ -27,10 +28,10 @@ if (!class_exists('ArsRouterHelper'))
 	require_once __DIR__ . '/Helper/ArsRouterHelper.php';
 }
 
-function arsBuildRoute(&$query)
+function arsBuildRoute(array &$query): array
 {
 	$format = isset($query['format']) ? $query['format'] : 'html';
-	$view = isset($query['view']) ? $query['view'] : 'browses';
+	$view   = isset($query['view']) ? $query['view'] : 'browses';
 
 	if (in_array($view, ['download', 'downloads', 'Item']))
 	{
@@ -40,13 +41,11 @@ function arsBuildRoute(&$query)
 	switch ($format)
 	{
 		case 'html':
+			$segments = [];
+
 			if (ComArsRouter::$routeHtml)
 			{
 				$segments = arsBuildRouteHtml($query);
-			}
-			else
-			{
-				$segments = array();
 			}
 			break;
 
@@ -60,13 +59,11 @@ function arsBuildRoute(&$query)
 
 		case 'raw':
 		default:
+			$segments = [];
+
 			if (ComArsRouter::$routeRaw)
 			{
 				$segments = arsBuildRouteRaw($query);
-			}
-			else
-			{
-				$segments = array();
 			}
 			break;
 	}
@@ -74,7 +71,7 @@ function arsBuildRoute(&$query)
 	return $segments;
 }
 
-function arsBuildRouteHtml(&$query)
+function arsBuildRouteHtml(array &$query): array
 {
 	static $currentLang = null;
 
@@ -95,7 +92,7 @@ function arsBuildRouteHtml(&$query)
 		return $segments;
 	}
 
-	$container = \FOF30\Container\Container::getInstance('com_ars');
+	$container = Container::getInstance('com_ars');
 	$menus     = AbstractMenu::getInstance('site');
 
 	$view     = ArsRouterHelper::getAndPop($query, 'view', 'browses');
@@ -277,7 +274,7 @@ function arsBuildRouteHtml(&$query)
 			{
 			}
 
-			$catAlias    = $category->alias;
+		$catAlias = $category->alias;
 
 			if (empty($Itemid))
 			{
@@ -369,8 +366,8 @@ function arsBuildRouteHtml(&$query)
 
 			if (is_object($release->category))
 			{
-				$catId     = $release->category->id;
-				$catAlias  = $release->category->alias;
+				$catId    = $release->category->id;
+				$catAlias = $release->category->alias;
 			}
 
 			// Do we have a "category" menu?
@@ -480,9 +477,9 @@ function arsBuildRouteHtml(&$query)
 	return $segments;
 }
 
-function arsBuildRouteRaw(&$query)
+function arsBuildRouteRaw(array &$query): array
 {
-	$segments = array();
+	$segments = [];
 
 	$view = ArsRouterHelper::getAndPop($query, 'view', 'invalid');
 	$task = ArsRouterHelper::getAndPop($query, 'task', 'download');
@@ -499,9 +496,9 @@ function arsBuildRouteRaw(&$query)
 		return $segments;
 	}
 
-	$container = \FOF30\Container\Container::getInstance('com_ars');
+	$container = Container::getInstance('com_ars');
 
-	$id = ArsRouterHelper::getAndPop($query, 'id');
+	$id     = ArsRouterHelper::getAndPop($query, 'id');
 	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid');
 
 	$menus = AbstractMenu::getInstance('site');
@@ -514,7 +511,7 @@ function arsBuildRouteRaw(&$query)
 	// If we have an extension other than html, raw, ini, xml, php try to set the format to manipulate the extension (if
 	// Joomla! is configured to use extensions in URLs)
 	$fileTarget = ($download->type == 'link') ? $download->url : $download->filename;
-	$extension = pathinfo($fileTarget, PATHINFO_EXTENSION);
+	$extension  = pathinfo($fileTarget, PATHINFO_EXTENSION);
 
 	if (!in_array($extension, ['html', 'raw', 'ini', 'xml', 'php']))
 	{
@@ -529,7 +526,7 @@ function arsBuildRouteRaw(&$query)
 
 	if ($Itemid)
 	{
-		$menu = $menus->getItem($Itemid);
+		$menu  = $menus->getItem($Itemid);
 		$mview = '';
 
 		if (!empty($menu))
@@ -545,9 +542,9 @@ function arsBuildRouteRaw(&$query)
 			case 'browses':
 			case 'browse':
 			case 'Categories':
-				$segments[] = $catAlias;
-				$segments[] = $release->alias;
-				$segments[] = $download->alias;
+				$segments[]      = $catAlias;
+				$segments[]      = $release->alias;
+				$segments[]      = $download->alias;
 				$query['Itemid'] = $Itemid;
 				break;
 
@@ -557,8 +554,8 @@ function arsBuildRouteRaw(&$query)
 
 				if ($params->get('catid', 0) == $release->category_id)
 				{
-					$segments[] = $release->alias;
-					$segments[] = $download->alias;
+					$segments[]      = $release->alias;
+					$segments[]      = $download->alias;
 					$query['Itemid'] = $Itemid;
 				}
 				else
@@ -573,7 +570,7 @@ function arsBuildRouteRaw(&$query)
 
 				if ($params->get('relid', 0) == $release->id)
 				{
-					$segments[] = $download->alias;
+					$segments[]      = $download->alias;
 					$query['Itemid'] = $Itemid;
 				}
 				else
@@ -589,16 +586,16 @@ function arsBuildRouteRaw(&$query)
 
 	if (empty($Itemid))
 	{
-		$options = array('option' => 'com_ars', 'view' => 'Items');
-		$params = array('relid' => $release->id);
+		$options = ['option' => 'com_ars', 'view' => 'Items'];
+		$params  = ['relid' => $release->id];
 
 		$possibleViews = ['Items', 'release'];
-		$menu = null;
+		$menu          = null;
 
 		foreach ($possibleViews as $possibleView)
 		{
 			$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-			$menu = ArsRouterHelper::findMenu($altQueryOptions, $params);
+			$menu            = ArsRouterHelper::findMenu($altQueryOptions, $params);
 
 			if (is_object($menu))
 			{
@@ -608,20 +605,20 @@ function arsBuildRouteRaw(&$query)
 
 		if (is_object($menu))
 		{
-			$segments[] = $download->alias;
+			$segments[]      = $download->alias;
 			$query['Itemid'] = $menu->id;
 		}
 		else
 		{
-			$options = array('option' => 'com_ars', 'view' => 'category');
-			$params = array('catid' => $release->category_id);
+			$options = ['option' => 'com_ars', 'view' => 'category'];
+			$params  = ['catid' => $release->category_id];
 
 			$possibleViews = ['Releases', 'category'];
 
 			foreach ($possibleViews as $possibleView)
 			{
 				$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-				$menu = ArsRouterHelper::findMenu($altQueryOptions, $params);
+				$menu            = ArsRouterHelper::findMenu($altQueryOptions, $params);
 
 				if (is_object($menu))
 				{
@@ -632,22 +629,22 @@ function arsBuildRouteRaw(&$query)
 
 		if (is_object($menu))
 		{
-			$segments[] = $release->alias;
-			$segments[] = $download->alias;
+			$segments[]      = $release->alias;
+			$segments[]      = $download->alias;
 			$query['Itemid'] = $menu->id;
 		}
 
 		if (!is_object($menu))
 		{
-			$options = array('view' => 'browses', 'option' => 'com_ars');
+			$options = ['view' => 'browses', 'option' => 'com_ars'];
 
 			$possibleViews = ['Categories', 'browse', 'browses'];
-			$menu = null;
+			$menu          = null;
 
 			foreach ($possibleViews as $possibleView)
 			{
 				$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-				$menu = ArsRouterHelper::findMenu($altQueryOptions);
+				$menu            = ArsRouterHelper::findMenu($altQueryOptions);
 
 				if (is_object($menu))
 				{
@@ -664,9 +661,9 @@ function arsBuildRouteRaw(&$query)
 			}
 			else
 			{
-				$segments[] = $catAlias;
-				$segments[] = $release->alias;
-				$segments[] = $download->alias;
+				$segments[]      = $catAlias;
+				$segments[]      = $release->alias;
+				$segments[]      = $download->alias;
 				$query['Itemid'] = $menu->id;
 			}
 		}
@@ -675,13 +672,13 @@ function arsBuildRouteRaw(&$query)
 	return $segments;
 }
 
-function arsBuildRouteXml(&$query)
+function arsBuildRouteXml(array &$query): array
 {
-	$segments = array();
+	$segments = [];
 
-	$view = ArsRouterHelper::getAndPop($query, 'view', 'Update');
-	$my_task = ArsRouterHelper::getAndPop($query, 'task', 'default');
-	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid', null);
+	$view     = ArsRouterHelper::getAndPop($query, 'view', 'Update');
+	$my_task  = ArsRouterHelper::getAndPop($query, 'task', 'default');
+	$Itemid   = ArsRouterHelper::getAndPop($query, 'Itemid', null);
 	$local_id = ArsRouterHelper::getAndPop($query, 'id', 'components');
 
 	if (!in_array($view, ['Update', 'updates', 'update']))
@@ -690,7 +687,7 @@ function arsBuildRouteXml(&$query)
 	}
 
 	$task = 'all';
-	$id = 0;
+	$id   = 0;
 
 	// Analyze the current Itemid
 	if (!empty($Itemid))
@@ -710,10 +707,10 @@ function arsBuildRouteXml(&$query)
 		}
 		else
 		{
-			$task = $uri->getVar('task');
+			$task   = $uri->getVar('task');
 			$layout = $uri->getVar('layout');
 			$format = $uri->getVar('format', 'ini');
-			$id = $uri->getVar('id', null);
+			$id     = $uri->getVar('id', null);
 
 			if (empty($task) && !empty($layout))
 			{
@@ -739,13 +736,13 @@ function arsBuildRouteXml(&$query)
 				{
 					case 'category':
 						$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-						$id = $params->get('category', 'components');
+						$id     = $params->get('category', 'components');
 						break;
 
 					case 'ini':
 					case 'stream':
 						$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-						$id = $params->get('streamid', 0);
+						$id     = $params->get('streamid', 0);
 						break;
 				}
 			}
@@ -759,7 +756,7 @@ function arsBuildRouteXml(&$query)
 			if (empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties
-				$options       = array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars');
+				$options = ['view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'];
 
 				$possibleViews = ['Update', 'Updates', 'update', 'updates'];
 				$otherMenuItem = null;
@@ -767,7 +764,7 @@ function arsBuildRouteXml(&$query)
 				foreach ($possibleViews as $possibleView)
 				{
 					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-					$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions);
+					$otherMenuItem   = ArsRouterHelper::findMenu($altQueryOptions);
 
 					if (!empty($otherMenuItem))
 					{
@@ -802,15 +799,15 @@ function arsBuildRouteXml(&$query)
 			if (empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties
-				$options = array('view' => 'updates', 'layout' => 'category', 'option' => 'com_ars');
-				$params = array('category' => $local_id);
+				$options       = ['view' => 'updates', 'layout' => 'category', 'option' => 'com_ars'];
+				$params        = ['category' => $local_id];
 				$possibleViews = ['Update', 'Updates', 'update', 'updates'];
 				$otherMenuItem = null;
 
 				foreach ($possibleViews as $possibleView)
 				{
 					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-					$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions, $params);
+					$otherMenuItem   = ArsRouterHelper::findMenu($altQueryOptions, $params);
 
 					if (!empty($otherMenuItem))
 					{
@@ -826,14 +823,14 @@ function arsBuildRouteXml(&$query)
 				else
 				{
 					// Try to find an Itemid for all categories
-					$options = array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars');
+					$options       = ['view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'];
 					$possibleViews = ['Update', 'Updates', 'update', 'updates'];
 					$otherMenuItem = null;
 
 					foreach ($possibleViews as $possibleView)
 					{
 						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-						$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions);
+						$otherMenuItem   = ArsRouterHelper::findMenu($altQueryOptions);
 
 						if (!empty($otherMenuItem))
 						{
@@ -845,7 +842,7 @@ function arsBuildRouteXml(&$query)
 					if (!empty($otherMenuItem))
 					{
 						$query['Itemid'] = $otherMenuItem->id;
-						$segments[] = $local_id;
+						$segments[]      = $local_id;
 					}
 					else
 					{
@@ -864,7 +861,7 @@ function arsBuildRouteXml(&$query)
 				elseif ($task == 'all')
 				{
 					$query['Itemid'] = $Itemid;
-					$segments[] = $local_id;
+					$segments[]      = $local_id;
 				}
 				else
 				{
@@ -878,11 +875,11 @@ function arsBuildRouteXml(&$query)
 			// TODO Cache this?
 			$db      = Factory::getDBO();
 			$dbquery = $db->getQuery(true)
-						  ->select(array(
-							  $db->qn('type'),
-							  $db->qn('alias'),
-						  ))->from($db->qn('#__ars_updatestreams'))
-						  ->where($db->qn('id') . ' = ' . $db->q($local_id));
+				->select([
+					$db->qn('type'),
+					$db->qn('alias'),
+				])->from($db->qn('#__ars_updatestreams'))
+				->where($db->qn('id') . ' = ' . $db->q($local_id));
 			$db->setQuery($dbquery, 0, 1);
 			$stream = $db->loadObject();
 
@@ -894,15 +891,15 @@ function arsBuildRouteXml(&$query)
 			if (empty($Itemid))
 			{
 				// Try to find an Itemid with the same properties
-				$options = array('view' => 'updates', 'layout' => 'stream', 'option' => 'com_ars');
-				$params = array('streamid' => $local_id);
+				$options       = ['view' => 'updates', 'layout' => 'stream', 'option' => 'com_ars'];
+				$params        = ['streamid' => $local_id];
 				$possibleViews = ['Update', 'Updates', 'update', 'updates'];
 				$otherMenuItem = null;
 
 				foreach ($possibleViews as $possibleView)
 				{
 					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-					$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions, $params);
+					$otherMenuItem   = ArsRouterHelper::findMenu($altQueryOptions, $params);
 
 					if (!empty($otherMenuItem))
 					{
@@ -919,15 +916,15 @@ function arsBuildRouteXml(&$query)
 				else
 				{
 					// Try to find an Itemid for the parent category
-					$options = array('view' => 'updates', 'layout' => 'category', 'option' => 'com_ars');
-					$params = array('category' => $stream->type);
+					$options       = ['view' => 'updates', 'layout' => 'category', 'option' => 'com_ars'];
+					$params        = ['category' => $stream->type];
 					$possibleViews = ['Update', 'Updates', 'update', 'updates'];
 					$otherMenuItem = null;
 
 					foreach ($possibleViews as $possibleView)
 					{
 						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-						$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions, $params);
+						$otherMenuItem   = ArsRouterHelper::findMenu($altQueryOptions, $params);
 
 						if (!empty($otherMenuItem))
 						{
@@ -938,19 +935,19 @@ function arsBuildRouteXml(&$query)
 					if (!empty($otherMenuItem))
 					{
 						$query['Itemid'] = $otherMenuItem->id;
-						$segments[] = $stream->alias;
+						$segments[]      = $stream->alias;
 					}
 					else
 					{
 						// Try to find an Itemid for all categories
-						$options = array('view' => 'updates', 'layout' => 'all', 'option' => 'com_ars');
+						$options       = ['view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'];
 						$possibleViews = ['Update', 'Updates', 'update', 'updates'];
 						$otherMenuItem = null;
 
 						foreach ($possibleViews as $possibleView)
 						{
 							$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-							$otherMenuItem = ArsRouterHelper::findMenu($altQueryOptions);
+							$otherMenuItem   = ArsRouterHelper::findMenu($altQueryOptions);
 
 							if (!empty($otherMenuItem))
 							{
@@ -961,8 +958,8 @@ function arsBuildRouteXml(&$query)
 						if (!empty($otherMenuItem))
 						{
 							$query['Itemid'] = $otherMenuItem->id;
-							$segments[] = $stream->type;
-							$segments[] = $local_id;
+							$segments[]      = $stream->type;
+							$segments[]      = $local_id;
 						}
 						else
 						{
@@ -983,13 +980,13 @@ function arsBuildRouteXml(&$query)
 				elseif (($task == 'category') && ($id == $stream->type))
 				{
 					$query['Itemid'] = $Itemid;
-					$segments[] = $stream->alias;
+					$segments[]      = $stream->alias;
 				}
 				elseif ($task == 'all')
 				{
 					$query['Itemid'] = $Itemid;
-					$segments[] = $stream->type;
-					$segments[] = $stream->alias;
+					$segments[]      = $stream->type;
+					$segments[]      = $stream->alias;
 				}
 				else
 				{
@@ -1004,15 +1001,15 @@ function arsBuildRouteXml(&$query)
 	return $segments;
 }
 
-function arsBuildRouteIni(&$query)
+function arsBuildRouteIni(array &$query): array
 {
-	$segments = array();
+	$segments = [];
 
-	$view = ArsRouterHelper::getAndPop($query, 'view', 'update');
-	$Itemid = ArsRouterHelper::getAndPop($query, 'Itemid', null);
+	$view     = ArsRouterHelper::getAndPop($query, 'view', 'update');
+	$Itemid   = ArsRouterHelper::getAndPop($query, 'Itemid', null);
 	$local_id = ArsRouterHelper::getAndPop($query, 'id', 'components');
-	$task = 'ini';
-	$id = '';
+	$task     = 'ini';
+	$id       = '';
 
 	if (!in_array($view, ['Update', 'updates', 'update']))
 	{
@@ -1037,10 +1034,10 @@ function arsBuildRouteIni(&$query)
 		}
 		else
 		{
-			$task = $uri->getVar('task');
+			$task   = $uri->getVar('task');
 			$layout = $uri->getVar('layout');
 			$format = $uri->getVar('format', 'ini');
-			$id = $uri->getVar('id', null);
+			$id     = $uri->getVar('id', null);
 
 			if (empty($task) && !empty($layout))
 			{
@@ -1066,13 +1063,13 @@ function arsBuildRouteIni(&$query)
 				{
 					case 'category':
 						$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-						$id = $params->get('category', 'components');
+						$id     = $params->get('category', 'components');
 						break;
 
 					case 'ini':
 					case 'stream':
 						$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-						$id = $params->get('streamid', 0);
+						$id     = $params->get('streamid', 0);
 						break;
 				}
 			}
@@ -1082,11 +1079,11 @@ function arsBuildRouteIni(&$query)
 	// TODO cache this?
 	$db      = Factory::getDBO();
 	$dbquery = $db->getQuery(true)
-				  ->select(array(
-					  $db->qn('type'),
-					  $db->qn('alias'),
-				  ))->from($db->qn('#__ars_updatestreams'))
-				  ->where($db->qn('id') . ' = ' . $db->q($local_id));
+		->select([
+			$db->qn('type'),
+			$db->qn('alias'),
+		])->from($db->qn('#__ars_updatestreams'))
+		->where($db->qn('id') . ' = ' . $db->q($local_id));
 	$db->setQuery($dbquery, 0, 1);
 	$stream = $db->loadObject();
 
@@ -1098,7 +1095,9 @@ function arsBuildRouteIni(&$query)
 	if (empty($Itemid))
 	{
 		// Try to find an Itemid with the same properties
-		$otherMenuItem = ArsRouterHelper::findMenu(array('view' => 'updates', 'layout' => 'ini', 'option' => 'com_ars'), array('streamid' => $local_id));
+		$otherMenuItem = ArsRouterHelper::findMenu([
+			'view' => 'updates', 'layout' => 'ini', 'option' => 'com_ars',
+		], ['streamid' => $local_id]);
 		if (!empty($otherMenuItem))
 		{
 			// Exact match
@@ -1129,9 +1128,9 @@ function arsBuildRouteIni(&$query)
 	return $segments;
 }
 
-function arsParseRoute(&$segments)
+function arsParseRoute(array &$segments): array
 {
-	$container = \FOF30\Container\Container::getInstance('com_ars');
+	$container = Container::getInstance('com_ars');
 
 	$input  = Factory::getApplication()->input;
 	$config = $container->platform->getConfig();
@@ -1151,13 +1150,13 @@ function arsParseRoute(&$segments)
 			$basename = basename($url);
 
 			// Lame way to get the extension via string manipulation (shoot me if you will, but this works everywhere)
-			$ext = substr(strtolower($basename), -4);
+			$ext    = substr(strtolower($basename), -4);
 			$format = ltrim($ext, '.');
 
 			// If SplFileInfo is available let's prefer it
 			if (class_exists('\\SplFileInfo'))
 			{
-				$info = new \SplFileInfo($basename);
+				$info   = new \SplFileInfo($basename);
 				$format = $info->getExtension();
 			}
 		}
@@ -1187,9 +1186,9 @@ function arsParseRoute(&$segments)
 	}
 }
 
-function arsParseRouteHtml(&$segments)
+function arsParseRouteHtml(array &$segments): array
 {
-	$query = array();
+	$query = [];
 	$menus = AbstractMenu::getInstance('site');
 	$menu  = $menus->getActive();
 
@@ -1200,15 +1199,15 @@ function arsParseRouteHtml(&$segments)
 
 		while ($found && count($segments))
 		{
-			$parent = $menu->id;
+			$parent      = $menu->id;
 			$lastSegment = array_shift($segments);
 
-			$m = $menus->getItems(array('parent_id', 'alias'), array($parent, $lastSegment), true);
+			$m = $menus->getItems(['parent_id', 'alias'], [$parent, $lastSegment], true);
 
 			if (is_object($m))
 			{
 				$found = true;
-				$menu = $m;
+				$menu  = $m;
 			}
 			else
 			{
@@ -1225,29 +1224,29 @@ function arsParseRouteHtml(&$segments)
 		{
 			case 1:
 				// Repository view
-				$query['view'] = 'Categories';
+				$query['view']   = 'Categories';
 				$query['layout'] = array_pop($segments);
 				break;
 
 			case 2:
 				// Category view
-				$query['view'] = 'Releases';
+				$query['view']   = 'Releases';
 				$query['layout'] = null;
-				$catalias = array_pop($segments);
-				$root = array_pop($segments);
+				$catalias        = array_pop($segments);
+				$root            = array_pop($segments);
 
 				// Load the category
 				$db      = Factory::getDBO();
 				$dbquery = $db->getQuery(true)
-							  ->select('*')
-							  ->from($db->qn('#__ars_categories'))
-							  ->where($db->qn('alias') . ' = ' . $db->q($catalias));
+					->select('*')
+					->from($db->qn('#__ars_categories'))
+					->where($db->qn('alias') . ' = ' . $db->q($catalias));
 				$db->setQuery($dbquery, 0, 1);
 				$cat = $db->loadObject();
 
 				if (empty($cat))
 				{
-					$query['view'] = 'Categories';
+					$query['view']   = 'Categories';
 					$query['layout'] = 'repository';
 				}
 				else
@@ -1258,38 +1257,38 @@ function arsParseRouteHtml(&$segments)
 
 			case 3:
 				// Release view
-				$query['view'] = 'Items';
+				$query['view']   = 'Items';
 				$query['layout'] = null;
-				$relalias = array_pop($segments);
-				$catalias = array_pop($segments);
-				$root = array_pop($segments);
+				$relalias        = array_pop($segments);
+				$catalias        = array_pop($segments);
+				$root            = array_pop($segments);
 
 				// Load the release
 				$db = Factory::getDBO();
 
 				$dbquery = $db->getQuery(true)
-							  ->select(array(
-								  $db->qn('r') . '.*',
-								  $db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
-								  $db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
-								  $db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
-								  $db->qn('c') . '.' . $db->qn('groups') . ' AS ' . $db->qn('cat_groups'),
-								  $db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
-								  $db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
-								  $db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
-							  ))
-							  ->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r'))
-							  ->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
-								  $db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
-							  ->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
-							  ->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
+					->select([
+						$db->qn('r') . '.*',
+						$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
+						$db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
+						$db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
+						$db->qn('c') . '.' . $db->qn('groups') . ' AS ' . $db->qn('cat_groups'),
+						$db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
+						$db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
+						$db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
+					])
+					->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r'))
+					->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
+						$db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
+					->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
+					->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
 
 				$db->setQuery($dbquery, 0, 1);
 				$rel = $db->loadObject();
 
 				if (empty($rel))
 				{
-					$query['view'] = 'Categories';
+					$query['view']   = 'Categories';
 					$query['layout'] = 'repository';
 				}
 				else
@@ -1308,7 +1307,7 @@ function arsParseRouteHtml(&$segments)
 	else
 	{
 		// A menu item is defined
-		$view = $menu->query['view'];
+		$view     = $menu->query['view'];
 		$catalias = null;
 		$relalias = null;
 
@@ -1319,14 +1318,14 @@ function arsParseRouteHtml(&$segments)
 				case 1:
 					// Category view
 					$query['view'] = 'Releases';
-					$catalias = array_pop($segments);
+					$catalias      = array_pop($segments);
 					break;
 
 				case 2:
 					// Release view
 					$query['view'] = 'Items';
-					$relalias = array_pop($segments);
-					$catalias = array_pop($segments);
+					$relalias      = array_pop($segments);
+					$catalias      = array_pop($segments);
 					break;
 
 				case 3:
@@ -1342,7 +1341,7 @@ function arsParseRouteHtml(&$segments)
 				case 1:
 					// Release view
 					$query['view'] = 'Items';
-					$relalias = array_pop($segments);
+					$relalias      = array_pop($segments);
 					break;
 
 				case 2:
@@ -1374,7 +1373,7 @@ function arsParseRouteHtml(&$segments)
 			}
 
 			$query['view'] = 'Items';
-			$relalias = array_pop($segments);
+			$relalias      = array_pop($segments);
 		}
 
 		$db = Factory::getDBO();
@@ -1382,28 +1381,28 @@ function arsParseRouteHtml(&$segments)
 		if ($relalias && $catalias)
 		{
 			$dbquery = $db->getQuery(true)
-						  ->select(array(
-							  $db->qn('r') . '.*',
-							  $db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
-							  $db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
-							  $db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
-							  $db->qn('c') . '.' . $db->qn('groups') . ' AS ' . $db->qn('cat_groups'),
-							  $db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
-							  $db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
-							  $db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
-						  ))
-						  ->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r'))
-						  ->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
-							  $db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
-						  ->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
-						  ->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
+				->select([
+					$db->qn('r') . '.*',
+					$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
+					$db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
+					$db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
+					$db->qn('c') . '.' . $db->qn('groups') . ' AS ' . $db->qn('cat_groups'),
+					$db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
+					$db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
+					$db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
+				])
+				->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r'))
+				->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
+					$db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
+				->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
+				->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
 
 			$db->setQuery($dbquery, 0, 1);
 			$rel = $db->loadObject();
 
 			if (empty($rel))
 			{
-				$query['view'] = 'Categories';
+				$query['view']   = 'Categories';
 				$query['layout'] = 'repository';
 			}
 			else
@@ -1416,16 +1415,16 @@ function arsParseRouteHtml(&$segments)
 			$db = Factory::getDBO();
 
 			$dbquery = $db->getQuery(true)
-						  ->select('*')
-						  ->from($db->qn('#__ars_categories'))
-						  ->where($db->qn('alias') . ' = ' . $db->q($catalias));
+				->select('*')
+				->from($db->qn('#__ars_categories'))
+				->where($db->qn('alias') . ' = ' . $db->q($catalias));
 
 			$db->setQuery($dbquery, 0, 1);
 			$cat = $db->loadObject();
 
 			if (empty($cat))
 			{
-				$query['view'] = 'Categories';
+				$query['view']   = 'Categories';
 				$query['layout'] = 'repository';
 			}
 			else
@@ -1436,31 +1435,31 @@ function arsParseRouteHtml(&$segments)
 		else
 		{
 			$params = is_object($menu->params) ? $menu->params : new JRegistry($menu->params);
-			$catid = $params->get('catid', 0);
+			$catid  = $params->get('catid', 0);
 
 			$dbquery = $db->getQuery(true)
-						  ->select(array(
-							  $db->qn('r') . '.*',
-							  $db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
-							  $db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
-							  $db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
-							  $db->qn('c') . '.' . $db->qn('groups') . ' AS ' . $db->qn('cat_groups'),
-							  $db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
-							  $db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
-							  $db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
-						  ))
-						  ->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r'))
-						  ->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
-							  $db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
-						  ->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
-						  ->where($db->qn('c') . '.' . $db->qn('id') . ' = ' . $db->q($catid));
+				->select([
+					$db->qn('r') . '.*',
+					$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
+					$db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
+					$db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
+					$db->qn('c') . '.' . $db->qn('groups') . ' AS ' . $db->qn('cat_groups'),
+					$db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
+					$db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
+					$db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
+				])
+				->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r'))
+				->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
+					$db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
+				->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
+				->where($db->qn('c') . '.' . $db->qn('id') . ' = ' . $db->q($catid));
 
 			$db->setQuery($dbquery, 0, 1);
 			$rel = $db->loadObject();
 
 			if (empty($rel))
 			{
-				$query['view'] = 'Categories';
+				$query['view']   = 'Categories';
 				$query['layout'] = 'repository';
 			}
 			else
@@ -1473,9 +1472,9 @@ function arsParseRouteHtml(&$segments)
 	return $query;
 }
 
-function arsParseRouteRaw(&$segments)
+function arsParseRouteRaw(array &$segments): array
 {
-	$query           = array();
+	$query           = [];
 	$menus           = AbstractMenu::getInstance('site');
 	$menu            = $menus->getActive();
 	$query['view']   = 'Item';
@@ -1486,47 +1485,47 @@ function arsParseRouteRaw(&$segments)
 	{
 		// No menu. The segments are browse_layout/category_alias/release_alias/item_alias
 		$query['layout'] = null;
-		$itemalias = array_pop($segments);
-		$relalias = array_pop($segments);
-		$catalias = array_pop($segments);
-		$root = array_pop($segments);
+		$itemalias       = array_pop($segments);
+		$relalias        = array_pop($segments);
+		$catalias        = array_pop($segments);
+		$root            = array_pop($segments);
 
 		// Load the release
 		$db = Factory::getDBO();
 
 		$dbquery = $db->getQuery(true)
-					  ->select(array(
-						  $db->qn('i') . '.*',
-						  $db->qn('r') . '.' . $db->qn('category_id'),
-						  $db->qn('r') . '.' . $db->qn('version'),
-						  $db->qn('r') . '.' . $db->qn('maturity'),
-						  $db->qn('r') . '.' . $db->qn('alias') . ' AS ' . $db->qn('rel_alias'),
-						  $db->qn('r') . '.' . $db->qn('groups') . ' AS ' . $db->qn('rel_groups'),
-						  $db->qn('r') . '.' . $db->qn('access') . ' AS ' . $db->qn('rel_access'),
-						  $db->qn('r') . '.' . $db->qn('published') . ' AS ' . $db->qn('rel_published'),
-						  $db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
-						  $db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
-						  $db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
-						  $db->qn('c') . '.' . $db->qn('groups') . ' AS ' . $db->qn('cat_groups'),
-						  $db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
-						  $db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
-						  $db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
-					  ))
-					  ->from($db->qn('#__ars_items') . ' AS ' . $db->qn('i'))
-					  ->innerJoin($db->qn('#__ars_releases') . ' AS ' . $db->qn('r') . ' ON(' .
-						  $db->qn('r') . '.' . $db->qn('id') . '=' . $db->qn('i') . '.' . $db->qn('release_id') . ')')
-					  ->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
-						  $db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
-					  ->where($db->qn('i') . '.' . $db->qn('alias') . ' = ' . $db->q($itemalias))
-					  ->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
-					  ->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
+			->select([
+				$db->qn('i') . '.*',
+				$db->qn('r') . '.' . $db->qn('category_id'),
+				$db->qn('r') . '.' . $db->qn('version'),
+				$db->qn('r') . '.' . $db->qn('maturity'),
+				$db->qn('r') . '.' . $db->qn('alias') . ' AS ' . $db->qn('rel_alias'),
+				$db->qn('r') . '.' . $db->qn('groups') . ' AS ' . $db->qn('rel_groups'),
+				$db->qn('r') . '.' . $db->qn('access') . ' AS ' . $db->qn('rel_access'),
+				$db->qn('r') . '.' . $db->qn('published') . ' AS ' . $db->qn('rel_published'),
+				$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
+				$db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
+				$db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
+				$db->qn('c') . '.' . $db->qn('groups') . ' AS ' . $db->qn('cat_groups'),
+				$db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
+				$db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
+				$db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
+			])
+			->from($db->qn('#__ars_items') . ' AS ' . $db->qn('i'))
+			->innerJoin($db->qn('#__ars_releases') . ' AS ' . $db->qn('r') . ' ON(' .
+				$db->qn('r') . '.' . $db->qn('id') . '=' . $db->qn('i') . '.' . $db->qn('release_id') . ')')
+			->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
+				$db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
+			->where($db->qn('i') . '.' . $db->qn('alias') . ' = ' . $db->q($itemalias))
+			->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
+			->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
 
 		$db->setQuery($dbquery, 0, 1);
 		$item = $db->loadObject();
 
 		if (empty($item))
 		{
-			$query['view'] = 'Categories';
+			$query['view']   = 'Categories';
 			$query['layout'] = 'repository';
 			$query['format'] = 'html';
 		}
@@ -1538,58 +1537,58 @@ function arsParseRouteRaw(&$segments)
 	else
 	{
 		// A menu item is defined
-		$view = $menu->query['view'];
-		$params = is_object($menu->params) ? $menu->params : new JRegistry($menu->params);
+		$view      = $menu->query['view'];
+		$params    = is_object($menu->params) ? $menu->params : new JRegistry($menu->params);
 		$itemalias = null;
-		$catalias = null;
-		$catid = null;
-		$relalias    = null;
-		$relid       = null;
+		$catalias  = null;
+		$catid     = null;
+		$relalias  = null;
+		$relid     = null;
 
 		if (empty($view) || in_array($view, ['Categories', 'browse', 'browses']))
 		{
 			$itemalias = array_pop($segments);
-			$relalias = array_pop($segments);
-			$catalias = array_pop($segments);
+			$relalias  = array_pop($segments);
+			$catalias  = array_pop($segments);
 		}
 		elseif (in_array($view, ['Releases', 'category']))
 		{
 			$itemalias = array_pop($segments);
-			$relalias = array_pop($segments);
-			$catid = $params->get('catid', 0);
+			$relalias  = array_pop($segments);
+			$catid     = $params->get('catid', 0);
 		}
 		else
 		{
 			$itemalias = array_pop($segments);
-			$relid = $params->get('relid', 0);
+			$relid     = $params->get('relid', 0);
 		}
 
 		$db = Factory::getDBO();
 
 		$dbquery = $db->getQuery(true)
-					  ->select(array(
-						  $db->qn('i') . '.*',
-						  $db->qn('r') . '.' . $db->qn('category_id'),
-						  $db->qn('r') . '.' . $db->qn('version'),
-						  $db->qn('r') . '.' . $db->qn('maturity'),
-						  $db->qn('r') . '.' . $db->qn('alias') . ' AS ' . $db->qn('rel_alias'),
-						  $db->qn('r') . '.' . $db->qn('groups') . ' AS ' . $db->qn('rel_groups'),
-						  $db->qn('r') . '.' . $db->qn('access') . ' AS ' . $db->qn('rel_access'),
-						  $db->qn('r') . '.' . $db->qn('published') . ' AS ' . $db->qn('rel_published'),
-						  $db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
-						  $db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
-						  $db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
-						  $db->qn('c') . '.' . $db->qn('groups') . ' AS ' . $db->qn('cat_groups'),
-						  $db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
-						  $db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
-						  $db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
-					  ))
-					  ->from($db->qn('#__ars_items') . ' AS ' . $db->qn('i'))
-					  ->innerJoin($db->qn('#__ars_releases') . ' AS ' . $db->qn('r') . ' ON(' .
-						  $db->qn('r') . '.' . $db->qn('id') . '=' . $db->qn('i') . '.' . $db->qn('release_id') . ')')
-					  ->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
-						  $db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
-					  ->where($db->qn('i') . '.' . $db->qn('alias') . ' = ' . $db->q($itemalias));
+			->select([
+				$db->qn('i') . '.*',
+				$db->qn('r') . '.' . $db->qn('category_id'),
+				$db->qn('r') . '.' . $db->qn('version'),
+				$db->qn('r') . '.' . $db->qn('maturity'),
+				$db->qn('r') . '.' . $db->qn('alias') . ' AS ' . $db->qn('rel_alias'),
+				$db->qn('r') . '.' . $db->qn('groups') . ' AS ' . $db->qn('rel_groups'),
+				$db->qn('r') . '.' . $db->qn('access') . ' AS ' . $db->qn('rel_access'),
+				$db->qn('r') . '.' . $db->qn('published') . ' AS ' . $db->qn('rel_published'),
+				$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
+				$db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
+				$db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
+				$db->qn('c') . '.' . $db->qn('groups') . ' AS ' . $db->qn('cat_groups'),
+				$db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
+				$db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
+				$db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
+			])
+			->from($db->qn('#__ars_items') . ' AS ' . $db->qn('i'))
+			->innerJoin($db->qn('#__ars_releases') . ' AS ' . $db->qn('r') . ' ON(' .
+				$db->qn('r') . '.' . $db->qn('id') . '=' . $db->qn('i') . '.' . $db->qn('release_id') . ')')
+			->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
+				$db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
+			->where($db->qn('i') . '.' . $db->qn('alias') . ' = ' . $db->q($itemalias));
 
 		if (!empty($relalias))
 		{
@@ -1617,7 +1616,7 @@ function arsParseRouteRaw(&$segments)
 		if (empty($item))
 		{
 			// JError::raiseError('404', 'Item not found');
-			$query['view'] = 'Categories';
+			$query['view']   = 'Categories';
 			$query['layout'] = 'repository';
 		}
 		else
@@ -1629,10 +1628,10 @@ function arsParseRouteRaw(&$segments)
 	return $query;
 }
 
-function arsParseRouteXml(&$segments)
+function arsParseRouteXml(array &$segments): array
 {
-	$query = array();
-	$query['view'] = 'Update';
+	$query           = [];
+	$query['view']   = 'Update';
 	$query['format'] = 'xml';
 
 	$menus    = AbstractMenu::getInstance('site');
@@ -1652,11 +1651,11 @@ function arsParseRouteXml(&$segments)
 		}
 		else
 		{
-			$view = $uri->getVar('view');
-			$task = $uri->getVar('task');
+			$view   = $uri->getVar('view');
+			$task   = $uri->getVar('task');
 			$layout = $uri->getVar('layout');
 			$format = $uri->getVar('format', 'ini');
-			$id = $uri->getVar('id', null);
+			$id     = $uri->getVar('id', null);
 
 			if (empty($task) && !empty($layout))
 			{
@@ -1681,13 +1680,13 @@ function arsParseRouteXml(&$segments)
 				{
 					case 'category':
 						$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-						$id = $params->get('category', 'components');
+						$id     = $params->get('category', 'components');
 						break;
 
 					case 'ini':
 					case 'stream':
 						$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-						$id = $params->get('streamid', 0);
+						$id     = $params->get('streamid', 0);
 						break;
 				}
 			}
@@ -1698,7 +1697,7 @@ function arsParseRouteXml(&$segments)
 				{
 					case 'stream':
 						$query['task'] = 'stream';
-						$query['id'] = $id;
+						$query['id']   = $id;
 
 						return $query;
 						break;
@@ -1724,7 +1723,7 @@ function arsParseRouteXml(&$segments)
 		return $query;
 	}
 
-	$cat = count($segments) ? array_shift($segments) : null;
+	$cat    = count($segments) ? array_shift($segments) : null;
 	$stream = count($segments) ? array_shift($segments) : null;
 
 	if (empty($cat) && empty($stream))
@@ -1734,17 +1733,17 @@ function arsParseRouteXml(&$segments)
 	elseif (!empty($cat) && empty($stream))
 	{
 		$query['task'] = 'category';
-		$query['id'] = $cat;
+		$query['id']   = $cat;
 	}
 	else
 	{
 		$query['task'] = 'stream';
 		$db            = Factory::getDBO();
 		$dbquery       = $db->getQuery(true)
-					  ->select('*')
-					  ->from($db->qn('#__ars_updatestreams'))
-					  ->where($db->qn('alias') . ' = ' . $db->q($stream))
-					  ->where($db->qn('type') . ' = ' . $db->q($cat));
+			->select('*')
+			->from($db->qn('#__ars_updatestreams'))
+			->where($db->qn('alias') . ' = ' . $db->q($stream))
+			->where($db->qn('type') . ' = ' . $db->q($cat));
 		$db->setQuery($dbquery, 0, 1);
 		$item = $db->loadObject();
 
@@ -1759,12 +1758,12 @@ function arsParseRouteXml(&$segments)
 	return $query;
 }
 
-function arsParseRouteIni(&$segments)
+function arsParseRouteIni(array &$segments): array
 {
-	$query = array();
-	$query['view'] = 'Update';
+	$query           = [];
+	$query['view']   = 'Update';
 	$query['format'] = 'ini';
-	$query['task'] = 'ini';
+	$query['task']   = 'ini';
 
 	$check = array_shift($segments);
 
@@ -1773,17 +1772,17 @@ function arsParseRouteIni(&$segments)
 		return $query;
 	}
 
-	$cat = count($segments) ? array_shift($segments) : null;
+	$cat    = count($segments) ? array_shift($segments) : null;
 	$stream = count($segments) ? array_shift($segments) : null;
 
 	$query['task'] = 'stream';
 
 	$db      = Factory::getDBO();
 	$dbquery = $db->getQuery(true)
-				  ->select('*')
-				  ->from($db->qn('#__ars_updatestreams'))
-				  ->where($db->qn('alias') . ' = ' . $db->q($stream))
-				  ->where($db->qn('type') . ' = ' . $db->q($cat));
+		->select('*')
+		->from($db->qn('#__ars_updatestreams'))
+		->where($db->qn('alias') . ' = ' . $db->q($stream))
+		->where($db->qn('type') . ' = ' . $db->q($cat));
 	$db->setQuery($dbquery, 0, 1);
 	$item = $db->loadObject();
 
