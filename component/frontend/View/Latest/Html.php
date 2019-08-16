@@ -76,7 +76,5 @@ class Html extends BaseView
 		$this->cparams = ComponentHelper::getParams('com_ars');
 		$this->Itemid  = $this->input->getInt('Itemid', 0);
 		$this->menu    = $app->getMenu()->getActive();
-
-		return true;
 	}
 }

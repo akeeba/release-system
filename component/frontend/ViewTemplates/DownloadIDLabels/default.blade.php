@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
-use Joomla\Uri\Uri;
+use Joomla\CMS\Uri\Uri;
 
 /** @var \Akeeba\ReleaseSystem\Site\View\DownloadIDLabels\Html $this */
 
@@ -109,7 +109,7 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
                         <span class="akion-refresh"></span>
                     </a>
                     @unless($item->primary)
-                        <a href="@route::_('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
+                        <a href="@route('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
                            class="akeeba-btn--red--small" title="@lang('COM_ARS_DLIDLABELS_FIELD_TRASH')">
                         <span class="akion-trash-b"></span>
                     </a>

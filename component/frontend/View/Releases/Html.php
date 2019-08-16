@@ -95,7 +95,5 @@ class Html extends BaseView
 		$this->menu = $app->getMenu()->getActive();
 
 		$this->addJavascriptFile('media://fef/js/tabs.min.js');
-
-		return true;
 	}
 }
