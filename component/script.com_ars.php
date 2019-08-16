@@ -48,13 +48,33 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 	protected $minimumJoomlaVersion = '3.9.0';
 
 	/**
+	 * The list of obsolete extra modules and plugins to uninstall on component upgrade / installation.
+	 *
+	 * @var array
+	 */
+	protected $uninstallation_queue = [
+		// modules => { (folder) => { (module) }* }*
+		'modules' => [
+			'admin' => [],
+			'site'  => [],
+		],
+		// plugins => { (folder) => { (element) }* }*
+		'plugins' => [
+			'ars' => [
+				'bleedingedgediff',
+				'bleedingedgematurity',
+			],
+		],
+	];
+
+	/**
 	 * Obsolete files and folders to remove from both paid and free releases. This is used when you refactor code and
 	 * some files inevitably become obsolete and need to be removed.
 	 *
 	 * @var   array
 	 */
-	protected $removeFilesAllVersions = array(
-		'files'   => array(
+	protected $removeFilesAllVersions = [
+		'files'   => [
 			// Moving to FOF 3
 			'cache/com_ars.updates.php',
 			'cache/com_ars.updates.ini',
@@ -86,37 +106,37 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'components/com_ars/Model/ExtensionUpdates.php',
 			'cli/ars-update',
 
-            // Moving to FEF
-            'administrator/components/com_ars/Controller/Upload.php',
-            'administrator/components/com_ars/Model/Upload.php',
-            'administrator/components/com_ars/View/views.ini',
+			// Moving to FEF
+			'administrator/components/com_ars/Controller/Upload.php',
+			'administrator/components/com_ars/Model/Upload.php',
+			'administrator/components/com_ars/View/views.ini',
 			'administrator/components/com_ars/View/AutoDescriptions/tmpl/form.default.xml',
-            'administrator/components/com_ars/View/AutoDescriptions/tmpl/form.form.xml',
+			'administrator/components/com_ars/View/AutoDescriptions/tmpl/form.form.xml',
 			'administrator/components/com_ars/View/Categories/tmpl/form.form.xml',
 			'administrator/components/com_ars/View/Categories/tmpl/form.default.xml',
-            'administrator/components/com_ars/View/DownloadIDLabels/tmpl/form.default.xml',
-            'administrator/components/com_ars/View/DownloadIDLabels/tmpl/form.form.xml',
-            'administrator/components/com_ars/View/DownloadIDLabels/tmpl/default_dlid.php',
-            'administrator/components/com_ars/View/Environments/tmpl/form.default.xml',
-            'administrator/components/com_ars/View/Environments/tmpl/form.form.xml',
-            'administrator/components/com_ars/View/Items/tmpl/form.form.xml',
-            'administrator/components/com_ars/View/Items/tmpl/default_environments.php',
-            'administrator/components/com_ars/View/Items/tmpl/form.default.xml',
-            'administrator/components/com_ars/View/Items/tmpl/form.modal.xml',
-            'administrator/components/com_ars/View/Logs/tmpl/form.default.xml',
-            'administrator/components/com_ars/View/Logs/tmpl/default_item.php',
-            'administrator/components/com_ars/View/Releases/tmpl/form.form.xml',
-            'administrator/components/com_ars/View/Releases/tmpl/form.default.xml',
-            'administrator/components/com_ars/View/UpdateStreams/tmpl/default_links.php',
-            'administrator/components/com_ars/View/UpdateStreams/tmpl/form.default.xml',
-            'administrator/components/com_ars/View/UpdateStreams/tmpl/form.form.xml',
-            'administrator/components/com_ars/View/VisualGroups/tmpl/form.form.xml',
-            'administrator/components/com_ars/View/VisualGroups/tmpl/form.default.xml',
+			'administrator/components/com_ars/View/DownloadIDLabels/tmpl/form.default.xml',
+			'administrator/components/com_ars/View/DownloadIDLabels/tmpl/form.form.xml',
+			'administrator/components/com_ars/View/DownloadIDLabels/tmpl/default_dlid.php',
+			'administrator/components/com_ars/View/Environments/tmpl/form.default.xml',
+			'administrator/components/com_ars/View/Environments/tmpl/form.form.xml',
+			'administrator/components/com_ars/View/Items/tmpl/form.form.xml',
+			'administrator/components/com_ars/View/Items/tmpl/default_environments.php',
+			'administrator/components/com_ars/View/Items/tmpl/form.default.xml',
+			'administrator/components/com_ars/View/Items/tmpl/form.modal.xml',
+			'administrator/components/com_ars/View/Logs/tmpl/form.default.xml',
+			'administrator/components/com_ars/View/Logs/tmpl/default_item.php',
+			'administrator/components/com_ars/View/Releases/tmpl/form.form.xml',
+			'administrator/components/com_ars/View/Releases/tmpl/form.default.xml',
+			'administrator/components/com_ars/View/UpdateStreams/tmpl/default_links.php',
+			'administrator/components/com_ars/View/UpdateStreams/tmpl/form.default.xml',
+			'administrator/components/com_ars/View/UpdateStreams/tmpl/form.form.xml',
+			'administrator/components/com_ars/View/VisualGroups/tmpl/form.form.xml',
+			'administrator/components/com_ars/View/VisualGroups/tmpl/form.default.xml',
 
-            'components/com_ars/View/DownloadIDLabels/Form.php',
-            'components/com_ars/View/DownloadIDLabels/tmpl/form.form.xml',
-            'components/com_ars/View/Items/Form.php',
-            'components/com_ars/View/Items/tmpl/form.modal.xml',
+			'components/com_ars/View/DownloadIDLabels/Form.php',
+			'components/com_ars/View/DownloadIDLabels/tmpl/form.form.xml',
+			'components/com_ars/View/Items/Form.php',
+			'components/com_ars/View/Items/tmpl/form.modal.xml',
 
 			// Version 5 -- Rolling internal release
 			'administrator/components/com_ars/Helper/ComponentParams.php',
@@ -136,8 +156,8 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'components/com_ars/View/Update/tmpl/jed.php',
 
 			'components/com_ars/views/Update/tmpl/jed.xml',
-		),
-		'folders' => array(
+		],
+		'folders' => [
 			// Moving to FOF 3
 			'administrator/components/com_ars/assets/geoip',
 			'administrator/components/com_ars/assets/images',
@@ -171,8 +191,8 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'media/com_ars/theme',
 
 			// Moving to FEF
-            'administrator/components/com_ars/Form',
-            'administrator/components/com_ars/View/Upload',
+			'administrator/components/com_ars/Form',
+			'administrator/components/com_ars/View/Upload',
 
 			// Environment icons
 			'media/com_ars/environments',
@@ -192,8 +212,8 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'administrator/components/com_ars/Model/SubscriptionIntegration',
 
 			'administrator/components/com_ars/View/VisualGroups',
-		)
-	);
+		],
+	];
 
 	public function uninstall($parent)
 	{
@@ -223,7 +243,7 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 		<h1>Akeeba Release System</h1>
 
 		<img src="../media/com_ars/icons/ars_logo_48.png" width="48" height="48" alt="Akeeba Release System"
-			 align="right"/>
+			 align="right" />
 
 		<h2>Welcome to Akeeba Release System!</h2>
 
@@ -247,11 +267,11 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 	{
 		$db            = Factory::getDbo();
 		$query         = $db->getQuery(true)
-					->select('COUNT(*)')
-					->from($db->qn('#__extensions'))
-					->where($db->qn('type') . ' = ' . $db->q('component'))
-					->where($db->qn('element') . ' = ' . $db->q('com_poweradmin'))
-					->where($db->qn('enabled') . ' = ' . $db->q('1'));
+			->select('COUNT(*)')
+			->from($db->qn('#__extensions'))
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->where($db->qn('element') . ' = ' . $db->q('com_poweradmin'))
+			->where($db->qn('enabled') . ' = ' . $db->q('1'));
 		$hasPowerAdmin = $db->setQuery($query)->loadResult();
 
 		if (!$hasPowerAdmin)
@@ -259,13 +279,13 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			return;
 		}
 
-		$query = $db->getQuery(true)
-					->select('manifest_cache')
-					->from($db->qn('#__extensions'))
-					->where($db->qn('type') . ' = ' . $db->q('component'))
-					->where($db->qn('element') . ' = ' . $db->q('com_poweradmin'))
-					->where($db->qn('enabled') . ' = ' . $db->q('1'));
-		$paramsJson = $db->setQuery($query)->loadResult();
+		$query         = $db->getQuery(true)
+			->select('manifest_cache')
+			->from($db->qn('#__extensions'))
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->where($db->qn('element') . ' = ' . $db->q('com_poweradmin'))
+			->where($db->qn('enabled') . ' = ' . $db->q('1'));
+		$paramsJson    = $db->setQuery($query)->loadResult();
 		$jsnPAManifest = new JRegistry();
 		$jsnPAManifest->loadString($paramsJson, 'JSON');
 		$version = $jsnPAManifest->get('version', '0.0.0');
@@ -297,17 +317,17 @@ HTML;
 	 * Removes obsolete update sites created for the component (we are now using an update site for the package, not the
 	 * component).
 	 *
-	 * @param   JInstallerAdapterComponent  $parent  The parent installer
+	 * @param JInstallerAdapterComponent $parent The parent installer
 	 */
 	protected function removeObsoleteUpdateSites($parent)
 	{
 		$db = $parent->getParent()->getDBO();
 
 		$query = $db->getQuery(true)
-					->select($db->qn('extension_id'))
-					->from($db->qn('#__extensions'))
-					->where($db->qn('type') . ' = ' . $db->q('component'))
-					->where($db->qn('name') . ' = ' . $db->q($this->componentName));
+			->select($db->qn('extension_id'))
+			->from($db->qn('#__extensions'))
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->where($db->qn('name') . ' = ' . $db->q($this->componentName));
 		$db->setQuery($query);
 		$extensionId = $db->loadResult();
 
@@ -317,9 +337,9 @@ HTML;
 		}
 
 		$query = $db->getQuery(true)
-					->select($db->qn('update_site_id'))
-					->from($db->qn('#__update_sites_extensions'))
-					->where($db->qn('extension_id') . ' = ' . $db->q($extensionId));
+			->select($db->qn('update_site_id'))
+			->from($db->qn('#__update_sites_extensions'))
+			->where($db->qn('extension_id') . ' = ' . $db->q($extensionId));
 		$db->setQuery($query);
 
 		$ids = $db->loadColumn(0);
@@ -332,8 +352,8 @@ HTML;
 		foreach ($ids as $id)
 		{
 			$query = $db->getQuery(true)
-						->delete($db->qn('#__update_sites'))
-						->where($db->qn('update_site_id') . ' = ' . $db->q($id));
+				->delete($db->qn('#__update_sites'))
+				->where($db->qn('update_site_id') . ' = ' . $db->q($id));
 			$db->setQuery($query);
 
 			try
