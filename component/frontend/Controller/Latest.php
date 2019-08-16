@@ -55,7 +55,7 @@ class Latest extends Controller
 		parent::display($cachable, $urlparams, $tpl);
 	}
 
-	public function execute($task): void
+	public function execute($task): ?bool
 	{
 		$task         = 'main';
 		$this->layout = 'latest';

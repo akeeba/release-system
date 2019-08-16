@@ -22,7 +22,7 @@ use Joomla\CMS\Language\Text;
 
 class Item extends DataController
 {
-	public function execute($task): void
+	public function execute($task): ?bool
 	{
 		// If we're using the JSON API we need a manager
 		$format = $this->input->getCmd('format', 'html');

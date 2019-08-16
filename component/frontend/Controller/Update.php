@@ -28,7 +28,7 @@ class Update extends Controller
 	 *
 	 * @return  void
 	 */
-	public function execute($task): void
+	public function execute($task): ?bool
 	{
 		$viewType = $this->container->platform->getDocument()->getType();
 		$task     = $this->input->getCmd('task', '');
