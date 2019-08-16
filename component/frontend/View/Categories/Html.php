@@ -14,6 +14,7 @@ use Akeeba\ReleaseSystem\Site\Model\Categories;
 use FOF30\Model\DataModel\Collection;
 use FOF30\View\DataView\Html as BaseView;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Pagination\Pagination;
 
 class Html extends BaseView
@@ -39,29 +40,31 @@ class Html extends BaseView
 	/** @var  object  The active menu item */
 	public $menu;
 
+	public $customHtmlFile;
+
 	public function onBeforeBrowse($tpl = null): void
 	{
-		// Prevent phpStorm's whining...
-		if ($tpl) {}
-
 		// Load the model
 		/** @var Categories $model */
 		$model = $this->getModel();
+		/** @var \JApplicationSite $app */
+		$app = Factory::getApplication();
 
 		// Assign data to the view, part 1 (we need this later on)
-		$this->items = $model->get(true)->filter(function ($item)
-		{
+		$this->items = $model->get(true)->filter(function ($item) {
 			return Filter::filterItem($item, true);
 		});
 
-		// Add RSS links
-		/** @var \JApplicationSite $app */
-		$app = Factory::getApplication();
-		/** @var \JRegistry $params */
-		$params = $app->getParams('com_ars');
+		// Do I have a custom HTML file?
+		$this->customHtmlFile = JPATH_THEMES . '/' . $app->getTemplate() . '/html/com_ars/Categories/repo.html';
+
+		if (!File::exists($this->customHtmlFile))
+		{
+			$this->customHtmlFile = null;
+		}
 
 		// Get the ordering
-		$this->order = $model->getState('filter_order', 'id', 'cmd');
+		$this->order     = $model->getState('filter_order', 'id', 'cmd');
 		$this->order_Dir = $model->getState('filter_order_Dir', 'DESC', 'cmd');
 
 		// Assign data to the view
@@ -70,8 +73,6 @@ class Html extends BaseView
 		// Pass page params
 		$this->params = $app->getParams();
 		$this->Itemid = $this->input->getInt('Itemid', 0);
-		$this->menu = $app->getMenu()->getActive();
-
-		return true;
+		$this->menu   = $app->getMenu()->getActive();
 	}
 }

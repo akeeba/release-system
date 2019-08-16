@@ -19,6 +19,8 @@ defined('_JEXEC') or die;
 
 	@if($this->params->get('grouping', 'normal') == 'none')
 		@include('site:com_ars/Categories/generic', ['section' => 'all', 'title' => ''])
+	@elseif (!empty($this->customHtmlFile))
+		@include('site:com_ars/Categories/customrepo', ['renderSection' => 'all', 'title' => ''])
 	@else
 		@include('site:com_ars/Categories/generic', ['section' => 'normal', 'title' => 'ARS_CATEGORY_NORMAL'])
 		@include('site:com_ars/Categories/generic', ['section' => 'bleedingedge', 'title' => 'ARS_CATEGORY_BLEEDINGEDGE'])
