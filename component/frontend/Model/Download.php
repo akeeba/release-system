@@ -14,6 +14,8 @@ use FOF30\Model\Model;
 use Joomla\CMS\Authentication\Authentication as JAuthentication;
 use Joomla\CMS\Authentication\AuthenticationResponse as JAuthenticationResponse;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\User\UserHelper;
 
@@ -44,11 +46,11 @@ class Download extends Model
 
 		$folder = $item->release->category->directory;
 
-		if (!\JFolder::exists($folder))
+		if (!Folder::exists($folder))
 		{
 			$folder = JPATH_ROOT . '/' . $folder;
 
-			if (!\JFolder::exists($folder))
+			if (!Folder::exists($folder))
 			{
 				$this->logoutUser();
 
@@ -58,7 +60,7 @@ class Download extends Model
 
 		$filename = $folder . '/' . $item->filename;
 
-		if (!\JFile::exists($filename))
+		if (!File::exists($filename))
 		{
 			$this->logoutUser();
 

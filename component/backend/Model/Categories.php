@@ -15,6 +15,7 @@ use FOF30\Model\DataModel;
 use FOF30\Model\Mixin\Assertions;
 use FOF30\Model\Mixin\ImplodedArrays;
 use JDatabaseQuery;
+use Joomla\CMS\Filesystem\Folder;
 
 /**
  * Model for the download Categories
@@ -305,11 +306,11 @@ class Categories extends DataModel
 
 		$this->assertNotEmpty($check, 'COM_ARS_CATEGORY_ERR_NEEDS_DIRECTORY');
 
-		if (!\JFolder::exists($this->directory))
+		if (!Folder::exists($this->directory))
 		{
 			$directory = JPATH_SITE . '/' . $this->directory;
 
-			$this->assert(\JFolder::exists($directory), 'COM_ARS_CATEGORY_ERR_DIRECTORY_NOT_EXISTS');
+			$this->assert(Folder::exists($directory), 'COM_ARS_CATEGORY_ERR_DIRECTORY_NOT_EXISTS');
 		}
 
 		// Automaticaly fix the type

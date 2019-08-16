@@ -15,6 +15,7 @@ use FOF30\Model\Model;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Plugin\PluginHelper;
 
@@ -135,7 +136,7 @@ class BleedingEdge extends Model
 
 				if ($mustScanFolder)
 				{
-					$exists = \JFolder::exists($folder);
+					$exists = Folder::exists($folder);
 				}
 
 				if (!$exists)
@@ -167,7 +168,7 @@ class BleedingEdge extends Model
 
 			$hasChangelog = false;
 
-			if (\JFile::exists($changelog))
+			if (File::exists($changelog))
 			{
 				$hasChangelog    = true;
 				$first_changelog = @file_get_contents($changelog);
@@ -187,7 +188,7 @@ class BleedingEdge extends Model
 		}
 
 		// Get a list of all folders
-		$allFolders = \JFolder::folders($this->folder);
+		$allFolders = Folder::folders($this->folder);
 
 		if (!empty($allFolders))
 		{
@@ -203,7 +204,7 @@ class BleedingEdge extends Model
 					$hasChangelog   = false;
 					$this_changelog = '';
 
-					if (\JFile::exists($changelog))
+					if (File::exists($changelog))
 					{
 						$hasChangelog   = true;
 						$this_changelog = @file_get_contents($changelog);
@@ -343,7 +344,7 @@ class BleedingEdge extends Model
 			$hasChangelog   = false;
 			$this_changelog = '';
 
-			if (\JFile::exists($changelog))
+			if (File::exists($changelog))
 			{
 				$hasChangelog   = true;
 				$this_changelog = @file_get_contents($changelog);
@@ -363,7 +364,7 @@ class BleedingEdge extends Model
 
 		$known_items = [];
 
-		$files = \JFolder::files($folder);
+		$files = Folder::files($folder);
 
 		if ($release->items->count())
 		{
@@ -565,7 +566,7 @@ class BleedingEdge extends Model
 		{
 			$folderCheck = $folder . '/' . $candidate;
 
-			if (\JFolder::exists($folderCheck))
+			if (Folder::exists($folderCheck))
 			{
 				return $candidate;
 			}

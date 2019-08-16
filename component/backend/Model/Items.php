@@ -15,6 +15,8 @@ use FOF30\Model\Mixin\Assertions;
 use FOF30\Model\Mixin\ImplodedArrays;
 use FOF30\Model\Mixin\JsonData;
 use JDatabaseQuery;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Installer\InstallerHelper;
@@ -754,11 +756,11 @@ class Items extends DataModel
 
 				if (!empty($folder))
 				{
-					if (!\JFolder::exists($folder))
+					if (!Folder::exists($folder))
 					{
 						$folder = JPATH_ROOT . '/' . $folder;
 
-						if (!\JFolder::exists($folder))
+						if (!Folder::exists($folder))
 						{
 							$folder = null;
 						}
@@ -804,7 +806,7 @@ class Items extends DataModel
 
 					if ($data !== false)
 					{
-						$result = \JFile::write($target, $data);
+						$result = File::write($target, $data);
 					}
 
 					curl_close($process);
@@ -820,7 +822,7 @@ class Items extends DataModel
 
 			if (!empty($filename) && is_file($filename))
 			{
-				if (!\JFile::exists($filename))
+				if (!File::exists($filename))
 				{
 					$filename = null;
 				}
@@ -885,7 +887,7 @@ class Items extends DataModel
 			{
 				if (!@unlink($filename))
 				{
-					\JFile::delete($filename);
+					File::delete($filename);
 				}
 			}
 		}
@@ -1021,11 +1023,11 @@ class Items extends DataModel
 		// Get which directory to use
 		$directory = $release->category->directory;
 
-		if (!\JFolder::exists($directory))
+		if (!Folder::exists($directory))
 		{
 			$directory = JPATH_ROOT . '/' . $directory;
 
-			if (!\JFolder::exists($directory))
+			if (!Folder::exists($directory))
 			{
 				$directory = null;
 			}

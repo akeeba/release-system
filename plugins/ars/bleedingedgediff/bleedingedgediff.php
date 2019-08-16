@@ -7,6 +7,7 @@
 
 // Protect from unauthorized access
 use FOF30\Container\Container;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Plugin\CMSPlugin;
 
 defined('_JEXEC') or die();
@@ -149,10 +150,10 @@ class plgArsBleedingedgediff extends CMSPlugin
 
 		$folder = $category->directory;
 
-		if (!JFolder::exists($folder))
+		if (!Folder::exists($folder))
 		{
 			$folder = JPATH_ROOT . '/' . $folder;
-			if (!JFolder::exists($folder))
+			if (!Folder::exists($folder))
 			{
 				return;
 			}
