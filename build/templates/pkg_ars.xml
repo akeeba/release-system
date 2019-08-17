@@ -21,10 +21,6 @@
         <file type="module" client="site" id="mod_arsdlid">mod_arsdlid.zip</file>
         <file type="module" client="site" id="mod_arsdownloads">mod_arsdownloads.zip</file>
 
-        <!-- Plugins: ars -->
-        <file type="plugin" group="ars" id="bleedingedgediff">plg_ars_bleedingedgediff.zip</file>
-        <file type="plugin" group="ars" id="bleedingedgematurity">plg_ars_bleedingedgematurity.zip</file>
-
         <!-- Plugins: content -->
         <file type="plugin" group="content" id="arsdlid">plg_content_arsdlid.zip</file>
         <file type="plugin" group="content" id="arslatest">plg_content_arslatest.zip</file>

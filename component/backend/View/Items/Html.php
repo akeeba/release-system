@@ -10,6 +10,7 @@ namespace Akeeba\ReleaseSystem\Admin\View\Items;
 defined('_JEXEC') or die;
 
 use FOF30\View\DataView\Html as BaseView;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 class Html extends BaseView
@@ -58,5 +59,35 @@ class Html extends BaseView
 			'hits'      => Text::_('JGLOBAL_HITS'),
 			'language'  => Text::_('JFIELD_LANGUAGE_LABEL'),
 		);
+
+		if ($this->layout == 'modal')
+		{
+			$function = $this->input->getCmd('function', 'arsSelectItem');
+
+			$js = <<< JS
+function arsItemsProxy(id, title)
+{
+    if (window.parent)
+    {
+        window.parent.{$function}(id, title);
+    }
+}
+
+JS;
+
+			$this->addJavascriptInline($js);
+
+		}
+	}
+
+	protected function onBeforeEdit(): void
+	{
+		parent::onBeforeEdit();
+
+		// Push options to the page's JavaScript
+		$jDocument = Factory::getDocument();
+		$jDocument->addScriptOptions('csrf.token', $this->container->platform->getToken(true), false);
+		$jDocument->addScriptOptions('ars.item_id', $this->item->getId(), false);
+		$jDocument->addScriptOptions('ars.item_filename', $this->item->getFieldValue('filename', ''), false);
 	}
 }

@@ -34,9 +34,9 @@ defined('_JEXEC') or die;
 
 @section('browse-table-header')
 	<tr>
-		<td width="8%">
+		<th width="8%">
 			@sortgrid('ordering', '<i class="icon-menu-2"></i>')
-		</td>
+		</th>
 		<th width="32">
 			@jhtml('FEFHelper.browse.checkall')
 		</th>

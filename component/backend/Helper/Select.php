@@ -442,7 +442,7 @@ HTML;
 
 		if (!$items->count())
 		{
-			return $options;
+			return '';
 		}
 
 		if (empty($category_id))
