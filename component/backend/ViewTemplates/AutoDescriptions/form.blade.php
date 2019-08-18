@@ -19,6 +19,7 @@ HTMLHelper::_('formbehavior.chosen', '#environments');
 /** @var \Akeeba\ReleaseSystem\Admin\Model\AutoDescriptions $item */
 $item = $this->getItem();
 ?>
+@jhtml('formbehavior.chosen')
 
 @extends('admin:com_ars/Common/edit')
 
@@ -48,7 +49,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="environments">@lang('LBL_ITEMS_ENVIRONMENTS')</label>
 
-                {{ Select::environments('environments', $item->environments, ['multiple' => 'multiple'], 'environments[]') }}
+                {{ Select::environments('environments', $item->environments, ['multiple' => 'multiple', 'class' => 'advancedSelect'], 'environments[]') }}
             </div>
 
             <div class="akeeba-form-group">

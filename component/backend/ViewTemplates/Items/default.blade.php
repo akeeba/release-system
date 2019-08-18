@@ -18,15 +18,17 @@ $user = $this->getContainer()->platform->getUser();
 $modal = isset($modal) ? boolval($modal) : false;
 
 ?>
+@jhtml('formbehavior.chosen')
+
 @extends('admin:com_ars/Common/browse')
 
 @section('browse-filters')
 	<div class="akeeba-filter-element akeeba-form-group">
-		{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()'], false) }}
+		{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect'], false) }}
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
-		{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::releases($this->filters['release'], 'release', ['onchange' => 'document.adminForm.submit()']) }}
+		{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::releases($this->filters['release'], 'release', ['onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect']) }}
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
@@ -38,7 +40,7 @@ $modal = isset($modal) ? boolval($modal) : false;
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
-		{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel('access', $this->filters['access'], ['onchange' => 'document.adminForm.submit()']) }}
+		{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel('access', $this->filters['access'], ['onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect']) }}
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">

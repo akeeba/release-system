@@ -12,6 +12,8 @@ use Akeeba\ReleaseSystem\Admin\Helper\Html;use Akeeba\ReleaseSystem\Admin\Helper
 defined('_JEXEC') or die;
 
 ?>
+@jhtml('formbehavior.chosen')
+
 @extends('admin:com_ars/Common/browse')
 
 @section('browse-filters')
@@ -20,7 +22,9 @@ defined('_JEXEC') or die;
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
-		<?php echo Select::accessLevel('access', $this->filters['access'], ['onchange' => 'document.adminForm.submit()']);?>
+		<?php echo Select::accessLevel('access', $this->filters['access'], [
+				'onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect'
+		]);?>
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">

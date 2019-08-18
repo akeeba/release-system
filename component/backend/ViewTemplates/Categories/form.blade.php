@@ -18,6 +18,7 @@ defined('_JEXEC') or die;
 /** @var \Akeeba\ReleaseSystem\Admin\Model\Categories $item */
 $item = $this->getItem();
 ?>
+@jhtml('formbehavior.chosen')
 
 @extends('admin:com_ars/Common/edit')
 
@@ -60,7 +61,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="access">@lang('JFIELD_ACCESS_LABEL')</label>
 
-                {{ Select::accessLevel('access', $item->access) }}
+                {{ Select::accessLevel('access', $item->access, ['class' => 'advancedSelect']) }}
             </div>
 
             <div class="akeeba-form-group">
@@ -72,7 +73,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="groups">@lang('COM_ARS_COMMON_CATEGORIES_GROUPS_LABEL')</label>
 
-                {{ Select::subscriptionGroups('groups[]', $item->groups, array('multiple' => true)) }}
+                {{ Select::subscriptionGroups('groups[]', $item->groups, array('multiple' => true, 'class' => 'advancedSelect')) }}
             </div>
 
             <div class="akeeba-form-group">

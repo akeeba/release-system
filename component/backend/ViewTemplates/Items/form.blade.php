@@ -28,7 +28,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="release_id">@lang('LBL_ITEMS_RELEASE')</label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::releases($item->release_id, 'release_id') }}
+                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::releases($item->release_id, 'release_id', ['class' => 'advancedSelect']) }}
             </div>
 
             <div class="akeeba-form-group">
@@ -144,7 +144,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="updatestream">@lang('LBL_ITEMS_UPDATESTREAM')</label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::updatestreams('updatestream', $item->updatestream) }}
+                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::updatestreams('updatestream', $item->updatestream, ['class' => 'advancedSelect']) }}
             </div>
 
             <div class="akeeba-form-group">
