@@ -44,7 +44,7 @@ $modal = isset($modal) ? boolval($modal) : false;
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
-		{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::published($this->filters['published'], 'published', ['onchange' => 'document.adminForm.submit()']) }}
+        {{ \FOF30\Utils\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
