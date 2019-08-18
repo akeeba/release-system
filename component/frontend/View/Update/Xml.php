@@ -15,19 +15,25 @@ use Joomla\CMS\Component\ComponentHelper as JComponentHelper;
 
 class Xml extends Raw
 {
-	public $items = array();
+	use Common;
+
+	public $items = [];
 
 	public $published = false;
 
 	public $updates_name = '';
+
 	public $updates_desc = '';
+
 	public $category = 0;
+
 	public $envs = [];
+
 	public $showChecksums = false;
 
 	public function display($tpl = null): bool
 	{
-		$task     = $this->getModel()->getState('task', 'all');
+		$task = $this->getModel()->getState('task', 'all');
 
 		if (!in_array($task, ['all', 'category', 'stream', 'jed']))
 		{
@@ -41,7 +47,9 @@ class Xml extends Raw
 
 	protected function onBeforeAll(): void
 	{
-		$params             = JComponentHelper::getParams('com_ars');
+		$this->commonSetup();
+
+		$params = JComponentHelper::getParams('com_ars');
 
 		$this->updates_name = $params->get('updates_name', '');
 		$this->updates_desc = $params->get('updates_desc', '');
@@ -51,6 +59,8 @@ class Xml extends Raw
 
 	protected function onBeforeCategory(): void
 	{
+		$this->commonSetup();
+
 		$category       = $this->input->getCmd('id', '');
 		$this->category = $category;
 
@@ -59,10 +69,12 @@ class Xml extends Raw
 
 	protected function onBeforeStream(): void
 	{
+		$this->commonSetup();
+
 		/** @var Environments $envmodel */
 		$envmodel = $this->container->factory->model('Environments')->tmpInstance();
 		$rawenvs  = $envmodel->get(true);
-		$envs     = array();
+		$envs     = [];
 
 		if ($rawenvs->count())
 		{

@@ -128,7 +128,7 @@ class Update extends Controller
 
 		$this->input->set('task', $task);
 
-		parent::execute($task);
+		$ret = parent::execute($task);
 
 		/**
 		 * If the CMS application is reporting that the requested rendering format was HTML this was the result of a
@@ -140,6 +140,8 @@ class Update extends Controller
 		{
 			$this->container->platform->closeApplication();
 		}
+
+		return $ret;
 	}
 
 	/**

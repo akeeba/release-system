@@ -5,13 +5,21 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Html;use Akeeba\ReleaseSystem\Admin\Helper\Select;use FOF30\Utils\FEFHelper\Html as FEFHtml;use Joomla\CMS\HTML\HTMLHelper;use Joomla\CMS\Language\Text;use Joomla\CMS\Uri\Uri;
+use Akeeba\ReleaseSystem\Admin\Helper\Html;
+use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use FOF30\Utils\FEFHelper\Html as FEFHtml;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die();
 
 /** @var Akeeba\ReleaseSystem\Admin\View\UpdateStreams\Html $this */
 
 $i = 0;
+
+$siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
+
 ?>
 @jhtml('formbehavior.chosen')
 
@@ -102,13 +110,13 @@ $i = 0;
                 {{{ $row->element }}}
             </td>
             <td>
-                <a href="{{ \Joomla\CMS\Uri\Uri::base() }}index.php?option=com_ars&view=update&format=ini&id={{{ $row->id }}}"
+                <a href="{{ $siteRoot }}index.php?option=com_ars&view=update&format=ini&id={{{ $row->id }}}"
                    target="_blank">INI</a>
                 &bull;
-                <a href="{{ \Joomla\CMS\Uri\Uri::base() }}index.php?option=com_ars&view=update&task=stream&format=xml&id={{{ $row->id }}}"
+                <a href="{{ $siteRoot }}index.php?option=com_ars&view=update&task=stream&format=xml&id={{{ $row->id }}}"
                    target="_blank">XML</a>
                 &bull;
-                <a href="{{ \Joomla\CMS\Uri\Uri::base() }}index.php?option=com_ars&view=update&task=download&format=raw&id={{{ $row->id }}}"
+                <a href="{{ $siteRoot }}index.php?option=com_ars&view=update&task=download&format=raw&id={{{ $row->id }}}"
                    target="_blank">D/L</a>
 
             </td>

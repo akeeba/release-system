@@ -134,7 +134,7 @@ class Update extends Model
 		return $ret;
 	}
 
-	public function getPublished(int $id): ?array
+	public function getPublished(int $id): ?string
 	{
 		$db = $this->container->db;
 

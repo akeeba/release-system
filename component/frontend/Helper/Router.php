@@ -15,13 +15,13 @@ use Joomla\CMS\Uri\Uri as JUri;
 
 class Router
 {
-	static function _(string $plainURL): string
+	static function _(string $plainURL, $xhtml = true, $tls = JRoute::TLS_IGNORE, $absolute = false): string
 	{
 		$container = Container::getInstance('com_ars');
 		$config    = $container->platform->getConfig();
 		$addSuffix = $config->get('sef_suffix', 0) == 1;
 
-		$url = JRoute::_($plainURL);
+		$url = JRoute::_($plainURL, $xhtml, $tls, $absolute);
 
 		if ($addSuffix)
 		{
@@ -29,7 +29,7 @@ class Router
 			$format = $uri->getVar('format', 'html');
 			$format = strtolower($format);
 
-			if (!in_array($format, ['html', 'raw']))
+			if (!in_array($format, ['html', 'raw', 'xml']))
 			{
 				// Save any query parameters
 				if (strstr($url, '?'))
