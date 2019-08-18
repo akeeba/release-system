@@ -27,8 +27,13 @@ abstract class Filter
 	 *
 	 * @return  bool True if we should add it to the list, false otherwise
 	 */
-	public static function filterItem(DataModel $source, bool $displayUnauthorized = false, ?array $filterByViewLevels = null): bool
+	public static function filterItem(?DataModel $source, bool $displayUnauthorized = false, ?array $filterByViewLevels = null): bool
 	{
+		if (is_null($source))
+		{
+			return false;
+		}
+
 		static $myGroups = null;
 
 		if (!is_object($source) || !($source instanceof DataModel))

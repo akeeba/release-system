@@ -5,7 +5,6 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
@@ -20,27 +19,18 @@ $url       = Route::_('index.php?option=com_ars&view=DownloadIDLabel&task=' . $t
                  . '&id=' . $item->ars_dlidlabel_id
                  . '&' . $this->container->platform->getToken(true) . '=1'
                  . '&returnurl=' . $returnUrl . $itemId);
+?>
 
-if ($item->enabled)
-{
-	$btnStyle = 'akeeba-btn--green--small';
-	$btnIcon  = 'akion-checkmark';
-	$btnTitle = Text::_('JPUBLISHED');
-}
-else
-{
-	$btnStyle = 'akeeba-btn--red--small';
-	$btnIcon  = 'akion-close';
-	$btnTitle = Text::_('JUNPUBLISHED');
-}
-
-if ($item->primary): ?>
-	<a class="akeeba-btn--grey--small" href="#" disabled="disabled" title="<?php echo $btnTitle ?>">
+@if ($item->primary)
+    <a class="akeeba-btn--grey--small" href="#" disabled="disabled" title="@lang('JPUBLISHED')">
+        <span class="akion-checkmark"></span>
+    </a>
+@elseif($item->enabled)
+    <a class="akeeba-btn--green--small" title="@lang('JPUBLISHED')" href="{{ $url }}">
 		<span class="akion-checkmark"></span>
 	</a>
-<?php else: ?>
-	<a class="btn btn-default <?php echo $btnStyle ?>" href="<?php echo $url ?>" title="<?php echo $btnTitle ?>">
-		<span class="<?php echo $btnIcon?>"></span>
+@else
+    <a class="akeeba-btn--red--small" title="@lang('JUNPUBLISHED')" href="{{ $url }}">
+        <span class="akion-close"></span>
 	</a>
-<?php
-endif;
+@endif

@@ -84,7 +84,7 @@ $this->getContainer()->template->addJSInline($js);
 	@unless(empty($item->environments) || !$this->params->get('show_environments',1))
 		<p>
 			@foreach($item->environments as $environment)
-				{{ Select::environmentIcon($environment) }}
+				{{ Select::environmentIcon((int) $environment) }}
 			@endforeach
 		</p>
 	@endunless
@@ -191,7 +191,7 @@ $this->getContainer()->template->addJSInline($js);
 					</td>
 					<td>
 						@foreach($item->environments as $environment)
-							{{ Select::environmentIcon($environment) }}
+							{{ Select::environmentIcon((int) $environment) }}
 						@endforeach
 					</td>
 				</tr>

@@ -28,102 +28,79 @@ if (!class_exists('ComArsRouter'))
 
 ComArsRouter::$routeHtml = false;
 
-$escapedOrder = addslashes($this->order);
-$js = <<< JS
+$user = $this->getContainer()->platform->getUser();
 
-;// This comment is intentionally put here to prevent badly written plugins from causing a Javascript error
-// due to missing trailing semicolon and/or newline in their code.
-Joomla.orderTable = function () {
-	var table = document.getElementById("sortTable");
-	var direction = document.getElementById("directionTable");
-	var order = table.options[table.selectedIndex].value;
-	if (order != '$escapedOrder')
-	{
-		var dirn = 'asc';
-	}
-	else
-	{
-		var dirn = direction.options[direction.selectedIndex].value;
-	}
-	Joomla.tableOrdering(order, dirn, '');
-}
-
-JS;
-
-$this->getContainer()->template->addJSInline($js);
-
-$function = $this->input->getCmd('function', 'arsSelectItem');
 ?>
+@jhtml('behavior.core')
+@jhtml('formbehavior.chosen')
+
 <form action="index.php" method="post" name="adminForm" id="adminForm" class="akeeba-form">
 
     <section class="akeeba-panel--33-66 akeeba-filter-bar-container">
         <div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
             <div class="akeeba-filter-element akeeba-form-group">
-	            <?php echo Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()'], false) ?>
+                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()'], false) }}
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::releases($this->filters['release'], 'release', ['onchange' => 'document.adminForm.submit()'])?>
+                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::releases($this->filters['release'], 'release', ['onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect']) }}
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<input type="text" name="title" placeholder="<?php echo Text::_('LBL_ITEMS_TITLE'); ?>"
-					   id="filter_title" onchange="document.adminForm.submit()"
-					   value="<?php echo $this->escape($this->filters['title']); ?>"
-					   title="<?php echo Text::_('LBL_ITEMS_TITLE'); ?>" />
+                @searchfilter('title', 'title', 'LBL_ITEMS_TITLE')
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::itemType('type', $this->filters['type'], ['onchange' => 'document.adminForm.submit()'])?>
+                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::itemType('type', $this->filters['type'], ['onchange' => 'document.adminForm.submit()']) }}
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::accessLevel('access', $this->filters['access'], ['onchange' => 'document.adminForm.submit()']);?>
+                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel('access', $this->filters['access'], ['onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect']) }}
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::published($this->filters['published'], 'published', ['onchange' => 'document.adminForm.submit()'])?>
+                {{ \FOF30\Utils\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-				<?php echo Select::languages('language', $this->filters['language'], ['onchange' => 'document.adminForm.submit()'])?>
+                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::languages('language', $this->filters['language'], ['onchange' => 'document.adminForm.submit()']) }}
             </div>
         </div>
 
         <div class="akeeba-filter-bar akeeba-filter-bar--right">
             <div class="akeeba-filter-element akeeba-form-group">
                 <label for="limit" class="element-invisible">
-	                <?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?>
+                    @lang('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC')
                 </label>
-				<?php echo $this->pagination->getLimitBox(); ?>
+                {{ $this->pagination->getLimitBox() }}
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
                 <label for="directionTable" class="element-invisible">
-	                <?php echo Text::_('JFIELD_ORDERING_DESC'); ?>
+                    @lang('JFIELD_ORDERING_DESC')
                 </label>
                 <select name="directionTable" id="directionTable" class="input-medium custom-select" onchange="Joomla.orderTable()">
                     <option value="">
-	                    <?php echo Text::_('JFIELD_ORDERING_DESC'); ?>
+                        @lang('JFIELD_ORDERING_DESC')
                     </option>
                     <option value="asc" <?php echo ($this->order_Dir == 'asc') ? 'selected="selected"' : ""; ?>>
-	                    <?php echo Text::_('JGLOBAL_ORDER_ASCENDING'); ?>
+                        @lang('JGLOBAL_ORDER_ASCENDING')
                     </option>
                     <option value="desc" <?php echo ($this->order_Dir == 'desc') ? 'selected="selected"' : ""; ?>>
-	                    <?php echo Text::_('JGLOBAL_ORDER_DESCENDING'); ?>
+                        @lang('JGLOBAL_ORDER_DESCENDING')
                     </option>
                 </select>
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
                 <label for="sortTable" class="element-invisible">
-	                <?php echo Text::_('JGLOBAL_SORT_BY'); ?>
+                    @lang('JGLOBAL_SORT_BY')
                 </label>
                 <select name="sortTable" id="sortTable" class="input-medium custom-select" onchange="Joomla.orderTable()">
                     <option value="">
-	                    <?php echo Text::_('JGLOBAL_SORT_BY'); ?>
+                        @lang('JGLOBAL_SORT_BY')
                     </option>
-	                <?php echo HTMLHelper::_('select.options', $this->sortFields, 'value', 'text', $this->order); ?>
+                    @jhtml('select.options', $this->sortFields, 'value', 'text', $this->order)
                 </select>
             </div>
         </div>
@@ -133,38 +110,38 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
     <table class="akeeba-table akeeba-table--striped" id="itemsList">
         <thead>
         <tr>
-            <th width="20px">
-                <a href="#" onclick="Joomla.tableOrdering('ordering','asc','');return false;" class="hasPopover" title="" data-content="Select to sort by this column" data-placement="top" data-original-title="Ordering"><i class="icon-menu-2"></i></a>
+            <th width="8%">
+                @sortgrid('ordering', '<i class="icon-menu-2"></i>')
             </th>
             <th width="32">
-                <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);"/>
+                @jhtml('FEFHelper.browse.checkall')
             </th>
             <th>
-	            <?php echo Text::_('LBL_ITEMS_CATEGORY'); ?>
+                @lang('LBL_ITEMS_CATEGORY')
             </th>
             <th>
-	            <?php echo HTMLHelper::_('grid.sort', 'LBL_ITEMS_RELEASE', 'release', $this->order_Dir, $this->order, 'browse'); ?>
+                @sortgrid('release', 'LBL_ITEMS_RELEASE')
             </th>
             <th>
-	            <?php echo HTMLHelper::_('grid.sort', 'LBL_ITEMS_TITLE', 'title', $this->order_Dir, $this->order, 'browse'); ?>
+                @sortgrid('title', 'LBL_ITEMS_TITLE')
             </th>
             <th>
-	            <?php echo HTMLHelper::_('grid.sort', 'LBL_ITEMS_TYPE', 'type', $this->order_Dir, $this->order, 'browse'); ?>
+                @sortgrid('type', 'LBL_ITEMS_TYPE')
             </th>
             <th>
-	            <?php echo Text::_('LBL_ITEMS_ENVIRONMENTS'); ?>
+                @lang('LBL_ITEMS_ENVIRONMENTS')
             </th>
             <th>
-	            <?php echo HTMLHelper::_('grid.sort', 'JFIELD_ACCESS_LABEL', 'access', $this->order_Dir, $this->order, 'browse'); ?>
+                @sortgrid('access', 'JFIELD_ACCESS_LABEL')
             </th>
             <th width="8%">
-	            <?php echo HTMLHelper::_('grid.sort', 'JPUBLISHED', 'published', $this->order_Dir, $this->order, 'browse'); ?>
+                @sortgrid('published', 'JPUBLISHED')
             </th>
             <th>
-	            <?php echo HTMLHelper::_('grid.sort', 'JGLOBAL_HITS', 'hits', $this->order_Dir, $this->order, 'browse'); ?>
+                @sortgrid('hits', 'JGLOBAL_HITS')
             </th>
             <th>
-	            <?php echo HTMLHelper::_('grid.sort', 'JFIELD_LANGUAGE_LABEL', 'language', $this->order_Dir, $this->order, 'browse'); ?>
+                @sortgrid('language', 'JFIELD_LANGUAGE_LABEL')
             </th>
         </tr>
         </thead>
@@ -176,69 +153,70 @@ $function = $this->input->getCmd('function', 'arsSelectItem');
         </tr>
         </tfoot>
         <tbody>
-		<?php if (!count($this->items)):?>
+        @unless(count($this->items))
             <tr>
                 <td colspan="11">
-	                <?php echo Text::_('COM_ARS_COMMON_NORECORDS') ?>
+                    @lang('COM_ARS_COMMON_NORECORDS')
                 </td>
             </tr>
-		<?php endif;?>
-		<?php
-		if ($this->items):
-			$i = 0;
+        @else
+	        <?php
+	        $i = 0;
+	        /** @var \Akeeba\ReleaseSystem\Admin\Model\Items $row */
+	        ?>
+            @foreach($this->items as $row)
+		        <?php
+		        /** @var \Akeeba\ReleaseSystem\Admin\Model\Items $row */
 
-			/** @var \Akeeba\ReleaseSystem\Admin\Model\Items $row */
-			foreach($this->items as $row):
-				$type = $row->type == 'link' ? Text::_('LBL_ITEMS_TYPE_LINK') : Text::_('LBL_ITEMS_TYPE_FILE');
-
-				$category_id = Releases::forceEagerLoad($row->release_id, 'category_id');
-				$link = 'index.php?option=com_ars&view=Item&id='.$row->id;
-				?>
+		        $category_id = Releases::forceEagerLoad($row->release_id, 'category_id');
+		        $canEdit = $user->authorise('core.admin') || $user->authorise('core.edit', 'com_ars.category.' . $category_id);
+		        $enabled = $user->authorise('core.edit.state', 'com_ars')
+		        ?>
                 <tr>
                     <td>
-						<?php echo Html::ordering($this, 'ordering', $row->ordering)?>
+                        @jhtml('FEFHelper.browse.order', 'ordering', $row->ordering)
                     </td>
                     <td>
-	                    <?php echo HTMLHelper::_('grid.id', ++$i, $row->id); ?>
+                        @jhtml('FEFHelper.browse.id', ++$i, $row->getId())
                     </td>
                     <td>
-						<?php echo Categories::forceEagerLoad($category_id, 'title'); ?>
+                        {{{ \Akeeba\ReleaseSystem\Site\Model\Categories::forceEagerLoad($category_id, 'title') }}}
                     </td>
                     <td>
-						<?php echo Releases::forceEagerLoad($row->release_id, 'version') ?>
+                        {{{ \Akeeba\ReleaseSystem\Site\Model\Releases::forceEagerLoad($row->release_id, 'version') }}}
                     </td>
                     <td>
-                        <a href="javascript:arsItemsProxy('<?php echo $row->id?>', '<?php echo $row->title ?>')">
-							<?php echo $row->title ?>
+                        <a href="javascript:arsItemsProxy('{{{ $row->id }}}', '{{{ $row->title }}}')">
+                            {{{ $row->title }}}
                         </a>
                     </td>
                     <td>
-						<?php echo $type ?>
+                        @if ($row->type == 'link')
+                            @lang('LBL_ITEMS_TYPE_LINK')
+                        @else
+                            @lang('LBL_ITEMS_TYPE_FILE')
+                        @endif
                     </td>
                     <td>
-						<?php
-						foreach ($row->environments as $environment)
-						{
-							echo Select::environmentIcon($environment);
-						}
-						?>
+                        @foreach ($row->environments as $environment)
+                            {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentIcon((int)$environment) }}
+                        @endforeach
                     </td>
                     <td>
-						<?php echo Html::accessLevel($row->access) ?>
+                        {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::accessLevel($row->access) }}
                     </td>
                     <td>
-	                    <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, '', false, 'cb') ?>
+                        @jhtml('FEFHelper.browse.published', $row->published, $i, '', $enabled)
                     </td>
                     <td>
-						<?php echo $row->hits; ?>
+                        {{{ $row->hits }}}
                     </td>
                     <td>
-						<?php echo Html::language($row->language) ?>
+                        {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::language($row->language) }}
                     </td>
                 </tr>
-			<?php
-			endforeach;
-		endif; ?>
+            @endforeach
+        @endunless
         </tbody>
 
     </table>

@@ -140,7 +140,7 @@ use FOF30\Utils\FEFHelper\Html as FEFHtml;
             <input type="hidden" name="filter_order" id="filter_order" value="{{{ $this->lists->order }}}" />
             <input type="hidden" name="filter_order_Dir" id="filter_order_Dir"
                    value="{{{ $this->lists->order_Dir }}}" />
-            <input type="hidden" id="token" name="@token()" value="1" />
+            <input type="hidden" id="token" name="@token(true)" value="1" />
             {{-- Current user ID --}}
             <input type="hidden" id="user_id" value="{{{ $this->getContainer()->platform->getUser()->id }}}" />
         @show

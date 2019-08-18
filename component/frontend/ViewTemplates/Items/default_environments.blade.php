@@ -9,10 +9,9 @@ defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Admin\Model\Items  $model */
 
-if (!empty($fieldValue))
-{
-	foreach ($fieldValue as $environment)
-	{
-		echo \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentIcon($environment);
-	}
-}
+?>
+@unless(empty($fieldValue))
+    @foreach ($fieldValue as $environment)
+        {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentIcon((int) $environment) }}
+    @endforeach
+@endunless

@@ -93,6 +93,21 @@ class Html extends BaseView
 			'hits'      => Text::_('JGLOBAL_HITS'),
 			'language'  => Text::_('JFIELD_LANGUAGE_LABEL'),
 		);
+
+		$function = $this->input->getCmd('function', 'arsSelectItem');
+
+		$js = <<< JS
+function arsItemsProxy(id, title)
+{
+    if (window.parent)
+    {
+        window.parent.{$function}(id, title);
+    }
+}
+
+JS;
+
+		$this->addJavascriptInline($js);
 	}
 
 	public function onBeforeBrowse($tpl = null): void

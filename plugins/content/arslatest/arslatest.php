@@ -250,7 +250,7 @@ class plgContentArslatest extends CMSPlugin
 	 *
 	 * @return  Releases
 	 */
-	private function getLatestRelease(string $content): Releases
+	private function getLatestRelease(string $content): ?Releases
 	{
 		$release = null;
 
