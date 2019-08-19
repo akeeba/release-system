@@ -104,10 +104,7 @@ $item = $this->getItem();
 
     <div class="akeeba-container--50-50">
         <div>
-            @jhtml('FEFHelper.edit.editor', 'description', $this->getItem()->description)
-        </div>
-        <div>
-            @jhtml('FEFHelper.edit.editor', 'notes', $this->getItem()->description)
+            @jhtml('FEFHelper.edit.editor', 'notes', $this->getItem()->notes)
         </div>
     </div>
 @stop

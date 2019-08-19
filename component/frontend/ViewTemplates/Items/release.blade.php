@@ -29,7 +29,7 @@ $released = $this->container->platform->getDate($item->created);
 	</h4>
 	<p class="text-muted">
 		<strong>@lang('LBL_RELEASES_RELEASEDON')</strong>:
-		@jhtml('date', $released, Text::_('DATE_FORMAT_LC2'))
+		@jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC2'))
 
 		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
 				data-target="#ars-release-{{{ $item->id }}}-info">
@@ -39,6 +39,6 @@ $released = $this->container->platform->getDate($item->created);
 	</p>
 
 	<div id="ars-release-{{{ $item->id }}}-info" class="akeeba-panel--info" style="display: none;">
-		{{ Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
+		{{ \Akeeba\ReleaseSystem\Admin\Helper\Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
 	</div>
 </div>

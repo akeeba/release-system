@@ -57,7 +57,6 @@ CREATE TABLE `#__ars_releases` (
     `version` VARCHAR(255) NOT NULL,
     `alias` VARCHAR(255) NOT NULL,
     `maturity` ENUM('alpha','beta','rc','stable') NOT NULL DEFAULT 'beta',
-    `description` MEDIUMTEXT NULL,
     `notes` TEXT NULL,
     `groups` varchar(255) DEFAULT NULL,
     `hits` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
@@ -470,6 +469,13 @@ DROP TABLE IF EXISTS `#__ars_vgroups`;
             <condition type="missing" value="vgroup_id" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_categories` DROP COLUMN `vgroup_id`;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_releases" canfail="0">
+            <condition type="missing" value="description" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_releases` DROP COLUMN `description`;
             ]]></query>
         </action>
 

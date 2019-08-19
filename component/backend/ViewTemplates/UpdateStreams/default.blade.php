@@ -27,9 +27,9 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
 
 @section('browse-page-top')
     <div class="akeeba-block--info">
-		<?php echo Text::_('LBL_UPDATESTREAMS_ALLLINKS_INTRO') ?>
+        @lang('LBL_UPDATESTREAMS_ALLLINKS_INTRO')
         <a href="<?php echo Uri::root() ?>index.php?option=com_ars&view=update&task=all&format=xml" target="_blank">
-			<?php echo Text::_('LBL_UPDATESTREAMS_ALLLINKS') ?>
+            @lang('LBL_UPDATESTREAMS_ALLLINKS')
         </a>
     </div>
 @stop

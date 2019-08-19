@@ -29,7 +29,7 @@ defined('_JEXEC') or die;
 
 $id          = isset($id) ? $id : $field;
 $readonly    = isset($readonly) ? ($readonly ? true : false) : false;
-$placeholder = isset($placeholder) ? JText::_($placeholder) : JText::_('JLIB_FORM_SELECT_USER');
+$placeholder = isset($placeholder) ? \Joomla\CMS\Language\Text::_($placeholder) : \Joomla\CMS\Language\Text::_('JLIB_FORM_SELECT_USER');
 $userID      = $item->getFieldValue($field, 0);
 $user        = $item->getContainer()->platform->getUser($userID);
 $width       = isset($width) ? $width : 800;

@@ -27,7 +27,6 @@ use Joomla\CMS\Filter\InputFilter;
  * @property  string  $version
  * @property  string  $alias
  * @property  string  $maturity
- * @property  string  $description
  * @property  string  $notes
  * @property  array   $groups
  * @property  int     $hits
@@ -49,7 +48,6 @@ use Joomla\CMS\Filter\InputFilter;
  * @method  $this  version()            version(string $v)
  * @method  $this  alias()              alias(string $v)
  * @method  $this  maturity()           maturity(string $v)
- * @method  $this  description()        description(string $v)
  * @method  $this  notes()              notes(string $v)
  * @method  $this  groups()             groups(string $v)
  * @method  $this  hits()               hits(int $v)
@@ -118,7 +116,6 @@ class Releases extends DataModel
 
 		// Automatic checks should not take place on these fields:
 		$config['fieldsSkipChecks'] = [
-			'description',
 			'notes',
 			'groups',
 			'hits',
@@ -525,12 +522,6 @@ class Releases extends DataModel
 		}
 
 		$filter = InputFilter::getInstance(null, null, 1, 1);
-
-		// Filter the description using a safe HTML filter
-		if (!empty($this->description))
-		{
-			$this->description = $filter->clean($this->description);
-		}
 
 		// Filter the notes using a safe HTML filter
 		if (!empty($this->notes))

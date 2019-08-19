@@ -12,8 +12,6 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
-use Akeeba\ReleaseSystem\Admin\Helper\Format;
-use Joomla\CMS\Language\Text;
 
 $released = $this->container->platform->getDate($item->created);
 
@@ -87,7 +85,7 @@ $this->getContainer()->template->addJSInline($js);
 	</h4>
 	<p>
 		<strong>@lang('LBL_RELEASES_RELEASEDON')</strong>:
-		@jhtml('date', $released, Text::_('DATE_FORMAT_LC1'))
+		@jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC1'))
 		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
 				data-target="#ars-release-{{{ $item->id }}}-info">
 			<span class="akion-information-circled"></span>
@@ -103,7 +101,7 @@ $this->getContainer()->template->addJSInline($js);
 			</tr>
 			<tr>
 				<td>@lang('LBL_RELEASES_RELEASEDON')</td>
-				<td>@jhtml('date', $released, Text::_('DATE_FORMAT_LC1'))</td>
+				<td>@jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC1'))</td>
 			</tr>
 		@if($this->params->get('show_downloads', 1))
 			<tr>
@@ -113,22 +111,11 @@ $this->getContainer()->template->addJSInline($js);
 		@endif
 		</table>
 
-		<div class="akeeba-tabs">
-			<label for="reltabs-{{ $item->id }}-desc" class="active">
-				@lang('COM_ARS_RELEASE_DESCRIPTION_LABEL')
-			</label>
-
-			<section id="reltabs-{{ $item->id }}-desc">
-				{{ Format::preProcessMessage($item->description, 'com_ars.release_description') }}
-			</section>
-
-			<label for="reltabs-{{ $item->id }}-notes">
+		<div id=reltabs-{{ $item->id }}-notes"">
+			<h3>
 				@lang('COM_ARS_RELEASE_NOTES_LABEL')
-			</label>
-
-			<section id=reltabs-{{ $item->id }}-notes"">
-				{{ Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
-			</section>
+			</h3>
+			{{ \Akeeba\ReleaseSystem\Admin\Helper\Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
 		</div>
 
 		@if(!isset($no_link) || !$no_link)

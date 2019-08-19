@@ -88,7 +88,7 @@ switch ($release->maturity)
 				@lang('LBL_RELEASES_RELEASEDON')
 			</td>
 			<td colspan="2">
-				@jhtml('date', $released, Text::_('DATE_FORMAT_LC2'))
+				@jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC2'))
 			</td>
 		</tr>
 
