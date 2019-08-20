@@ -290,6 +290,14 @@ abstract class Select
 	private static $container;
 
 	/**
+	 * Cache of environment IDs to their titles
+	 *
+	 * @var   array
+	 * @since 5.0.0
+	 */
+	private static $environmentTitles;
+
+	/**
 	 * Get the component's container
 	 *
 	 * @return  Container
@@ -336,6 +344,16 @@ abstract class Select
 		return JHtml::_('FEFHelper.select.genericlist', $list, $name, $attribs, 'value', 'text', $selected, $idTag);
 	}
 
+	/**
+	 * Convert the ISO-3316 country code (e.g. US) to its human-readable, English country name (e.g. United States of
+	 * America).
+	 *
+	 * @param string $country
+	 *
+	 * @return string
+	 *
+	 * @since 5.0.0
+	 */
 	public static function countryDecode(string $country): string
 	{
 		if (isset(static::$countries[$country]))
@@ -360,7 +378,7 @@ abstract class Select
 	 *
 	 * @return string
 	 *
-	 * @since version
+	 * @since 5.0.0
 	 */
 	public static function countryToEmoji(string $cCode = ''): string
 	{
@@ -408,41 +426,33 @@ abstract class Select
 	}
 
 	/**
-	 * Renders the environment icon using an internal cache
+	 * Returns the title of the specified environment ID
 	 *
 	 * @param int   $id      Environment ID
 	 * @param array $attribs Any HTML attributes for the IMG element
 	 *
-	 * @return  string  The HTML for the IMG element
+	 * @return  string  The title of the environment
 	 */
-	public static function environmentIcon(int $id, array $attribs = []): string
+	public static function environmentTitle(int $id, array $attribs = []): string
 	{
-		static $items = null;
-
-		if (is_null($items))
+		if (is_null(self::$environmentTitles))
 		{
 			/** @var Environments $environmentsModel */
 			$environmentsModel = Container::getInstance('com_ars')->factory->model('Environments')->tmpInstance();
 			// We use getItemsArray instead of get to fetch an associative array
-			$items = $environmentsModel->getItemsArray(0, 0, true);
+			self::$environmentTitles = $environmentsModel
+				->get(true)
+				->transform(function(Environments $item) {
+					return $item->title;
+				});
 		}
 
-		if (!isset($items[$id]))
+		if (!isset(self::$environmentTitles[$id]))
 		{
 			return '';
 		}
 
-		$base_folder = rtrim(JUri::base(), '/');
-
-		if (substr($base_folder, -13) == 'administrator')
-		{
-			$base_folder = rtrim(substr($base_folder, 0, -13), '/');
-		}
-
-		return <<< HTML
-<span class="akeeba-label--teal ars-environment-icon">{$items[$id]->title}</span>
-HTML;
-
+		return self::$environmentTitles[$id];
 	}
 
 	public static function environments(string $id, $selected = null, array $attribs = [], ?string $name = null): string

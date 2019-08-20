@@ -135,7 +135,7 @@ $modal = isset($modal) ? boolval($modal) : false;
 			</td>
 			<td>
 				@foreach ($row->environments as $environment)
-					{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentIcon((int)$environment) }}
+					<span class="akeeba-label--teal ars-environment-icon">{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentTitle((int)$environment) }}</span>
 				@endforeach
 			</td>
 			<td>

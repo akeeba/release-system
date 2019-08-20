@@ -84,7 +84,7 @@ $this->getContainer()->template->addJSInline($js);
 	@unless(empty($item->environments) || !$this->params->get('show_environments',1))
 		<p>
 			@foreach($item->environments as $environment)
-				{{ Select::environmentIcon((int) $environment) }}
+				<span class="akeeba-label--teal ars-environment-icon">{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentTitle((int)$environment) }}</span>
 			@endforeach
 		</p>
 	@endunless
@@ -191,7 +191,7 @@ $this->getContainer()->template->addJSInline($js);
 					</td>
 					<td>
 						@foreach($item->environments as $environment)
-							{{ Select::environmentIcon((int) $environment) }}
+							<span class="akeeba-label--teal ars-environment-icon">{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentTitle((int)$environment) }}</span>
 						@endforeach
 					</td>
 				</tr>
