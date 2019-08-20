@@ -347,6 +347,67 @@ abstract class Select
 	}
 
 	/**
+	 * Converts an ISO country code to an emoji flag.
+	 *
+	 * This is stupidly easy. An emoji flag is the country code using Unicode Regional Indicator Symbol Letter glyphs
+	 * instead of the regular ASCII characters. Thus US becomes \u1F1FA\u1F1F8 which is incidentally the emoji for the
+	 * US flag :)
+	 *
+	 * On really old browsers (pre-2015) this still renders as the country code since the Regional Indicator Symbol
+	 * Letter glyphs were added to Unicode in 2010. Now, if you have an even older browser -- what the heck, dude?!
+	 *
+	 * @param string $cCode
+	 *
+	 * @return string
+	 *
+	 * @since version
+	 */
+	public static function countryToEmoji(string $cCode = ''): string
+	{
+		$name = self::countryDecode($cCode);
+
+		if (empty($cCode) || ($name == $cCode) || ($name == '---'))
+		{
+			// Black flag
+			return '&#x1F3F4;&#x200D;&#x2620;&#xFE0F;';
+		}
+
+		$cCode = strtoupper($cCode);
+
+		// Uppercase letter to Unicode Regional Indicator Symbol Letter
+		$letterToRISL = [
+			'A' => "&#x1F1E6;",
+			'B' => "&#x1F1E7;",
+			'C' => "&#x1F1E8;",
+			'D' => "&#x1F1E9;",
+			'E' => "&#x1F1EA;",
+			'F' => "&#x1F1EB;",
+			'G' => "&#x1F1EC;",
+			'H' => "&#x1F1ED;",
+			'I' => "&#x1F1EE;",
+			'J' => "&#x1F1EF;",
+			'K' => "&#x1F1F0;",
+			'L' => "&#x1F1F1;",
+			'M' => "&#x1F1F2;",
+			'N' => "&#x1F1F3;",
+			'O' => "&#x1F1F4;",
+			'P' => "&#x1F1F5;",
+			'Q' => "&#x1F1F6;",
+			'R' => "&#x1F1F7;",
+			'S' => "&#x1F1F8;",
+			'T' => "&#x1F1F9;",
+			'U' => "&#x1F1FA;",
+			'V' => "&#x1F1FB;",
+			'W' => "&#x1F1FC;",
+			'X' => "&#x1F1FD;",
+			'Y' => "&#x1F1FE;",
+			'Z' => "&#x1F1FF;",
+		];
+
+		return $letterToRISL[substr($cCode, 0, 1)] . $letterToRISL[substr($cCode, 1, 1)];
+	}
+
+	/**
 	 * Renders the environment icon using an internal cache
 	 *
 	 * @param int   $id      Environment ID

@@ -105,6 +105,10 @@ defined('_JEXEC') or die;
                 {{{ $row->ip }}}
             </td>
             <td>
+                <span style="font-size: 200%">
+                    {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::countryToEmoji($row->country) }}
+                </span>
+                <br/>
                 {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::countryDecode($row->country) }}
             </td>
             <td>
