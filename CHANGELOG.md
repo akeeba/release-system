@@ -12,5 +12,8 @@
 * ➖ Remove support for JED Remote XML (since JED never made it work anyway).
 * ➖ Remove built-in mime.types files.
 * ➖ Remove some useless graphs and stats.
+* ➖ Remove access rules from Categories.
+* ➖ Remove release descriptions (release notes are kept since that's what we were displaying anyway).
+* ⚙️ Substituted Chart.js for jqPlot.
 * ⚙️ Upgrade deprecated Joomla API calls to Joomla 3.9.
 * ⚙️ Work towards future PHP 7.4 support.
