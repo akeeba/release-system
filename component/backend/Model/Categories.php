@@ -23,7 +23,6 @@ use Joomla\CMS\Filesystem\Folder;
  * Fields:
  *
  * @property  int        $id
- * @property  int        $asset_id
  * @property  string     $title
  * @property  string     $alias
  * @property  string     $description
@@ -44,7 +43,6 @@ use Joomla\CMS\Filesystem\Folder;
  * Filters:
  *
  * @method  $this  id()                 id(int $v)
- * @method  $this  asset_id()           asset_id(int $v)
  * @method  $this  title()              title(string $v)
  * @method  $this  alias()              alias(string $v)
  * @method  $this  description()        description(string $v)

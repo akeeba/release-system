@@ -100,8 +100,4 @@ $item = $this->getItem();
             @jhtml('FEFHelper.edit.editor', 'description', $this->getItem()->description)
         </div>
     </div>
-
-    <div>
-        {{ Html::rules($item->asset_id, 'rules', 'Categories', 'com_ars', 'category') }}
-    </div>
 @stop
