@@ -15,11 +15,6 @@ defined('_JEXEC') or die;
 
 /** @var \Akeeba\ReleaseSystem\Admin\Model\DownloadIDLabels $item */
 $item = $this->getItem();
-
-$userField        = new UserField();
-$userField->id    = 'user_id';
-$userField->name  = 'user_id';
-$userField->value = $item->user_id;
 ?>
 
 @extends('admin:com_ars/Common/edit')
@@ -40,7 +35,7 @@ $userField->value = $item->user_id;
                     @lang('COM_ARS_DLIDLABELS_FIELD_USER_ID')
                 </label>
 
-                {{ $userField->input }}
+                @include('admin:com_ars/Common/EntryUser', ['field' => 'user_id', 'item' => $item, 'required' => true])
             </div>
 
             <div class="akeeba-form-group">
