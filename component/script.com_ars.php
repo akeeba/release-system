@@ -156,6 +156,12 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'components/com_ars/View/Update/tmpl/jed.php',
 
 			'components/com_ars/views/Update/tmpl/jed.xml',
+
+			'media/com_ars/js/jqplot.dateAxisRenderer.min.js',
+			'media/com_ars/js/jqplot.hermite.js',
+			'media/com_ars/js/jqplot.hihglighter.min.js',
+			'media/com_ars/js/jquery.colorhelpers.min.js',
+			'media/com_ars/js/jquery.jqplot.min.js',
 		],
 		'folders' => [
 			// Moving to FOF 3
