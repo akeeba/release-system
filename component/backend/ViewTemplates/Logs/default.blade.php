@@ -93,7 +93,7 @@ defined('_JEXEC') or die;
                 <small>{{{ $row->item->title }}}</small>
             </td>
             <td>
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::renderUserRepeatable((int) ($row->user_id)) }}
+                @include('admin:com_ars/Common/ShowUser', ['item' => $row, 'field' => 'user_id'])
             </td>
             <td>
                 {{ strftime('%Y-%m-%d', (new \FOF30\Date\Date($row->accessed_on))->getTimestamp()) }}

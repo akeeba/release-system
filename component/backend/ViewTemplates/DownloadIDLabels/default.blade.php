@@ -70,7 +70,7 @@ defined('_JEXEC') or die;
                 @endif
             </td>
             <td>
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::renderUserRepeatable((int) ($row->user_id)) }}
+                @include('admin:com_ars/Common/ShowUser', ['item' => $row, 'field' => 'user_id'])
             </td>
             <td>
 				<span class="{{ $row->primary ? 'akeeba-label--dark' : '' }}">
