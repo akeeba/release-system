@@ -89,7 +89,11 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="groups">@lang('COM_ARS_COMMON_CATEGORIES_GROUPS_LABEL')</label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::subscriptionGroups('groups[]', $item->groups, array('multiple' => true, 'class' => 'advancedSelect')) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::subscriptionGroups(), 'groups[]', [
+                    'id' => 'groups', 'list.select' => $item->groups,
+                    'list.attr' => ['multiple' => 'multiple', 'class' => 'advancedSelect']
+                ])
             </div>
 
             <div class="akeeba-form-group">

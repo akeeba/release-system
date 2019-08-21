@@ -734,12 +734,12 @@ abstract class Select
 
 	}
 
-	public static function subscriptionGroups(string $id, $selected = null, array $attribs = []): string
+	public static function subscriptionGroups(): array
 	{
-		$options[] = JHtml::_('FEFHelper.select.option', '', Text::_('COM_ARS_COMMON_SELECT_GENERIC'));
-		$options   = array_merge($options, SubscriptionIntegration::getGroupsForSelect());
+		$options = SubscriptionIntegration::getGroupsForSelect();
+		array_unshift($options, JHtml::_('FEFHelper.select.option', '', Text::_('COM_ARS_COMMON_SELECT_GENERIC')));
 
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		return $options;
 	}
 
 	public static function maturity(string $id, ?string $selected = null, array $attribs = []): string
