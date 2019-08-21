@@ -659,31 +659,6 @@ abstract class Select
 		return $options;
 	}
 
-	/**
-	 * @param string      $name
-	 * @param array       $attribs
-	 * @param string|null $selected
-	 * @param bool        $showEmpty
-	 *
-	 * @return string
-	 *
-	 * @deprecated  Maybe use FEF's own styling?
-	 */
-	public static function booleanlist(string $name, array $attribs = [], ?string $selected = null, bool $showEmpty = true): string
-	{
-		$options = [];
-
-		if ($showEmpty)
-		{
-			$options[] = JHtml::_('FEFHelper.select.option', '', '---');
-		}
-
-		$options[] = JHtml::_('FEFHelper.select.option', '0', Text::_('JNO'));
-		$options[] = JHtml::_('FEFHelper.select.option', '1', Text::_('JYES'));
-
-		return self::genericlist($options, $name, $attribs, $selected, $name);
-	}
-
 	public static function published(?string $selected = null, string $id = 'enabled', array $attribs = []): string
 	{
 		$options   = [];
