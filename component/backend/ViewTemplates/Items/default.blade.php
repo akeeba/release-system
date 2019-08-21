@@ -36,7 +36,7 @@ $modal = isset($modal) ? boolval($modal) : false;
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
-		{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::itemType('type', $this->filters['type'], ['onchange' => 'document.adminForm.submit()']) }}
+		@selectfilter('type', \Akeeba\ReleaseSystem\Admin\Helper\Select::itemType(false), 'LBL_ITEMS_TYPE_SELECT')
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">

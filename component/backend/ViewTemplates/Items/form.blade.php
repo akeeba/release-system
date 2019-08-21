@@ -50,7 +50,11 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="type">@lang('LBL_ITEMS_TYPE')</label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::itemType('type', $item->type, array('onchange' => 'arsItems.onTypeChange();')) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::itemType(true), 'type', [
+                    'id' => 'type', 'list.select' => $item->type,
+                    'list.attr' => ['onchange' => 'arsItems.onTypeChange();']
+                ])
             </div>
 
             <div class="akeeba-form-group">

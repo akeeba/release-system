@@ -14,9 +14,6 @@ use Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
 use Akeeba\ReleaseSystem\Admin\Model\UpdateStreams;
 use FOF30\Container\Container;
 use FOF30\Utils\Collection;
-use Joomla\CMS\Filesystem\File as JFile;
-use Joomla\CMS\Filesystem\Folder as JFolder;
-use Joomla\CMS\Filesystem\Path as JPath;
 use Joomla\CMS\HTML\HTMLHelper as JHtml;
 use Joomla\CMS\Language\LanguageHelper as JLanguageHelper;
 use Joomla\CMS\Language\Text;
@@ -712,14 +709,29 @@ abstract class Select
 		return $options;
 	}
 
-	public static function itemType(string $id, ?string $selected = null, array $attribs = []): string
+	/**
+	 * Returns an options list with all item types
+	 *
+	 * @param bool $addDefault Add default select text?
+	 *
+	 * @return array
+	 *
+	 * @since  5.0.0
+	 */
+	public static function itemType(bool $addDefault = false): array
 	{
-		$options   = [];
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_ITEMS_TYPE_SELECT') . ' -');
-		$options[] = JHtml::_('FEFHelper.select.option', 'link', Text::_('LBL_ITEMS_TYPE_LINK'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'file', Text::_('LBL_ITEMS_TYPE_FILE'));
+		$options = [
+			JHtml::_('FEFHelper.select.option', 'link', Text::_('LBL_ITEMS_TYPE_LINK')),
+			JHtml::_('FEFHelper.select.option', 'file', Text::_('LBL_ITEMS_TYPE_FILE')),
+		];
 
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		if ($addDefault)
+		{
+			array_unshift($options, JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_ITEMS_TYPE_SELECT') . ' -'));
+		}
+
+		return $options;
+
 	}
 
 	public static function subscriptionGroups(string $id, $selected = null, array $attribs = []): string
