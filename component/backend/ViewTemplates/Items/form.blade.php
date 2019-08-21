@@ -122,7 +122,11 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="access">@lang('JFIELD_ACCESS_LABEL')</label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel('access', $item->access) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(true), 'access', [
+                    'id' => 'access', 'list.select' => $item->access,
+                    'list.attr' => ['class' => 'advancedSelect']
+                ])
             </div>
 
             <div class="akeeba-form-group">

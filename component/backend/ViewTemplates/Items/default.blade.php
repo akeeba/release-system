@@ -40,7 +40,7 @@ $modal = isset($modal) ? boolval($modal) : false;
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
-		{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel('access', $this->filters['access'], ['onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect']) }}
+		@selectfilter('access', \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(), 'COM_ARS_COMMON_SHOW_ALL_LEVELS', ['class' => 'advancedSelect'])
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">

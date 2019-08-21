@@ -434,7 +434,7 @@ abstract class Select
 		if (is_null(self::$environmentTitles))
 		{
 			/** @var Environments $environmentsModel */
-			$environmentsModel = Container::getInstance('com_ars')->factory->model('Environments')->tmpInstance();
+			$environmentsModel = self::getContainer()->factory->model('Environments')->tmpInstance();
 			// We use getItemsArray instead of get to fetch an associative array
 			self::$environmentTitles = $environmentsModel
 				->get(true)
@@ -461,7 +461,7 @@ abstract class Select
 	public static function environments(): array
 	{
 		/** @var Environments $environmentsModel */
-		$environmentsModel = Container::getInstance('com_ars')
+		$environmentsModel = self::getContainer()
 			->factory->model('Environments')->tmpInstance();
 		$options           = $environmentsModel
 			->filter_order('title')
@@ -489,7 +489,7 @@ abstract class Select
 	public static function releases(bool $addDefault = false): array
 	{
 		/** @var Releases $model */
-		$model = Container::getInstance('com_ars')
+		$model = self::getContainer()
 			->factory->model('Releases')->tmpInstance();
 
 		// We want all releases, but avoid the ones belonging to unpublished Bleeding Edge categories
@@ -560,7 +560,7 @@ abstract class Select
 	public static function categories(bool $addDefault = false, bool $excludeBleedingEdgeUnpublished = true): array
 	{
 		/** @var Categories $categoriesModel */
-		$categoriesModel = Container::getInstance('com_ars')
+		$categoriesModel = self::getContainer()
 			->factory->model('Categories')->tmpInstance();
 
 		$options = $categoriesModel
@@ -637,7 +637,7 @@ abstract class Select
 	public static function updateStreams(bool $addDefault = false): array
 	{
 		/** @var UpdateStreams $streamModel */
-		$streamModel = Container::getInstance('com_ars')
+		$streamModel = self::getContainer()
 			->factory->model('UpdateStreams')->tmpInstance();
 
 		$options = $streamModel
@@ -776,20 +776,17 @@ abstract class Select
 	}
 
 	/**
-	 * Static function to get a select list of all access levels. We have to copy Joomla code since it will force the
-	 * usage of Bootstrap classes, instead of using our FEFHelper to create the options.
+	 * Returns an options list with all Joomla access levels.
 	 *
-	 * @param       $id
-	 * @param null  $selected
-	 * @param array $attribs
+	 * @param bool $addDefault Add default select text?
 	 *
-	 * @return string
+	 * @return array
+	 *
+	 * @since  5.0.0
 	 */
-	public static function accessLevel(string $id, ?string $selected = null, array $attribs = []): string
+	public static function accessLevel(bool $addDefault = false): array
 	{
-		$container = static::getContainer();
-
-		$db    = $container->db;
+		$db    = static::getContainer()->db;
 		$query = $db->getQuery(true)
 			->select($db->qn('a.id', 'value') . ', ' . $db->qn('a.title', 'text'))
 			->from($db->qn('#__viewlevels', 'a'))
@@ -798,11 +795,13 @@ abstract class Select
 			->order($db->qn('title') . ' ASC');
 
 		// Get the options.
-		$db->setQuery($query);
-		$options = $db->loadObjectList();
+		$options = $db->setQuery($query)->loadObjectList();
 
-		array_unshift($options, JHtml::_('FEFHelper.select.option', '', Text::_('COM_ARS_COMMON_SHOW_ALL_LEVELS')));
+		if ($addDefault)
+		{
+			array_unshift($options, JHtml::_('FEFHelper.select.option', '', Text::_('COM_ARS_COMMON_SHOW_ALL_LEVELS')));
+		}
 
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		return $options;
 	}
 }

@@ -22,9 +22,7 @@ defined('_JEXEC') or die;
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
-		<?php echo Select::accessLevel('access', $this->filters['access'], [
-				'onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect'
-		]);?>
+		@selectfilter('access', \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(), 'COM_ARS_COMMON_SHOW_ALL_LEVELS', ['class' => 'advancedSelect'])
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
@@ -91,13 +89,13 @@ defined('_JEXEC') or die;
 				@endif
 			</td>
 			<td>
-				{{ Html::accessLevel($row->access) }}
+				{{ \Akeeba\ReleaseSystem\Admin\Helper\Html::accessLevel($row->access) }}
 			</td>
 			<td>
 				@jhtml('FEFHelper.browse.published', $row->published, $i, '', $enabled)
 			</td>
 			<td>
-				{{ Html::language($row->language) }}
+				{{ \Akeeba\ReleaseSystem\Admin\Helper\Html::language($row->language) }}
 			</td>
 		</tr>
 	@endforeach
