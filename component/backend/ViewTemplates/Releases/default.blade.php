@@ -19,7 +19,7 @@ $i = 0;
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
-        {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::categories($this->filters['category_id'], 'category_id', ['onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect']) }}
+        @selectfilter('category_id', \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL', ['class' => 'advancedSelect'])
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">

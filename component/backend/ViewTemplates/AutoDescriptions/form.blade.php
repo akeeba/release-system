@@ -28,7 +28,11 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="category">@lang('LBL_AUTODESC_CATEGORY')</label>
 
-                {{ Select::categories($item->category, 'category') }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'category', [
+                    'id' => 'category', 'list.select' => $item->category,
+                    'list.attr' => ['class' => 'advancedSelect']
+                ])
             </div>
 
             <div class="akeeba-form-group">

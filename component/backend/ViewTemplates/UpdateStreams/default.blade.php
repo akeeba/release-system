@@ -48,9 +48,7 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::categories($this->filters['category'], 'category', [
-            'onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect'
-        ]) }}
+        @selectfilter('category', \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL', ['class' => 'advancedSelect'])
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">

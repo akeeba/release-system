@@ -39,7 +39,7 @@ $user = $this->getContainer()->platform->getUser();
     <section class="akeeba-panel--33-66 akeeba-filter-bar-container">
         <div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
             <div class="akeeba-filter-element akeeba-form-group">
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()'], false) }}
+                @selectfilter('category', \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL')
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">

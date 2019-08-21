@@ -28,7 +28,11 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="category_id">@lang('COM_ARS_RELEASES_FIELD_CATEGORY')</label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::categories($item->category_id, 'category_id', ['class' => 'advancedSelect']) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'category_id', [
+                    'id' => 'category_id', 'list.select' => $item->category_id,
+                    'list.attr' => ['class' => 'advancedSelect']
+                ])
             </div>
 
             <div class="akeeba-form-group">

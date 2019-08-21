@@ -475,7 +475,7 @@ abstract class Select
 		return $options;
 	}
 
-	public static function releases($addDefault = false): array
+	public static function releases(bool $addDefault = false): array
 	{
 		/** @var Releases $model */
 		$model = Container::getInstance('com_ars')
@@ -536,35 +536,27 @@ abstract class Select
 		return $options;
 	}
 
-	public static function categories($selected = null, string $id = 'category', array $attribs = [], bool $nobeunpub = true): string
+	public static function categories(bool $addDefault = false, bool $excludeBleedingEdgeUnpublished = true): array
 	{
-		$container = Container::getInstance('com_ars');
-
 		/** @var Categories $categoriesModel */
-		$categoriesModel = $container->factory->model('Categories')->tmpInstance();
+		$categoriesModel = Container::getInstance('com_ars')
+			->factory->model('Categories')->tmpInstance();
 
-		if ($nobeunpub)
-		{
-			$categoriesModel->nobeunpub(1);
-		}
-
-		$items = $categoriesModel
+		$options = $categoriesModel
+			->nobeunpub($excludeBleedingEdgeUnpublished ? 1 : 0)
 			->filter_order('title')
 			->filter_order_Dir('ASC')
-			->get(true);
+			->get(true)
+			->transform(function (Categories $item) {
+				return JHtml::_('FEFHelper.select.option', $item->id, $item->title);
+			})->toArray();
 
-		$options   = [];
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -');
-
-		if (count($items))
+		if ($addDefault)
 		{
-			foreach ($items as $item)
-			{
-				$options[] = JHtml::_('FEFHelper.select.option', $item->id, $item->title);
-			}
+			array_unshift($options, JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('COM_ARS_COMMON_CATEGORY_SELECT_LABEL') . ' -'));
 		}
 
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		return $options;
 	}
 
 	public static function client_id(string $id, ?string $selected, array $attribs = []): string

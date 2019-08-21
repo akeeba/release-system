@@ -24,7 +24,7 @@ defined('_JEXEC') or die;
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-		<?php echo Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()']) ?>
+        @selectfilter('category', \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">

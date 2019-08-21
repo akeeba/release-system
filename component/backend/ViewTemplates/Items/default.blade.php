@@ -24,7 +24,7 @@ $modal = isset($modal) ? boolval($modal) : false;
 
 @section('browse-filters')
 	<div class="akeeba-filter-element akeeba-form-group">
-		{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::categories($this->filters['category'], 'category', ['onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect'], false) }}
+		@selectfilter('category', \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(false, false), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL', ['class' => 'advancedSelect'])
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">

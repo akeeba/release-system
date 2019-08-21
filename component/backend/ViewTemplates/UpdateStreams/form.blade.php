@@ -53,7 +53,11 @@ $item = $this->getItem();
                     @lang('COM_ARS_RELEASES_FIELD_CATEGORY')
                 </label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::categories($item->category, 'category', ['class' => 'advancedSelect']) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'category', [
+                    'id' => 'category', 'list.select' => $item->category,
+                    'list.attr' => ['class' => 'advancedSelect']
+                ])
             </div>
 
             <div class="akeeba-form-group">
