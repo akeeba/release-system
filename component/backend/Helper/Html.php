@@ -156,24 +156,15 @@ abstract class Html
 
 		if (is_null($defaultOptions))
 		{
-			$db    = Container::getInstance('com_ars')->platform->getDbo();
-			$query = $db->getQuery(true)
-				->select('a.id AS value, a.title AS text')
-				->from('#__viewlevels AS a')
-				->group('a.id, a.title, a.ordering')
-				->order('a.ordering ASC')
-				->order($db->qn('title') . ' ASC');
-
-			// Get the options.
-			$defaultOptions = $db->setQuery($query)->loadObjectList();
+			$defaultOptions = Select::accessLevel(false);
 		}
 
-		$options = $defaultOptions;
-
-		array_unshift($options, HTMLHelper::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')));
+		$options = array_merge([
+			HTMLHelper::_('select.option', '', Text::_('JOPTION_ACCESS_SHOW_ALL_LEVELS')),
+		], $defaultOptions);
 
 		return '<span ' . ($id ? $id : '') . ' class="' . $class . '">' .
-			htmlspecialchars(GenericList::getOptionName($options, $value), ENT_COMPAT, 'UTF-8') .
+			htmlspecialchars(self::getOptionName($options, $value), ENT_COMPAT, 'UTF-8') .
 			'</span>';
 	}
 
@@ -188,5 +179,52 @@ abstract class Html
 		}
 
 		return array_values($options);
+	}
+
+	/**
+	 * Gets the active option's label given an array of JHtml options
+	 *
+	 * @param array  $data        The JHtml options to parse
+	 * @param mixed  $selected    The currently selected value
+	 * @param string $optKey      Key name
+	 * @param string $optText     Value name
+	 * @param bool   $selectFirst Should I automatically select the first option?
+	 *
+	 * @return  mixed   The label of the currently selected option
+	 */
+	public static function getOptionName($data, $selected = null, $optKey = 'value', $optText = 'text', $selectFirst = true)
+	{
+		$ret = null;
+
+		foreach ($data as $elementKey => &$element)
+		{
+			if (is_array($element))
+			{
+				$key  = $optKey === null ? $elementKey : $element[$optKey];
+				$text = $element[$optText];
+			}
+			elseif (is_object($element))
+			{
+				$key  = $optKey === null ? $elementKey : $element->$optKey;
+				$text = $element->$optText;
+			}
+			else
+			{
+				// This is a simple associative array
+				$key  = $elementKey;
+				$text = $element;
+			}
+
+			if (is_null($ret) && $selectFirst)
+			{
+				$ret = $text;
+			}
+			elseif ($selected == $key)
+			{
+				$ret = $text;
+			}
+		}
+
+		return $ret;
 	}
 }
