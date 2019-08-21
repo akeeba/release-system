@@ -455,34 +455,23 @@ abstract class Select
 		return self::$environmentTitles[$id];
 	}
 
-	public static function environments(string $id, $selected = null, array $attribs = [], ?string $name = null): string
+	public static function environments(): array
 	{
 		$container = Container::getInstance('com_ars');
 
 		/** @var Environments $environmentsModel */
 		$environmentsModel = $container->factory->model('Environments')->tmpInstance();
-		$items             = $environmentsModel
+		$options           = $environmentsModel
 			->filter_order('title')
 			->filter_order_Dir('ASC')
-			->get(true);
+			->get(true)
+			->transform(function (Environments $item) {
+				return JHtml::_('FEFHelper.select.option', $item->id, $item->title);
+			})->toArray();
 
-		$options   = [];
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_ITEMS_ENVIRONMENT_SELECT') . ' -');
+		array_unshift($options, JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_ITEMS_ENVIRONMENT_SELECT') . ' -'));
 
-		if (count($items))
-		{
-			foreach ($items as $item)
-			{
-				$options[] = JHtml::_('FEFHelper.select.option', $item->id, $item->title);
-			}
-		}
-
-		if (empty($name))
-		{
-			$name = $id;
-		}
-
-		return self::genericlist($options, $name, $attribs, $selected, $id);
+		return $options;
 	}
 
 	public static function releases($selected = null, string $id = 'release', array $attribs = [], ?int $category_id = null): string

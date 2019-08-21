@@ -138,7 +138,12 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="environments">@lang('LBL_ITEMS_ENVIRONMENTS')</label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::environments('environments[]', $item->environments, array('multiple' => true, 'class' => 'advancedSelect')) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::environments(), 'environments[]', [
+                    'id' => 'environments', 'list.select' => $item->environments,
+                    'list.attr' => ['multiple' => 'multiple', 'class' => 'advancedSelect']
+                ])
+
             </div>
 
             <div class="akeeba-form-group">

@@ -5,10 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
-use Joomla\CMS\Editor\Editor;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\AutoDescriptions\Html $this */
 
@@ -49,7 +46,11 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="environments">@lang('LBL_ITEMS_ENVIRONMENTS')</label>
 
-                {{ Select::environments('environments', $item->environments, ['multiple' => 'multiple', 'class' => 'advancedSelect'], 'environments[]') }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::environments(), 'environments[]', [
+                        'id' => 'environments', 'list.select' => $item->environments,
+                        'list.attr' => ['multiple' => 'multiple', 'class' => 'advancedSelect']
+                    ])
             </div>
 
             <div class="akeeba-form-group">
