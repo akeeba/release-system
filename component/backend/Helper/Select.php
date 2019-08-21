@@ -14,6 +14,7 @@ use Akeeba\ReleaseSystem\Admin\Model\Releases;
 use Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
 use Akeeba\ReleaseSystem\Admin\Model\UpdateStreams;
 use FOF30\Container\Container;
+use FOF30\Utils\Collection;
 use Joomla\CMS\Filesystem\File as JFile;
 use Joomla\CMS\Filesystem\Folder as JFolder;
 use Joomla\CMS\Filesystem\Path as JPath;
@@ -21,6 +22,7 @@ use Joomla\CMS\HTML\HTMLHelper as JHtml;
 use Joomla\CMS\Language\LanguageHelper as JLanguageHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri as JUri;
+use function Sodium\version_string;
 
 defined('_JEXEC') or die;
 
@@ -457,10 +459,9 @@ abstract class Select
 
 	public static function environments(): array
 	{
-		$container = Container::getInstance('com_ars');
-
 		/** @var Environments $environmentsModel */
-		$environmentsModel = $container->factory->model('Environments')->tmpInstance();
+		$environmentsModel = Container::getInstance('com_ars')
+			->factory->model('Environments')->tmpInstance();
 		$options           = $environmentsModel
 			->filter_order('title')
 			->filter_order_Dir('ASC')
@@ -474,82 +475,65 @@ abstract class Select
 		return $options;
 	}
 
-	public static function releases($selected = null, string $id = 'release', array $attribs = [], ?int $category_id = null): string
+	public static function releases($addDefault = false): array
 	{
-		$container = Container::getInstance('com_ars');
-
 		/** @var Releases $model */
-		$model = $container->factory->model('Releases')->tmpInstance();
+		$model = Container::getInstance('com_ars')
+			->factory->model('Releases')->tmpInstance();
 
-		if (!empty($category_id))
-		{
-			$model->setState('category', $category_id);
-		}
-
-		if (empty($category_id))
-		{
-			// We want all releases, but avoid the ones belonging to unpublished Bleeding Edge categories
-			$model->published(null);
-			$model->setState('nobeunpub', 1);
-		}
-
-		$items = $model
+		// We want all releases, but avoid the ones belonging to unpublished Bleeding Edge categories
+		$options = [];
+		$lastCat = null;
+		$model
+			->published(null)
+			->nobeunpub(1)
 			->filter_order('version')
 			->filter_order_Dir('ASC')
-			->get(true);
+			->get(true)
+			// Convert to a simple list of keyed arrays containing category name, release ID and version.
+			->transform(function (Releases $release) {
+				return [
+					'cat'     => $release->category->title,
+					'id'      => $release->id,
+					'version' => $release->version,
+				];
+				// Order by category and version
+			})->sort(function (array $a, array $b) {
+				$catCompare = $a['cat'] <=> $b['cat'];
 
-		$options = [];
+				if ($catCompare !== 0)
+				{
+					return $catCompare;
+				}
 
-		if (!$items->count())
+				return version_compare($a['version'], $b['version']);
+			})
+			->each(function (array $item) use (&$options, &$lastCat) {
+				if ($item['cat'] !== $lastCat)
+				{
+					if ($lastCat !== null)
+					{
+						$options[] = JHtml::_('FEFHelper.select.option', '</OPTGROUP>');
+					}
+
+					$options[] = JHtml::_('FEFHelper.select.option', '<OPTGROUP>', $item['cat']);
+					$lastCat   = $item['cat'];
+				}
+
+				$options[] = JHtml::_('FEFHelper.select.option', $item['id'], $item['version']);
+			});
+
+		if ($lastCat !== null)
 		{
-			return '';
+			$options[] = JHtml::_('FEFHelper.select.option', '</OPTGROUP>');
 		}
 
-		if (empty($category_id))
+		if ($addDefault)
 		{
-			$cache = [];
-
-			/** @var Releases $item */
-			foreach ($items as $item)
-			{
-				if (!array_key_exists($item->category->title, $cache))
-				{
-					$cache[$item->category->title] = [];
-				}
-
-				$cache[$item->category->title][] = (object) ['id' => $item->id, 'version' => $item->version];
-			}
-
-			foreach ($cache as $category => $releases)
-			{
-				if (!empty($options))
-				{
-					$options[] = JHtml::_('FEFHelper.select.option', '</OPTGROUP>');
-				}
-
-				$options[] = JHtml::_('FEFHelper.select.option', '<OPTGROUP>', $category);
-
-				foreach ($releases as $release)
-				{
-					$options[] = JHtml::_('FEFHelper.select.option', $release->id, $release->version);
-				}
-			}
-		}
-		else
-		{
-			/** @var Releases $item */
-			foreach ($items as $item)
-			{
-				if ($item->category_id == $category_id)
-				{
-					$options[] = JHtml::_('FEFHelper.select.option', $item->id, $item->version);
-				}
-			}
+			array_unshift($options, JHtml::_('FEFHelper.select.option', 0, '- ' . Text::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL') . ' -'));
 		}
 
-		array_unshift($options, JHtml::_('FEFHelper.select.option', 0, '- ' . Text::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL') . ' -'));
-
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		return $options;
 	}
 
 	public static function categories($selected = null, string $id = 'category', array $attribs = [], bool $nobeunpub = true): string

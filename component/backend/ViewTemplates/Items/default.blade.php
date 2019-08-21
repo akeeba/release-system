@@ -28,7 +28,7 @@ $modal = isset($modal) ? boolval($modal) : false;
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
-		{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::releases($this->filters['release'], 'release', ['onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect']) }}
+		@selectfilter('release', \Akeeba\ReleaseSystem\Admin\Helper\Select::releases(), 'COM_ARS_COMMON_SELECT_RELEASE_LABEL', ['class' => 'advancedSelect'])
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">

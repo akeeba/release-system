@@ -141,6 +141,8 @@ class Logs extends DataModel
 							  ->where($db->qn('release_id') . ' IN (' . $query_inner . ')');
 			$db->setQuery($query_outer);
 			$ids    = $db->loadColumn();
+			// Add an always false clause so we won't have SQL errors in case of an empty set
+			$ids[]  = '-1';
 			$clause = '(' . implode(", ", $ids) . ')';
 
 			$query->where($db->qn('item_id') . ' IN ' . $clause);

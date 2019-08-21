@@ -28,7 +28,11 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="release_id">@lang('LBL_ITEMS_RELEASE')</label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::releases($item->release_id, 'release_id', ['class' => 'advancedSelect']) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::releases(true), 'release_id', [
+                    'id' => 'release_id', 'list.select' => $item->release_id,
+                    'list.attr' => ['class' => 'advancedSelect']
+                ])
             </div>
 
             <div class="akeeba-form-group">

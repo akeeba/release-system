@@ -43,7 +43,7 @@ defined('_JEXEC') or die;
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::releases($this->filters['version'], 'version', ['onchange' => 'document.adminForm.submit()', 'class' => 'advancedSelect']) }}
+        @selectfilter('version', \Akeeba\ReleaseSystem\Admin\Helper\Select::releases(), 'COM_ARS_COMMON_SELECT_RELEASE_LABEL', ['class' => 'advancedSelect'])
     </div>
 @stop
 
