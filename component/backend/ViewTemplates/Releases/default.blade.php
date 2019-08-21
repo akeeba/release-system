@@ -27,7 +27,7 @@ $i = 0;
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::maturity('maturity', $this->filters['maturity'], ['onchange' => 'document.adminForm.submit()']) }}
+        @selectfilter('maturity', \Akeeba\ReleaseSystem\Admin\Helper\Select::maturity(false), 'COM_ARS_RELEASES_MATURITY_SELECT')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">

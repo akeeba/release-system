@@ -50,7 +50,10 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="maturity">@lang('COM_ARS_RELEASES_FIELD_MATURITY')</label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::maturity('maturity', $item->maturity) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::maturity(true), 'maturity', [
+                    'id' => 'maturity', 'list.select' => $item->maturity,
+                ])
             </div>
 
             <div class="akeeba-form-group">

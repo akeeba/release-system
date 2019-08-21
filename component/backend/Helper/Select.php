@@ -734,6 +734,13 @@ abstract class Select
 
 	}
 
+	/**
+	 * Returns an options list with all subscription levels
+	 *
+	 * @return array
+	 *
+	 * @since  5.0.0
+	 */
 	public static function subscriptionGroups(): array
 	{
 		$options = SubscriptionIntegration::getGroupsForSelect();
@@ -742,15 +749,30 @@ abstract class Select
 		return $options;
 	}
 
-	public static function maturity(string $id, ?string $selected = null, array $attribs = []): string
+	/**
+	 * Returns an options list with all item types
+	 *
+	 * @param bool $addDefault Add default select text?
+	 *
+	 * @return array
+	 *
+	 * @since  5.0.0
+	 */
+	public static function maturity(bool $addDefault = false): array
 	{
-		$options[] = JHtml::_('FEFHelper.select.option', '', Text::_('COM_ARS_RELEASES_MATURITY_SELECT'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'alpha', Text::_('COM_ARS_RELEASES_MATURITY_ALPHA'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'beta', Text::_('COM_ARS_RELEASES_MATURITY_BETA'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'rc', Text::_('COM_ARS_RELEASES_MATURITY_RC'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'stable', Text::_('COM_ARS_RELEASES_MATURITY_STABLE'));
+		$options = [
+			JHtml::_('FEFHelper.select.option', 'alpha', Text::_('COM_ARS_RELEASES_MATURITY_ALPHA')),
+			JHtml::_('FEFHelper.select.option', 'beta', Text::_('COM_ARS_RELEASES_MATURITY_BETA')),
+			JHtml::_('FEFHelper.select.option', 'rc', Text::_('COM_ARS_RELEASES_MATURITY_RC')),
+			JHtml::_('FEFHelper.select.option', 'stable', Text::_('COM_ARS_RELEASES_MATURITY_STABLE')),
+		];
 
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		if ($addDefault)
+		{
+			array_unshift($options, JHtml::_('FEFHelper.select.option', '', Text::_('COM_ARS_RELEASES_MATURITY_SELECT')));
+		}
+
+		return $options;
 	}
 
 	/**
