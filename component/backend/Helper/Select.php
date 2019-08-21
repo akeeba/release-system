@@ -659,16 +659,6 @@ abstract class Select
 		return $options;
 	}
 
-	public static function published(?string $selected = null, string $id = 'enabled', array $attribs = []): string
-	{
-		$options   = [];
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('COM_ARS_LBL_COMMON_SELECTPUBLISHSTATE') . ' -');
-		$options[] = JHtml::_('FEFHelper.select.option', 0, Text::_('JUNPUBLISHED'));
-		$options[] = JHtml::_('FEFHelper.select.option', 1, Text::_('JPUBLISHED'));
-
-		return self::genericlist($options, $id, $attribs, $selected, $id);
-	}
-
 	public static function languages(string $id, ?string $selected = null, array $attribs = [], string $client = 'site'): string
 	{
 		if ($client != 'site' && $client != 'administrator')
