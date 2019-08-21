@@ -81,7 +81,10 @@ $item = $this->getItem();
                     @lang('LBL_RELEASES_CLIENT_ID')
                 </label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::client_id('client_id', $item->client_id) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::client_id(), 'client_id', [
+                    'id' => 'category', 'list.select' => $item->client_id
+                ])
             </div>
 
             <div class="akeeba-form-group">

@@ -559,13 +559,13 @@ abstract class Select
 		return $options;
 	}
 
-	public static function client_id(string $id, ?string $selected, array $attribs = []): string
+	public static function client_id(): array
 	{
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_RELEASES_CLIENT_ID') . ' -');
-		$options[] = JHtml::_('FEFHelper.select.option', '1', Text::_('LBL_CLIENTID_BACKEND'));
-		$options[] = JHtml::_('FEFHelper.select.option', '0', Text::_('LBL_CLIENTID_FRONTEND'));
-
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		return [
+			JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_RELEASES_CLIENT_ID') . ' -'),
+			JHtml::_('FEFHelper.select.option', '1', Text::_('LBL_CLIENTID_BACKEND')),
+			JHtml::_('FEFHelper.select.option', '0', Text::_('LBL_CLIENTID_FRONTEND')),
+		];
 	}
 
 	public static function updateTypes(string $id, ?string $selected, array $attribs = []): string
