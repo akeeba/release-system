@@ -659,6 +659,15 @@ abstract class Select
 		return $options;
 	}
 
+	/**
+	 * Returns an options list with all Update Streams
+	 *
+	 * @param string $client Which part of the site you want a language list for? Default: site
+	 *
+	 * @return array
+	 *
+	 * @since  5.0.0
+	 */
 	public static function languages(string $client = 'site'): array
 	{
 		if ($client != 'site' && $client != 'administrator')
@@ -679,14 +688,28 @@ abstract class Select
 		return $options;
 	}
 
-	public static function categoryType(string $id, ?string $selected = null, array $attribs = []): string
+	/**
+	 * Returns an options list with all category types
+	 *
+	 * @param bool $addDefault Add default select text?
+	 *
+	 * @return array
+	 *
+	 * @since  5.0.0
+	 */
+	public static function categoryType(bool $addDefault = false): array
 	{
-		$options   = [];
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('COM_ARS_LBL_COMMON_SELECTCATTYPE') . ' -');
-		$options[] = JHtml::_('FEFHelper.select.option', 'normal', Text::_('COM_ARS_CATEGORIES_TYPE_NORMAL'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'bleedingedge', Text::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE'));
+		$options = [
+			JHtml::_('FEFHelper.select.option', 'normal', Text::_('COM_ARS_CATEGORIES_TYPE_NORMAL')),
+			JHtml::_('FEFHelper.select.option', 'bleedingedge', Text::_('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE')),
+		];
 
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		if ($addDefault)
+		{
+			array_unshift($options, JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('COM_ARS_LBL_COMMON_SELECTCATTYPE') . ' -'));
+		}
+
+		return $options;
 	}
 
 	public static function itemType(string $id, ?string $selected = null, array $attribs = []): string
@@ -714,87 +737,6 @@ abstract class Select
 		$options[] = JHtml::_('FEFHelper.select.option', 'beta', Text::_('COM_ARS_RELEASES_MATURITY_BETA'));
 		$options[] = JHtml::_('FEFHelper.select.option', 'rc', Text::_('COM_ARS_RELEASES_MATURITY_RC'));
 		$options[] = JHtml::_('FEFHelper.select.option', 'stable', Text::_('COM_ARS_RELEASES_MATURITY_STABLE'));
-
-		return self::genericlist($options, $id, $attribs, $selected, $id);
-	}
-
-	public static function imageList(string $id, ?string $selected, string $path, array $attribs = []): string
-	{
-		$options  = [];
-		$filter   = '\.png$|\.gif$|\.jpg$|\.bmp$|\.ico$|\.jpeg$|\.psd$|\.eps$';
-		$exclude  = false;
-		$stripExt = false;
-
-		if (!is_dir($path))
-		{
-			$path = JPATH_ROOT . '/' . $path;
-		}
-
-		$path = JPath::clean($path);
-
-		// Prepend some default options based on field attributes.
-		if (isset($attribs['hideNone']))
-		{
-			unset($attribs['hideNone']);
-		}
-		else
-		{
-			$options[] = JHtml::_('FEFHelper.select.option', '-1', Text::alt('JOPTION_DO_NOT_USE', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $id)));
-		}
-
-		if (isset($attribs['hideDefault']))
-		{
-			unset($attribs['hideDefault']);
-		}
-		else
-		{
-			$options[] = JHtml::_('FEFHelper.select.option', '', Text::alt('JOPTION_USE_DEFAULT', preg_replace('/[^a-zA-Z0-9_\-]/', '_', $id)));
-		}
-
-		if (isset($attribs['filter']))
-		{
-			$filter = $attribs['filter'];
-			unset($attribs['filter']);
-		}
-
-		if (isset($attribs['exclude']))
-		{
-			$exclude = true;
-			unset($attribs['exclude']);
-		}
-
-		if (isset($attribs['stripExt']))
-		{
-			$stripExt = true;
-			unset($attribs['stripExt']);
-		}
-
-		// Get a list of files in the search path with the given filter.
-		$files = JFolder::files($path, $filter);
-
-		// Build the options list from the list of files.
-		if (is_array($files))
-		{
-			foreach ($files as $file)
-			{
-				// Check to see if the file is in the exclude mask.
-				if ($exclude)
-				{
-					if (preg_match(chr(1) . $exclude . chr(1), $file))
-					{
-						continue;
-					}
-				}
-
-				// If the extension is to be stripped, do it.
-				if ($stripExt)
-				{
-					$file = JFile::stripExt($file);
-				}
-
-				$options[] = JHtml::_('FEFHelper.select.option', $file, $file);
-			}
-		}
 
 		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}

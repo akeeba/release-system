@@ -43,7 +43,11 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="type">@lang('COM_ARS_CATEGORIES_FIELD_TYPE')</label>
 
-                {{ Select::categoryType('type', $item->type) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::categoryType(true), 'type', [
+                    'id' => 'type', 'list.select' => $item->type,
+                ])
+
             </div>
 
             <div class="akeeba-form-group">

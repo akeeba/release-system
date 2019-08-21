@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
 
 @section('browse-filters')
 	<div class="akeeba-filter-element akeeba-form-group">
-		<?php echo Select::categoryType('type', $this->filters['type'], ['onchange' => 'document.adminForm.submit()'])?>
+		@selectfilter('type', \Akeeba\ReleaseSystem\Admin\Helper\Select::categoryType(), 'COM_ARS_LBL_COMMON_SELECTCATTYPE')
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
