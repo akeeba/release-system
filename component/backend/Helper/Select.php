@@ -9,11 +9,11 @@ namespace Akeeba\ReleaseSystem\Admin\Helper;
 
 use Akeeba\ReleaseSystem\Admin\Model\Categories;
 use Akeeba\ReleaseSystem\Admin\Model\Environments;
-use Akeeba\ReleaseSystem\Admin\Model\Items;
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
 use Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
 use Akeeba\ReleaseSystem\Admin\Model\UpdateStreams;
 use FOF30\Container\Container;
+use FOF30\Utils\Collection;
 use Joomla\CMS\Filesystem\File as JFile;
 use Joomla\CMS\Filesystem\Folder as JFolder;
 use Joomla\CMS\Filesystem\Path as JPath;
@@ -659,29 +659,24 @@ abstract class Select
 		return $options;
 	}
 
-	public static function languages(string $id, ?string $selected = null, array $attribs = [], string $client = 'site'): string
+	public static function languages(string $client = 'site'): array
 	{
 		if ($client != 'site' && $client != 'administrator')
 		{
 			$client = 'site';
 		}
 
-		$languages = JLanguageHelper::createLanguageList($selected, constant('JPATH_' . strtoupper($client)), true, true);
+		$options = (new Collection(JLanguageHelper::createLanguageList(
+			null, constant('JPATH_' . strtoupper($client)), true, true
+		)))->sort(function ($a, $b) {
+			return strcmp($a['value'], $b['value']);
+		})->transform(function (array $item) {
+			return JHtml::_('FEFHelper.select.option', $item['value'], $item['text']);
+		})->toArray();
 
-		if (count($languages) > 1)
-		{
-			usort(
-				$languages,
-				function ($a, $b) {
-					return strcmp($a['value'], $b['value']);
-				}
-			);
-		}
+		array_unshift($options, JHtml::_('FEFHelper.select.option', '*', Text::_('JALL_LANGUAGE')));
 
-		$options[] = JHtml::_('FEFHelper.select.option', '*', Text::_('JALL_LANGUAGE'));
-		$options   = array_merge($options, $languages);
-
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		return $options;
 	}
 
 	public static function categoryType(string $id, ?string $selected = null, array $attribs = []): string

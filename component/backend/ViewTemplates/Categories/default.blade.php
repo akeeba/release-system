@@ -32,7 +32,7 @@ defined('_JEXEC') or die;
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
-		<?php echo Select::languages('language', $this->filters['language'], ['onchange' => 'document.adminForm.submit()'])?>
+		@selectfilter('language', \Akeeba\ReleaseSystem\Admin\Helper\Select::languages(), 'JFIELD_LANGUAGE_LABEL')
 	</div>
 @stop
 

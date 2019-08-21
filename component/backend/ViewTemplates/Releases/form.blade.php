@@ -101,7 +101,10 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="language">@lang('JFIELD_LANGUAGE_LABEL')</label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::languages('language', $item->language) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::languages(), 'language', [
+                    'id' => 'language', 'list.select' => $item->language,
+                ])
             </div>
         </div>
     </div>
