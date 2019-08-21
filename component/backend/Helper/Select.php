@@ -14,15 +14,12 @@ use Akeeba\ReleaseSystem\Admin\Model\Releases;
 use Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
 use Akeeba\ReleaseSystem\Admin\Model\UpdateStreams;
 use FOF30\Container\Container;
-use FOF30\Utils\Collection;
 use Joomla\CMS\Filesystem\File as JFile;
 use Joomla\CMS\Filesystem\Folder as JFolder;
 use Joomla\CMS\Filesystem\Path as JPath;
 use Joomla\CMS\HTML\HTMLHelper as JHtml;
 use Joomla\CMS\Language\LanguageHelper as JLanguageHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri as JUri;
-use function Sodium\version_string;
 
 defined('_JEXEC') or die;
 
@@ -660,18 +657,6 @@ abstract class Select
 		}
 
 		return $options;
-	}
-
-	public static function getFiles(?string $selected = null, int $release_id = 0, int $item_id = 0, string $id = 'type', array $attribs = []): string
-	{
-		$container = Container::getInstance('com_ars');
-
-		/** @var Items $model */
-		$model = $container->factory->model('Items')->tmpInstance();
-
-		$options = $model->getFilesOptions($release_id, $item_id);
-
-		return self::genericlist($options, $id, $attribs, $selected, $id);
 	}
 
 	/**

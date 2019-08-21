@@ -7,9 +7,10 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Controller;
 
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Akeeba\ReleaseSystem\Admin\Model\Items;
 use Exception;
 use FOF30\Controller\Controller;
+use Joomla\CMS\HTML\HTMLHelper as JHtml;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
@@ -50,10 +51,17 @@ class Ajax extends Controller
 		$selected   = $this->input->getString('selected', '');
 
 		// Return the HTML list of files
-		$result = Select::getFiles($selected, $release_id, $item_id, 'filename', ['onchange' => 'arsItems.onFileChange();']);
+		/** @var Items $model */
+		$model   = $this->container->factory->model('Items')->tmpInstance();
+		$options = $model->getFilesOptions($release_id, $item_id);
 
 		@ob_end_clean();
-		echo $result;
+
+		echo JHtml::_('FEFHelper.select.genericlist', $options, 'filename', [
+			'id'          => 'filename',
+			'list.select' => $selected,
+			'list.attr'   => ['onchange' => 'arsItems.onFileChange();'],
+		]);
 
 		$this->container->platform->closeApplication();
 	}
