@@ -153,7 +153,11 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="updatestream">@lang('LBL_ITEMS_UPDATESTREAM')</label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::updatestreams('updatestream', $item->updatestream, ['class' => 'advancedSelect']) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::updateStreams(true), 'updatestream', [
+                    'id' => 'updatestream', 'list.select' => $item->updatestream,
+                    'list.attr' => ['class' => 'advancedSelect']
+                ])
             </div>
 
             <div class="akeeba-form-group">

@@ -607,7 +607,7 @@ abstract class Select
 	 *
 	 * @param bool $addDefault Add default select text?
 	 *
-	 * @return string
+	 * @return array
 	 *
 	 * @since  5.0.0
 	 */
@@ -631,29 +631,35 @@ abstract class Select
 		return $options;
 	}
 
-	public static function updatestreams(string $id, ?string $selected = null, array $attribs = []): string
+	/**
+	 * Returns an options list with all Update Streams
+	 *
+	 * @param bool $addDefault Add default select text?
+	 *
+	 * @return array
+	 *
+	 * @since  5.0.0
+	 */
+	public static function updateStreams(bool $addDefault = false): array
 	{
-		$container = Container::getInstance('com_ars');
-
 		/** @var UpdateStreams $streamModel */
-		$streamModel = $container->factory->model('UpdateStreams')->tmpInstance();
-		$items       = $streamModel
+		$streamModel = Container::getInstance('com_ars')
+			->factory->model('UpdateStreams')->tmpInstance();
+
+		$options = $streamModel
 			->filter_order('name')
 			->filter_order_Dir('ASC')
-			->get(true);
+			->get(true)
+			->transform(function (UpdateStreams $item) {
+				return JHtml::_('FEFHelper.select.option', $item->id, $item->name);
+			})->toArray();
 
-		$options   = [];
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_ITEMS_UPDATESTREAM_SELECT') . ' -');
-
-		if (count($items))
+		if ($addDefault)
 		{
-			foreach ($items as $item)
-			{
-				$options[] = JHtml::_('FEFHelper.select.option', $item->id, $item->name);
-			}
+			array_unshift($options, JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_ITEMS_UPDATESTREAM_SELECT') . ' -'));
 		}
 
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		return $options;
 	}
 
 	public static function getFiles(?string $selected = null, int $release_id = 0, int $item_id = 0, string $id = 'type', array $attribs = []): string
