@@ -45,7 +45,10 @@ $item = $this->getItem();
                     @lang('LBL_UPDATES_TYPE')
                 </label>
 
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::updateTypes('type', $item->type) }}
+                @jhtml('FEFHelper.select.genericlist',
+                    \Akeeba\ReleaseSystem\Admin\Helper\Select::updateTypes(true), 'type', [
+                    'id' => 'type', 'list.select' => $item->type
+                ])
             </div>
 
             <div class="akeeba-form-group">

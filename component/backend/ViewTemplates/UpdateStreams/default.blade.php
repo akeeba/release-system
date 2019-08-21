@@ -44,7 +44,7 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::updateTypes('type', $this->filters['type'], ['onchange' => 'document.adminForm.submit()']) }}
+        @selectfilter('type', \Akeeba\ReleaseSystem\Admin\Helper\Select::updateTypes(), 'LBL_UPDATES_TYPE')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">

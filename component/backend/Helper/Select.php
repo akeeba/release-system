@@ -457,6 +457,13 @@ abstract class Select
 		return self::$environmentTitles[$id];
 	}
 
+	/**
+	 * Return an options list for all Environments
+	 *
+	 * @return array
+	 *
+	 * @since  5.0.0
+	 */
 	public static function environments(): array
 	{
 		/** @var Environments $environmentsModel */
@@ -475,6 +482,16 @@ abstract class Select
 		return $options;
 	}
 
+	/**
+	 * Return a grouped options list for all releases (grouped by category) and ordered by category and version
+	 * ascending.
+	 *
+	 * @param bool $addDefault Add default select text?
+	 *
+	 * @return array
+	 *
+	 * @since  5.0.0
+	 */
 	public static function releases(bool $addDefault = false): array
 	{
 		/** @var Releases $model */
@@ -536,6 +553,16 @@ abstract class Select
 		return $options;
 	}
 
+	/**
+	 * Return an options list for all categories
+	 *
+	 * @param bool $addDefault                     Add default select text?
+	 * @param bool $excludeBleedingEdgeUnpublished Should I exclude unpublished Bleeding Edge categories? Default: true.
+	 *
+	 * @return array
+	 *
+	 * @since  5.0.0
+	 */
 	public static function categories(bool $addDefault = false, bool $excludeBleedingEdgeUnpublished = true): array
 	{
 		/** @var Categories $categoriesModel */
@@ -559,6 +586,13 @@ abstract class Select
 		return $options;
 	}
 
+	/**
+	 * Return an options list for all Joomla client IDs. Used to set up update streams.
+	 *
+	 * @return array
+	 *
+	 * @since  5.0.0
+	 */
 	public static function client_id(): array
 	{
 		return [
@@ -568,18 +602,33 @@ abstract class Select
 		];
 	}
 
-	public static function updateTypes(string $id, ?string $selected, array $attribs = []): string
+	/**
+	 * Return an options list with Joomla update types
+	 *
+	 * @param bool $addDefault Add default select text?
+	 *
+	 * @return string
+	 *
+	 * @since  5.0.0
+	 */
+	public static function updateTypes(bool $addDefault = false): array
 	{
-		$options[] = JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_UPDATES_TYPE') . ' -');
-		$options[] = JHtml::_('FEFHelper.select.option', 'components', Text::_('LBL_UPDATETYPES_COMPONENTS'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'libraries', Text::_('LBL_UPDATETYPES_LIBRARIES'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'modules', Text::_('LBL_UPDATETYPES_MODULES'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'packages', Text::_('LBL_UPDATETYPES_PACKAGES'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'plugins', Text::_('LBL_UPDATETYPES_PLUGINS'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'templates', Text::_('LBL_UPDATETYPES_TEMPLATES'));
-		$options[] = JHtml::_('FEFHelper.select.option', 'files', Text::_('LBL_UPDATETYPES_FILES'));
+		$options = [
+			JHtml::_('FEFHelper.select.option', 'components', Text::_('LBL_UPDATETYPES_COMPONENTS')),
+			JHtml::_('FEFHelper.select.option', 'libraries', Text::_('LBL_UPDATETYPES_LIBRARIES')),
+			JHtml::_('FEFHelper.select.option', 'modules', Text::_('LBL_UPDATETYPES_MODULES')),
+			JHtml::_('FEFHelper.select.option', 'packages', Text::_('LBL_UPDATETYPES_PACKAGES')),
+			JHtml::_('FEFHelper.select.option', 'plugins', Text::_('LBL_UPDATETYPES_PLUGINS')),
+			JHtml::_('FEFHelper.select.option', 'templates', Text::_('LBL_UPDATETYPES_TEMPLATES')),
+			JHtml::_('FEFHelper.select.option', 'files', Text::_('LBL_UPDATETYPES_FILES')),
+		];
 
-		return self::genericlist($options, $id, $attribs, $selected, $id);
+		if ($addDefault)
+		{
+			array_unshift($options, JHtml::_('FEFHelper.select.option', '', '- ' . Text::_('LBL_UPDATES_TYPE') . ' -'));
+		}
+
+		return $options;
 	}
 
 	public static function updatestreams(string $id, ?string $selected = null, array $attribs = []): string
