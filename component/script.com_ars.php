@@ -234,6 +234,10 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'components/com_ars/View/Latest/tmpl',
 			'components/com_ars/View/Releases/tmpl',
 			'components/com_ars/View/Update/tmpl',
+
+			// Joomla! 4 compatible routing (using a router class instead of router functions)
+			'components/com_ars/Helper/ComArsRouter.php',
+			'components/com_ars/Helper/ArsRouterHelper.php',
 		],
 	];
 

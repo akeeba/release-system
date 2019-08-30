@@ -21,12 +21,12 @@ $this->getContainer()->toolbar->setRenderFrontendSubmenu(true);
 
 // Turn off routing before displaying the form to prevent JPagination's call to JRoute from removing the layout and tmpl
 // query string parameters which are critical for pagination links to work.
-if (!class_exists('ComArsRouter'))
+if (!class_exists('ArsRouter'))
 {
-	require_once JPATH_COMPONENT . '/Helper/ComArsRouter.php';
+	require_once JPATH_COMPONENT . '/router.php';
 }
 
-ComArsRouter::$routeHtml = false;
+ArsRouter::setRouteHtml(false);
 
 $user = $this->getContainer()->platform->getUser();
 
@@ -235,7 +235,7 @@ $user = $this->getContainer()->platform->getUser();
 </form>
 <?php
 // Re-enable ARS routing
-ComArsRouter::$routeHtml = true;
+ArsRouter::setRouteHtml(true);
 
 $function = $this->input->getCmd('function', 'arsSelectItem');
 ?>
