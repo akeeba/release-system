@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 $lang = Factory::getLanguage();
 
-$groups = array('basic', 'tools', 'update');
+$groups = ['basic', 'tools', 'update'];
 
 ?>
 @section('icons')

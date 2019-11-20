@@ -17,7 +17,7 @@ $jsonReport = str_replace('\'', '\\\'', json_encode(array_map(function ($date, $
 }, array_keys($this->monthlyDailyReport), $this->monthlyDailyReport)));
 
 $js = <<< JS
-akeeba.jQuery(document).ready(function ($)
+akeeba.System.documentReady(function ()
 {
 	var data = JSON.parse('$jsonReport');
 	var lineLabels = [];
