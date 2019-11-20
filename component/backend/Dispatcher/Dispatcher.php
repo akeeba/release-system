@@ -65,6 +65,8 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 	private function loadCommonJavascript(): void
 	{
 		// Load common CSS and JavaScript
+		HTMLHelper::_('jquery.framework');
+
 		$mediaVersion = $this->container->mediaVersion;
 
 		// Do not move: System depends on Modal
