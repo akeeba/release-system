@@ -75,5 +75,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		$this->container->template->addJS('media://com_ars/js/Ajax.js', false, false, $mediaVersion);
 		// Do not move: System depends on Ajax
 		$this->container->template->addJS('media://com_ars/js/System.js', false, false, $mediaVersion);
+		// Do not move: Tooltip depends on System
+		$this->container->template->addJS('media://com_ars/js/Tooltip.js', false, false, $mediaVersion);
 	}
 }
