@@ -13,11 +13,6 @@ if (typeof (akeeba) == "undefined")
     var akeeba = {};
 }
 
-if (typeof (akeeba.jQuery) == "undefined")
-{
-    akeeba.jQuery = jQuery.noConflict();
-}
-
 var arsItems = {};
 
 arsItems.onTypeChange = function (e) {
@@ -25,52 +20,48 @@ arsItems.onTypeChange = function (e) {
 };
 
 arsItems.populateFiles = function (forceSelected) {
-    (function ($) {
-        var itemID    = Joomla.getOptions("ars.item_id", "");
-        var releaseID = $("#release_id").val();
-        var selected  = $("#filename").val();
-        var token     = Joomla.getOptions("csrf.token", "");
+    var itemID    = Joomla.getOptions("ars.item_id", "");
+    var releaseID = document.getElementById("release_id").value;
+    var selected  = document.getElementById("filename").value;
+    var token     = Joomla.getOptions("csrf.token", "");
 
-        if (forceSelected)
-        {
-            selected = forceSelected;
+    if (forceSelected)
+    {
+        selected = forceSelected;
+    }
+
+    var ajaxData = {
+        "option":     "com_ars",
+        "view":       "Ajax",
+        "format":     "raw",
+        "task":       "getFiles",
+        "item_id":    itemID,
+        "release_id": releaseID,
+        "selected":   selected
+    };
+
+    ajaxData[token] = 1;
+
+    var structure = {
+        type: "GET",
+        data: ajaxData,
+        success : function (data) {
+            var elFilename = document.getElementById("filename");
+
+            elFilename.innerHTML = data;
+            elFilename.removeAttribute("disabled");
+            elFilename.addEventListener('change', function (e) {
+                arsItems.onFileChange(e);
+            });
+
+            arsItems.onFileChange();
         }
+    };
 
-        var ajaxData    = {
-            "option":     "com_ars",
-            "view":       "Ajax",
-            "format":     "raw",
-            "task":       "getFiles",
-            "item_id":    itemID,
-            "release_id": releaseID,
-            "selected":   selected
-        };
-        ajaxData[token] = 1;
-
-        $.get(
-            "index.php",
-            ajaxData,
-            function (data, textStatus) {
-                var elFilename = $("#filename");
-
-                elFilename.html(data);
-                elFilename.removeAttr("disabled");
-                elFilename.change(function (e) {
-                    arsItems.onFileChange(e);
-                });
-
-                try
-                {
-                    elFilename.trigger("liszt:updated");
-                }
-                catch (e)
-                {
-                }
-
-                arsItems.onFileChange();
-            }
-        )
-    })(akeeba.jQuery);
+    akeeba.Ajax.ajax(
+        'index.php',
+        structure
+    );
 };
 
 arsItems.onLinkBlur = function (e) {
