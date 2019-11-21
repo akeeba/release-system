@@ -70,27 +70,12 @@ function errorHandlerAkeebaReleaseSystem($e)
 	}
 }
 
-if (version_compare(PHP_VERSION, '7.0.0', 'lt'))
+// PHP 7.0 or later; we can catch PHP Fatal Errors as well
+try
 {
-	// PHP 5.4, 5.5 and 5.6. Only user exceptions can be caught.
-	try
-	{
-		mainLoopAkeebaReleaseSystem();
-	}
-	catch (Exception $e)
-	{
-		errorHandlerAkeebaReleaseSystem($e);
-	}
+	mainLoopAkeebaReleaseSystem();
 }
-else
+catch (Throwable $e)
 {
-	// PHP 7.0 or later; we can catch PHP Fatal Errors as well
-	try
-	{
-		mainLoopAkeebaReleaseSystem();
-	}
-	catch (Throwable $e)
-	{
-		errorHandlerAkeebaReleaseSystem($e);
-	}
+	errorHandlerAkeebaReleaseSystem($e);
 }
