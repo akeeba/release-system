@@ -82,7 +82,7 @@ $url = 'index.php' . $uri->toString(['query']);
     ])
 
     <script type="text/javascript">
-        jQuery(document).ready(function () {
+        akeeba.System.documentReady(function () {
             setTimeout(function () {
                 var elModal     = document.getElementById("userModal_{{{ $field }}}");
                 var elContainer = document.getElementById("akeeba-renderer-fef");

@@ -74,80 +74,71 @@ arsItems.populateFiles = function (forceSelected) {
 };
 
 arsItems.onLinkBlur = function (e) {
-    (function ($) {
-        var elAlias  = $("#alias");
-        var oldAlias = elAlias.val();
+    var elAlias  = document.getElementById("alias");
+    var oldAlias = elAlias.value;
 
-        if (oldAlias === "")
+    if (oldAlias === "")
+    {
+        var newAlias = basename(document.getElementById("url").value);
+        var qmPos    = newAlias.indexOf("?");
+
+        if (qmPos >= 0)
         {
-            var newAlias = basename($("#url").val());
-            var qmPos    = newAlias.indexOf("?");
-
-            if (qmPos >= 0)
-            {
-                newAlias = newAlias.substr(0, qmPos);
-            }
-
-            newAlias = newAlias.replace(" ", "-", "g");
-            newAlias = newAlias.replace(".", "-", "g");
-
-            elAlias.val(newAlias);
+            newAlias = newAlias.substr(0, qmPos);
         }
-    })(akeeba.jQuery);
+
+        newAlias = newAlias.replace(" ", "-", "g");
+        newAlias = newAlias.replace(".", "-", "g");
+
+        elAlias.value = newAlias;
+    }
 };
 
 arsItems.onFileChange = function (e) {
-    (function ($) {
-        var elAlias  = $("#alias");
-        var oldAlias = elAlias.val();
+    var elAlias  = document.getElementById("alias");
+    var oldAlias = elAlias.value;
 
-        if (oldAlias === "")
-        {
-            var newAlias = basename($("#filename").val());
+    if (oldAlias === "")
+    {
+        var newAlias = basename(document.getElementById("filename").value);
 
-            newAlias = newAlias.replace(" ", "-", "g");
-            newAlias = newAlias.replace(".", "-", "g");
+        newAlias = newAlias.replace(" ", "-", "g");
+        newAlias = newAlias.replace(".", "-", "g");
 
-            elAlias.val(newAlias);
-        }
-
-    })(akeeba.jQuery);
+        elAlias.value = newAlias;
+    }
 };
 
 arsItems.showHideRows = function (populateFiles) {
-    (function ($) {
-        var elFilename = $("#filename");
-        var elURL      = $("#url");
+    var elFilename = document.getElementById("filename");
+    var elURL      = document.getElementById("url");
 
-        elFilename.parent().hide();
-        elURL.parent().hide();
+    elFilename.parentNode.style.display = 'none';
+    elURL.parentNode.style.display = 'none';
 
-        var currentType = $("#type").val();
+    var currentType = document.getElementById("type").value;
 
-        if (currentType === "file")
+    if (currentType === "file")
+    {
+        elFilename.parentNode.style.display = '';
+        elFilename.setAttribute("disabled", "disabled");
+
+        if ((populateFiles === undefined) || populateFiles)
         {
-            elFilename.parent().show();
-            elFilename.attr("disabled", "disabled");
-
-            if ((populateFiles === undefined) || populateFiles)
-            {
-                arsItems.populateFiles();
-            }
+            arsItems.populateFiles();
         }
-        else
-        {
-            elURL.parent().show();
-        }
-    })(akeeba.jQuery);
+    }
+    else
+    {
+        elURL.parentNode.style.display = '';
+    }
 };
 
-(function ($) {
-    $(document).ready(function () {
-        $("#url").blur(function (e) {
-            arsItems.onLinkBlur(e);
-        });
+akeeba.System.documentReady(function () {
+    document.getElementById('url').addEventListener('focus', function(e){
+        arsItems.onLinkBlur(e);
+    });
 
-        arsItems.showHideRows(false);
-        arsItems.populateFiles(Joomla.getOptions("ars.item_filename", ""));
-    })
-})(akeeba.jQuery);
+    arsItems.showHideRows(false);
+    arsItems.populateFiles(Joomla.getOptions("ars.item_filename", ""));
+});
