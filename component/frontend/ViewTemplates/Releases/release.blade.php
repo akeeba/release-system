@@ -48,29 +48,6 @@ switch ($item->maturity)
 }
 
 
-$js = <<<JS
-if (typeof(akeeba) == 'undefined')
-{
-	var akeeba = {};
-}
-
-if (typeof(akeeba.jQuery) === 'undefined')
-{
-	akeeba.jQuery = window.jQuery;
-}
-
-akeeba.jQuery(document).ready(function($){
-    akeeba.fef.tabs();
-
-    $('.release-info-toggler').off().on('click', function(){
-        var target = $(this).data('target');
-        $(target).slideToggle();
-    })
-});
-JS;
-
-$this->getContainer()->template->addJSInline($js);
-
 ?>
 
 <div class="ars-release-{{{ $item->id }}}">
@@ -87,7 +64,7 @@ $this->getContainer()->template->addJSInline($js);
 		<strong>@lang('LBL_RELEASES_RELEASEDON')</strong>:
 		@jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC1'))
 		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
-				data-target="#ars-release-{{{ $item->id }}}-info">
+				data-target="ars-release-{{{ $item->id }}}-info">
 			<span class="akion-information-circled"></span>
 			@lang('COM_ARS_RELEASES_MOREINFO')
 		</button>
