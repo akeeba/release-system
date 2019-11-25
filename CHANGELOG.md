@@ -15,6 +15,7 @@
 * ➖ Remove some useless graphs and stats.
 * ➖ Remove access rules from Categories.
 * ➖ Remove release descriptions (not shown since a while ago), kept release notes.
+* ⚙️ Removed jQuery dependence [gh-168]
 * ⚙️ Replaced jqPlot with Chart.js.
 * ⚙️ Upgrade deprecated Joomla API calls to Joomla 3.9.
 * ⚙️ Work towards future PHP 7.4 support.
