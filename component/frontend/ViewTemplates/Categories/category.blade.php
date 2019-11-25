@@ -30,7 +30,7 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 	</h4>
 	<p>
 		<button class="akeeba-btn--small" type="button" data-toggle="collapse"
-				data-target="#ars-category-{{{ $id }}}-info" aria-expanded="false"
+				data-target="ars-category-{{{ $id }}}-info" aria-expanded="false"
 				aria-controls="ars-category-{{{ $id }}}-info">
 			<span class="akion-information-circled"></span>
 			@lang('COM_ARS_RELEASES_MOREINFO')

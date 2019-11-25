@@ -9,11 +9,6 @@
 
 defined('_JEXEC') or die;
 ?>
-@css('media://com_ars/css/backend.css')
-@js('media://com_ars/js/gui-helpers.js')
-
-@jhtml('behavior.core')
-@jhtml('formbehavior.chosen', 'select')
 
 {{-- Include external sections. Do note how you can include sub-templates in one order and compile them in a completely
 different order using @yield later on! --}}

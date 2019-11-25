@@ -32,7 +32,7 @@ $released = $this->container->platform->getDate($item->created);
 		@jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC2'))
 
 		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
-				data-target="#ars-release-{{{ $item->id }}}-info">
+				data-target="ars-release-{{{ $item->id }}}-info">
 			<span class="akion-information-circled"></span>
 			@lang('COM_ARS_RELEASES_MOREINFO')
 		</button>

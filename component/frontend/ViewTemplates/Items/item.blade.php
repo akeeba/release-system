@@ -50,29 +50,6 @@ if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()
 	$download_url = $item->redirect_unauth;
 	$directLink = false;
 }
-
-$js = <<<JS
-if (typeof(akeeba) == 'undefined')
-{
-	var akeeba = {};
-}
-
-if (typeof(akeeba.jQuery) === 'undefined')
-{
-	akeeba.jQuery = window.jQuery;
-}
-
-akeeba.jQuery(document).ready(function($){
-    akeeba.fef.tabs();
-
-    $('.release-info-toggler').off().on('click', function(){
-        var target = $(this).data('target');
-        $(target).slideToggle();
-    })
-});
-JS;
-
-$this->getContainer()->template->addJSInline($js);
 ?>
 
 <div class="ars-item-{{{ $item->id }}}">
@@ -99,7 +76,7 @@ $this->getContainer()->template->addJSInline($js);
 		</a>
 
 		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
-				data-target="#ars-item-{{{ $item->id }}}-info">
+				data-target="ars-item-{{{ $item->id }}}-info">
 			<span class="akion-information-circled"></span>
 			@lang('COM_ARS_RELEASES_MOREINFO')
 		</button>

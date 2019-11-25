@@ -55,9 +55,18 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		$this->container->renderer->setOption('fef_reset', in_array($fefReset, [1,3]));
 		$this->container->renderer->setOption('linkbar_style', 'classic');
 
-		// Load common CSS and JavaScript
-		HTMLHelper::_('jquery.framework');
-		$this->container->template->addCSS('media://com_ars/css/frontend.css', $this->container->mediaVersion);
+		// FEF Renderer options. Used to load the common CSS file.
+		$this->container->renderer->setOptions([
+			'custom_css' => 'media://com_ars/css/frontend.css',
+		]);
+
+		$format = $this->input->getCmd('format', 'html');
+
+		if ($format == 'html')
+		{
+			// Load common Javascript files.
+			$this->loadCommonJavascript();
+		}
 	}
 
 	/**
@@ -85,5 +94,22 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		}
 
 		$this->container->input->set('view', $view);
+	}
+
+	private function loadCommonJavascript(): void
+	{
+		// Load common CSS and JavaScript
+		HTMLHelper::_('jquery.framework');
+
+		$mediaVersion = $this->container->mediaVersion;
+
+		// Do not move: System depends on Modal
+		$this->container->template->addJS('media://com_ars/js/Modal.js', false, false, $mediaVersion);
+		// Do not move: System depends on Ajax
+		$this->container->template->addJS('media://com_ars/js/Ajax.js', false, false, $mediaVersion);
+		// Do not move: System depends on Ajax
+		$this->container->template->addJS('media://com_ars/js/System.js', false, false, $mediaVersion);
+		// Do not move: Tooltip depends on System
+		$this->container->template->addJS('media://com_ars/js/Tooltip.js', false, false, $mediaVersion);
 	}
 }
