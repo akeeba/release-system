@@ -1,83 +1,181 @@
 <?php
 /**
- * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * Obsolete PHP version notification
+ *
+ * @copyright Copyright Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
-// Protect from unauthorized access
-defined('_JEXEC') or die();
+defined('AKEEBA_COMMON_WRONGPHP') or die;
 
-// PHP 5.6 is modern enough. Anything else gets a warning.
-$minPHPVersion = '5.4.0';
-$recommendedPHPVersion = '5.6.0';
+/**
+ * This script checks if you are using an obsolete PHP version.
+ *
+ * If your PHP version is too old it will notify you and return FALSE.
+ *
+ * If your PHP version is supported it will simply return TRUE.
+ */
 
-if (!version_compare(PHP_VERSION, $minPHPVersion, 'lt'))
+// Configuration -- Override before calling this script
+$minPHPVersion         = isset($minPHPVersion) ? $minPHPVersion : '7.2.0';
+$recommendedPHPVersion = isset($recommendedPHPVersion) ? $recommendedPHPVersion : '7.3.0';
+$softwareName          = isset($softwareName) ? $softwareName : 'This software';
+$silentResults         = isset($silentResults) ? $silentResults : false;
+
+// Override these to test the script
+$longVersion      = isset($longVersion) ? $longVersion : PHP_VERSION;
+$shortVersion     = isset($shortVersion) ? $shortVersion : sprintf('%d.%d', PHP_MAJOR_VERSION, PHP_MINOR_VERSION);
+$currentTimestamp = isset($currentTimestamp) ? $currentTimestamp : time();
+
+/**
+ * Versions newer than PHP 5.3. Format version => [maintenance_date, eol_date]
+ *
+ * For versions older than 5.6 we use a fake maintenance_date because this information no longer exists on PHP's site.
+ */
+$phpDates = [
+	'3.0' => ['1990-01-01 00:00:00', '2000-10-20 00:00:00'],
+	'4.0' => ['1990-01-01 00:00:00', '2001-06-23 00:00:00'],
+	'4.1' => ['1990-01-01 00:00:00', '2002-03-12 00:00:00'],
+	'4.2' => ['1990-01-01 00:00:00', '2002-09-06 00:00:00'],
+	'4.3' => ['1990-01-01 00:00:00', '2005-03-31 00:00:00'],
+	'4.4' => ['1990-01-01 00:00:00', '2008-08-07 00:00:00'],
+	'5.0' => ['1990-01-01 00:00:00', '2005-09-05 00:00:00'],
+	'5.1' => ['1990-01-01 00:00:00', '2006-08-24 00:00:00'],
+	'5.2' => ['1990-01-01 00:00:00', '2011-01-11 00:00:00'],
+	'5.3' => ['1990-01-01 00:00:00', '2014-08-14 00:00:00'],
+	'5.4' => ['1990-01-01 00:00:00', '2015-09-03 00:00:00'],
+	'5.5' => ['1990-01-01 00:00:00', '2016-07-10 00:00:00'],
+	'5.6' => ['2017-01-10 00:00:00', '2018-12-31 00:00:00'],
+	'7.0' => ['2018-01-01 00:00:00', '2019-01-10 00:00:00'],
+	'7.1' => ['2018-12-01 00:00:00', '2019-12-01 00:00:00'],
+	'7.2' => ['2019-11-30 00:00:00', '2020-11-30 00:00:00'],
+	'7.3' => ['2020-12-06 00:00:00', '2021-12-06 00:00:00'],
+	'7.4' => ['2021-11-28 00:00:00', '2022-11-28 00:00:00'],
+];
+
+if (!version_compare($longVersion, $minPHPVersion, 'lt'))
 {
-	return;
+	unset($minPHPVersion, $recommendedPHPVersion, $softwareName, $longVersion, $shortVersion, $phpDates,
+		$silentResults, $currentTimestamp);
+
+	return true;
 }
 
-$tx = new DateTimeZone('GMT');
+// Typically used in the frontend to not divulge any information about the server
+if ($silentResults)
+{
+	return false;
+}
 
-// PHP 5.3
-if (version_compare(PHP_VERSION, '5.4.0', 'lt'))
-{
-	$akeebaCommonDatePHP = new DateTime('2014-08-14 00:00:00', $tx);
-}
-// PHP 5.4
-elseif (version_compare(PHP_VERSION, '5.5.0', 'lt'))
-{
-	$akeebaCommonDatePHP = new DateTime('2015-09-03 00:00:00', $tx);
-}
-// PHP 5.5
-elseif (version_compare(PHP_VERSION, '5.6.0', 'lt'))
-{
-	$akeebaCommonDatePHP = new DateTime('2016-07-10 00:00:00', $tx);
-}
-// PHP 5.6
-elseif (version_compare(PHP_VERSION, '5.7.0', 'lt'))
-{
-	$akeebaCommonDatePHP = new DateTime('2018-12-31 00:00:00', $tx);
-}
-// PHP 7.0
-elseif (version_compare(PHP_VERSION, '7.1.0', 'lt'))
-{
-	$akeebaCommonDatePHP = new DateTime('2018-12-03 00:00:00', $tx);
-}
-// PHP 7.1
-elseif (version_compare(PHP_VERSION, '7.2.0', 'lt'))
-{
-	$akeebaCommonDatePHP = new DateTime('2019-12-1 00:00:00', $tx);
-}
-// PHP 7.2
-elseif (version_compare(PHP_VERSION, '7.3.0', 'lt'))
-{
-	$akeebaCommonDatePHP = new DateTime('2020-11-30 00:00:00', $tx);
-}
+$tzGmt        = new DateTimeZone('GMT');
+$securityDate = new DateTime($phpDates[$shortVersion][0]);
+$eolDate      = new DateTime($phpDates[$shortVersion][1]);
+
+/**
+ * Ancient:  This PHP version has reached end-of-life more than 2 years ago
+ * EOL:      This PHP version has reached end-of-life
+ * Security: This PHP version has reached the Security Support date but not the EOL date yet
+ * Current:  This PHP version is still in Active Support
+ */
+$isEol      = $eolDate->getTimestamp() <= $currentTimestamp;
+$isAncient  = $isEol && (($currentTimestamp - $eolDate->getTimestamp()) >= 63072000);
+$isSecurity = !$isEol && ($securityDate->getTimestamp() <= $currentTimestamp);
+$isCurrent  = !$isEol && !$isSecurity;
+
+$characterization = $isCurrent ? 'unsupported' : 'older';
+$characterization = $isEol ? 'obsolete' : $characterization;
+$characterization = $isAncient ? 'dangerously obsolete' : $characterization;
 
 ?>
 
-<div style="margin: 1em">
-	<h1>Outdated PHP version <?php echo PHP_VERSION ?> detected</h1>
-	<hr/>
-	<p style="font-size: 180%; margin: 2em 1em;">
-		Akeeba Release System requires PHP <?php echo $minPHPVersion ?> or any later version to work.
-	</p>
-	<p>
-		We <b>strongly</b> urge you to update to PHP <?php echo $recommendedPHPVersion ?> or later. If you are
-		unsure how to do this, please ask your host.
-	</p>
-	<p>
-		<a href="https://www.akeebabackup.com/how-do-version-numbers-work.html">Version numbers don't make sense?</a>
-	</p>
+	<div style="margin: 1em">
+		<p style="font-size: 180%; margin: 2em 1em; padding: 2em 1em; text-align: center; border: thin solid #f0ad4e; background-color: gold; font-weight: bold; border-radius: 0.25em">
+			<?php echo $softwareName ?> requires PHP <?php echo $minPHPVersion ?> or later.
+		</p>
+		<h2><?php echo ucfirst($characterization) ?> PHP version <?php echo $longVersion ?> detected</h2>
+		<hr />
+		<p>
+			We recommend that you upgrade your site to PHP <?php echo $recommendedPHPVersion ?> or later. If you are
+			unsure how to do this, please ask your host.
+		</p>
+		<p>
+			<a href="https://www.akeebabackup.com/how-do-version-numbers-work.html">Version numbers don't make
+				sense?</a>
+		</p>
 
-	<hr/>
+		<hr />
 
-	<h3>Security advice</h3>
-	<p>
-		Your version of PHP, <?php echo PHP_VERSION ?>, <a href="http://php.net/eol.php">has reached the end
-			of its life</a> on <?php echo $akeebaCommonDatePHP->format(Text::_('DATE_FORMAT_LC1')) ?>. You are
-		strongly urged to upgrade to a current version, as using older versions may expose you to security
-		vulnerabilities and bugs that have been fixed in more recent versions of PHP.
-	</p>
-</div>
+		<?php if ($isAncient): ?>
+			<h3>Urgent security advice</h3>
+
+			<p>
+				Your version of PHP, <?php echo $longVersion ?>, <a href="http://php.net/eol.php">has reached the end
+					of its life</a> a <strong>very</strong> long time ago, namely on
+				<?php echo $eolDate->format('l, d F Y') ?>. It has known security vulnerabilities which are used to
+				compromise (“hack”) web servers. It is no longer safe using it in production. You are <strong>VERY
+					STRONGLY</strong> advised to upgrade your server to a <a
+						href="https://www.php.net/supported-versions.php">supported PHP version</a> as soon as possible.
+			</p>
+		<?php elseif ($isEol): ?>
+			<h3>Security advice</h3>
+
+			<p>
+				Your version of PHP, <?php echo $longVersion ?>, <a href="http://php.net/eol.php">has reached the end
+					of its life</a> on <?php echo $eolDate->format('l, d F Y') ?>. End-of-life PHP versions may have
+				as-yet-undiscovered security vulnerabilities which can be used to compromise (“hack”) your site. It is
+				no
+				longer safe using it in production, even if your host or your Linux distribution claim otherwise – the
+				PHP
+				developers themselves have said time over time that not all security vulnerabilities fixes can be
+				backported
+				to End-of-Life versions of PHP since they may require architectural changes in PHP itself. You are
+				<strong>strongly</strong> advised to upgrade your server to a <a
+						href="https://www.php.net/supported-versions.php">supported PHP version</a> as soon as possible.
+			</p>
+
+		<?php elseif ($isSecurity): ?>
+			<h3>Security reminder</h3>
+
+			<p>
+				Your version of PHP, <?php echo $longVersion ?>, has entered the “Security Support” phase of its life on
+				<?php echo $securityDate->format('l, d F Y') ?>. As such, only security issues will be addressed but not
+				any of its known functional issues (“bugs”). Unfixed functional issues in PHP can lead to your site not
+				working
+				properly. It is advisable to plan migrating your site to a
+				<a href="https://www.php.net/supported-versions.php">supported PHP version</a> no later than
+				<?php echo $eolDate->format('l, d F Y') ?> – that's when PHP
+				<?php echo $shortVersion ?> will become End-of-Life, therefore
+				completely
+				unsuitable for use on a live server.
+			</p>
+		<?php endif; ?>
+
+		<?php if ($isSecurity || $isCurrent): ?>
+			<h3>Why is my PHP version not supported?</h3>
+
+			<p>
+				Even though PHP <?php echo $shortVersion ?> will be supported by the PHP
+				project until <?php echo $eolDate->format('l, d F Y') ?> we are unfortunately unable to provide
+				support for it in our software. This has to do either with missing features or third party libraries.
+				Older
+				PHP versions are missing features we require for our software to work efficiently and be written in a
+				way
+				that makes it possible for us to provide a plethora of relevant features while maintaining good quality
+				control. Moreover, third party libraries we use to provide some of the software's features do not
+				support
+				older PHP versions for the same reason – so even if we don't absolutely need to use at least PHP
+				<?php $minPHPVersion ?> the third party libraries do, making it impossible for our software to run on
+				your
+				older version <?php echo $shortVersion ?>. We apologize for the inconvenience.
+			</p>
+			<p>
+				We'd like to remind you, however, that newer PHP versions are always faster and more well-tested than
+				their
+				predecessors. Upgrading your site to a newer PHP version will not only let our software run but will
+				also
+				make your site faster, more stable and help it perform better in search engine results.
+			</p>
+		<?php endif; ?>
+	</div>
+
+<?php return false; ?>
