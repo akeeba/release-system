@@ -6,7 +6,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-defined('AKEEBA_COMMON_WRONGPHP') or die;
+(defined('_JEXEC') || defined('WPINC') || defined('APATH_BASE') || defined('AKEEBA_COMMON_WRONGPHP')) or die;
 
 /**
  * This script checks if you are using an obsolete PHP version.
@@ -18,7 +18,7 @@ defined('AKEEBA_COMMON_WRONGPHP') or die;
 
 // Configuration -- Override before calling this script
 $minPHPVersion         = isset($minPHPVersion) ? $minPHPVersion : '7.2.0';
-$recommendedPHPVersion = isset($recommendedPHPVersion) ? $recommendedPHPVersion : '7.3.0';
+$recommendedPHPVersion = isset($recommendedPHPVersion) ? $recommendedPHPVersion : '7.3';
 $softwareName          = isset($softwareName) ? $softwareName : 'This software';
 $silentResults         = isset($silentResults) ? $silentResults : false;
 
@@ -28,7 +28,7 @@ $shortVersion     = isset($shortVersion) ? $shortVersion : sprintf('%d.%d', PHP_
 $currentTimestamp = isset($currentTimestamp) ? $currentTimestamp : time();
 
 /**
- * Versions newer than PHP 5.3. Format version => [maintenance_date, eol_date]
+ * Format: version => [maintenance_date, eol_date]
  *
  * For versions older than 5.6 we use a fake maintenance_date because this information no longer exists on PHP's site.
  */
@@ -67,20 +67,44 @@ if ($silentResults)
 	return false;
 }
 
-$tzGmt        = new DateTimeZone('GMT');
-$securityDate = new DateTime($phpDates[$shortVersion][0]);
-$eolDate      = new DateTime($phpDates[$shortVersion][1]);
+/**
+ * Safe defaults for PHP versions older than 5.3.0.
+ *
+ * Older PHP versions don't even have support for DateTime so we need these defaults to prevent this warning script from
+ * bringing the site down with an error.
+ */
+$isEol      = true;
+$isAncient  = true;
+$isSecurity = false;
+$isCurrent  = false;
+
+$eolDateFormatted      = $phpDates[$shortVersion][1];
+$securityDateFormatted = $phpDates[$shortVersion][0];
+
 
 /**
- * Ancient:  This PHP version has reached end-of-life more than 2 years ago
- * EOL:      This PHP version has reached end-of-life
- * Security: This PHP version has reached the Security Support date but not the EOL date yet
- * Current:  This PHP version is still in Active Support
+ * This can only work on PHP 5.2.0 or later
  */
-$isEol      = $eolDate->getTimestamp() <= $currentTimestamp;
-$isAncient  = $isEol && (($currentTimestamp - $eolDate->getTimestamp()) >= 63072000);
-$isSecurity = !$isEol && ($securityDate->getTimestamp() <= $currentTimestamp);
-$isCurrent  = !$isEol && !$isSecurity;
+if (version_compare($longVersion, '5.2.0', 'ge'))
+{
+	$tzGmt        = new DateTimeZone('GMT');
+	$securityDate = new DateTime($phpDates[$shortVersion][0], $tzGmt);
+	$eolDate      = new DateTime($phpDates[$shortVersion][1], $tzGmt);
+
+	/**
+	 * Ancient:  This PHP version has reached end-of-life more than 2 years ago
+	 * EOL:      This PHP version has reached end-of-life
+	 * Security: This PHP version has reached the Security Support date but not the EOL date yet
+	 * Current:  This PHP version is still in Active Support
+	 */
+	$isEol      = $eolDate->getTimestamp() <= $currentTimestamp;
+	$isAncient  = $isEol && (($currentTimestamp - $eolDate->getTimestamp()) >= 63072000);
+	$isSecurity = !$isEol && ($securityDate->getTimestamp() <= $currentTimestamp);
+	$isCurrent  = !$isEol && !$isSecurity;
+
+	$eolDateFormatted      = $eolDate->format('l, d F Y');
+	$securityDateFormatted = $securityDate->format('l, d F Y');
+}
 
 $characterization = $isCurrent ? 'unsupported' : 'older';
 $characterization = $isEol ? 'obsolete' : $characterization;
@@ -111,17 +135,17 @@ $characterization = $isAncient ? 'dangerously obsolete' : $characterization;
 			<p>
 				Your version of PHP, <?php echo $longVersion ?>, <a href="http://php.net/eol.php">has reached the end
 					of its life</a> a <strong>very</strong> long time ago, namely on
-				<?php echo $eolDate->format('l, d F Y') ?>. It has known security vulnerabilities which are used to
+				<?php echo $eolDateFormatted ?>. It has known security vulnerabilities which are used to
 				compromise (“hack”) web servers. It is no longer safe using it in production. You are <strong>VERY
 					STRONGLY</strong> advised to upgrade your server to a <a
-						href="https://www.php.net/supported-versions.php">supported PHP version</a> as soon as possible.
+					href="https://www.php.net/supported-versions.php">supported PHP version</a> as soon as possible.
 			</p>
 		<?php elseif ($isEol): ?>
 			<h3>Security advice</h3>
 
 			<p>
 				Your version of PHP, <?php echo $longVersion ?>, <a href="http://php.net/eol.php">has reached the end
-					of its life</a> on <?php echo $eolDate->format('l, d F Y') ?>. End-of-life PHP versions may have
+					of its life</a> on <?php echo $eolDateFormatted ?>. End-of-life PHP versions may have
 				as-yet-undiscovered security vulnerabilities which can be used to compromise (“hack”) your site. It is
 				no
 				longer safe using it in production, even if your host or your Linux distribution claim otherwise – the
@@ -130,7 +154,7 @@ $characterization = $isAncient ? 'dangerously obsolete' : $characterization;
 				backported
 				to End-of-Life versions of PHP since they may require architectural changes in PHP itself. You are
 				<strong>strongly</strong> advised to upgrade your server to a <a
-						href="https://www.php.net/supported-versions.php">supported PHP version</a> as soon as possible.
+					href="https://www.php.net/supported-versions.php">supported PHP version</a> as soon as possible.
 			</p>
 
 		<?php elseif ($isSecurity): ?>
@@ -138,12 +162,12 @@ $characterization = $isAncient ? 'dangerously obsolete' : $characterization;
 
 			<p>
 				Your version of PHP, <?php echo $longVersion ?>, has entered the “Security Support” phase of its life on
-				<?php echo $securityDate->format('l, d F Y') ?>. As such, only security issues will be addressed but not
+				<?php echo $securityDateFormatted ?>. As such, only security issues will be addressed but not
 				any of its known functional issues (“bugs”). Unfixed functional issues in PHP can lead to your site not
 				working
 				properly. It is advisable to plan migrating your site to a
 				<a href="https://www.php.net/supported-versions.php">supported PHP version</a> no later than
-				<?php echo $eolDate->format('l, d F Y') ?> – that's when PHP
+				<?php echo $eolDateFormatted ?> – that's when PHP
 				<?php echo $shortVersion ?> will become End-of-Life, therefore
 				completely
 				unsuitable for use on a live server.
@@ -155,7 +179,7 @@ $characterization = $isAncient ? 'dangerously obsolete' : $characterization;
 
 			<p>
 				Even though PHP <?php echo $shortVersion ?> will be supported by the PHP
-				project until <?php echo $eolDate->format('l, d F Y') ?> we are unfortunately unable to provide
+				project until <?php echo $eolDateFormatted ?> we are unfortunately unable to provide
 				support for it in our software. This has to do either with missing features or third party libraries.
 				Older
 				PHP versions are missing features we require for our software to work efficiently and be written in a
