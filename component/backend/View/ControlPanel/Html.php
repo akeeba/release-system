@@ -49,7 +49,7 @@ class Html extends \FOF30\View\DataView\Html
 	/**
 	 * Executes before rendering the 'main' task's view template
 	 *
-	 * @param string|null $tpl Currently unused
+	 * @param   string|null  $tpl  Currently unused
 	 *
 	 * @return  void
 	 * @throws \Exception
@@ -73,7 +73,10 @@ class Html extends \FOF30\View\DataView\Html
 			]));
 		}
 
-		$dldetails = json_decode($dldetails, true);
+		$dldetails = @json_decode($dldetails, true) ?? [
+				'dlmonth' => 0,
+				'dlweek'  => 0,
+			];
 
 		$this->downloadsMonth = $dldetails['dlmonth'];
 		$this->downloadsWeek  = $dldetails['dlweek'];
@@ -107,8 +110,8 @@ class Html extends \FOF30\View\DataView\Html
 
 		$this->graphsWidth = $width;
 
-		$this->needsMenuItem  = $model->needsCategoriesMenu();
-		$this->hasGeoIPPlugin = $model->hasGeoIPPlugin();
+		$this->needsMenuItem          = $model->needsCategoriesMenu();
+		$this->hasGeoIPPlugin         = $model->hasGeoIPPlugin();
 		$this->geoIPPluginNeedsUpdate = $model->GeoIPDBNeedsUpdate();
 
 		// Information for the PHP version warning
