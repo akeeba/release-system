@@ -32,26 +32,26 @@ $currentTimestamp = isset($currentTimestamp) ? $currentTimestamp : time();
  *
  * For versions older than 5.6 we use a fake maintenance_date because this information no longer exists on PHP's site.
  */
-$phpDates = [
-	'3.0' => ['1990-01-01 00:00:00', '2000-10-20 00:00:00'],
-	'4.0' => ['1990-01-01 00:00:00', '2001-06-23 00:00:00'],
-	'4.1' => ['1990-01-01 00:00:00', '2002-03-12 00:00:00'],
-	'4.2' => ['1990-01-01 00:00:00', '2002-09-06 00:00:00'],
-	'4.3' => ['1990-01-01 00:00:00', '2005-03-31 00:00:00'],
-	'4.4' => ['1990-01-01 00:00:00', '2008-08-07 00:00:00'],
-	'5.0' => ['1990-01-01 00:00:00', '2005-09-05 00:00:00'],
-	'5.1' => ['1990-01-01 00:00:00', '2006-08-24 00:00:00'],
-	'5.2' => ['1990-01-01 00:00:00', '2011-01-11 00:00:00'],
-	'5.3' => ['1990-01-01 00:00:00', '2014-08-14 00:00:00'],
-	'5.4' => ['1990-01-01 00:00:00', '2015-09-03 00:00:00'],
-	'5.5' => ['1990-01-01 00:00:00', '2016-07-10 00:00:00'],
-	'5.6' => ['2017-01-10 00:00:00', '2018-12-31 00:00:00'],
-	'7.0' => ['2018-01-01 00:00:00', '2019-01-10 00:00:00'],
-	'7.1' => ['2018-12-01 00:00:00', '2019-12-01 00:00:00'],
-	'7.2' => ['2019-11-30 00:00:00', '2020-11-30 00:00:00'],
-	'7.3' => ['2020-12-06 00:00:00', '2021-12-06 00:00:00'],
-	'7.4' => ['2021-11-28 00:00:00', '2022-11-28 00:00:00'],
-];
+$phpDates = array(
+	'3.0' => array('1990-01-01 00:00:00', '2000-10-20 00:00:00'),
+	'4.0' => array('1990-01-01 00:00:00', '2001-06-23 00:00:00'),
+	'4.1' => array('1990-01-01 00:00:00', '2002-03-12 00:00:00'),
+	'4.2' => array('1990-01-01 00:00:00', '2002-09-06 00:00:00'),
+	'4.3' => array('1990-01-01 00:00:00', '2005-03-31 00:00:00'),
+	'4.4' => array('1990-01-01 00:00:00', '2008-08-07 00:00:00'),
+	'5.0' => array('1990-01-01 00:00:00', '2005-09-05 00:00:00'),
+	'5.1' => array('1990-01-01 00:00:00', '2006-08-24 00:00:00'),
+	'5.2' => array('1990-01-01 00:00:00', '2011-01-11 00:00:00'),
+	'5.3' => array('1990-01-01 00:00:00', '2014-08-14 00:00:00'),
+	'5.4' => array('1990-01-01 00:00:00', '2015-09-03 00:00:00'),
+	'5.5' => array('1990-01-01 00:00:00', '2016-07-10 00:00:00'),
+	'5.6' => array('2017-01-10 00:00:00', '2018-12-31 00:00:00'),
+	'7.0' => array('2018-01-01 00:00:00', '2019-01-10 00:00:00'),
+	'7.1' => array('2018-12-01 00:00:00', '2019-12-01 00:00:00'),
+	'7.2' => array('2019-11-30 00:00:00', '2020-11-30 00:00:00'),
+	'7.3' => array('2020-12-06 00:00:00', '2021-12-06 00:00:00'),
+	'7.4' => array('2021-11-28 00:00:00', '2022-11-28 00:00:00'),
+);
 
 if (!version_compare($longVersion, $minPHPVersion, 'lt'))
 {
@@ -138,7 +138,7 @@ $characterization = $isAncient ? 'dangerously obsolete' : $characterization;
 				<?php echo $eolDateFormatted ?>. It has known security vulnerabilities which are used to
 				compromise (“hack”) web servers. It is no longer safe using it in production. You are <strong>VERY
 					STRONGLY</strong> advised to upgrade your server to a <a
-					href="https://www.php.net/supported-versions.php">supported PHP version</a> as soon as possible.
+						href="https://www.php.net/supported-versions.php">supported PHP version</a> as soon as possible.
 			</p>
 		<?php elseif ($isEol): ?>
 			<h3>Security advice</h3>
@@ -154,7 +154,7 @@ $characterization = $isAncient ? 'dangerously obsolete' : $characterization;
 				backported
 				to End-of-Life versions of PHP since they may require architectural changes in PHP itself. You are
 				<strong>strongly</strong> advised to upgrade your server to a <a
-					href="https://www.php.net/supported-versions.php">supported PHP version</a> as soon as possible.
+						href="https://www.php.net/supported-versions.php">supported PHP version</a> as soon as possible.
 			</p>
 
 		<?php elseif ($isSecurity): ?>
@@ -188,7 +188,7 @@ $characterization = $isAncient ? 'dangerously obsolete' : $characterization;
 				control. Moreover, third party libraries we use to provide some of the software's features do not
 				support
 				older PHP versions for the same reason – so even if we don't absolutely need to use at least PHP
-				<?php $minPHPVersion ?> the third party libraries do, making it impossible for our software to run on
+				<?php echo $minPHPVersion ?> the third party libraries do, making it impossible for our software to run on
 				your
 				older version <?php echo $shortVersion ?>. We apologize for the inconvenience.
 			</p>

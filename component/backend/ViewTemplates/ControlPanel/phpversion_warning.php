@@ -34,26 +34,26 @@ $currentTimestamp = isset($currentTimestamp) ? $currentTimestamp : time();
  *
  * For versions older than 5.6 we use a fake maintenance_date because this information no longer exists on PHP's site.
  */
-$phpDates = [
-	'3.0' => ['1990-01-01 00:00:00', '2000-10-20 00:00:00'],
-	'4.0' => ['1990-01-01 00:00:00', '2001-06-23 00:00:00'],
-	'4.1' => ['1990-01-01 00:00:00', '2002-03-12 00:00:00'],
-	'4.2' => ['1990-01-01 00:00:00', '2002-09-06 00:00:00'],
-	'4.3' => ['1990-01-01 00:00:00', '2005-03-31 00:00:00'],
-	'4.4' => ['1990-01-01 00:00:00', '2008-08-07 00:00:00'],
-	'5.0' => ['1990-01-01 00:00:00', '2005-09-05 00:00:00'],
-	'5.1' => ['1990-01-01 00:00:00', '2006-08-24 00:00:00'],
-	'5.2' => ['1990-01-01 00:00:00', '2011-01-11 00:00:00'],
-	'5.3' => ['1990-01-01 00:00:00', '2014-08-14 00:00:00'],
-	'5.4' => ['1990-01-01 00:00:00', '2015-09-03 00:00:00'],
-	'5.5' => ['1990-01-01 00:00:00', '2016-07-10 00:00:00'],
-	'5.6' => ['2017-01-10 00:00:00', '2018-12-31 00:00:00'],
-	'7.0' => ['2018-01-01 00:00:00', '2019-01-10 00:00:00'],
-	'7.1' => ['2018-12-01 00:00:00', '2019-12-01 00:00:00'],
-	'7.2' => ['2019-11-30 00:00:00', '2020-11-30 00:00:00'],
-	'7.3' => ['2020-12-06 00:00:00', '2021-12-06 00:00:00'],
-	'7.4' => ['2021-11-28 00:00:00', '2022-11-28 00:00:00'],
-];
+$phpDates = array(
+	'3.0' => array('1990-01-01 00:00:00', '2000-10-20 00:00:00'),
+	'4.0' => array('1990-01-01 00:00:00', '2001-06-23 00:00:00'),
+	'4.1' => array('1990-01-01 00:00:00', '2002-03-12 00:00:00'),
+	'4.2' => array('1990-01-01 00:00:00', '2002-09-06 00:00:00'),
+	'4.3' => array('1990-01-01 00:00:00', '2005-03-31 00:00:00'),
+	'4.4' => array('1990-01-01 00:00:00', '2008-08-07 00:00:00'),
+	'5.0' => array('1990-01-01 00:00:00', '2005-09-05 00:00:00'),
+	'5.1' => array('1990-01-01 00:00:00', '2006-08-24 00:00:00'),
+	'5.2' => array('1990-01-01 00:00:00', '2011-01-11 00:00:00'),
+	'5.3' => array('1990-01-01 00:00:00', '2014-08-14 00:00:00'),
+	'5.4' => array('1990-01-01 00:00:00', '2015-09-03 00:00:00'),
+	'5.5' => array('1990-01-01 00:00:00', '2016-07-10 00:00:00'),
+	'5.6' => array('2017-01-10 00:00:00', '2018-12-31 00:00:00'),
+	'7.0' => array('2018-01-01 00:00:00', '2019-01-10 00:00:00'),
+	'7.1' => array('2018-12-01 00:00:00', '2019-12-01 00:00:00'),
+	'7.2' => array('2019-11-30 00:00:00', '2020-11-30 00:00:00'),
+	'7.3' => array('2020-12-06 00:00:00', '2021-12-06 00:00:00'),
+	'7.4' => array('2021-11-28 00:00:00', '2022-11-28 00:00:00'),
+);
 
 /**
  * Safe defaults for PHP versions older than 5.3.0.
@@ -109,14 +109,12 @@ if ($isAncient):
 
 		<p>
 			Your site is currently using PHP <?php echo $longVersion ?>. This version of PHP has become <a
-					href="https://php.net/eol.php" target="_blank">End-of-Life since <?php echo $eolDateFormatted ?></a>.
-			It has
+					href="https://php.net/eol.php" target="_blank">End-of-Life since <?php echo $eolDateFormatted ?></a>. It has
 			not received security updates for a <em>very long time</em>. You MUST NOT use it for a live site!
 		</p>
 		<p>
 			<?php echo $softwareName ?> will stop supporting your version of PHP very soon. You must <strong>very
-				urgently</strong> upgrade to a newer version of PHP. We recommend
-			PHP <?php echo $recommendedPHPVersion ?>
+				urgently</strong> upgrade to a newer version of PHP. We recommend PHP <?php echo $recommendedPHPVersion ?>
 			or later. You can ask your host or your system administrator for instructions. It's easy and it will make
 			your site faster and more secure.
 		</p>
@@ -130,8 +128,7 @@ elseif ($isEol):
 
 		<p>
 			Your site is currently using PHP <?php echo $longVersion ?>. This version of PHP has recently become <a
-					href="https://php.net/eol.php" target="_blank">End-of-Life since <?php echo $eolDateFormatted ?></a>.
-			It has
+					href="https://php.net/eol.php" target="_blank">End-of-Life since <?php echo $eolDateFormatted ?></a>. It has
 			stopped receiving security updates. You should not use it for a live site.
 		</p>
 		<p>
@@ -150,13 +147,13 @@ elseif ($warn_about_maintenance):
 
 		<p>
 			Your site is currently using PHP <?php echo $longVersion ?>. This version of PHP has entered its
-			“Security maintenance” phase since <?php $securityDateFormatted ?> and has stopped receiving bug fixes. It
-			will stop receiving security updates on <?php $eolDateFormatted ?> at which point it will be unsuitable for
+			“Security maintenance” phase since <?php echo $securityDateFormatted ?> and has stopped receiving bug fixes. It
+			will stop receiving security updates on <?php echo $eolDateFormatted ?> at which point it will be unsuitable for
 			use on a live site.
 		</p>
 		<p>
 			<?php echo $softwareName ?> will stop supporting your version of PHP soon after it becomes End-of-Life on
-			<?php $eolDateFormatted ?>. We recommend that you plan your migration to a newer version of PHP before that
+			<?php echo $eolDateFormatted ?>. We recommend that you plan your migration to a newer version of PHP before that
 			date. We recommend PHP <?php echo $recommendedPHPVersion ?> or later. You can ask your host or your system
 			administrator for instructions. It's easy and it will make your site faster and more secure.
 		</p>
