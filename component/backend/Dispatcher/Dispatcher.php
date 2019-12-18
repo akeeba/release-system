@@ -15,7 +15,8 @@ defined('_JEXEC') or die;
 
 class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 {
-	use ViewAliases {
+	use ViewAliases
+	{
 		onBeforeDispatch as onBeforeDispatchViewAliases;
 	}
 
@@ -27,7 +28,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		parent::__construct($container, $config);
 
 		$this->viewNameAliases = [
-			'cpanel'             => 'ControlPanel',
+			'cpanel' => 'ControlPanel',
 		];
 	}
 
@@ -38,17 +39,31 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		// Render submenus as drop-down navigation bars powered by Bootstrap
 		$this->container->renderer->setOption('linkbar_style', 'classic');
 
-        // Renderer options (0=none, 1=frontend, 2=backend, 3=both)
-        $useFEF   = $this->container->params->get('load_fef', 3);
-        $fefReset = $this->container->params->get('fef_reset', 3);
+		// Renderer options (0=none, 1=frontend, 2=backend, 3=both)
+		$useFEF   = in_array($this->container->params->get('load_fef', 3), [2, 3]);
+		$fefReset = $useFEF && in_array($this->container->params->get('fef_reset', 3), [2, 3]);
 
-        $this->container->renderer->setOption('load_fef', in_array($useFEF, [2,3]));
-        $this->container->renderer->setOption('fef_reset', in_array($fefReset, [2,3]));
-        $this->container->renderer->setOption('linkbar_style', 'classic');
+		if (!$useFEF)
+		{
+			$this->container->rendererClass = '\\FOF30\\Render\\Joomla3';
+		}
 
-		// FEF Renderer options. Used to load the common CSS file.
+		$darkMode = $this->container->params->get('dark_mode_backend', -1);
+
+		$customCss = 'media://com_ars/css/backend.css';
+
+		if ($darkMode != 0)
+		{
+			$customCss .= ', media://com_ars/css/backend_dark.css';
+		}
+
 		$this->container->renderer->setOptions([
-			'custom_css' => 'media://com_ars/css/backend.css',
+			'load_fef'      => $useFEF,
+			'fef_reset'     => $fefReset,
+			'fef_dark'      => $useFEF ? $darkMode : 0,
+			'custom_css'    => $customCss,
+			// Render submenus as drop-down navigation bars powered by Bootstrap
+			'linkbar_style' => 'classic',
 		]);
 
 		$format = $this->input->getCmd('format', 'html');
