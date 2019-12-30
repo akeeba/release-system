@@ -29,12 +29,6 @@ class Html extends \FOF30\View\DataView\Html
 	/** @var  int  Graphs width in Bootstrap columns (1 to 12) */
 	public $graphsWidth = 0;
 
-	/** @var  bool  Is the GeoIP plugin installed? */
-	public $hasGeoIPPlugin = false;
-
-	/** @var  bool  Does the GeoIP plugin needs to update its GeoIP database? */
-	public $geoIPPluginNeedsUpdate = false;
-
 	/** @var  string  Currently installed version of the component */
 	public $currentVersion = '0.0.0';
 
@@ -111,8 +105,6 @@ class Html extends \FOF30\View\DataView\Html
 		$this->graphsWidth = $width;
 
 		$this->needsMenuItem          = $model->needsCategoriesMenu();
-		$this->hasGeoIPPlugin         = $model->hasGeoIPPlugin();
-		$this->geoIPPluginNeedsUpdate = $model->GeoIPDBNeedsUpdate();
 
 		// Information for the PHP version warning
 		$this->akeebaCommonDatePHP          = $this->container->platform->getDate('2015-08-14 00:00:00', 'GMT')->format(Text::_('DATE_FORMAT_LC1'));

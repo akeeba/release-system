@@ -130,7 +130,6 @@ CREATE TABLE `#__ars_log` (
     `accessed_on` DATETIME NOT NULL,
     `referer` VARCHAR(255) NOT NULL,
     `ip` VARCHAR(255) NOT NULL,
-    `country` VARCHAR(3) NOT NULL,
     `authorized` TINYINT(1) NOT NULL DEFAULT '1',
 	PRIMARY KEY `id` (`id`),
 	KEY `ars_log_accessed` (`accessed_on`),
@@ -475,6 +474,13 @@ ALTER TABLE `#__ars_categories` DROP COLUMN `vgroup_id`;
             <condition type="missing" value="description" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_releases` DROP COLUMN `description`;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_log" canfail="1">
+            <condition type="missing" value="country" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_log` DROP COLUMN `country`;
             ]]></query>
         </action>
 

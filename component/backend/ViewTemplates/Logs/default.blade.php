@@ -68,9 +68,6 @@ defined('_JEXEC') or die;
             @sortgrid('ip', 'LBL_LOGS_IP')
         </th>
         <th>
-            @sortgrid('country', 'LBL_LOGS_COUNTRY')
-        </th>
-        <th>
             @sortgrid('authorized', 'LBL_LOGS_AUTHORIZED')
         </th>
     </tr>
@@ -103,13 +100,6 @@ defined('_JEXEC') or die;
             </td>
             <td>
                 {{{ $row->ip }}}
-            </td>
-            <td>
-                <span style="font-size: 200%">
-                    {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::countryToEmoji($row->country) }}
-                </span>
-                <br/>
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Select::countryDecode($row->country) }}
             </td>
             <td>
                 @jhtml('FEFHelper.browse.published', $row->authorized, $i, '', false)

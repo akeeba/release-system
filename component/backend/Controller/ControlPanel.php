@@ -9,7 +9,6 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 defined('_JEXEC') or die;
 
-use AkeebaGeoipProvider;
 use Exception;
 use FOF30\Container\Container;
 use FOF30\Controller\Controller;
@@ -24,7 +23,7 @@ class ControlPanel extends Controller
 	{
 		parent::__construct($container, $config);
 
-		$this->predefinedTaskList = ['main', 'updategeoip'];
+		$this->predefinedTaskList = ['main'];
 	}
 
 	/**
@@ -39,45 +38,5 @@ class ControlPanel extends Controller
 			->saveMagicVariables();
 
 		return true;
-	}
-
-	/**
-	 * Update the GeoIP database
-	 *
-	 * @throws Exception
-	 */
-	public function updategeoip(): void
-	{
-		if ($this->csrfProtection)
-		{
-			$this->csrfProtection();
-		}
-
-		// Load the GeoIP library if it's not already loaded
-		if (!class_exists('AkeebaGeoipProvider'))
-		{
-			if (@file_exists(JPATH_PLUGINS . '/system/akgeoip/lib/akgeoip.php'))
-			{
-				if (@include_once JPATH_PLUGINS . '/system/akgeoip/lib/vendor/autoload.php')
-				{
-					@include_once JPATH_PLUGINS . '/system/akgeoip/lib/akgeoip.php';
-				}
-			}
-		}
-
-		$geoip  = new AkeebaGeoipProvider();
-		$result = $geoip->updateDatabase();
-
-		$url = 'index.php?option=com_ars';
-
-		if ($result === true)
-		{
-			$msg = Text::_('COM_ARS_GEOIP_MSG_DOWNLOADEDGEOIPDATABASE');
-			$this->setRedirect($url, $msg);
-		}
-		else
-		{
-			$this->setRedirect($url, $result, 'error');
-		}
 	}
 }

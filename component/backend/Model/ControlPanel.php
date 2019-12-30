@@ -18,69 +18,6 @@ use JRegistry;
 class ControlPanel extends Model
 {
 	/**
-	 * Do we have the Akeeba GeoIP provider plugin installed?
-	 *
-	 * @return  boolean  False = not installed, True = installed
-	 */
-	public function hasGeoIPPlugin(): bool
-	{
-		static $result = null;
-
-		if (is_null($result))
-		{
-			$db = $this->container->db;
-
-			$query = $db->getQuery(true)
-						->select('COUNT(*)')
-						->from($db->qn('#__extensions'))
-						->where($db->qn('type') . ' = ' . $db->q('plugin'))
-						->where($db->qn('folder') . ' = ' . $db->q('system'))
-						->where($db->qn('element') . ' = ' . $db->q('akgeoip'));
-			$db->setQuery($query);
-			$result = $db->loadResult();
-		}
-
-		return ($result != 0);
-	}
-
-	/**
-	 * Does the GeoIP database need update?
-	 *
-	 * @param   integer  $maxAge  The maximum age of the db in days (default: 15)
-	 *
-	 * @return  boolean
-	 */
-	public function GeoIPDBNeedsUpdate(int $maxAge = 15): bool
-	{
-		$needsUpdate = false;
-
-		if (!$this->hasGeoIPPlugin())
-		{
-			return $needsUpdate;
-		}
-
-		// Get the modification time of the database file
-		$filePath = JPATH_ROOT . '/plugins/system/akgeoip/db/GeoLite2-Country.mmdb';
-		$modTime = @filemtime($filePath);
-
-		// This is now
-		$now = time();
-
-		// Minimum time difference we want (15 days) in seconds
-		if ($maxAge <= 0)
-		{
-			$maxAge = 15;
-		}
-
-		$threshold = $maxAge * 24 * 3600;
-
-		// Do we need an update?
-		$needsUpdate = ($now - $modTime) > $threshold;
-
-		return $needsUpdate;
-	}
-
-	/**
 	 * Checks the database for missing / outdated tables using the $dbChecks
 	 * data and runs the appropriate SQL scripts if necessary.
 	 *

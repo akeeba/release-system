@@ -41,7 +41,6 @@ class Html extends BaseView
 		$this->filters['usertext'] 	 	  = $platform->getUserStateFromRequest($hash . 'filter_usertext', 'usertext', $input);
 		$this->filters['referer'] 	 	  = $platform->getUserStateFromRequest($hash . 'filter_referer', 'referer', $input);
 		$this->filters['ip'] 	 	  	  = $platform->getUserStateFromRequest($hash . 'filter_ip', 'ip', $input);
-		$this->filters['country']	 	  = $platform->getUserStateFromRequest($hash . 'filter_country', 'country', $input);
 		$this->filters['authorized']	  = $platform->getUserStateFromRequest($hash . 'filter_authorized', 'authorized', $input);
 		$this->filters['version']	 	  = $platform->getUserStateFromRequest($hash . 'filter_version', 'version', $input);
 		$this->filters['category']	 	  = $platform->getUserStateFromRequest($hash . 'filter_category', 'category', $input);
@@ -53,7 +52,6 @@ class Html extends BaseView
 			'accessed_on' => Text::_('LBL_LOGS_ACCESSED'),
 			'referer'     => Text::_('LBL_LOGS_REFERER'),
 			'ip'          => Text::_('LBL_LOGS_IP'),
-			'country'     => Text::_('LBL_LOGS_COUNTRY'),
 			'authorized'  => Text::_('LBL_LOGS_AUTHORIZED'),
 		);
 

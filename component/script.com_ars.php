@@ -162,6 +162,10 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			'media/com_ars/js/jqplot.hihglighter.min.js',
 			'media/com_ars/js/jquery.colorhelpers.min.js',
 			'media/com_ars/js/jquery.jqplot.min.js',
+
+			// Removed GeoIP features
+			'administrator/components/com_ars/ViewTemplates/ControlPanel/geoip.blade.php',
+
 		],
 		'folders' => [
 			// Moving to FOF 3

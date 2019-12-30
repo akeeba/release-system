@@ -6,6 +6,7 @@
 * ➕ Implement Joomla! 4 routing. ([gh-135](https://github.com/akeeba/release-system/issues/135))
 * ➕ Support for fully customised repository layout using an HTML override. 
 * ➕ Common PHP version warning scripts 
+* ➖ Remove country column from Logs
 * ➖ Remove unused INI parser helper class.
 * ➖ Remove Visual Groups feature.
 * ➖ Remove support for the old versions of SiteGround SuperCacher.

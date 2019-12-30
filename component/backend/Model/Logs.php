@@ -23,7 +23,6 @@ use JDatabaseQuery;
  * @property string	$accessed_on
  * @property string	$referer
  * @property string	$ip
- * @property string	$country
  * @property int	$authorized
  *
  * @property-read Items	$item
@@ -203,12 +202,6 @@ class Logs extends DataModel
 		if (empty($this->ip))
 		{
 			$this->ip = Ip::getIp();
-
-			if (class_exists('\\AkeebaGeoipProvider'))
-			{
-				$geoip = new \AkeebaGeoipProvider;
-				$this->country = $geoip->getCountryCode($this->ip);
-			}
 		}
 
 		return parent::check();
