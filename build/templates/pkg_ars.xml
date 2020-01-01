@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
+
 <extension version="3.3.0" type="package" method="upgrade">
     <name>Akeeba Release System package</name>
     <author>Nicholas K. Dionysopoulos</author>

@@ -1,13 +1,13 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
 
-/** @var  \Akeeba\ReleaseSystem\Admin\Model\Items  $model */
+/** @var  \Akeeba\ReleaseSystem\Admin\Model\Items $model */
 
 ?>
 @unless(empty($fieldValue))

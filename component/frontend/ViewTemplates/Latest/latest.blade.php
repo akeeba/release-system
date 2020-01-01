@@ -1,13 +1,13 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
 defined('_JEXEC') or die;
 
-/** @var  \Akeeba\ReleaseSystem\Site\View\Latest\Html  $this */
+/** @var  \Akeeba\ReleaseSystem\Site\View\Latest\Html $this */
 ?>
 <div class="item-page{{{ $this->params->get('pageclass_sfx') }}}">
 	<div class="page-header">

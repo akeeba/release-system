@@ -1,6 +1,6 @@
 /*
- * @package   akeebabackup
- * @copyright Copyright (c)2006-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -245,7 +245,8 @@ akeeba.Tooltip.hideTooltip = function (target)
  *
  * @param {object} parent - The trigger of the tooltip.
  * @param {object} tooltip - The tooltip itself.
- * @param {string} posHorizontal - Desired horizontal position of the tooltip relatively to the trigger (left/center/right)
+ * @param {string} posHorizontal - Desired horizontal position of the tooltip relatively to the trigger
+ *     (left/center/right)
  * @param {string} posVertical - Desired vertical position of the tooltip relatively to the trigger (top/center/bottom)
  *
  */

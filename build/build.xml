@@ -1,4 +1,10 @@
 <?xml version="1.0"?>
+<!--
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
+
 <project name="AkeebaReleaseSystem" description="Akeeba Release System" default="git" >
 	<import file="${phing.dir}/../../buildfiles/phing/common.xml" />
 

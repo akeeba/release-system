@@ -1,6 +1,6 @@
 /*
- * @package   akeebabackup
- * @copyright Copyright (c)2006-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -29,7 +29,8 @@ if (typeof akeeba.Ajax == 'undefined')
 }
 
 /**
- * Performs an asynchronous AJAX request. Mostly compatible with jQuery 1.5+ calling conventions, or at least the subset
+ * Performs an asynchronous AJAX request. Mostly compatible with jQuery 1.5+ calling conventions, or at least the
+ * subset
  * of the features we used in our software.
  *
  * The parameters can be
@@ -39,7 +40,8 @@ if (typeof akeeba.Ajax == 'undefined')
  * data     	object      Data to send to the AJAX URL. Default: empty
  * success  	function    function(string responseText, string responseStatus, XMLHttpRequest xhr)
  * error    	function	function(XMLHttpRequest xhr, string errorType, Exception e)
- * beforeSend 	function	function(XMLHttpRequest xhr, object parameters) You can modify xhr, not parameters. Return false to abort the request.
+ * beforeSend 	function	function(XMLHttpRequest xhr, object parameters) You can modify xhr, not parameters.
+ * Return false to abort the request.
  *
  * @param   url         {string}  URL to send the AJAX request to
  * @param   parameters  {object}  Configuration parameters

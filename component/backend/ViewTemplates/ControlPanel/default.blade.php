@@ -1,11 +1,11 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2019 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
-/** @var  \Akeeba\ReleaseSystem\Admin\View\ControlPanel\Html  $this */
+/** @var  \Akeeba\ReleaseSystem\Admin\View\ControlPanel\Html $this */
 
 defined('_JEXEC') or die;
 ?>
