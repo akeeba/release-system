@@ -1,0 +1,23 @@
+/*
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
+// Use the "Akeeba Products" font for a vector logo
+.icon-ats,
+.icon-ats-j4 {
+  &:before {
+    font-family: 'Akeeba Products' !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    line-height: 1 !important;
+
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    -moz-osx-font-smoothing: grayscale;
+
+    content: '\0052';
+  }
+}

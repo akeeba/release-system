@@ -61,7 +61,7 @@ defined('_JEXEC') or die;
         <th>
             @lang('LBL_LOGS_ACCESSED')
         </th>
-        <th>
+        <th class="akeeba-hidden-mobile">
             @sortgrid('referer', 'LBL_LOGS_REFERER')
         </th>
         <th>
@@ -95,7 +95,7 @@ defined('_JEXEC') or die;
             <td>
                 {{ strftime('%Y-%m-%d', (new \FOF30\Date\Date($row->accessed_on))->getTimestamp()) }}
             </td>
-            <td>
+            <td class="akeeba-hidden-mobile">
                 {{{ $row->referer }}}
             </td>
             <td>

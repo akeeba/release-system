@@ -166,6 +166,45 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 			// Removed GeoIP features
 			'administrator/components/com_ars/ViewTemplates/ControlPanel/geoip.blade.php',
 
+			// Unused bitmap icons
+			'media/com_ars/icons/action_add.png',
+			'media/com_ars/icons/action_apply.png',
+			'media/com_ars/icons/action_cancel.png',
+			'media/com_ars/icons/action_csv.png',
+			'media/com_ars/icons/action_download.png',
+			'media/com_ars/icons/action_edit.png',
+			'media/com_ars/icons/action_pdf.png',
+			'media/com_ars/icons/action_remove.png',
+			'media/com_ars/icons/action_save.png',
+
+			'media/com_ars/icons/ars_logo_16.png',
+			'media/com_ars/icons/ars_logo_32.png',
+			'media/com_ars/icons/ars_logo_64.png',
+
+			'media/com_ars/icons/view-activity-32.png',
+			'media/com_ars/icons/view-autodesc-32.png',
+			'media/com_ars/icons/view-categories-32.png',
+			'media/com_ars/icons/view-dlidlabels-32.png',
+			'media/com_ars/icons/view-impjed-32.png',
+			'media/com_ars/icons/view-items-32.png',
+			'media/com_ars/icons/view-logs-32.png',
+			'media/com_ars/icons/view-releases-32.png',
+			'media/com_ars/icons/view-updatestreams-32.png',
+			'media/com_ars/icons/view-upload-32.png',
+
+			'media/com_ars/icons/browse_16.png',
+			'media/com_ars/icons/error_small.png',
+			'media/com_ars/icons/locked_16.png',
+			'media/com_ars/icons/ok_small.png',
+			'media/com_ars/icons/unlocked_16.png',
+
+			'media/com_ars/icons/status_alpha.png',
+			'media/com_ars/icons/status_beta.png',
+			'media/com_ars/icons/status_rc.png',
+			'media/com_ars/icons/status_stable.png',
+
+			// Unused CSS file
+			'media/com_ars/css/browser.css',
 		],
 		'folders' => [
 			// Moving to FOF 3

@@ -1,0 +1,24 @@
+/*!
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
+@import 'sources/common/variables';
+
+/**
+ * Dark Mode
+ *
+ * This applies the color modifications to both forced dark mode and automatic dark mode
+ */
+.akeeba-renderer-fef--dark {
+  :root {
+    color-scheme: dark;
+  }
+
+  @import 'sources/frontend/dark';
+}
+
+@media (prefers-color-scheme: dark) {
+  @import 'sources/frontend/dark';
+}

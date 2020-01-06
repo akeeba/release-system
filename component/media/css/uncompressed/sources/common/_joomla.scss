@@ -1,0 +1,143 @@
+/*
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
+// Joomla 3 overrides
+div.joomla-version-3 {
+
+  // Improve visuals in dark mode by replacing the border around the component with our own background color
+  padding: 20px 20px;
+  margin: -20px -20px;
+
+  // Toolbar improvements
+  div#toolbar {
+
+    // Joomla 3.7 made success buttons fixed width
+    .btn-success {
+      width: auto !important;
+    }
+
+    // Joomla! 3.x missing icon classes
+    div#toolbar-back button.btn span.icon-back::before {
+      content: "";
+    }
+
+    div#toolbar-restore button.btn span.icon-restore::before {
+      content: "R";
+    }
+  }
+
+  // Calendar styling fix
+  .akeeba-filter-joomlacalendarfix {
+    vertical-align: middle;
+    padding-top: 0.35em;
+  }
+
+  .btn-toolbar {
+    tr.calendar-head-row {
+      font-size: 8pt;
+    }
+  }
+
+  /**
+   * Joomla! 3 forces margins on form inputs, breaking our forms. Reset them to inherited values.
+   */
+  .akeeba-form {
+    select,
+    textarea,
+    input[type="text"],
+    input[type="password"],
+    input[type="datetime"],
+    input[type="datetime-local"],
+    input[type="date"],
+    input[type="month"],
+    input[type="time"],
+    input[type="week"],
+    input[type="number"],
+    input[type="email"],
+    input[type="url"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="color"],
+    .uneditable-input {
+      margin-bottom: inherit;
+    }
+  }
+
+  /**
+   * Joomla! 3.x workarounds for missing icon classes
+   */
+
+  .icon-downarrow::before,
+  .icon-arrow-down::before {
+    content: "";
+  }
+
+  .icon-uparrow::before,
+  .icon-arrow-up::before {
+    content: "";
+  }
+
+  // Legacy row ordering -- TODO Remove me
+  td.order {
+    span {
+      line-height: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+    }
+
+    input.text_area {
+      width: 20px;
+    }
+
+    a.jgrid {
+      span.state {
+        background-repeat: no-repeat;
+        height: 12px;
+        margin-bottom: 2px;
+
+        span.text {
+          line-height: 16px;
+        }
+      }
+    }
+  }
+}
+
+// Filter bar style fixes
+div.akeeba-filter-bar--right {
+  text-align: right;
+}
+
+div.akeeba-filter-element {
+  display: inline-block;
+  margin-right: 0.5em;
+
+  button[class*=--icon-only] {
+    + button[class*=--icon-only] {
+      margin-left: 0;
+    }
+
+    [class*=akion-] {
+      margin: 0;
+      vertical-align: baseline;
+    }
+  }
+}
+
+div.akeeba-filter-bar {
+  select.custom-select {
+    min-width: 0;
+    max-width: 115px;
+  }
+}
+
+/**
+ * Filter bar (above tables)
+ */
+.akeeba-renderer-fef form[class*=akeeba-form] [class*=akeeba-filter-bar-container] [class*=akeeba-form-section] {
+  margin-bottom: 0;
+}

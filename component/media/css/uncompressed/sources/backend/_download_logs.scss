@@ -1,0 +1,39 @@
+/*
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
+/**
+ * User information field
+ */
+
+img.fof-usersfield-avatar {
+  padding-right: 6pt;
+}
+
+span.fof-usersfield-username {
+  font-weight: bold;
+}
+
+span.fof-usersfield-id {
+  padding-left: 6pt;
+  font-size: smaller;
+  font-style: italic;
+
+  &:before {
+    content: "["
+  }
+
+  &:after {
+    content: "]"
+  }
+}
+
+span.fof-usersfield-name {
+  display: block;
+}
+
+span.fof-usersfield-email {
+  display: block;
+}

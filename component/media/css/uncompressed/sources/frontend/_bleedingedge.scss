@@ -1,0 +1,36 @@
+/*
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
+/**
+ * Changelog colorisation in Bleeding Edge releases
+ */
+[class|="ars-devrelease-changelog"] {
+  color: $grey;
+
+  &[class$="added"] {
+    color: $green;
+    font-weight: bold;
+  }
+
+  &[class$="removed"] {
+    color: $red;
+  }
+
+  &[class$="bugfix"] {
+    color: $teal;
+  }
+
+  &[class$="minor"] {
+    color: darken($light-grey, 40%);
+    font-style: italic;
+  }
+
+  &[class$="important"] {
+    color: $orange;
+    font-weight: bold;
+    font-style: italic;
+  }
+}

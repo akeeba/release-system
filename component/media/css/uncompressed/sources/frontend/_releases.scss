@@ -1,0 +1,34 @@
+/*
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
+/**
+ * Style fixes for Releases, Categories and items
+ */
+div[class^="ars-release"],
+div[class^="ars-category"] {
+  h4 {
+    padding-bottom: 10px;
+
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+div[class^="ars-item"] {
+  h4 {
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .ars-release-properties {
+    td:nth-child(2) {
+      word-break: break-all;
+      word-wrap: break-word;
+    }
+  }
+}
