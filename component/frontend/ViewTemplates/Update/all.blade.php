@@ -10,7 +10,8 @@ defined('_JEXEC') or die();
 /** @var \Akeeba\ReleaseSystem\Site\View\Update\Xml $this */
 
 @ob_end_clean();
-?><?xml version = "1.0" encoding = "utf-8" ?>
+echo '<' . '?';
+?>xml version = "1.0" encoding = "utf-8" <?php echo '?' . '>' ?>
 <!-- Update stream generated automatically by Akeeba Release System on {{ gmdate('Y-m-d H:i:s') }} -->
 <extensionset name="<?php echo $this->updates_name ?>" description="<?php echo $this->updates_desc ?>">
 	@foreach (['components', 'libraries', 'modules', 'packages', 'plugins', 'files', 'templates'] as $category)
