@@ -7,19 +7,24 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Helper;
 
+use FOF30\Container\Container;
+use FOF30\Date\Date;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die;
 
 abstract class Format
 {
+	private static $dateFormat = null;
+
 	/**
 	 * Processes the message, replacing placeholders with their values and running any
 	 * plug-ins
 	 *
-	 * @param string $message The message to process
-	 * @param string $context The context of the message to process
+	 * @param   string  $message  The message to process
+	 * @param   string  $context  The context of the message to process
 	 *
 	 * @return string The processed message
 	 */
@@ -54,5 +59,26 @@ abstract class Format
 		{
 			return $filesize . " bytes";
 		}
+	}
+
+	public static function formatDate($date, $local = true)
+	{
+		$date = new Date($date, 'GMT');
+
+		return $date->format(self::getDateFormat(), $local);
+	}
+
+	private static function getDateFormat()
+	{
+		if (!is_null(self::$dateFormat))
+		{
+			return self::$dateFormat;
+		}
+
+		$container = Container::getInstance('com_ars');
+
+		self::$dateFormat = $container->params->get('dateformat', Text::_('DATE_FORMAT_LC5'));
+
+		return self::$dateFormat;
 	}
 }

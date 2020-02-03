@@ -53,6 +53,9 @@ $i = 0;
             @sortgrid('maturity', 'COM_ARS_RELEASES_FIELD_MATURITY')
         </th>
         <th>
+            @sortgrid('created', 'COM_ARS_RELEASES_FIELD_RELEASED')
+        </th>
+        <th>
             @sortgrid('access', 'JFIELD_ACCESS_LABEL')
         </th>
         <th width="8%">
@@ -97,6 +100,10 @@ $i = 0;
                 @else
                     @lang('COM_ARS_RELEASES_MATURITY_ALPHA')
                 @endif
+            </td>
+            <td>
+                {{ \Akeeba\ReleaseSystem\Admin\Helper\Format::formatDate($row->created, true) }}
+
             </td>
             <td>
                 {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::accessLevel($row->access) }}
