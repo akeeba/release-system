@@ -24,4 +24,5 @@
 * `~` Work towards future PHP 7.4 support.
 * `#` [HIGH] XML streams broken on hosts with short PHP tags enabled
 * `#` [HIGH] INI update format always showed the wrong platforms
+* `#` [HIGH] File picker in Item edit form was broken 
 * `#` [LOW] Download stats sometimes appeared empty

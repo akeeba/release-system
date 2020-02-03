@@ -10,11 +10,13 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Model\Mixin\ClearCacheAfterActions;
+use Exception;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 use FOF30\Model\Mixin\Assertions;
 use FOF30\Model\Mixin\ImplodedArrays;
 use JDatabaseQuery;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filter\InputFilter;
 
 /**
@@ -571,7 +573,7 @@ class Releases extends DataModel
 		{
 			$db->setQuery($query)->execute();
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			// Do not fail on database error
 		}
@@ -657,14 +659,63 @@ class Releases extends DataModel
 		}
 
 		self::$itemsBeforeCopy->map(function($item) use($releaseAfterCopy) {
-			/** @var  Items  $item */
+			/** @var  Items $item */
 			$item->copy([
-				'release_id' => $releaseAfterCopy->id
+				'release_id' => $releaseAfterCopy->id,
 			]);
 		});
 
 		self::$itemsBeforeCopy = null;
 
 		$this->onAfterCopyCacheClean($releaseAfterCopy);
+	}
+
+	/**
+	 * Get the absolute filesystem path of the files directory for a specific release ID.
+	 *
+	 * @param   int  $release_id  The release ID to get the directory for
+	 *
+	 * @return  string|null  The directory or NULL if it's not defined or does not exist
+	 * @see     Items::getFilesOptions
+	 */
+	public function directoryForRelease(int $release_id): ?string
+	{
+		if (empty($release_id))
+		{
+			return null;
+		}
+
+		/** @var Releases $releaseModel */
+		$releaseModel = $this->tmpInstance();
+
+		// Get the release
+		try
+		{
+			$release = $releaseModel->findOrFail((int) $release_id);
+		}
+		catch (Exception $e)
+		{
+			return null;
+		}
+
+		// Get which directory to use
+		$directory = $release->category->directory;
+
+		if (empty($directory))
+		{
+			return null;
+		}
+
+		if (!Folder::exists($directory))
+		{
+			$directory = JPATH_ROOT . '/' . $directory;
+		}
+
+		if (!Folder::exists($directory))
+		{
+			return null;
+		}
+
+		return $directory;
 	}
 }

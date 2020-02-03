@@ -28,33 +28,33 @@ use Joomla\CMS\User\User;
  *
  * Fields:
  *
- * @property  int     $id
- * @property  int     $release_id
- * @property  string  $title
- * @property  string  $alias
- * @property  string  $description
- * @property  string  $type
- * @property  string  $filename
- * @property  string  $url
- * @property  int     $updatestream
- * @property  string  $md5
- * @property  string  $sha1
- * @property  string  $sha256
- * @property  string  $sha384
- * @property  string  $sha512
- * @property  int     $filesize
- * @property  string  $groups
- * @property  int     $hits
- * @property  string  $created
- * @property  string  $modified
- * @property  int     $checked_out
- * @property  string  $checked_out_time
- * @property  int     $access
- * @property  bool    $show_unauth_links
- * @property  string  $redirect_unauth
- * @property  bool    $published
- * @property  string  $language
- * @property  array   $environments
+ * @property  int           $id
+ * @property  int           $release_id
+ * @property  string        $title
+ * @property  string        $alias
+ * @property  string        $description
+ * @property  string        $type
+ * @property  string        $filename
+ * @property  string        $url
+ * @property  int           $updatestream
+ * @property  string        $md5
+ * @property  string        $sha1
+ * @property  string        $sha256
+ * @property  string        $sha384
+ * @property  string        $sha512
+ * @property  int           $filesize
+ * @property  string        $groups
+ * @property  int           $hits
+ * @property  string        $created
+ * @property  string        $modified
+ * @property  int           $checked_out
+ * @property  string        $checked_out_time
+ * @property  int           $access
+ * @property  bool          $show_unauth_links
+ * @property  string        $redirect_unauth
+ * @property  bool          $published
+ * @property  string        $language
+ * @property  array         $environments
  *
  * Filters:
  *
@@ -94,8 +94,8 @@ use Joomla\CMS\User\User;
  *
  * Relations:
  *
- * @property  Releases       $release
- * @property  UpdateStreams  $updateStreamObject
+ * @property  Releases      $release
+ * @property  UpdateStreams $updateStreamObject
  *
  **/
 class Items extends DataModel
@@ -103,7 +103,8 @@ class Items extends DataModel
 	use ImplodedArrays;
 	use Assertions;
 	use JsonData;
-	use Mixin\VersionedCopy {
+	use Mixin\VersionedCopy
+	{
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
 	}
 	use Mixin\ClearCacheAfterActions;
@@ -111,19 +112,19 @@ class Items extends DataModel
 	/**
 	 * Public constructor. Overrides the parent constructor.
 	 *
-	 * @see DataModel::__construct()
-	 *
 	 * @param   Container  $container  The configuration variables to this model
 	 * @param   array      $config     Configuration values for this model
 	 *
 	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
+	 * @see DataModel::__construct()
+	 *
 	 */
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
-		$config['tableName'] = '#__ars_items';
+		$config['tableName']   = '#__ars_items';
 		$config['idFieldName'] = 'id';
 		$config['aliasFields'] = [
-			'slug' 	      => 'alias',
+			'slug'        => 'alias',
 			'enabled'     => 'published',
 			'created_on'  => 'created',
 			'modified_on' => 'modified',
@@ -180,243 +181,9 @@ class Items extends DataModel
 	}
 
 	/**
-	 * Implements custom filtering
-	 *
-	 * @param JDatabaseQuery $query          The model query we're operating on
-	 * @param   bool         $overrideLimits Are we told to override limits?
-	 *
-	 * @return  void
-	 */
-	protected function onBeforeBuildQuery(JDatabaseQuery &$query, bool $overrideLimits = false): void
-	{
-		$db = $this->getDbo();
-
-		$fltCategory = $this->getState('category', null, 'int');
-
-		if ($fltCategory > 0)
-		{
-			// Filter the categories table, too
-			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $fltCategory) {
-				$subQuery->where($db->qn('category_id') . ' = ' . $db->q($fltCategory));
-			});
-		}
-
-		$fltItemId = $this->getState('item_id', null, 'int');
-
-		if ($fltItemId > 0)
-		{
-			$query->where($db->qn('id') . ' = ' . $db->q($fltItemId));
-		}
-
-		$fltRelease = $this->getState('release_id', null, 'array');
-
-		if (!is_array($fltRelease))
-		{
-			$fltRelease = $this->getState('release_id', null, 'int');
-		}
-		else
-		{
-			$fltRelease = null;
-		}
-
-		$fltRelease = $this->getState('release', $fltRelease, 'int');
-
-		if ($fltRelease > 0)
-		{
-			$query->where($db->qn('release_id') . ' = ' . $db->q($fltRelease));
-		}
-
-		$fltAccessUser = $this->getState('access_user', null, 'int');
-
-		if (!is_null($fltAccessUser))
-		{
-			$user = $this->container->platform->getUser($fltAccessUser);
-
-			if (!is_object($user) || !($user instanceof User))
-			{
-				$access_levels = array(-1);
-			}
-			else
-			{
-				$access_levels = $this->container->platform->getUser($fltAccessUser)->getAuthorisedViewLevels();
-
-				if (empty($access_levels))
-				{
-					// Essentially, tell it to find nothing if no our user is authorised to no access levels
-					$access_levels = [-1];
-				}
-			}
-
-			$access_levels = array_unique($access_levels);
-
-			// Filter this table
-			$access_levels_escaped = array_map(array($db, 'quote'), $access_levels);
-			$query->where(
-				'(' .
-				'('. $db->qn('access') . ' IN (' . implode(',', $access_levels_escaped) . ')) OR (' .
-				$db->qn('show_unauth_links') . ' = ' . $db->q(1)
-				. '))'
-			);
-
-			/** @var Categories $categoriesModel */
-			$categories = [];
-			$categoriesModel = $this->container->factory->model('Categories')->tmpInstance();
-			$categoriesModel->access($access_levels)->get(true)->transform(function($item) use(&$categories){
-				$categories[] = $item->id;
-			});
-
-			if (empty($categories))
-			{
-				// Essentially, tell it to find nothing if no categories fulfill our criteria
-				$categories = [-1];
-			}
-
-			// We have a category filter.
-			if (!empty($fltCategory))
-			{
-				// If the category exists in our list of allowed categories, filter by it
-				if (in_array($fltCategory, $categories))
-				{
-					$categories = [$fltCategory];
-				}
-				// Otherwise show nothing (selected category is unreachable)
-				else
-				{
-					$categories = [-1];
-				}
-			}
-
-			$categories = array_map(array($db, 'quote'), $categories);
-
-			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $access_levels, $categories) {
-				$subQuery->where($db->qn('category_id') . ' IN (' . implode(',', $categories) . ')');
-				$subQuery->where($db->qn('access') . ' IN (' . implode(',', $access_levels) . ')');
-			});
-		}
-
-		$fltLanguage = $this->getState('language', null, 'cmd');
-		$fltLanguage2 = $this->getState('language2', null, 'string');
-
-		if (($fltLanguage != '*') && ($fltLanguage != ''))
-		{
-			$query->where($db->qn('language') . ' IN (' . $db->q('*') . ',' . $db->q($fltLanguage) . ')');
-
-			/** @var Categories $categoriesModel */
-			$categories = [];
-			$categoriesModel = $this->container->factory->model('Categories')->tmpInstance();
-			$categoriesModel->language($fltLanguage)->get(true)->transform(function($item) use(&$categories){
-				/** @var Categories $item */
-				$categories[] = $item->id;
-			});
-
-			if (empty($categories))
-			{
-				// Essentially, tell it to find nothing if no categories fulfill our criteria
-				$categories = [-1];
-			}
-
-			if (!empty($fltCategory))
-			{
-				// If the category exists in our list of allowed categories, filter by it
-				if (in_array($fltCategory, $categories))
-				{
-					$categories = [$fltCategory];
-				}
-				// Otherwise show nothing (selected category is unreachable)
-				else
-				{
-					$categories = [-1];
-				}
-			}
-
-			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $fltLanguage, $categories) {
-				$categories = array_map(array($db, 'quote'), $categories);
-
-				$subQuery->where($db->qn('language') . ' IN (' . $db->q('*') . ',' . $db->q($fltLanguage) . ')');
-				$subQuery->where($db->qn('category_id') . ' IN (' . implode(',', $categories) . ')');
-			});
-		}
-		elseif ($fltLanguage2)
-		{
-			$query->where($db->qn('language') . ' = ' . $db->q($fltLanguage2));
-
-			/** @var Categories $categoriesModel */
-			$categories = [];
-			$categoriesModel = $this->container->factory->model('Categories')->tmpInstance();
-			$categoriesModel->language2($fltLanguage2)->get(true)->transform(function($item) use(&$categories){
-				$categories[] = $item->id;
-			});
-
-			if (empty($categories))
-			{
-				// Essentially, tell it to find nothing if no categories fulfill our criteria
-				$categories = [-1];
-			}
-
-			if (!empty($fltCategory))
-			{
-				// If the category exists in our list of allowed categories, filter by it
-				if (in_array($fltCategory, $categories))
-				{
-					$categories = [$fltCategory];
-				}
-				// Otherwise show nothing (selected category is unreachable)
-				else
-				{
-					$categories = [-1];
-				}
-			}
-
-			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $fltLanguage2, $categories) {
-				$categories = array_map(array($db, 'quote'), $categories);
-
-				$subQuery->where($db->qn('language') . ' = ' . $db->q($fltLanguage2));
-				$subQuery->where($db->qn('category_id') . ' IN (' . implode(',', $categories) . ')');
-			});
-		}
-
-		// Default ordering ID descending (latest created release on top)
-		$filterOrder = $this->getState('filter_order', 'id');
-		$filterOrderDir = $this->getState('filter_order_Dir', 'DESC');
-		$this->setState('filter_order', $filterOrder);
-		$this->setState('filter_order_Dir', $filterOrderDir);
-
-		// Order filtering
-		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
-
-		switch ($fltOrderBy)
-		{
-			case 'alpha':
-				$this->setState('filter_order', 'title');
-				$this->setState('filter_order_Dir', 'ASC');
-				break;
-
-			case 'ralpha':
-				$this->setState('filter_order', 'title');
-				$this->setState('filter_order_Dir', 'DESC');
-				break;
-
-			case 'created':
-				$this->setState('filter_order', 'created');
-				$this->setState('filter_order_Dir', 'ASC');
-				break;
-
-			case 'rcreated':
-				$this->setState('filter_order', 'created');
-				$this->setState('filter_order_Dir', 'DESC');
-				break;
-
-			case 'order':
-				$this->setState('filter_order', 'ordering');
-				$this->setState('filter_order_Dir', 'ASC');
-				break;
-		}
-	}
-
-	/**
 	 * Change the ordering of the records of the table
 	 *
-	 * @param   string $where The WHERE clause of the SQL used to fetch the order
+	 * @param   string  $where  The WHERE clause of the SQL used to fetch the order
 	 *
 	 * @return  static  Self, for chaining
 	 *
@@ -432,68 +199,18 @@ class Items extends DataModel
 		return parent::reorder($where);
 	}
 
-	/**
-	 * Get the default WHERE clause for reordering items. Called by reorder().
-	 *
-	 * @return  string
-	 */
-	private function getReorderWhere(): string
-	{
-		$where        = array();
-		$fltCategory  = $this->getState('category', null, 'int');
-		$fltRelease   = $this->getState('release', null, 'int');
-		$fltPublished = $this->getState('published', null, 'cmd');
-
-		$db = $this->getDBO();
-
-		if ($fltCategory)
-		{
-			/** @var Releases $releasesModel */
-			$releases = [];
-			$releasesModel = $this->container->factory->model('Releases')->tmpInstance();
-			$releasesModel->category($fltCategory)->get(true)->transform(function($item) use(&$releases){
-				$releases[] = $item->id;
-			});
-
-			if (!empty($releases))
-			{
-				$releases = array_map(array($db, 'quote'), $releases);
-				$where[] = $db->qn('release_id') . ' IN (' . implode(',', $releases) . ')';
-			}
-		}
-
-		if ($fltRelease)
-		{
-			$where[] = $db->qn('release_id') . ' = ' . $db->q($fltRelease);
-		}
-
-		if ($fltPublished != '')
-		{
-			$where[] = $db->qn('published') . ' = ' . $db->q($fltPublished);
-		}
-
-		if (count($where))
-		{
-			return '(' . implode(') AND (', $where) . ')';
-		}
-		else
-		{
-			return '';
-		}
-	}
-
 	public function check(): self
 	{
 		$this->assertNotEmpty($this->release_id, 'ERR_ITEM_NEEDS_CATEGORY');
 
 		// Get some useful info
-		$db = $this->getDBO();
+		$db    = $this->getDBO();
 		$query = $db->getQuery(true)
-					->select(array(
-						$db->qn('title'),
-						$db->qn('alias')
-					))->from($db->qn('#__ars_items'))
-					->where($db->qn('release_id') . ' = ' . $db->q($this->release_id));
+			->select([
+				$db->qn('title'),
+				$db->qn('alias'),
+			])->from($db->qn('#__ars_items'))
+			->where($db->qn('release_id') . ' = ' . $db->q($this->release_id));
 
 		if ($this->id)
 		{
@@ -501,32 +218,32 @@ class Items extends DataModel
 		}
 
 		$db->setQuery($query);
-		$info = $db->loadAssocList();
-		$titles = array();
-		$aliases = array();
+		$info    = $db->loadAssocList();
+		$titles  = [];
+		$aliases = [];
 
 		foreach ($info as $infoitem)
 		{
-			$titles[] = $infoitem['title'];
+			$titles[]  = $infoitem['title'];
 			$aliases[] = $infoitem['alias'];
 		}
 
 		// Let's get automatic item title/description records
 		$subQuery = $db->getQuery(true)
-					   ->select($db->qn('category_id'))
-					   ->from($db->qn('#__ars_releases'))
-					   ->where($db->qn('id') . ' = ' . $db->q($this->release_id));
+			->select($db->qn('category_id'))
+			->from($db->qn('#__ars_releases'))
+			->where($db->qn('id') . ' = ' . $db->q($this->release_id));
 
 		$query = $db->getQuery(true)
-					->select('*')
-					->from($db->qn('#__ars_autoitemdesc'))
-					->where($db->qn('category') . ' IN (' . $subQuery . ')')
-					->where('NOT(' . $db->qn('published') . '=' . $db->q(0) . ')');
+			->select('*')
+			->from($db->qn('#__ars_autoitemdesc'))
+			->where($db->qn('category') . ' IN (' . $subQuery . ')')
+			->where('NOT(' . $db->qn('published') . '=' . $db->q(0) . ')');
 
 		$db->setQuery($query);
 
 		$autoitems = $db->loadObjectList();
-		$auto = (object)array('title' => '', 'description' => '', 'environments' => '');
+		$auto      = (object) ['title' => '', 'description' => '', 'environments' => ''];
 
 		if (!empty($autoitems))
 		{
@@ -558,7 +275,7 @@ class Items extends DataModel
 		if (!empty($this->environments) && is_array($this->environments))
 		{
 			// Filter out empty environments
-			$temp = array();
+			$temp = [];
 
 			foreach ($this->environments as $eid)
 			{
@@ -644,7 +361,7 @@ class Items extends DataModel
 			$alias = str_replace(' ', '-', $alias);
 			$alias = str_replace('.', '-', $alias);
 
-			$this->alias = (string)preg_replace('/[^A-Z0-9_-]/i', '', $alias);
+			$this->alias = (string) preg_replace('/[^A-Z0-9_-]/i', '', $alias);
 		}
 
 		$this->assertNotEmpty($this->alias, 'ERR_ITEM_NEEDS_ALIAS');
@@ -689,14 +406,14 @@ class Items extends DataModel
 			$db = $this->getDBO();
 
 			$subquery = $db->getQuery(true)
-						   ->select($db->qn('category_id'))
-						   ->from('#__ars_releases')
-						   ->where($db->qn('id') . ' = ' . $db->q($this->release_id));
+				->select($db->qn('category_id'))
+				->from('#__ars_releases')
+				->where($db->qn('id') . ' = ' . $db->q($this->release_id));
 
 			$query = $db->getQuery(true)
-						->select('*')
-						->from($db->qn('#__ars_updatestreams'))
-						->where($db->qn('category') . ' IN (' . $subquery . ')');
+				->select('*')
+				->from($db->qn('#__ars_updatestreams'))
+				->where($db->qn('category') . ' IN (' . $subquery . ')');
 
 			$db->setQuery($query);
 			$streams = $db->loadObjectList();
@@ -735,8 +452,8 @@ class Items extends DataModel
 		{
 			if ($this->type == 'file')
 			{
-				$target = null;
-				$folder = null;
+				$target   = null;
+				$folder   = null;
 				$filename = $this->filename;
 
 				/** @var Releases $releaseModel */
@@ -896,11 +613,329 @@ class Items extends DataModel
 	}
 
 	/**
-	 * Runs before copying an Item
+	 * Returns a list of select options which will let the user pick a file for a release.
 	 *
-	 * @see  Releases::onBeforeCopy  for the concept
+	 * Files already used in other items of the same category will not be listed to prevent the list getting too long.
+	 *
+	 * @param   int  $release_id  The numeric ID of the release selected by the user
+	 * @param   int  $item_id     The numeric ID of the current item. Leave 0 if it's a new item.
+	 *
+	 * @return  array  Array of JHtml options.
+	 * @see     Releases::directoryForRelease()
+	 */
+	public function getFilesOptions(int $release_id, int $item_id = 0): array
+	{
+		// Default options –– basically, an empty select
+		$options   = [];
+		$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
+
+		// Get the directory where this category holds its files
+		/** @var Releases $releaseModel */
+		$releaseModel = $this->container->factory->model('Releases')->tmpInstance();
+		$directory    = $releaseModel->directoryForRelease($release_id);
+
+		if (empty($directory))
+		{
+			return $options;
+		}
+
+		$directory .= in_array(substr($directory, -1), ['/', DIRECTORY_SEPARATOR]) ? '' : '/';
+
+		// Get all files under this directory and remove the directory prefix
+		$allFiles = Folder::files($directory, '.', true, true);
+		$allFiles = array_map(function ($thisFolder) use ($directory) {
+			$dirLen = strlen($directory);
+			if (substr($thisFolder, 0, $dirLen) == $directory)
+			{
+				$thisFolder = substr($thisFolder, $dirLen);
+			}
+
+			return ltrim($thisFolder, '/' . DIRECTORY_SEPARATOR);
+		}, $allFiles);
+
+		// Get a list of files already used in this category (so as not to show them again, he he!)
+		$files           = [];
+		$itemsModel      = $this->tmpInstance();
+		$release         = $releaseModel->find($release_id);
+		$items           = $itemsModel
+			->category($release->category_id)
+			->release('false')
+			->get(true);
+		$currentFilename = '';
+
+		$items->each(function ($item) use (&$files, &$currentFilename, $item_id) {
+			if (empty($item->filename))
+			{
+				return;
+			}
+
+			$files[$item->id] = $item->filename;
+		});
+
+		if (isset($files[$item_id]))
+		{
+			$currentFilename = $files[$item_id];
+
+			unset($files[$item_id]);
+		}
+
+		// Produce a list of files and remove the items in the $files array
+		$files    = array_unique($files);
+		$useFiles = array_diff($allFiles, $files);
+
+		if (empty($useFiles))
+		{
+			return $options;
+		}
+
+		foreach ($useFiles as $file)
+		{
+			$options[] = HTMLHelper::_('select.option', $file, $file);
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Implements custom filtering
+	 *
+	 * @param   JDatabaseQuery  $query           The model query we're operating on
+	 * @param   bool            $overrideLimits  Are we told to override limits?
 	 *
 	 * @return  void
+	 */
+	protected function onBeforeBuildQuery(JDatabaseQuery &$query, bool $overrideLimits = false): void
+	{
+		$db = $this->getDbo();
+
+		$fltCategory = $this->getState('category', null, 'int');
+
+		if ($fltCategory > 0)
+		{
+			// Filter the categories table, too
+			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $fltCategory) {
+				$subQuery->where($db->qn('category_id') . ' = ' . $db->q($fltCategory));
+			});
+		}
+
+		$fltItemId = $this->getState('item_id', null, 'int');
+
+		if ($fltItemId > 0)
+		{
+			$query->where($db->qn('id') . ' = ' . $db->q($fltItemId));
+		}
+
+		$fltRelease = $this->getState('release_id', null, 'array');
+
+		if (!is_array($fltRelease))
+		{
+			$fltRelease = $this->getState('release_id', null, 'int');
+		}
+		else
+		{
+			$fltRelease = null;
+		}
+
+		$fltRelease = $this->getState('release', $fltRelease, 'int');
+
+		if ($fltRelease > 0)
+		{
+			$query->where($db->qn('release_id') . ' = ' . $db->q($fltRelease));
+		}
+
+		$fltAccessUser = $this->getState('access_user', null, 'int');
+
+		if (!is_null($fltAccessUser))
+		{
+			$user = $this->container->platform->getUser($fltAccessUser);
+
+			if (!is_object($user) || !($user instanceof User))
+			{
+				$access_levels = [-1];
+			}
+			else
+			{
+				$access_levels = $this->container->platform->getUser($fltAccessUser)->getAuthorisedViewLevels();
+
+				if (empty($access_levels))
+				{
+					// Essentially, tell it to find nothing if no our user is authorised to no access levels
+					$access_levels = [-1];
+				}
+			}
+
+			$access_levels = array_unique($access_levels);
+
+			// Filter this table
+			$access_levels_escaped = array_map([$db, 'quote'], $access_levels);
+			$query->where(
+				'(' .
+				'(' . $db->qn('access') . ' IN (' . implode(',', $access_levels_escaped) . ')) OR (' .
+				$db->qn('show_unauth_links') . ' = ' . $db->q(1)
+				. '))'
+			);
+
+			/** @var Categories $categoriesModel */
+			$categories      = [];
+			$categoriesModel = $this->container->factory->model('Categories')->tmpInstance();
+			$categoriesModel->access($access_levels)->get(true)->transform(function ($item) use (&$categories) {
+				$categories[] = $item->id;
+			});
+
+			if (empty($categories))
+			{
+				// Essentially, tell it to find nothing if no categories fulfill our criteria
+				$categories = [-1];
+			}
+
+			// We have a category filter.
+			if (!empty($fltCategory))
+			{
+				// If the category exists in our list of allowed categories, filter by it
+				if (in_array($fltCategory, $categories))
+				{
+					$categories = [$fltCategory];
+				}
+				// Otherwise show nothing (selected category is unreachable)
+				else
+				{
+					$categories = [-1];
+				}
+			}
+
+			$categories = array_map([$db, 'quote'], $categories);
+
+			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $access_levels, $categories) {
+				$subQuery->where($db->qn('category_id') . ' IN (' . implode(',', $categories) . ')');
+				$subQuery->where($db->qn('access') . ' IN (' . implode(',', $access_levels) . ')');
+			});
+		}
+
+		$fltLanguage  = $this->getState('language', null, 'cmd');
+		$fltLanguage2 = $this->getState('language2', null, 'string');
+
+		if (($fltLanguage != '*') && ($fltLanguage != ''))
+		{
+			$query->where($db->qn('language') . ' IN (' . $db->q('*') . ',' . $db->q($fltLanguage) . ')');
+
+			/** @var Categories $categoriesModel */
+			$categories      = [];
+			$categoriesModel = $this->container->factory->model('Categories')->tmpInstance();
+			$categoriesModel->language($fltLanguage)->get(true)->transform(function ($item) use (&$categories) {
+				/** @var Categories $item */
+				$categories[] = $item->id;
+			});
+
+			if (empty($categories))
+			{
+				// Essentially, tell it to find nothing if no categories fulfill our criteria
+				$categories = [-1];
+			}
+
+			if (!empty($fltCategory))
+			{
+				// If the category exists in our list of allowed categories, filter by it
+				if (in_array($fltCategory, $categories))
+				{
+					$categories = [$fltCategory];
+				}
+				// Otherwise show nothing (selected category is unreachable)
+				else
+				{
+					$categories = [-1];
+				}
+			}
+
+			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $fltLanguage, $categories) {
+				$categories = array_map([$db, 'quote'], $categories);
+
+				$subQuery->where($db->qn('language') . ' IN (' . $db->q('*') . ',' . $db->q($fltLanguage) . ')');
+				$subQuery->where($db->qn('category_id') . ' IN (' . implode(',', $categories) . ')');
+			});
+		}
+		elseif ($fltLanguage2)
+		{
+			$query->where($db->qn('language') . ' = ' . $db->q($fltLanguage2));
+
+			/** @var Categories $categoriesModel */
+			$categories      = [];
+			$categoriesModel = $this->container->factory->model('Categories')->tmpInstance();
+			$categoriesModel->language2($fltLanguage2)->get(true)->transform(function ($item) use (&$categories) {
+				$categories[] = $item->id;
+			});
+
+			if (empty($categories))
+			{
+				// Essentially, tell it to find nothing if no categories fulfill our criteria
+				$categories = [-1];
+			}
+
+			if (!empty($fltCategory))
+			{
+				// If the category exists in our list of allowed categories, filter by it
+				if (in_array($fltCategory, $categories))
+				{
+					$categories = [$fltCategory];
+				}
+				// Otherwise show nothing (selected category is unreachable)
+				else
+				{
+					$categories = [-1];
+				}
+			}
+
+			$this->whereHas('release', function (JDatabaseQuery $subQuery) use ($db, $fltLanguage2, $categories) {
+				$categories = array_map([$db, 'quote'], $categories);
+
+				$subQuery->where($db->qn('language') . ' = ' . $db->q($fltLanguage2));
+				$subQuery->where($db->qn('category_id') . ' IN (' . implode(',', $categories) . ')');
+			});
+		}
+
+		// Default ordering ID descending (latest created release on top)
+		$filterOrder    = $this->getState('filter_order', 'id');
+		$filterOrderDir = $this->getState('filter_order_Dir', 'DESC');
+		$this->setState('filter_order', $filterOrder);
+		$this->setState('filter_order_Dir', $filterOrderDir);
+
+		// Order filtering
+		$fltOrderBy = $this->getState('orderby_filter', null, 'cmd');
+
+		switch ($fltOrderBy)
+		{
+			case 'alpha':
+				$this->setState('filter_order', 'title');
+				$this->setState('filter_order_Dir', 'ASC');
+				break;
+
+			case 'ralpha':
+				$this->setState('filter_order', 'title');
+				$this->setState('filter_order_Dir', 'DESC');
+				break;
+
+			case 'created':
+				$this->setState('filter_order', 'created');
+				$this->setState('filter_order_Dir', 'ASC');
+				break;
+
+			case 'rcreated':
+				$this->setState('filter_order', 'created');
+				$this->setState('filter_order_Dir', 'DESC');
+				break;
+
+			case 'order':
+				$this->setState('filter_order', 'ordering');
+				$this->setState('filter_order_Dir', 'ASC');
+				break;
+		}
+	}
+
+	/**
+	 * Runs before copying an Item
+	 *
+	 * @return  void
+	 * @see  Releases::onBeforeCopy  for the concept
+	 *
 	 */
 	protected function onBeforeCopy(): void
 	{
@@ -919,13 +954,13 @@ class Items extends DataModel
 	protected function onBeforeCreate(object &$dataObject): void
 	{
 		$dataObject->ordering = 1;
-		$this->ordering = 1;
+		$this->ordering       = 1;
 
 		$db = $this->getDbo();
 
 		$query = $db->getQuery(true)
-					->update($db->qn('#__ars_items'))
-					->set($db->qn('ordering') . ' = ' . $db->qn('ordering') . ' + ' . $db->q(1));
+			->update($db->qn('#__ars_items'))
+			->set($db->qn('ordering') . ' = ' . $db->qn('ordering') . ' + ' . $db->q(1));
 
 		// Only update items with the same release (as long as a release is – and it should be!) defined
 		if (isset($dataObject->release_id) && !empty($dataObject->release_id))
@@ -946,7 +981,7 @@ class Items extends DataModel
 	/**
 	 * Converts the loaded comma-separated list of subscription levels into an array
 	 *
-	 * @param string|array $value The comma-separated list or an already converted array
+	 * @param   string|array  $value  The comma-separated list or an already converted array
 	 *
 	 * @return  array  The exploded array
 	 */
@@ -958,7 +993,7 @@ class Items extends DataModel
 	/**
 	 * Converts the array of subscription levels into a comma separated list
 	 *
-	 * @param array|string $value The array of values or an already converted string
+	 * @param   array|string  $value  The array of values or an already converted string
 	 *
 	 * @return  string  The imploded comma-separated list
 	 */
@@ -971,7 +1006,7 @@ class Items extends DataModel
 	/**
 	 * Converts the loaded JSON-encoded list of environments into an array
 	 *
-	 * @param string|array $value The comma-separated list
+	 * @param   string|array  $value  The comma-separated list
 	 *
 	 * @return  array  The exploded array
 	 */
@@ -983,7 +1018,7 @@ class Items extends DataModel
 	/**
 	 * Converts the array of environments into a JSON-encoded string
 	 *
-	 * @param array|string $value The array of values
+	 * @param   array|string  $value  The array of values
 	 *
 	 * @return  string  The imploded comma-separated list
 	 */
@@ -993,103 +1028,52 @@ class Items extends DataModel
 	}
 
 	/**
-	 * Returns a list of select options which will let the user pick a file for a release. Files already used in other
-	 * items of the same category will not be listed to prevent the list getting too long.
+	 * Get the default WHERE clause for reordering items. Called by reorder().
 	 *
-	 * @param   int  $release_id  The numeric ID of the release selected by the user
-	 * @param   int  $item_id     The numeric ID of the current item. Leave 0 if it's a new item.
-	 *
-	 * @return  array  Array of JHtml options.
+	 * @return  string
 	 */
-	public function getFilesOptions(int $release_id, int $item_id = 0): array
+	private function getReorderWhere(): string
 	{
-		$options   = array();
-		$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
+		$where        = [];
+		$fltCategory  = $this->getState('category', null, 'int');
+		$fltRelease   = $this->getState('release', null, 'int');
+		$fltPublished = $this->getState('published', null, 'cmd');
 
-		// Try to figure out a directory
-		$directory = null;
+		$db = $this->getDBO();
 
-		if (empty($release_id))
+		if ($fltCategory)
 		{
-			return $options;
-		}
+			/** @var Releases $releasesModel */
+			$releases      = [];
+			$releasesModel = $this->container->factory->model('Releases')->tmpInstance();
+			$releasesModel->category($fltCategory)->get(true)->transform(function ($item) use (&$releases) {
+				$releases[] = $item->id;
+			});
 
-		/** @var Releases $releaseModel */
-		$releaseModel = $this->container->factory->model('Releases')->tmpInstance();
-
-		// Get the release
-		$release = $releaseModel->find((int) $release_id);
-
-		// Get which directory to use
-		$directory = $release->category->directory;
-
-		if (!Folder::exists($directory))
-		{
-			$directory = JPATH_ROOT . '/' . $directory;
-
-			if (!Folder::exists($directory))
+			if (!empty($releases))
 			{
-				$directory = null;
+				$releases = array_map([$db, 'quote'], $releases);
+				$where[]  = $db->qn('release_id') . ' IN (' . implode(',', $releases) . ')';
 			}
 		}
 
-		if (empty($directory))
+		if ($fltRelease)
 		{
-			return $options;
+			$where[] = $db->qn('release_id') . ' = ' . $db->q($fltRelease);
 		}
 
-		// Get a list of files already used in this category (so as not to show them again, he he!)
-		$files = array();
-
-		$itemsModel = $this->tmpInstance();
-
-		$items = $itemsModel
-			->category($release->category_id)
-			->release('false')
-			->get(true);
-
-		if (!empty($items))
+		if ($fltPublished != '')
 		{
-			// Walk through the list and find the currently selected filename
-			$currentFilename = '';
-
-			foreach ($items as $item)
-			{
-				if ($item->id == $item_id)
-				{
-					$currentFilename = $item->filename;
-
-					break;
-				}
-			}
-
-			// Remove already used filenames except the currently selected filename
-			reset($items);
-
-			foreach ($items as $item)
-			{
-				if (($item->filename != $currentFilename) && !empty($item->filename))
-				{
-					$files[] = $item->filename;
-				}
-			}
-
-			$files = array_unique($files);
+			$where[] = $db->qn('published') . ' = ' . $db->q($fltPublished);
 		}
 
-		// Produce a list of files and remove the items in the $files array
-		$useFiles = array();
-
-		if (empty($useFiles))
+		if (count($where))
 		{
-			return $options;
+			return '(' . implode(') AND (', $where) . ')';
 		}
-
-		foreach ($useFiles as $file)
+		else
 		{
-			$options[] = HTMLHelper::_('select.option', $file, $file);
+			return '';
 		}
-
-		return $options;
 	}
 }
