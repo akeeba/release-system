@@ -69,10 +69,12 @@ class Html extends \FOF30\View\DataView\Html
 			!isset($dldetails['dlweek']) || empty($dldetails['dlweek'])
 		)
 		{
-			$cache->setValue('dldetails', json_encode([
+			$dldetails = [
 				'dlmonth' => $model->getNumDownloads('month'),
 				'dlweek'  => $model->getNumDownloads('week'),
-			]));
+			];
+
+			$cache->setValue('dldetails', json_encode($dldetails));
 		}
 
 		$this->downloadsMonth = $dldetails['dlmonth'];
