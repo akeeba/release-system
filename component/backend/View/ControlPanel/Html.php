@@ -57,20 +57,23 @@ class Html extends \FOF30\View\DataView\Html
 		$cache = new Cache();
 
 		// Download details (Downloads per Month, Week, All Time)
-		$dldetails = $cache->getValue('dldetails');
+		$dldetails = $cache->getValue('dldetails', '{}');
+		$dldetails = @json_decode($dldetails, true) ?? [
+				'dlmonth' => 0,
+				'dlweek'  => 0,
+			];
 
-		if (empty($dldetails))
+		if (
+			empty($dldetails) ||
+			!isset($dldetails['dlmonth']) || empty($dldetails['dlmonth']) ||
+			!isset($dldetails['dlweek']) || empty($dldetails['dlweek'])
+		)
 		{
 			$cache->setValue('dldetails', json_encode([
 				'dlmonth' => $model->getNumDownloads('month'),
 				'dlweek'  => $model->getNumDownloads('week'),
 			]));
 		}
-
-		$dldetails = @json_decode($dldetails, true) ?? [
-				'dlmonth' => 0,
-				'dlweek'  => 0,
-			];
 
 		$this->downloadsMonth = $dldetails['dlmonth'];
 		$this->downloadsWeek  = $dldetails['dlweek'];
@@ -104,7 +107,7 @@ class Html extends \FOF30\View\DataView\Html
 
 		$this->graphsWidth = $width;
 
-		$this->needsMenuItem          = $model->needsCategoriesMenu();
+		$this->needsMenuItem = $model->needsCategoriesMenu();
 
 		// Information for the PHP version warning
 		$this->akeebaCommonDatePHP          = $this->container->platform->getDate('2015-08-14 00:00:00', 'GMT')->format(Text::_('DATE_FORMAT_LC1'));
