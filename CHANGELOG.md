@@ -22,3 +22,4 @@
 * ⚙️ Upgrade deprecated Joomla API calls to Joomla 3.9.
 * ⚙️ Work towards future PHP 7.4 support.
 * 🐜 XML streams broken on hosts with short PHP tags enabled
+* 🐜 INI update format always showed the wrong platforms

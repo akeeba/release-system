@@ -28,7 +28,7 @@ if (count($this->items))
 		return $x[0] . '/' . $x[1];
 	}, $parsedPlatforms['platforms']);
 	$platformKeys    = array_merge($platformKeys, array_map(function ($x) {
-		return 'php/' . $x[0];
+		return 'php/' . $x;
 	}, $parsedPlatforms['php']));
 
 	$moreURL = Route::_('index.php?option=com_ars&view=Items&release_id=' . $item->release_id, false, Route::TLS_IGNORE, true);
@@ -38,8 +38,8 @@ if (count($this->items))
 @ob_end_clean();
 ?>
 @if (!$this->published || empty($this->items))
-; Live Update provision file
-; No updates are available!
+	; Live Update provision file
+	; No updates are available!
 @else
 	; Live Update provision file
 	; Generated on {{ gmdate('Y-m-d H:i:s') }} GMT
@@ -51,10 +51,12 @@ if (count($this->items))
 	infourl="{{ $moreURL }}"
 	md5="{{ $item->md5 }}"
 	sha1="{{ $item->sha1 }}"
-	@foreach (['sha256', 'sha384', 'sha512'] as $hash)
-		@unless(empty($item->{$hash}))
-			{{$hash}}="{{ $item->{$hash} }}"
-		@endunless
-	@endforeach
+	@if($this->showChecksums)
+		@foreach (['sha256', 'sha384', 'sha512'] as $hash)
+			@unless(empty($item->{$hash}))
+				{{$hash}}="{{ $item->{$hash} }}"
+			@endunless
+		@endforeach
+	@endif
 	platforms="{{ implode(',', $platformKeys) }}"
 @endif

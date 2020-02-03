@@ -143,11 +143,18 @@ trait Common
 			return $parsedPlatforms;
 		}
 
-		if (!empty($item->environments) && is_array($item->environments))
+		/**
+		 * DO NOT REMOVE -- DO NOT REFACTOR -- DO NOT TOUCH
+		 *
+		 * This is a virtual property. is_array() always returns false on it, breaking the code below
+		 */
+		$environments = $item->environments;
+
+		if (!empty($environments) && is_array($environments))
 		{
 			$platforms = [];
 
-			foreach ($item->environments as $eid)
+			foreach ($environments as $eid)
 			{
 				if (isset($this->envs[$eid]))
 				{

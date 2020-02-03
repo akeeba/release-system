@@ -16,10 +16,32 @@ class Ini extends Raw
 {
 	use Common;
 
-	public $items = array();
+	public $items = [];
+
+	public $envs = [];
+
+	public $showChecksums = false;
 
 	protected function onBeforeIni($tpl = null): void
 	{
+		$this->commonSetup();
+
+		/** @var Environments $envmodel */
+		$envmodel = $this->container->factory->model('Environments')->tmpInstance();
+		$rawenvs  = $envmodel->get(true);
+		$envs     = [];
+
+		if ($rawenvs->count())
+		{
+			foreach ($rawenvs as $env)
+			{
+				$envs[$env->id] = $env;
+			}
+		}
+
+		$this->envs          = $envs;
+		$this->showChecksums = $this->container->params->get('show_checksums', 0) == 1;
+
 		$this->setLayout('ini');
 
 		// Set the content type to text/plain
