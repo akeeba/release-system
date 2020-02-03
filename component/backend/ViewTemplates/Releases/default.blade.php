@@ -62,9 +62,6 @@ $i = 0;
             @sortgrid('published', 'JPUBLISHED')
         </th>
         <th>
-            @sortgrid('hits', 'JGLOBAL_HITS')
-        </th>
-        <th>
             @sortgrid('language', 'JFIELD_LANGUAGE_LABEL')
         </th>
     </tr>
@@ -110,9 +107,6 @@ $i = 0;
             </td>
             <td>
                 @jhtml('jgrid.published', $row->published, $i, '', $user->authorise('core.edit.state', 'com_ars'), 'cb')
-            </td>
-            <td>
-                {{{ $row->hits }}}
             </td>
             <td>
                 {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::language($row->language) }}
