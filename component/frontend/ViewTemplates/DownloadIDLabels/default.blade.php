@@ -87,10 +87,10 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
         @if($this->items->count())
             @foreach($this->items as $item)
             <tr>
-                <td>
+                <td data-th="@lang('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID')">
                     @include('site:com_ars/DownloadIDLabels/default_dlid', ['item' => $item])
                 </td>
-                <td>
+                <td data-th="@lang('COM_ARS_DLIDLABELS_FIELD_LABEL')">
                     @if($item->primary)
                         @lang('COM_ARS_DLIDLABELS_LBL_DEFAULT')
                     @else
@@ -100,10 +100,10 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
                     @endif
 
                 </td>
-                <td>
+                <td data-th="@lang('JPUBLISHED')">
                     @include('site:com_ars/DownloadIDLabels/default_publish', ['item' => $item])
                 </td>
-                <td>
+                <td data-th="">
                     <a href="@route('index.php?option=com_ars&view=DownloadIDLabels&task=reset&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
                        class="akeeba-btn--orange--small" title="@lang('COM_ARS_DLIDLABELS_FIELD_RESET')">
                         <span class="akion-refresh"></span>
