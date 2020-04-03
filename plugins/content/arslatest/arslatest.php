@@ -7,7 +7,7 @@
 
 // Protect from unauthorized access
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
-use Akeeba\ReleaseSystem\Site\Model\Releases;
+use Akeeba\ReleaseSystem\Admin\Model\Releases;
 use FOF30\Container\Container;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
@@ -110,7 +110,7 @@ class plgContentArslatest extends CMSPlugin
 	{
 		$ret = '';
 
-		list($op, $content, $pattern) = $this->analyzeString($match[1]);
+		[$op, $content, $pattern] = $this->analyzeString($match[1]);
 
 		switch (strtolower($op))
 		{

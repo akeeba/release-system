@@ -25,4 +25,5 @@
 * `#` [HIGH] XML streams broken on hosts with short PHP tags enabled
 * `#` [HIGH] INI update format always showed the wrong platforms
 * `#` [HIGH] File picker in Item edit form was broken 
+* `#` [HIGH] Fatal error from ARS Latest content plugin when unpublishing article category in the backend 
 * `#` [LOW] Download stats sometimes appeared empty
