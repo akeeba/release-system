@@ -30,6 +30,41 @@ class SubscriptionIntegration extends Model
 	protected $cachedGroups;
 
 	/**
+	 * Subscriptions levels per user ID, cached for performance
+	 *
+	 * @var   array
+	 * @since 5.0.0
+	 */
+	protected static $groupsPerUser = [];
+
+	/**
+	 * Returns a list of subscription groups / levels in a format suitable for selection lists
+	 *
+	 * @return  array
+	 */
+	public static function getGroupsForSelect(): array
+	{
+		/** @var self $instance */
+		$instance = Container::getInstance('com_ars')->factory->model('SubscriptionIntegration');
+
+		$ret  = [];
+		$temp = $instance->getGroups();
+
+		if (!empty($temp))
+		{
+			foreach ($temp as $k => $v)
+			{
+				$ret[] = [
+					'value' => $k,
+					'text'  => $v,
+				];
+			}
+		}
+
+		return $ret;
+	}
+
+	/**
 	 * Is the Akeeba Subscriptions integration available for this site?
 	 *
 	 * @return  bool  True if available
@@ -89,7 +124,7 @@ class SubscriptionIntegration extends Model
 	/**
 	 * Returns a list of subscription groups/levels the current user belongs to
 	 *
-	 * @param int $user_id User ID to check. Leave null to use current logged-in user.
+	 * @param   int  $user_id  User ID to check. Leave null to use current logged-in user.
 	 *
 	 * @return  array  Array of integers: the subscription levels the user belongs to
 	 */
@@ -117,33 +152,6 @@ class SubscriptionIntegration extends Model
 		}
 
 		return $this->userGroups[$user_id];
-	}
-
-	/**
-	 * Returns a list of subscription groups / levels in a format suitable for selection lists
-	 *
-	 * @return  array
-	 */
-	public static function getGroupsForSelect(): array
-	{
-		/** @var self $instance */
-		$instance = Container::getInstance('com_ars')->factory->model('SubscriptionIntegration');
-
-		$ret  = [];
-		$temp = $instance->getGroups();
-
-		if (!empty($temp))
-		{
-			foreach ($temp as $k => $v)
-			{
-				$ret[] = [
-					'value' => $k,
-					'text'  => $v,
-				];
-			}
-		}
-
-		return $ret;
 	}
 
 	/**
@@ -196,6 +204,12 @@ class SubscriptionIntegration extends Model
 			return [];
 		}
 
+		if (array_key_exists($user_id, self::$groupsPerUser))
+		{
+			return self::$groupsPerUser[$user_id];
+		}
+
+
 		$container = Container::getInstance('com_akeebasubs');
 		/** @var DataModel $subscriptionsModel */
 		$subscriptionsModel = $container->factory->model('Subscriptions')->tmpInstance();
@@ -212,6 +226,8 @@ class SubscriptionIntegration extends Model
 			}
 		}
 
-		return array_unique($theList);
+		self::$groupsPerUser[$user_id] = array_unique($theList);
+
+		return self::$groupsPerUser[$user_id];
 	}
 }
