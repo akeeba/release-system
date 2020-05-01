@@ -2,7 +2,7 @@
 
 * `!`️ Rolling internal release. This is no longer a mass distributed extension.
 * `+` PHP 7.3+ only. 
-* `+` Joomla 4 (alpha 10) compatible. 
+* `+` Joomla 4 compatible. 
 * `+` Implement Joomla! 4 routing. ([gh-135](https://github.com/akeeba/release-system/issues/135))
 * `+` Support for fully customised repository layout using an HTML override. 
 * `+` Common PHP version warning scripts 

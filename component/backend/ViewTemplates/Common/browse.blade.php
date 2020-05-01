@@ -51,10 +51,13 @@ use FOF30\Utils\FEFHelper\Html as FEFHtml;
 
 /** @var  FOF30\View\DataView\Html $this */
 
+$ajaxOrderingSupport = $this->hasAjaxOrderingSupport();
 ?>
 
 {{-- Allow tooltips, used in grid headers --}}
-@jhtml('behavior.tooltip')
+@if (version_compare(JVERSION, '3.999.999', 'le'))
+    @jhtml('behavior.tooltip')
+@endif
 {{-- Allow SHIFT+click to select multiple rows --}}
 @jhtml('behavior.multiselect')
 
@@ -121,7 +124,14 @@ use FOF30\Utils\FEFHelper\Html as FEFHtml;
         <tfoot>
         @yield('browse-table-footer')
         </tfoot>
-        <tbody>
+        <tbody
+                @if(($ajaxOrderingSupport !== false) && $ajaxOrderingSupport['saveOrder'])
+                class="js-draggable"
+                data-url="{{ $ajaxOrderingSupport['saveOrderURL'] }}"
+                data-direction="{{ strtolower($this->getModel()->getState('filter_order_Dir', null, 'cmd')) }}"
+                data-nested="{{ ($this->getModel() instanceof \FOF30\Model\TreeModel) ? 'true' : 'false' }}"
+                @endif
+        >
         @unless(count($this->items))
             @yield('browse-table-body-norecords')
         @else

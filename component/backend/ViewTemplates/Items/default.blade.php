@@ -99,7 +99,7 @@ $modal = isset($modal) ? boolval($modal) : false;
 		$canEdit = $user->authorise('core.admin') || $user->authorise('core.edit', 'com_ars.category.' . $category_id);
 		$enabled = $user->authorise('core.edit.state', 'com_ars')
 		?>
-		<tr>
+		<tr data-dragable-group="1">
 			<td>
 				@jhtml('FEFHelper.browse.order', 'ordering', $row->ordering)
 			</td>

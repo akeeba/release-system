@@ -69,7 +69,7 @@ defined('_JEXEC') or die;
 		<?php
 		$enabled = $this->container->platform->getUser()->authorise('core.edit.state', 'com_ars')
 		?>
-		<tr>
+		<tr data-dragable-group="1">
 			<td>
 				@jhtml('FEFHelper.browse.order', 'ordering', $row->ordering)
 			</td>

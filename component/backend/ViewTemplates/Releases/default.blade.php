@@ -36,7 +36,7 @@ $i = 0;
 @stop
 
 @section('browse-table-header')
-    <tr>
+    <tr data-dragable-group="1">
         <th width="8%">
             @sortgrid('ordering', '<i class="icon-menu-2"></i>')
         </th>
