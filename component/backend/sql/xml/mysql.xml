@@ -421,7 +421,7 @@ ALTER TABLE `#__ars_categories` ADD COLUMN `is_supported` TINYINT NOT NULL DEFAU
         </action>
 
         <action table="#__ars_categories" canfail="0">
-            <condition type="missing" value="asset_id" operator="NOT" />
+            <condition type="missing" value="asset_id" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_categories` DROP COLUMN `asset_id`;
             ]]></query>
