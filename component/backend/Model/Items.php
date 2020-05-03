@@ -381,7 +381,7 @@ class Items extends DataModel
 				break;
 		}
 
-		$filter = InputFilter::getInstance(null, null, 1, 1);
+		$filter = InputFilter::getInstance([], [], 1, 1);
 
 		// Filter the description using a safe HTML filter
 		if (!empty($this->description))

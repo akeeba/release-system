@@ -523,7 +523,7 @@ class Releases extends DataModel
 			$this->maturity = 'beta';
 		}
 
-		$filter = InputFilter::getInstance(null, null, 1, 1);
+		$filter = InputFilter::getInstance([], [], 1, 1);
 
 		// Filter the notes using a safe HTML filter
 		if (!empty($this->notes))
