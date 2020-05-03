@@ -37,7 +37,7 @@ CREATE TABLE `#__ars_categories` (
     `ordering` bigint(20) NOT NULL DEFAULT '0',
     `access` int(11) NOT NULL DEFAULT '0',
     `show_unauth_links` TINYINT NOT NULL DEFAULT '0',
-    `redirect_unauth` VARCHAR( 255 ) NOT NULL,
+    `redirect_unauth` VARCHAR( 255 ) NOT NULL DEFAULT '',
     `published` int(11) NOT NULL DEFAULT '1',
     `is_supported` TINYINT NOT NULL DEFAULT '1',
 	`language` char(7) NOT NULL DEFAULT '*',
@@ -68,7 +68,7 @@ CREATE TABLE `#__ars_releases` (
     `ordering` bigint(20) unsigned NOT NULL,
     `access` int(11) NOT NULL DEFAULT '0',
     `show_unauth_links` TINYINT NOT NULL DEFAULT '0',
-    `redirect_unauth` VARCHAR( 255 ) NOT NULL,
+    `redirect_unauth` VARCHAR( 255 ) NOT NULL DEFAULT '',
     `published` tinyint(1) NOT NULL DEFAULT '1',
 	`language` char(7) NOT NULL DEFAULT '*',
 	PRIMARY KEY `id` (`id`),
@@ -108,7 +108,7 @@ CREATE TABLE `#__ars_items` (
     `ordering` bigint(20) unsigned NOT NULL,
     `access` int(11) NOT NULL DEFAULT '0',
     `show_unauth_links` TINYINT NOT NULL DEFAULT '0',
-    `redirect_unauth` VARCHAR( 255 ) NOT NULL,
+    `redirect_unauth` VARCHAR( 255 ) NOT NULL DEFAULT '',
     `published` tinyint(1) NOT NULL DEFAULT '1',
 	`language` char(7) NOT NULL DEFAULT '*',
     `environments` varchar(255) DEFAULT NULL,
@@ -481,6 +481,36 @@ ALTER TABLE `#__ars_releases` DROP COLUMN `description`;
             <condition type="missing" value="country" operator="not"/>
             <query><![CDATA[
 ALTER TABLE `#__ars_log` DROP COLUMN `country`;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_categories" canfail="1">
+            <condition type="equals" operator="not" value="1"><![CDATA[
+                SELECT COUNT(*) FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = '#__ars_categories' AND `COLUMN_NAME` = 'redirect_unauth' AND `COLUMN_DEFAULT` IS NOT NULL
+            ]]></condition>
+
+            <query><![CDATA[
+ALTER TABLE #__ars_categories MODIFY `redirect_unauth` VARCHAR( 255 ) NOT NULL DEFAULT '';
+            ]]></query>
+        </action>
+
+        <action table="#__ars_releases" canfail="1">
+            <condition type="equals" operator="not" value="1"><![CDATA[
+                SELECT COUNT(*) FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = '#__ars_releases' AND `COLUMN_NAME` = 'redirect_unauth' AND `COLUMN_DEFAULT` IS NOT NULL
+            ]]></condition>
+
+            <query><![CDATA[
+ALTER TABLE #__ars_releases MODIFY `redirect_unauth` VARCHAR( 255 ) NOT NULL DEFAULT '';
+            ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="1">
+            <condition type="equals" operator="not" value="1"><![CDATA[
+                SELECT COUNT(*) FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = '#__ars_items' AND `COLUMN_NAME` = 'redirect_unauth' AND `COLUMN_DEFAULT` IS NOT NULL
+            ]]></condition>
+
+            <query><![CDATA[
+ALTER TABLE #__ars_items MODIFY `redirect_unauth` VARCHAR( 255 ) NOT NULL DEFAULT '';
             ]]></query>
         </action>
 
