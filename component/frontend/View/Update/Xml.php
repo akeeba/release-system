@@ -42,7 +42,22 @@ class Xml extends Raw
 
 		$this->container->platform->getDocument()->setMimeEncoding('text/xml');
 
-		return parent::display($tpl);
+		@ob_start();
+		$ret      = parent::display($tpl);
+		$document = @ob_get_clean();
+
+		if ($this->container->params->get('minify_xml', 1) == 1)
+		{
+			$dom                     = new \DOMDocument('1.0', 'UTF-8');
+			$dom->formatOutput       = false;
+			$dom->preserveWhiteSpace = false;
+			$dom->loadXML($document);
+			$document = $dom->saveXML();
+		}
+
+		echo $document;
+
+		return $ret;
 	}
 
 	protected function onBeforeAll(): void

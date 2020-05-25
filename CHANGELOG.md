@@ -7,6 +7,7 @@
 * `+` Support for fully customised repository layout using an HTML override. 
 * `+` Common PHP version warning scripts 
 * `+` Show the release date in the Releases page 
+* `+` Minify the XML update stream 
 * `-` Remove country column from Logs
 * `-` Remove unused INI parser helper class.
 * `-` Remove Visual Groups feature.

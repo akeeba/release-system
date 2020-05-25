@@ -26,6 +26,15 @@
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
+
+        <field name="minify_xml" type="radio" default="1"
+               label="COM_ARS_CONFIG_MINIFY_XML_LABEL"
+               description="COM_ARS_CONFIG_MINIFY_XML_DESC"
+               class="switcher btn-group"
+        >
+            <option value="0">JNo</option>
+            <option value="1">JYes</option>
+        </field>
     </fieldset>
 
     <fieldset name="frontend" label="COM_ARS_CONFIG_FRONTEND_HEADER_LABEL"
