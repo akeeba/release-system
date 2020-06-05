@@ -32,3 +32,4 @@
 * `#` [HIGH] Fatal error from ARS Latest content plugin when unpublishing article category in the backend 
 * `#` [MEDIUM] Missing default column values would cause MySQL errors creating Releases or Items programmatically
 * `#` [LOW] Download stats sometimes appeared empty
+* `#` [LOW] Unhandled exception page was incompatible with Joomla 4
