@@ -10,7 +10,7 @@ use Joomla\CMS\Editor\Editor;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-/** @var \Akeeba\ReleaseSystem\Admin\View\VisualGroups\Html $this */
+/** @var \Akeeba\ReleaseSystem\Admin\View\Releases\Html $this */
 
 defined('_JEXEC') or die;
 
@@ -91,16 +91,6 @@ $item = $this->getItem();
 
                 <input type="text" name="redirect_unauth" id="redirect_unauth"
                        value="{{{ $item->redirect_unauth }}}" />
-            </div>
-
-            <div class="akeeba-form-group">
-                <label for="groups">@lang('COM_ARS_COMMON_CATEGORIES_GROUPS_LABEL')</label>
-
-                @jhtml('FEFHelper.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::subscriptionGroups(), 'groups[]', [
-                    'id' => 'groups', 'list.select' => $item->groups,
-                    'list.attr' => ['multiple' => 'multiple', 'class' => 'advancedSelect']
-                ])
             </div>
 
             <div class="akeeba-form-group">

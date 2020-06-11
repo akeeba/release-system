@@ -45,12 +45,6 @@ class Item extends DataController
 		}
 
 		// When you deselect all items Chosen doesn't return any items in the request :(
-		if (!isset($data['groups']))
-		{
-			$data['groups'] = [];
-		}
-
-		// Save as above *sigh*
 		if (!isset($data['environments']))
 		{
 			$data['environments'] = [];

@@ -10,7 +10,6 @@ namespace Akeeba\ReleaseSystem\Admin\Helper;
 use Akeeba\ReleaseSystem\Admin\Model\Categories;
 use Akeeba\ReleaseSystem\Admin\Model\Environments;
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
-use Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
 use Akeeba\ReleaseSystem\Admin\Model\UpdateStreams;
 use FOF30\Container\Container;
 use FOF30\Utils\Collection;
@@ -395,21 +394,6 @@ abstract class Select
 
 		return $options;
 
-	}
-
-	/**
-	 * Returns an options list with all subscription levels
-	 *
-	 * @return array
-	 *
-	 * @since  5.0.0
-	 */
-	public static function subscriptionGroups(): array
-	{
-		$options = SubscriptionIntegration::getGroupsForSelect();
-		array_unshift($options, JHtml::_('FEFHelper.select.option', '', Text::_('COM_ARS_COMMON_SELECT_GENERIC')));
-
-		return $options;
 	}
 
 	/**

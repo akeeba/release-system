@@ -118,7 +118,7 @@ class Release extends DataController
 			$categoryModel->find($id);
 
 			// Make sure subscription level filtering allows access
-			if (!Filter::filterItem($categoryModel) || !$categoryModel->published)
+			if (!Filter::filterItem($categoryModel, false) || !$categoryModel->published)
 			{
 				throw new \Exception('Filtering failed');
 			}

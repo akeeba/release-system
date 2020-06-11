@@ -27,7 +27,6 @@ use Joomla\CMS\Filesystem\Folder;
  * @property  string     $alias
  * @property  string     $description
  * @property  string     $type
- * @property  array      $groups
  * @property  string     $directory
  * @property  string     $created
  * @property  string     $modified
@@ -47,7 +46,6 @@ use Joomla\CMS\Filesystem\Folder;
  * @method  $this  alias()              alias(string $v)
  * @method  $this  description()        description(string $v)
  * @method  $this  type()               type(string $v)
- * @method  $this  groups()             groups(string $v)
  * @method  $this  directory()          directory(string $v)
  * @method  $this  created()            created(string $v)
  * @method  $this  created_by()         created_by(int $v)
@@ -122,7 +120,6 @@ class Categories extends DataModel
 		// Automatic checks should not take place on these fields:
 		$config['fieldsSkipChecks'] = [
 			'description',
-			'groups',
 			'show_unauth_links',
 			'redirect_unauth',
 			'language',
@@ -317,15 +314,10 @@ class Categories extends DataModel
 			$this->type = 'normal';
 		}
 
-		// Set the access to registered if there are subscriptions groups defined
-		if (empty($this->access))
+		// Set the default access level
+		if ($this->access <= 0)
 		{
 			$this->access = 1;
-		}
-
-		if (!empty($this->groups) && ($this->access == 1))
-		{
-			$this->access = 2;
 		}
 
 		if (empty($this->published) && ($this->published !== 0))
@@ -359,30 +351,6 @@ class Categories extends DataModel
 		];
 
 		$this->canDelete($oid, $joins);
-	}
-
-	/**
-	 * Converts the loaded comma-separated list of subscription levels into an array
-	 *
-	 * @param string|array $value The comma-separated list
-	 *
-	 * @return  array  The exploded array
-	 */
-	protected function getGroupsAttribute($value): array
-	{
-		return $this->getAttributeForImplodedArray($value);
-	}
-
-	/**
-	 * Converts the array of subscription levels into a comma separated list
-	 *
-	 * @param array|string $value The array of values
-	 *
-	 * @return  string  The imploded comma-separated list
-	 */
-	protected function setGroupsAttribute($value): string
-	{
-		return $this->setAttributeForImplodedArray($value);
 	}
 
 	/**

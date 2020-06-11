@@ -313,11 +313,9 @@ class plgContentArslatest extends CMSPlugin
 		$link      = Route::_('index.php?option=com_ars&view=Items&release_id=' . $release->id);
         $container = \FOF30\Container\Container::getInstance('com_ars');
 
-        $authorisedViewLevels = $container->platform->getUser()->getAuthorisedViewLevels();
-
-        if (!Filter::filterItem($release, false, $authorisedViewLevels) && !empty($release->redirect_unauth))
+        if (!Filter::filterItem($release, false) && !empty($release->redirect_unauth))
         {
-            $link = $release->redirect_unauth;
+	        $link = $release->redirect_unauth;
         }
 
 		return $link;
@@ -370,10 +368,10 @@ class plgContentArslatest extends CMSPlugin
 
         $container = \FOF30\Container\Container::getInstance('com_ars');
 
-        if (!Filter::filterItem($item, false, $container->platform->getUser()->getAuthorisedViewLevels()) && !empty($item->redirect_unauth))
-        {
-            $link = $item->redirect_unauth;
-        }
+		if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
+		{
+			$link = $item->redirect_unauth;
+		}
 
 		return $link;
 	}

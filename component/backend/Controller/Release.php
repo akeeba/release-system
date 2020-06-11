@@ -29,12 +29,6 @@ class Release extends DataController
 			}
 		}
 
-		// When you deselect all items Chosen doesn't return any items in the request :(
-		if (!isset($data['groups']))
-		{
-			$data['groups'] = array();
-		}
-
 		return true;
 	}
 

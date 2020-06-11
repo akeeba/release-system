@@ -23,12 +23,11 @@ if (!isset($this->releases[$item->id]))
 }
 
 /** @var \Akeeba\ReleaseSystem\Site\Model\Releases $release */
-$release = $this->releases[$item->id];
-$released = $this->container->platform->getDate($release->created);
+$release     = $this->releases[$item->id];
+$released    = $this->container->platform->getDate($release->created);
 $release_url = Router::_('index.php?option=com_ars&view=Items&release_id=' . $release->id . '&Itemid=' . $Itemid);
-$authorisedViewLevels = $this->getContainer()->platform->getUser()->getAuthorisedViewLevels();
 
-if (!Filter::filterItem($release, false, $authorisedViewLevels) && !empty($release->redirect_unauth))
+if (!Filter::filterItem($release, false) && !empty($release->redirect_unauth))
 {
 	$release_url = $release->redirect_unauth;
 }
@@ -97,7 +96,7 @@ switch ($release->maturity)
 		{
 			if (!$item->enabled) return false;
 
-			return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true);
+			return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true, $this->container->platform->getUser()->getAuthorisedViewLevels());
 		}) as $i)
 		@include('site:com_ars/Latest/item', ['item' => $i, 'Itemid' => $this->Itemid])
 		@endforeach

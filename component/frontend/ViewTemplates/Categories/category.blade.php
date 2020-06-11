@@ -17,7 +17,7 @@ use Akeeba\ReleaseSystem\Admin\Helper\Format;
 
 $category_url = Router::_('index.php?option=com_ars&view=Releases&category_id=' . $item->id . '&Itemid=' . $Itemid);
 
-if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()->getAuthorisedViewLevels()) && !empty($item->redirect_unauth))
+if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 {
 	$category_url = $item->redirect_unauth;
 }

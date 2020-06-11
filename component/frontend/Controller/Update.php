@@ -359,7 +359,7 @@ class Update extends Controller
 		/** @var Logs $log */
 		$log = $this->container->factory->model('Logs')->tmpInstance();
 
-		if (!Filter::filterItem($item))
+		if (!Filter::filterItem($item, false))
 		{
 			$log->create([
 				'authorized' => 0,

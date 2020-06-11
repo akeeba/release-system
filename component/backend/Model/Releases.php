@@ -30,7 +30,6 @@ use Joomla\CMS\Filter\InputFilter;
  * @property  string  $alias
  * @property  string  $maturity
  * @property  string  $notes
- * @property  array   $groups
  * @property  int     $hits
  * @property  string  $created
  * @property  string  $modified
@@ -51,7 +50,6 @@ use Joomla\CMS\Filter\InputFilter;
  * @method  $this  alias()              alias(string $v)
  * @method  $this  maturity()           maturity(string $v)
  * @method  $this  notes()              notes(string $v)
- * @method  $this  groups()             groups(string $v)
  * @method  $this  hits()               hits(int $v)
  * @method  $this  created()            created(string $v)
  * @method  $this  created_by()         created_by(int $v)
@@ -119,7 +117,6 @@ class Releases extends DataModel
 		// Automatic checks should not take place on these fields:
 		$config['fieldsSkipChecks'] = [
 			'notes',
-			'groups',
 			'hits',
 			'created',
 			'created_by',
@@ -531,10 +528,9 @@ class Releases extends DataModel
 			$this->notes = $filter->clean($this->notes);
 		}
 
-		// Set the access to registered if there are subscriptions defined
-		if (!empty($this->groups) && ($this->access == 1))
+		if ($this->access <= 0)
 		{
-			$this->access = 2;
+			$this->access = 1;
 		}
 
 		if (empty($this->published) && ($this->published !== 0))
@@ -600,30 +596,6 @@ class Releases extends DataModel
 		);
 
 		$this->canDelete($oid, $joins);
-	}
-
-	/**
-	 * Converts the loaded comma-separated list of subscription levels into an array
-	 *
-	 * @param string|array $value The comma-separated list or an array if it's already converted.
-	 *
-	 * @return  array  The exploded array
-	 */
-	protected function getGroupsAttribute($value): array
-	{
-		return $this->getAttributeForImplodedArray($value);
-	}
-
-	/**
-	 * Converts the array of subscription levels into a comma separated list
-	 *
-	 * @param   array  $value  The array of values
-	 *
-	 * @return  string  The imploded comma-separated list
-	 */
-	protected function setGroupsAttribute(array $value): string
-	{
-		return $this->setAttributeForImplodedArray($value);
 	}
 
 	/**
