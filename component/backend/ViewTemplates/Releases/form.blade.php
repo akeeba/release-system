@@ -94,16 +94,6 @@ $item = $this->getItem();
             </div>
 
             <div class="akeeba-form-group">
-                <label for="groups">@lang('COM_ARS_COMMON_CATEGORIES_GROUPS_LABEL')</label>
-
-                @jhtml('FEFHelper.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::subscriptionGroups(), 'groups[]', [
-                    'id' => 'groups', 'list.select' => $item->groups,
-                    'list.attr' => ['multiple' => 'multiple', 'class' => 'advancedSelect']
-                ])
-            </div>
-
-            <div class="akeeba-form-group">
                 <label for="created">@lang('COM_ARS_RELEASES_FIELD_RELEASED')</label>
 
                 @jhtml('calendar', $item->created, 'created', 'created')
