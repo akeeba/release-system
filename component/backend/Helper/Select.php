@@ -7,9 +7,7 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Helper;
 
-use Akeeba\ReleaseSystem\Admin\Model\Categories;
 use Akeeba\ReleaseSystem\Admin\Model\Environments;
-use Akeeba\ReleaseSystem\Admin\Model\Releases;
 use Akeeba\ReleaseSystem\Admin\Model\SubscriptionIntegration;
 use Akeeba\ReleaseSystem\Admin\Model\UpdateStreams;
 use FOF30\Container\Container;
@@ -143,59 +141,66 @@ abstract class Select
 	 * Return a grouped options list for all releases (grouped by category) and ordered by category and version
 	 * ascending.
 	 *
-	 * @param bool $addDefault Add default select text?
+	 * @param   bool      $addDefault        Add default select text?
+	 * @param   int|null  $filterByCategory  Category to filter releases by
 	 *
-	 * @return array
+	 * @return  array
 	 *
-	 * @since  5.0.0
+	 * @since   5.0.0
 	 */
-	public static function releases(bool $addDefault = false): array
+	public static function releases(bool $addDefault = false, ?int $filterByCategory = 0): array
 	{
-		/** @var Releases $model */
-		$model = self::getContainer()
-			->factory->model('Releases')->tmpInstance();
+		$container = self::getContainer();
+		$db        = $container->db;
+		$query     = $db->getQuery(true)
+			->select([
+				$db->qn('c.title', 'cat'),
+				$db->qn('r.id', 'id'),
+				$db->qn('r.version'),
+			])->from($db->qn('#__ars_releases', 'r'))
+			->join('inner', $db->qn('#__ars_categories', 'c') . ' ON (' . $db->qn('c.id') . ' = ' . $db->qn('r.category_id') . ')')
+			->where(
+			// published = 1 and type != bleedingedge
+				'((' . $db->qn('c.published') . ' = 1 AND ' . $db->qn('type') . ' != ' . $db->q('bleedingedge') . ') OR ' . $db->qn('type') . ' = ' . $db->q('normal') . ')'
+			);
 
-		// We want all releases, but avoid the ones belonging to unpublished Bleeding Edge categories
-		$options = [];
-		$lastCat = null;
-		$model
-			->published(null)
-			->nobeunpub(1)
-			->filter_order('version')
-			->filter_order_Dir('ASC')
-			->get(true)
-			// Convert to a simple list of keyed arrays containing category name, release ID and version.
-			->transform(function (Releases $release) {
-				return [
-					'cat'     => $release->category->title,
-					'id'      => $release->id,
-					'version' => $release->version,
-				];
-				// Order by category and version
-			})->sort(function (array $a, array $b) {
-				$catCompare = $a['cat'] <=> $b['cat'];
+		if (!is_null($filterByCategory) && ($filterByCategory > 0))
+		{
+			$query->where($db->qn('c.id') . ' = ' . $filterByCategory, 'AND');
+		}
 
-				if ($catCompare !== 0)
+		$releases = $db->setQuery($query)->loadAssocList();
+
+		if (empty($releases))
+		{
+			return [];
+		}
+
+		uasort($releases, function (array $a, array $b) {
+			$catCompare = $a['cat'] <=> $b['cat'];
+
+			if ($catCompare !== 0)
+			{
+				return $catCompare;
+			}
+
+			return version_compare($a['version'], $b['version']);
+		});
+
+		array_map(function (array $item) use (&$options, &$lastCat) {
+			if ($item['cat'] !== $lastCat)
+			{
+				if ($lastCat !== null)
 				{
-					return $catCompare;
+					$options[] = JHtml::_('FEFHelper.select.option', '</OPTGROUP>');
 				}
 
-				return version_compare($a['version'], $b['version']);
-			})
-			->each(function (array $item) use (&$options, &$lastCat) {
-				if ($item['cat'] !== $lastCat)
-				{
-					if ($lastCat !== null)
-					{
-						$options[] = JHtml::_('FEFHelper.select.option', '</OPTGROUP>');
-					}
+				$options[] = JHtml::_('FEFHelper.select.option', '<OPTGROUP>', $item['cat']);
+				$lastCat   = $item['cat'];
+			}
 
-					$options[] = JHtml::_('FEFHelper.select.option', '<OPTGROUP>', $item['cat']);
-					$lastCat   = $item['cat'];
-				}
-
-				$options[] = JHtml::_('FEFHelper.select.option', $item['id'], $item['version']);
-			});
+			$options[] = JHtml::_('FEFHelper.select.option', $item['id'], $item['version']);
+		}, $releases);
 
 		if ($lastCat !== null)
 		{
@@ -222,18 +227,36 @@ abstract class Select
 	 */
 	public static function categories(bool $addDefault = false, bool $excludeBleedingEdgeUnpublished = true): array
 	{
-		/** @var Categories $categoriesModel */
-		$categoriesModel = self::getContainer()
-			->factory->model('Categories')->tmpInstance();
+		$container = self::getContainer();
+		$db        = $container->db;
 
-		$options = $categoriesModel
-			->nobeunpub($excludeBleedingEdgeUnpublished ? 1 : 0)
-			->filter_order('title')
-			->filter_order_Dir('ASC')
-			->get(true)
-			->transform(function (Categories $item) {
-				return JHtml::_('FEFHelper.select.option', $item->id, $item->title);
-			})->toArray();
+		$query = $db->getQuery(true)
+			->select([
+				$db->qn('title'),
+				$db->qn('id'),
+			])->from($db->qn('#__ars_categories'));
+
+		if ($excludeBleedingEdgeUnpublished)
+		{
+			$query->where(
+			// published = 1 and type != bleedingedge
+				'(' . $db->qn('published') . ' = 1 AND ' . $db->qn('type') . ' != ' . $db->q('bleedingedge') . ')', 'OR'
+			)->where(
+			// type = normal
+				$db->qn('type') . ' = ' . $db->q('normal'), 'OR'
+			);
+		}
+
+		$cats = $db->setQuery($query)->loadAssocList();
+
+		if (empty($cats))
+		{
+			return [];
+		}
+
+		$options = array_map(function (array $item) {
+			return JHtml::_('FEFHelper.select.option', $item['id'], $item['title']);
+		}, $cats);
 
 		if ($addDefault)
 		{

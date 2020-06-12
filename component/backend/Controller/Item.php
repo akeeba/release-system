@@ -16,11 +16,9 @@ use Joomla\CMS\Language\Text;
 
 class Item extends DataController
 {
-	public function __construct(Container $container, array $config = [])
+	protected function onBeforeBrowse()
 	{
-		parent::__construct($container, $config);
-
-		if ($this->getModel()->getState('limit', 0) != 0)
+		if ($this->getModel()->getState('limit', 20) != 0)
 		{
 			$this->getModel()->with([]);
 		}

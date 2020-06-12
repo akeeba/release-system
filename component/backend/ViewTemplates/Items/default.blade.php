@@ -16,7 +16,7 @@ $i = 0;
 $user = $this->getContainer()->platform->getUser();
 
 $modal = isset($modal) ? boolval($modal) : false;
-
+$filterCat = (int) $this->getModel()->getState('category', 0);
 ?>
 @jhtml('formbehavior.chosen')
 
@@ -28,7 +28,7 @@ $modal = isset($modal) ? boolval($modal) : false;
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
-		@selectfilter('release', \Akeeba\ReleaseSystem\Admin\Helper\Select::releases(), 'COM_ARS_COMMON_SELECT_RELEASE_LABEL', ['class' => 'advancedSelect'])
+		@selectfilter('release', \Akeeba\ReleaseSystem\Admin\Helper\Select::releases(false, $filterCat), 'COM_ARS_COMMON_SELECT_RELEASE_LABEL', ['class' => 'advancedSelect'])
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
