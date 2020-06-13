@@ -26,7 +26,6 @@ CREATE TABLE `#__ars_categories` (
     `alias` varchar(255) NOT NULL,
     `description` mediumtext,
     `type` enum('normal','bleedingedge') NOT NULL DEFAULT 'normal',
-    `groups` varchar(255) DEFAULT NULL,
     `directory` varchar(255) NOT NULL DEFAULT 'arsrepo',
     `created` datetime NOT NULL,
     `created_by` int(11) NOT NULL DEFAULT '0',
@@ -57,7 +56,6 @@ CREATE TABLE `#__ars_releases` (
     `alias` VARCHAR(255) NOT NULL,
     `maturity` ENUM('alpha','beta','rc','stable') NOT NULL DEFAULT 'beta',
     `notes` TEXT NULL,
-    `groups` varchar(255) DEFAULT NULL,
     `hits` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
     `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
     `created_by` int(11) NOT NULL DEFAULT '0',
@@ -97,7 +95,6 @@ CREATE TABLE `#__ars_items` (
     `sha384` varchar(96) DEFAULT NULL,
     `sha512` varchar(128) DEFAULT NULL,
     `filesize` int(10) unsigned DEFAULT NULL,
-    `groups` varchar(255) DEFAULT NULL,
     `hits` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
     `created` datetime NOT NULL,
     `created_by` int(11) NOT NULL DEFAULT '0',
@@ -514,5 +511,25 @@ ALTER TABLE #__ars_items MODIFY `redirect_unauth` VARCHAR( 255 ) NOT NULL DEFAUL
             ]]></query>
         </action>
 
+        <action table="#__ars_categories" canfail="0">
+            <condition type="missing" value="groups" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_categories` DROP COLUMN `groups`;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_releases" canfail="0">
+            <condition type="missing" value="groups" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_releases` DROP COLUMN `groups`;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="0">
+            <condition type="missing" value="groups" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_items` DROP COLUMN `groups`;
+            ]]></query>
+        </action>
     </sql>
 </schema>

@@ -10,7 +10,7 @@ use Joomla\CMS\Editor\Editor;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-/** @var \Akeeba\ReleaseSystem\Admin\View\VisualGroups\Html $this */
+/** @var \Akeeba\ReleaseSystem\Admin\View\Releases\Html $this */
 
 defined('_JEXEC') or die;
 

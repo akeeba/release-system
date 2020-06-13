@@ -15,9 +15,9 @@ use Akeeba\ReleaseSystem\Admin\Helper\Format;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 
 $download_url =
-		Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id . '&Itemid=' . $this->Itemid);
+	Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id . '&Itemid=' . $this->Itemid);
 
-if (!Filter::filterItem($item, false, $this->getContainer()->platform->getUser()->getAuthorisedViewLevels()) && !empty($item->redirect_unauth))
+if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 {
 	$download_url = $item->redirect_unauth;
 }

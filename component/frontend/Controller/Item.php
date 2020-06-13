@@ -141,7 +141,7 @@ class Item extends DataController
 			$releaseModel->find($id);
 
 			// Make sure subscription level filtering allows access
-			if (!Filter::filterItem($releaseModel) || !$releaseModel->published)
+			if (!Filter::filterItem($releaseModel, false) || !$releaseModel->published)
 			{
 				throw new \Exception('Filtering failed');
 			}
@@ -170,7 +170,7 @@ class Item extends DataController
 			// Try to filter the category as well
 			$category = $releaseModel->category;
 
-			if (!Filter::filterItem($category) || !$category->published)
+			if (!Filter::filterItem($category, false) || !$category->published)
 			{
 				throw new \Exception('Filtering failed');
 			}
@@ -220,23 +220,6 @@ class Item extends DataController
 	 */
 	protected function onBeforeApplySave(array &$data): void
 	{
-		// If "groups" is a comma separated list of IDs convert to a proper array
-		if (isset($data['groups']) && !is_array($data['groups']))
-		{
-			if (empty($data['groups']))
-			{
-				$data['groups'] = [];
-			}
-
-			if (!is_array($data['groups']))
-			{
-				$data['groups'] = explode(',', $data['groups']);
-				$data['groups'] = array_map(function ($x) {
-					return trim($x);
-				}, $data['groups']);
-			}
-		}
-
 		// If "environments" is a comma separated list of IDs convert to a proper array
 		if (isset($data['environments']) && !is_array($data['environments']))
 		{
@@ -288,7 +271,7 @@ class Item extends DataController
 			$item->find($id);
 
 			// Make sure subscription level filtering allows access
-			if (!Filter::filterItem($item, false, $this->container->platform->getUser()->getAuthorisedViewLevels()))
+			if (!Filter::filterItem($item, false))
 			{
 				throw new \Exception('Filtering failed');
 			}
@@ -338,7 +321,7 @@ class Item extends DataController
 			$release = $item->release;
 
 			// Make sure subscription level filtering allows access
-			if (!$release->id || !Filter::filterItem($release, false, $this->container->platform->getUser()->getAuthorisedViewLevels()))
+			if (!$release->id || !Filter::filterItem($release, false))
 			{
 				throw new \Exception('Filtering failed');
 			}
@@ -372,7 +355,7 @@ class Item extends DataController
 			$category = $release->category;
 
 			// Make sure subscription level filtering allows access
-			if (!$category->id || !Filter::filterItem($category, false, $this->container->platform->getUser()->getAuthorisedViewLevels()))
+			if (!$category->id || !Filter::filterItem($category, false))
 			{
 				throw new \Exception('Filtering failed');
 			}

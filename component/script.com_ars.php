@@ -205,6 +205,9 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			// Unused CSS file
 			'media/com_ars/css/browser.css',
+
+			// Subscription levels support
+			'administrator/components/com_ars/Model/SubscriptionIntegration.php',
 		],
 		'folders' => [
 			// Moving to FOF 3

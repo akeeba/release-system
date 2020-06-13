@@ -57,7 +57,7 @@ $items = call_user_func(function (array $streamsArray): array {
 		// Is the user authorized to download this item?
 		$iFull = $dlModel->find($i->item_id);
 
-		if (!Filter::filterItem($iFull))
+		if (!Filter::filterItem($iFull, false))
 		{
 			continue;
 		}

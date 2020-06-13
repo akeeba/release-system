@@ -8,7 +8,6 @@
 namespace Akeeba\ReleaseSystem\Site\Helper;
 
 use Akeeba\ReleaseSystem\Site\Model\DownloadIDLabels;
-use Akeeba\ReleaseSystem\Site\Model\SubscriptionIntegration;
 use Exception;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
@@ -19,108 +18,38 @@ defined('_JEXEC') or die();
 abstract class Filter
 {
 	/**
-	 * Used to filter a list by subscription levels
+	 * Used to filter a list by view access levels
 	 *
-	 * @param DataModel  $source              The source item to check whether it should be included in the list
-	 * @param bool       $displayUnauthorized Do we want to display such item to unauthorized users, too?
-	 * @param array|null $filterByViewLevels  View levels of the user
+	 * @param   DataModel  $source               Model with the resource to authorize
+	 * @param   bool       $displayUnauthorized  Should I display unauthorized links if the model allows it?
 	 *
-	 * @return  bool True if we should add it to the list, false otherwise
+	 * @return  bool  True if the user is authorized to view this item.
 	 */
-	public static function filterItem(?DataModel $source, bool $displayUnauthorized = false, ?array $filterByViewLevels = null): bool
+	public static function filterItem(?DataModel $source, bool $displayUnauthorized = false): bool
 	{
+		// Can't authorize access to a null object
 		if (is_null($source))
 		{
 			return false;
 		}
 
-		static $myGroups = null;
-
-		if (!is_object($source) || !($source instanceof DataModel))
-		{
-			return false;
-		}
-
-		// If we're told to display unauthorized links for this item we have to oblige
-		if ($source->show_unauth_links && $displayUnauthorized)
+		// Override the check if we're asked to show unauthorized links and the model says we are allowed to do that.
+		if ($displayUnauthorized && $source->getFieldValue('show_unauth_links', false))
 		{
 			return true;
 		}
 
-		// Should I also filter by a list of view access levels?
-		if (is_array($filterByViewLevels) && !in_array($source->access, $filterByViewLevels))
-		{
-			return false;
-		}
+		// Filter by the current user's access levels
+		$authorizedLevels = $source->getContainer()->platform->getUser()->getAuthorisedViewLevels();
 
-		// Cache user access and groups
-		if (is_null($myGroups))
-		{
-			$container = Container::getInstance('com_ars');
-			/** @var SubscriptionIntegration $subsIntegration */
-			$subsIntegration = $container->factory->model('SubscriptionIntegration');
-
-			// Get subscription groups of current user
-			if (!$subsIntegration->hasIntegration())
-			{
-				$mygroups = [];
-			}
-			else
-			{
-				$mygroups = $subsIntegration->getUserGroups();
-			}
-		}
-
-		// Filter by subscription group
-		if (!empty($source->groups))
-		{
-			// Category defines subscriptions groups, user belongs to none, do
-			// not display anything.
-			if (empty($mygroups))
-			{
-				return false;
-			}
-
-			// Check if any of the category's subscriptions groups are in the
-			// list of groups the user belongs to
-			$groups = $source->groups;
-
-			if (!is_array($groups))
-			{
-				$groups = explode(',', $groups);
-			}
-
-			$inGroups = false;
-
-			if (!empty($groups))
-			{
-				foreach ($groups as $group)
-				{
-					if (in_array($group, $mygroups))
-					{
-						$inGroups = true;
-					}
-				}
-			}
-			else
-			{
-				$inGroups = true;
-			}
-
-			if (!$inGroups)
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return !empty($authorizedLevels) && in_array($source->access, $authorizedLevels);
 	}
 
 	/**
 	 * Formats a string to a valid Download ID format. If the string is not looking like a Download ID it will return
 	 * an empty string instead.
 	 *
-	 * @param string $dlid The string to reformat.
+	 * @param   string  $dlid  The string to reformat.
 	 *
 	 * @return  string
 	 */
@@ -167,7 +96,7 @@ abstract class Filter
 	/**
 	 * Gets the user associated with a specific Download ID
 	 *
-	 * @param string $downloadId The Download ID to check
+	 * @param   string  $downloadId  The Download ID to check
 	 *
 	 * @return  User  The user record of the corresponding user and the Download ID
 	 *
@@ -236,7 +165,7 @@ abstract class Filter
 	/**
 	 * Returns the main download ID for a user. If it doesn't exist it creates a new one.
 	 *
-	 * @param int|null $user_id The Joomla user ID
+	 * @param   int|null  $user_id  The Joomla user ID
 	 *
 	 * @return string
 	 */

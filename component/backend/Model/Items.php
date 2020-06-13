@@ -43,7 +43,6 @@ use Joomla\CMS\User\User;
  * @property  string        $sha384
  * @property  string        $sha512
  * @property  int           $filesize
- * @property  string        $groups
  * @property  int           $hits
  * @property  string        $created
  * @property  string        $modified
@@ -72,7 +71,6 @@ use Joomla\CMS\User\User;
  * @method  $this  md5()                md5(string $v)
  * @method  $this  sha1()               sha1(string $v)
  * @method  $this  filesize()           filesize(int $v)
- * @method  $this  groups()             groups(string $v)
  * @method  $this  hits()               hits(int $v)
  * @method  $this  created()            created(string $v)
  * @method  $this  created_by()         created_by(int $v)
@@ -141,7 +139,6 @@ class Items extends DataModel
 			'md5',
 			'sha1',
 			'filesize',
-			'groups',
 			'hits',
 			'created',
 			'created_by',
@@ -389,10 +386,10 @@ class Items extends DataModel
 			$this->description = $filter->clean($this->description);
 		}
 
-		// Set the access to registered if there are subscription groups defined
-		if (!empty($this->groups) && ($this->access == 1))
+		// Set a default access
+		if ($this->access <= 0)
 		{
-			$this->access = 2;
+			$this->access = 1;
 		}
 
 		if (is_null($this->published) || ($this->published == ''))
@@ -977,31 +974,6 @@ class Items extends DataModel
 			// Do not fail on database error
 		}
 	}
-
-	/**
-	 * Converts the loaded comma-separated list of subscription levels into an array
-	 *
-	 * @param   string|array  $value  The comma-separated list or an already converted array
-	 *
-	 * @return  array  The exploded array
-	 */
-	protected function getGroupsAttribute($value): array
-	{
-		return $this->getAttributeForImplodedArray($value);
-	}
-
-	/**
-	 * Converts the array of subscription levels into a comma separated list
-	 *
-	 * @param   array|string  $value  The array of values or an already converted string
-	 *
-	 * @return  string  The imploded comma-separated list
-	 */
-	protected function setGroupsAttribute($value): string
-	{
-		return $this->setAttributeForImplodedArray($value);
-	}
-
 
 	/**
 	 * Converts the loaded JSON-encoded list of environments into an array

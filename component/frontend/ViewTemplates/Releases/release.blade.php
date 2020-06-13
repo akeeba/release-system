@@ -18,9 +18,7 @@ $released = $this->container->platform->getDate($item->created);
 
 $release_url = Router::_('index.php?option=com_ars&view=Items&release_id=' . $item->id . '&Itemid=' . $Itemid);
 
-$authorisedViewLevels = $this->getContainer()->platform->getUser()->getAuthorisedViewLevels();
-
-if (!Filter::filterItem($item, false, $authorisedViewLevels) && !empty($item->redirect_unauth))
+if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 {
 	$release_url = $item->redirect_unauth;
 }

@@ -234,7 +234,6 @@ class BleedingEdge extends Model
 						'maturity'    => 'alpha',
 						'description' => '',
 						'notes'       => $notes,
-						'groups'      => $this->category->groups,
 						'access'      => $this->category->access,
 						'published'   => 1,
 						'created'     => $jNow->toSql(),
@@ -407,11 +406,10 @@ class BleedingEdge extends Model
 					'type'        => 'file',
 					'filename'    => $folderName . '/' . $file,
 					'url'         => '',
-					'groups'      => $release->groups,
 					'hits'        => '0',
 					'published'   => '1',
 					'created'     => $jNow->toSql(),
-					'access'      => '1',
+					'access'      => $release->access,
 				];
 
 				// Before saving the item, call the onNewARSBleedingEdgeItem()

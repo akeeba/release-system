@@ -14,15 +14,6 @@ use Joomla\CMS\Language\Text;
 
 class Category extends DataController
 {
-	protected function onBeforeApplySave(array &$data): void
-	{
-		// When you deselect all items Chosen doesn't return any items in the request :(
-		if (!isset($data['groups']))
-		{
-			$data['groups'] = [];
-		}
-	}
-
 	protected function onBeforeAdd(): bool
 	{
 		if (!$this->checkACL('@Add'))
