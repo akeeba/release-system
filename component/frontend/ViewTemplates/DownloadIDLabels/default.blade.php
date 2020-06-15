@@ -26,7 +26,7 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
 ?>
 
 <div class="akeeba-block--info">
-    @sprintf('COM_ARS_DLIDLABELS_MASTERDLID', Filter::myDownloadID())
+    @sprintf('COM_ARS_DLIDLABELS_MAINDLID', Filter::myDownloadID())
 </div>
 
 <form name="arsDownloadID" action="{{ htmlentities($formURI) }}" method="post" class="akeeba-form--inline">
