@@ -18,6 +18,10 @@ defined('_JEXEC') or die;
 
 @section('browse-filters')
 	<div class="akeeba-filter-element akeeba-form-group">
+		@searchfilter('search', 'search', 'COM_ARS_CATEGORIES_FIELD_TITLE')
+	</div>
+
+	<div class="akeeba-filter-element akeeba-form-group">
 		@selectfilter('type', \Akeeba\ReleaseSystem\Admin\Helper\Select::categoryType(), 'COM_ARS_LBL_COMMON_SELECTCATTYPE')
 	</div>
 
