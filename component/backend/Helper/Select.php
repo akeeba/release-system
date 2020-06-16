@@ -239,7 +239,7 @@ abstract class Select
 		{
 			$query->where(
 			// published = 1 and type != bleedingedge
-				'(' . $db->qn('published') . ' = 1 AND ' . $db->qn('type') . ' != ' . $db->q('bleedingedge') . ')', 'OR'
+				'(' . $db->qn('published') . ' = 1 AND ' . $db->qn('type') . ' = ' . $db->q('bleedingedge') . ')', 'OR'
 			)->where(
 			// type = normal
 				$db->qn('type') . ' = ' . $db->q('normal'), 'OR'

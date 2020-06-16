@@ -1,5 +1,13 @@
 # 5.0.0
 
+* `~` Restore the categories search filter
+* `~` Normalize language strings
+* `#` [MEDIUM] Cannot create or filter auto descriptions by BleedingEdge release 
+* `#` [HIGH] Router would make the wrong document format decision if the URL contained a query parameter 
+* `#` [HIGH] Regression: categories pagination broken 
+
+# 5.0.0.b1
+
 * `!`️ Rolling internal release. This is no longer a mass distributed extension.
 * `+` PHP 7.3+ only. 
 * `+` Joomla 4 compatible. 
