@@ -128,7 +128,7 @@ class ArsRouter extends RouterBase
 			if ($config->get('sef_suffix', 0))
 			{
 				// Get the last part of the URI path
-				$url      = Uri::getInstance()->toString();
+				$url      = Uri::getInstance()->toString(['path']);
 				$basename = basename($url);
 
 				// Lame way to get the extension via string manipulation (shoot me if you will, but this works everywhere)
