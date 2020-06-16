@@ -19,14 +19,15 @@ class Breadcrumbs
 	/**
 	 * Adds the repository root to the breadcrumbs pathway
 	 *
-	 * @param string $repoType
+	 * @param   string|null  $repoType
 	 *
-	 * @throws \Exception
+	 * @throws  \Exception
 	 */
-	public static function addRepositoryRoot(string $repoType = ''): void
+	public static function addRepositoryRoot(?string $repoType = ''): void
 	{
 		$menus    = JMenu::getInstance('site');
 		$menuitem = $menus->getActive();
+		$repoType = $repoType ?? '';
 
 		$rootName = null;
 
@@ -74,15 +75,17 @@ class Breadcrumbs
 	/**
 	 * Adds an ARS category to the breadcrumbs pathway
 	 *
-	 * @param int    $id   Category ID to add
-	 * @param string $name The name in the pathway
+	 * @param   int     $id    Category ID to add
+	 * @param   string  $name  The name in the pathway
 	 *
 	 * @throws \Exception
 	 */
-	public static function addCategory(int $id, string $name): void
+	public static function addCategory(?int $id, ?string $name): void
 	{
 		$menus    = JMenu::getInstance('site');
 		$menuitem = $menus->getActive();
+		$id       = $id ?? 0;
+		$name     = $name ?? '';
 
 		if (!is_object($menuitem) || !in_array(strtolower($menuitem->query['view']), ['category', 'releases']))
 		{
@@ -133,8 +136,8 @@ class Breadcrumbs
 	/**
 	 * Adds an ARS release to the breadcrumbs pathway
 	 *
-	 * @param int    $id   Release ID to add
-	 * @param string $name The name in the pathway
+	 * @param   int     $id    Release ID to add
+	 * @param   string  $name  The name in the pathway
 	 *
 	 * @throws \Exception
 	 */
