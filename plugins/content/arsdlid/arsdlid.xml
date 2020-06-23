@@ -12,8 +12,8 @@
     <authorUrl>http://www.akeebabackup.com</authorUrl>
     <copyright>Copyright (c)2010-2017 Nicholas K. Dionysopoulos</copyright>
     <license>GNU General Public License version 3, or later</license>
-    <creationDate>2020-06-16</creationDate>
-    <version>5.0.0.a1</version>
+    <creationDate>2020-06-23</creationDate>
+    <version>5.0.0</version>
     <description>PLG_CONTENT_ARSDLID_DESCRIPTION</description>
     <files>
         <filename plugin="arsdlid">arsdlid.php</filename>
