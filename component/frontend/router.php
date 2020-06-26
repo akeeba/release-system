@@ -5,93 +5,355 @@
  * @license   GNU General Public License version 3, or later
  */
 
-// Protect from unauthorized access
+use Akeeba\ReleaseSystem\Admin\Model\Releases;
+use Akeeba\ReleaseSystem\Site\Dispatcher\Dispatcher;
+use Akeeba\ReleaseSystem\Site\Model\Categories;
+use Akeeba\ReleaseSystem\Site\Model\Items;
+use Akeeba\ReleaseSystem\Site\Model\UpdateStreams;
 use FOF30\Container\Container;
+use FOF30\Model\DataModel;
+use FOF30\Model\DataModel\Exception\RecordNotLoaded;
 use Joomla\CMS\Component\Router\RouterBase;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Menu\AbstractMenu;
-use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Menu\MenuItem;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
-if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
-{
-	throw new RuntimeException('FOF 3.0 is not installed', 500);
-}
-
-/**
- * Akeeba Release System component router
- *
- * This used to be separate functions for building and parsing routes. It has been converted to a router class since it
- * is necessary for Joomla! 4. Router classes are supported since Joomla! 3.3, so no lost compatibility there.
- *
- * @since   5.0.0
- */
 class ArsRouter extends RouterBase
 {
-	/**
-	 * Should I build routes for raw views?
-	 *
-	 * @var bool
-	 */
-	protected static $routeRaw = true;
+	private const DEFAULT_VIEW = 'Categories';
+
+	private const VALID_VIEWS = [
+		'Categories', 'Releases', 'Items', 'Item', 'Latest', 'Update', 'DownloadIDLabel', 'DownloadIDLabels',
+	];
 
 	/**
-	 * Should I build routes for html views?
+	 * List of file extensions which can be used as a Joomla 'format' parameter, being equivalent to the "raw" view.
 	 *
-	 * @var bool
+	 * This list must not include any extensions potentially executable by the server to avoid any mishaps.
+	 *
+	 * The idea is to include a number of extensions commonly used with archive files, installable packages on different
+	 * OS and document files.
 	 */
-	protected static $routeHtml = true;
+	private const ACCEPTED_EXTENSIONS = [
+		'zip', 'tar', 'gz', 'tgz', 'bz2', 'tbz', 'xz', 'txz', 'tar', 'rar', '7z',
+		'exe', 'msi', 'msp', 'cab', 'dmg', 'pkg', 'rpm', 'deb',
+		'pdf', 'epub', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'fodt', 'ods', 'fods', 'odp', 'fodp',
+		'odg', 'fodg', 'odf',
+	];
 
 	/**
-	 * Build method for URLs
-	 * This method is meant to transform the query parameters into a more human
-	 * readable form. It is only executed when SEF mode is switched on.
+	 * The component container
 	 *
-	 * @param array  &$query An array of URL arguments
+	 * @var  Container|null
+	 */
+	private $container;
+
+	private $modelCache = [
+		'Categories' => [],
+		'Releases'   => [],
+		'Items'      => [],
+	];
+
+	/**
+	 * Generic method to preprocess a URL.
+	 *
+	 * Its job is to analyze the query string parameters of a non-SEF URLs and come up with a suitable Itemid. If
+	 * necessary, it can also modify the query string parameters, e.g. if something is missing.
+	 *
+	 * @param   array  $query  An associative array of URL arguments
 	 *
 	 * @return  array  The URL arguments to use to assemble the subsequent URL.
 	 *
-	 * @since   5.0.0
+	 * @since   5.1.0
 	 */
-	public function build(&$query)
+	public function preprocess($query): array
 	{
-		$format = isset($query['format']) ? $query['format'] : 'html';
-		$view   = isset($query['view']) ? $query['view'] : 'browses';
+		// Let's pluck some information out of the non-SEF URL's request parameters
+		$itemId = $this->getAndPop($query, 'Itemid');
+		$view   = $this->getAndPop($query, 'view');
+		$format = $this->getAndPop($query, 'format', 'html');
 
-		if (in_array($view, ['download', 'downloads', 'Item']))
+		// If we have a legacy view we need its new name for our code to work.
+		if (!empty($view))
 		{
-			$format = 'raw';
+			$view = $this->translateLegacyView($view);
 		}
 
-		switch ($format)
+		// If there's no Itemid we will try to use the active menu item's ID
+		if (empty($itemId))
 		{
-			case 'html':
-				$segments = [];
+			$activeMenuItem = $this->menu->getActive();
+			$itemId         = (is_object($activeMenuItem) && property_exists($activeMenuItem, 'id'))
+				? $activeMenuItem->id
+				: null;
+		}
 
-				if (self::$routeHtml)
+		// Try to load the presumptive menu item object if we have an Itemid
+		$menuItem = null;
+
+		if (!empty($itemId))
+		{
+			$menuItem = $this->menu->getItem($itemId);
+		}
+
+		// Sanity check: the component must match
+		if (!empty($menuItem))
+		{
+			if ($menuItem->component != $this->getContainer()->componentName)
+			{
+				$menuItem = null;
+			}
+		}
+
+		// Sanity check: the view name must be something supported by my component
+		if (!empty($menuItem))
+		{
+			$menuView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+
+			if (!in_array($menuView, self::VALID_VIEWS))
+			{
+				$menuItem = null;
+			}
+			/**
+			 * I may have a non-SEF URL which does not specify a view name but does specify an Itemid.
+			 *
+			 * In this case the effective view is the one defined in the menu item.
+			 */
+			elseif (empty($view))
+			{
+				$view = $this->translateLegacyView($menuView);
+			}
+		}
+
+		// Sanity check: the menu item must be compatible with the requested View and record ID
+		if (!empty($menuItem))
+		{
+			$menuItem = $this->validateMenuItem($menuItem, $view, $query);
+		}
+
+		// If we don't have a menu item we'll try to find a suitable one
+		if (empty($menuItem))
+		{
+			$menuItem = $this->getMenuItemForView($view, $query);
+		}
+
+		// If we have a menu item pass its Itemid
+		if (!empty($menuItem))
+		{
+			// Pass the Itemid
+			$query['Itemid'] = $menuItem->id;
+
+			// If the menu view and the requested view are different set the $query['view'] back to what it was before.
+			$menuView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+
+			if ($menuView != $view)
+			{
+				$query['view'] = $view;
+			}
+		}
+		// If I don't have a valid menu item remove the Itemid from the query and reset the view to its previous value.
+		elseif (isset($query['Itemid']))
+		{
+			unset($query['Itemid']);
+
+			// Pass a sane view name
+			$query['view'] = empty($view) ? self::DEFAULT_VIEW : $view;
+		}
+
+		// Set the format, making sure it's something valid for the requested view
+		$query['format'] = $this->getValidFormatForView($view, $format, $query);
+
+		/**
+		 * Only keep a non-default layout.
+		 *
+		 * For most views this means a layout other than 'default'.
+		 *
+		 * For the Update XML view no layout is allowed. It's set automatically based on the task.
+		 */
+		$layout = $this->getAndPop($query, 'layout');
+
+		if (!empty($layout) && ($layout != 'default'))
+		{
+			$query['layout'] = $layout;
+		}
+
+		return $query;
+	}
+
+	/**
+	 * Build a SEF URL
+	 *
+	 * This runs after self::preprocess() is done modifying the query. We MUST NOT change the Itemid here.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 *
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 *
+	 * @since   5.1.0
+	 */
+	public function build(&$query): array
+	{
+		$segments = [];
+		$Itemid   = $query['Itemid'] ?? null;
+
+		/**
+		 * Since Joomla has executed preprocess() we have a valid Itemid. If not, fall back to Joomla's ugly, default
+		 * SEF routes (/component/ars/...)
+		 */
+		if (empty($Itemid))
+		{
+			return $segments;
+		}
+
+		$menuItem = $this->menu->getItem($Itemid);
+		$mView    = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+		$view     = $this->getAndPop($query, 'view', null);
+
+		/**
+		 * If there was no view in the non-SEF URL or the menu item and non-SEF view match we have nothing to do.
+		 *
+		 * However, this DOES NOT apply to the Updates view. The Updates view always needs segments.
+		 */
+		if (empty($view) || (($view != 'Update') && ($mView == $view)))
+		{
+			$query['Itemid'] = $Itemid;
+
+			return $segments;
+		}
+
+		switch ($view)
+		{
+			case 'Releases':
+				// The only case where view=Release and view!=mView is when mView == Categories
+				$category_id = $this->getAndPop($query, 'category_id');
+				$category    = $this->getModelObject('Categories', $category_id);
+
+				if (!$category->getId())
 				{
-					$segments = $this->arsBuildRouteHtml($query);
+					// You are asking for a list of releases with an invalid category ID. Ka-boom.
+					return $segments;
 				}
+
+				$segments[] = $category->alias;
 				break;
 
-			case 'xml':
-				$segments = $this->arsBuildRouteXml($query);
+			case 'Items':
+			case 'Item':
+				if ($view === 'Item')
+				{
+					$item_id    = $this->getAndPop($query, 'id');
+					$item_id    = $this->getAndPop($query, 'item_id', $item_id);
+					$item       = $this->getModelObject('Items', $item_id);
+					$release_id = $item->release_id;
+				}
+				else
+				{
+					$release_id = $this->getAndPop($query, 'release_id');
+				}
+
+				$release = $this->getModelObject('Releases', $release_id);
+
+				if ($mView == 'Releases')
+				{
+					if (!$release->getId())
+					{
+						// You are asking for a list of items with an invalid release ID. Ka-boom.
+						return $segments;
+					}
+
+					$segments[] = $release->alias;
+				}
+				else
+				{
+					$category = $this->getModelObject('Categories', $release->category_id);
+
+					if (!$category->getId())
+					{
+						// You are asking for a list of items of a release with an invalid category ID. Ka-boom.
+						return $segments;
+					}
+
+					$segments[] = $category->alias;
+					$segments[] = $release->alias;
+				}
+
+				if ($view === 'Item')
+				{
+					$segments[] = $item->alias;
+
+					// The default task for the Item view is 'download' and must be removed from the query.
+					$task = $this->getAndPop($query, 'task', 'download');
+
+					if ($task != 'download')
+					{
+						$query['task'] = $task;
+					}
+				}
+
+			break;
+
+			case 'DownloadIDLabels':
+			case 'DownloadIDLabel':
+				if ($mView != 'DownloadIDLabels')
+				{
+					// You should really have separate menu items for these views. This is a fugly solution!
+					$segments[] = '__internal';
+					$segments[] = $view;
+
+					return $segments;
+				}
+
 				break;
 
-			case 'ini':
-				$segments = $this->arsBuildRouteIni($query);
+			case 'Update':
+				$id      = $this->getAndPop($query, 'id');
+				$task    = $this->getAndPop($query, 'task');
+				$layout  = $this->getAndPop($query, 'layout', $task);
+				$mLayout = $menuItem->query['layout'] ?? null;
+
+				if ($mView != $view)
+				{
+					// You should really have separate menu items for these views. This is a fugly solution!
+					$segments[] = '__internal';
+					$segments[] = $view;
+				}
+
+				if ($mLayout != $layout)
+				{
+					$segments[] = $layout;
+				}
+
+				switch ($layout)
+				{
+					case 'all':
+					default:
+						// No segment to add
+						break;
+
+					case 'category':
+						$segments[] = $id;
+						break;
+
+					case 'stream':
+					case 'ini':
+					case 'download':
+						$updateStream = $this->getModelObject('UpdateStreams', $id);
+						$segments[]   = $updateStream->alias;
+						break;
+				}
+
 				break;
 
-			case 'raw':
+			case 'Categories':
+			case 'Latest':
 			default:
-				$segments = [];
+				// You should really have separate menu items for these views. This is a fugly solution!
+				$segments[] = '__internal';
+				$segments[] = $view;
 
-				if (self::$routeRaw)
-				{
-					$segments = $this->arsBuildRouteRaw($query);
-				}
+				return $segments;
+
 				break;
 		}
 
@@ -99,1733 +361,1231 @@ class ArsRouter extends RouterBase
 	}
 
 	/**
-	 * Parse method for URLs
-	 * This method is meant to transform the human readable URL back into
-	 * query parameters. It is only executed when SEF mode is switched on.
+	 * Parse a SEF URL
 	 *
-	 * @param array  &$segments The segments of the URL to parse.
+	 * Based on the currently active menu item and the $segments array we reconstruct an array of query parameters.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
 	 *
 	 * @return  array  The URL attributes to be used by the application.
 	 *
-	 * @throws  Exception
-	 * @since   5.0.0
+	 * @since   5.1.0
 	 */
-	public function parse(&$segments)
+	public function parse(&$segments): array
 	{
-		$container = Container::getInstance('com_ars');
+		$query    = [];
+		$menuItem = $this->menu->getActive();
 
-		$input  = Factory::getApplication()->input;
-		$config = $container->platform->getConfig();
-
-		$format = $input->getCmd('format', null);
-
-		if (is_null($format))
+		// This should never happen. Joomla should never call me without segments. But I can't rule out a future bug :)
+		if (empty($segments))
 		{
-			// If no format is specified in the URL we first assume it's "html"
-			$format = 'html';
+			return $query;
+		}
 
-			// If we have SEF URL suffixes enabled we can infer the format from the suffix
-			if ($config->get('sef_suffix', 0))
+		// Parsing a SEF route requires an active menu item. Without one we should just let it crash and burn.
+		if (empty($menuItem))
+		{
+			return $query;
+		}
+
+		$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+
+		// Do we have our fugly fix for a missing menu item of a top-level view?
+		if ($segments[0] === '__internal')
+		{
+			$junk          = array_shift($segments);
+			$query['view'] = array_shift($segments);
+
+			if ($query['view'] != 'Update')
 			{
-				// Get the last part of the URI path
-				$url      = Uri::getInstance()->toString(['path']);
-				$basename = basename($url);
-
-				// Lame way to get the extension via string manipulation (shoot me if you will, but this works everywhere)
-				$ext    = substr(strtolower($basename), -4);
-				$format = ltrim($ext, '.');
-
-				// If SplFileInfo is available let's prefer it
-				if (class_exists('\\SplFileInfo'))
-				{
-					$info   = new \SplFileInfo($basename);
-					$format = $info->getExtension();
-				}
+				return $query;
 			}
 		}
 
-		$segments = self::preconditionSegments($segments);
-
-		switch ($format)
+		switch ($mView)
 		{
-			case 'html':
-				return $this->arsParseRouteHtml($segments);
+			// This is an Item view. The only segment is the Item alias.
+			case 'Items':
+				$item          = $this->getModelObject('Items', [
+					'alias'      => array_shift($segments),
+					'release_id' => $menuItem->query['release_id'] ?? null,
+				]);
+				$query['view'] = 'Item';
+				$query['task'] = 'download';
+				$query['id']   = $item->getId();
 				break;
 
-			// The default is here to catch formats like "zip", "exe" or whatever may be returned by the if-block above.
-			case 'raw':
-			default:
-				return $this->arsParseRouteRaw($segments);
+			// This is an Item or Items view depending on the number of segments.
+			case 'Releases':
+				$category_id  = $menuItem->query['category_id'] ?? null;
+				$segmentCount = count($segments);
+
+				if ($segmentCount === 2)
+				{
+					[$releaseAlias, $itemAlias] = $segments;
+
+					$release = $this->getModelObject('Releases', [
+						'alias'       => $releaseAlias,
+						'category_id' => $category_id,
+					]);
+
+					$item = $this->getModelObject('Items', [
+						'alias'      => $itemAlias,
+						'release_id' => $release->getId(),
+					]);
+
+					$query['view'] = 'Item';
+					$query['task'] = 'download';
+					$query['id']   = $item->getId();
+				}
+				elseif ($segmentCount === 1)
+				{
+					[$releaseAlias] = $segments;
+
+					$release = $this->getModelObject('Releases', [
+						'alias'       => $releaseAlias,
+						'category_id' => $category_id,
+					]);
+
+					$query['view']       = 'Items';
+					$query['release_id'] = $release->getId();
+				}
+
 				break;
 
-			case 'xml':
-				return $this->arsParseRouteXml($segments);
+			// This is the Releases, Items or Item view depending on the number of segments.
+			case 'Categories':
+				$segmentCount = count($segments);
+				$qView        = $query['view'] ?? null;
+
+				if ($qView == 'Update')
+				{
+					/**
+					 * Set the view and layout in the query and let this fall through to the next if-block after the
+					 * case block.
+					 *
+					 * This trick allows me to handle an Update view no matter if the menu item is Update or Categories.
+					 */
+					$query['view']   = 'Update';
+					$query['layout'] = array_shift($segments);
+				}
+				elseif ($segmentCount === 3)
+				{
+					[$categoryAlias, $releaseAlias, $itemAlias] = $segments;
+
+					$category = $this->getModelObject('Categories', [
+						'alias' => $categoryAlias,
+					]);
+
+					$release = $this->getModelObject('Releases', [
+						'alias'       => $releaseAlias,
+						'category_id' => $category->getId(),
+					]);
+
+					$item = $this->getModelObject('Items', [
+						'alias'      => $itemAlias,
+						'release_id' => $release->getId(),
+					]);
+
+					$query['view'] = 'Item';
+					$query['task'] = 'download';
+					$query['id']   = $item->getId();
+				}
+				elseif ($segmentCount === 2)
+				{
+					[$categoryAlias, $releaseAlias] = $segments;
+
+					$category = $this->getModelObject('Categories', [
+						'alias' => $categoryAlias,
+					]);
+
+					$release = $this->getModelObject('Releases', [
+						'alias'       => $releaseAlias,
+						'category_id' => $category->getId(),
+					]);
+
+					$query['view']       = 'Items';
+					$query['release_id'] = $release->getId();
+				}
+				elseif ($segmentCount === 1)
+				{
+					[$categoryAlias] = $segments;
+
+					$category = $this->getModelObject('Categories', [
+						'alias' => $categoryAlias,
+					]);
+
+					$query['view']        = 'Releases';
+					$query['category_id'] = $category->getId();
+				}
 				break;
 
-			case 'ini':
-				return $this->arsParseRouteIni($segments);
+			case 'Update':
+				/**
+				 * Set the view in the query and let this fall through to the next if-block after the case block.
+				 *
+				 * This trick allows me to handle an Update view no matter if the menu item is Update or Categories.
+				 */
+				$query['view'] = 'Update';
 				break;
 		}
+
+		// Special handling for the Update view
+		$qView = $query['view'] ?? self::DEFAULT_VIEW;
+
+		if (($qView === 'Update') && !empty($segments))
+		{
+			switch ($query['layout'] ?? 'stream')
+			{
+				case 'all':
+					// Do nothing. The main update stream doesn't have any arguments.
+					break;
+
+				case 'category':
+					$query['id'] = array_pop($segments);
+					break;
+
+				case 'stream':
+				case 'ini':
+				case 'download':
+				default:
+					$stream      = $this->getModelObject('UpdateStreams', [
+						'alias' => array_pop($segments),
+					]);
+					$query['id'] = $stream->getId();
+					break;
+			}
+		}
+
+		return $query;
 	}
 
-	private function arsBuildRouteHtml(array &$query): array
+	/**
+	 * Verifies we're using a valid format for the view and returns the most suitable format
+	 *
+	 * @param   string|null  $view    The name of the view
+	 * @param   string       $format  The presumptive format from the non-SEF query string parameters
+	 * @param   array        $query   The established query parameters so far
+	 *
+	 * @return  string  The most suitable format we should be using
+	 *
+	 * @since   5.1.0
+	 */
+	protected function getValidFormatForView(?string $view, string $format, array $query): string
 	{
-		static $currentLang = null;
-
-		if (is_null($currentLang))
+		switch ($view)
 		{
-			$jLang       = Factory::getLanguage();
-			$currentLang = $jLang->getTag();
+			// This view supports JSON and RAW formats
+			case 'Item':
+				if (!in_array($format, ['json', 'raw']))
+				{
+					return 'html';
+				}
+
+				/**
+				 * The raw format leads to .raw URLs. Let's convert them based on the extension of the downloaded file.
+				 *
+				 * This only applies for certain whitelisted, hardcoded extensions
+				 */
+				$item      = $this->getModelObject('Items', $query['id'] ?? null);
+				$target    = ($item->type == 'file') ? $item->filename : $item->url;
+				$bits      = explode('.', $target);
+				$extension = strtolower((count($bits) > 1) ? array_pop($bits) : 'raw');
+
+				if (in_array($extension, self::ACCEPTED_EXTENSIONS))
+				{
+					return $extension;
+				}
+
+				return 'raw';
+
+				break;
+
+			// These views support HTML and JSON formats
+			case 'Categories':
+			case 'Releases':
+			case 'Items':
+				if (!in_array($format, ['html', 'json']))
+				{
+					return 'html';
+				}
+
+				break;
+
+			// These views support XML and INI formats
+			case 'Update':
+			case 'Updates':
+				if (!in_array($format, ['xml', 'ini', 'raw']))
+				{
+					return 'xml';
+				}
+
+				break;
+
+			// Everything else is HTML format only
+			default:
+				return 'html';
+
+				break;
 		}
 
-		$segments = [];
+		return $format;
+	}
 
-		// If there is only the option and Itemid, let Joomla! decide on the naming scheme
-		if (isset($query['option']) && isset($query['Itemid']) &&
-			!isset($query['view']) && !isset($query['task']) &&
-			!isset($query['layout']) && !isset($query['id'])
-		)
-		{
-			return $segments;
-		}
-
-		$container = Container::getInstance('com_ars');
-		$menus     = AbstractMenu::getInstance('site');
-
-		$view     = self::getAndPop($query, 'view', 'browses');
-		$task     = self::getAndPop($query, 'task');
-		$layout   = self::getAndPop($query, 'layout');
-		$id       = self::getAndPop($query, 'id');
-		$Itemid   = self::getAndPop($query, 'Itemid');
-		$language = self::getAndPop($query, 'language', $currentLang);
-
-		// The id in the Releases view is called category_id
-		if ($view == 'Releases')
-		{
-			$alt_id = self::getAndPop($query, 'category_id');
-			$id     = empty($alt_id) ? $id : $alt_id;
-		}
-
-		// The id in the Items view is called release_id
-		if ($view == 'Items')
-		{
-			$alt_id = self::getAndPop($query, 'release_id');
-			$id     = empty($alt_id) ? $id : $alt_id;
-		}
-
+	/**
+	 * Finds a suitable menu item for the given view and query string parameters
+	 *
+	 * @param   string  $view   The requested view in the non-SEF URL
+	 * @param   array   $query  The non-SEF request parameters
+	 *
+	 * @return  MenuItem|null  A suitable menu item, null if none is a good fit.
+	 *
+	 * @since   5.1.0
+	 */
+	protected function getMenuItemForView(string &$view, array &$query): ?MenuItem
+	{
+		// Get the default menu item search options
 		$queryOptions = [
-			'option'   => 'com_ars',
-			'view'     => $view,
-			'task'     => $task,
-			'layout'   => $layout,
-			'id'       => $id,
-			'language' => $language,
+			'option' => $this->getContainer()->componentName,
+			'view'   => $view,
 		];
+
+		// If a specific language is requested add it to the menu item search options
+		$language            = $this->getAndPop($query, 'language');
+		$hasValidLangInQuery = !empty($language) && ($language != '*');
+
+		if ($hasValidLangInQuery)
+		{
+			$queryOptions['lang'] = $language;
+		}
+
+		// Get the category, release or item ID from the query
+		$id = $this->getAndPop($query, 'id');
+		$id = $this->getAndPop($query, 'release_id', $id);
+		$id = $this->getAndPop($query, 'category_id', $id);
+
+		// If there is no ID for these views something has gone REALLY wrong...
+		if (empty($id) && in_array($view, ['Releases', 'Items', 'Item']))
+		{
+			return null;
+		}
 
 		switch ($view)
 		{
-			case 'dlidlabel':
-			case 'dlidlabels':
-			case 'DownloadIDLabels':
-			case 'DownloadIDLabel':
-				if ($Itemid)
+			/**
+			 * The 'Releases' view needs a menu item for a specific category OR a menu item for Categories
+			 */
+			case 'Releases':
+				// If no language was requested in the non-SEF URL use the language of the Category
+				if (!$hasValidLangInQuery)
 				{
-					$menu  = $menus->getItem($Itemid);
-					$mView = isset($menu->query['view']) ? $menu->query['view'] : 'Categories';
-
-					// No, we have to find another root
-					if (!in_array($mView, ['dlidlabel', 'dlidlabels', 'DownloadIDLabel', 'DownloadIDLabels']))
-					{
-						$Itemid = null;
-					}
+					$category             = $this->getModelObject('Categories', $id);
+					$queryOptions['lang'] = $category->language;
 				}
 
-				$possibleViews = ['dlidlabel', 'dlidlabels', 'DownloadIDLabel', 'DownloadIDLabels'];
+				// Try to find the Releases view for the specific category
+				$menuItem = $this->findMenu(array_merge($queryOptions, [
+					'view'        => 'Releases',
+					'category_id' => $id,
+				]));
 
-				foreach ($possibleViews as $possibleView)
+				// Fall back to legacy "category" view menu item
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'        => 'category',
+						'category_id' => $id,
+					]));
+
+				// Fall back to the root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'Categories',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the legacy root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'Categories',
+						'layout' => $this->getModelObject('Releases', $id)->type,
+					]));
+
+				// Fall back to the legacy root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => $this->getModelObject('Releases', $id)->type,
+					]));
+				// Pass back the view and ID to the query as needed
+				$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+
+				if ($mView != $view)
 				{
-					$altQueryOptions = array_merge($queryOptions, ['view' => $possibleView]);
-					$menu            = self::findMenu($altQueryOptions);
-					$Itemid          = empty($menu) ? null : $menu->id;
+					$query['view']        = $view;
+					$query['category_id'] = $id;
+				}
 
-					if (!empty($Itemid))
-					{
+				return $menuItem;
+
+				break;
+
+			/**
+			 * The 'Items' view needs a menu item for a specific release OR a menu item for its parent category
+			 * OR a menu item for Categories.
+			 *
+			 * The 'Item' view is the same but we're given the ID of an item, not a release, so we need to do some
+			 * pre-processing first.
+			 */
+			case 'Items':
+			case 'Item':
+				// In a singular Item view fetch the release ID into $id so the rest of the code works
+				if ($view == 'Item')
+				{
+					$id = $this->getModelObject('Items', $id)->release_id;
+				}
+
+			// If no language was requested in the non-SEF URL use the language of the Category
+			if (!$hasValidLangInQuery)
+			{
+				$release              = $this->getModelObject('Releases', $id);
+				$category             = $this->getModelObject('Categories', $release->id);
+				$queryOptions['lang'] = $category->language;
+			}
+
+			// Try to find the Items view for the specific Release
+			$menuItem = $this->findMenu(array_merge($queryOptions, [
+				'view'       => 'Items',
+				'release_id' => $id,
+			]));
+
+			// Fall back to legacy "release" view menu item
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'       => 'release',
+					'release_id' => $id,
+				]));
+
+			// Fall back to Releases view for the specific category ID
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'        => 'Releases',
+					'category_id' => $this->getModelObject('Releases', $id)->category_id,
+				]));
+
+			// Fall back to legacy "category" view for the specific category ID
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'        => 'category',
+					'category_id' => $this->getModelObject('Releases', $id)->category_id,
+				]));
+
+			// Fall back to the root Categories menu item if necessary
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'   => 'Categories',
+					'layout' => 'repository',
+				]));
+
+			// Fall back to the legacy root Categories menu item if necessary
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'   => 'browses',
+					'layout' => 'repository',
+				]));
+
+			// Fall back to the root Categories menu item with a specific layout
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'   => 'Categories',
+					'layout' => $release->type,
+				]));
+
+			// Fall back to the legacy root Categories menu item with a specific layout
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'   => 'browses',
+					'layout' => $release->type,
+				]));
+
+			// Pass back the view and ID to the query as needed
+			$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+
+			if ($mView != $view)
+			{
+				$query['view'] = $view;
+
+				switch ($view)
+				{
+					case 'Item':
+						$query['id'] = $id;
 						break;
-					}
+
+					case 'Items':
+						$query['release_id'] = $id;
+						break;
+
+					case 'Releases':
+						$query['category_id'] = $id;
+						break;
 				}
+			}
 
-				if (empty($Itemid))
+			return $menuItem;
+
+			break;
+
+			/**
+			 * The singular 'DownloadIDLabel' view always needs a menu item fow 'DownloadIDLabels'.
+			 *
+			 * Moreover, depending on the existence of a non-empty, non-zero ID its implied task can either be
+			 * 'edit' or 'add'. Since we'll be replacing it with the plural view (DownloadIDLabels) we need to
+			 * explicitly set the task, otherwise the view will break.
+			 */
+			case 'DownloadIDLabel':
+				$view     = 'DownloadIDLabels';
+				$menuItem = $this->findMenu(array_merge($queryOptions, [
+					'view' => 'DownloadIDLabels',
+				]));
+
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'dlidlabels',
+					]));
+
+				// Fall back to the root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'Categories',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the legacy root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'Categories',
+					]));
+
+				// Fall back to the legacy root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'browses',
+					]));
+
+				// Set a missing task to 'edit' or 'add' depending on existence of an id parameter
+				if (!empty($menuItem))
 				{
-					$query['option'] = 'com_ars';
-					$query['view']   = $view;
-
-					if (!empty($language))
+					if (!empty($query['task'] ?? null))
 					{
-						$query['language'] = $language;
+						$id            = $this->getAndPop($query, 'id');
+						$query['task'] = 'add';
+
+						if (!empty($id))
+						{
+							$query['task'] = 'edit';
+							$query['id']   = $id;
+						}
 					}
 				}
-				else
+
+				return $menuItem;
+
+				break;
+
+			case 'Update':
+				$task   = $this->getAndPop($query, 'task');
+				$layout = $this->getAndPop($query, 'layout');
+
+				if (!in_array($task, ['all', 'category', 'stream', 'ini', 'download']) && !empty($layout))
 				{
-					// Joomla! will let the menu item naming work its magic
-					$query['Itemid'] = $Itemid;
+					$task   = $layout;
+					$layout = null;
 				}
 
-				if (!empty($task))
+				$layout = null;
+
+				// Menu items use layout, not task
+				$queryOptions['layout'] = $task;
+
+				switch ($task)
 				{
-					$query['task'] = $task;
+					case 'all':
+						// No ID searching in the 'all' layout
+						break;
+
+					case 'category':
+						$queryOptions['category'] = $id;
+
+						break;
+
+					default:
+						$queryOptions['streamid'] = $id;
+
+						break;
 				}
 
-				if (!empty($layout))
+				// Find the most suitable menu item
+				$menuItem = $this->findMenu($queryOptions);
+
+				// Fallback to menu item with legacy view name
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'update',
+					]));
+
+				// Prepare for fallback to the main update menu link (layout=all)
+				if (isset($queryOptions['category']))
 				{
-					$query['layout'] = $layout;
+					unset($queryOptions['category']);
 				}
+
+				if (isset($queryOptions['streamid']))
+				{
+					unset($queryOptions['streamid']);
+				}
+
+				$queryOptions['layout'] = 'all';
+
+				$menuItem = $menuItem ?? $this->findMenu($queryOptions);
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'update',
+					]));
+
+				// Prepare for fallback to main repo page
+				unset($queryOptions['layout']);
+
+				// Fall back to the root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'Categories',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the legacy root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'Categories',
+					]));
+
+				// Fall back to the legacy root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'browses',
+					]));
+
+				$query['layout'] = $task;
 
 				if (!empty($id))
 				{
 					$query['id'] = $id;
 				}
 
+				return $menuItem;
+
 				break;
 
-			case 'browses':
-			case 'categories':
-			case 'Categories':
-				// Is it a Categories list menu item?
-				if ($Itemid)
-				{
-					$menu  = $menus->getItem($Itemid);
-					$mView = isset($menu->query['view']) ? $menu->query['view'] : 'Categories';
+			/**
+			 * Everything else needs a menu item of the corresponding view.
+			 *
+			 * This covers the views: Categories, Latest, Update, DownloadIDLabels
+			 *
+			 * Note that the Categories menu is the root of the tree therefore it needs a menu item of its own
+			 */
+			default:
+				// Find an up-to-date menu item
+				$menuItem = $this->findMenu($queryOptions);
 
-					if (!in_array($mView, ['browses', 'browse', 'Categories']))
+				// Find a legacy menu item
+				$legacyViews = [
+					'Categories'       => 'browse',
+					'Releases'         => 'category',
+					'Items'            => 'release',
+					'Item'             => 'download',
+					'Latest'           => 'latest',
+					'Update'           => 'update',
+					'DownloadIDLabel'  => 'dlidlabel',
+					'DownloadIDLabels' => 'dlidlabels',
+				];
+				$altView     = $legacyViews[$queryOptions['view']] ?? $queryOptions['view'];
+
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => $altView,
+					]));
+
+				// Fall back to the root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'Categories',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the legacy root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'Categories',
+					]));
+
+				// Fall back to the legacy root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'browses',
+					]));
+
+				if (($view == 'Update') && !empty($id))
+				{
+					$query['id'] = $id;
+				}
+
+				if (!empty($menuItem))
+				{
+					// If the implied default task 'browse' is present, remove it. Anything else is kept verbatim.
+					$task = $this->getAndPop($query, 'task');
+
+					if (!empty($task) && ($task != 'browse'))
 					{
-						$Itemid = null;
+						$query['task'] = 'browse';
 					}
 				}
 
-				$possibleViews = ['browse', 'browses', 'Categories'];
+				return $menuItem;
 
-				foreach ($possibleViews as $possibleView)
-				{
-					$altQueryOptions = array_merge($queryOptions, ['view' => $possibleView]);
-					$menu            = self::findMenu($altQueryOptions);
-					$Itemid          = empty($menu) ? null : $menu->id;
-
-					if (!empty($Itemid))
-					{
-						break;
-					}
-				}
-
-				if (empty($Itemid))
-				{
-					// No menu found, let's add a segment based on the layout
-					$segments[] = $layout;
-				}
-				else
-				{
-					// Joomla! will let the menu item naming work its magic
-					$query['Itemid'] = $Itemid;
-				}
 				break;
+		}
+	}
 
-			case 'category':
+	/**
+	 * Validates that an existing menu item (based on Itemid) is usable for the non-SEF URL we're trying to route.
+	 *
+	 * @param   MenuItem     $menuItem  The menu item to validate
+	 * @param   string|null  $view      The view requested in the non-SEF URL
+	 * @param   array        $query     The non-SEF URL's request parameters
+	 *
+	 * @return  MenuItem|null  The validated menu item or NULL if it's not usable for the request
+	 *
+	 * @since   5.1.0
+	 */
+	protected function validateMenuItem(MenuItem $menuItem, ?string $view, array &$query): ?MenuItem
+	{
+		$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+
+		switch ($view)
+		{
 			case 'Releases':
-				// Do we have a category menu item (showing the releases of a Category)?
-				if ($Itemid)
+				$id = $query['category_id'] ?? null;
+
+				switch ($mView)
 				{
-					$menu  = $menus->getItem($Itemid);
-					$mView = isset($menu->query['view']) ? $menu->query['view'] : 'Categories';
+					// Same view. Check that the category ID matches.
+					case 'Releases':
+						$mID = $menuItem->query['category_id'] ?? null;
 
-					// No, we have to find another root
-					if (in_array($mView, ['category', 'Releases']))
-					{
-						$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
-
-						if ($params->get('cat_id', 0) == $id)
+						if ($id != $mID)
 						{
-							$query['Itemid'] = $Itemid;
-
-							return $segments;
+							$menuItem = null;
 						}
-						else
-						{
-							$Itemid = null;
-						}
-					}
-					elseif (!in_array($mView, ['browses', 'browse', 'Categories']))
-					{
-						$Itemid = null;
-					}
-				}
+						break;
 
-				// TODO Cache category aliases
-				// Get category alias
-				/** @var \Akeeba\ReleaseSystem\Site\Model\Categories $category */
-				$category = $container->factory->model('Categories')->tmpInstance();
-
-				try
-				{
-					$category->find($id);
-				}
-				catch (\Exception $e)
-				{
-				}
-
-				$catAlias = $category->alias;
-
-				if (empty($Itemid))
-				{
-					// Try to find a menu item for this category
-					$options = $queryOptions;
-					unset($options['id']);
-					$params = ['catid' => $id];
-
-					$possibleViews = ['category', 'Releases'];
-
-					foreach ($possibleViews as $possibleView)
-					{
-						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-						$menu            = self::findMenu($altQueryOptions, $params);
-						$Itemid          = empty($menu) ? null : $menu->id;
-
-						if (!empty($Itemid))
+					// Root node. I can use it if it's the correct language.
+					case 'Categories':
+						// If the menu item is "All" languages I can use it.
+						if ($menuItem->language == '*')
 						{
 							break;
 						}
-					}
 
-					if (!empty($Itemid))
-					{
-						// A category menu item found, use it
-						$query['Itemid'] = $Itemid;
-					}
-					else
-					{
-						// Not found. Try fetching a Categories menu item
-						$options = [
-							'option'   => 'com_ars', 'view' => 'Categories', 'layout' => 'repository',
-							'language' => $language,
-						];
+						$category = $this->getModelObject('Categories', $id);
 
-						$possibleViews = ['browse', 'browses', 'Categories'];
-
-						foreach ($possibleViews as $possibleView)
+						// If my Category is "All" languages I can use whichever menu item.
+						if ($category->language == '*')
 						{
-							$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-							$menu            = self::findMenu($altQueryOptions);
-							$Itemid          = empty($menu) ? null : $menu->id;
-
-							if (!empty($Itemid))
-							{
-								$query['Itemid'] = $menu->id;
-								$segments[]      = $catAlias;
-
-								break;
-							}
+							break;
 						}
 
-						if (empty($Itemid))
+						// If the menu item and category languages differ I will have to find another menu item.
+						if ($menuItem->language != $category->language)
 						{
-							// Push the browser layout and category alias
-							$segments[] = 'repository';
-							$segments[] = $catAlias;
+							$menuItem = null;
 						}
-					}
-				}
-				else
-				{
-					// This is a Categories menu item. Push the category alias
-					$query['Itemid'] = $Itemid;
-					$segments[]      = $catAlias;
+
+						break;
+
+					// Er, I can't use this view
+					default:
+						$menuItem = null;
+						break;
 				}
 
-				break;
+				return $menuItem;
 
-			case 'release':
 			case 'Items':
-				// TODO Cache category IDs and release alias per release, get category aliases from category cache
-				// Get release info
-				/** @var \Akeeba\ReleaseSystem\Site\Model\Releases $release */
-				$release = $container->factory->model('Releases')->tmpInstance();
+				$id = $query['release_id'] ?? null;
 
-				try
+				switch ($mView)
 				{
-					$release->find($id);
-				}
-				catch (\Exception $e)
-				{
-				}
+					// Same view. Check that the release ID matches.
+					case 'Items':
+						$mID = $menuItem->query['release_id'] ?? null;
 
-				// Get release info
-				$releaseAlias = $release->alias;
-				$catId        = 0;
-				$catAlias     = '';
-
-				if (is_object($release->category))
-				{
-					$catId    = $release->category->id;
-					$catAlias = $release->category->alias;
-				}
-
-				// Do we have a "category" menu?
-				if ($Itemid)
-				{
-					$menu  = $menus->getItem($Itemid);
-					$mView = isset($menu->query['view']) ? $menu->query['view'] : 'Categories';
-
-					if (in_array($mView, ['browses', 'browse', 'Categories']))
-					{
-						// No. It is a Categories menu item. We must add the category and release aliases.
-						$query['Itemid'] = $Itemid;
-						$segments[]      = $catAlias;
-						$segments[]      = $releaseAlias;
-					}
-					elseif (in_array($mView, ['category', 'Releases']))
-					{
-						// Yes! Is it the category we want?
-						$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
-
-						if ($params->get('catid', 0) == $catId)
+						if ($id != $mID)
 						{
-							// Cool! Just append the release alias
-							$query['Itemid'] = $Itemid;
-							$segments[]      = $releaseAlias;
+							$menuItem = null;
 						}
-						else
-						{
-							// Nope. Gotta find a new menu item.
-							$Itemid = null;
-						}
-					}
-					else
-					{
-						// Probably a menu item to another release. Hmpf!
-						$Itemid = null;
-					}
-				}
-
-				if (empty($Itemid))
-				{
-					// Try to find a category menu item
-					$options = ['view' => 'Category', 'option' => 'com_ars', 'language' => $language];
-					$params  = ['catid' => $catId];
-
-					$possibleViews = ['release', 'Items'];
-
-					foreach ($possibleViews as $possibleView)
-					{
-						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-						$menu            = self::findMenu($altQueryOptions, $params);
-
-						if (!empty($menu))
-						{
-							$query['Itemid'] = $menu->id;
-
-							break;
-						}
-					}
-
-					if (!empty($menu))
-					{
-						// Found it! Just append the release alias
-						$query['Itemid'] = $menu->id;
-						$segments[]      = $releaseAlias;
-					}
-					else
-					{
-						// Nah. Let's find a browse menu item.
-						$options = ['view' => 'browses', 'option' => 'com_ars', 'language' => $language];
-
-						$possibleViews = ['browse', 'browses', 'Categories'];
-
-						foreach ($possibleViews as $possibleView)
-						{
-							$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-							$menu            = self::findMenu($altQueryOptions);
-
-							if (!empty($menu))
-							{
-								$query['Itemid'] = $menu->id;
-
-								break;
-							}
-						}
-
-						if (!empty($menu))
-						{
-							// We must add the category and release aliases.
-							$query['Itemid'] = $menu->id;
-							$segments[]      = $catAlias;
-							$segments[]      = $releaseAlias;
-						}
-						else
-						{
-							// I must add the full path
-							$segments[] = 'repository';
-							$segments[] = $catAlias;
-							$segments[] = $releaseAlias;
-						}
-					}
-				}
-
-				break;
-		}
-
-		return $segments;
-	}
-
-	private function arsBuildRouteRaw(array &$query): array
-	{
-		$segments = [];
-
-		$view = self::getAndPop($query, 'view', 'invalid');
-		$task = self::getAndPop($query, 'task', 'download');
-
-		// Map all possible views
-		if (in_array($view, ['download', 'Download', 'downloads', 'Downloads', 'Items', 'Item']))
-		{
-			$view = 'Item';
-			$task = 'download';
-		}
-
-		if (($view != 'Item') || ($task != 'download'))
-		{
-			return $segments;
-		}
-
-		$container = Container::getInstance('com_ars');
-
-		$id     = self::getAndPop($query, 'id');
-		$Itemid = self::getAndPop($query, 'Itemid');
-
-		$menus = AbstractMenu::getInstance('site');
-
-		// Get download item info
-		/** @var \Akeeba\ReleaseSystem\Site\Model\Items $download */
-		$download = $container->factory->model('Items')->tmpInstance();
-		$download->find($id);
-
-		// If we have an extension other than html, raw, ini, xml, php try to set the format to manipulate the extension (if
-		// Joomla! is configured to use extensions in URLs)
-		$fileTarget = ($download->type == 'link') ? $download->url : $download->filename;
-		$extension  = pathinfo($fileTarget, PATHINFO_EXTENSION);
-
-		if (!in_array($extension, ['html', 'raw', 'ini', 'xml', 'php']))
-		{
-			$query['format'] = $extension;
-		}
-
-		// Get release info
-		$release = $download->release;
-
-		// Get category alias
-		$catAlias = $release->category->alias;
-
-		if ($Itemid)
-		{
-			$menu  = $menus->getItem($Itemid);
-			$mview = '';
-
-			if (!empty($menu))
-			{
-				if (isset($menu->query['view']))
-				{
-					$mview = $menu->query['view'];
-				}
-			}
-
-			switch ($mview)
-			{
-				case 'browses':
-				case 'browse':
-				case 'Categories':
-					$segments[]      = $catAlias;
-					$segments[]      = $release->alias;
-					$segments[]      = $download->alias;
-					$query['Itemid'] = $Itemid;
-					break;
-
-				case 'category':
-				case 'Releases':
-					$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
-
-					if ($params->get('catid', 0) == $release->category_id)
-					{
-						$segments[]      = $release->alias;
-						$segments[]      = $download->alias;
-						$query['Itemid'] = $Itemid;
-					}
-					else
-					{
-						$Itemid = null;
-					}
-					break;
-
-				case 'release':
-				case 'Items':
-					$params = ($menu->params instanceof JRegistry) ? $menu->params : $menus->getParams($Itemid);
-
-					if ($params->get('relid', 0) == $release->id)
-					{
-						$segments[]      = $download->alias;
-						$query['Itemid'] = $Itemid;
-					}
-					else
-					{
-						$Itemid = null;
-					}
-					break;
-
-				default:
-					$Itemid = null;
-			}
-		}
-
-		if (empty($Itemid))
-		{
-			$options = ['option' => 'com_ars', 'view' => 'Items'];
-			$params  = ['relid' => $release->id];
-
-			$possibleViews = ['Items', 'release'];
-			$menu          = null;
-
-			foreach ($possibleViews as $possibleView)
-			{
-				$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-				$menu            = self::findMenu($altQueryOptions, $params);
-
-				if (is_object($menu))
-				{
-					break;
-				}
-			}
-
-			if (is_object($menu))
-			{
-				$segments[]      = $download->alias;
-				$query['Itemid'] = $menu->id;
-			}
-			else
-			{
-				$options = ['option' => 'com_ars', 'view' => 'category'];
-				$params  = ['catid' => $release->category_id];
-
-				$possibleViews = ['Releases', 'category'];
-
-				foreach ($possibleViews as $possibleView)
-				{
-					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-					$menu            = self::findMenu($altQueryOptions, $params);
-
-					if (is_object($menu))
-					{
 						break;
-					}
-				}
-			}
 
-			if (is_object($menu))
-			{
-				$segments[]      = $release->alias;
-				$segments[]      = $download->alias;
-				$query['Itemid'] = $menu->id;
-			}
+					// Releases (of a category) view. Check that the category ID matches my release's category ID.
+					case 'Releases':
+						$mID = $menuItem->query['category_id'] ?? null;
 
-			if (!is_object($menu))
-			{
-				$options = ['view' => 'browses', 'option' => 'com_ars'];
+						if (empty($id))
+						{
+							$menuItem = null;
 
-				$possibleViews = ['Categories', 'browse', 'browses'];
-				$menu          = null;
+							break;
+						}
 
-				foreach ($possibleViews as $possibleView)
-				{
-					$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-					$menu            = self::findMenu($altQueryOptions);
+						$release = $this->getModelObject('Releases', $id);
 
-					if (is_object($menu))
-					{
+						if ($release->getId() != $mID)
+						{
+							$menuItem = null;
+						}
+
 						break;
-					}
-				}
 
-				if (!is_object($menu))
-				{
-					$segments[] = 'repository';
-					$segments[] = $catAlias;
-					$segments[] = $release->alias;
-					$segments[] = $download->alias;
-				}
-				else
-				{
-					$segments[]      = $catAlias;
-					$segments[]      = $release->alias;
-					$segments[]      = $download->alias;
-					$query['Itemid'] = $menu->id;
-				}
-			}
-		}
-
-		return $segments;
-	}
-
-	private function arsBuildRouteXml(array &$query): array
-	{
-		$segments = [];
-
-		$view     = self::getAndPop($query, 'view', 'Update');
-		$my_task  = self::getAndPop($query, 'task', 'default');
-		$Itemid   = self::getAndPop($query, 'Itemid', null);
-		$local_id = self::getAndPop($query, 'id', 'components');
-
-		if (!in_array($view, ['Update', 'updates', 'update']))
-		{
-			return $segments;
-		}
-
-		$task = 'all';
-		$id   = 0;
-
-		// Analyze the current Itemid
-		if (!empty($Itemid))
-		{
-			// Get the specified menu
-			$menus    = AbstractMenu::getInstance('site');
-			$menuitem = $menus->getItem($Itemid);
-
-			// Analyze URL
-			$uri    = new Uri($menuitem->link);
-			$option = $uri->getVar('option');
-
-			// Sanity check
-			if ($option != 'com_ars')
-			{
-				$Itemid = null;
-			}
-			else
-			{
-				$task   = $uri->getVar('task');
-				$layout = $uri->getVar('layout');
-				$format = $uri->getVar('format', 'ini');
-				$id     = $uri->getVar('id', null);
-
-				if (empty($task) && !empty($layout))
-				{
-					$task = $layout;
-				}
-
-				if (empty($task))
-				{
-					if ($format == 'ini')
-					{
-						$task = 'ini';
-					}
-					else
-					{
-						$task = 'all';
-					}
-				}
-
-				// make sure we can grab the ID specified in menu item options
-				if (empty($id))
-				{
-					switch ($task)
-					{
-						case 'category':
-							$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-							$id     = $params->get('category', 'components');
-							break;
-
-						case 'ini':
-						case 'stream':
-							$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-							$id     = $params->get('streamid', 0);
-							break;
-					}
-				}
-			}
-		}
-
-		switch ($my_task)
-		{
-			case 'default':
-			case 'all':
-				if (empty($Itemid))
-				{
-					// Try to find an Itemid with the same properties
-					$options = ['view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'];
-
-					$possibleViews = ['Update', 'Updates', 'update', 'updates'];
-					$otherMenuItem = null;
-
-					foreach ($possibleViews as $possibleView)
-					{
-						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-						$otherMenuItem   = self::findMenu($altQueryOptions);
-
-						if (!empty($otherMenuItem))
+					// Root node. I can use it if it's the correct language.
+					case 'Categories':
+						// If the menu item is "All" languages I can use it.
+						if ($menuItem->language == '*')
 						{
 							break;
 						}
-					}
 
-					if (!empty($otherMenuItem))
-					{
-						// Exact match
-						$query['Itemid'] = $otherMenuItem->id;
-					}
-					else
-					{
-						$segments[] = 'updates';
-					}
+						$release  = $this->getModelObject('Releases', $id);
+						$category = $this->getModelObject('Categories', $release->id);
+
+						// If the menu item and category languages differ I will have to find another menu item.
+						if ($menuItem->language != $category->language)
+						{
+							$menuItem = null;
+						}
+
+						break;
+
+					// Er, I can't use this view
+					default:
+						$menuItem = null;
+						break;
 				}
-				else
+
+				return $menuItem;
+
+			case 'Item':
+				$arsItemId = $query['id'] ?? null;
+				$item      = $this->getModelObject('Items', $arsItemId);
+
+				switch ($mView)
 				{
-					if ($task == 'all')
-					{
-						$query['Itemid'] = $Itemid;
-					}
-					else
-					{
-						$segments[] = 'updates';
-					}
+					// Items (of a release) view. Check that the release ID matches.
+					case 'Items':
+						$mID = $menuItem->query['release_id'] ?? null;
+
+						if ($item->release_id != $mID)
+						{
+							$menuItem = null;
+						}
+						break;
+
+					// Releases (of a category) view. Check that the category ID matches my release's category ID.
+					case 'Releases':
+						$mID = $menuItem->query['category_id'] ?? null;
+
+						if (empty($item->release_id))
+						{
+							$menuItem = null;
+
+							break;
+						}
+
+						$release = $this->getModelObject('Releases', $item->release_id);
+
+						if ($release->getId() != $mID)
+						{
+							$menuItem = null;
+						}
+
+						break;
+
+					// Root node. I can use it if it's the correct language.
+					case 'Categories':
+						// If the menu item is "All" languages I can use it.
+						if ($menuItem->language == '*')
+						{
+							break;
+						}
+
+						$release  = $this->getModelObject('Releases', $item->release_id);
+						$category = $this->getModelObject('Categories', $release->id);
+
+						// If the menu item and release languages differ I will have to find another menu item.
+						if ($menuItem->language != $category->language)
+						{
+							$menuItem = null;
+						}
+
+						break;
+
+					// Er, I can't use this view
+					default:
+						$menuItem = null;
+						break;
+				}
+
+				return $menuItem;
+
+			case 'Categories':
+				// Match the layout, if one is set. The layout = repository is always allowed.
+				$layout = $query['layout'] ?? null;
+
+				if (empty($layout))
+				{
+					return $menuItem;
+				}
+
+				$mLayout = $menuItem->query['layout'] ?? 'repository';
+
+				if (($mLayout != 'repository') && ($mLayout != $layout))
+				{
+					$menuItem = null;
 				}
 				break;
 
-			case 'category':
-				if (empty($Itemid))
+			case 'DownloadIDLabel':
+			case 'DownloadIDLabels':
+				// View must always be DownloadIDLabels
+				if ($mView != 'DownloadIDLabels')
 				{
-					// Try to find an Itemid with the same properties
-					$options       = ['view' => 'updates', 'layout' => 'category', 'option' => 'com_ars'];
-					$params        = ['category' => $local_id];
-					$possibleViews = ['Update', 'Updates', 'update', 'updates'];
-					$otherMenuItem = null;
-
-					foreach ($possibleViews as $possibleView)
-					{
-						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-						$otherMenuItem   = self::findMenu($altQueryOptions, $params);
-
-						if (!empty($otherMenuItem))
-						{
-							break;
-						}
-					}
-
-					if (!empty($otherMenuItem))
-					{
-						// Exact match
-						$query['Itemid'] = $otherMenuItem->id;
-					}
-					else
-					{
-						// Try to find an Itemid for all categories
-						$options       = ['view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'];
-						$possibleViews = ['Update', 'Updates', 'update', 'updates'];
-						$otherMenuItem = null;
-
-						foreach ($possibleViews as $possibleView)
-						{
-							$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-							$otherMenuItem   = self::findMenu($altQueryOptions);
-
-							if (!empty($otherMenuItem))
-							{
-								break;
-							}
-						}
-
-						// Try to find an Itemid for all categories
-						if (!empty($otherMenuItem))
-						{
-							$query['Itemid'] = $otherMenuItem->id;
-							$segments[]      = $local_id;
-						}
-						else
-						{
-							$segments[] = 'updates';
-							$segments[] = $local_id;
-						}
-					}
-				}
-				else
-				{
-					// menu item id exists in the query
-					if (($task == 'category') && ($id == $local_id))
-					{
-						$query['Itemid'] = $Itemid;
-					}
-					elseif ($task == 'all')
-					{
-						$query['Itemid'] = $Itemid;
-						$segments[]      = $local_id;
-					}
-					else
-					{
-						$segments[] = 'updates';
-						$segments[] = $local_id;
-					}
+					$menuItem = null;
 				}
 				break;
 
-			case 'stream':
-				// TODO Cache this?
-				$db      = Factory::getDBO();
-				$dbquery = $db->getQuery(true)
-					->select([
-						$db->qn('type'),
-						$db->qn('alias'),
-					])->from($db->qn('#__ars_updatestreams'))
-					->where($db->qn('id') . ' = ' . $db->q($local_id));
-				$db->setQuery($dbquery, 0, 1);
-				$stream = $db->loadObject();
+			case 'Update':
+				// TODO Validate the Update menu item
+				$id      = $query['id'] ?? null;
+				$task    = $query['task'] ?? null;
+				$layout  = $query['layout'] ?? $task;
+				$mLayout = $menuItem->query['layout'] ?? null;
 
-				if (empty($stream))
+				// We always accept the download repository root as a valid menu item for updates.
+				if ($mView == 'Categories')
 				{
-					return $segments;
+					break;
 				}
 
-				if (empty($Itemid))
+				// Beyond that, only an Update menu item would have a chance of being valid.
+				if ($mView != 'Update')
 				{
-					// Try to find an Itemid with the same properties
-					$options       = ['view' => 'updates', 'layout' => 'stream', 'option' => 'com_ars'];
-					$params        = ['streamid' => $local_id];
-					$possibleViews = ['Update', 'Updates', 'update', 'updates'];
-					$otherMenuItem = null;
+					$menuItem = null;
 
-					foreach ($possibleViews as $possibleView)
-					{
-						$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-						$otherMenuItem   = self::findMenu($altQueryOptions, $params);
-
-						if (!empty($otherMenuItem))
-						{
-							break;
-						}
-					}
-
-					// Try to find an Itemid with the same properties
-					if (!empty($otherMenuItem))
-					{
-						// Exact match
-						$query['Itemid'] = $otherMenuItem->id;
-					}
-					else
-					{
-						// Try to find an Itemid for the parent category
-						$options       = ['view' => 'updates', 'layout' => 'category', 'option' => 'com_ars'];
-						$params        = ['category' => $stream->type];
-						$possibleViews = ['Update', 'Updates', 'update', 'updates'];
-						$otherMenuItem = null;
-
-						foreach ($possibleViews as $possibleView)
-						{
-							$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-							$otherMenuItem   = self::findMenu($altQueryOptions, $params);
-
-							if (!empty($otherMenuItem))
-							{
-								break;
-							}
-						}
-
-						if (!empty($otherMenuItem))
-						{
-							$query['Itemid'] = $otherMenuItem->id;
-							$segments[]      = $stream->alias;
-						}
-						else
-						{
-							// Try to find an Itemid for all categories
-							$options       = ['view' => 'updates', 'layout' => 'all', 'option' => 'com_ars'];
-							$possibleViews = ['Update', 'Updates', 'update', 'updates'];
-							$otherMenuItem = null;
-
-							foreach ($possibleViews as $possibleView)
-							{
-								$altQueryOptions = array_merge($options, ['view' => $possibleView]);
-								$otherMenuItem   = self::findMenu($altQueryOptions);
-
-								if (!empty($otherMenuItem))
-								{
-									break;
-								}
-							}
-
-							if (!empty($otherMenuItem))
-							{
-								$query['Itemid'] = $otherMenuItem->id;
-								$segments[]      = $stream->type;
-								$segments[]      = $local_id;
-							}
-							else
-							{
-								$segments[] = 'updates';
-								$segments[] = $stream->type;
-								$segments[] = $stream->alias;
-							}
-						}
-					}
+					break;
 				}
-				else // if $Itemid is not empty
+
+				// If the menu item layout is "all" it's valid for any Update link
+				if ($mLayout === 'all')
 				{
-					// menu item id exists in the query
-					if (($task == 'stream') && ($id == $local_id))
-					{
-						$query['Itemid'] = $Itemid;
-					}
-					elseif (($task == 'category') && ($id == $stream->type))
-					{
-						$query['Itemid'] = $Itemid;
-						$segments[]      = $stream->alias;
-					}
-					elseif ($task == 'all')
-					{
-						$query['Itemid'] = $Itemid;
-						$segments[]      = $stream->type;
-						$segments[]      = $stream->alias;
-					}
-					else
-					{
-						$segments[] = 'updates';
-						$segments[] = $stream->type;
-						$segments[] = $stream->alias;
-					}
+					break;
+				}
+
+				// If the menu and query layouts don't match this is not a good fit
+				if ($mLayout != $layout)
+				{
+					$menuItem = null;
+
+					break;
+				}
+
+				switch ($layout)
+				{
+					// For update streams the menu streamid must match the query id
+					case 'stream':
+					case 'ini':
+					case 'download':
+						$mStreamId = $menuItem->query['streamid'] ?? 0;
+
+						if ($mStreamId != $id)
+						{
+							$menuItem = null;
+						}
+
+						break;
+
+					// For update stream categories the menu category must match the query id
+					case 'category':
+						$mCategory = $menuItem->query['category'] ?? '';
+
+						if ($mCategory != $id)
+						{
+							$menuItem = null;
+						}
+
+						break;
+				}
+
+				break;
+
+			default:
+				// The View must match
+				if ($view != $mView)
+				{
+					$menuItem = null;
 				}
 				break;
 		}
 
-		return $segments;
+		return $menuItem;
 	}
 
-	private function arsBuildRouteIni(array &$query): array
+	/**
+	 * Gets a temporary instance of the Akeeba Subscriptions container
+	 *
+	 * @return  Container
+	 *
+	 * @since   5.1.0
+	 */
+	private function getContainer(): Container
 	{
-		$segments = [];
-
-		$view     = self::getAndPop($query, 'view', 'update');
-		$Itemid   = self::getAndPop($query, 'Itemid', null);
-		$local_id = self::getAndPop($query, 'id', 'components');
-		$task     = 'ini';
-		$id       = '';
-
-		if (!in_array($view, ['Update', 'updates', 'update']))
+		if (is_null($this->container))
 		{
-			return $segments;
+			$this->container = Container::getInstance('com_ars', [
+				'tempInstance' => true,
+			]);
 		}
 
-		// Analyze the current Itemid
-		if (!empty($Itemid))
-		{
-			// Get the specified menu
-			$menus    = AbstractMenu::getInstance('site');
-			$menuitem = $menus->getItem($Itemid);
-
-			// Analyze URL
-			$uri    = new Uri($menuitem->link);
-			$option = $uri->getVar('option');
-
-			// Sanity check
-			if ($option != 'com_ars')
-			{
-				$Itemid = null;
-			}
-			else
-			{
-				$task   = $uri->getVar('task');
-				$layout = $uri->getVar('layout');
-				$format = $uri->getVar('format', 'ini');
-				$id     = $uri->getVar('id', null);
-
-				if (empty($task) && !empty($layout))
-				{
-					$task = $layout;
-				}
-
-				if (empty($task))
-				{
-					if ($format == 'ini')
-					{
-						$task = 'ini';
-					}
-					else
-					{
-						$task = 'all';
-					}
-				}
-
-				// make sure we can grab the ID specified in menu item options
-				if (empty($id))
-				{
-					switch ($task)
-					{
-						case 'category':
-							$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-							$id     = $params->get('category', 'components');
-							break;
-
-						case 'ini':
-						case 'stream':
-							$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-							$id     = $params->get('streamid', 0);
-							break;
-					}
-				}
-			}
-		}
-
-		// TODO cache this?
-		$db      = Factory::getDBO();
-		$dbquery = $db->getQuery(true)
-			->select([
-				$db->qn('type'),
-				$db->qn('alias'),
-			])->from($db->qn('#__ars_updatestreams'))
-			->where($db->qn('id') . ' = ' . $db->q($local_id));
-		$db->setQuery($dbquery, 0, 1);
-		$stream = $db->loadObject();
-
-		if (empty($stream))
-		{
-			die();
-		}
-
-		if (empty($Itemid))
-		{
-			// Try to find an Itemid with the same properties
-			$otherMenuItem = self::findMenu([
-				'view' => 'updates', 'layout' => 'ini', 'option' => 'com_ars',
-			], ['streamid' => $local_id]);
-			if (!empty($otherMenuItem))
-			{
-				// Exact match
-				$query['Itemid'] = $otherMenuItem->id;
-			}
-			else
-			{
-				$segments[] = 'updates';
-				$segments[] = $stream->type;
-				$segments[] = $stream->alias;
-			}
-		}
-		else
-		{
-			// menu item id exists in the query
-			if (($task == 'ini') && ($id == $local_id))
-			{
-				$query['Itemid'] = $Itemid;
-			}
-			else
-			{
-				$segments[] = 'updates';
-				$segments[] = $stream->type;
-				$segments[] = $stream->alias;
-			}
-		}
-
-		return $segments;
+		return $this->container;
 	}
 
-	private function arsParseRouteHtml(array &$segments): array
+	/**
+	 * Finds a menu whose query parameters match those in $queryOptions
+	 *
+	 * @param   array  $queryOptions  The query parameters to look for
+	 * @param   array  $params        The menu parameters to look for
+	 *
+	 * @return  null|MenuItem  Null if not found, or the menu item if we did find it
+	 *
+	 * @since   5.1.0
+	 */
+	private function findMenu(array $queryOptions = [], array $params = []): ?MenuItem
 	{
-		$query = [];
-		$menus = AbstractMenu::getInstance('site');
-		$menu  = $menus->getActive();
+		$menuitem = $this->menu->getActive();
 
-		if (!is_null($menu) && count($segments))
+		// First check the current menu item (fastest shortcut!)
+		if (is_object($menuitem) && $this->checkMenu($menuitem, $queryOptions, $params))
 		{
-			// We have a sub(-sub-sub)menu item
-			$found = true;
+			return $menuitem;
+		}
 
-			while ($found && count($segments))
+		foreach ($this->menu->getMenu() as $item)
+		{
+			if ($this->checkMenu($item, $queryOptions, $params))
 			{
-				$parent      = $menu->id;
-				$lastSegment = array_shift($segments);
-
-				$m = $menus->getItems(['parent_id', 'alias'], [$parent, $lastSegment], true);
-
-				if (is_object($m))
-				{
-					$found = true;
-					$menu  = $m;
-				}
-				else
-				{
-					$found = false;
-					array_unshift($segments, $lastSegment);
-				}
+				return $item;
 			}
 		}
 
-		if (is_null($menu))
-		{
-			// No menu. The segments are browse_layout/category_alias/release_alias
-			switch (count($segments))
-			{
-				case 1:
-					// Repository view
-					$query['view']   = 'Categories';
-					$query['layout'] = array_pop($segments);
-					break;
-
-				case 2:
-					// Category view
-					$query['view']   = 'Releases';
-					$query['layout'] = null;
-					$catalias        = array_pop($segments);
-					$root            = array_pop($segments);
-
-					// Load the category
-					$db      = Factory::getDBO();
-					$dbquery = $db->getQuery(true)
-						->select('*')
-						->from($db->qn('#__ars_categories'))
-						->where($db->qn('alias') . ' = ' . $db->q($catalias));
-					$db->setQuery($dbquery, 0, 1);
-					$cat = $db->loadObject();
-
-					if (empty($cat))
-					{
-						$query['view']   = 'Categories';
-						$query['layout'] = 'repository';
-					}
-					else
-					{
-						$query['category_id'] = $cat->id;
-					}
-					break;
-
-				case 3:
-					// Release view
-					$query['view']   = 'Items';
-					$query['layout'] = null;
-					$relalias        = array_pop($segments);
-					$catalias        = array_pop($segments);
-					$root            = array_pop($segments);
-
-					// Load the release
-					$db = Factory::getDBO();
-
-					$dbquery = $db->getQuery(true)
-						->select([
-							$db->qn('r') . '.*',
-							$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
-							$db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
-							$db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
-							$db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
-							$db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
-							$db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
-						])
-						->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r'))
-						->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
-							$db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
-						->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
-						->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
-
-					$db->setQuery($dbquery, 0, 1);
-					$rel = $db->loadObject();
-
-					if (empty($rel))
-					{
-						$query['view']   = 'Categories';
-						$query['layout'] = 'repository';
-					}
-					else
-					{
-						$query['release_id'] = $rel->id;
-					}
-
-					break;
-
-				case 4:
-					// Degenerate case :(
-					return $this->arsParseRouteRaw($segments);
-					break;
-			}
-		}
-		else
-		{
-			// A menu item is defined
-			$view     = $menu->query['view'];
-			$catalias = null;
-			$relalias = null;
-
-			if (empty($view) || in_array($view, ['Categories', 'browse', 'browses']))
-			{
-				switch (count($segments))
-				{
-					case 1:
-						// Category view
-						$query['view'] = 'Releases';
-						$catalias      = array_pop($segments);
-						break;
-
-					case 2:
-						// Release view
-						$query['view'] = 'Items';
-						$relalias      = array_pop($segments);
-						$catalias      = array_pop($segments);
-						break;
-
-					case 3:
-						// Degenerate case :(
-						return $this->arsParseRouteRaw($segments);
-						break;
-				}
-			}
-			elseif (empty($view) || in_array($view, ['Releases', 'category']))
-			{
-				switch (count($segments))
-				{
-					case 1:
-						// Release view
-						$query['view'] = 'Items';
-						$relalias      = array_pop($segments);
-						break;
-
-					case 2:
-						// Degenerate case :(
-						return $this->arsParseRouteRaw($segments);
-						break;
-				}
-			}
-			else
-			{
-				if (in_array($view, ['DownloadIDLabels', 'dlidlabels']))
-				{
-					$query['view'] = $view;
-
-					return $query;
-				}
-
-				if (in_array($view, ['DownloadIDLabel', 'dlidlabel']))
-				{
-					$query['view'] = $view;
-
-					return $query;
-				}
-
-				// Degenerate case :(
-				if (count($segments) == 2)
-				{
-					return $this->arsParseRouteRaw($segments);
-				}
-
-				$query['view'] = 'Items';
-				$relalias      = array_pop($segments);
-			}
-
-			$db = Factory::getDBO();
-
-			if ($relalias && $catalias)
-			{
-				$dbquery = $db->getQuery(true)
-					->select([
-						$db->qn('r') . '.*',
-						$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
-						$db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
-						$db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
-						$db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
-						$db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
-						$db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
-					])
-					->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r'))
-					->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
-						$db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
-					->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
-					->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
-
-				$db->setQuery($dbquery, 0, 1);
-				$rel = $db->loadObject();
-
-				if (empty($rel))
-				{
-					$query['view']   = 'Categories';
-					$query['layout'] = 'repository';
-				}
-				else
-				{
-					$query['release_id'] = $rel->id;
-				}
-			}
-			elseif ($catalias && is_null($relalias))
-			{
-				$db = Factory::getDBO();
-
-				$dbquery = $db->getQuery(true)
-					->select('*')
-					->from($db->qn('#__ars_categories'))
-					->where($db->qn('alias') . ' = ' . $db->q($catalias));
-
-				$db->setQuery($dbquery, 0, 1);
-				$cat = $db->loadObject();
-
-				if (empty($cat))
-				{
-					$query['view']   = 'Categories';
-					$query['layout'] = 'repository';
-				}
-				else
-				{
-					$query['category_id'] = $cat->id;
-				}
-			}
-			else
-			{
-				$params = is_object($menu->params) ? $menu->params : new JRegistry($menu->params);
-				$catid  = $params->get('catid', 0);
-
-				$dbquery = $db->getQuery(true)
-					->select([
-						$db->qn('r') . '.*',
-						$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
-						$db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
-						$db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
-						$db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
-						$db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
-						$db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
-					])
-					->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r'))
-					->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
-						$db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
-					->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
-					->where($db->qn('c') . '.' . $db->qn('id') . ' = ' . $db->q($catid));
-
-				$db->setQuery($dbquery, 0, 1);
-				$rel = $db->loadObject();
-
-				if (empty($rel))
-				{
-					$query['view']   = 'Categories';
-					$query['layout'] = 'repository';
-				}
-				else
-				{
-					$query['release_id'] = $rel->id;
-				}
-			}
-		}
-
-		return $query;
+		return null;
 	}
 
-	private function arsParseRouteRaw(array &$segments): array
+	/**
+	 * Checks if a menu item conforms to the query options and parameters specified
+	 *
+	 * @param   MenuItem  $menu          A menu item
+	 * @param   array     $queryOptions  The query options to look for
+	 * @param   array     $params        The menu parameters to look for
+	 *
+	 * @return  bool
+	 *
+	 * @since   5.1.0
+	 */
+	private function checkMenu(MenuItem $menu, array $queryOptions, array $params = []): bool
 	{
-		$query           = [];
-		$menus           = AbstractMenu::getInstance('site');
-		$menu            = $menus->getActive();
-		$query['view']   = 'Item';
-		$query['task']   = 'download';
-		$query['format'] = 'raw';
-
-		if (is_null($menu))
+		// Test for menu item language
+		if (isset($queryOptions['lang']))
 		{
-			// No menu. The segments are browse_layout/category_alias/release_alias/item_alias
-			$query['layout'] = null;
-			$itemalias       = array_pop($segments);
-			$relalias        = array_pop($segments);
-			$catalias        = array_pop($segments);
-			$root            = array_pop($segments);
+			$searchLanguage = $queryOptions['lang'];
+			$searchLanguage = empty($searchLanguage) ? '*' : $searchLanguage;
 
-			// Load the release
-			$db = Factory::getDBO();
+			$menuLanguage = $menu->language ?? '*';
+			$menuLanguage = empty($menuLanguage) ? '*' : $menuLanguage;
 
-			$dbquery = $db->getQuery(true)
-				->select([
-					$db->qn('i') . '.*',
-					$db->qn('r') . '.' . $db->qn('category_id'),
-					$db->qn('r') . '.' . $db->qn('version'),
-					$db->qn('r') . '.' . $db->qn('maturity'),
-					$db->qn('r') . '.' . $db->qn('alias') . ' AS ' . $db->qn('rel_alias'),
-					$db->qn('r') . '.' . $db->qn('access') . ' AS ' . $db->qn('rel_access'),
-					$db->qn('r') . '.' . $db->qn('published') . ' AS ' . $db->qn('rel_published'),
-					$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
-					$db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
-					$db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
-					$db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
-					$db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
-					$db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
-				])
-				->from($db->qn('#__ars_items') . ' AS ' . $db->qn('i'))
-				->innerJoin($db->qn('#__ars_releases') . ' AS ' . $db->qn('r') . ' ON(' .
-					$db->qn('r') . '.' . $db->qn('id') . '=' . $db->qn('i') . '.' . $db->qn('release_id') . ')')
-				->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
-					$db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
-				->where($db->qn('i') . '.' . $db->qn('alias') . ' = ' . $db->q($itemalias))
-				->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias))
-				->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
+			unset($queryOptions['lang']);
 
-			$db->setQuery($dbquery, 0, 1);
-			$item = $db->loadObject();
-
-			if (empty($item))
+			if (($searchLanguage != '*') && ($menuLanguage != '*') && ($menuLanguage != $searchLanguage))
 			{
-				$query['view']   = 'Categories';
-				$query['layout'] = 'repository';
-				$query['format'] = 'html';
-			}
-			else
-			{
-				$query['id'] = $item->id;
-			}
-		}
-		else
-		{
-			// A menu item is defined
-			$view      = $menu->query['view'];
-			$params    = is_object($menu->params) ? $menu->params : new JRegistry($menu->params);
-			$itemalias = null;
-			$catalias  = null;
-			$catid     = null;
-			$relalias  = null;
-			$relid     = null;
-
-			if (empty($view) || in_array($view, ['Categories', 'browse', 'browses']))
-			{
-				$itemalias = array_pop($segments);
-				$relalias  = array_pop($segments);
-				$catalias  = array_pop($segments);
-			}
-			elseif (in_array($view, ['Releases', 'category']))
-			{
-				$itemalias = array_pop($segments);
-				$relalias  = array_pop($segments);
-				$catid     = $params->get('catid', 0);
-			}
-			else
-			{
-				$itemalias = array_pop($segments);
-				$relid     = $params->get('relid', 0);
-			}
-
-			$db = Factory::getDBO();
-
-			$dbquery = $db->getQuery(true)
-				->select([
-					$db->qn('i') . '.*',
-					$db->qn('r') . '.' . $db->qn('category_id'),
-					$db->qn('r') . '.' . $db->qn('version'),
-					$db->qn('r') . '.' . $db->qn('maturity'),
-					$db->qn('r') . '.' . $db->qn('alias') . ' AS ' . $db->qn('rel_alias'),
-					$db->qn('r') . '.' . $db->qn('access') . ' AS ' . $db->qn('rel_access'),
-					$db->qn('r') . '.' . $db->qn('published') . ' AS ' . $db->qn('rel_published'),
-					$db->qn('c') . '.' . $db->qn('title') . ' AS ' . $db->qn('cat_title'),
-					$db->qn('c') . '.' . $db->qn('alias') . ' AS ' . $db->qn('cat_alias'),
-					$db->qn('c') . '.' . $db->qn('type') . ' AS ' . $db->qn('cat_type'),
-					$db->qn('c') . '.' . $db->qn('directory') . ' AS ' . $db->qn('cat_directory'),
-					$db->qn('c') . '.' . $db->qn('access') . ' AS ' . $db->qn('cat_access'),
-					$db->qn('c') . '.' . $db->qn('published') . ' AS ' . $db->qn('cat_published'),
-				])
-				->from($db->qn('#__ars_items') . ' AS ' . $db->qn('i'))
-				->innerJoin($db->qn('#__ars_releases') . ' AS ' . $db->qn('r') . ' ON(' .
-					$db->qn('r') . '.' . $db->qn('id') . '=' . $db->qn('i') . '.' . $db->qn('release_id') . ')')
-				->innerJoin($db->qn('#__ars_categories') . ' AS ' . $db->qn('c') . ' ON(' .
-					$db->qn('c') . '.' . $db->qn('id') . '=' . $db->qn('r') . '.' . $db->qn('category_id') . ')')
-				->where($db->qn('i') . '.' . $db->qn('alias') . ' = ' . $db->q($itemalias));
-
-			if (!empty($relalias))
-			{
-				$dbquery->where($db->qn('r') . '.' . $db->qn('alias') . ' = ' . $db->q($relalias));
-			}
-
-			if (!empty($relid))
-			{
-				$dbquery->where($db->qn('r') . '.' . $db->qn('id') . ' = ' . $db->q($relid));
-			}
-
-			if (!empty($catalias))
-			{
-				$dbquery->where($db->qn('c') . '.' . $db->qn('alias') . ' = ' . $db->q($catalias));
-			}
-
-			if (!empty($catid))
-			{
-				$dbquery->where($db->qn('c') . '.' . $db->qn('id') . ' = ' . $db->q($catid));
-			}
-
-			$db->setQuery($dbquery, 0, 1);
-			$item = $db->loadObject();
-
-			if (empty($item))
-			{
-				// JError::raiseError('404', 'Item not found');
-				$query['view']   = 'Categories';
-				$query['layout'] = 'repository';
-			}
-			else
-			{
-				$query['id'] = $item->id;
+				return false;
 			}
 		}
 
-		return $query;
+		$query = $menu->query;
+
+		foreach ($queryOptions as $key => $value)
+		{
+			// A null value was requested. Huh.
+			if (is_null($value))
+			{
+				// If the key is set and is not empty it's not the menu item you're looking for
+				if (isset($query[$key]) && !empty($query[$key]))
+				{
+					return false;
+				}
+
+				continue;
+			}
+
+			if (!isset($query[$key]))
+			{
+				return false;
+			}
+
+			if ($key == 'view')
+			{
+				// Treat views case-insensitive
+				if (strtolower($query[$key]) != strtolower($value))
+				{
+					return false;
+				}
+			}
+			elseif ($query[$key] != $value)
+			{
+				return false;
+			}
+		}
+
+		if (empty($params))
+		{
+			return true;
+		}
+
+		$menuItemParams = $menu->getParams();
+		$check          = $menuItemParams instanceof Registry ? $menuItemParams : $this->menu->getParams($menu->id);
+
+		foreach ($params as $key => $value)
+		{
+			if (is_null($value))
+			{
+				continue;
+			}
+
+			if ($check->get($key) != $value)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
-	private function arsParseRouteXml(array &$segments): array
+	/**
+	 * Returns the application's languages, in the preferred order for the current user.
+	 *
+	 * @return  string[]
+	 *
+	 * @since   5.1.0
+	 */
+	private function getApplicationLanguages(): array
 	{
-		$query           = [];
-		$query['view']   = 'Update';
-		$query['format'] = 'xml';
+		$container      = $this->getContainer();
+		$languages      = ['*'];
+		$platform       = $container->platform;
+		$isMultilingual = false;
 
-		$menus    = AbstractMenu::getInstance('site');
-		$menuitem = $menus->getActive();
-
-		// Analyze the current Itemid
-		if (!empty($menuitem))
+		if (!$platform->isCli() && !$platform->isBackend() && !$platform->isApi())
 		{
-			// Analyze URL
-			$uri    = new Uri($menuitem->link);
-			$option = $uri->getVar('option');
-
-			// Sanity check
-			if ($option != 'com_ars')
-			{
-				$Itemid = null;
-			}
-			else
-			{
-				$view   = $uri->getVar('view');
-				$task   = $uri->getVar('task');
-				$layout = $uri->getVar('layout');
-				$format = $uri->getVar('format', 'ini');
-				$id     = $uri->getVar('id', null);
-
-				if (empty($task) && !empty($layout))
-				{
-					$task = $layout;
-				}
-				if (empty($task))
-				{
-					if ($format == 'ini')
-					{
-						$task = 'ini';
-					}
-					else
-					{
-						$task = 'all';
-					}
-				}
-
-				// make sure we can grab the ID specified in menu item options
-				if (empty($id))
-				{
-					switch ($task)
-					{
-						case 'category':
-							$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-							$id     = $params->get('category', 'components');
-							break;
-
-						case 'ini':
-						case 'stream':
-							$params = ($menuitem->params instanceof JRegistry) ? $menuitem->params : new JRegistry($menuitem->params);
-							$id     = $params->get('streamid', 0);
-							break;
-					}
-				}
-
-				if (($option == 'com_ars') && in_array($view, ['Update', 'update', 'updates']))
-				{
-					switch ($task)
-					{
-						case 'stream':
-							$query['task'] = 'stream';
-							$query['id']   = $id;
-
-							return $query;
-							break;
-
-						case 'category':
-							array_unshift($segments, $id);
-							array_unshift($segments, 'updates');
-							break;
-
-						case 'all':
-						case 'ini':
-							array_unshift($segments, 'updates');
-							break;
-					}
-				}
-			}
+			$isMultilingual = method_exists($this->app, 'getLanguageFilter') ?
+				$this->app->getLanguageFilter() : false;
 		}
 
-		$check = array_shift($segments);
-
-		if ($check != 'updates')
+		if (!$isMultilingual)
 		{
-			return $query;
+			return $languages;
 		}
 
-		$cat    = count($segments) ? array_shift($segments) : null;
-		$stream = count($segments) ? array_shift($segments) : null;
+		// Get default site language
+		$jLang = $this->app->getLanguage();
 
-		if (empty($cat) && empty($stream))
-		{
-			return $query;
-		}
-		elseif (!empty($cat) && empty($stream))
-		{
-			$query['task'] = 'category';
-			$query['id']   = $cat;
-		}
-		else
-		{
-			$query['task'] = 'stream';
-			$db            = Factory::getDBO();
-			$dbquery       = $db->getQuery(true)
-				->select('*')
-				->from($db->qn('#__ars_updatestreams'))
-				->where($db->qn('alias') . ' = ' . $db->q($stream))
-				->where($db->qn('type') . ' = ' . $db->q($cat));
-			$db->setQuery($dbquery, 0, 1);
-			$item = $db->loadObject();
-
-			if (empty($item))
-			{
-				return $query;
-			}
-
-			$query['id'] = $item->id;
-		}
-
-		return $query;
+		return array_unique([
+			$jLang->getTag(),
+			$jLang->getDefault(),
+			'*',
+		]);
 	}
 
-	private function arsParseRouteIni(array &$segments): array
+	/**
+	 * Return the view we're building a route from based on the query parameters in $query
+	 *
+	 * If $query['view'] is set we use it and we remove it from the $query array.
+	 *
+	 * Otherwise we check if there's an Itemid and use the view from that menu item.
+	 *
+	 * If this still fails we return self::DEFAULT_VIEW, close our eyes and hope for the best.
+	 *
+	 * @param   array  $query  Query parameters
+	 *
+	 * @return  string
+	 *
+	 * @since   5.1.0
+	 */
+	private function getViewFromQuery(array &$query): string
 	{
-		$query           = [];
-		$query['view']   = 'Update';
-		$query['format'] = 'ini';
-		$query['task']   = 'ini';
-
-		$check = array_shift($segments);
-
-		if ($check != 'updates')
+		// If the query has a view use that one instead
+		if (isset($query['view']) && !empty($query['view']))
 		{
-			return $query;
+			$view = $query['view'];
+
+			unset($query['view']);
+
+			return $view;
 		}
 
-		$cat    = count($segments) ? array_shift($segments) : null;
-		$stream = count($segments) ? array_shift($segments) : null;
-
-		$query['task'] = 'stream';
-
-		$db      = Factory::getDBO();
-		$dbquery = $db->getQuery(true)
-			->select('*')
-			->from($db->qn('#__ars_updatestreams'))
-			->where($db->qn('alias') . ' = ' . $db->q($stream))
-			->where($db->qn('type') . ' = ' . $db->q($cat));
-		$db->setQuery($dbquery, 0, 1);
-		$item = $db->loadObject();
-
-		if (empty($item))
+		// If we don't have an Itemid return the default view of the component
+		if (!isset($query['Itemid']) || empty($query['Itemid']))
 		{
-			return $query;
+			return self::DEFAULT_VIEW;
 		}
 
-		$query['id'] = $item->id;
+		// Try to load the menu from Itemid
+		$menu = $this->menu->getItem($query['Itemid']);
 
-		return $query;
+		// If loading the menu failed return the component's default view
+		if (!is_object($menu) || ($menu->id != $query['Itemid']))
+		{
+			return self::DEFAULT_VIEW;
+		}
+
+		return $this->translateLegacyView($menu->query['view'] ?? self::DEFAULT_VIEW);
+	}
+
+	/**
+	 * Translates ARS 1.x to 3.x view names to the new view names.
+	 *
+	 * This ensures menu items created in the olden days will still work without causing a minor site meltdown.
+	 *
+	 * @param   string  $view  The potentially legacy view name.
+	 *
+	 * @return  string
+	 *
+	 * @since   5.1.0
+	 */
+	private function translateLegacyView(string $view): string
+	{
+		/** @var Dispatcher $dispatcher */
+		$dispatcher = $this->getContainer()->dispatcher;
+
+		if (array_key_exists($view, $dispatcher->viewMap))
+		{
+			return $dispatcher->viewMap[$view];
+		}
+
+		return $view;
 	}
 
 	/**
@@ -1833,13 +1593,15 @@ class ArsRouter extends RouterBase
 	 *
 	 * If the key is not found in the array the default value is returned
 	 *
-	 * @param array  $query   They key-value array
-	 * @param string $key     The key to retrieve and eliminate from the array
-	 * @param mixed  $default The default value to use if the key does not exist in the array.
+	 * @param   array   $query    They key-value array
+	 * @param   string  $key      The key to retrieve and eliminate from the array
+	 * @param   mixed   $default  The default value to use if the key does not exist in the array.
 	 *
 	 * @return mixed The retrieved value (or the default, if the key was not present)
+	 *
+	 * @since   5.1.0
 	 */
-	private static function getAndPop(array &$query, string $key, $default = null)
+	private function getAndPop(array &$query, string $key, $default = null)
 	{
 		if (!isset($query[$key]))
 		{
@@ -1854,222 +1616,68 @@ class ArsRouter extends RouterBase
 	}
 
 	/**
-	 * Finds a menu whose query parameters match those in $qoptions
+	 * Loads an ARS Category, Release or Item and returns its model object. Results are cached for performance.
 	 *
-	 * @param array $qoptions The query parameters to look for
-	 * @param array $params   The menu parameters to look for
+	 * @param   string  $type  The type of the model: Categories, Releases, Items
+	 * @param   mixed   $id    The numeric ID of the record to load or an array with the keys to look for
 	 *
-	 * @return null|object Null if not found, or the menu item if we did find it
-	 * @throws Exception
+	 * @return  Categories|Releases|Items|UpdateStreams
+	 *
+	 * @see     .phpstorm.meta.php  for advanced type hinting of what is essentially a factory method
+	 *
+	 * @since   5.1.0
 	 */
-	private static function findMenu(array $qoptions = [], ?array $params = null): ?object
+	private function getModelObject(string $type, $id): DataModel
 	{
-		$input = Factory::getApplication()->input;
+		/** @var DataModel $model */
+		$model = $this->getContainer()->factory->model($type)->tmpInstance();
 
-		// Convert $qoptions to an object
-		if (empty($qoptions) || !is_array($qoptions))
+		// Do not load relationships through this method
+		$model->with([]);
+
+		if (empty($id))
 		{
-			$qoptions = [];
+			return $model;
 		}
 
-		$menus    = AbstractMenu::getInstance('site');
-		$menuitem = $menus->getActive();
-
-		// First check the current menu item (fastest shortcut!)
-		if (is_object($menuitem) && self::checkMenu($menuitem, $qoptions, $params))
+		if (is_numeric($id))
 		{
-			return $menuitem;
+			$search = [
+				'id' => (int) $id,
+			];
+		}
+		elseif (is_array($id))
+		{
+			$search = $id;
+		}
+		else
+		{
+			return $model;
 		}
 
-		// Find all potential menu items
-		$possible_items = [];
-
-		foreach ($menus->getMenu() as $item)
+		if (empty($search))
 		{
-			if (self::checkMenu($item, $qoptions, $params))
-			{
-				$possible_items[] = $item;
-			}
+			return $model;
 		}
 
-		// If no potential item exists, return null
-		if (empty($possible_items))
+		ksort($search);
+
+		$key = md5(json_encode($search));
+
+		if (isset($this->modelCache[$type][$key]))
 		{
-			return null;
+			return $this->modelCache[$type][$key];
 		}
 
-		// Filter by language, if required
-		/** @var JApplicationSite $app */
-		$app      = Factory::getApplication();
-		$langCode = $input->getCmd('language', '*');
-
-		if ($app->getLanguageFilter())
+		try
 		{
-			$lang_filter_plugin = PluginHelper::getPlugin('system', 'languagefilter');
-			$lang_filter_params = new JRegistry($lang_filter_plugin->params);
-
-			if ($lang_filter_params->get('remove_default_prefix'))
-			{
-				// Get default site language
-				$lg       = Factory::getLanguage();
-				$langCode = $lg->getTag();
-			}
+			$this->modelCache[$type][$key] = $model->findOrFail($search);
+		}
+		catch (RecordNotLoaded $e)
+		{
+			$this->modelCache[$type][$key] = $model;
 		}
 
-		if ($langCode == '*')
-		{
-			// No language filtering required, return the first item
-			return array_shift($possible_items);
-		}
-
-		// Filter for exact language or *
-		foreach ($possible_items as $item)
-		{
-			if (in_array($item->language, [$langCode, '*']))
-			{
-				return $item;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Checks if a menu item conforms to the query options and parameters specified
-	 *
-	 * @param object $menu     A menu item
-	 * @param array  $qoptions The query options to look for
-	 * @param array  $params   The menu parameters to look for
-	 *
-	 * @return bool
-	 * @throws Exception
-	 */
-	private static function checkMenu(object $menu, array $qoptions, ?array $params = null): bool
-	{
-		$query = $menu->query;
-
-		foreach ($qoptions as $key => $value)
-		{
-			//if(is_null($value)) continue;
-			if ($key == 'language')
-			{
-				continue;
-			}
-
-			if (empty($value))
-			{
-				continue;
-			}
-
-			if (!isset($query[$key]))
-			{
-				return false;
-			}
-
-			if ($query[$key] != $value)
-			{
-				return false;
-			}
-		}
-
-		if (isset($qoptions['language']))
-		{
-			if (($menu->language != $qoptions['language']) && ($menu->language != '*'))
-			{
-				return false;
-			}
-		}
-
-		if (is_null($params))
-		{
-			return true;
-		}
-
-		$menus = AbstractMenu::getInstance('site');
-		$check = $menu->params instanceof JRegistry ? $menu->params : $menus->getParams($menu->id);
-
-		foreach ($params as $key => $value)
-		{
-			if (is_null($value))
-			{
-				continue;
-			}
-
-			if ($key == 'language')
-			{
-				$v = $check->get($key);
-
-				if (($v != $value) && ($v != '*') && !empty($v))
-				{
-					return false;
-				}
-
-				continue;
-			}
-
-			if ($check->get($key) != $value)
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * Precondition the SEF URL segments returned by Joomla
-	 *
-	 * Joomla replaces the first dash of each segment with a colon. For example /foo/bar-baz-bat will result in the
-	 * array ['foo', 'bar:baz-bat']. This is based on the assumption that we write SEF URLs like Joomla used to back in
-	 * 2005 when it was in version 1.0. Nowadays we want dashes to be kept as dashes. Hence this method which converts
-	 * colons back to dashes.
-	 *
-	 * @param array $segments
-	 *
-	 * @return array
-	 */
-	private static function preconditionSegments(array $segments): array
-	{
-		$newSegments = [];
-
-		if (empty($segments))
-		{
-			return [];
-		}
-
-		foreach ($segments as $segment)
-		{
-			if (strstr($segment, ':'))
-			{
-				$segment = str_replace(':', '-', $segment);
-			}
-
-			if (is_array($segment))
-			{
-				$newSegments[] = implode('-', $segment);
-
-				continue;
-			}
-
-			$newSegments[] = $segment;
-		}
-
-		return $newSegments;
-	}
-
-	/**
-	 * @param bool $routeRaw
-	 */
-	public static function setRouteRaw(bool $routeRaw): void
-	{
-		self::$routeRaw = $routeRaw;
-	}
-
-	/**
-	 * @param bool $routeHtml
-	 */
-	public static function setRouteHtml(bool $routeHtml): void
-	{
-		self::$routeHtml = $routeHtml;
+		return $this->modelCache[$type][$key];
 	}
 }

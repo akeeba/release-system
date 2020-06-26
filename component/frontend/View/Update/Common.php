@@ -123,8 +123,9 @@ trait Common
 			}
 		}
 
-		$dlUri->setVar('format', 'raw');
-		$dlUri->setVar('dummy', 'my.' . $format);
+		// We no longer need to set fomrat=raw&dummy=my.zip — Joomla has grown up now.
+		// $dlUri->setVar('format', 'raw');
+		// $dlUri->setVar('dummy', 'my.' . $format);
 
 		return [$dlUri->toString(), $format];
 	}
