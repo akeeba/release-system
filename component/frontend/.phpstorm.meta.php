@@ -25,8 +25,9 @@ namespace PHPSTORM_META
 	]));
 
 	override(\ArsRouter::getModelObject(), map([
-		'Categories' => \Akeeba\ReleaseSystem\Site\Model\Categories::class,
-		'Releases'   => \Akeeba\ReleaseSystem\Site\Model\UpdateStreams::class,
-		'Items'      => \Akeeba\ReleaseSystem\Site\Model\Items::class,
+		'Categories'    => \Akeeba\ReleaseSystem\Site\Model\Categories::class,
+		'Releases'      => \Akeeba\ReleaseSystem\Site\Model\UpdateStreams::class,
+		'Items'         => \Akeeba\ReleaseSystem\Site\Model\Items::class,
+		'UpdateStreams' => \Akeeba\ReleaseSystem\Site\Model\UpdateStreams::class,
 	]));
 }

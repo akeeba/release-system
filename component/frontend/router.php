@@ -9,6 +9,7 @@ use Akeeba\ReleaseSystem\Admin\Model\Releases;
 use Akeeba\ReleaseSystem\Site\Dispatcher\Dispatcher;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Items;
+use Akeeba\ReleaseSystem\Site\Model\UpdateStreams;
 use FOF30\Container\Container;
 use FOF30\Model\DataModel;
 use FOF30\Model\DataModel\Exception\RecordNotLoaded;
@@ -24,6 +25,21 @@ class ArsRouter extends RouterBase
 
 	private const VALID_VIEWS = [
 		'Categories', 'Releases', 'Items', 'Item', 'Latest', 'Update', 'DownloadIDLabel', 'DownloadIDLabels',
+	];
+
+	/**
+	 * List of file extensions which can be used as a Joomla 'format' parameter, being equivalent to the "raw" view.
+	 *
+	 * This list must not include any extensions potentially executable by the server to avoid any mishaps.
+	 *
+	 * The idea is to include a number of extensions commonly used with archive files, installable packages on different
+	 * OS and document files.
+	 */
+	private const ACCEPTED_EXTENSIONS = [
+		'zip', 'tar', 'gz', 'tgz', 'bz2', 'tbz', 'xz', 'txz', 'tar', 'rar', '7z',
+		'exe', 'msi', 'msp', 'cab', 'dmg', 'pkg', 'rpm', 'deb',
+		'pdf', 'epub', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'fodt', 'ods', 'fods', 'odp', 'fodp',
+		'odg', 'fodg', 'odf',
 	];
 
 	/**
@@ -146,7 +162,7 @@ class ArsRouter extends RouterBase
 		}
 
 		// Set the format, making sure it's something valid for the requested view
-		$query['format'] = $this->getValidFormatForView($view, $format);
+		$query['format'] = $this->getValidFormatForView($view, $format, $query);
 
 		/**
 		 * Only keep a non-default layout.
@@ -157,7 +173,7 @@ class ArsRouter extends RouterBase
 		 */
 		$layout = $this->getAndPop($query, 'layout');
 
-		if (!empty($layout) && ($layout != 'default') && ($view != 'Update'))
+		if (!empty($layout) && ($layout != 'default'))
 		{
 			$query['layout'] = $layout;
 		}
@@ -194,7 +210,12 @@ class ArsRouter extends RouterBase
 		$mView    = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
 		$view     = $this->getAndPop($query, 'view', null);
 
-		if (empty($view) || ($mView == $view))
+		/**
+		 * If there was no view in the non-SEF URL or the menu item and non-SEF view match we have nothing to do.
+		 *
+		 * However, this DOES NOT apply to the Updates view. The Updates view always needs segments.
+		 */
+		if (empty($view) || (($view != 'Update') && ($mView == $view)))
 		{
 			$query['Itemid'] = $Itemid;
 
@@ -285,9 +306,47 @@ class ArsRouter extends RouterBase
 
 				break;
 
+			case 'Update':
+				$id      = $this->getAndPop($query, 'id');
+				$task    = $this->getAndPop($query, 'task');
+				$layout  = $this->getAndPop($query, 'layout', $task);
+				$mLayout = $menuItem->query['layout'] ?? null;
+
+				if ($mView != $view)
+				{
+					// You should really have separate menu items for these views. This is a fugly solution!
+					$segments[] = '__internal';
+					$segments[] = $view;
+				}
+
+				if ($mLayout != $layout)
+				{
+					$segments[] = $layout;
+				}
+
+				switch ($layout)
+				{
+					case 'all':
+					default:
+						// No segment to add
+						break;
+
+					case 'category':
+						$segments[] = $id;
+						break;
+
+					case 'stream':
+					case 'ini':
+					case 'download':
+						$updateStream = $this->getModelObject('UpdateStreams', $id);
+						$segments[]   = $updateStream->alias;
+						break;
+				}
+
+				break;
+
 			case 'Categories':
 			case 'Latest':
-			case 'Update':
 			default:
 				// You should really have separate menu items for these views. This is a fugly solution!
 				$segments[] = '__internal';
@@ -329,16 +388,19 @@ class ArsRouter extends RouterBase
 			return $query;
 		}
 
+		$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+
 		// Do we have our fugly fix for a missing menu item of a top-level view?
 		if ($segments[0] === '__internal')
 		{
 			$junk          = array_shift($segments);
 			$query['view'] = array_shift($segments);
 
-			return $query;
+			if ($query['view'] != 'Update')
+			{
+				return $query;
+			}
 		}
-
-		$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
 
 		switch ($mView)
 		{
@@ -394,8 +456,20 @@ class ArsRouter extends RouterBase
 			// This is the Releases, Items or Item view depending on the number of segments.
 			case 'Categories':
 				$segmentCount = count($segments);
+				$qView        = $query['view'] ?? null;
 
-				if ($segmentCount === 3)
+				if ($qView == 'Update')
+				{
+					/**
+					 * Set the view and layout in the query and let this fall through to the next if-block after the
+					 * case block.
+					 *
+					 * This trick allows me to handle an Update view no matter if the menu item is Update or Categories.
+					 */
+					$query['view']   = 'Update';
+					$query['layout'] = array_shift($segments);
+				}
+				elseif ($segmentCount === 3)
 				{
 					[$categoryAlias, $releaseAlias, $itemAlias] = $segments;
 
@@ -446,6 +520,41 @@ class ArsRouter extends RouterBase
 				}
 				break;
 
+			case 'Update':
+				/**
+				 * Set the view in the query and let this fall through to the next if-block after the case block.
+				 *
+				 * This trick allows me to handle an Update view no matter if the menu item is Update or Categories.
+				 */
+				$query['view'] = 'Update';
+				break;
+		}
+
+		// Special handling for the Update view
+		$qView = $query['view'] ?? self::DEFAULT_VIEW;
+
+		if (($qView === 'Update') && !empty($segments))
+		{
+			switch ($query['layout'] ?? 'stream')
+			{
+				case 'all':
+					// Do nothing. The main update stream doesn't have any arguments.
+					break;
+
+				case 'category':
+					$query['id'] = array_pop($segments);
+					break;
+
+				case 'stream':
+				case 'ini':
+				case 'download':
+				default:
+					$stream      = $this->getModelObject('UpdateStreams', [
+						'alias' => array_pop($segments),
+					]);
+					$query['id'] = $stream->getId();
+					break;
+			}
 		}
 
 		return $query;
@@ -456,21 +565,39 @@ class ArsRouter extends RouterBase
 	 *
 	 * @param   string|null  $view    The name of the view
 	 * @param   string       $format  The presumptive format from the non-SEF query string parameters
+	 * @param   array        $query   The established query parameters so far
 	 *
 	 * @return  string  The most suitable format we should be using
 	 *
 	 * @since   5.1.0
 	 */
-	protected function getValidFormatForView(?string $view, string $format): string
+	protected function getValidFormatForView(?string $view, string $format, array $query): string
 	{
 		switch ($view)
 		{
-			// This view supports HTML, JSON and RAW formats
+			// This view supports JSON and RAW formats
 			case 'Item':
-				if (!in_array($format, ['html', 'json', 'raw']))
+				if (!in_array($format, ['json', 'raw']))
 				{
 					return 'html';
 				}
+
+				/**
+				 * The raw format leads to .raw URLs. Let's convert them based on the extension of the downloaded file.
+				 *
+				 * This only applies for certain whitelisted, hardcoded extensions
+				 */
+				$item      = $this->getModelObject('Items', $query['id'] ?? null);
+				$target    = ($item->type == 'file') ? $item->filename : $item->url;
+				$bits      = explode('.', $target);
+				$extension = strtolower((count($bits) > 1) ? array_pop($bits) : 'raw');
+
+				if (in_array($extension, self::ACCEPTED_EXTENSIONS))
+				{
+					return $extension;
+				}
+
+				return 'raw';
 
 				break;
 
@@ -488,7 +615,7 @@ class ArsRouter extends RouterBase
 			// These views support XML and INI formats
 			case 'Update':
 			case 'Updates':
-				if (!in_array($format, ['xml', 'ini']))
+				if (!in_array($format, ['xml', 'ini', 'raw']))
 				{
 					return 'xml';
 				}
@@ -627,11 +754,11 @@ class ArsRouter extends RouterBase
 					$queryOptions['lang'] = $category->language;
 				}
 
-				// Try to find the Items view for the specific Release
-				$menuItem = $this->findMenu(array_merge($queryOptions, [
-					'view'       => 'Items',
-					'release_id' => $id,
-				]));
+			// Try to find the Items view for the specific Release
+			$menuItem = $this->findMenu(array_merge($queryOptions, [
+				'view'       => 'Items',
+				'release_id' => $id,
+			]));
 
 			// Fall back to legacy "release" view menu item
 			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
@@ -719,6 +846,28 @@ class ArsRouter extends RouterBase
 						'view' => 'dlidlabels',
 					]));
 
+				// Fall back to the root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'Categories',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the legacy root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'Categories',
+					]));
+
+				// Fall back to the legacy root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'browses',
+					]));
+
 				// Set a missing task to 'edit' or 'add' depending on existence of an id parameter
 				if (!empty($menuItem))
 				{
@@ -739,6 +888,84 @@ class ArsRouter extends RouterBase
 
 				break;
 
+			case 'Update':
+				$task   = $this->getAndPop($query, 'task');
+				$layout = $this->getAndPop($query, 'layout');
+
+				if (!in_array($task, ['all', 'category', 'stream', 'ini', 'download']) && !empty($layout))
+				{
+					$task   = $layout;
+					$layout = null;
+				}
+
+				$layout = null;
+
+				// Menu items use layout, not task
+				$queryOptions['layout'] = $task;
+
+				if ($task != 'all')
+				{
+					// TODO This may not be correct for all tasks
+					$queryOptions['id'] = $id;
+				}
+
+				// Find the most suitable menu item
+				$menuItem = $this->findMenu($queryOptions);
+
+				// Fallback to menu item with legacy view name
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'update',
+					]));
+
+				// Prepare for fallback to the main update menu link
+				if (isset($queryOptions['id']))
+				{
+					unset($queryOptions['id']);
+				}
+
+				$queryOptions['layout'] = 'all';
+
+				$menuItem = $menuItem ?? $this->findMenu($queryOptions);
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'update',
+					]));
+
+				// Prepare for fallback to main repo page
+				unset($queryOptions['layout']);
+
+				// Fall back to the root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'Categories',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the legacy root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'Categories',
+					]));
+
+				// Fall back to the legacy root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'browses',
+					]));
+
+				$query['layout'] = $task;
+
+				if (!empty($id))
+				{
+					$query['id'] = $id;
+				}
+
+				return $menuItem;
+
+				break;
+
 			/**
 			 * Everything else needs a menu item of the corresponding view.
 			 *
@@ -747,8 +974,10 @@ class ArsRouter extends RouterBase
 			 * Note that the Categories menu is the root of the tree therefore it needs a menu item of its own
 			 */
 			default:
+				// Find an up-to-date menu item
 				$menuItem = $this->findMenu($queryOptions);
 
+				// Find a legacy menu item
 				$legacyViews = [
 					'Categories'       => 'browse',
 					'Releases'         => 'category',
@@ -764,6 +993,33 @@ class ArsRouter extends RouterBase
 				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
 						'view' => $altView,
 					]));
+
+				// Fall back to the root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'Categories',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the legacy root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'Categories',
+					]));
+
+				// Fall back to the legacy root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'browses',
+					]));
+
+				if (($view == 'Update') && !empty($id))
+				{
+					$query['id'] = $id;
+				}
 
 				if (!empty($menuItem))
 				{
@@ -995,6 +1251,10 @@ class ArsRouter extends RouterBase
 				{
 					$menuItem = null;
 				}
+				break;
+
+			case 'Update':
+				// TODO Validate the Update menu item
 				break;
 
 			default:
@@ -1285,7 +1545,7 @@ class ArsRouter extends RouterBase
 	 * @param   string  $type  The type of the model: Categories, Releases, Items
 	 * @param   mixed   $id    The numeric ID of the record to load or an array with the keys to look for
 	 *
-	 * @return  Categories|Releases|Items
+	 * @return  Categories|Releases|Items|UpdateStreams
 	 *
 	 * @see     .phpstorm.meta.php  for advanced type hinting of what is essentially a factory method
 	 *
