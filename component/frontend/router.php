@@ -165,6 +165,17 @@ class ArsRouter extends RouterBase
 		return $query;
 	}
 
+	/**
+	 * Build a SEF URL
+	 *
+	 * This runs after self::preprocess() is done modifying the query. We MUST NOT change the Itemid here.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 *
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 *
+	 * @since   5.1.0
+	 */
 	public function build(&$query): array
 	{
 		$segments = [];
@@ -279,6 +290,17 @@ class ArsRouter extends RouterBase
 		return $segments;
 	}
 
+	/**
+	 * Parse a SEF URL
+	 *
+	 * Based on the currently active menu item and the $segments array we reconstruct an array of query parameters.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 *
+	 * @return  array  The URL attributes to be used by the application.
+	 *
+	 * @since   5.1.0
+	 */
 	public function parse(&$segments): array
 	{
 		$query    = [];
@@ -479,6 +501,8 @@ class ArsRouter extends RouterBase
 	 * @param   array   $query  The non-SEF request parameters
 	 *
 	 * @return  MenuItem|null  A suitable menu item, null if none is a good fit.
+	 *
+	 * @since   5.1.0
 	 */
 	protected function getMenuItemForView(string &$view, array &$query): ?MenuItem
 	{
@@ -735,6 +759,8 @@ class ArsRouter extends RouterBase
 	 * @param   array        $query     The non-SEF URL's request parameters
 	 *
 	 * @return  MenuItem|null  The validated menu item or NULL if it's not usable for the request
+	 *
+	 * @since   5.1.0
 	 */
 	protected function validateMenuItem(MenuItem $menuItem, ?string $view, array &$query): ?MenuItem
 	{
@@ -1104,6 +1130,8 @@ class ArsRouter extends RouterBase
 	 * @param   array  $query  Query parameters
 	 *
 	 * @return  string
+	 *
+	 * @since   5.1.0
 	 */
 	private function getViewFromQuery(array &$query): string
 	{
@@ -1143,6 +1171,8 @@ class ArsRouter extends RouterBase
 	 * @param   string  $view  The potentially legacy view name.
 	 *
 	 * @return  string
+	 *
+	 * @since   5.1.0
 	 */
 	private function translateLegacyView(string $view): string
 	{
@@ -1167,6 +1197,8 @@ class ArsRouter extends RouterBase
 	 * @param   mixed   $default  The default value to use if the key does not exist in the array.
 	 *
 	 * @return mixed The retrieved value (or the default, if the key was not present)
+	 *
+	 * @since   5.1.0
 	 */
 	private function getAndPop(array &$query, string $key, $default = null)
 	{
@@ -1191,6 +1223,8 @@ class ArsRouter extends RouterBase
 	 * @return  Categories|Releases|Items
 	 *
 	 * @see     .phpstorm.meta.php  for advanced type hinting of what is essentially a factory method
+	 *
+	 * @since   5.1.0
 	 */
 	private function getModelObject(string $type, $id): DataModel
 	{
