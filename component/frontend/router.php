@@ -746,13 +746,13 @@ class ArsRouter extends RouterBase
 					$id = $this->getModelObject('Items', $id)->release_id;
 				}
 
-				// If no language was requested in the non-SEF URL use the language of the Category
-				if (!$hasValidLangInQuery)
-				{
-					$release              = $this->getModelObject('Releases', $id);
-					$category             = $this->getModelObject('Categories', $release->id);
-					$queryOptions['lang'] = $category->language;
-				}
+			// If no language was requested in the non-SEF URL use the language of the Category
+			if (!$hasValidLangInQuery)
+			{
+				$release              = $this->getModelObject('Releases', $id);
+				$category             = $this->getModelObject('Categories', $release->id);
+				$queryOptions['lang'] = $category->language;
+			}
 
 			// Try to find the Items view for the specific Release
 			$menuItem = $this->findMenu(array_merge($queryOptions, [
@@ -903,10 +903,21 @@ class ArsRouter extends RouterBase
 				// Menu items use layout, not task
 				$queryOptions['layout'] = $task;
 
-				if ($task != 'all')
+				switch ($task)
 				{
-					// TODO This may not be correct for all tasks
-					$queryOptions['id'] = $id;
+					case 'all':
+						// No ID searching in the 'all' layout
+						break;
+
+					case 'category':
+						$queryOptions['category'] = $id;
+
+						break;
+
+					default:
+						$queryOptions['streamid'] = $id;
+
+						break;
 				}
 
 				// Find the most suitable menu item
@@ -917,10 +928,15 @@ class ArsRouter extends RouterBase
 						'view' => 'update',
 					]));
 
-				// Prepare for fallback to the main update menu link
-				if (isset($queryOptions['id']))
+				// Prepare for fallback to the main update menu link (layout=all)
+				if (isset($queryOptions['category']))
 				{
-					unset($queryOptions['id']);
+					unset($queryOptions['category']);
+				}
+
+				if (isset($queryOptions['streamid']))
+				{
+					unset($queryOptions['streamid']);
 				}
 
 				$queryOptions['layout'] = 'all';
@@ -1255,6 +1271,66 @@ class ArsRouter extends RouterBase
 
 			case 'Update':
 				// TODO Validate the Update menu item
+				$id      = $query['id'] ?? null;
+				$task    = $query['task'] ?? null;
+				$layout  = $query['layout'] ?? $task;
+				$mLayout = $menuItem->query['layout'] ?? null;
+
+				// We always accept the download repository root as a valid menu item for updates.
+				if ($mView == 'Categories')
+				{
+					break;
+				}
+
+				// Beyond that, only an Update menu item would have a chance of being valid.
+				if ($mView != 'Update')
+				{
+					$menuItem = null;
+
+					break;
+				}
+
+				// If the menu item layout is "all" it's valid for any Update link
+				if ($mLayout === 'all')
+				{
+					break;
+				}
+
+				// If the menu and query layouts don't match this is not a good fit
+				if ($mLayout != $layout)
+				{
+					$menuItem = null;
+
+					break;
+				}
+
+				switch ($layout)
+				{
+					// For update streams the menu streamid must match the query id
+					case 'stream':
+					case 'ini':
+					case 'download':
+						$mStreamId = $menuItem->query['streamid'] ?? 0;
+
+						if ($mStreamId != $id)
+						{
+							$menuItem = null;
+						}
+
+						break;
+
+					// For update stream categories the menu category must match the query id
+					case 'category':
+						$mCategory = $menuItem->query['category'] ?? '';
+
+						if ($mCategory != $id)
+						{
+							$menuItem = null;
+						}
+
+						break;
+				}
+
 				break;
 
 			default:
