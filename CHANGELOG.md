@@ -1,6 +1,7 @@
 # 5.1.0
 
 * `~` Rewritten frontend SEF router
+* `#` [LOW] Frontend add-on download ID, redirect to non-SEF URL after editing an item
 
 # 5.0.0
 
