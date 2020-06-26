@@ -148,7 +148,19 @@ class ArsRouter extends RouterBase
 		// Set the format, making sure it's something valid for the requested view
 		$query['format'] = $this->getValidFormatForView($view, $format);
 
-		// TODO Remove default layout. This depends on the view!!!!!
+		/**
+		 * Only keep a non-default layout.
+		 *
+		 * For most views this means a layout other than 'default'.
+		 *
+		 * For the Update XML view no layout is allowed. It's set automatically based on the task.
+		 */
+		$layout = $this->getAndPop($query, 'layout');
+
+		if (!empty($layout) && ($layout != 'default') && ($view != 'Update'))
+		{
+			$query['layout'] = $layout;
+		}
 
 		return $query;
 	}
@@ -167,14 +179,233 @@ class ArsRouter extends RouterBase
 			return $segments;
 		}
 
-		// TODO: Implement build() method.
+		$menuItem = $this->menu->getItem($Itemid);
+		$mView    = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+		$view     = $this->getAndPop($query, 'view', null);
+
+		if (empty($view) || ($mView == $view))
+		{
+			$query['Itemid'] = $Itemid;
+
+			return $segments;
+		}
+
+		switch ($view)
+		{
+			case 'Releases':
+				// The only case where view=Release and view!=mView is when mView == Categories
+				$category_id = $this->getAndPop($query, 'category_id');
+				$category    = $this->getModelObject('Categories', $category_id);
+
+				if (!$category->getId())
+				{
+					// You are asking for a list of releases with an invalid category ID. Ka-boom.
+					return $segments;
+				}
+
+				$segments[] = $category->alias;
+				break;
+
+			case 'Items':
+			case 'Item':
+				if ($view === 'Item')
+				{
+					$item_id    = $this->getAndPop($query, 'id');
+					$item_id    = $this->getAndPop($query, 'item_id', $item_id);
+					$item       = $this->getModelObject('Items', $item_id);
+					$release_id = $item->release_id;
+				}
+				else
+				{
+					$release_id = $this->getAndPop($query, 'release_id');
+				}
+
+				$release = $this->getModelObject('Releases', $release_id);
+
+				if ($mView == 'Releases')
+				{
+					if (!$release->getId())
+					{
+						// You are asking for a list of items with an invalid release ID. Ka-boom.
+						return $segments;
+					}
+
+					$segments[] = $release->alias;
+				}
+				else
+				{
+					$category = $this->getModelObject('Categories', $release->getId());
+
+					if (!$category->getId())
+					{
+						// You are asking for a list of items of a release with an invalid category ID. Ka-boom.
+						return $segments;
+					}
+
+					$segments[] = $category->alias;
+					$segments[] = $release->alias;
+				}
+
+				if ($view === 'Item')
+				{
+					$segments[] = $item->alias;
+				}
+
+				break;
+
+			case 'Categories':
+			case 'DownloadIDLabels':
+			case 'DownloadIDLabel':
+			case 'Latest':
+			case 'Update':
+			default:
+				// You should really have separate menu items for these views. This is a fugly solution!
+				$segments[] = '__internal';
+				$segments[] = $view;
+
+				return $segments;
+
+				break;
+		}
 
 		return $segments;
 	}
 
 	public function parse(&$segments): array
 	{
-		// TODO: Implement parse() method.
+		$query    = [];
+		$menuItem = $this->menu->getActive();
+
+		// This should never happen. Joomla should never call me without segments. But I can't rule out a future bug :)
+		if (empty($segments))
+		{
+			return $query;
+		}
+
+		// Parsing a SEF route requires an active menu item. Without one we should just let it crash and burn.
+		if (empty($menuItem))
+		{
+			return $query;
+		}
+
+		// Do we have our fugly fix for a missing menu item of a top-level view?
+		if ($segments[0] === '__internal')
+		{
+			$junk          = array_shift($segments);
+			$query['view'] = array_shift($segments);
+
+			return $query;
+		}
+
+		$mView  = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+		$layout = $menuItem->query['layout'] ?? null;
+
+		switch ($mView)
+		{
+			// This is an Item view. The only segment is the Item alias.
+			case 'Items':
+				$item          = $this->getModelObject('Items', [
+					'alias'      => array_shift($segments),
+					'release_id' => $menuItem->query['release_id'] ?? null,
+				]);
+				$query['view'] = 'Item';
+				$query['id']   = $item->getId();
+				break;
+
+			// This is an Item or Items view depending on the number of segments.
+			case 'Releases':
+				$category_id  = $menuItem->query['category_id'] ?? null;
+				$segmentCount = count($segments);
+
+				if ($segmentCount === 2)
+				{
+					[$releaseAlias, $itemAlias] = $segments;
+
+					$release = $this->getModelObject('Releases', [
+						'alias'       => $releaseAlias,
+						'category_id' => $category_id,
+					]);
+
+					$item = $this->getModelObject('Items', [
+						'alias'      => $itemAlias,
+						'release_id' => $release->getId(),
+					]);
+
+					$query['view'] = 'Item';
+					$query['id']   = $item->getId();
+				}
+				elseif ($segmentCount === 1)
+				{
+					[$releaseAlias] = $segments;
+
+					$release = $this->getModelObject('Releases', [
+						'alias'       => $releaseAlias,
+						'category_id' => $category_id,
+					]);
+
+					$query['view']       = 'Items';
+					$query['release_id'] = $release->getId();
+				}
+
+				break;
+
+			// This is the Releases, Items or Item view depending on the number of segments.
+			case 'Categories':
+				$segmentCount = count($segments);
+
+				if ($segmentCount === 3)
+				{
+					[$categoryAlias, $releaseAlias, $itemAlias] = $segments;
+
+					$category = $this->getModelObject('Categories', [
+						'alias' => $categoryAlias,
+					]);
+
+					$release = $this->getModelObject('Releases', [
+						'alias'       => $releaseAlias,
+						'category_id' => $category->getId(),
+					]);
+
+					$item = $this->getModelObject('Items', [
+						'alias'      => $itemAlias,
+						'release_id' => $release->getId(),
+					]);
+
+					$query['view'] = 'Item';
+					$query['id']   = $item->getId();
+				}
+				elseif ($segmentCount === 2)
+				{
+					[$categoryAlias, $releaseAlias] = $segments;
+
+					$category = $this->getModelObject('Categories', [
+						'alias' => $categoryAlias,
+					]);
+
+					$release = $this->getModelObject('Releases', [
+						'alias'       => $releaseAlias,
+						'category_id' => $category->getId(),
+					]);
+
+					$query['view']       = 'Items';
+					$query['release_id'] = $release->getId();
+				}
+				elseif ($segmentCount === 1)
+				{
+					[$categoryAlias] = $segments;
+
+					$category = $this->getModelObject('Categories', [
+						'alias' => $categoryAlias,
+					]);
+
+					$query['view']        = 'Releases';
+					$query['category_id'] = $category->getId();
+				}
+				break;
+
+		}
+
+		return $query;
 	}
 
 	/**
@@ -296,7 +527,9 @@ class ArsRouter extends RouterBase
 					]));
 
 				// Pass back the view and ID to the query as needed
-				if (($menuItem->query['view'] ?? self::DEFAULT_VIEW) != $view)
+				$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+
+				if ($mView != $view)
 				{
 					$query['view'] = $view;
 					$query['id']   = $id;
@@ -353,21 +586,23 @@ class ArsRouter extends RouterBase
 						'category_id' => $this->getModelObject('Releases', $id)->category_id,
 					]));
 
-				// Fall back to the root Categories menu item if necessary
-				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-						'view' => 'Categories',
-					]));
+			// Fall back to the root Categories menu item if necessary
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view' => 'Categories',
+				]));
 
-				// Pass back the view and ID to the query as needed
-				if (($menuItem->query['view'] ?? self::DEFAULT_VIEW) != $view)
-				{
-					$query['view'] = $view;
-					$query['id']   = $id;
-				}
+			// Pass back the view and ID to the query as needed
+			$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
 
-				return $menuItem;
+			if ($mView != $view)
+			{
+				$query['view'] = $view;
+				$query['id']   = $id;
+			}
 
-				break;
+			return $menuItem;
+
+			break;
 
 			/**
 			 * The singular 'DownloadIDLabel' view always needs a menu item fow 'DownloadIDLabels'.
@@ -440,19 +675,18 @@ class ArsRouter extends RouterBase
 	 */
 	protected function validateMenuItem(MenuItem $menuItem, ?string $view, array &$query): ?MenuItem
 	{
-		$mView = $menuItem->query['view'] ?? self::DEFAULT_VIEW;
+		$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
 
 		switch ($view)
 		{
 			case 'Releases':
-				$id = $query['id'] ?? null;
+				$id = $query['category_id'] ?? null;
 
 				switch ($mView)
 				{
 					// Same view. Check that the category ID matches.
 					case 'Releases':
-						$mID = $menuItem->query['id'] ?? null;
-						$mID = $menuItem->query['category_id'] ?? $mID;
+						$mID = $menuItem->query['category_id'] ?? null;
 
 						if ($id != $mID)
 						{
@@ -493,14 +727,13 @@ class ArsRouter extends RouterBase
 				return $menuItem;
 
 			case 'Items':
-				$id = $query['id'] ?? null;
+				$id = $query['release_id'] ?? null;
 
 				switch ($mView)
 				{
 					// Same view. Check that the release ID matches.
 					case 'Items':
-						$mID = $menuItem->query['id'] ?? null;
-						$mID = $menuItem->query['release_id'] ?? $mID;
+						$mID = $menuItem->query['release_id'] ?? null;
 
 						if ($id != $mID)
 						{
@@ -510,8 +743,7 @@ class ArsRouter extends RouterBase
 
 					// Releases (of a category) view. Check that the category ID matches my release's category ID.
 					case 'Releases':
-						$mID = $menuItem->query['id'] ?? null;
-						$mID = $menuItem->query['category_id'] ?? $mID;
+						$mID = $menuItem->query['category_id'] ?? null;
 
 						if (empty($id))
 						{
@@ -564,8 +796,7 @@ class ArsRouter extends RouterBase
 				{
 					// Items (of a release) view. Check that the release ID matches.
 					case 'Items':
-						$mID = $menuItem->query['id'] ?? null;
-						$mID = $menuItem->query['release_id'] ?? $mID;
+						$mID = $menuItem->query['release_id'] ?? null;
 
 						if ($item->release_id != $mID)
 						{
@@ -575,8 +806,7 @@ class ArsRouter extends RouterBase
 
 					// Releases (of a category) view. Check that the category ID matches my release's category ID.
 					case 'Releases':
-						$mID = $menuItem->query['id'] ?? null;
-						$mID = $menuItem->query['category_id'] ?? $mID;
+						$mID = $menuItem->query['category_id'] ?? null;
 
 						if (empty($item->release_id))
 						{
@@ -839,7 +1069,7 @@ class ArsRouter extends RouterBase
 			return self::DEFAULT_VIEW;
 		}
 
-		return $menu->query['view'] ?? self::DEFAULT_VIEW;
+		return $this->translateLegacyView($menu->query['view'] ?? self::DEFAULT_VIEW);
 	}
 
 	/**
@@ -892,14 +1122,14 @@ class ArsRouter extends RouterBase
 	/**
 	 * Loads an ARS Category, Release or Item and returns its model object. Results are cached for performance.
 	 *
-	 * @param   string    $type  The type of the model: Categories, Releases, Items
-	 * @param   int|null  $id    The ID of the record to load
+	 * @param   string  $type  The type of the model: Categories, Releases, Items
+	 * @param   mixed   $id    The numeric ID of the record to load or an array with the keys to look for
 	 *
 	 * @return  Categories|Releases|Items
 	 *
 	 * @see     .phpstorm.meta.php  for advanced type hinting of what is essentially a factory method
 	 */
-	private function getModelObject(string $type, ?int $id): DataModel
+	private function getModelObject(string $type, $id): DataModel
 	{
 		/** @var DataModel $model */
 		$model = $this->getContainer()->factory->model($type)->tmpInstance();
@@ -912,20 +1142,44 @@ class ArsRouter extends RouterBase
 			return $model;
 		}
 
-		if (isset($this->modelCache[$type][$id]))
+		if (is_numeric($id))
 		{
-			return $this->modelCache[$type][$id];
+			$search = [
+				'id' => (int) $id,
+			];
+		}
+		elseif (is_array($id))
+		{
+			$search = $id;
+		}
+		else
+		{
+			return $model;
+		}
+
+		if (empty($search))
+		{
+			return $model;
+		}
+
+		ksort($search);
+
+		$key = md5(json_encode($search));
+
+		if (isset($this->modelCache[$type][$key]))
+		{
+			return $this->modelCache[$type][$key];
 		}
 
 		try
 		{
-			$this->modelCache[$type][$id] = $model->findOrFail($id);
+			$this->modelCache[$type][$key] = $model->findOrFail($search);
 		}
 		catch (RecordNotLoaded $e)
 		{
-			$this->modelCache[$type][$id] = $model;
+			$this->modelCache[$type][$key] = $model;
 		}
 
-		return $this->modelCache[$type][$id];
+		return $this->modelCache[$type][$key];
 	}
 }
