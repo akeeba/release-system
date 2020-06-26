@@ -298,7 +298,6 @@ class ArsRouter extends RouterBase
 		}
 
 		$mView  = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
-		$layout = $menuItem->query['layout'] ?? null;
 
 		switch ($mView)
 		{
