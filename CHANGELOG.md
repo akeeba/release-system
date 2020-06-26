@@ -1,3 +1,7 @@
+# 5.1.0
+
+* `~` Rewritten frontend SEF router
+
 # 5.0.0
 
 * `~` Restore the categories search filter

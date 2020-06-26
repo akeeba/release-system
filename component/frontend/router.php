@@ -270,11 +270,22 @@ class ArsRouter extends RouterBase
 					}
 				}
 
+			break;
+
+			case 'DownloadIDLabels':
+			case 'DownloadIDLabel':
+				if ($mView != 'DownloadIDLabels')
+				{
+					// You should really have separate menu items for these views. This is a fugly solution!
+					$segments[] = '__internal';
+					$segments[] = $view;
+
+					return $segments;
+				}
+
 				break;
 
 			case 'Categories':
-			case 'DownloadIDLabels':
-			case 'DownloadIDLabel':
 			case 'Latest':
 			case 'Update':
 			default:
@@ -526,8 +537,8 @@ class ArsRouter extends RouterBase
 		$id = $this->getAndPop($query, 'release_id', $id);
 		$id = $this->getAndPop($query, 'category_id', $id);
 
-		// If there is no ID something has gone REALLY wrong...
-		if (empty($id))
+		// If there is no ID for these views something has gone REALLY wrong...
+		if (empty($id) && in_array($view, ['Releases', 'Items', 'Item']))
 		{
 			return null;
 		}
@@ -622,11 +633,11 @@ class ArsRouter extends RouterBase
 					'release_id' => $id,
 				]));
 
-				// Fall back to legacy "release" view menu item
-				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-						'view'       => 'release',
-						'release_id' => $id,
-					]));
+			// Fall back to legacy "release" view menu item
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'       => 'release',
+					'release_id' => $id,
+				]));
 
 			// Fall back to Releases view for the specific category ID
 			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
@@ -704,6 +715,10 @@ class ArsRouter extends RouterBase
 					'view' => 'DownloadIDLabels',
 				]));
 
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => 'dlidlabels',
+					]));
+
 				// Set a missing task to 'edit' or 'add' depending on existence of an id parameter
 				if (!empty($menuItem))
 				{
@@ -733,6 +748,22 @@ class ArsRouter extends RouterBase
 			 */
 			default:
 				$menuItem = $this->findMenu($queryOptions);
+
+				$legacyViews = [
+					'Categories'       => 'browse',
+					'Releases'         => 'category',
+					'Items'            => 'release',
+					'Item'             => 'download',
+					'Latest'           => 'latest',
+					'Update'           => 'update',
+					'DownloadIDLabel'  => 'dlidlabel',
+					'DownloadIDLabels' => 'dlidlabels',
+				];
+				$altView     = $legacyViews[$queryOptions['view']] ?? $queryOptions['view'];
+
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view' => $altView,
+					]));
 
 				if (!empty($menuItem))
 				{
@@ -939,6 +970,40 @@ class ArsRouter extends RouterBase
 				}
 
 				return $menuItem;
+
+			case 'Categories':
+				// Match the layout, if one is set. The layout = repository is always allowed.
+				$layout = $query['layout'] ?? null;
+
+				if (empty($layout))
+				{
+					return $menuItem;
+				}
+
+				$mLayout = $menuItem->query['layout'] ?? 'repository';
+
+				if (($mLayout != 'repository') && ($mLayout != $layout))
+				{
+					$menuItem = null;
+				}
+				break;
+
+			case 'DownloadIDLabel':
+			case 'DownloadIDLabels':
+				// View must always be DownloadIDLabels
+				if ($mView != 'DownloadIDLabels')
+				{
+					$menuItem = null;
+				}
+				break;
+
+			default:
+				// The View must match
+				if ($view != $mView)
+				{
+					$menuItem = null;
+				}
+				break;
 		}
 
 		return $menuItem;
