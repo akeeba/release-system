@@ -234,7 +234,7 @@ class ArsRouter extends RouterBase
 				}
 				else
 				{
-					$category = $this->getModelObject('Categories', $release->getId());
+					$category = $this->getModelObject('Categories', $release->category_id);
 
 					if (!$category->getId())
 					{
@@ -249,6 +249,14 @@ class ArsRouter extends RouterBase
 				if ($view === 'Item')
 				{
 					$segments[] = $item->alias;
+
+					// The default task for the Item view is 'download' and must be removed from the query.
+					$task = $this->getAndPop($query, 'task', 'download');
+
+					if ($task != 'download')
+					{
+						$query['task'] = $task;
+					}
 				}
 
 				break;
@@ -297,7 +305,7 @@ class ArsRouter extends RouterBase
 			return $query;
 		}
 
-		$mView  = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+		$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
 
 		switch ($mView)
 		{
@@ -308,6 +316,7 @@ class ArsRouter extends RouterBase
 					'release_id' => $menuItem->query['release_id'] ?? null,
 				]);
 				$query['view'] = 'Item';
+				$query['task'] = 'download';
 				$query['id']   = $item->getId();
 				break;
 
@@ -331,6 +340,7 @@ class ArsRouter extends RouterBase
 					]);
 
 					$query['view'] = 'Item';
+					$query['task'] = 'download';
 					$query['id']   = $item->getId();
 				}
 				elseif ($segmentCount === 1)
@@ -371,6 +381,7 @@ class ArsRouter extends RouterBase
 					]);
 
 					$query['view'] = 'Item';
+					$query['task'] = 'download';
 					$query['id']   = $item->getId();
 				}
 				elseif ($segmentCount === 2)
@@ -579,11 +590,11 @@ class ArsRouter extends RouterBase
 						'id'   => $this->getModelObject('Releases', $id)->category_id,
 					]));
 
-				// Fall back to legacy "category" view for the specific category ID
-				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-						'view'        => 'category',
-						'category_id' => $this->getModelObject('Releases', $id)->category_id,
-					]));
+			// Fall back to legacy "category" view for the specific category ID
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'        => 'category',
+					'category_id' => $this->getModelObject('Releases', $id)->category_id,
+				]));
 
 			// Fall back to the root Categories menu item if necessary
 			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
