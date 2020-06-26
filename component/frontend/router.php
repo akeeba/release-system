@@ -499,6 +499,8 @@ class ArsRouter extends RouterBase
 
 		// Get the category, release or item ID from the query
 		$id = $this->getAndPop($query, 'id');
+		$id = $this->getAndPop($query, 'release_id', $id);
+		$id = $this->getAndPop($query, 'category_id', $id);
 
 		// If there is no ID something has gone REALLY wrong...
 		if (empty($id))
@@ -521,8 +523,8 @@ class ArsRouter extends RouterBase
 
 				// Try to find the Releases view for the specific category
 				$menuItem = $this->findMenu(array_merge($queryOptions, [
-					'view' => 'Releases',
-					'id'   => $id,
+					'view'        => 'Releases',
+					'category_id' => $id,
 				]));
 
 				// Fall back to legacy "category" view menu item
@@ -533,16 +535,34 @@ class ArsRouter extends RouterBase
 
 				// Fall back to the root Categories menu item if necessary
 				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-						'view' => 'Categories',
+						'view'   => 'Categories',
+						'layout' => 'repository',
 					]));
 
+				// Fall back to the legacy root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => 'repository',
+					]));
+
+				// Fall back to the root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'Categories',
+						'layout' => $this->getModelObject('Releases', $id)->type,
+					]));
+
+				// Fall back to the legacy root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => $this->getModelObject('Releases', $id)->type,
+					]));
 				// Pass back the view and ID to the query as needed
 				$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
 
 				if ($mView != $view)
 				{
-					$query['view'] = $view;
-					$query['id']   = $id;
+					$query['view']        = $view;
+					$query['category_id'] = $id;
 				}
 
 				return $menuItem;
@@ -574,8 +594,8 @@ class ArsRouter extends RouterBase
 
 				// Try to find the Items view for the specific Release
 				$menuItem = $this->findMenu(array_merge($queryOptions, [
-					'view' => 'Items',
-					'id'   => $id,
+					'view'       => 'Items',
+					'release_id' => $id,
 				]));
 
 				// Fall back to legacy "release" view menu item
@@ -584,11 +604,11 @@ class ArsRouter extends RouterBase
 						'release_id' => $id,
 					]));
 
-				// Fall back to Releases view for the specific category ID
-				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-						'view' => 'Releases',
-						'id'   => $this->getModelObject('Releases', $id)->category_id,
-					]));
+			// Fall back to Releases view for the specific category ID
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'        => 'Releases',
+					'category_id' => $this->getModelObject('Releases', $id)->category_id,
+				]));
 
 			// Fall back to legacy "category" view for the specific category ID
 			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
@@ -598,7 +618,26 @@ class ArsRouter extends RouterBase
 
 			// Fall back to the root Categories menu item if necessary
 			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-					'view' => 'Categories',
+					'view'   => 'Categories',
+					'layout' => 'repository',
+				]));
+
+			// Fall back to the legacy root Categories menu item if necessary
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'   => 'browses',
+					'layout' => 'repository',
+				]));
+
+			// Fall back to the root Categories menu item with a specific layout
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'   => 'Categories',
+					'layout' => $release->type,
+				]));
+
+			// Fall back to the legacy root Categories menu item with a specific layout
+			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+					'view'   => 'browses',
+					'layout' => $release->type,
 				]));
 
 			// Pass back the view and ID to the query as needed
@@ -607,7 +646,21 @@ class ArsRouter extends RouterBase
 			if ($mView != $view)
 			{
 				$query['view'] = $view;
-				$query['id']   = $id;
+
+				switch ($view)
+				{
+					case 'Item':
+						$query['id'] = $id;
+						break;
+
+					case 'Items':
+						$query['release_id'] = $id;
+						break;
+
+					case 'Releases':
+						$query['category_id'] = $id;
+						break;
+				}
 			}
 
 			return $menuItem;
