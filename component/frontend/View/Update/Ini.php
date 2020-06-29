@@ -22,6 +22,8 @@ class Ini extends Raw
 
 	public $showChecksums = false;
 
+	public $compactDisplay = false;
+
 	protected function onBeforeIni($tpl = null): void
 	{
 		$this->commonSetup();
@@ -39,8 +41,9 @@ class Ini extends Raw
 			}
 		}
 
-		$this->envs          = $envs;
-		$this->showChecksums = $this->container->params->get('show_checksums', 0) == 1;
+		$this->envs           = $envs;
+		$this->showChecksums  = $this->container->params->get('show_checksums', 0) == 1;
+		$this->compactDisplay = $this->container->params->get('minify_xml', 1) == 1;
 
 		$this->setLayout('ini');
 

@@ -9,6 +9,7 @@ defined('_JEXEC') or die();
 
 /** @var \Akeeba\ReleaseSystem\Site\View\Update\Ini $this */
 
+use Akeeba\ReleaseSystem\Admin\Helper\Format;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Router as RouterHelper;
 use FOF30\Date\Date;
@@ -47,14 +48,18 @@ $infoUrl = RouterHelper::_(
 		'index.php?option=com_ars&view=Items&release_id=' . $item->release_id,
 		true, Route::TLS_IGNORE, true
 );
+
+$releaseNotes = $this->compactDisplay ? '' : (str_replace("\n", '', str_replace("\r", '', Format::preProcessMessage($item->release_notes))));
 ?>
-; Live Update provision file
-; Generated on {{ gmdate('Y-m-d H:i:s') }} GMT
+@unless($this->compactDisplay)
+	; Live Update provision file
+	; Generated on {{ gmdate('Y-m-d H:i:s') }} GMT
+@endunless
 software="{{ $item->cat_title }}"
 version="{{ $item->version }}"
 link="{{ $downloadURL }}"
 date="{{ $date->format('Y-m-d') }}"
-releasenotes="<a href=\"{{ $infoUrl }}\">{{ $infoUrl }}</a>"
+releasenotes="{{ $releaseNotes }}"
 infourl="{{ $moreURL }}"
 md5="{{ $item->md5 }}"
 sha1="{{ $item->sha1 }}"
