@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 
 /** @var \Akeeba\ReleaseSystem\Site\View\Update\Xml $this */
 
-$showChecksums = isset($this->showChecksums) ? $this->showChecksums : false;
+$showChecksums = $this->showChecksums ?? false;
 
 $streamTypeMap = [
 	'components' => 'component',
@@ -25,16 +25,28 @@ $streamTypeMap = [
 	'templates'  => 'template',
 ];
 
+$minifyXML = $this->container->params->get('minify_xml', 1) == 1;
+
 $updateStream = new SimpleXMLElement("<updates />");
+
+/**
+ * For the gory details of what is required and what is not:
+ * @see https://docs.joomla.org/Deploying_an_Update_Server
+ */
 
 /** @var \Akeeba\ReleaseSystem\Site\Model\UpdateStreams $item */
 foreach ($this->items as $item)
 {
+	if (!empty($this->filteredItemIDs) && !in_array($item->release_id, $this->filteredItemIDs))
+	{
+		continue;
+	}
+
 	$parsedPlatforms = $this->getParsedPlatforms($item);
 	foreach ($parsedPlatforms['platforms'] as $platform)
 	{
-		list($platformName, $platformVersion) = $platform;
-		list($downloadUrl, $format) = $this->getDownloadUrl($item);
+		[$platformName, $platformVersion] = $platform;
+		[$downloadUrl, $format] = $this->getDownloadUrl($item);
 		$minPhp = array_reduce($parsedPlatforms['php'], function (?string $carry, ?string $item): ?string {
 			if (empty($carry))
 			{
@@ -47,7 +59,10 @@ foreach ($this->items as $item)
 		$update = $updateStream->addChild('update');
 
 		$update->addChild('name', $item->name);
-		$update->addChild('description', $item->name);
+		if (!$minifyXML)
+		{
+			$update->addChild('description', $item->name);
+		}
 		$update->addChild('element', $item->element);
 		$update->addChild('type', $streamTypeMap[$item->type]);
 		$update->addChild('version', $item->version);
@@ -68,29 +83,44 @@ foreach ($this->items as $item)
 
 		$tags->addChild('tag', $item->maturity);
 
-		$update->addChild('maintainer', $this->container->platform->getConfig()->get('sitename'));
-		$update->addChild('maintainerurl', Uri::base());
-		$update->addChild('section', 'Updates');
+		if (!$minifyXML)
+		{
+			$update->addChild('maintainer', $this->container->platform->getConfig()->get('sitename'));
+			$update->addChild('maintainerurl', Uri::base());
+			$update->addChild('section', 'Updates');
+		}
 
 		$targetPlatform = $update->addChild('targetplatform');
 		$targetPlatform->addAttribute('name', $platformName);
 		$targetPlatform->addAttribute('version', $platformVersion);
 
-		foreach (['md5', 'sha1', 'sha256', 'sha384', 'sha512'] as $checksum)
+		$supportedChecksums = ['md5', 'sha1', 'sha256', 'sha384', 'sha512'];
+
+		if ($minifyXML)
 		{
-			if ($showChecksums && !empty($item->{$checksum}))
+			// Joomla supports SHA-256, SHA-384 and SHA-512. For space efficiency reasons SHA-256 is enough.
+			$supportedChecksums = ['sha256'];
+		}
+
+		foreach ($supportedChecksums as $checksum)
+		{
+			if ($showChecksums && ($item->{$checksum} != ''))
 			{
 				$checksum = $update->addChild($checksum, $item->{$checksum});
 			}
 		}
 
-		if (($platformName == 'joomla') && (substr($platformVersion, 0, 2) != '1.'))
+		// Joomla uses client_id = 1 by default. We only need to explicitly specify when it's not 1.
+		if ($item->client_id != 1)
 		{
-			$update->addChild('client_id', (int) $item->client_id);
-		}
-        elseif ($platformName == 'joomla')
-		{
-			$update->addChild('client', (int) $item->client_id);
+			if (($platformName == 'joomla') && (substr($platformVersion, 0, 2) != '1.'))
+			{
+				$update->addChild('client_id', (int) $item->client_id);
+			}
+            elseif ($platformName == 'joomla')
+			{
+				$update->addChild('client', (int) $item->client_id);
+			}
 		}
 
 		if (!empty($item->folder))
@@ -98,9 +128,12 @@ foreach ($this->items as $item)
 			$update->addChild('folder', $item->folder);
 		}
 
-		foreach ($parsedPlatforms['php'] as $phpVersion)
+		if (!$minifyXML)
 		{
-			$update->addChild('ars-phpcompat', $phpVersion);
+			foreach ($parsedPlatforms['php'] as $phpVersion)
+			{
+				$update->addChild('ars-phpcompat', $phpVersion);
+			}
 		}
 
 		if (!empty($minPhp))

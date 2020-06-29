@@ -5,6 +5,7 @@
 * `~` Rewritten item XML update stream using SimpleXML
 * `~` Far more compact XML update streams, using RegEx target platform version matching
 * `~` Far more compact INI update streams, without release notes
+* `~` Optionally use com_compatibility to reduce the number of displayed releases in the update stream
 * `#` [LOW] Frontend add-on download ID, redirect to non-SEF URL after editing an item
 
 # 5.0.0

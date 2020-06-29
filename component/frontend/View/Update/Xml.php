@@ -10,8 +10,11 @@ namespace Akeeba\ReleaseSystem\Site\View\Update;
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Model\Environments;
+use FOF30\Container\Container;
 use FOF30\Date\Date;
+use FOF30\Model\DataModel\Exception\RecordNotLoaded;
 use FOF30\View\DataView\Raw;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\ComponentHelper as JComponentHelper;
 
 class Xml extends Raw
@@ -31,6 +34,8 @@ class Xml extends Raw
 	public $envs = [];
 
 	public $showChecksums = false;
+
+	public $filteredItemIDs = null;
 
 	public function display($tpl = null): bool
 	{
@@ -122,5 +127,77 @@ class Xml extends Raw
 		$this->envs          = $envs;
 		$this->showChecksums = $this->container->params->get('show_checksums', 0) == 1;
 		$this->setLayout('stream');
+
+		/**
+		 * Use Version Compatibility information to cut down the number of displayed versions?
+		 */
+		if ($this->container->params->get('use_compatibility', 1) == 1)
+		{
+			$this->applyVersionCompatibilityUpdateStreamFilter();
+		}
+	}
+
+	protected function applyVersionCompatibilityUpdateStreamFilter(): void
+	{
+		if (!ComponentHelper::isEnabled('com_compatibility'))
+		{
+			return;
+		}
+
+		$container = Container::getInstance('com_compatibility', [
+			'tempInstance' => true,
+		]);
+
+		if (empty($this->category))
+		{
+			return;
+		}
+
+		try
+		{
+			$updateStream = $this->container->factory->model('UpdateStreams')->tmpInstance()
+				->findOrFail($this->category);
+			$category     = $this->container->factory->model('Categories')->tmpInstance()
+				->findOrFail($updateStream->category);
+		}
+		catch (RecordNotLoaded $e)
+		{
+			return;
+		}
+
+		$displayData = $container->factory->model('Compatibility')->tmpInstance()->getDisplayData();
+		$displayData = array_filter($displayData, function ($extensionData) use ($category) {
+			return $extensionData['slug'] == $category->slug;
+		});
+
+		if (empty($displayData))
+		{
+			return;
+		}
+
+		$extensionData         = array_pop($displayData);
+		$this->filteredItemIDs = [];
+
+		foreach ($extensionData['matrix'] as $jVersion => $perPHPVersion)
+		{
+			foreach ($perPHPVersion as $phpVersion => $versionInfo)
+			{
+				if (empty($versionInfo))
+				{
+					continue;
+				}
+
+				$id = $versionInfo['id'] ?? null;
+
+				if (empty($id))
+				{
+					continue;
+				}
+
+				$this->filteredItemIDs[] = $id;
+			}
+		}
+
+		$this->filteredItemIDs = array_unique($this->filteredItemIDs);
 	}
 }

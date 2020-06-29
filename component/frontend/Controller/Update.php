@@ -24,7 +24,7 @@ class Update extends Controller
 	/**
 	 * Determines the task from the layout and view format
 	 *
-	 * @param string $task The task to execute
+	 * @param   string  $task  The task to execute
 	 *
 	 * @return  void
 	 */
@@ -234,6 +234,7 @@ class Update extends Controller
 		$view            = $this->getView();
 		$view->items     = $model->getItems($id);
 		$view->published = $model->getPublished($id);
+		$view->category  = $id;
 
 		$registeredURLParams = [
 			'option' => 'CMD',
