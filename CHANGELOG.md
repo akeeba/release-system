@@ -1,5 +1,6 @@
 # 5.1.0
 
+* `+` Add `php_minimum` to XML update streams
 * `~` Rewritten frontend SEF router
 * `#` [LOW] Frontend add-on download ID, redirect to non-SEF URL after editing an item
 

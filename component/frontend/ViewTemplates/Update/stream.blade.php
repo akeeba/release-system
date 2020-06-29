@@ -33,6 +33,14 @@ echo '<' . '?';
 	foreach ($parsedPlatforms['platforms'] as $platform):
 	list($platformName, $platformVersion) = $platform;
 	list($downloadUrl, $format) = $this->getDownloadUrl($item);
+	$minPhp = array_reduce($parsedPlatforms['php'], function (?string $carry, ?string $item): ?string {
+		if (empty($carry))
+		{
+			return $item;
+		}
+
+		return version_compare($item, $carry, 'lt') ? $item : $carry;
+	}, null);
 	?>
 	<update>
 		<name><![CDATA[{{{ $item->name }}}]]></name>
@@ -67,7 +75,10 @@ echo '<' . '?';
 	<folder>{{ $item->folder ?? '' }}</folder>
 	@foreach($parsedPlatforms['php'] as $phpVersion)
 		<ars-phpcompat version="<?php echo $phpVersion ?>" />
-		@endforeach
+	@endforeach
+	@unless(empty($minPhp))
+		<php_minimum>{{{ $minPhp }}}</php_minimum>
+		@endunless
 		</update>
 		<?php endforeach; endforeach; ?>
 </updates>
