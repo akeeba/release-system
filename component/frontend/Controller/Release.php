@@ -145,6 +145,13 @@ class Release extends DataController
 		// Filter the releases by this category
 		$releasesModel->category($categoryModel->id)->published(1);
 
+		$limit = $releasesModel->getState('limit', null);
+
+		if (is_null($limit))
+		{
+			$releasesModel->limit($app->get('list_limit', 20));
+		}
+
 		/** @var BleedingEdge $bleedingEdgeModel */
 		$bleedingEdgeModel = $this->container->factory->model('BleedingEdge');
 		$bleedingEdgeModel->scanCategory($categoryModel);
