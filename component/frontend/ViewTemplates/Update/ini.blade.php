@@ -9,14 +9,10 @@ defined('_JEXEC') or die();
 
 /** @var \Akeeba\ReleaseSystem\Site\View\Update\Ini $this */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Format;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
+use Akeeba\ReleaseSystem\Site\Helper\Router as RouterHelper;
 use FOF30\Date\Date;
-use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Version;
 
 if (count($this->items))
 {
@@ -36,27 +32,37 @@ if (count($this->items))
 }
 
 @ob_end_clean();
+
+if (!$this->published || empty($this->items))
+{
+	echo <<< INI
+; Live Update provision file
+; No updates are available!
+INI;
+
+	return;
+}
+
+$infoUrl = RouterHelper::_(
+		'index.php?option=com_ars&view=Items&release_id=' . $item->release_id,
+		true, Route::TLS_IGNORE, true
+);
 ?>
-@if (!$this->published || empty($this->items))
-	; Live Update provision file
-	; No updates are available!
-@else
-	; Live Update provision file
-	; Generated on {{ gmdate('Y-m-d H:i:s') }} GMT
-	software="{{ $item->cat_title }}"
-	version="{{ $item->version }}"
-	link="{{ $downloadURL }}"
-	date="{{ $date->format('Y-m-d') }}"
-	releasenotes="{{ str_replace("\n", '', str_replace("\r", '', Format::preProcessMessage($item->release_notes))) }}"
-	infourl="{{ $moreURL }}"
-	md5="{{ $item->md5 }}"
-	sha1="{{ $item->sha1 }}"
-	@if($this->showChecksums)
-		@foreach (['sha256', 'sha384', 'sha512'] as $hash)
-			@unless(empty($item->{$hash}))
-				{{$hash}}="{{ $item->{$hash} }}"
-			@endunless
-		@endforeach
-	@endif
-	platforms="{{ implode(',', $platformKeys) }}"
+; Live Update provision file
+; Generated on {{ gmdate('Y-m-d H:i:s') }} GMT
+software="{{ $item->cat_title }}"
+version="{{ $item->version }}"
+link="{{ $downloadURL }}"
+date="{{ $date->format('Y-m-d') }}"
+releasenotes="<a href=\"{{ $infoUrl }}\">{{ $infoUrl }}</a>"
+infourl="{{ $moreURL }}"
+md5="{{ $item->md5 }}"
+sha1="{{ $item->sha1 }}"
+@if($this->showChecksums)
+	@foreach (['sha256', 'sha384', 'sha512'] as $hash)
+		@unless(empty($item->{$hash}))
+			{{$hash}}="{{ $item->{$hash} }}"
+		@endunless
+	@endforeach
 @endif
+platforms="{{ implode(',', $platformKeys) }}"
