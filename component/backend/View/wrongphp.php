@@ -148,7 +148,7 @@ if (!function_exists('akeeba_common_wrongphp'))
 				unsure how to do this, please ask your host.
 			</p>
 			<p>
-				<a href="https://www.akeebabackup.com/how-do-version-numbers-work.html">Version numbers don't make
+				<a href="https://www.akeeba.com/how-do-version-numbers-work.html">Version numbers don't make
 					sense?</a>
 			</p>
 

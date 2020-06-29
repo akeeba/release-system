@@ -4,7 +4,7 @@ COPYRIGHT AND DISCLAIMER
 ================================================================================
 
 Akeeba Release System - A software release system for Joomla!
-Copyright (C) 2010-2017 Nicholas K. Dionysopoulos / AkeebaBackup.com
+Copyright (C) 2010-2017 Nicholas K. Dionysopoulos / Akeeba Ltd
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -28,11 +28,11 @@ CONTACT AND SUPPORT
 ================================================================================
 
 If you have further questions, you can contact the author directly by emailing
-at nicholas@akeebabackup.com. Alternatively, you can post on our free support
-forum at http://www.akeebabackup.com/forum.html or send a Twitter message to
+at nicholas@akeeba.com. Alternatively, you can post on our free support
+forum at https://www.akeeba.com/forum.html or send a Twitter message to
 @akeebabackup or @nikosdion. If you wish to contact us by Instant Messaging or
 Skype voice call, please leave a Personal Message to user "nicholas" on our
-official site http://www.akeebabackup.com stating the reason of communication,
+official site https://www.akeeba.com stating the reason of communication,
 your Skype handle and timezone so that we can arrange for such communication.
 
 Note: we regret to inform you that we can not do one-on-one support through

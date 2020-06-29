@@ -12,17 +12,18 @@ defined('_JEXEC') or die();
 
 <div style="margin: 1em">
 	<h1>Akeeba Frontend Framework (FEF) could not be found on this site</h1>
-	<hr/>
+	<hr />
 	<div class="alert alert-warning">
 		<h2>
 			This component requires the Akeeba Frontend Framework (FEF) to be installed on your site. Please go to <a
-					href="https://www.akeebabackup.com/download/official/fef.html">our download page</a> to download it, then install it on your site.
+					href="https://www.akeeba.com/download/official/fef.html">our download page</a> to download it, then
+			install it on your site.
 		</h2>
 	</div>
-	<hr/>
+	<hr />
 	<h4>Further information</h4>
 	<p>
-        FEF is the name of our custom CSS framework. It's responsible for rendering the interface of our Joomla!
+		FEF is the name of our custom CSS framework. It's responsible for rendering the interface of our Joomla!
 		extensions. It is automatically installed when you install our extensions on your site.
 	</p>
 	<p>
