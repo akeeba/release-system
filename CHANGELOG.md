@@ -3,6 +3,7 @@
 * `+` Add `php_minimum` to XML update streams
 * `~` Rewritten frontend SEF router
 * `~` Rewritten item XML update stream using SimpleXML
+* `~` Far more compact XML update streams, using RegEx target platform version matching
 * `#` [LOW] Frontend add-on download ID, redirect to non-SEF URL after editing an item
 
 # 5.0.0

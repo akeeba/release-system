@@ -23,7 +23,7 @@ if (count($this->items))
 	/** @var object $item */
 	$item = array_shift($this->items);
 	list($downloadURL, $format) = $this->getDownloadUrl($item);
-	$parsedPlatforms = $this->getParsedPlatforms($item);
+	$parsedPlatforms = $this->getParsedPlatforms($item, false);
 	$platformKeys    = array_map(function ($x) {
 		return $x[0] . '/' . $x[1];
 	}, $parsedPlatforms['platforms']);

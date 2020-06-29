@@ -27,23 +27,6 @@ trait Common
 	 */
 	public $dlidRequest;
 
-	private function commonSetup()
-	{
-		// Set up the download ID request suffix
-		$this->dlidRequest = '';
-		$dlid              = trim($this->input->getCmd('dlid', ''));
-
-		if (!empty($dlid))
-		{
-			$dlid = Filter::reformatDownloadID($dlid);
-		}
-
-		if (!empty($dlid))
-		{
-			$this->dlidRequest = '&dlid=' . $dlid;
-		}
-	}
-
 	/**
 	 * Return a sanitized download URL for a download item.
 	 *
@@ -52,7 +35,7 @@ trait Common
 	 * `format=zip` in it. However, all download URLs are meant to be format=raw. This causes some interesting anomalies
 	 * because now FOF is not aware this is supposed to be a raw view and the download fails.
 	 *
-	 * @param object|null $item
+	 * @param   object|null  $item
 	 *
 	 * @return array ['url', 'format']
 	 */
@@ -130,7 +113,21 @@ trait Common
 		return [$dlUri->toString(), $format];
 	}
 
-	public function getParsedPlatforms(?object $item): array
+	/**
+	 * Parses the environments into distinct arrays of versions by platform name.
+	 *
+	 * When $compact is set to true (default) the versions for each platform are compacted into a single regular
+	 * expression. This RegEx is understood by Joomla's update code and lets us create a concise update XML stream
+	 * document with a single element for all supported versions of the CMS (as opposed to an update element for each
+	 * supported CMS version). This may look silly but it saves a ton of money when delivering these updates through
+	 * an Amazon CloudFlare CDN which charges per byte transferred.
+	 *
+	 * @param   object|null  $item     Update stream
+	 * @param   bool         $compact  Should I compact the versions into a single RegEx?
+	 *
+	 * @return  array
+	 */
+	public function getParsedPlatforms(?object $item, $compact = true): array
 	{
 		$parsedPlatforms = [
 			'platforms' => [],
@@ -205,6 +202,156 @@ trait Common
 			$parsedPlatforms['platforms'][] = [$platformName, $platformVersion];
 		}
 
+		if (!$compact)
+		{
+			return $parsedPlatforms;
+		}
+
+		/**
+		 * At this point I have Joomla platforms set up as e.g. 3.8, 3.9, 3.10, 4.0. Ths would cause four identical
+		 * entries to be output, only difference being the target platform.
+		 */
+
+		$platformVersions = [];
+
+		foreach ($parsedPlatforms['platforms'] as $platform)
+		{
+			[$pName, $pVersion] = $platform;
+			$platformVersions[$pName]   = $platformVersions[$pName] ?? [];
+			$platformVersions[$pName][] = $pVersion;
+		}
+
+		$parsedPlatforms['platforms'] = [];
+
+		foreach ($platformVersions as $pName => $pVersions)
+		{
+			$parsedPlatforms['platforms'][] = [
+				$pName,
+				$this->platformVersionCompactor($pVersions),
+			];
+		}
+
 		return $parsedPlatforms;
+	}
+
+	private function platformVersionCompactor(array $versions): string
+	{
+		$byMajor     = [];
+		$retVersions = [];
+
+		foreach ($versions as $v)
+		{
+			$parts = explode('.', $v, 3);
+
+			// If the last version part is a star we can toss it – it's the default behavior in Joomla.
+			if ((count($parts) == 3) && ($parts[2] == '*'))
+			{
+				array_pop($parts);
+			}
+
+			// Three part version. This will be a separate entry. I can't compact oddball versions like that.
+			if (count($parts) == 3)
+			{
+				$retVersions[] = $v;
+
+				continue;
+			}
+
+			// Someone is stupid enough to only specify a major version. Let me fix that for you.
+			if (count($parts) == 1)
+			{
+				$parts[] = '*';
+			}
+
+			[$major, $minor] = $parts;
+
+			// Did someone specify ".*"?! OK, we will tell Joomla to install no matter the version. You're insane...
+			if (empty($major) && ($minor == '*'))
+			{
+				$byMajor = ['*' => '*'];
+
+				break;
+			}
+
+			$byMajor[$major] = $byMajor[$major] ?? [];
+
+			// Has someone already specified "all versions" for this major version?
+			if (in_array('*', $byMajor[$major]))
+			{
+				continue;
+			}
+
+			// Someone specified "all versions" for this major version. OK, then.
+			if ($minor == '*')
+			{
+				$byMajor[$major] = ['*'];
+
+				continue;
+			}
+
+			// Add a minor version to this major
+			$byMajor[$major][] = $minor;
+		}
+
+		// Special case: all major and minor versions (overrides everything else)
+		if (($byMajor['*'] ?? []) == ['*'])
+		{
+			return '.*';
+		}
+
+		// Add version RegEx by major version
+		foreach ($byMajor as $major => $minorVersions)
+		{
+			// Special case: no minor version (how the heck...?)
+			if (!count($minorVersions))
+			{
+				continue;
+			}
+
+			// Special case: all minor versions for this major version
+			if ($minorVersions == ['*'])
+			{
+				$retVersions[] = $major;
+
+				continue;
+			}
+
+			// Special case: just one minor version
+			if (count($minorVersions) == 1)
+			{
+				$retVersions[] = sprintf('%s\.%s', $major, array_shift($minorVersions));
+
+				continue;
+			}
+
+			$retVersions[] = sprintf('%s\.(%s)', $major, implode('|', $minorVersions));
+		}
+
+		// Special case: only one version regEx supported
+		if (count($retVersions) == 1)
+		{
+			return array_pop($retVersions);
+		}
+
+		return '(' . implode('|', array_map(function ($regex) {
+				return sprintf('(%s)', $regex);
+			}, $retVersions)) . ')';
+	}
+
+	private function commonSetup()
+	{
+		// Set up the download ID request suffix
+		$this->dlidRequest = '';
+		$dlid              = trim($this->input->getCmd('dlid', ''));
+
+		if (!empty($dlid))
+		{
+			$dlid = Filter::reformatDownloadID($dlid);
+		}
+
+		if (!empty($dlid))
+		{
+			$this->dlidRequest = '&dlid=' . $dlid;
+		}
 	}
 }
