@@ -1,6 +1,7 @@
 # 5.1.0
 
 * `+` Add `php_minimum` to XML update streams
+* `+` Show environments in each release (not just each item)
 * `~` Rewritten frontend SEF router
 * `~` Rewritten item XML update stream using SimpleXML
 * `~` Far more compact XML update streams, using RegEx target platform version matching
