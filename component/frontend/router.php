@@ -406,9 +406,11 @@ class ArsRouter extends RouterBase
 		{
 			// This is an Item view. The only segment is the Item alias.
 			case 'Items':
+				$releaseId     = $menuItem->query['release_id'] ?? null;
+				$releaseId     = $menuItem->getParams()->get('relid', $releaseId);
 				$item          = $this->getModelObject('Items', [
 					'alias'      => array_shift($segments),
-					'release_id' => $menuItem->query['release_id'] ?? null,
+					'release_id' => $releaseId,
 				]);
 				$query['view'] = 'Item';
 				$query['task'] = 'download';
@@ -418,6 +420,7 @@ class ArsRouter extends RouterBase
 			// This is an Item or Items view depending on the number of segments.
 			case 'Releases':
 				$category_id  = $menuItem->query['category_id'] ?? null;
+				$category_id  = $menuItem->getParams()->get('catid', $category_id);
 				$segmentCount = count($segments);
 
 				if ($segmentCount === 2)
@@ -741,10 +744,10 @@ class ArsRouter extends RouterBase
 			case 'Items':
 			case 'Item':
 				// In a singular Item view fetch the release ID into $id so the rest of the code works
-				if ($view == 'Item')
-				{
-					$id = $this->getModelObject('Items', $id)->release_id;
-				}
+			if ($view == 'Item')
+			{
+				$id = $this->getModelObject('Items', $id)->release_id;
+			}
 
 			// If no language was requested in the non-SEF URL use the language of the Category
 			if (!$hasValidLangInQuery)
@@ -1079,6 +1082,7 @@ class ArsRouter extends RouterBase
 					// Same view. Check that the category ID matches.
 					case 'Releases':
 						$mID = $menuItem->query['category_id'] ?? null;
+						$mID = $menuItem->getParams()->get('catid', $mID);
 
 						if ($id != $mID)
 						{
@@ -1126,6 +1130,7 @@ class ArsRouter extends RouterBase
 					// Same view. Check that the release ID matches.
 					case 'Items':
 						$mID = $menuItem->query['release_id'] ?? null;
+						$mID = $menuItem->getParams()->get('relid', $mID);
 
 						if ($id != $mID)
 						{
@@ -1136,6 +1141,7 @@ class ArsRouter extends RouterBase
 					// Releases (of a category) view. Check that the category ID matches my release's category ID.
 					case 'Releases':
 						$mID = $menuItem->query['category_id'] ?? null;
+						$mID = $menuItem->getParams()->get('catid', $mID);
 
 						if (empty($id))
 						{
@@ -1189,6 +1195,7 @@ class ArsRouter extends RouterBase
 					// Items (of a release) view. Check that the release ID matches.
 					case 'Items':
 						$mID = $menuItem->query['release_id'] ?? null;
+						$mID = $menuItem->getParams()->get('relid', $mID);
 
 						if ($item->release_id != $mID)
 						{
@@ -1199,6 +1206,7 @@ class ArsRouter extends RouterBase
 					// Releases (of a category) view. Check that the category ID matches my release's category ID.
 					case 'Releases':
 						$mID = $menuItem->query['category_id'] ?? null;
+						$mID = $menuItem->getParams()->get('catid', $mID);
 
 						if (empty($item->release_id))
 						{
@@ -1270,7 +1278,6 @@ class ArsRouter extends RouterBase
 				break;
 
 			case 'Update':
-				// TODO Validate the Update menu item
 				$id      = $query['id'] ?? null;
 				$task    = $query['task'] ?? null;
 				$layout  = $query['layout'] ?? $task;
@@ -1310,18 +1317,20 @@ class ArsRouter extends RouterBase
 					case 'stream':
 					case 'ini':
 					case 'download':
-						$mStreamId = $menuItem->query['streamid'] ?? 0;
+					$mStreamId = $menuItem->query['streamid'] ?? 0;
+					$mStreamId = $menuItem->getParams()->get('streamid', $mStreamId);
 
-						if ($mStreamId != $id)
-						{
-							$menuItem = null;
-						}
+					if ($mStreamId != $id)
+					{
+						$menuItem = null;
+					}
 
-						break;
+					break;
 
 					// For update stream categories the menu category must match the query id
 					case 'category':
 						$mCategory = $menuItem->query['category'] ?? '';
+						$mCategory = $menuItem->getParams()->get('category', $mCategory);
 
 						if ($mCategory != $id)
 						{
