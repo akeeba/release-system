@@ -984,7 +984,14 @@ class Items extends DataModel
 	 */
 	protected function getEnvironmentsAttribute($value): array
 	{
-		return $this->getAttributeForJson($value);
+		$environments = $this->getAttributeForJson($value);
+
+		if (!is_array($environments))
+		{
+			$environments = [];
+		}
+
+		return $environments;
 	}
 
 	/**

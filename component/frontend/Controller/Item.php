@@ -16,6 +16,7 @@ use Akeeba\ReleaseSystem\Site\Model\Items;
 use Akeeba\ReleaseSystem\Site\Model\Logs;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
 use FOF30\Controller\DataController;
+use FOF30\Controller\Exception\ItemNotFound;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -199,6 +200,9 @@ class Item extends DataController
 
 		/** @var BleedingEdge $bleedingEdgeModel */
 		$bleedingEdgeModel = $this->container->factory->model('BleedingEdge');
+
+		// TODO Check BleedingEdge limits and make sure the release is still published after that
+
 		$bleedingEdgeModel->checkFiles($releaseModel);
 
 		// Push the models to the view

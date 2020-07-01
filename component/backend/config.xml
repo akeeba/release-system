@@ -70,6 +70,26 @@
             <option value="1">JYes</option>
         </field>
 
+        <field
+                name="bleedingedge_age"
+                label="COM_ARS_CONFIG_BLEEDINGEDGE_AGE_LABEL"
+                description="COM_ARS_CONFIG_BLEEDINGEDGE_AGE_DESC"
+                default="0"
+                type="number"
+                min="0"
+                max="7320"
+        />
+
+        <field
+                name="bleedingedge_count"
+                label="COM_ARS_CONFIG_BLEEDINGEDGE_COUNT_LABEL"
+                description="COM_ARS_CONFIG_BLEEDINGEDGE_COUNT_DESC"
+                default="0"
+                type="number"
+                min="0"
+                max="1000"
+        />
+
         <field name="@spacer" type="spacer" default="" label="" description=""/>
 
         <field name="no_access_url" type="text" default="" label="COM_ARS_CONFIG_FE_NOACCESSURL_LABEL"

@@ -9,6 +9,7 @@ namespace Akeeba\ReleaseSystem\Site\Model;
 
 defined('_JEXEC') or die();
 
+use Exception;
 use FOF30\Date\Date;
 use FOF30\Model\DataModel\Collection;
 use FOF30\Model\Model;
@@ -43,44 +44,12 @@ class BleedingEdge extends Model
 	private $folder = null;
 
 	/**
-	 * Sets the category we are operating on
-	 *
-	 * @param Categories|integer $catId A category table or a numeric category ID
-	 *
-	 * @return void
-	 */
-	protected function setCategory(int $catId): void
-	{
-		// Initialise
-		$this->folder      = null;
-		$this->category_id = (int) $catId;
-		$this->category    = $this->container->factory->model('Categories')->tmpInstance();
-		$this->category->find($this->category_id);
-
-		// Store folder
-		$folder = $this->category->directory;
-
-		// If it is stored locally, make sure the folder exists
-		if (!Folder::exists($folder))
-		{
-			$folder = JPATH_ROOT . '/' . $folder;
-
-			if (!Folder::exists($folder))
-			{
-				return;
-			}
-		}
-
-		$this->folder = $folder;
-	}
-
-	/**
 	 * Scan a bleeding edge category
 	 *
-	 * @param Categories $category The category to scan
+	 * @param   Categories  $category  The category to scan
 	 *
 	 * @return  void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function scanCategory(Categories $category): void
 	{
@@ -104,61 +73,106 @@ class BleedingEdge extends Model
 			return;
 		}
 
+		// We will now prune releases based on the existence of their files, their age and their count.
 		$known_folders = [];
+		$releases      = $category->releases;
 
-		// Make sure published releases do exist
-		if (!empty($category->releases))
+		if (!is_object($releases))
 		{
-			/** @var Releases $release */
-			foreach ($category->releases as $release)
+			// This makes sure that a category without releases won't cause an error
+			$releases = new Collection();
+		}
+
+		// Releases pointing to non-existent folders will be deleted
+		$toDelete = $releases->filter(function (Releases &$release) use (&$known_folders) {
+			// Already unpublished releases will be automatically deleted
+			if (!$release->published)
 			{
-				if (!$release->published)
-				{
-					continue;
-				}
-
-				$mustScanFolder = true;
-				$folder         = null;
-
-				$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
-
-				if (is_null($folderName))
-				{
-					$mustScanFolder = false;
-				}
-				else
-				{
-					$known_folders[] = $folderName;
-					$folder          = $this->folder . '/' . $folderName;
-				}
-
-				$exists = false;
-
-				if ($mustScanFolder)
-				{
-					$exists = Folder::exists($folder);
-				}
-
-				if (!$exists)
-				{
-					$release->save([
-						'published' => 0,
-					]);
-				}
-				else
-				{
-					$this->checkFiles($release);
-				}
+				return true;
 			}
 
-			/** @var Collection $category ->releases */
-			$first_release = $category->releases->first();
-		}
-		else
+			// Releases with an invalid folder name will be automatically deleted
+			$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
+
+			if (is_null($folderName))
+			{
+				return true;
+			}
+
+			// Releases whose folder no longer exists will be automatically deleted
+			$folder = $this->folder . '/' . $folderName;
+			$exists = Folder::exists($folder);
+
+			if (!$exists)
+			{
+				return true;
+			}
+
+			// The folder exists. Add it to the known folders array and check the files of this BE release.
+			$known_folders[] = $folderName;
+
+			$this->checkFiles($release);
+
+			return false;
+		});
+
+		// Keep the releases which are not already marked for deletion. Avoids double entries in $toDelete.
+		if ($toDelete->count())
 		{
-			$first_release = null;
+			$releases = $releases->diff($toDelete);
 		}
 
+		// Apply maximum age limits
+		$ageLimit = $this->container->params->get('bleedingedge_age', 0);
+
+		if ($ageLimit > 0)
+		{
+			// Releases older than this timestamp are to be deleted
+			$targetTimestamp = time() - (86400 * $ageLimit);
+
+			// Find which BleedingEdge releases I need to delete by age
+			$toDelete = $toDelete->merge($releases->filter(function (Releases $release) use ($targetTimestamp) {
+				try
+				{
+					return (new Date($release->created))->getTimestamp() <= $targetTimestamp;
+				}
+				catch (Exception $e)
+				{
+					// The release creation timestamp is invalid. Delete the sucker anyway.
+					return true;
+				}
+			}));
+
+			// Keep the releases which are not already marked for deletion
+			if ($toDelete->count())
+			{
+				$releases = $releases->diff($toDelete);
+			}
+		}
+
+		// Apply count limits
+		$countLimit = $this->container->params->get('bleedingedge_count', 0);
+
+		if (($countLimit > 0) && ($releases->count() > $countLimit))
+		{
+			// Add the excess releases in the collection of releases to remove
+			$toDelete = $toDelete->merge($releases->slice($countLimit));
+			// Conversely, only keep as many releases as I was told to keep
+			$releases = $releases->take($countLimit);
+		}
+
+		// Remove any leftover releases
+		$toDelete->each(function (Releases $release) {
+			$this->recursiveDeleteRelease($release);
+		});
+
+		// Sort releases in ascending order
+		$releases->sort(function (Releases $a, Releases $b) {
+			return $a->getId() <=> $b->getId();
+		});
+
+		// Get the latest release, used to calculate the CHANGELOG
+		$first_release   = $releases->last();
 		$first_changelog = [];
 
 		/** @var Releases $first_release */
@@ -166,24 +180,10 @@ class BleedingEdge extends Model
 		{
 			$changelog = $this->folder . '/' . $first_release->alias . '/CHANGELOG';
 
-			$hasChangelog = false;
-
 			if (File::exists($changelog))
 			{
-				$hasChangelog    = true;
-				$first_changelog = @file_get_contents($changelog);
-			}
-
-			if ($hasChangelog)
-			{
-				if (!empty($first_changelog))
-				{
-					$first_changelog = explode("\n", str_replace("\r\n", "\n", $first_changelog));
-				}
-				else
-				{
-					$first_changelog = [];
-				}
+				$changeLogData   = @file_get_contents($changelog);
+				$first_changelog = explode("\n", str_replace("\r\n", "\n", $changeLogData));
 			}
 		}
 
@@ -197,29 +197,15 @@ class BleedingEdge extends Model
 				if (!in_array($folder, $known_folders))
 				{
 					// Create a new entry
-					$notes = '';
-
-					$changelog = $this->folder . '/' . $folder . '/' . 'CHANGELOG';
-
-					$hasChangelog   = false;
-					$this_changelog = '';
+					$notes         = '';
+					$changelog     = $this->folder . '/' . $folder . '/' . 'CHANGELOG';
+					$changeLogData = '';
 
 					if (File::exists($changelog))
 					{
-						$hasChangelog   = true;
-						$this_changelog = @file_get_contents($changelog);
-					}
-
-					if ($hasChangelog)
-					{
-						if (!empty($this_changelog))
-						{
-							$notes = $this->coloriseChangelog($this_changelog, $first_changelog);
-						}
-					}
-					else
-					{
-						$this_changelog = '';
+						$changeLogData = @file_get_contents($changelog);
+						$changeLogData = ($changeLogData === false) ? '' : $changeLogData;
+						$notes         = $this->coloriseChangelog($changeLogData, $first_changelog);
 					}
 
 					$jNow = new Date();
@@ -251,9 +237,9 @@ class BleedingEdge extends Model
 						'folder'          => $folder,
 						'category_id'     => $this->category_id,
 						'category'        => $this->category,
-						'has_changelog'   => $hasChangelog,
+						'has_changelog'   => !empty($changeLogData),
 						'changelog_file'  => $changelog,
-						'changelog'       => $this_changelog,
+						'changelog'       => $changeLogData,
 						'first_changelog' => $first_changelog,
 					];
 
@@ -278,14 +264,14 @@ class BleedingEdge extends Model
 
 					// -- Create the BE release
 					/** @var Releases $table */
-					$table = $this->container->factory->model('Releases')->tmpInstance();
+					$release = $this->container->factory->model('Releases')->tmpInstance();
 
 					try
 					{
-						$table->create($data);
-						$this->checkFiles($table);
+						$release->create($data);
+						$this->checkFiles($release);
 					}
-					catch (\Exception $e)
+					catch (Exception $e)
 					{
 					}
 				}
@@ -297,7 +283,8 @@ class BleedingEdge extends Model
 	{
 		if (!$release->id)
 		{
-			throw new \LogicException('Unexpected empty release identifier in BleedingEdge::checkFiles()');
+			return;
+			//throw new \LogicException('Unexpected empty release identifier in BleedingEdge::checkFiles()');
 		}
 
 		// Make sure we are given a release which exists
@@ -463,6 +450,38 @@ class BleedingEdge extends Model
 		}
 	}
 
+	/**
+	 * Sets the category we are operating on
+	 *
+	 * @param   Categories|integer  $catId  A category table or a numeric category ID
+	 *
+	 * @return void
+	 */
+	protected function setCategory(int $catId): void
+	{
+		// Initialise
+		$this->folder      = null;
+		$this->category_id = (int) $catId;
+		$this->category    = $this->container->factory->model('Categories')->tmpInstance();
+		$this->category->find($this->category_id);
+
+		// Store folder
+		$folder = $this->category->directory;
+
+		// If it is stored locally, make sure the folder exists
+		if (!Folder::exists($folder))
+		{
+			$folder = JPATH_ROOT . '/' . $folder;
+
+			if (!Folder::exists($folder))
+			{
+				return;
+			}
+		}
+
+		$this->folder = $folder;
+	}
+
 	private function coloriseChangelog(&$this_changelog, array $first_changelog = []): string
 	{
 		$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
@@ -571,5 +590,63 @@ class BleedingEdge extends Model
 		}
 
 		return null;
+	}
+
+	/**
+	 * Deletes a BleedingEdge release.
+	 *
+	 * This method deletes the releases' items, their files, the log entries pointing to them, the folder of the BE
+	 * release and the BE release itself.
+	 *
+	 * @param   Releases  $release
+	 */
+	private function recursiveDeleteRelease(Releases $release)
+	{
+		// Get the folder of the release
+		$folder = $this->folder . '/' . (
+				$this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity) ?? 'INVALID'
+			);
+
+		/** @var Logs $logModel */
+		$logModel = $this->container->factory->model('Logs')->tmpInstance();
+
+		$this->container->factory->model('Items')
+			->tmpInstance()
+			->release_id($release->getId())
+			->get(false)
+			->each(function (Items $item) use ($logModel, $folder) {
+				// Delete log entries for this item
+				$logModel->setState('item_id', $item->getId());
+				$logModel->get(true)->delete();
+
+				// Delete the file
+				if ($item->type == 'file')
+				{
+					$filePath = $folder . '/' . $item->filename;
+
+					if (is_file($filePath))
+					{
+						if (!@unlink($filePath))
+						{
+							File::delete($filePath);
+						}
+					}
+				}
+
+				// Delete the item
+				$item->delete();
+			});
+
+		// Delete the folder, recursively
+		if (@is_dir($folder))
+		{
+			if (!@unlink($folder))
+			{
+				Folder::delete($folder);
+			}
+		}
+
+		// Delete the release itself
+		$release->delete();
 	}
 }
