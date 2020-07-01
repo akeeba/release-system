@@ -744,93 +744,94 @@ class ArsRouter extends RouterBase
 			case 'Items':
 			case 'Item':
 				// In a singular Item view fetch the release ID into $id so the rest of the code works
-			if ($view == 'Item')
-			{
-				$id = $this->getModelObject('Items', $id)->release_id;
-			}
+				if ($view == 'Item')
+				{
+					$arsItemId = $id;
+					$id        = $this->getModelObject('Items', $id)->release_id;
+				}
 
-			// If no language was requested in the non-SEF URL use the language of the Category
-			if (!$hasValidLangInQuery)
-			{
-				$release              = $this->getModelObject('Releases', $id);
-				$category             = $this->getModelObject('Categories', $release->id);
-				$queryOptions['lang'] = $category->language;
-			}
+				// If no language was requested in the non-SEF URL use the language of the Category
+				if (!$hasValidLangInQuery)
+				{
+					$release              = $this->getModelObject('Releases', $id);
+					$category             = $this->getModelObject('Categories', $release->id);
+					$queryOptions['lang'] = $category->language;
+				}
 
-			// Try to find the Items view for the specific Release
-			$menuItem = $this->findMenu(array_merge($queryOptions, [
-				'view'       => 'Items',
-				'release_id' => $id,
-			]));
-
-			// Fall back to legacy "release" view menu item
-			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-					'view'       => 'release',
+				// Try to find the Items view for the specific Release
+				$menuItem = $this->findMenu(array_merge($queryOptions, [
+					'view'       => 'Items',
 					'release_id' => $id,
 				]));
 
-			// Fall back to Releases view for the specific category ID
-			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-					'view'        => 'Releases',
-					'category_id' => $this->getModelObject('Releases', $id)->category_id,
-				]));
+				// Fall back to legacy "release" view menu item
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'       => 'release',
+						'release_id' => $id,
+					]));
 
-			// Fall back to legacy "category" view for the specific category ID
-			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-					'view'        => 'category',
-					'category_id' => $this->getModelObject('Releases', $id)->category_id,
-				]));
+				// Fall back to Releases view for the specific category ID
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'        => 'Releases',
+						'category_id' => $this->getModelObject('Releases', $id)->category_id,
+					]));
 
-			// Fall back to the root Categories menu item if necessary
-			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-					'view'   => 'Categories',
-					'layout' => 'repository',
-				]));
+				// Fall back to legacy "category" view for the specific category ID
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'        => 'category',
+						'category_id' => $this->getModelObject('Releases', $id)->category_id,
+					]));
 
-			// Fall back to the legacy root Categories menu item if necessary
-			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-					'view'   => 'browses',
-					'layout' => 'repository',
-				]));
+				// Fall back to the root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'Categories',
+						'layout' => 'repository',
+					]));
 
-			// Fall back to the root Categories menu item with a specific layout
-			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-					'view'   => 'Categories',
-					'layout' => $release->type,
-				]));
+				// Fall back to the legacy root Categories menu item if necessary
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => 'repository',
+					]));
 
-			// Fall back to the legacy root Categories menu item with a specific layout
-			$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
-					'view'   => 'browses',
-					'layout' => $release->type,
-				]));
+				// Fall back to the root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'Categories',
+						'layout' => $release->type,
+					]));
 
-			// Pass back the view and ID to the query as needed
-			$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
+				// Fall back to the legacy root Categories menu item with a specific layout
+				$menuItem = $menuItem ?? $this->findMenu(array_merge($queryOptions, [
+						'view'   => 'browses',
+						'layout' => $release->type,
+					]));
 
-			if ($mView != $view)
-			{
-				$query['view'] = $view;
+				// Pass back the view and ID to the query as needed
+				$mView = $this->translateLegacyView($menuItem->query['view'] ?? self::DEFAULT_VIEW);
 
-				switch ($view)
+				if ($mView != $view)
 				{
-					case 'Item':
-						$query['id'] = $id;
-						break;
+					$query['view'] = $view;
 
-					case 'Items':
-						$query['release_id'] = $id;
-						break;
+					switch ($view)
+					{
+						case 'Item':
+							$query['id'] = $arsItemId;
+							break;
 
-					case 'Releases':
-						$query['category_id'] = $id;
-						break;
+						case 'Items':
+							$query['release_id'] = $id;
+							break;
+
+						case 'Releases':
+							$query['category_id'] = $this->getModelObject('Releases', $id)->category_id;
+							break;
+					}
 				}
-			}
 
-			return $menuItem;
+				return $menuItem;
 
-			break;
+				break;
 
 			/**
 			 * The singular 'DownloadIDLabel' view always needs a menu item fow 'DownloadIDLabels'.
@@ -1317,15 +1318,15 @@ class ArsRouter extends RouterBase
 					case 'stream':
 					case 'ini':
 					case 'download':
-					$mStreamId = $menuItem->query['streamid'] ?? 0;
-					$mStreamId = $menuItem->getParams()->get('streamid', $mStreamId);
+						$mStreamId = $menuItem->query['streamid'] ?? 0;
+						$mStreamId = $menuItem->getParams()->get('streamid', $mStreamId);
 
-					if ($mStreamId != $id)
-					{
-						$menuItem = null;
-					}
+						if ($mStreamId != $id)
+						{
+							$menuItem = null;
+						}
 
-					break;
+						break;
 
 					// For update stream categories the menu category must match the query id
 					case 'category':
