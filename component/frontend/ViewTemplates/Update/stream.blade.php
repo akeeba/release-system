@@ -111,15 +111,21 @@ foreach ($this->items as $item)
 		}
 
 		// Joomla uses client_id = 1 by default. We only need to explicitly specify when it's not 1.
-		if ($item->client_id != 1)
+		if (($platformName == 'joomla'))
 		{
-			if (($platformName == 'joomla') && (substr($platformVersion, 0, 2) != '1.'))
+			switch ($item->client_id)
 			{
-				$update->addChild('client_id', (int) $item->client_id);
-			}
-            elseif ($platformName == 'joomla')
-			{
-				$update->addChild('client', (int) $item->client_id);
+				case 0:
+					$update->addChild('client', 'site');
+					break;
+
+				case 1:
+					$update->addChild('client', 'administrator');
+					break;
+
+				case 2:
+					$update->addChild('client', 'installation');
+					break;
 			}
 		}
 
