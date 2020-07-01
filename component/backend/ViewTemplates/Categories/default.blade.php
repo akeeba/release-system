@@ -84,6 +84,8 @@ defined('_JEXEC') or die;
 				<a href="index.php?option=com_ars&view=Category&id={{ $row->getId() }}">
 					{{{ $row->title }}}
 				</a>
+				<br />
+				<code>{{ $row->directory }}</code>
 			</td>
 			<td>
 				@if ($row->type == 'normal')

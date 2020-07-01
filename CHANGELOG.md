@@ -2,6 +2,7 @@
 
 * `+` Add `php_minimum` to XML update streams
 * `+` Show environments in each release (not just each item)
+* `+` Show folder for each Category in the backend
 * `~` Rewritten frontend SEF router
 * `~` Rewritten item XML update stream using SimpleXML
 * `~` Far more compact XML update streams, using RegEx target platform version matching
