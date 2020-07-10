@@ -112,8 +112,6 @@ JS;
 
 	public function onBeforeBrowse($tpl = null): void
 	{
-		$this->addJavascriptFile('media://fef/js/tabs.min.js');
-
 		// If we're browsing a modal, we need some different things
 		$layout = $this->input->getCmd('layout', 'default');
 		$tmpl   = $this->input->getCmd('tmpl', '');

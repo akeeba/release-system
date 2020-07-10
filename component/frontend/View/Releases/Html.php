@@ -94,8 +94,6 @@ class Html extends BaseView
 		$this->params = $app->getParams();
 		$this->Itemid = $this->input->getInt('Itemid', 0);
 		$this->menu   = $app->getMenu()->getActive();
-
-		$this->addJavascriptFile('media://fef/js/tabs.min.js');
 	}
 
 	public function getEnvironments(Releases $release): array

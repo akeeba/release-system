@@ -65,7 +65,7 @@ JS;
 ?>
 
 @section('graphs')
-	@js('media://com_ars/js/Chart.bundle.min.js')
+	@js('media://com_ars/js/Chart.bundle.min.js', $this->getContainer()->mediaVersion)
 
 	<div class="akeeba-panel--info">
 		<header class="akeeba-block-header">

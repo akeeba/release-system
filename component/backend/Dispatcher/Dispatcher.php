@@ -85,12 +85,12 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 		$mediaVersion = $this->container->mediaVersion;
 
 		// Do not move: System depends on Modal
-		$this->container->template->addJS('media://com_ars/js/Modal.js', false, false, $mediaVersion);
+		$this->container->template->addJS('media://com_ars/js/Modal.min.js', false, false, $mediaVersion);
 		// Do not move: System depends on Ajax
-		$this->container->template->addJS('media://com_ars/js/Ajax.js', false, false, $mediaVersion);
+		$this->container->template->addJS('media://com_ars/js/Ajax.min.js', false, false, $mediaVersion);
 		// Do not move: System depends on Ajax
-		$this->container->template->addJS('media://com_ars/js/System.js', false, false, $mediaVersion);
+		$this->container->template->addJS('media://com_ars/js/System.min.js', false, false, $mediaVersion);
 		// Do not move: Tooltip depends on System
-		$this->container->template->addJS('media://com_ars/js/Tooltip.js', false, false, $mediaVersion);
+		$this->container->template->addJS('media://com_ars/js/Tooltip.min.js', false, false, $mediaVersion);
 	}
 }
