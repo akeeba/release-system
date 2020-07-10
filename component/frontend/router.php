@@ -1082,6 +1082,11 @@ class ArsRouter extends RouterBase
 				{
 					// Same view. Check that the category ID matches.
 					case 'Releases':
+						if (is_null($id))
+						{
+							break;
+						}
+
 						$mID = $menuItem->query['category_id'] ?? null;
 						$mID = $menuItem->getParams()->get('catid', $mID);
 
@@ -1130,6 +1135,11 @@ class ArsRouter extends RouterBase
 				{
 					// Same view. Check that the release ID matches.
 					case 'Items':
+						if (is_null($id))
+						{
+							break;
+						}
+
 						$mID = $menuItem->query['release_id'] ?? null;
 						$mID = $menuItem->getParams()->get('relid', $mID);
 
