@@ -1,13 +1,15 @@
-/*!
+/*
  * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
-@import 'sources/common/variables';
+.akeeba-renderer-fef [class*=akeeba-panel] {
+  &.chromeFalsePositive {
+    background-color: lighten($green, 40%);
 
-@import 'sources/frontend/bleedingedge';
-
-@import 'sources/frontend/releases';
-
-@import 'sources/frontend/chrome';
+    > div {
+      font-size: 1.4rem;
+    }
+  }
+}

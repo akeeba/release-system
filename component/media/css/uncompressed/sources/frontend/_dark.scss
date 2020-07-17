@@ -15,3 +15,9 @@
     color: darken($light-grey, 20%);
   }
 }
+
+.akeeba-renderer-fef [class*=akeeba-panel] {
+  &.chromeFalsePositive {
+    background-color: darken($green, 20%);
+  }
+}

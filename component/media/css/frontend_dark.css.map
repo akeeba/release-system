@@ -1,12 +1,12 @@
 {
-  "version": 3,
-  "sourceRoot": "",
-  "sources": [
-    "uncompressed/frontend_dark.scss",
-    "uncompressed/sources/frontend/_dark.scss",
-    "uncompressed/sources/common/_variables.scss"
-  ],
-  "names": [],
-  "mappings": "AAAA;AAAA;AAAA;AAAA;AAAA,GAcE,iCACE,kBCTJ,6DACE,MCGW,QDDX,6EACE,cAGF,2EACE,cDOJ,mCCfA,kCACE,MCGW,QDDX,kDACE,cAGF,gDACE",
-  "file": "frontend_dark.css"
+	"version": 3,
+	"sourceRoot": "",
+	"sources": [
+		"uncompressed/frontend_dark.scss",
+		"uncompressed/sources/frontend/_dark.scss",
+		"uncompressed/sources/common/_variables.scss"
+	],
+	"names": [],
+	"mappings": "AAAA;AAAA;AAAA;AAAA;AAAA,GAcE,iCACE,kBCTJ,6DACE,MCGW,QDDX,6EACE,cAGF,2EACE,cAKF,0FACE,yBDCJ,mCCfA,kCACE,MCGW,QDDX,kDACE,cAGF,gDACE,cAKF,+DACE",
+	"file": "frontend_dark.css"
 }

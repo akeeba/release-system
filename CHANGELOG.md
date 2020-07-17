@@ -4,6 +4,7 @@
 * `+` Show environments in each release (not just each item)
 * `+` Show folder for each Category in the backend
 * `+` BleedingEdge release limits (gh-176)
+* `+` Warning about Chrome mistakenly reporting downloads as unsafe
 * `~` Rewritten frontend SEF router
 * `~` Rewritten item XML update stream using SimpleXML
 * `~` Far more compact XML update streams, using RegEx target platform version matching
