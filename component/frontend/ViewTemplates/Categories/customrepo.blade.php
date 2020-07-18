@@ -17,7 +17,7 @@
 $customHTML = @file_get_contents($this->customHtmlFile);
 
 ?>
-@include('site:com_ars/Categories/chromeisbroken')
+{{--@include('site:com_ars/Categories/chromeisbroken')--}}
 
 @unless(empty($customHTML))
     {{ Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $customHTML) }}
