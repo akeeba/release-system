@@ -22,7 +22,7 @@ $groups = ['basic', 'tools', 'update'];
 			<h3>@lang('LBL_ARS_CPANEL_BASIC')</h3>
 		</header>
 
-		<div class="akeeba-grid--small">
+		<div class="akeeba-grid">
 			<a href="index.php?option=com_ars&view=Categories" class="akeeba-action--teal">
 				<span class="akion-folder"></span>
 				@lang('COM_ARS_TITLE_CATEGORIES')
@@ -55,7 +55,7 @@ $groups = ['basic', 'tools', 'update'];
 			<h3>@lang('LBL_ARS_CPANEL_TOOLS')</h3>
 		</header>
 
-		<div class="akeeba-grid--small">
+		<div class="akeeba-grid">
 			<a href="index.php?option=com_ars&view=AutoDescriptions" class="akeeba-action--grey">
 				<span class="akion-wand"></span>
 				@lang('COM_ARS_TITLE_AUTODESCRIPTIONS')
