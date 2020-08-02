@@ -91,6 +91,8 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 		$longVersion            = $config['longVersion'];
 		$shortVersion           = $config['shortVersion'];
 		$currentTimestamp       = $config['currentTimestamp'];
+		$phpVersions            = array_keys($phpDates);
+		$lastVersion            = array_pop($phpVersions);
 
 		/**
 		 * Safe defaults for PHP versions older than 5.3.0.
@@ -102,14 +104,15 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 		$isAncient  = true;
 		$isSecurity = false;
 		$isCurrent  = false;
+		$isTooNew   = !isset($phpDates[$shortVersion]) && version_compare($shortVersion, $lastVersion, 'gt');
 
-		$eolDateFormatted      = $phpDates[$shortVersion][1];
-		$securityDateFormatted = $phpDates[$shortVersion][0];
+		$eolDateFormatted      = isset($phpDates[$shortVersion]) ? $phpDates[$shortVersion][1] : '';
+		$securityDateFormatted = isset($phpDates[$shortVersion]) ? $phpDates[$shortVersion][0] : '';
 
 		/**
 		 * This can only work on PHP 5.3.0 or later since we are using DatePeriod (PHP >= 5.3.0)
 		 */
-		if (version_compare($longVersion, '5.2.0', 'ge'))
+		if (version_compare($longVersion, '5.2.0', 'ge') && !$isTooNew)
 		{
 			$tzGmt         = new DateTimeZone('GMT');
 			$securityDate  = new DateTime($phpDates[$shortVersion][0], $tzGmt);
@@ -138,15 +141,32 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 			return;
 		}
 
-		if ($isAncient):
-			?>
+		if ($isTooNew): ?>
+			<!-- Your PHP version is too new -->
+			<div class="<?php echo $class_priority_medium ?>">
+				<h3>PHP version <?php echo $shortVersion ?> is newer than this software supports</h3>
+
+				<p>
+					Your site is currently using PHP <?php echo $longVersion ?>. This version of PHP not supported by
+					your currently installed version of <?php echo $softwareName ?>. We cannot guarantee that
+					<?php echo $softwareName ?> will work correctly on your site.
+				</p>
+				<p>
+					Please check our site for an updated version of <?php echo $softwareName ?> which supports PHP
+					<?php echo $shortVersion ?>. If none is available yet you will need to wait 1-3 months. Meanwhile,
+					you can still use PHP <?php echo $recommendedPHPVersion ?> which is fully supported by
+					<?php echo $softwareName ?>. You can ask your host or your system administrator for instructions.
+				</p>
+			</div>
+		<?php elseif ($isAncient): ?>
 			<!-- Your PHP version has been End-of-Life for a very long time -->
 			<div class="<?php echo $class_priority_high ?>">
 				<h3>Severely outdated PHP version <?php echo $shortVersion ?></h3>
 
 				<p>
 					Your site is currently using PHP <?php echo $longVersion ?>. This version of PHP has become <a
-						href="https://php.net/eol.php" target="_blank">End-of-Life since <?php echo $eolDateFormatted ?></a>. It has
+							href="https://php.net/eol.php" target="_blank">End-of-Life
+						since <?php echo $eolDateFormatted ?></a>. It has
 					not received security updates for a <em>very long time</em>. You MUST NOT use it for a live site!
 				</p>
 				<p>
