@@ -5,6 +5,7 @@
 * `+` Show folder for each Category in the backend
 * `+` BleedingEdge release limits (gh-176)
 * `+` Warning about Chrome mistakenly reporting downloads as unsafe
+* `+` Explicit media version to address issues with Joomla not having cached the extension manifest
 * `~` Adjust size of control panel icons
 * `~` Rewritten frontend SEF router
 * `~` Rewritten item XML update stream using SimpleXML

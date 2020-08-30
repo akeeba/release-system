@@ -7,6 +7,7 @@
 
 namespace Akeeba\ReleaseSystem\Site\Dispatcher;
 
+use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
 defined('_JEXEC') or die;
@@ -44,6 +45,14 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 	public function onBeforeDispatch(): void
 	{
+		/**
+		 * Set up a media version. DO NOT REMOVE. There's something wrong on our site's extension cache which makes the
+		 * FOF MediaVersion class return a new media version query string on every request :@
+		 */
+		$this->container->mediaVersion = ApplicationHelper::getHash(
+			filemtime($this->container->frontEndPath . '/ars.php') . ':' . filemtime($this->container->backEndPath . '/ars.php')
+		);
+
 		// Map the view
 		$this->applyViewMap();
 
