@@ -1,0 +1,10 @@
+{
+	"version": 3,
+	"sourceRoot": "",
+	"sources": [
+		"uncompressed/backend_dark.scss"
+	],
+	"names": [],
+	"mappings": "AAAA;AAAA;AAAA;AAAA;AAAA",
+	"file": "backend_dark.css"
+}
