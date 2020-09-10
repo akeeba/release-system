@@ -6,6 +6,7 @@
 * `+` BleedingEdge release limits (gh-176)
 * `+` Warning about Chrome mistakenly reporting downloads as unsafe
 * `+` Explicit media version to address issues with Joomla not having cached the extension manifest
+* `~` Improved unhandled PHP exception error page
 * `~` Adjust size of control panel icons
 * `~` Rewritten frontend SEF router
 * `~` Rewritten item XML update stream using SimpleXML

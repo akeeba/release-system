@@ -1,28 +1,34 @@
 <?php
 /**
- * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * PHP Exception Handler
+ *
+ * @copyright Copyright (c) 2018-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Toolbar\ToolbarHelper;
-
 /** @var Throwable $e */
 /** @var string $title */
 /** @var bool $isPro */
 
-$code         = $e->getCode();
-$code         = !empty($code) ? $code : 500;
-$app          = class_exists('\Joomla\CMS\Factory') ? Factory::getApplication() : \JFactory::getApplication();
+$code = $e->getCode();
+$code = !empty($code) ? $code : 500;
+
+$app = class_exists('\Joomla\CMS\Factory') ? \Joomla\CMS\Factory::getApplication() : \JFactory::getApplication();
+
+$user30  = (class_exists('JFactory') && method_exists('JFactory', 'getUser')) ? JFactory::getUser() : null;
+$user38  = class_exists('\Joomla\CMS\Factory') && method_exists('\Joomla\CMS\Factory', 'getUser') ? \Joomla\CMS\Factory::getUser() : null;
+$user40  = (is_object($app) && method_exists($app, 'getIdentity')) ? $app->getIdentity() : null;
+$user    = is_null($user40) ? $user38 : $user40;
+$user    = is_null($user40) ? $user30 : $user;
+$isSuper = !is_null($user) && $user->authorise('core.admin');
+
 $isFrontend   = class_exists('JApplicationSite') && ($app instanceof JApplicationSite);
-$isFrontend   = $isFrontend || (class_exists('\Joomla\CMS\Application\SiteApplication') && ($app instanceof SiteApplication));
+$isFrontend   = $isFrontend || (class_exists('\Joomla\CMS\Application\SiteApplication') && ($app instanceof \Joomla\CMS\Application\SiteApplication));
 $user         = $isFrontend ? (method_exists($app, 'getIdentity') ? $app->getIdentity() : JFactory::getUser()) : null;
-$hideTheError = $isFrontend && !(defined('JDEBUG') && (JDEBUG == 1)) && !$user->authorise('core.admin');
+$hideTheError = $isFrontend && !(defined('JDEBUG') && (JDEBUG == 1)) && !$isSuper;
 $isPro        = !isset($isPro) ? false : $isPro;
 
 // 403 and 404 are re-thrown
@@ -46,7 +52,7 @@ if (!$isFrontend)
 {
 	if (class_exists('\Joomla\CMS\Toolbar\ToolbarHelper'))
 	{
-		ToolbarHelper::title($title . ' <small>Unhandled Exception</small>');
+		\Joomla\CMS\Toolbar\ToolbarHelper::title($title . ' <small>Unhandled Exception</small>');
 	}
 	else
 	{
@@ -151,26 +157,31 @@ if (!$isFrontend)
 		<td>Joomla! version</td>
 		<td><?php echo JVERSION ?></td>
 	</tr>
-	<tr>
-		<td>Database driver name</td>
-		<td><?php echo JFactory::getDbo()->getName() ?></td>
-	</tr>
-	<tr>
-		<td>Database driver type</td>
-		<td><?php echo JFactory::getDbo()->getServerType() ?></td>
-	</tr>
-	<tr>
-		<td>Database server version</td>
-		<td><?php echo JFactory::getDbo()->getVersion() ?></td>
-	</tr>
-	<tr>
-		<td>Database collation</td>
-		<td><?php echo JFactory::getDbo()->getCollation() ?></td>
-	</tr>
-	<tr>
-		<td>Database connection collation</td>
-		<td><?php echo JFactory::getDbo()->getConnectionCollation() ?></td>
-	</tr>
+	<?php
+	$db = JFactory::getDbo();
+	if (!is_null($db)):
+		?>
+		<tr>
+			<td>Database driver name</td>
+			<td><?php echo $db->getName() ?></td>
+		</tr>
+		<tr>
+			<td>Database driver type</td>
+			<td><?php echo $db->getServerType() ?></td>
+		</tr>
+		<tr>
+			<td>Database server version</td>
+			<td><?php echo $db->getVersion() ?></td>
+		</tr>
+		<tr>
+			<td>Database collation</td>
+			<td><?php echo $db->getCollation() ?></td>
+		</tr>
+		<tr>
+			<td>Database connection collation</td>
+			<td><?php echo $db->getConnectionCollation() ?></td>
+		</tr>
+	<?php endif; ?>
 	<tr>
 		<td>PHP Memory limit</td>
 		<td><?php echo function_exists('ini_get') ? htmlentities(ini_get('memory_limit')) : 'N/A' ?></td>

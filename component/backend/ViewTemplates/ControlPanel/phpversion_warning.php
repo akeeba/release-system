@@ -2,7 +2,7 @@
 /**
  * Old PHP version notification
  *
- * @copyright Copyright Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c) 2018-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -171,8 +171,10 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 				</p>
 				<p>
 					<?php echo $softwareName ?> will stop supporting your version of PHP very soon. You must <strong>very
-						urgently</strong> upgrade to a newer version of PHP. We recommend PHP <?php echo $recommendedPHPVersion ?>
-					or later. You can ask your host or your system administrator for instructions. It's easy and it will make
+						urgently</strong> upgrade to a newer version of PHP. We recommend
+					PHP <?php echo $recommendedPHPVersion ?>
+					or later. You can ask your host or your system administrator for instructions. It's easy and it will
+					make
 					your site faster and more secure.
 				</p>
 			</div>
