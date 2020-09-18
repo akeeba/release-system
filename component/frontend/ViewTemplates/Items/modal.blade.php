@@ -19,15 +19,6 @@ defined('_JEXEC') or die();
 // Render the filter sidebar
 $this->getContainer()->toolbar->setRenderFrontendSubmenu(true);
 
-// Turn off routing before displaying the form to prevent JPagination's call to JRoute from removing the layout and tmpl
-// query string parameters which are critical for pagination links to work.
-if (!class_exists('ArsRouter'))
-{
-	require_once JPATH_COMPONENT . '/router.php';
-}
-
-ArsRouter::setRouteHtml(false);
-
 $user = $this->getContainer()->platform->getUser();
 
 ?>
@@ -234,9 +225,6 @@ $user = $this->getContainer()->platform->getUser();
     </div>
 </form>
 <?php
-// Re-enable ARS routing
-ArsRouter::setRouteHtml(true);
-
 $function = $this->input->getCmd('function', 'arsSelectItem');
 ?>
 <script type="text/javascript">

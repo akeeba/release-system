@@ -15,6 +15,7 @@
 * `~` Optionally use com_compatibility to reduce the number of displayed releases in the update stream
 * `~` Minified JS files
 * `#` [LOW] Frontend add-on download ID, redirect to non-SEF URL after editing an item
+* `#` [LOW] Frontend, ARS item selection is broken
 * `#` [LOW] No default list limit showing releases 
 * `#` [HIGH] Joomla 4 uses strings for `<client>`, not integers 
 
