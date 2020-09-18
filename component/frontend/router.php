@@ -645,8 +645,13 @@ class ArsRouter extends RouterBase
 	 *
 	 * @since   5.1.0
 	 */
-	protected function getMenuItemForView(string &$view, array &$query): ?MenuItem
+	protected function getMenuItemForView(?string &$view, array &$query): ?MenuItem
 	{
+		if (is_null($view))
+		{
+			return null;
+		}
+
 		// Get the default menu item search options
 		$queryOptions = [
 			'option' => $this->getContainer()->componentName,

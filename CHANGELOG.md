@@ -17,6 +17,7 @@
 * `#` [LOW] Frontend add-on download ID, redirect to non-SEF URL after editing an item
 * `#` [LOW] Frontend, ARS item selection is broken
 * `#` [LOW] No default list limit showing releases 
+* `#` [LOW] “Argument 1 passed to ArsRouter::getMenuItemForView() must be of the type string, null given” 
 * `#` [HIGH] Joomla 4 uses strings for `<client>`, not integers 
 
 # 5.0.0
