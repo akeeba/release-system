@@ -19,6 +19,7 @@
 * `#` [LOW] No default list limit showing releases 
 * `#` [LOW] “Argument 1 passed to ArsRouter::getMenuItemForView() must be of the type string, null given” 
 * `#` [HIGH] Joomla 4 uses strings for `<client>`, not integers 
+* `#` [HIGH] Joomla 4 requires that `$segments` is empty after parsing the route, otherwise it throws a 404 
 
 # 5.0.0
 

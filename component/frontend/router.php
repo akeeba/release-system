@@ -425,7 +425,8 @@ class ArsRouter extends RouterBase
 
 				if ($segmentCount === 2)
 				{
-					[$releaseAlias, $itemAlias] = $segments;
+					$releaseAlias = array_shift($segments);
+					$itemAlias    = array_shift($segments);
 
 					$release = $this->getModelObject('Releases', [
 						'alias'       => $releaseAlias,
@@ -443,7 +444,7 @@ class ArsRouter extends RouterBase
 				}
 				elseif ($segmentCount === 1)
 				{
-					[$releaseAlias] = $segments;
+					$releaseAlias = array_shift($segments);
 
 					$release = $this->getModelObject('Releases', [
 						'alias'       => $releaseAlias,
@@ -474,7 +475,9 @@ class ArsRouter extends RouterBase
 				}
 				elseif ($segmentCount === 3)
 				{
-					[$categoryAlias, $releaseAlias, $itemAlias] = $segments;
+					$categoryAlias = array_shift($segments);
+					$releaseAlias  = array_shift($segments);
+					$itemAlias     = array_shift($segments);
 
 					$category = $this->getModelObject('Categories', [
 						'alias' => $categoryAlias,
@@ -496,7 +499,8 @@ class ArsRouter extends RouterBase
 				}
 				elseif ($segmentCount === 2)
 				{
-					[$categoryAlias, $releaseAlias] = $segments;
+					$categoryAlias = array_shift($segments);
+					$releaseAlias  = array_shift($segments);
 
 					$category = $this->getModelObject('Categories', [
 						'alias' => $categoryAlias,
@@ -512,7 +516,7 @@ class ArsRouter extends RouterBase
 				}
 				elseif ($segmentCount === 1)
 				{
-					[$categoryAlias] = $segments;
+					$categoryAlias = array_shift($segments);
 
 					$category = $this->getModelObject('Categories', [
 						'alias' => $categoryAlias,
