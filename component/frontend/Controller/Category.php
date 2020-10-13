@@ -10,6 +10,7 @@ namespace Akeeba\ReleaseSystem\Site\Controller;
 defined('_JEXEC') or die;
 
 use FOF30\Controller\DataController;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -78,16 +79,16 @@ class Category extends DataController
 		}
 
 		// Push page parameters to the model
-		/** @var \JApplicationSite $app */
+		/** @var SiteApplication $app */
 		$app    = Factory::getApplication();
 		$params = $app->getParams('com_ars');
 
 		/** @var \Akeeba\ReleaseSystem\Site\Model\Categories $model */
 		$model = $this->getModel();
 		$model->orderby_filter($params->get('orderby', 'order'))
-			  ->limitstart(0)
-			  ->limit(0)
-			  ->published(1)
-			  ->access_user($this->container->platform->getUser()->id);
+			->limitstart(0)
+			->limit(0)
+			->published(1)
+			->access_user($this->container->platform->getUser()->id);
 	}
 }

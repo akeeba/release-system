@@ -13,6 +13,7 @@ use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use FOF30\Model\DataModel\Collection;
 use FOF30\View\DataView\Html as BaseView;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Pagination\Pagination;
@@ -47,8 +48,10 @@ class Html extends BaseView
 		// Load the model
 		/** @var Categories $model */
 		$model = $this->getModel();
-		/** @var \JApplicationSite $app */
-		$app = Factory::getApplication();
+
+		/** @var SiteApplication $app */
+		$app    = Factory::getApplication();
+		$params = $app->getParams('com_ars');
 
 		// Assign data to the view, part 1 (we need this later on)
 		$this->items = $model->get(true)->filter(function ($item) {
@@ -56,9 +59,12 @@ class Html extends BaseView
 		});
 
 		// Do I have a custom HTML file?
-		$this->customHtmlFile = JPATH_THEMES . '/' . $app->getTemplate() . '/html/com_ars/Categories/repo.html';
+		$useCustomHtml      = $params->get('useCustomRepoFile', 1) == 1;
+		$customRepoFilename = $params->get('customRepoFilename', 'repo.html');
 
-		if (!File::exists($this->customHtmlFile))
+		$this->customHtmlFile = JPATH_THEMES . '/' . $app->getTemplate() . '/html/com_ars/Categories/' . $customRepoFilename;
+
+		if (!$useCustomHtml || !File::exists($this->customHtmlFile))
 		{
 			$this->customHtmlFile = null;
 		}

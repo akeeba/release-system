@@ -13,11 +13,23 @@
     </layout>
     <fields name="params">
         <fieldset name="basic" label="COM_ARS_FIELDSET_BASIC">
+            <field name="useCustomRepoFile" type="radio" default="1"
+                   label="ARS_BROWSE_REPOSITORY_USECUSTOMREPOFILE_LBL"
+                   description="ARS_BROWSE_REPOSITORY_USECUSTOMREPOFILE_DESC">
+                <option value="0">JNo</option>
+                <option value="1">JYes</option>
+            </field>
+
+            <field name="customRepoFilename" type="text" default="repo.html"
+                   label="ARS_BROWSE_REPOSITORY_CUSTOMREPOFILENAME_LBL"
+                   description="ARS_BROWSE_REPOSITORY_CUSTOMREPOFILENAME_DESC"/>
+
             <field name="grouping" type="list" default="normal" label="ARS_BROWSE_REPOSITORY_GROUPING_LBL"
                    description="ARS_BROWSE_REPOSITORY_GROUPING_DESC">
                 <option value="none">ARS_BROWSE_REPOSITORY_GROUPING_NO</option>
                 <option value="normal">ARS_BROWSE_REPOSITORY_GROUPING_NORMAL</option>
             </field>
+
             <field name="orderby" type="list" default="order" label="ARS_BROWSE_REPOSITORY_ORDERBY_LBL"
                    description="ARS_BROWSE_REPOSITORY_ORDERBY_DESC">
                 <option value="none">ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
@@ -28,7 +40,6 @@
                 <option value="order">ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
             </field>
 
-            <field name="@spacer" type="spacer" default="" label="" description=""/>
             <field name="rel_orderby" type="list" default="order" label="ARS_RELEASES_ORDERBY_LBL"
                    description="ARS_RELEASES_ORDERBY_DESC">
                 <option value="none">ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
@@ -39,7 +50,6 @@
                 <option value="order">ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
             </field>
 
-            <field name="@spacer" type="spacer" default="" label="" description=""/>
             <field name="items_orderby" type="list" default="order" label="ARS_ITEMS_ORDERBY_LBL"
                    description="ARS_ITEMS_ORDERBY_DESC">
                 <option value="none">ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
