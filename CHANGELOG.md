@@ -4,7 +4,6 @@
 * `+` Show environments in each release (not just each item)
 * `+` Show folder for each Category in the backend
 * `+` BleedingEdge release limits (gh-176)
-* `+` Warning about Chrome mistakenly reporting downloads as unsafe
 * `+` Explicit media version to address issues with Joomla not having cached the extension manifest
 * `~` Improved unhandled PHP exception error page
 * `~` Adjust size of control panel icons
