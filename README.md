@@ -1,15 +1,20 @@
 # Akeeba Release System
+![ARS Logo](build/logo/product-releasesystem.svg)
 
 A download manager component for Joomla!, designed for the distribution of Akeeba software.
 
-## INTERNAL PROJECT
+## Internal Project
 
-This software is only meant to be used only on our site and caters only to our business goals. 
+This software is designed to primarily fit the needs of our business site, akeeba.com.
 
-We do not provide support for it. We do not take feature requests for it. We do not even provide downloads for it.
+If you decide to use this software please keep the following in mind:
 
-There is absolutely no guarantee whatsoever that any feature implemented today will be available in the future or that
-the component will continue to work the same or even exist. The project does not even follow semver.
+* We do not provide any support for this software whatsoever.
+* We do not take feature requests for this software.
+* There is absolutely no guarantee that any feature implemented today will be available in the future, including the next minor release.
+* There is absolutely no guarantee that the component will continue to work the same or even exist.
+ * This project does NOT follow semantic versioning.
+* We provide VERY irregular downloads through GitHub.
 
 ## Prerequisites
 
@@ -18,3 +23,5 @@ Necessary folder structure for building packages
 * **ars** This repository
 * **buildfiles** [Akeeba Build Tools](https://github.com/akeeba/buildfiles)
 * **fof3** [Framework on Framework 3.x](https://github.com/akeeba/fof)
+
+From `ars/build` run `phing git -Dversion=5.999.999.b1` to build an installable package with the fake version number `5.999.999.b1`.

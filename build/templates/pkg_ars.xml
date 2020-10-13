@@ -31,8 +31,8 @@
         <file type="plugin" group="content" id="arsdlid">plg_content_arsdlid.zip</file>
         <file type="plugin" group="content" id="arslatest">plg_content_arslatest.zip</file>
 
-		<!-- Plugins: editors-xtd -->
-		<file type="plugin" group="editors-xtd" id="arslink">plg_editors-xtd_arslink.zip</file>
+        <!-- Plugins: editors-xtd -->
+        <file type="plugin" group="editors-xtd" id="arslink">plg_editors-xtd_arslink.zip</file>
 
         <!-- Plugins: system -->
         <file type="plugin" group="system" id="arsjed">plg_system_arsjed.zip</file>
@@ -40,4 +40,11 @@
 
     <!-- Installation script -->
     <scriptfile>script.ars.php</scriptfile>
+
+    <!-- Update servers -->
+    <updateservers>
+        <server type="extension" priority="1" name="Akeeba Release System Updates">
+            https://raw.githubusercontent.com/akeeba/release-system/master/update/pkg_ars_updates.xml
+        </server>
+    </updateservers>
 </extension>
