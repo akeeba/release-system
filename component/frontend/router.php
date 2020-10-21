@@ -513,6 +513,7 @@ class ArsRouter extends RouterBase
 
 					$query['view']       = 'Items';
 					$query['release_id'] = $release->getId();
+					$query['layout']     = 'default';
 				}
 				elseif ($segmentCount === 1)
 				{
