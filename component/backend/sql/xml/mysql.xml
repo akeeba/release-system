@@ -27,12 +27,12 @@ CREATE TABLE `#__ars_categories` (
     `description` mediumtext,
     `type` enum('normal','bleedingedge') NOT NULL DEFAULT 'normal',
     `directory` varchar(255) NOT NULL DEFAULT 'arsrepo',
-    `created` datetime NOT NULL,
+    `created` datetime NULL DEFAULT NULL,
     `created_by` int(11) NOT NULL DEFAULT '0',
-    `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `modified` datetime NULL DEFAULT NULL,
     `modified_by` int(11) NOT NULL DEFAULT '0',
     `checked_out` int(11) NOT NULL DEFAULT '0',
-    `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `checked_out_time` datetime NULL DEFAULT NULL,
     `ordering` bigint(20) NOT NULL DEFAULT '0',
     `access` int(11) NOT NULL DEFAULT '0',
     `show_unauth_links` TINYINT NOT NULL DEFAULT '0',
@@ -57,12 +57,12 @@ CREATE TABLE `#__ars_releases` (
     `maturity` ENUM('alpha','beta','rc','stable') NOT NULL DEFAULT 'beta',
     `notes` TEXT NULL,
     `hits` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-    `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `created` datetime NULL DEFAULT NULL,
     `created_by` int(11) NOT NULL DEFAULT '0',
-    `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `modified` datetime NULL DEFAULT NULL,
     `modified_by` int(11) NOT NULL DEFAULT '0',
     `checked_out` int(11) NOT NULL DEFAULT '0',
-    `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `checked_out_time` datetime NULL DEFAULT NULL,
     `ordering` bigint(20) unsigned NOT NULL,
     `access` int(11) NOT NULL DEFAULT '0',
     `show_unauth_links` TINYINT NOT NULL DEFAULT '0',
@@ -96,12 +96,12 @@ CREATE TABLE `#__ars_items` (
     `sha512` varchar(128) DEFAULT NULL,
     `filesize` int(10) unsigned DEFAULT NULL,
     `hits` BIGINT(20) UNSIGNED NOT NULL DEFAULT 0,
-    `created` datetime NOT NULL,
+    `created` datetime NULL DEFAULT NULL,
     `created_by` int(11) NOT NULL DEFAULT '0',
-    `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `modified` datetime NULL DEFAULT NULL,
     `modified_by` int(11) NOT NULL DEFAULT '0',
     `checked_out` int(11) NOT NULL DEFAULT '0',
-    `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `checked_out_time` datetime NULL DEFAULT NULL,
     `ordering` bigint(20) unsigned NOT NULL,
     `access` int(11) NOT NULL DEFAULT '0',
     `show_unauth_links` TINYINT NOT NULL DEFAULT '0',
@@ -124,7 +124,7 @@ CREATE TABLE `#__ars_log` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `user_id` BIGINT(20) UNSIGNED NOT NULL,
     `item_id` BIGINT(20) UNSIGNED NOT NULL,
-    `accessed_on` DATETIME NOT NULL,
+    `accessed_on` datetime NULL DEFAULT NULL,
     `referer` VARCHAR(255) NOT NULL,
     `ip` VARCHAR(255) NOT NULL,
     `authorized` TINYINT(1) NOT NULL DEFAULT '1',
@@ -151,12 +151,12 @@ CREATE TABLE `#__ars_updatestreams` (
 	`client_id` int(1) NOT NULL DEFAULT '1',
 	`folder` varchar(255) DEFAULT '',
 	`jedid` bigint(20) NOT NULL,
-	`created` datetime NOT NULL,
+	`created` datetime NULL DEFAULT NULL,
 	`created_by` int(11) NOT NULL DEFAULT '0',
-	`modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`modified` datetime NULL DEFAULT NULL,
 	`modified_by` int(11) NOT NULL DEFAULT '0',
 	`checked_out` int(11) NOT NULL DEFAULT '0',
-	`checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`checked_out_time` datetime NULL DEFAULT NULL,
 	`published` int(11) NOT NULL DEFAULT '1',
 	PRIMARY KEY `id` (`id`),
 	KEY `#__ars_updatestreams_published` (`published`),
@@ -204,9 +204,9 @@ CREATE TABLE `#__ars_dlidlabels` (
   `dlid` CHAR(32) NOT NULL,
   `enabled` tinyint(3) NOT NULL DEFAULT '1',
   `created_by` bigint(20) NOT NULL DEFAULT '0',
-  `created_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_on` datetime NULL DEFAULT NULL,
   `modified_by` bigint(20) NOT NULL DEFAULT '0',
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_on` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`ars_dlidlabel_id`)
 ) DEFAULT COLLATE utf8_general_ci;
             ]]></query>
@@ -445,10 +445,10 @@ ALTER TABLE `#__ars_items` ADD COLUMN `sha512` varchar(128) DEFAULT NULL AFTER `
             ]]></query>
         </action>
 
-        <action table="#__ars_items" canfail="0">
-            <condition type="missing" operator="not" value="icon" />
+        <action table="#__ars_environments" canfail="0">
+            <condition type="missing" operator="not" value="icon"/>
             <query><![CDATA[
-ALTER TABLE `#___ars_environments` DROP COLUMN `icon`;
+ALTER TABLE `#__ars_environments` DROP COLUMN `icon`;
             ]]></query>
         </action>
 
@@ -530,6 +530,148 @@ ALTER TABLE `#__ars_releases` DROP COLUMN `groups`;
             <query><![CDATA[
 ALTER TABLE `#__ars_items` DROP COLUMN `groups`;
             ]]></query>
+        </action>
+
+        <!-- Replace zero datetime with nullable datetime -->
+        <action table="#__ars_categories" canfail="1">
+            <condition type="nullable" value="created" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_categories` MODIFY `created` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_categories` SET `created` = NULL WHERE `created` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+        <action table="#__ars_categories" canfail="1">
+            <condition type="nullable" value="modified" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_categories` MODIFY `modified` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_categories` SET `modified` = NULL WHERE `modified` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+        <action table="#__ars_categories" canfail="1">
+            <condition type="nullable" value="checked_out_time" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_categories` MODIFY `checked_out_time` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_categories` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+
+        <action table="#__ars_releases" canfail="1">
+            <condition type="nullable" value="created" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_releases` MODIFY `created` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_releases` SET `created` = NULL WHERE `created` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+        <action table="#__ars_releases" canfail="1">
+            <condition type="nullable" value="modified" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_releases` MODIFY `modified` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_releases` SET `modified` = NULL WHERE `modified` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+        <action table="#__ars_releases" canfail="1">
+            <condition type="nullable" value="checked_out_time" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_releases` MODIFY `checked_out_time` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_releases` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="1">
+            <condition type="nullable" value="created" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_items` MODIFY `created` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_items` SET `created` = NULL WHERE `created` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+        <action table="#__ars_items" canfail="1">
+            <condition type="nullable" value="modified" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_items` MODIFY `modified` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_items` SET `modified` = NULL WHERE `modified` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+        <action table="#__ars_items" canfail="1">
+            <condition type="nullable" value="checked_out_time" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_items` MODIFY `checked_out_time` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_items` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+
+        <action table="#__ars_updatestreams" canfail="1">
+            <condition type="nullable" value="created" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_updatestreams` MODIFY `created` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_updatestreams` SET `created` = NULL WHERE `created` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+        <action table="#__ars_updatestreams" canfail="1">
+            <condition type="nullable" value="modified" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_updatestreams` MODIFY `modified` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_updatestreams` SET `modified` = NULL WHERE `modified` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+        <action table="#__ars_updatestreams" canfail="1">
+            <condition type="nullable" value="checked_out_time" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_updatestreams` MODIFY `checked_out_time` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_updatestreams` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+
+        <action table="#__ars_log" canfail="1">
+            <condition type="nullable" value="accessed_on" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_log` MODIFY `accessed_on` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_log` SET `accessed_on` = NULL WHERE `accessed_on` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+
+        <action table="#__ars_dlidlabels" canfail="1">
+            <condition type="nullable" value="created_on" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_dlidlabels` MODIFY `created_on` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_dlidlabels` SET `created_on` = NULL WHERE `created_on` = '0000-00-00 00:00:00';
+      ]]></query>
+        </action>
+        <action table="#__ars_dlidlabels" canfail="1">
+            <condition type="nullable" value="modified_on" operator="not"/>
+            <query><![CDATA[
+ALTER TABLE `#__ars_dlidlabels` MODIFY `modified_on` DATETIME NULL DEFAULT NULL;
+      ]]></query>
+            <query><![CDATA[
+UPDATE `#__ars_dlidlabels` SET `modified_on` = NULL WHERE `modified_on` = '0000-00-00 00:00:00';
+      ]]></query>
         </action>
     </sql>
 </schema>

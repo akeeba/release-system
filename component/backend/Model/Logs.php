@@ -174,7 +174,7 @@ class Logs extends DataModel
 	{
 		if (empty($this->user_id))
 		{
-			$user = $this->container->platform->getUser();
+			$user          = $this->container->platform->getUser();
 			$this->user_id = $user->id;
 		}
 
@@ -185,9 +185,9 @@ class Logs extends DataModel
 			$this->item_id = $this->input->getInt('id', 0);
 		}
 
-		if (empty($this->accessed_on) || ($this->accessed_on == '0000-00-00 00:00:00'))
+		if (empty($this->accessed_on) || ($this->accessed_on == '0000-00-00 00:00:00') || ($this->accessed_on == $this->container->db->getNullDate()))
 		{
-			$date = new Date();
+			$date              = new Date();
 			$this->accessed_on = $date->toSql();
 		}
 

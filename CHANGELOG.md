@@ -14,6 +14,7 @@
 * `~` Far more compact INI update streams, without release notes
 * `~` Optionally use com_compatibility to reduce the number of displayed releases in the update stream
 * `~` Minified JS files
+* `~` Replace zero datetime with nullable datetime (gh-179)
 * `#` [LOW] Frontend add-on download ID, redirect to non-SEF URL after editing an item
 * `#` [LOW] Frontend, ARS item selection is broken
 * `#` [LOW] No default list limit showing releases 

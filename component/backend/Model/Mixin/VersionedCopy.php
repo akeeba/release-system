@@ -66,7 +66,7 @@ trait VersionedCopy
 		// Also reset the alias and the created / modified / locked fields
 		$this->alias       = '';
 		$this->locked_by   = 0;
-		$this->locked_on   = $db->getNullDate();
+		$this->locked_on   = null;
 		$this->created_by  = 0;
 		$this->created_on  = $this->locked_on;
 		$this->modified_by = 0;
