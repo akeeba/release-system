@@ -62,7 +62,7 @@ $environments = ($this->params->get('show_environments', 1) == 1) ? $this->getEn
     @unless(empty($environments))
         <p>
             @foreach($environments as $environment)
-                <span class="akeeba-label--teal ars-environment-icon">$environment</span>
+                <span class="akeeba-label--teal ars-environment-icon">{{ $environment }}</span>
             @endforeach
         </p>
     @endunless
