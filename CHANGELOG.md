@@ -21,7 +21,8 @@
 * `#` [LOW] “Argument 1 passed to ArsRouter::getMenuItemForView() must be of the type string, null given” 
 * `#` [HIGH] Joomla 4 uses strings for `<client>`, not integers 
 * `#` [HIGH] Joomla 4 requires that `$segments` is empty after parsing the route, otherwise it throws a 404 
-* `#` [HIGH] Joomla 4 does not ignore the menu item query when calling parse() in the SEF router [gh-178] 
+* `#` [HIGH] Joomla 4 does not ignore the menu item query when calling parse() in the SEF router [gh-178]
+* `#` [HIGH] Joomla 4 beta 6 changed how sessions work, breaking everything
 
 # 5.0.0
 
