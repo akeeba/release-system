@@ -53,11 +53,11 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 ?>
 
 <div class="ars-item-{{{ $item->id }}}">
-	<h3>
+	<h4>
 		<a href="{{ htmlentities($download_url) }}">
 			{{{ $item->title }}}
 		</a>
-	</h3>
+	</h4>
 	@unless(empty($item->environments) || !$this->params->get('show_environments',1))
 		<p>
 			@foreach($item->environments as $environment)
