@@ -94,7 +94,7 @@ $environments = ($this->params->get('show_environments', 1) == 1) ? $this->getEn
             @endif
         </table>
 
-        <div id=reltabs-{{ $item->id }}-notes"">
+        <div id="ars-release-{{{ $item->id }}}-notes">
             <h3>
                 @lang('COM_ARS_RELEASE_NOTES_LABEL')
             </h3>
