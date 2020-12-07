@@ -21,13 +21,13 @@ $released = $this->container->platform->getDate($item->created);
 ?>
 
 <div class="ars-release-{{{ $item->id }}} ars-release-{{ $this->release->category->is_supported ? 'supported' : 'unsupported' }}">
-	<h4 class="text-muted">
+	<h2 class="text-muted">
 		{{{ $item->category->title }}}
 		{{{ $item->version }}}
 		<span class="akeeba-label--grey--small">
 			@lang('COM_ARS_RELEASES_MATURITY_' . $item->maturity)
 		</span>
-	</h4>
+	</h2>
 	<p class="text-muted">
 		<strong>@lang('LBL_RELEASES_RELEASEDON')</strong>:
 		@jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC2'))
