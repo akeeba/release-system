@@ -16,13 +16,13 @@ defined('_JEXEC') or die();
 $code = $e->getCode();
 $code = !empty($code) ? $code : 500;
 
-$app = class_exists('\Joomla\CMS\Factory') ? \Joomla\CMS\Factory::getApplication() : \JFactory::getApplication();
+$app  = class_exists('\Joomla\CMS\Factory') ? \Joomla\CMS\Factory::getApplication() : \JFactory::getApplication();
 
-$user30  = (class_exists('JFactory') && method_exists('JFactory', 'getUser')) ? JFactory::getUser() : null;
-$user38  = class_exists('\Joomla\CMS\Factory') && method_exists('\Joomla\CMS\Factory', 'getUser') ? \Joomla\CMS\Factory::getUser() : null;
-$user40  = (is_object($app) && method_exists($app, 'getIdentity')) ? $app->getIdentity() : null;
-$user    = is_null($user40) ? $user38 : $user40;
-$user    = is_null($user40) ? $user30 : $user;
+$user30 = (class_exists('JFactory') && method_exists('JFactory', 'getUser')) ? JFactory::getUser() : null;
+$user38 = class_exists('\Joomla\CMS\Factory') && method_exists('\Joomla\CMS\Factory', 'getUser') ? \Joomla\CMS\Factory::getUser() : null;
+$user40 = (is_object($app) && method_exists($app, 'getIdentity')) ? $app->getIdentity() : null;
+$user = is_null($user40) ? $user38 : $user40;
+$user = is_null($user40) ? $user30 : $user;
 $isSuper = !is_null($user) && $user->authorise('core.admin');
 
 $isFrontend   = class_exists('JApplicationSite') && ($app instanceof JApplicationSite);
@@ -85,7 +85,7 @@ if (!$isFrontend)
 </p>
 
 <?php if ($isPro): ?>
-	<div class="<?php if (version_compare(JVERSION, '3.999.999', 'le')): ?>hero-unit<?php else: ?>alert alert-primary<?php endif; ?>">
+	<div class="<?php if (version_compare(JVERSION, '3.999.999', 'le')):?>hero-unit<?php else: ?>alert alert-primary<?php endif; ?>">
 		<p>
 			<strong>Would you like us to help you faster?</strong>
 		</p>
@@ -160,27 +160,27 @@ if (!$isFrontend)
 	<?php
 	$db = JFactory::getDbo();
 	if (!is_null($db)):
-		?>
-		<tr>
-			<td>Database driver name</td>
-			<td><?php echo $db->getName() ?></td>
-		</tr>
-		<tr>
-			<td>Database driver type</td>
-			<td><?php echo $db->getServerType() ?></td>
-		</tr>
-		<tr>
-			<td>Database server version</td>
-			<td><?php echo $db->getVersion() ?></td>
-		</tr>
-		<tr>
-			<td>Database collation</td>
-			<td><?php echo $db->getCollation() ?></td>
-		</tr>
-		<tr>
-			<td>Database connection collation</td>
-			<td><?php echo $db->getConnectionCollation() ?></td>
-		</tr>
+	?>
+	<tr>
+		<td>Database driver name</td>
+		<td><?php echo $db->getName() ?></td>
+	</tr>
+	<tr>
+		<td>Database driver type</td>
+		<td><?php echo $db->getServerType() ?></td>
+	</tr>
+	<tr>
+		<td>Database server version</td>
+		<td><?php echo $db->getVersion() ?></td>
+	</tr>
+	<tr>
+		<td>Database collation</td>
+		<td><?php echo $db->getCollation() ?></td>
+	</tr>
+	<tr>
+		<td>Database connection collation</td>
+		<td><?php echo $db->getConnectionCollation() ?></td>
+	</tr>
 	<?php endif; ?>
 	<tr>
 		<td>PHP Memory limit</td>
@@ -226,7 +226,7 @@ if (version_compare(JVERSION, '3.999.999', 'le'))
 		return;
 	}
 
-	$model = new AdminModelSysInfo();
+	$model       = new AdminModelSysInfo();
 }
 else
 {

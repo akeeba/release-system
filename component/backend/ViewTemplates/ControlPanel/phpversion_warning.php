@@ -62,12 +62,13 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 			'7.2' => array('2019-11-30 00:00:00', '2020-11-30 00:00:00'),
 			'7.3' => array('2020-12-06 00:00:00', '2021-12-06 00:00:00'),
 			'7.4' => array('2021-11-28 00:00:00', '2022-11-28 00:00:00'),
+			'8.0' => array('2022-11-26 00:00:00', '2023-11-26 00:00:00'),
 		);
 
 		// Make sure I have all necessary configuration variables
 		$config = array_merge(array(
 			'minPHPVersion'          => '7.2.0',
-			'recommendedPHPVersion'  => '7.3',
+			'recommendedPHPVersion'  => '7.4',
 			'softwareName'           => 'This software',
 			'class_priority_low'     => 'akeeba-block--info',
 			'class_priority_medium'  => 'akeeba-block--warning',
@@ -165,16 +166,13 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 
 				<p>
 					Your site is currently using PHP <?php echo $longVersion ?>. This version of PHP has become <a
-							href="https://php.net/eol.php" target="_blank">End-of-Life
-						since <?php echo $eolDateFormatted ?></a>. It has
+						href="https://php.net/eol.php" target="_blank">End-of-Life since <?php echo $eolDateFormatted ?></a>. It has
 					not received security updates for a <em>very long time</em>. You MUST NOT use it for a live site!
 				</p>
 				<p>
 					<?php echo $softwareName ?> will stop supporting your version of PHP very soon. You must <strong>very
-						urgently</strong> upgrade to a newer version of PHP. We recommend
-					PHP <?php echo $recommendedPHPVersion ?>
-					or later. You can ask your host or your system administrator for instructions. It's easy and it will
-					make
+						urgently</strong> upgrade to a newer version of PHP. We recommend PHP <?php echo $recommendedPHPVersion ?>
+					or later. You can ask your host or your system administrator for instructions. It's easy and it will make
 					your site faster and more secure.
 				</p>
 			</div>

@@ -56,6 +56,7 @@ if (!function_exists('akeeba_common_wrongphp'))
 			'7.2' => array('2019-11-30 00:00:00', '2020-11-30 00:00:00'),
 			'7.3' => array('2020-12-06 00:00:00', '2021-12-06 00:00:00'),
 			'7.4' => array('2021-11-28 00:00:00', '2022-11-28 00:00:00'),
+			'8.0' => array('2022-11-26 00:00:00', '2023-11-26 00:00:00'),
 		);
 
 		// Make sure I have all necessary configuration variables
