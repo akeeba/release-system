@@ -1,5 +1,17 @@
 <?php
 /**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
+/**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
+/**
  * Old PHP version notification
  *
  * @copyright Copyright Nicholas K. Dionysopoulos / Akeeba Ltd

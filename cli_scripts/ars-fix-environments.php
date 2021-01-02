@@ -2,7 +2,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -34,7 +34,7 @@ use FOF30\Container\Container;
 use FOF30\Model\DataModel\Exception\RecordNotLoaded;
 
 // Setup and import the base CLI script
-$minphp = '7.1.0';
+$minphp = '7.2.0';
 
 // Boilerplate -- START
 define('_JEXEC', 1);
