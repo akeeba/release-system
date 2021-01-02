@@ -11,7 +11,7 @@
 	<author>Nicholas K. Dionysopoulos</author>
 	<authorEmail>nicholas@akeeba.com</authorEmail>
 	<authorUrl>https://www.akeeba.com</authorUrl>
-	<copyright>Copyright (c)2010-2017 Nicholas K. Dionysopoulos</copyright>
+	<copyright>Copyright (c)2010-2020 Nicholas K. Dionysopoulos</copyright>
 	<license>This component in released under the GNU/GPL v3 or later license</license>
 	<version>##VERSION##</version>
 	<description>Akeeba Release System</description>

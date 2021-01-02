@@ -14,7 +14,7 @@
     <url>https://www.akeeba.com</url>
     <packager>Akeeba Ltd</packager>
     <packagerurl>https://www.akeeba.com</packagerurl>
-    <copyright>Copyright (c)2010-2017 Nicholas K. Dionysopoulos</copyright>
+    <copyright>Copyright (c)2010-2020 Nicholas K. Dionysopoulos</copyright>
     <license>GNU GPL v3 or later</license>
     <description>Akeeba Release System installation package v.##VERSION##</description>
 
