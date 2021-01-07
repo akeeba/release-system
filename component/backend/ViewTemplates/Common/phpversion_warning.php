@@ -27,7 +27,7 @@
  */
 
 // Configuration -- Override before calling this script
-$minPHPVersion          = isset($minPHPVersion) ? $minPHPVersion : '7.2.0';
+$minPHPVersion          = isset($minPHPVersion) ? $minPHPVersion : '7.3.0';
 $recommendedPHPVersion  = isset($recommendedPHPVersion) ? $recommendedPHPVersion : '7.3';
 $softwareName           = isset($softwareName) ? $softwareName : 'This software';
 $class_priority_low     = isset($class_priority_low) ? $class_priority_low : 'akeeba-block--info';

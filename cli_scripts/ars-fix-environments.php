@@ -34,7 +34,7 @@ use FOF30\Container\Container;
 use FOF30\Model\DataModel\Exception\RecordNotLoaded;
 
 // Setup and import the base CLI script
-$minphp = '7.2.0';
+$minphp = '7.3.0';
 
 // Boilerplate -- START
 define('_JEXEC', 1);

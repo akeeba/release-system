@@ -2,7 +2,7 @@
 /**
  * Obsolete PHP version notification
  *
- * @copyright Copyright (c) 2018-2020 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c) 2018-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -60,15 +60,15 @@ if (!function_exists('akeeba_common_wrongphp'))
 		);
 
 		// Make sure I have all necessary configuration variables
-		$config = array_merge(array(
+		$config = array_merge([
 			'minPHPVersion'         => '7.2.0',
-			'recommendedPHPVersion' => '7.3',
+			'recommendedPHPVersion' => '7.4',
 			'softwareName'          => 'This software',
 			'silentResults'         => false,
 			'longVersion'           => PHP_VERSION,
 			'shortVersion'          => sprintf('%d.%d', PHP_MAJOR_VERSION, PHP_MINOR_VERSION),
 			'currentTimestamp'      => time(),
-		), $config);
+		], $config);
 
 		// Selectively extract configuration variables. Do not use extract(), it's potentially dangerous.
 		$minPHPVersion         = $config['minPHPVersion'];
@@ -242,7 +242,7 @@ if (!defined('KICKSTART'))
 		return akeeba_common_wrongphp(array(
 			// Configuration -- Override before calling this script
 			'minPHPVersion'         => isset($minPHPVersion) ? $minPHPVersion : '7.2.0',
-			'recommendedPHPVersion' => isset($recommendedPHPVersion) ? $recommendedPHPVersion : '7.3',
+			'recommendedPHPVersion' => isset($recommendedPHPVersion) ? $recommendedPHPVersion : '7.4',
 			'softwareName'          => isset($softwareName) ? $softwareName : 'This software',
 			'silentResults'         => isset($silentResults) ? $silentResults : false,
 			// Override these to test the script
