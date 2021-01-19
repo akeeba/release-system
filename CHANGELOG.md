@@ -5,7 +5,8 @@
 * `+` Show folder for each Category in the backend
 * `+` BleedingEdge release limits (gh-176)
 * `+` Explicit media version to address issues with Joomla not having cached the extension manifest
-* `+` Options for using a custom repository HTML page 
+* `+` Options for using a custom repository HTML page
+* `+` Add the time to the Download Logs' Accessed column (gh-184)
 * `~` Improved unhandled PHP exception error page
 * `~` Adjust size of control panel icons
 * `~` Rewritten frontend SEF router

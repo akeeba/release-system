@@ -5,7 +5,12 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Html;use Akeeba\ReleaseSystem\Admin\Helper\Select;use Joomla\CMS\HTML\HTMLHelper;use Joomla\CMS\Language\Text;
+/** @noinspection PhpUnusedAliasInspection */
+use Akeeba\ReleaseSystem\Admin\Helper\Html;
+use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Akeeba\ReleaseSystem\Admin\Helper\Format;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\Logs\Html */
 
@@ -93,7 +98,7 @@ defined('_JEXEC') or die;
                 @include('admin:com_ars/Common/ShowUser', ['item' => $row, 'field' => 'user_id'])
             </td>
             <td>
-                {{ strftime('%Y-%m-%d', (new \FOF30\Date\Date($row->accessed_on))->getTimestamp()) }}
+                {{ Format::formatDate($row->accessed_on, true) }}
             </td>
             <td class="akeeba-hidden-mobile">
                 {{{ $row->referer }}}
