@@ -63,7 +63,18 @@ abstract class Format
 
 	public static function formatDate($date, $local = true)
 	{
-		$date = new Date($date, 'GMT');
+		$container = Container::getInstance('com_ars');
+		$date      = new Date($date, 'GMT');
+
+		if ($local)
+		{
+			$zone = $container->platform->getUser()->getParam(
+				'timezone',
+				$container->platform->getConfig()->get('offset', 'UTC')
+			);
+			$tz   = new \DateTimeZone($zone);
+			$date->setTimezone($tz);
+		}
 
 		return $date->format(self::getDateFormat(), $local);
 	}
@@ -77,7 +88,7 @@ abstract class Format
 
 		$container = Container::getInstance('com_ars');
 
-		self::$dateFormat = $container->params->get('dateformat', Text::_('DATE_FORMAT_LC5'));
+		self::$dateFormat = $container->params->get('dateformat', Text::_('DATE_FORMAT_LC6') . ' T');
 
 		return self::$dateFormat;
 	}
