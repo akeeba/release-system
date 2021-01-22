@@ -18,6 +18,7 @@
 * `~` Replace zero datetime with nullable datetime (gh-179)
 * `~` Better heading level relations in the Items page (gh-182)
 * `~` Add PHP 8.0 in the list of known PHP versions, recommend PHP 7.4 or later
+* `~` Now using common view templates from our FOF framework for consistency across our software
 * `#` [LOW] Formatted dates would always display in GMT
 * `#` [LOW] Frontend add-on download ID, redirect to non-SEF URL after editing an item
 * `#` [LOW] Frontend, ARS item selection is broken

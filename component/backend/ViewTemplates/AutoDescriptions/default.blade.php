@@ -12,7 +12,7 @@ use Akeeba\ReleaseSystem\Admin\Helper\Select;
 defined('_JEXEC') or die;
 
 ?>
-@extends('admin:com_ars/Common/browse')
+@extends('any:lib_fof30/Common/browse')
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">

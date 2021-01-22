@@ -20,7 +20,7 @@ $item = $this->getItem();
 ?>
 @jhtml('formbehavior.chosen')
 
-@extends('admin:com_ars/Common/edit')
+@extends('any:lib_fof30/Common/edit')
 
 @section('edit-form-body')
     <div class="akeeba-container--50-50">

@@ -208,6 +208,12 @@ class Com_ArsInstallerScript extends \FOF30\Utils\InstallScript
 
 			// Subscription levels support
 			'administrator/components/com_ars/Model/SubscriptionIntegration.php',
+
+			// Moved inside FOF
+			'administrator/components/com_ars/ViewTemplates/Common/browse.blade.php',
+			'administrator/components/com_ars/ViewTemplates/Common/edit.blade.php',
+			'administrator/components/com_ars/ViewTemplates/Common/EntryUser.blade.php',
+			'administrator/components/com_ars/ViewTemplates/Common/ShowUser.blade.php',
 		],
 		'folders' => [
 			// Moving to FOF 3

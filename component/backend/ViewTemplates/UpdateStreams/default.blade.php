@@ -23,7 +23,7 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
 ?>
 @jhtml('formbehavior.chosen')
 
-@extends('admin:com_ars/Common/browse')
+@extends('any:lib_fof30/Common/browse')
 
 @section('browse-page-top')
     <div class="akeeba-block--info">

@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 $item = $this->getItem();
 
 ?>
-@extends('admin:com_ars/Common/edit')
+@extends('any:lib_fof30/Common/edit')
 
 @section('edit-page-top')
     <h3>@lang('COM_ARS_DLIDLABELS_GROUP_BASIC')</h3>

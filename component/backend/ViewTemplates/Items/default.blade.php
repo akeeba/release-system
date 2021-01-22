@@ -20,7 +20,7 @@ $filterCat = (int) $this->getModel()->getState('category', 0);
 ?>
 @jhtml('formbehavior.chosen')
 
-@extends('admin:com_ars/Common/browse')
+@extends('any:lib_fof30/Common/browse')
 
 @section('browse-filters')
 	<div class="akeeba-filter-element akeeba-form-group">

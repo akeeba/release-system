@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 ?>
-@extends('admin:com_ars/Common/browse')
+@extends('any:lib_fof30/Common/browse')
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
@@ -70,7 +70,7 @@ defined('_JEXEC') or die;
                 @endif
             </td>
             <td>
-                @include('admin:com_ars/Common/ShowUser', ['item' => $row, 'field' => 'user_id'])
+                @include('any:lib_fof30/Common/user_show', ['item' => $row, 'field' => 'user_id'])
             </td>
             <td>
 				<span class="{{ $row->primary ? 'akeeba-label--dark' : '' }}">

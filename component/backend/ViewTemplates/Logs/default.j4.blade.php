@@ -20,7 +20,7 @@ defined('_JEXEC') or die;
 
 @jhtml('formbehavior.chosen')
 
-@extends('admin:com_ars/Common/browse')
+@extends('any:lib_fof30/Common/browse')
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
@@ -93,7 +93,7 @@ defined('_JEXEC') or die;
                 <em>{{{ $row->item->release->version }}}</em> <br /> <small>{{{ $row->item->title }}}</small>
             </td>
             <td>
-                @include('admin:com_ars/Common/ShowUser', ['item' => $row, 'field' => 'user_id', 'ShowID' => false, 'showAvatar' => true, 'avatarSize' => 24, 'showLink' => false])
+                @include('any:lib_fof30/Common/user_show', ['item' => $row, 'field' => 'user_id', 'ShowID' => false, 'showAvatar' => true, 'avatarSize' => 24, 'showLink' => false])
             </td>
             <td>
                 <div class="ars-logs-accessed-on">

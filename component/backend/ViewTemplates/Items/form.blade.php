@@ -17,7 +17,7 @@ $item = $this->getItem();
 
 @js('media://com_ars/js/Items.js', $this->getContainer()->mediaVersion)
 
-@extends('admin:com_ars/Common/edit')
+@extends('any:lib_fof30/Common/edit')
 
 @jhtml('behavior.core')
 @jhtml('formbehavior.chosen')

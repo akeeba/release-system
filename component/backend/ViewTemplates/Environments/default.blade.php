@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 defined('_JEXEC') or die;
 
 ?>
-@extends('admin:com_ars/Common/browse')
+@extends('any:lib_fof30/Common/browse')
 
 @section('browse-filters')
     @searchfilter('search', 'search', 'LBL_ENVIRONMENTS_TITLE')
