@@ -34,58 +34,6 @@
 
 	<!--
 	====================================================================================================
-	Tasks - Project management
-	====================================================================================================
-	-->
-
-	<target name="release">
-		<!-- Make sure there is a tag that's the same as the version number -->
-		<gittag gitPath="${git.binary}"
-				repository="${dirs.root}"
-				list="true" pattern="${version}"
-				outputProperty="git.tags"
-		/>
-
-		<php function="trim" returnProperty="git.tags">
-			<param value="${git.tags}" />
-		</php>
-
-		<if>
-			<not>
-				<equals arg1="${git.tags}" arg2="${version}" />
-			</not>
-			<then>
-				<fail message="You must tag version ${version} before trying to release it." />
-			</then>
-		</if>
-
-		<!-- Verify the tag. If it can't verify the tag the build fails. -->
-		<gittag gitPath="${git.binary}"
-				repository="${dirs.root}"
-				verify="true"
-				object="${version}"
-				outputProperty="git.verify"
-		/>
-
-		<!-- Make a draft release -->
-		<loadfile property="github.release.body" file="${dirs.root}/RELEASENOTES.md" />
-
-		<GitHubRelease token="${github.token}" organization="${github.organization}" repository="${github.repository}"
-					   tagName="${version}" releaseName="v.${version}" releaseBody="${github.release.body}" draft="1"
-					   propName="github.release.id" />
-
-		<!-- Upload the release files -->
-		<GitHubAsset token="${github.token}" organization="${github.organization}" repository="${github.repository}"
-					 file="${dirs.release}/pkg_ars-${version}.zip"
-					 releaseId="${github.release.id}" />
-
-		<!-- Publish the release -->
-		<GitHubRelease token="${github.token}" organization="${github.organization}" repository="${github.repository}"
-					   tagName="${version}" draft="0" />
-	</target>
-
-	<!--
-	====================================================================================================
 	Obsolete
 	====================================================================================================
 	-->
