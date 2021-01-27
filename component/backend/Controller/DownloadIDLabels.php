@@ -9,9 +9,9 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 defined('_JEXEC') or die;
 
-use FOF30\Controller\DataController;
-use FOF30\Controller\Exception\ItemNotFound;
-use FOF30\Controller\Exception\TaskNotFound;
+use FOF40\Controller\DataController;
+use FOF40\Controller\Exception\ItemNotFound;
+use FOF40\Controller\Exception\TaskNotFound;
 use Joomla\CMS\Language\Text;
 
 class DownloadIDLabels extends DataController

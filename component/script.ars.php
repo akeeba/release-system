@@ -212,20 +212,20 @@ class Pkg_ArsInstallerScript
 	{
 		// Preload FOF classes required for the InstallScript. This is required since we'll be trying to uninstall FOF
 		// before uninstalling the component itself. The component has an uninstallation script which uses FOF, so...
-		@include_once(JPATH_LIBRARIES . '/fof30/include.php');
-		class_exists('FOF30\\Utils\\InstallScript\\BaseInstaller', true);
-		class_exists('FOF30\\Utils\\InstallScript\\Component', true);
-		class_exists('FOF30\\Utils\\InstallScript\\Module', true);
-		class_exists('FOF30\\Utils\\InstallScript\\Plugin', true);
-		class_exists('FOF30\\Utils\\InstallScript');
-		class_exists('FOF30\\Database\\Installer');
+		@include_once(JPATH_LIBRARIES . '/fof40/include.php');
+		class_exists('FOF40\\Utils\\InstallScript\\BaseInstaller', true);
+		class_exists('FOF40\\Utils\\InstallScript\\Component', true);
+		class_exists('FOF40\\Utils\\InstallScript\\Module', true);
+		class_exists('FOF40\\Utils\\InstallScript\\Plugin', true);
+		class_exists('FOF40\\Utils\\InstallScript');
+		class_exists('FOF40\\Database\\Installer');
 
 		/**
-		 * uninstall() is called before the component is uninstalled. Therefore there is a dependency to FOF 3 which
-		 * prevents FOF 3 from being removed at this point. Therefore we have to remove the dependency before removing
+		 * uninstall() is called before the component is uninstalled. Therefore there is a dependency to FOF 4 which
+		 * prevents FOF 4 from being removed at this point. Therefore we have to remove the dependency before removing
 		 * the component and hope nothing goes wrong.
 		 */
-		$this->removeDependency('fof30', $this->componentName);
+		$this->removeDependency('fof40', $this->componentName);
 
 		/**
 		 * uninstall() is called before the component is uninstalled. Therefore there is a dependency to FEF which
@@ -256,13 +256,13 @@ class Pkg_ArsInstallerScript
 	private function installOrUpdateFOF($parent)
 	{
 		// Get the path to the FOF package
-		$sourcePath = $parent->getParent()->getPath('source');
-		$sourcePackage = $sourcePath . '/lib_fof30.zip';
+		$sourcePath    = $parent->getParent()->getPath('source');
+		$sourcePackage = $sourcePath . '/lib_fof40.zip';
 
 		// Extract and install the package
-		$package = JInstallerHelper::unpack($sourcePackage);
-		$tmpInstaller  = new JInstaller;
-		$error = null;
+		$package      = JInstallerHelper::unpack($sourcePackage);
+		$tmpInstaller = new JInstaller;
+		$error        = null;
 
 		try
 		{
@@ -271,13 +271,13 @@ class Pkg_ArsInstallerScript
 		catch (\Exception $e)
 		{
 			$installResult = false;
-			$error = $e->getMessage();
+			$error         = $e->getMessage();
 		}
 
 		// Try to include FOF. If that fails then the FOF package isn't installed because its installation failed, not
 		// because we had a newer version already installed. As a result we have to abort the entire package's
 		// installation.
-		if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+		if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof40/include.php'))
 		{
 			if (empty($error))
 			{
@@ -305,10 +305,10 @@ class Pkg_ArsInstallerScript
 		$db = $parent->getParent()->getDbo();
 
 		$query = $db->getQuery(true)
-		            ->select('extension_id')
-		            ->from('#__extensions')
-		            ->where('type = ' . $db->quote('library'))
-		            ->where('element = ' . $db->quote('lib_fof30'));
+			->select('extension_id')
+			->from('#__extensions')
+			->where('type = ' . $db->quote('library'))
+			->where('element = ' . $db->quote('lib_fof40'));
 
 		$db->setQuery($query);
 		$id = $db->loadResult();

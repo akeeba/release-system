@@ -127,6 +127,26 @@ if (!$isFrontend)
 </p>
 <pre><?php echo htmlentities($e->getTraceAsString()) ?></pre>
 
+<?php while ($e = $e->getPrevious()): ?>
+	<hr />
+	<h4>Previous exception</h4>
+	<strong>
+		<?php if (version_compare(JVERSION, '3.999.999', 'le')): ?>
+			<span class="label label-danger"><?php echo htmlentities($code) ?></span> <?php echo htmlentities($e->getMessage()) ?>
+		<?php else: ?>
+			<span class="badge badge-danger"><?php echo htmlentities($code) ?></span> <?php echo htmlentities($e->getMessage()) ?>
+		<?php endif; ?>
+	</strong>
+	<p>
+		File <code><?php echo htmlentities(str_ireplace(JPATH_ROOT, '&lt;root&gt;', $e->getFile())) ?></code> Line <span
+				class="label label-info"><?php echo (int) $e->getLine() ?></span>
+	</p>
+	<p>
+		Exception type: <code><?php echo htmlentities(get_class($e)) ?></code>
+	</p>
+	<pre><?php echo htmlentities($e->getTraceAsString()) ?></pre>
+<?php endwhile; ?>
+
 <h3>System information</h3>
 <table class="table table-striped">
 	<tr>

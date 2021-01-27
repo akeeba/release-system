@@ -15,7 +15,7 @@ $i = 0;
 ?>
 @jhtml('formbehavior.chosen')
 
-@extends('any:lib_fof30/Common/browse')
+@extends('any:lib_fof40/Common/browse')
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
@@ -41,7 +41,7 @@ $i = 0;
             @sortgrid('ordering', '<i class="icon-menu-2"></i>')
         </th>
         <th width="32">
-            @jhtml('FEFHelper.browse.checkall')
+            @jhtml('FEFHelp.browse.checkall')
         </th>
         <th>
             @sortgrid('category_id', 'COM_ARS_RELEASES_FIELD_CATEGORY')
@@ -74,10 +74,10 @@ $i = 0;
 		?>
         <tr>
             <td>
-                @jhtml('FEFHelper.browse.order', 'ordering', $row->ordering)
+                @jhtml('FEFHelp.browse.order', 'ordering', $row->ordering)
             </td>
             <td>
-                @jhtml('FEFHelper.browse.id', ++$i, $row->getId())
+                @jhtml('FEFHelp.browse.id', ++$i, $row->getId())
             </td>
             <td>
                 {{{ \Akeeba\ReleaseSystem\Admin\Model\Categories::forceEagerLoad($row->category_id, 'title') }}}

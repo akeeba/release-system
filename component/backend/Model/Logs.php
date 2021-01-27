@@ -9,21 +9,21 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 
 defined('_JEXEC') or die;
 
-use FOF30\Container\Container;
-use FOF30\Date\Date;
-use FOF30\Model\DataModel;
-use FOF30\Model\Mixin\Assertions;
-use FOF30\Utils\Ip;
+use FOF40\Container\Container;
+use FOF40\Date\Date;
+use FOF40\Model\DataModel;
+use FOF40\Model\Mixin\Assertions;
+use FOF40\IP\IPHelper as Ip;
 use JDatabaseQuery;
 
 /**
- * @property int	$id
- * @property int	$user_id
- * @property int	$item_id
- * @property string	$accessed_on
- * @property string	$referer
- * @property string	$ip
- * @property int	$authorized
+ * @property int           $id
+ * @property int           $user_id
+ * @property int           $item_id
+ * @property string        $accessed_on
+ * @property string        $referer
+ * @property string        $ip
+ * @property int           $authorized
  *
  * @property-read Items	$item
  */
@@ -34,12 +34,12 @@ class Logs extends DataModel
 	/**
 	 * Public constructor. Overrides the parent constructor.
 	 *
-	 * @see DataModel::__construct()
-	 *
 	 * @param   Container  $container  The configuration variables to this model
 	 * @param   array      $config     Configuration values for this model
 	 *
-	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
+	 * @throws \FOF40\Model\DataModel\Exception\NoTableColumns
+	 * @see DataModel::__construct()
+	 *
 	 */
 	public function __construct(Container $container, array $config = array())
 	{

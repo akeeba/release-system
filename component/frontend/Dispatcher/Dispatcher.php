@@ -12,7 +12,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 defined('_JEXEC') or die;
 
-class Dispatcher extends \FOF30\Dispatcher\Dispatcher
+class Dispatcher extends \FOF40\Dispatcher\Dispatcher
 {
 	/**
 	 * Map old views to the new ones.
@@ -62,7 +62,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 		if (!$useFEF)
 		{
-			$this->container->rendererClass = '\\FOF30\\Render\\Joomla3';
+			$this->container->rendererClass = '\\FOF40\\Render\\Joomla3';
 		}
 
 		$darkMode = $this->container->params->get('dark_mode_frontend', -1);

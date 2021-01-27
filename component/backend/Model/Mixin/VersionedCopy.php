@@ -18,7 +18,7 @@ trait VersionedCopy
 {
 	protected function onBeforeCopy(): void
 	{
-		/** @var \FOF30\Model\DataModel $this */
+		/** @var \FOF40\Model\DataModel $this */
 
 		// If the old title is versioned, remove the copy number
 		$oldTitle = $this->title;

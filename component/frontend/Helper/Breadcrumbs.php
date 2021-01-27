@@ -95,10 +95,14 @@ class Breadcrumbs
 			// Preferably find a menu item linking to a specific repository type
 			$Itemid    = null;
 			$all_items = $menus->getItems('type', 'component', false);
+
 			if (empty($all_items))
 			{
 				return;
 			}
+
+			$rootName = null;
+
 			foreach ($all_items as $item)
 			{
 				if ((!property_exists($item, 'published') || ($item->published))

@@ -9,7 +9,7 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 defined('_JEXEC') or die;
 
-use FOF30\Controller\DataController;
+use FOF40\Controller\DataController;
 use Joomla\CMS\Language\Text;
 
 class Category extends DataController

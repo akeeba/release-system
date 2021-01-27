@@ -10,10 +10,10 @@ namespace Akeeba\ReleaseSystem\Site\View\Update;
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Model\Environments;
-use FOF30\Container\Container;
-use FOF30\Date\Date;
-use FOF30\Model\DataModel\Exception\RecordNotLoaded;
-use FOF30\View\DataView\Raw;
+use FOF40\Container\Container;
+use FOF40\Date\Date;
+use FOF40\Model\DataModel\Exception\RecordNotLoaded;
+use FOF40\View\DataView\Raw;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\ComponentHelper as JComponentHelper;
 

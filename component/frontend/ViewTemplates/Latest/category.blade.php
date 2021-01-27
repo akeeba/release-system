@@ -25,7 +25,7 @@ if (!isset($this->releases[$item->id]))
 /** @var \Akeeba\ReleaseSystem\Site\Model\Releases $release */
 $release     = $this->releases[$item->id];
 $released    = $this->container->platform->getDate($release->created);
-$release_url = Router::_('index.php?option=com_ars&view=Items&release_id=' . $release->id . '&Itemid=' . $Itemid);
+$release_url = Router::_('index.php?option=com_ars&view=Items&release_id=' . $release->id . '&Itemid=' . $this->Itemid);
 
 if (!Filter::filterItem($release, false) && !empty($release->redirect_unauth))
 {

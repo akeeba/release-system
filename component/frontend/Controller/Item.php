@@ -15,8 +15,8 @@ use Akeeba\ReleaseSystem\Site\Model\Download;
 use Akeeba\ReleaseSystem\Site\Model\Items;
 use Akeeba\ReleaseSystem\Site\Model\Logs;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
-use FOF30\Controller\DataController;
-use FOF30\Controller\Exception\ItemNotFound;
+use FOF40\Controller\DataController;
+use FOF40\Controller\Exception\ItemNotFound;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -48,11 +48,11 @@ class Item extends DataController
 	/**
 	 * Overrides the default display method to add caching support
 	 *
-	 * @param bool        $cachable  Is this a cacheable view?
-	 * @param bool|array  $urlparams Registered URL parameters
-	 * @param null|string $tpl       Sub-template (not really used...)
+	 * @param   bool         $cachable   Is this a cacheable view?
+	 * @param   bool|array   $urlparams  Registered URL parameters
+	 * @param   null|string  $tpl        Sub-template (not really used...)
 	 */
-	public function display($cachable = false, $urlparams = false, $tpl = null)
+	public function display(bool $cachable = false, bool $urlparams = false, ?string $tpl = null): void
 	{
 		$cachable = true;
 

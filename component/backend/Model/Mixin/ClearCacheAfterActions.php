@@ -7,8 +7,8 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Model\Mixin;
 
-use FOF30\Model\DataModel;
-use FOF30\Utils\CacheCleaner;
+use FOF40\Model\DataModel;
+use FOF40\JoomlaAbstraction\CacheCleaner;
 
 trait ClearCacheAfterActions
 {

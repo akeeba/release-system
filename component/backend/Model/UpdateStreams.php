@@ -9,10 +9,10 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 
 defined('_JEXEC') or die;
 
-use FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use FOF30\Model\DataModel\Exception\NoTableColumns;
-use FOF30\Model\Mixin\Assertions;
+use FOF40\Container\Container;
+use FOF40\Model\DataModel;
+use FOF40\Model\DataModel\Exception\NoTableColumns;
+use FOF40\Model\Mixin\Assertions;
 use JDatabaseQuery;
 
 /**

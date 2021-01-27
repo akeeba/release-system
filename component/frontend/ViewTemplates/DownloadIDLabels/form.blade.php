@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 $item = $this->getItem();
 
 ?>
-@extends('any:lib_fof30/Common/edit')
+@extends('any:lib_fof40/Common/edit')
 
 @section('edit-page-top')
     <h3>@lang('COM_ARS_DLIDLABELS_GROUP_BASIC')</h3>
@@ -33,7 +33,7 @@ $item = $this->getItem();
             @lang('JPUBLISHED')
         </label>
 
-        @jhtml('FEFHelper.select.booleanswitch', 'enabled', $item->enabled)
+        @jhtml('FEFHelp.select.booleanswitch', 'enabled', $item->enabled)
     </div>
 
     <div class="akeeba-form-group--pull-right">

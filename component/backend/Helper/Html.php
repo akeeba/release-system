@@ -7,10 +7,10 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Helper;
 
-use FOF30\Container\Container;
-use FOF30\Form\Field\GenericList;
-use FOF30\Model\DataModel;
-use FOF30\View\DataView\Raw;
+use FOF40\Container\Container;
+use FOF40\Form\Field\GenericList;
+use FOF40\Model\DataModel;
+use FOF40\View\DataView\Raw;
 use JHelperUsergroups;
 use JHtml;
 use Joomla\CMS\Access\Access;
@@ -98,52 +98,6 @@ abstract class Html
 			default:
 				return '';
 		}
-	}
-
-	public static function ordering(Raw $view, string $orderingField, string $orderingValue): string
-	{
-		$ordering = $view->getLists()->order == $orderingField;
-		$class    = 'input-mini';
-		$icon     = 'icon-menu';
-
-		// Default inactive ordering
-		$html = '<span class="sortable-handler inactive" >';
-		$html .= '<span class="' . $icon . '"></span>';
-		$html .= '</span>';
-
-		// The modern drag'n'drop method
-		if ($view->getPerms()->editstate)
-		{
-			$disableClassName = '';
-			$disabledLabel    = '';
-
-			// DO NOT REMOVE! It will initialize Joomla libraries and javascript functions
-			$hasAjaxOrderingSupport = $view->hasAjaxOrderingSupport();
-
-			if (!$hasAjaxOrderingSupport['saveOrder'])
-			{
-				$disabledLabel    = Text::_('JORDERINGDISABLED');
-				$disableClassName = 'inactive tip-top';
-			}
-
-			$orderClass = $ordering ? 'order-enabled' : 'order-disabled';
-
-			$html = '<div class="' . $orderClass . '">';
-			$html .= '<span class="sortable-handler ' . $disableClassName . '" title="' . $disabledLabel . '" rel="tooltip">';
-			$html .= '<span class="' . $icon . '"></span>';
-			$html .= '</span>';
-
-			if ($ordering)
-			{
-				$joomla35IsBroken = version_compare(JVERSION, '3.5.0', 'ge') ? 'style="display: none"' : '';
-
-				$html .= '<input type="text" name="order[]" ' . $joomla35IsBroken . ' size="5" class="' . $class . ' text-area-order" value="' . $orderingValue . '" />';
-			}
-
-			$html .= '</div>';
-		}
-
-		return $html;
 	}
 
 	public static function accessLevel(string $value, array $fieldOptions = []): string

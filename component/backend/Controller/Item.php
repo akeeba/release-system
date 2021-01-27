@@ -9,9 +9,9 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 defined('_JEXEC') or die;
 
-use FOF30\Container\Container;
-use FOF30\Controller\DataController;
-use FOF30\Controller\Exception\ItemNotFound;
+use FOF40\Container\Container;
+use FOF40\Controller\DataController;
+use FOF40\Controller\Exception\ItemNotFound;
 use Joomla\CMS\Language\Text;
 
 class Item extends DataController

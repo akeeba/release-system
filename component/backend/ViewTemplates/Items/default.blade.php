@@ -20,7 +20,7 @@ $filterCat = (int) $this->getModel()->getState('category', 0);
 ?>
 @jhtml('formbehavior.chosen')
 
-@extends('any:lib_fof30/Common/browse')
+@extends('any:lib_fof40/Common/browse')
 
 @section('browse-filters')
 	<div class="akeeba-filter-element akeeba-form-group">
@@ -44,7 +44,7 @@ $filterCat = (int) $this->getModel()->getState('category', 0);
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
-        {{ \FOF30\Utils\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
+		{{ \FOF40\Html\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
 	</div>
 
 	<div class="akeeba-filter-element akeeba-form-group">
@@ -58,7 +58,7 @@ $filterCat = (int) $this->getModel()->getState('category', 0);
 			@sortgrid('ordering', '<i class="icon-menu-2"></i>')
 		</th>
 		<th width="32">
-			@jhtml('FEFHelper.browse.checkall')
+			@jhtml('FEFHelp.browse.checkall')
 		</th>
 		<th>
 			@lang('LBL_ITEMS_CATEGORY')
@@ -101,10 +101,10 @@ $filterCat = (int) $this->getModel()->getState('category', 0);
 		?>
 		<tr data-dragable-group="1">
 			<td>
-				@jhtml('FEFHelper.browse.order', 'ordering', $row->ordering)
+				@jhtml('FEFHelp.browse.order', 'ordering', $row->ordering)
 			</td>
 			<td>
-				@jhtml('FEFHelper.browse.id', ++$i, $row->getId())
+				@jhtml('FEFHelp.browse.id', ++$i, $row->getId())
 			</td>
 			<td>
 				{{{ \Akeeba\ReleaseSystem\Site\Model\Categories::forceEagerLoad($category_id, 'title') }}}
@@ -142,7 +142,7 @@ $filterCat = (int) $this->getModel()->getState('category', 0);
 				{{ \Akeeba\ReleaseSystem\Admin\Helper\Html::accessLevel($row->access) }}
 			</td>
 			<td>
-				@jhtml('FEFHelper.browse.published', $row->published, $i, '', $enabled)
+				@jhtml('FEFHelp.browse.published', $row->published, $i, '', $enabled)
 			</td>
 			<td>
 				{{{ $row->hits }}}

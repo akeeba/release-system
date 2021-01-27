@@ -13,14 +13,15 @@ $tooLongAgo = (int) gmdate('Y') - 2015;
 
 <div style="margin: 1em">
 	<h1>Akeeba Framework-on-Framework (FOF) version 3 could not be found on this site</h1>
-	<hr/>
+	<hr />
 	<div class="alert alert-warning">
 		<h2>
 			This component requires the Akeeba FOF framework package to be installed on your site. Please go to <a
-					href="https://www.akeeba.com/download/fof3.html">our download page</a> to download it, then install it on your site.
+					href="https://www.akeeba.com/download/fof4.html">our download page</a> to download it, then install
+			it on your site.
 		</h2>
 	</div>
-	<hr/>
+	<hr />
 	<h4>Further information</h4>
 	<p>
 		FOF is a Joomla component framework. It's the low level code which sits between our Joomla! extensions and
@@ -39,23 +40,26 @@ $tooLongAgo = (int) gmdate('Y') - 2015;
 		uninstalled when you uninstall all components which depend on it.
 	</p>
 	<p>
-		FOF is installed in the <code><?php echo JPATH_LIBRARIES . DIRECTORY_SEPARATOR?>/fof30</code> folder on your
-		server. It appears in Joomla's Extensions, Manage page as <code>FOF30</code>. Please do not remove it from your
-		site.
+		FOF is installed in the <code><?php echo rtrim(JPATH_LIBRARIES, '/\\') . DIRECTORY_SEPARATOR ?>fof40</code>
+		folder on your server. It appears in Joomla's Extensions, Manage page as <code>FOF40</code>. Please do not
+		remove it from your site.
 	</p>
-<?php if (version_compare(JVERSION, '3.9999.9999', 'le')): ?>
-	<h4>Why do I have multiple FOF entries in Joomla?</h4>
-	<p>
-		Joomla <?php echo JVERSION ?> includes an <em>old, obsolete</em> version of FOF - version 2.x. It is installed
-		in the <code><?php echo JPATH_LIBRARIES . DIRECTORY_SEPARATOR ?>fof</code> folder on your server. It appears in
-		Joomla's Extensions, Manage page as <code>FOF</code>. Please do not remove it from your site; Joomla needs it
-		to function properly.
-	</p>
+	<?php if (version_compare(JVERSION, '3.9999.9999', 'le')): ?>
+		<h4>Why do I have multiple FOF entries in Joomla?</h4>
+		<p>
+			Joomla <?php echo JVERSION ?> includes an <em>old, obsolete</em> version of FOF - version 2.x. It is
+			installed in the <code><?php echo JPATH_LIBRARIES . DIRECTORY_SEPARATOR ?>fof</code> folder on your server.
+			It appears in Joomla's Extensions, Manage page as <code>FOF</code>. Please do not remove it from your site;
+			Joomla needs it to function properly.
+		</p>
 	<p>
 		We discontinued FOF 2.x in 2015 &mdash; that's <?php echo $tooLongAgo ?> years ago. Ever since, we replaced it
-		with FOF 3.x. The two versions are incompatible with each other but both are required; FOF 2.x for Joomla!
-		itself and FOF 3.x for our extensions. That's why you see both. You must not remove either of them or something
-		will break!
+		with FOF 3.x. Starting February 2021 we replaced it with FOF 4.x. The three versions are incompatible with each
+		other but they are all required; FOF 2.x for Joomla! 3.x itself, FOF 3.x for our old extensions and some third
+		party extensions, FOF 4.x for our newer extensions. That's why you see all of them. You must not remove any of
+		them or something will break! Please note that FOF 3.x is automatically uninstalled if it's no longer necessary
+		as part of our extensions' update or uninstallation. We can't vouch that third party developers are as diligent,
+		though.
 	</p>
 <?php endif; ?>
 </div>

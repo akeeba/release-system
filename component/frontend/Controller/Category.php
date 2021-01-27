@@ -9,7 +9,7 @@ namespace Akeeba\ReleaseSystem\Site\Controller;
 
 defined('_JEXEC') or die;
 
-use FOF30\Controller\DataController;
+use FOF40\Controller\DataController;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;

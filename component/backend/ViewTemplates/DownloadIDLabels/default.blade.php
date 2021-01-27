@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 ?>
-@extends('any:lib_fof30/Common/browse')
+@extends('any:lib_fof40/Common/browse')
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
@@ -29,7 +29,7 @@ defined('_JEXEC') or die;
 @section('browse-table-header')
     <tr>
         <th width="32">
-            @jhtml('FEFHelper.browse.checkall')
+            @jhtml('FEFHelp.browse.checkall')
         </th>
         <th>
             @sortgrid('label', 'COM_ARS_DLIDLABELS_FIELD_LABEL')
@@ -58,7 +58,7 @@ defined('_JEXEC') or die;
 		?>
         <tr>
             <td>
-                @jhtml('FEFHelper.browse.id', ++$i, $row->getId())
+                @jhtml('FEFHelp.browse.id', ++$i, $row->getId())
             </td>
             <td>
                 @if (($row->label == '_MAIN_') || $row->primary)
@@ -70,7 +70,7 @@ defined('_JEXEC') or die;
                 @endif
             </td>
             <td>
-                @include('any:lib_fof30/Common/user_show', ['item' => $row, 'field' => 'user_id'])
+                @include('any:lib_fof40/Common/user_show', ['item' => $row, 'field' => 'user_id'])
             </td>
             <td>
 				<span class="{{ $row->primary ? 'akeeba-label--dark' : '' }}">
@@ -78,7 +78,7 @@ defined('_JEXEC') or die;
 				</span>
             </td>
             <td>
-                @jhtml('FEFHelper.browse.published', $row->enabled, $i, '', $enabled)
+                @jhtml('FEFHelp.browse.published', $row->enabled, $i, '', $enabled)
             </td>
             <td>
                 <a href="index.php?option=com_ars&view=DownloadIDLabels&task=reset&id={{{ $row->ars_dlidlabel_id }}}&{{{ $this->getContainer()->platform->getToken(true) }}}=1"

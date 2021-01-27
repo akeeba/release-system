@@ -9,11 +9,11 @@ namespace Akeeba\ReleaseSystem\Admin\Model;
 
 defined('_JEXEC') or die;
 
-use FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use FOF30\Model\Mixin\Assertions;
-use FOF30\Model\Mixin\ImplodedArrays;
-use FOF30\Model\Mixin\JsonData;
+use FOF40\Container\Container;
+use FOF40\Model\DataModel;
+use FOF40\Model\Mixin\Assertions;
+use FOF40\Model\Mixin\ImplodedArrays;
+use FOF40\Model\Mixin\JsonData;
 use JDatabaseQuery;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
@@ -113,7 +113,7 @@ class Items extends DataModel
 	 * @param   Container  $container  The configuration variables to this model
 	 * @param   array      $config     Configuration values for this model
 	 *
-	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
+	 * @throws \FOF40\Model\DataModel\Exception\NoTableColumns
 	 * @see DataModel::__construct()
 	 *
 	 */

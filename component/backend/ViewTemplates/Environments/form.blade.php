@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 
 ?>
 
-@extends('any:lib_fof30/Common/edit')
+@extends('any:lib_fof40/Common/edit')
 
 @section('edit-form-body')
     <div class="akeeba-container--50-50">

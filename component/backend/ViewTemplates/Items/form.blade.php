@@ -17,7 +17,7 @@ $item = $this->getItem();
 
 @js('media://com_ars/js/Items.js', $this->getContainer()->mediaVersion)
 
-@extends('any:lib_fof30/Common/edit')
+@extends('any:lib_fof40/Common/edit')
 
 @jhtml('behavior.core')
 @jhtml('formbehavior.chosen')
@@ -28,7 +28,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="release_id">@lang('LBL_ITEMS_RELEASE')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::releases(true), 'release_id', [
                     'id' => 'release_id', 'list.select' => $item->release_id,
                     'list.attr' => ['class' => 'advancedSelect']
@@ -50,7 +50,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="type">@lang('LBL_ITEMS_TYPE')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::itemType(true), 'type', [
                     'id' => 'type', 'list.select' => $item->type,
                     'list.attr' => ['onchange' => 'arsItems.onTypeChange();']
@@ -116,13 +116,13 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="published">@lang('JPUBLISHED')</label>
 
-                @jhtml('FEFHelper.select.booleanswitch', 'published', $item->published)
+                @jhtml('FEFHelp.select.booleanswitch', 'published', $item->published)
             </div>
 
             <div class="akeeba-form-group">
                 <label for="access">@lang('JFIELD_ACCESS_LABEL')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(true), 'access', [
                     'id' => 'access', 'list.select' => $item->access,
                     'list.attr' => ['class' => 'advancedSelect']
@@ -132,7 +132,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="show_unauth_links">@lang('COM_ARS_COMMON_SHOW_UNAUTH_LINKS')</label>
 
-                @jhtml('FEFHelper.select.booleanswitch', 'show_unauth_links', $item->show_unauth_links)
+                @jhtml('FEFHelp.select.booleanswitch', 'show_unauth_links', $item->show_unauth_links)
             </div>
 
             <div class="akeeba-form-group">
@@ -144,7 +144,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="environments">@lang('LBL_ITEMS_ENVIRONMENTS')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::environments(), 'environments[]', [
                     'id' => 'environments', 'list.select' => $item->environments,
                     'list.attr' => ['multiple' => 'multiple', 'class' => 'advancedSelect']
@@ -155,7 +155,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="updatestream">@lang('LBL_ITEMS_UPDATESTREAM')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::updateStreams(true), 'updatestream', [
                     'id' => 'updatestream', 'list.select' => $item->updatestream,
                     'list.attr' => ['class' => 'advancedSelect']
@@ -165,7 +165,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="language">@lang('JFIELD_LANGUAGE_LABEL')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::languages(), 'language', [
                     'id' => 'language', 'list.select' => $item->language,
                 ])
@@ -175,7 +175,7 @@ $item = $this->getItem();
 
     <div class="akeeba-container--100">
         <div>
-            @jhtml('FEFHelper.edit.editor', 'description', $this->getItem()->description)
+            @jhtml('FEFHelp.edit.editor', 'description', $this->getItem()->description)
         </div>
     </div>
 @stop

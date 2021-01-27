@@ -52,14 +52,14 @@ if (!@file_exists(JPATH_SITE . '/media/fef/fef.php'))
 
 function mainLoopAkeebaReleaseSystem()
 {
-	if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+	if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof40/include.php'))
 	{
-		(include_once __DIR__ . '/View/fof.php') or die('You need to have the Akeeba Framework-on-Framework (FOF) 3 package installed on your site to use this component. Please visit https://www.akeeba.com/download/fof3.html to download it and install it on your site.');
+		(include_once __DIR__ . '/View/fof.php') or die('You need to have the Akeeba Framework-on-Framework (FOF) 3 package installed on your site to use this component. Please visit https://www.akeeba.com/download/fof4.html to download it and install it on your site.');
 
 		return;
 	}
 
-	FOF30\Container\Container::getInstance('com_ars')->dispatcher->dispatch();
+	FOF40\Container\Container::getInstance('com_ars')->dispatcher->dispatch();
 };
 
 function errorHandlerAkeebaReleaseSystem($e)

@@ -13,7 +13,7 @@
 
 namespace PHPSTORM_META
 {
-	override(\FOF30\Factory\FactoryInterface::model(), map([
+	override(\FOF40\Factory\FactoryInterface::model(), map([
 		'AutoDescriptions' => \Akeeba\ReleaseSystem\Site\Model\AutoDescriptions::class,
 		'Categories'       => \Akeeba\ReleaseSystem\Site\Model\Categories::class,
 		'ControlPanel'     => \Akeeba\ReleaseSystem\Site\Model\ControlPanel::class,

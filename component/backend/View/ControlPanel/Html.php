@@ -9,13 +9,13 @@ namespace Akeeba\ReleaseSystem\Admin\View\ControlPanel;
 
 use Akeeba\ReleaseSystem\Admin\Helper\Cache;
 use Akeeba\ReleaseSystem\Admin\Model\ControlPanel;
-use FOF30\Date\Date;
+use FOF40\Date\Date;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 
-class Html extends \FOF30\View\DataView\Html
+class Html extends \FOF40\View\DataView\Html
 {
 	/** @var  int  Total number of downloads this month */
 	public $downloadsMonth = 0;

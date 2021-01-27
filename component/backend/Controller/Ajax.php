@@ -9,7 +9,7 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 use Akeeba\ReleaseSystem\Admin\Model\Items;
 use Exception;
-use FOF30\Controller\Controller;
+use FOF40\Controller\Controller;
 use Joomla\CMS\HTML\HTMLHelper as JHtml;
 use Joomla\CMS\Language\Text;
 
@@ -57,7 +57,7 @@ class Ajax extends Controller
 
 		@ob_end_clean();
 
-		echo JHtml::_('FEFHelper.select.genericlist', $options, 'filename', [
+		echo JHtml::_('FEFHelp.select.genericlist', $options, 'filename', [
 			'id'          => 'filename',
 			'list.select' => $selected,
 			'list.attr'   => ['onchange' => 'arsItems.onFileChange();'],

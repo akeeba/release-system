@@ -9,7 +9,7 @@ namespace Akeeba\ReleaseSystem\Site\View\Categories;
 
 defined('_JEXEC') or die;
 
-class Json extends \FOF30\View\DataView\Json
+class Json extends \FOF40\View\DataView\Json
 {
 
 }

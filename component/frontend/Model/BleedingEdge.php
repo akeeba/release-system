@@ -10,9 +10,9 @@ namespace Akeeba\ReleaseSystem\Site\Model;
 defined('_JEXEC') or die();
 
 use Exception;
-use FOF30\Date\Date;
-use FOF30\Model\DataModel\Collection;
-use FOF30\Model\Model;
+use FOF40\Date\Date;
+use FOF40\Model\DataModel\Collection;
+use FOF40\Model\Model;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;

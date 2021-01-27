@@ -20,7 +20,7 @@ $item = $this->getItem();
 
 @jhtml('formbehavior.chosen')
 
-@extends('any:lib_fof30/Common/edit')
+@extends('any:lib_fof40/Common/edit')
 
 @section('edit-form-body')
     <div class="akeeba-container--50-50">
@@ -28,7 +28,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="category_id">@lang('COM_ARS_RELEASES_FIELD_CATEGORY')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'category_id', [
                     'id' => 'category_id', 'list.select' => $item->category_id,
                     'list.attr' => ['class' => 'advancedSelect']
@@ -50,7 +50,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="maturity">@lang('COM_ARS_RELEASES_FIELD_MATURITY')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::maturity(true), 'maturity', [
                     'id' => 'maturity', 'list.select' => $item->maturity,
                 ])
@@ -65,7 +65,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="published">@lang('JPUBLISHED')</label>
 
-                @jhtml('FEFHelper.select.booleanswitch', 'published', $item->published)
+                @jhtml('FEFHelp.select.booleanswitch', 'published', $item->published)
             </div>
         </div>
 
@@ -73,7 +73,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="access">@lang('JFIELD_ACCESS_LABEL')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(true), 'access', [
                     'id' => 'access', 'list.select' => $item->access,
                     'list.attr' => ['class' => 'advancedSelect']
@@ -83,7 +83,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="show_unauth_links">@lang('COM_ARS_COMMON_SHOW_UNAUTH_LINKS')</label>
 
-                @jhtml('FEFHelper.select.booleanswitch', 'show_unauth_links', $item->show_unauth_links)
+                @jhtml('FEFHelp.select.booleanswitch', 'show_unauth_links', $item->show_unauth_links)
             </div>
 
             <div class="akeeba-form-group">
@@ -102,7 +102,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="language">@lang('JFIELD_LANGUAGE_LABEL')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::languages(), 'language', [
                     'id' => 'language', 'list.select' => $item->language,
                 ])
@@ -112,7 +112,7 @@ $item = $this->getItem();
 
     <div class="akeeba-container--50-50">
         <div>
-            @jhtml('FEFHelper.edit.editor', 'notes', $this->getItem()->notes)
+            @jhtml('FEFHelp.edit.editor', 'notes', $this->getItem()->notes)
         </div>
     </div>
 @stop

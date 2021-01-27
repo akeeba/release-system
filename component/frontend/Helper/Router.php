@@ -9,7 +9,7 @@ namespace Akeeba\ReleaseSystem\Site\Helper;
 
 defined('_JEXEC') or die;
 
-use FOF30\Container\Container;
+use FOF40\Container\Container;
 use Joomla\CMS\Router\Route as JRoute;
 use Joomla\CMS\Uri\Uri as JUri;
 
@@ -34,7 +34,7 @@ class Router
 				// Save any query parameters
 				if (strstr($url, '?'))
 				{
-					list($url, $qparams) = explode('?', $url, 2);
+					[$url, $qparams] = explode('?', $url, 2);
 
 					$qparams = '?' . $qparams;
 				}

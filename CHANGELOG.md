@@ -1,3 +1,7 @@
+# 6.0.0
+
+* Rewritten with FOF 4
+
 # 5.1.0
 
 * `+` Add `php_minimum` to XML update streams

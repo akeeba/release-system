@@ -5,7 +5,6 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use FOF30\Utils\FEFHelper\Html as FEFHtml;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -14,7 +13,7 @@ use Joomla\CMS\Language\Text;
 defined('_JEXEC') or die;
 
 ?>
-@extends('any:lib_fof30/Common/browse')
+@extends('any:lib_fof40/Common/browse')
 
 @section('browse-filters')
     @searchfilter('search', 'search', 'LBL_ENVIRONMENTS_TITLE')
@@ -23,7 +22,7 @@ defined('_JEXEC') or die;
 @section('browse-table-header')
     <tr>
         <th width="32">
-            @jhtml('FEFHelper.browse.checkall')
+            @jhtml('FEFHelp.browse.checkall')
         </th>
         <th>
             @sortgrid('title', 'LBL_ENVIRONMENTS_TITLE')

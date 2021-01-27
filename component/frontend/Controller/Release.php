@@ -13,7 +13,7 @@ use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Model\BleedingEdge;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
-use FOF30\Controller\DataController;
+use FOF40\Controller\DataController;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -47,11 +47,11 @@ class Release extends DataController
 	/**
 	 * Overrides the default display method to add caching support
 	 *
-	 * @param   bool        $cachable  Is this a cacheable view?
-	 * @param   bool|array  $urlparams Registered URL parameters
-	 * @param   null|string $tpl       Sub-template (not really used...)
+	 * @param   bool         $cachable   Is this a cacheable view?
+	 * @param   bool|array   $urlparams  Registered URL parameters
+	 * @param   null|string  $tpl        Sub-template (not really used...)
 	 */
-	public function display($cachable = false, $urlparams = false, $tpl = null)
+	public function display(bool $cachable = false, ?array $urlparams = null, ?string $tpl = null): void
 	{
 		$cachable = true;
 

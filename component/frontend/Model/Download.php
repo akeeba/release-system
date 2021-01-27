@@ -10,7 +10,7 @@ namespace Akeeba\ReleaseSystem\Site\Model;
 defined('_JEXEC') or die();
 
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
-use FOF30\Model\Model;
+use FOF40\Model\Model;
 use Joomla\CMS\Authentication\Authentication as JAuthentication;
 use Joomla\CMS\Authentication\AuthenticationResponse as JAuthenticationResponse;
 use Joomla\CMS\Factory;
@@ -172,13 +172,13 @@ class Download extends Model
 
 		if (isset($_SERVER['HTTP_RANGE']))
 		{
-			list($size_unit, $range_orig) = explode('=', $_SERVER['HTTP_RANGE'], 2);
+			[$size_unit, $range_orig] = explode('=', $_SERVER['HTTP_RANGE'], 2);
 
 			if ($size_unit == 'bytes')
 			{
 				//multiple ranges could be specified at the same time, but for simplicity only serve the first range
 				//http://tools.ietf.org/id/draft-ietf-http-range-retrieval-00.txt
-				list($range, $extra_ranges) = explode(',', $range_orig, 2);
+				[$range, $extra_ranges] = explode(',', $range_orig, 2);
 			}
 			else
 			{
@@ -193,7 +193,7 @@ class Download extends Model
 		if ($range)
 		{
 			// Figure out download piece from range (if set)
-			list($seek_start, $seek_end) = explode('-', $range, 2);
+			[$seek_start, $seek_end] = explode('-', $range, 2);
 
 			// Set start and end based on range (if set), else set defaults. Also checks for invalid ranges.
 			$seek_end   = (empty($seek_end)) ? ($filesize - 1) : min(abs(intval($seek_end)), ($filesize - 1));

@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 $item = $this->getItem();
 ?>
 
-@extends('any:lib_fof30/Common/edit')
+@extends('any:lib_fof40/Common/edit')
 
 @section('edit-form-body')
     <div class="akeeba-container--50-50">
@@ -35,7 +35,7 @@ $item = $this->getItem();
                     @lang('COM_ARS_DLIDLABELS_FIELD_USER_ID')
                 </label>
 
-                @include('any:lib_fof30/Common/user_select', ['field' => 'user_id', 'item' => $item, 'required' => true])
+                @include('any:lib_fof40/Common/user_select', ['field' => 'user_id', 'item' => $item, 'required' => true])
             </div>
 
             <div class="akeeba-form-group">
@@ -43,7 +43,7 @@ $item = $this->getItem();
                     @lang('JPUBLISHED')
                 </label>
 
-                @jhtml('FEFHelper.select.booleanswitch', 'enabled', $item->enabled)
+                @jhtml('FEFHelp.select.booleanswitch', 'enabled', $item->enabled)
             </div>
         </div>
     </div>

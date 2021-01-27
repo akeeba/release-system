@@ -50,7 +50,7 @@ $user = $this->getContainer()->platform->getUser();
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                {{ \FOF30\Utils\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
+                {{ \FOF40\Html\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
@@ -105,7 +105,7 @@ $user = $this->getContainer()->platform->getUser();
                 @sortgrid('ordering', '<i class="icon-menu-2"></i>')
             </th>
             <th width="32">
-                @jhtml('FEFHelper.browse.checkall')
+                @jhtml('FEFHelp.browse.checkall')
             </th>
             <th>
                 @lang('LBL_ITEMS_CATEGORY')
@@ -165,10 +165,10 @@ $user = $this->getContainer()->platform->getUser();
 		        ?>
                 <tr>
                     <td>
-                        @jhtml('FEFHelper.browse.order', 'ordering', $row->ordering)
+                        @jhtml('FEFHelp.browse.order', 'ordering', $row->ordering)
                     </td>
                     <td>
-                        @jhtml('FEFHelper.browse.id', ++$i, $row->getId())
+                        @jhtml('FEFHelp.browse.id', ++$i, $row->getId())
                     </td>
                     <td>
                         {{{ \Akeeba\ReleaseSystem\Site\Model\Categories::forceEagerLoad($category_id, 'title') }}}
@@ -197,7 +197,7 @@ $user = $this->getContainer()->platform->getUser();
                         {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::accessLevel($row->access) }}
                     </td>
                     <td>
-                        @jhtml('FEFHelper.browse.published', $row->published, $i, '', $enabled)
+                        @jhtml('FEFHelp.browse.published', $row->published, $i, '', $enabled)
                     </td>
                     <td>
                         {{{ $row->hits }}}

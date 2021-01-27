@@ -19,7 +19,7 @@ $item = $this->getItem();
 ?>
 @jhtml('formbehavior.chosen')
 
-@extends('any:lib_fof30/Common/edit')
+@extends('any:lib_fof40/Common/edit')
 
 @section('edit-form-body')
     <div class="akeeba-container--50-50">
@@ -45,7 +45,7 @@ $item = $this->getItem();
                     @lang('LBL_UPDATES_TYPE')
                 </label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::updateTypes(true), 'type', [
                     'id' => 'type', 'list.select' => $item->type
                 ])
@@ -56,7 +56,7 @@ $item = $this->getItem();
                     @lang('COM_ARS_RELEASES_FIELD_CATEGORY')
                 </label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'category', [
                     'id' => 'category', 'list.select' => $item->category,
                     'list.attr' => ['class' => 'advancedSelect']
@@ -84,7 +84,7 @@ $item = $this->getItem();
                     @lang('LBL_RELEASES_CLIENT_ID')
                 </label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::client_id(), 'client_id', [
                     'id' => 'category', 'list.select' => $item->client_id
                 ])
@@ -111,7 +111,7 @@ $item = $this->getItem();
                     @lang('JPUBLISHED')
                 </label>
 
-                @jhtml('FEFHelper.select.booleanswitch', 'published', $item->published)
+                @jhtml('FEFHelp.select.booleanswitch', 'published', $item->published)
             </div>
         </div>
     </div>

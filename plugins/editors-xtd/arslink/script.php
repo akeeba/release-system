@@ -8,12 +8,12 @@
 defined('_JEXEC') or die;
 
 // Load FOF if not already loaded
-if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof40/include.php'))
 {
-	throw new RuntimeException('This extension requires FOF 3.0.');
+	throw new RuntimeException('This extension requires FOF 4.0.');
 }
 
-class plgEditorsxtdArslinkInstallerScript extends FOF30\Utils\InstallScript\Plugin
+class plgEditorsxtdArslinkInstallerScript extends FOF40\InstallScript\Plugin
 {
 	/**
 	 * The plugins's name, e.g. foobar (for plg_system_foobar)

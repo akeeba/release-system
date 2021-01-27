@@ -7,7 +7,6 @@
 
 use Akeeba\ReleaseSystem\Admin\Helper\Html;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
-use FOF30\Utils\FEFHelper\Html as FEFHtml;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -23,7 +22,7 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
 ?>
 @jhtml('formbehavior.chosen')
 
-@extends('any:lib_fof30/Common/browse')
+@extends('any:lib_fof40/Common/browse')
 
 @section('browse-page-top')
     <div class="akeeba-block--info">
@@ -52,14 +51,14 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        {{ \FOF30\Utils\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
+        {{ \FOF40\Html\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
     </div>
 @stop
 
 @section('browse-table-header')
     <tr>
         <th width="32">
-            @jhtml('FEFHelper.browse.checkall')
+            @jhtml('FEFHelp.browse.checkall')
         </th>
         <th>
             @sortgrid('name', 'LBL_UPDATES_NAME')
@@ -90,7 +89,7 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
 		?>
         <tr>
             <td>
-                @jhtml('FEFHelper.browse.id', ++$i, $row->getId())
+                @jhtml('FEFHelp.browse.id', ++$i, $row->getId())
             </td>
             <td>
                 <a href="index.php?option=com_ars&view=UpdateStream&id={{{ $row->id }}}">
@@ -119,7 +118,7 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
 
             </td>
             <td>
-                @jhtml('FEFHelper.browse.published', $row->published, $i, '', $this->container->platform->getUser()->authorise('core.edit.state', 'com_ars'))
+                @jhtml('FEFHelp.browse.published', $row->published, $i, '', $this->container->platform->getUser()->authorise('core.edit.state', 'com_ars'))
             </td>
         </tr>
     @endforeach

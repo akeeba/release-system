@@ -11,10 +11,10 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Model\Mixin\ClearCacheAfterActions;
 use Exception;
-use FOF30\Container\Container;
-use FOF30\Model\DataModel;
-use FOF30\Model\Mixin\Assertions;
-use FOF30\Model\Mixin\ImplodedArrays;
+use FOF40\Container\Container;
+use FOF40\Model\DataModel;
+use FOF40\Model\Mixin\Assertions;
+use FOF40\Model\Mixin\ImplodedArrays;
 use JDatabaseQuery;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filter\InputFilter;
@@ -93,12 +93,12 @@ class Releases extends DataModel
 	/**
 	 * Public constructor. Overrides the parent constructor.
 	 *
-	 * @see DataModel::__construct()
-	 *
 	 * @param   Container  $container  The configuration variables to this model
 	 * @param   array      $config     Configuration values for this model
 	 *
-	 * @throws \FOF30\Model\DataModel\Exception\NoTableColumns
+	 * @throws \FOF40\Model\DataModel\Exception\NoTableColumns
+	 * @see DataModel::__construct()
+	 *
 	 */
 	public function __construct(Container $container, array $config = array())
 	{

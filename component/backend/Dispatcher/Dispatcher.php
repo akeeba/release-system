@@ -7,14 +7,15 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Dispatcher;
 
-use FOF30\Container\Container;
-use FOF30\Dispatcher\Mixin\ViewAliases;
+use FOF40\Container\Container;
+use FOF40\Dispatcher\Mixin\ViewAliases;
+use FOF40\JoomlaAbstraction\CacheCleaner;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
 defined('_JEXEC') or die;
 
-class Dispatcher extends \FOF30\Dispatcher\Dispatcher
+class Dispatcher extends \FOF40\Dispatcher\Dispatcher
 {
 	use ViewAliases
 	{
@@ -54,7 +55,7 @@ class Dispatcher extends \FOF30\Dispatcher\Dispatcher
 
 		if (!$useFEF)
 		{
-			$this->container->rendererClass = '\\FOF30\\Render\\Joomla3';
+			$this->container->rendererClass = '\\FOF40\\Render\\Joomla3';
 		}
 
 		$darkMode = $this->container->params->get('dark_mode_backend', -1);

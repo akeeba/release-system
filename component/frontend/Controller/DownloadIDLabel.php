@@ -10,12 +10,13 @@ namespace Akeeba\ReleaseSystem\Site\Controller;
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Controller\DownloadIDLabels;
-use FOF30\Container\Container;
+use FOF40\Container\Container;
+use FOF40\Controller\Controller;
 use Joomla\CMS\Router\Route;
 
 class DownloadIDLabel extends DownloadIDLabels
 {
-	public function __construct(Container $container, array $config = array())
+	public function __construct(Container $container, array $config = [])
 	{
 		$config['taskPrivileges'] = [
 			'publish'   => 'true',
@@ -44,7 +45,7 @@ class DownloadIDLabel extends DownloadIDLabels
 		parent::display($cachable, $urlparams, $tpl);
 	}
 
-	public function setRedirect($url, $msg = null, $type = null)
+	public function setRedirect(string $url, ?string $msg = null, ?string $type = null): Controller
 	{
 		if (substr($url, 0, 10) == 'index.php?')
 		{

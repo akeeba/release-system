@@ -8,7 +8,7 @@
 // Protect from unauthorized access
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
-use FOF30\Container\Container;
+use FOF40\Container\Container;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Router\Route;
@@ -45,7 +45,7 @@ class plgContentArslatest extends CMSPlugin
 	{
 		parent::__construct($subject, $config);
 
-		if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+		if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof40/include.php'))
 		{
 			$this->enabled = false;
 		}
@@ -150,19 +150,18 @@ class plgContentArslatest extends CMSPlugin
 	private function initialise(): void
 	{
 		// Make sure our auto-loader is set up and ready
-		$container = \FOF30\Container\Container::getInstance('com_ars');
+		$container = \FOF40\Container\Container::getInstance('com_ars');
 
 		/** @var \Akeeba\ReleaseSystem\Admin\Model\Releases $model */
 		$model = $container->factory->model('Releases')->tmpInstance();
 		$model->reset(true)
-		      ->published(1)
-		      ->latest(true)
-		      ->access_user($container->platform->getUser()->id)
-		      ->with(['items', 'category']);
+			->published(1)
+			->latest(true)
+			->access_user($container->platform->getUser()->id)
+			->with(['items', 'category']);
 
-		/** @var \FOF30\Model\DataModel\Collection $releases */
-		$releases = $model->get(true)->filter(function ($item)
-		{
+		/** @var \FOF40\Model\DataModel\Collection $releases */
+		$releases = $model->get(true)->filter(function ($item) {
 			return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true);
 		});
 
@@ -311,7 +310,7 @@ class plgContentArslatest extends CMSPlugin
 		}
 
 		$link      = Route::_('index.php?option=com_ars&view=Items&release_id=' . $release->id);
-        $container = \FOF30\Container\Container::getInstance('com_ars');
+		$container = \FOF40\Container\Container::getInstance('com_ars');
 
         if (!Filter::filterItem($release, false) && !empty($release->redirect_unauth))
         {
@@ -366,7 +365,7 @@ class plgContentArslatest extends CMSPlugin
 
 		$link = Route::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id);
 
-        $container = \FOF30\Container\Container::getInstance('com_ars');
+		$container = \FOF40\Container\Container::getInstance('com_ars');
 
 		if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 		{

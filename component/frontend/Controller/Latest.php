@@ -11,8 +11,8 @@ defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
-use FOF30\Container\Container;
-use FOF30\Controller\Controller;
+use FOF40\Container\Container;
+use FOF40\Controller\Controller;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 
@@ -28,11 +28,11 @@ class Latest extends Controller
 	/**
 	 * Overrides the default display method to add caching support
 	 *
-	 * @param   bool        $cachable  Is this a cacheable view?
-	 * @param   bool|array  $urlparams Registered URL parameters
-	 * @param   null|string $tpl       Sub-template (not really used...)
+	 * @param   bool         $cachable   Is this a cacheable view?
+	 * @param   bool|array   $urlparams  Registered URL parameters
+	 * @param   null|string  $tpl        Sub-template (not really used...)
 	 */
-	public function display($cachable = false, $urlparams = false, $tpl = null)
+	public function display(bool $cachable = false, ?array $urlparams = null, ?string $tpl = null): void
 	{
 		$cachable = true;
 

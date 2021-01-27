@@ -12,8 +12,8 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Model\Categories;
 use Akeeba\ReleaseSystem\Site\Model\Releases;
-use FOF30\Model\DataModel\Collection;
-use FOF30\View\DataView\Html as BaseView;
+use FOF40\Model\DataModel\Collection;
+use FOF40\View\DataView\Html as BaseView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 

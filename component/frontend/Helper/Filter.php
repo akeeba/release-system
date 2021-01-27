@@ -9,8 +9,8 @@ namespace Akeeba\ReleaseSystem\Site\Helper;
 
 use Akeeba\ReleaseSystem\Site\Model\DownloadIDLabels;
 use Exception;
-use FOF30\Container\Container;
-use FOF30\Model\DataModel;
+use FOF40\Container\Container;
+use FOF40\Model\DataModel;
 use Joomla\CMS\User\User;
 
 defined('_JEXEC') or die();
@@ -171,6 +171,11 @@ abstract class Filter
 	 */
 	static public function myDownloadID(?int $user_id = null): string
 	{
+		if (!defined('FOF40_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof40/include.php'))
+		{
+			return '';
+		}
+
 		$container = Container::getInstance('com_ars');
 		$user      = $container->platform->getUser($user_id);
 

@@ -18,7 +18,7 @@ $item = $this->getItem();
 ?>
 @jhtml('formbehavior.chosen')
 
-@extends('any:lib_fof30/Common/edit')
+@extends('any:lib_fof40/Common/edit')
 
 @section('edit-form-body')
     <div class="akeeba-container--50-50">
@@ -28,7 +28,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="category">@lang('LBL_AUTODESC_CATEGORY')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'category', [
                     'id' => 'category', 'list.select' => $item->category,
                     'list.attr' => ['class' => 'advancedSelect']
@@ -50,7 +50,7 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="environments">@lang('LBL_ITEMS_ENVIRONMENTS')</label>
 
-                @jhtml('FEFHelper.select.genericlist',
+                @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\ReleaseSystem\Admin\Helper\Select::environments(), 'environments[]', [
                         'id' => 'environments', 'list.select' => $item->environments,
                         'list.attr' => ['multiple' => 'multiple', 'class' => 'advancedSelect']
@@ -60,12 +60,12 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="published">@lang('JPUBLISHED')</label>
 
-                @jhtml('FEFHelper.select.booleanswitch', 'published', $item->published)
+                @jhtml('FEFHelp.select.booleanswitch', 'published', $item->published)
             </div>
         </div>
 
         <div>
-            @jhtml('FEFHelper.edit.editor', 'description', $this->getItem()->description)
+            @jhtml('FEFHelp.edit.editor', 'description', $this->getItem()->description)
         </div>
     </div>
 @stop

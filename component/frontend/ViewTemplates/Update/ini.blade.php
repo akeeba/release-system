@@ -12,7 +12,7 @@ defined('_JEXEC') or die();
 use Akeeba\ReleaseSystem\Admin\Helper\Format;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Router as RouterHelper;
-use FOF30\Date\Date;
+use FOF40\Date\Date;
 use Joomla\CMS\Router\Route;
 
 if (count($this->items))

@@ -12,7 +12,7 @@ use Akeeba\ReleaseSystem\Admin\Helper\Select;
 defined('_JEXEC') or die;
 
 ?>
-@extends('any:lib_fof30/Common/browse')
+@extends('any:lib_fof40/Common/browse')
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
@@ -28,14 +28,14 @@ defined('_JEXEC') or die;
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        {{ \FOF30\Utils\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
+        {{ \FOF40\Html\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
     </div>
 @stop
 
 @section('browse-table-header')
     <tr>
         <th width="32">
-            @jhtml('FEFHelper.browse.checkall')
+            @jhtml('FEFHelp.browse.checkall')
         </th>
         <th>
             @sortgrid('category', 'LBL_AUTODESC_CATEGORY')
@@ -62,7 +62,7 @@ defined('_JEXEC') or die;
 		?>
         <tr>
             <td>
-                @jhtml('FEFHelper.browse.id', ++$i, $row->getId())
+                @jhtml('FEFHelp.browse.id', ++$i, $row->getId())
             </td>
             <td>
                 {{{ $row->categoryObject->title }}}
@@ -76,7 +76,7 @@ defined('_JEXEC') or die;
                 </a>
             </td>
             <td>
-                @jhtml('FEFHelper.browse.published', $row->published, $i, '', $enabled)
+                @jhtml('FEFHelp.browse.published', $row->published, $i, '', $enabled)
             </td>
         </tr>
     @endforeach

@@ -7,8 +7,8 @@
 
 namespace Akeeba\ReleaseSystem\Admin\Helper;
 
-use FOF30\Container\Container;
-use FOF30\Date\Date;
+use FOF40\Container\Container;
+use FOF40\Date\Date;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;

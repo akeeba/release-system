@@ -10,7 +10,7 @@ namespace Akeeba\ReleaseSystem\Site\View\Update;
 defined('_JEXEC') or die;
 
 use Akeeba\ReleaseSystem\Admin\Model\Environments;
-use FOF30\View\DataView\Raw;
+use FOF40\View\DataView\Raw;
 
 class Ini extends Raw
 {

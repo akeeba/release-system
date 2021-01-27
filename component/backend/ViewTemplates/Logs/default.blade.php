@@ -20,7 +20,7 @@ defined('_JEXEC') or die;
 
 @jhtml('formbehavior.chosen')
 
-@extends('any:lib_fof30/Common/browse')
+@extends('any:lib_fof40/Common/browse')
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
@@ -40,7 +40,7 @@ defined('_JEXEC') or die;
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        {{ \FOF30\Utils\FEFHelper\BrowseView::publishedFilter('authorized', 'LBL_LOGS_AUTHORIZED') }}
+        {{ \FOF40\Html\FEFHelper\BrowseView::publishedFilter('authorized', 'LBL_LOGS_AUTHORIZED') }}
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
@@ -55,7 +55,7 @@ defined('_JEXEC') or die;
 @section('browse-table-header')
     <tr>
         <th width="32">
-            @jhtml('FEFHelper.browse.checkall')
+            @jhtml('FEFHelp.browse.checkall')
         </th>
         <th>
             @sortgrid('item_id', 'LBL_LOGS_ITEM')
@@ -86,7 +86,7 @@ defined('_JEXEC') or die;
     @foreach($this->items as $row)
         <tr>
             <td>
-                @jhtml('FEFHelper.browse.id', ++$i, $row->getId())
+                @jhtml('FEFHelp.browse.id', ++$i, $row->getId())
             </td>
             <td>
                 <strong>{{{ $row->item->release->category->title }}}</strong>
@@ -95,7 +95,7 @@ defined('_JEXEC') or die;
                 <small>{{{ $row->item->title }}}</small>
             </td>
             <td>
-                @include('any:lib_fof30/Common/user_show', ['item' => $row, 'field' => 'user_id'])
+                @include('any:lib_fof40/Common/user_show', ['item' => $row, 'field' => 'user_id'])
             </td>
             <td>
                 {{ Format::formatDate($row->accessed_on, true) }}
@@ -107,7 +107,7 @@ defined('_JEXEC') or die;
                 {{{ $row->ip }}}
             </td>
             <td>
-                @jhtml('FEFHelper.browse.published', $row->authorized, $i, '', false)
+                @jhtml('FEFHelp.browse.published', $row->authorized, $i, '', false)
             </td>
         </tr>
     @endforeach

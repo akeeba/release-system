@@ -9,7 +9,7 @@ namespace Akeeba\ReleaseSystem\Site\Model;
 
 defined('_JEXEC') or die;
 
-use FOF30\Model\Model;
+use FOF40\Model\Model;
 
 class Update extends Model
 {

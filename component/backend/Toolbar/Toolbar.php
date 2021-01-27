@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use JToolBarHelper;
 
-class Toolbar extends \FOF30\Toolbar\Toolbar
+class Toolbar extends \FOF40\Toolbar\Toolbar
 {
 	/**
 	 * Returns the views of the component to be displayed in the toolbar submenu
