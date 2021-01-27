@@ -47,6 +47,11 @@ class Html extends BaseView
 
 	public function onBeforeBrowse($tpl = null): void
 	{
+		if ($this->layout == 'repository')
+		{
+			$this->layout = 'default';
+		}
+
 		// Load the model
 		/** @var Releases $model */
 		$model = $this->getModel();

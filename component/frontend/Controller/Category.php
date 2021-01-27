@@ -43,11 +43,11 @@ class Category extends DataController
 	/**
 	 * Overrides the default display method to add caching support
 	 *
-	 * @param   bool        $cachable  Is this a cacheable view?
-	 * @param   bool|array  $urlparams Registered URL parameters
-	 * @param   null|string $tpl       Sub-template (not really used...)
+	 * @param   bool         $cachable   Is this a cacheable view?
+	 * @param   bool|array   $urlparams  Registered URL parameters
+	 * @param   null|string  $tpl        Sub-template (not really used...)
 	 */
-	public function display($cachable = false, $urlparams = false, $tpl = null): void
+	public function display(bool $cachable = false, ?array $urlparams = null, ?string $tpl = null): void
 	{
 		$cachable = true;
 

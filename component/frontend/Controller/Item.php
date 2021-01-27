@@ -52,7 +52,7 @@ class Item extends DataController
 	 * @param   bool|array   $urlparams  Registered URL parameters
 	 * @param   null|string  $tpl        Sub-template (not really used...)
 	 */
-	public function display(bool $cachable = false, bool $urlparams = false, ?string $tpl = null): void
+	public function display(bool $cachable = false, ?array $urlparams = null, ?string $tpl = null): void
 	{
 		$cachable = true;
 

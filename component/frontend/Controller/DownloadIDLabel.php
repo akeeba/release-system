@@ -38,7 +38,7 @@ class DownloadIDLabel extends DownloadIDLabels
 	 * @param   bool|array   $urlparams  Registered URL parameters
 	 * @param   null|string  $tpl        Sub-template (not really used...)
 	 */
-	public function display($cachable = false, $urlparams = false, $tpl = null): void
+	public function display(bool $cachable = false, ?array $urlparams = null, ?string $tpl = null): void
 	{
 		$cachable = false;
 
