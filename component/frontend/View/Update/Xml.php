@@ -144,9 +144,30 @@ class Xml extends Raw
 			return;
 		}
 
-		$container = Container::getInstance('com_compatibility', [
-			'tempInstance' => true,
-		]);
+		$isComCompatibilityFOF3 = $this->isComCompatibilityFOF3();
+
+		if (is_null($isComCompatibilityFOF3))
+		{
+			return;
+		}
+
+		if ($isComCompatibilityFOF3)
+		{
+			if (!defined('FOF30_INCLUDED') && !@include_once(JPATH_LIBRARIES . '/fof30/include.php'))
+			{
+				return;
+			}
+
+			$container = \FOF30\Container\Container::getInstance('com_compatibility', [
+				'tempInstance' => true,
+			]);
+		}
+		else
+		{
+			$container = Container::getInstance('com_compatibility', [
+				'tempInstance' => true,
+			]);
+		}
 
 		if (empty($this->category))
 		{
@@ -199,5 +220,29 @@ class Xml extends Raw
 		}
 
 		$this->filteredItemIDs = array_unique($this->filteredItemIDs);
+	}
+
+	/**
+	 * Is com_compatibility still using FOF3?
+	 *
+	 * @return  bool|null  NULL if it's not installed, TRUE for FOF3, FALSE otherwise
+	 */
+	function isComCompatibilityFOF3(): ?bool
+	{
+		$path = JPATH_SITE . '/components/com_compatibility/Model/Compatibility.php';
+
+		if (!@file_exists($path))
+		{
+			return null;
+		}
+
+		$contents = @file_get_contents($path);
+
+		if ($contents === false)
+		{
+			return null;
+		}
+
+		return (strpos($contents, 'FOF30\Model\Model') !== false);
 	}
 }
