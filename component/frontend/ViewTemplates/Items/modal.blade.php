@@ -24,6 +24,7 @@ $user = $this->getContainer()->platform->getUser();
 ?>
 @jhtml('behavior.core')
 @jhtml('formbehavior.chosen')
+@js('media://com_ars/js/ItemSelect.js', $this->getContainer()->mediaVersion)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm" class="akeeba-form">
 
@@ -177,7 +178,7 @@ $user = $this->getContainer()->platform->getUser();
                         {{{ \Akeeba\ReleaseSystem\Site\Model\Releases::forceEagerLoad($row->release_id, 'version') }}}
                     </td>
                     <td>
-                        <a href="javascript:arsItemsProxy('{{{ $row->id }}}', '{{{ $row->title }}}')">
+                        <a class="hasArsItemProxy" data-arsrowid="{{{ $row->id }}}" data-arstitle="{{{ $row->title }}}">
                             {{{ $row->title }}}
                         </a>
                     </td>
@@ -224,12 +225,3 @@ $user = $this->getContainer()->platform->getUser();
         <input type="hidden" name="<?php echo $this->container->platform->getToken(true); ?>" value="1"/>
     </div>
 </form>
-<?php
-$function = $this->input->getCmd('function', 'arsSelectItem');
-?>
-<script type="text/javascript">
-	function arsItemsProxy(id, title)
-	{
-		if (window.parent) window.parent.<?php echo $this->escape($function); ?>(id, title);
-	}
-</script>

@@ -9,63 +9,20 @@ defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Admin\View\ControlPanel\Html $this */
 
-$jsonReport = str_replace('\'', '\\\'', json_encode(array_map(function ($date, $count) {
+$downloadsReport = array_map(function ($date, $count) {
 	return [
-		'date'      => $date,
+			'date'  => $date,
 			'count' => $count,
 	];
-}, array_keys($this->monthlyDailyReport), $this->monthlyDailyReport)));
+}, array_keys($this->monthlyDailyReport), $this->monthlyDailyReport);
 
-$js = <<< JS
-akeeba.System.documentReady(function ()
-{
-	var data = JSON.parse('$jsonReport');
-	var lineLabels = [];
-	var dlPoints = [];
-
-	for (var i = 0; i < data.length; i++)
-	{
-	    var item = data[i];
-		lineLabels.push(item.date);
-		dlPoints.push(
-			parseInt(item.count * 100) / 100
-		);
-	}
-
-	new Chart(document.getElementById("mdrChart"),{
-            type: "line",
-            data: {
-                labels: lineLabels,
-                datasets:[
-                    {
-                        data: dlPoints,
-                        fill: false,
-                        borderColor: "rgb(75, 192, 192)",
-                        lineTension: 0.1
-                    }
-                ]
-            },
-            options:{
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-});
-JS;
-
+$this->getContainer()->platform->addScriptOptions('akeeba.ReleaseSystem.ControlPanel.downloadsReport', $downloadsReport);
 
 ?>
 
 @section('graphs')
 	@js('media://com_ars/js/Chart.bundle.min.js', $this->getContainer()->mediaVersion)
+	@js('media://com_ars/js/ControlPanel.min.js', $this->getContainer()->mediaVersion)
 
 	<div class="akeeba-panel--info">
 		<header class="akeeba-block-header">
@@ -99,6 +56,4 @@ JS;
 			</tr>
 		</table>
 	</div>
-
-	@inlineJs($js)
 @stop

@@ -96,18 +96,7 @@ class Html extends BaseView
 
 		$function = $this->input->getCmd('function', 'arsSelectItem');
 
-		$js = <<< JS
-function arsItemsProxy(id, title)
-{
-    if (window.parent)
-    {
-        window.parent.{$function}(id, title);
-    }
-}
-
-JS;
-
-		$this->addJavascriptInline($js);
+		$this->getContainer()->platform->addScriptOptions('ars.itemsProxyCallback', $function);
 	}
 
 	public function onBeforeBrowse($tpl = null): void

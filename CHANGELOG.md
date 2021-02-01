@@ -1,6 +1,7 @@
 # 6.0.0
 
-* Rewritten with FOF 4
+* `+` Rewritten with FOF 4
+* `+` Now using FEF 2 with a common JavaScript library across all Akeeba extensions
 
 # 5.1.0
 

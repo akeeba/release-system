@@ -8,31 +8,8 @@
 defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Releases\Html $this */
-$js = <<<JS
-akeeba.System.documentReady(function(){
-    akeeba.fef.tabs();
-
-    var release_info = document.querySelectorAll('.release-info-toggler');
-
-    release_info.forEach(function(item){
-        item.addEventListener('click', function(){
-            var target = this.getAttribute('data-target');
-            var elTarget = document.getElementById(target);
-
-            // If the element is visible, hide it
-			if (window.getComputedStyle(elTarget).display === 'block') {
-				elTarget.style.display = 'none';
-			}
-			else{
-				elTarget.style.display = '';
-			}
-        })
-    });
-});
-JS;
-
-$this->getContainer()->template->addJSInline($js);
 ?>
+@js('media://com_ars/js/InfoToggler.js', $this->getContainer()->mediaVersion)
 
 <div class="item-page{{{ $this->params->get('pageclass_sfx') }}}">
 	@if($this->params->get('show_page_heading'))

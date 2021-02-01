@@ -215,6 +215,20 @@ class Com_ArsInstallerScript extends \FOF40\InstallScript\Component
 			'administrator/components/com_ars/ViewTemplates/Common/edit.blade.php',
 			'administrator/components/com_ars/ViewTemplates/Common/EntryUser.blade.php',
 			'administrator/components/com_ars/ViewTemplates/Common/ShowUser.blade.php',
+
+			// Moving to Akeeba FEF 2
+			'media/com_ars/js/Ajax.js',
+			'media/com_ars/js/Ajax.min.js',
+			'media/com_ars/js/Ajax.min.map',
+			'media/com_ars/js/Modal.js',
+			'media/com_ars/js/Modal.min.js',
+			'media/com_ars/js/Modal.min.map',
+			'media/com_ars/js/System.js',
+			'media/com_ars/js/System.min.js',
+			'media/com_ars/js/System.min.map',
+			'media/com_ars/js/Tooltip.js',
+			'media/com_ars/js/Tooltip.min.js',
+			'media/com_ars/js/Tooltip.min.map',
 		],
 		'folders' => [
 			// Moving to FOF 3

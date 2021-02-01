@@ -9,12 +9,10 @@ defined('_JEXEC') or die();
 
 /** @var Akeeba\ReleaseSystem\Admin\View\Items\Html $this */
 
-$this->getContainer()->template->addJS('media://com_ars/js/gui-helpers.js', false, false, $this->getContainer()->mediaVersion);
-
 /** @var \Akeeba\ReleaseSystem\Admin\Model\Items $item */
 $item = $this->getItem();
 ?>
-
+@js('media://com_ars/js/gui-helpers.js', $this->getContainer()->mediaVersion)
 @js('media://com_ars/js/Items.js', $this->getContainer()->mediaVersion)
 
 @extends('any:lib_fof40/Common/edit')

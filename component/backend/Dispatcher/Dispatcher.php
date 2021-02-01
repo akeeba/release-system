@@ -89,18 +89,6 @@ class Dispatcher extends \FOF40\Dispatcher\Dispatcher
 
 	private function loadCommonJavascript(): void
 	{
-		// Load common CSS and JavaScript
-		HTMLHelper::_('jquery.framework');
-
-		$mediaVersion = $this->container->mediaVersion;
-
-		// Do not move: System depends on Modal
-		$this->container->template->addJS('media://com_ars/js/Modal.min.js', false, false, $mediaVersion);
-		// Do not move: System depends on Ajax
-		$this->container->template->addJS('media://com_ars/js/Ajax.min.js', false, false, $mediaVersion);
-		// Do not move: System depends on Ajax
-		$this->container->template->addJS('media://com_ars/js/System.min.js', false, false, $mediaVersion);
-		// Do not move: Tooltip depends on System
-		$this->container->template->addJS('media://com_ars/js/Tooltip.min.js', false, false, $mediaVersion);
+		\AkeebaFEFHelper::loadFEFScript('Tooltip');
 	}
 }

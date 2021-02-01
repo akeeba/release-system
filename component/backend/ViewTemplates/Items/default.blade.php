@@ -20,6 +20,10 @@ $filterCat = (int) $this->getModel()->getState('category', 0);
 ?>
 @jhtml('formbehavior.chosen')
 
+@if($modal)
+	@js('media://com_ars/js/ItemSelect.js', $this->getContainer()->mediaVersion)
+@endif
+
 @extends('any:lib_fof40/Common/browse')
 
 @section('browse-filters')
@@ -114,10 +118,9 @@ $filterCat = (int) $this->getModel()->getState('category', 0);
 			</td>
 			<td>
 				@if ($modal)
-					<a href="javascript:arsItemsProxy('{{{ $row->id }}}', '{{{ $row->title }}}')">
+					<a class="hasArsItemProxy" data-arsrowid="{{{ $row->id }}}" data-arstitle="{{{ $row->title }}}">
 						{{{ $row->title }}}
 					</a>
-
 				@elseif ($canEdit)
 					<a href="index.php?option=com_ars&view=Item&id={{ $row->id }}">
 						{{{ $row->title }}}
