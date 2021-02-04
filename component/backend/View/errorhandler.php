@@ -95,16 +95,13 @@ if (!$isFrontend)
 	</div>
 	<p>
 		<strong>Why do we need all that information?</strong> This information is an x-ray of your site at the time the
-		error
-		occurred. It lets us reproduce the issue or, if it's not a bug in our software, help you pinpoint the external
-		reason which
-		led to it.
+		error occurred. It lets us reproduce the issue or, if it's not a bug in our software, help you pinpoint the
+		external reason which led to it.
 	</p>
 	<p>
 		<strong>What about privacy?</strong>
 		Attachments are private in our ticket system: only you and us can see them, <em>even if you file a public
-			ticket</em>, and
-		they are automatically deleted after a month.
+		ticket</em>, and they are automatically deleted after a month.
 	</p>
 <?php endif; ?>
 
@@ -126,6 +123,26 @@ if (!$isFrontend)
 	Exception type: <code><?php echo htmlentities(get_class($e)) ?></code>
 </p>
 <pre><?php echo htmlentities($e->getTraceAsString()) ?></pre>
+
+<?php while ($e = $e->getPrevious()): ?>
+	<hr />
+	<h4>Previous exception</h4>
+	<strong>
+		<?php if (version_compare(JVERSION, '3.999.999', 'le')): ?>
+			<span class="label label-danger"><?php echo htmlentities($code) ?></span> <?php echo htmlentities($e->getMessage()) ?>
+		<?php else: ?>
+			<span class="badge badge-danger"><?php echo htmlentities($code) ?></span> <?php echo htmlentities($e->getMessage()) ?>
+		<?php endif; ?>
+	</strong>
+	<p>
+		File <code><?php echo htmlentities(str_ireplace(JPATH_ROOT, '&lt;root&gt;', $e->getFile())) ?></code> Line <span
+				class="label label-info"><?php echo (int) $e->getLine() ?></span>
+	</p>
+	<p>
+		Exception type: <code><?php echo htmlentities(get_class($e)) ?></code>
+	</p>
+	<pre><?php echo htmlentities($e->getTraceAsString()) ?></pre>
+<?php endwhile; ?>
 
 <h3>System information</h3>
 <table class="table table-striped">
@@ -160,27 +177,27 @@ if (!$isFrontend)
 	<?php
 	$db = JFactory::getDbo();
 	if (!is_null($db)):
-	?>
-	<tr>
-		<td>Database driver name</td>
-		<td><?php echo $db->getName() ?></td>
-	</tr>
-	<tr>
-		<td>Database driver type</td>
-		<td><?php echo $db->getServerType() ?></td>
-	</tr>
-	<tr>
-		<td>Database server version</td>
-		<td><?php echo $db->getVersion() ?></td>
-	</tr>
-	<tr>
-		<td>Database collation</td>
-		<td><?php echo $db->getCollation() ?></td>
-	</tr>
-	<tr>
-		<td>Database connection collation</td>
-		<td><?php echo $db->getConnectionCollation() ?></td>
-	</tr>
+		?>
+		<tr>
+			<td>Database driver name</td>
+			<td><?php echo $db->getName() ?></td>
+		</tr>
+		<tr>
+			<td>Database driver type</td>
+			<td><?php echo $db->getServerType() ?></td>
+		</tr>
+		<tr>
+			<td>Database server version</td>
+			<td><?php echo $db->getVersion() ?></td>
+		</tr>
+		<tr>
+			<td>Database collation</td>
+			<td><?php echo $db->getCollation() ?></td>
+		</tr>
+		<tr>
+			<td>Database connection collation</td>
+			<td><?php echo $db->getConnectionCollation() ?></td>
+		</tr>
 	<?php endif; ?>
 	<tr>
 		<td>PHP Memory limit</td>
