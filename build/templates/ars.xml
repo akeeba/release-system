@@ -23,7 +23,7 @@
 		<folder>Helper</folder>
 		<folder>Model</folder>
 		<folder>View</folder>
-		<folder>views</folder>
+		<folder>tmpl</folder>
 
 		<filename>ars.php</filename>
 		<filename>metadata.xml</filename>
@@ -56,6 +56,7 @@
 			<folder>Helper</folder>
 			<folder>Model</folder>
 			<folder>sql</folder>
+			<folder>tmpl</folder>
 			<folder>Toolbar</folder>
 			<folder>View</folder>
 

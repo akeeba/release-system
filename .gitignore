@@ -9,10 +9,9 @@
 
 # Symlinked files/folders into the component tree
 /component/ars.xml
+/component/backend/views
 /component/cli/*.xml
-
-# Composer managed dependencies (run `composer install` after git pull)
-/component/backend/vendor
+/component/frontend/views
 
 # Release files
 /release

@@ -9,16 +9,19 @@
 	<import file="${phing.dir}/../../buildfiles/phing/common.xml" />
 
 	<fileset dir="${dirs.component}" id="component">
-		<include name="backend/**" />
-		<include name="frontend/**" />
-		<include name="language/**" />
-		<include name="media/**" />
+		<include name="backend/**"/>
+		<include name="frontend/**"/>
+		<include name="language/**"/>
+		<include name="media/**"/>
 
-		<include name="*" />
+		<include name="*"/>
 
-		<exclude name="cli/**" />
-		<exclude name="LICENSE.txt" />
-		<exclude name="script.ars.php" />
+		<include name="backend/views/**"/>
+		<include name="frontend/views/**"/>
+
+		<exclude name="cli/**"/>
+		<exclude name="LICENSE.txt"/>
+		<exclude name="script.ars.php"/>
 	</fileset>
 
 	<fileset dir="${dirs.release}" id="package">

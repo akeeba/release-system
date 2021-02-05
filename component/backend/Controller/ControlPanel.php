@@ -13,6 +13,7 @@ use Exception;
 use FOF40\Container\Container;
 use FOF40\Controller\Controller;
 use FOF40\Controller\Mixin\PredefinedTaskList;
+use FOF40\Utils\ViewManifestMigration;
 use Joomla\CMS\Language\Text;
 
 class ControlPanel extends Controller
@@ -36,6 +37,9 @@ class ControlPanel extends Controller
 		$model
 			->checkAndFixDatabase()
 			->saveMagicVariables();
+
+		ViewManifestMigration::migrateJoomla4MenuXMLFiles($this->container);
+		ViewManifestMigration::removeJoomla3LegacyViews($this->container);
 
 		return true;
 	}

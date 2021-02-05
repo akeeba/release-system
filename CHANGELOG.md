@@ -2,6 +2,7 @@
 
 * `+` Rewritten with FOF 4
 * `+` Now using FEF 2 with a common JavaScript library across all Akeeba extensions
+* `+` Renamed ViewTemplates to tmpl (Joomla 4 convention, with fallback code for Joomla 3)
 
 # 5.1.0
 

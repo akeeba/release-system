@@ -85,16 +85,13 @@ class Com_ArsInstallerScript extends \FOF40\InstallScript\Component
 
 			'administrator/components/com_ars/install.sql',
 			'administrator/components/com_ars/uninstall.sql',
-			'administrator/components/com_ars/assets/cacert.pem',
 			'administrator/components/com_ars/dispatcher.php',
 			'administrator/components/com_ars/install.ars.php',
 			'administrator/components/com_ars/script.ars.php',
 			'administrator/components/com_ars/toolbar.php',
 			'administrator/components/com_ars/uninstall.ars.php',
 
-			'components/com_ars/views/view.html.php',
 			'components/com_ars/dispatcher.php',
-			'components/com_ars/views/Releases/tmpl/item.xml',
 
 			'media/com_ars/js/akeebajq.js',
 			'media/com_ars/js/akeebajqui.js',
@@ -103,41 +100,16 @@ class Com_ArsInstallerScript extends \FOF40\InstallScript\Component
 			'administrator/components/com_ars/Controller/Updates.php',
 			'administrator/components/com_ars/Model/Updates.php',
 			'administrator/components/com_ars/Model/Statistics.php',
-			'administrator/components/com_ars/assets/stats',
 			'components/com_ars/Model/ExtensionUpdates.php',
-			'cli/ars-update',
+			'cli/ars-update.php',
 
 			// Moving to FEF
 			'administrator/components/com_ars/Controller/Upload.php',
 			'administrator/components/com_ars/Model/Upload.php',
 			'administrator/components/com_ars/View/views.ini',
-			'administrator/components/com_ars/View/AutoDescriptions/tmpl/form.default.xml',
-			'administrator/components/com_ars/View/AutoDescriptions/tmpl/form.form.xml',
-			'administrator/components/com_ars/View/Categories/tmpl/form.form.xml',
-			'administrator/components/com_ars/View/Categories/tmpl/form.default.xml',
-			'administrator/components/com_ars/View/DownloadIDLabels/tmpl/form.default.xml',
-			'administrator/components/com_ars/View/DownloadIDLabels/tmpl/form.form.xml',
-			'administrator/components/com_ars/View/DownloadIDLabels/tmpl/default_dlid.php',
-			'administrator/components/com_ars/View/Environments/tmpl/form.default.xml',
-			'administrator/components/com_ars/View/Environments/tmpl/form.form.xml',
-			'administrator/components/com_ars/View/Items/tmpl/form.form.xml',
-			'administrator/components/com_ars/View/Items/tmpl/default_environments.php',
-			'administrator/components/com_ars/View/Items/tmpl/form.default.xml',
-			'administrator/components/com_ars/View/Items/tmpl/form.modal.xml',
-			'administrator/components/com_ars/View/Logs/tmpl/form.default.xml',
-			'administrator/components/com_ars/View/Logs/tmpl/default_item.php',
-			'administrator/components/com_ars/View/Releases/tmpl/form.form.xml',
-			'administrator/components/com_ars/View/Releases/tmpl/form.default.xml',
-			'administrator/components/com_ars/View/UpdateStreams/tmpl/default_links.php',
-			'administrator/components/com_ars/View/UpdateStreams/tmpl/form.default.xml',
-			'administrator/components/com_ars/View/UpdateStreams/tmpl/form.form.xml',
-			'administrator/components/com_ars/View/VisualGroups/tmpl/form.form.xml',
-			'administrator/components/com_ars/View/VisualGroups/tmpl/form.default.xml',
 
 			'components/com_ars/View/DownloadIDLabels/Form.php',
-			'components/com_ars/View/DownloadIDLabels/tmpl/form.form.xml',
 			'components/com_ars/View/Items/Form.php',
-			'components/com_ars/View/Items/tmpl/form.modal.xml',
 
 			// Version 5 -- Rolling internal release
 			'administrator/components/com_ars/Helper/ComponentParams.php',
@@ -156,16 +128,11 @@ class Com_ArsInstallerScript extends \FOF40\InstallScript\Component
 
 			'components/com_ars/View/Update/tmpl/jed.php',
 
-			'components/com_ars/views/Update/tmpl/jed.xml',
-
 			'media/com_ars/js/jqplot.dateAxisRenderer.min.js',
 			'media/com_ars/js/jqplot.hermite.js',
 			'media/com_ars/js/jqplot.hihglighter.min.js',
 			'media/com_ars/js/jquery.colorhelpers.min.js',
 			'media/com_ars/js/jquery.jqplot.min.js',
-
-			// Removed GeoIP features
-			'administrator/components/com_ars/ViewTemplates/ControlPanel/geoip.blade.php',
 
 			// Unused bitmap icons
 			'media/com_ars/icons/action_add.png',
@@ -210,12 +177,6 @@ class Com_ArsInstallerScript extends \FOF40\InstallScript\Component
 			// Subscription levels support
 			'administrator/components/com_ars/Model/SubscriptionIntegration.php',
 
-			// Moved inside FOF
-			'administrator/components/com_ars/ViewTemplates/Common/browse.blade.php',
-			'administrator/components/com_ars/ViewTemplates/Common/edit.blade.php',
-			'administrator/components/com_ars/ViewTemplates/Common/EntryUser.blade.php',
-			'administrator/components/com_ars/ViewTemplates/Common/ShowUser.blade.php',
-
 			// Moving to Akeeba FEF 2
 			'media/com_ars/js/Ajax.js',
 			'media/com_ars/js/Ajax.min.js',
@@ -232,8 +193,6 @@ class Com_ArsInstallerScript extends \FOF40\InstallScript\Component
 		],
 		'folders' => [
 			// Moving to FOF 3
-			'administrator/components/com_ars/assets/geoip',
-			'administrator/components/com_ars/assets/images',
 			'administrator/components/com_ars/controllers',
 			'administrator/components/com_ars/fields',
 			'administrator/components/com_ars/helpers',
@@ -243,25 +202,15 @@ class Com_ArsInstallerScript extends \FOF40\InstallScript\Component
 			'administrator/components/com_ars/elements',
 			'administrator/components/com_ars/language',
 
-			// Old Amazon integration
-			'administrator/components/com_ars/Amazon',
-
-			// Usage stats
-			'administrator/components/com_ars/assets/stats',
-
 			'components/com_ars/controllers',
 			'components/com_ars/helpers',
 			'components/com_ars/models',
-			'components/com_ars/views/browse',
-			'components/com_ars/views/browses',
-			'components/com_ars/views/category',
-			'components/com_ars/views/dlidlabel',
-			'components/com_ars/views/dlidlabels',
-			'components/com_ars/views/download',
-			'components/com_ars/views/latests',
-			'components/com_ars/views/release',
+			'components/com_ars/views',
 
 			'media/com_ars/theme',
+
+			// Old Amazon integration
+			'administrator/components/com_ars/Amazon',
 
 			// Moving to FEF
 			'administrator/components/com_ars/Form',
@@ -284,6 +233,13 @@ class Com_ArsInstallerScript extends \FOF40\InstallScript\Component
 
 			'administrator/components/com_ars/Model/SubscriptionIntegration',
 
+			'administrator/components/com_ars/View/VisualGroups',
+
+			// Joomla! 4 compatible routing (using a router class instead of router functions)
+			'components/com_ars/Helper/ComArsRouter.php',
+			'components/com_ars/Helper/ArsRouterHelper.php',
+
+			// Moving to FOF 4
 			'administrator/components/com_ars/View/AutoDescriptions/tmpl',
 			'administrator/components/com_ars/View/Categories/tmpl',
 			'administrator/components/com_ars/View/ControlPanel/tmpl',
@@ -293,7 +249,7 @@ class Com_ArsInstallerScript extends \FOF40\InstallScript\Component
 			'administrator/components/com_ars/View/Logs/tmpl',
 			'administrator/components/com_ars/View/Releases/tmpl',
 			'administrator/components/com_ars/View/UpdateStreams/tmpl',
-			'administrator/components/com_ars/View/VisualGroups',
+			'administrator/components/com_ars/ViewTemplates',
 
 			'components/com_ars/View/Categories/tmpl',
 			'components/com_ars/View/DownloadIDLabels/tmpl',
@@ -301,10 +257,8 @@ class Com_ArsInstallerScript extends \FOF40\InstallScript\Component
 			'components/com_ars/View/Latest/tmpl',
 			'components/com_ars/View/Releases/tmpl',
 			'components/com_ars/View/Update/tmpl',
+			'components/com_ars/ViewTemplates',
 
-			// Joomla! 4 compatible routing (using a router class instead of router functions)
-			'components/com_ars/Helper/ComArsRouter.php',
-			'components/com_ars/Helper/ArsRouterHelper.php',
 		],
 	];
 

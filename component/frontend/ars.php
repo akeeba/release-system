@@ -14,7 +14,7 @@ $recommendedPHPVersion = '7.4';
 $softwareName          = 'Akeeba Release System';
 $silentResults         = true;
 
-if (!require_once(JPATH_COMPONENT_ADMINISTRATOR . '/View/wrongphp.php'))
+if (!require_once(JPATH_COMPONENT_ADMINISTRATOR . '/tmpl/ErrorPages/wrongphp.php'))
 {
 	echo 'Your PHP version is too old for this component.';
 
