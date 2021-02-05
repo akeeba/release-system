@@ -16,8 +16,8 @@
 
 		<include name="*"/>
 
-		<include name="backend/views/**"/>
-		<include name="frontend/views/**"/>
+		<exclude name="backend/views/**"/>
+		<exclude name="frontend/views/**"/>
 
 		<exclude name="cli/**"/>
 		<exclude name="LICENSE.txt"/>
