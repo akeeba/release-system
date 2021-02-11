@@ -114,6 +114,7 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
                    target="_blank">XML</a>
                 &bull;
                 <a href="{{ $siteRoot }}index.php?option=com_ars&view=update&task=download&format=raw&id={{{ $row->id }}}"
+                   download
                    target="_blank">D/L</a>
 
             </td>

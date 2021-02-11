@@ -15,7 +15,7 @@ use Akeeba\ReleaseSystem\Admin\Helper\Format;
 use Akeeba\ReleaseSystem\Admin\Helper\Select;
 
 $download_url =
-	Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id . '&Itemid=' . $this->Itemid);
+		Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id . '&Itemid=' . $this->Itemid);
 
 if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 {
@@ -25,13 +25,13 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 
 <tr>
 	<td>
-		<a href="{{ htmlentities($download_url) }}" rel="nofollow">
+		<a href="{{ htmlentities($download_url) }}" rel="nofollow" download>
 			{{{ $item->title }}}
 		</a>
 	</td>
 	<td width="25%">
-		<a href="{{ htmlentities($download_url) }}" rel="nofollow" class="akeeba-btn--primary--small">
-			<span class="icon icon-download"></span>
+		<a href="{{ htmlentities($download_url) }}" rel="nofollow" download class="akeeba-btn--primary--small"> <span
+					class="icon icon-download"></span>
 			@lang('LBL_ITEM_DOWNLOAD')
 		</a>
 	</td>

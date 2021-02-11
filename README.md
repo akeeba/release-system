@@ -11,10 +11,11 @@ If you decide to use this software please keep the following in mind:
 
 * We do not provide any support for this software whatsoever.
 * We do not take feature requests for this software.
-* There is absolutely no guarantee that any feature implemented today will be available in the future, including the next minor release.
+* There is absolutely no guarantee that any feature implemented today will be available in the future, including the
+  next minor release.
 * There is absolutely no guarantee that the component will continue to work the same or even exist.
- * This project does NOT follow semantic versioning.
-* We provide VERY irregular downloads through GitHub.
+* This project does NOT follow semantic versioning.
+* We provide VERY irregular downloads.
 
 ## Prerequisites
 

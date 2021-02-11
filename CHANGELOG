@@ -1,0 +1,7 @@
+<?php die(); ?>
+Akeeba Release System 6.0.0
+================================================================================
++ Rewritten with FOF 4
++ Now using FEF 2 with a common JavaScript library across all Akeeba extensions
++ Renamed ViewTemplates to tmpl (Joomla 4 convention, with fallback code for Joomla 3)
++ Download anchor tags use the `download` attribute

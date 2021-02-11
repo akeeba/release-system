@@ -54,7 +54,7 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 
 <div class="ars-item-{{{ $item->id }}}">
 	<h4>
-		<a href="{{ htmlentities($download_url) }}">
+		<a href="{{ htmlentities($download_url) }}" download>
 			{{{ $item->title }}}
 		</a>
 	</h4>
@@ -66,12 +66,11 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 		</p>
 	@endunless
 	<p>
-		<a href="{{ htmlentities($download_url) }}">
-			<code>{{{ basename(($item->type == 'file') ? $item->filename : $item->url) }}}</code>
-		</a>
+		<a href="{{ htmlentities($download_url) }}" rel="nofollow" download>
+			<code>{{{ basename(($item->type == 'file') ? $item->filename : $item->url) }}}</code> </a>
 
-		<a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary--small">
-			<span class="akion-ios-cloud-download"></span>
+		<a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary--small" rel="nofollow" download> <span
+					class="akion-ios-cloud-download"></span>
 			@lang('LBL_ITEM_DOWNLOAD')
 		</a>
 
@@ -183,7 +182,7 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 
 		<div style="margin-top: 10px;">
 			<p>
-				<a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary">
+				<a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary" rel="nofollow" download>
 					@lang('LBL_ITEM_DOWNLOAD')
 				</a>
 			</p>
