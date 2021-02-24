@@ -4,7 +4,7 @@
   ~ @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
   ~ @license   GNU General Public License version 3, or later
   -->
-<config addfieldpath="/administrator/components/com_ars/elements">
+<config addfieldpath="/administrator/components/com_ars/fields">
     <fieldset name="updatestream" label="COM_ARS_CONFIG_BACKEND_UPDATESTREAM_LABEL"
               description="COM_ARS_CONFIG_BACKEND_UPDATESTREAM_DESC">
 
@@ -18,7 +18,7 @@
                description="COM_ARS_CONFIG_UPDATES_DESC_DESC"
         />
 
-        <field name="show_checksums" type="radio" default="0"
+        <field name="show_checksums" type="fancyradio" default="0"
                label="COM_ARS_CONFIG_UPDATES_SHOW_CHECKSUMS_LABEL"
                description="COM_ARS_CONFIG_UPDATES_SHOW_CHECKSUMS_DESC"
                class="switcher btn-group"
@@ -27,7 +27,7 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="minify_xml" type="radio" default="1"
+        <field name="minify_xml" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_MINIFY_XML_LABEL"
                description="COM_ARS_CONFIG_MINIFY_XML_DESC"
                class="switcher btn-group"
@@ -36,7 +36,7 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="use_compatibility" type="radio" default="1"
+        <field name="use_compatibility" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_USE_COMPATIBILITY_LABEL"
                description="COM_ARS_CONFIG_USE_COMPATIBILITY_DESC"
                class="switcher btn-group"
@@ -52,7 +52,7 @@
 
         <field name="@spacer" type="spacer" default="" label="" description=""/>
 
-        <field name="begenchangelog" type="radio" default="1"
+        <field name="begenchangelog" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_BEGENCHANGELOG_LABEL"
                description="COM_ARS_CONFIG_BEGENCHANGELOG_DESC"
                class="switcher btn-group"
@@ -61,10 +61,11 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="becolorisechangelog" type="radio" default="1"
+        <field name="becolorisechangelog" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_BECOLORISECHANGELOG_LABEL"
                description="COM_ARS_CONFIG_BECOLORISECHANGELOG_DESC"
                class="switcher btn-group"
+               showon="begenchangelog:1"
         >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
@@ -95,7 +96,7 @@
         <field name="no_access_url" type="text" default="" label="COM_ARS_CONFIG_FE_NOACCESSURL_LABEL"
                description="COM_ARS_CONFIG_FE_NOACCESSURL_DESC" size="50"/>
 
-        <field name="show_downloads" type="radio" default="1"
+        <field name="show_downloads" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_SHOW_DOWNLOADS_LABEL"
                description="COM_ARS_CONFIG_SHOW_DOWNLOADS_DESC"
                class="switcher btn-group"
@@ -104,7 +105,7 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_filesize" type="radio" default="1"
+        <field name="show_filesize" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_SHOW_FILESIZE_LABEL"
                description="COM_ARS_CONFIG_SHOW_FILESIZE_DESC"
                class="switcher btn-group"
@@ -113,7 +114,7 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_md5" type="radio" default="1"
+        <field name="show_md5" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_SHOW_MD5_LABEL"
                description="COM_ARS_CONFIG_SHOW_MD5_DESC"
                class="switcher btn-group"
@@ -122,7 +123,7 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_sha1" type="radio" default="1"
+        <field name="show_sha1" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_SHOW_SHA1_LABEL"
                description="COM_ARS_CONFIG_SHOW_SHA1_DESC"
                class="switcher btn-group"
@@ -131,7 +132,7 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_sha256" type="radio" default="1"
+        <field name="show_sha256" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_SHOW_SHA256_LABEL"
                description="COM_ARS_CONFIG_SHOW_SHA256_DESC"
                class="switcher btn-group"
@@ -140,7 +141,7 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_sha384" type="radio" default="1"
+        <field name="show_sha384" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_SHOW_SHA384_LABEL"
                description="COM_ARS_CONFIG_SHOW_SHA384_DESC"
                class="switcher btn-group"
@@ -149,7 +150,7 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_sha512" type="radio" default="1"
+        <field name="show_sha512" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_SHOW_SHA512_LABEL"
                description="COM_ARS_CONFIG_SHOW_SHA512_DESC"
                class="switcher btn-group"
@@ -158,7 +159,7 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_environments" type="radio" default="1"
+        <field name="show_environments" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_LABEL"
                description="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_DESC"
                class="switcher btn-group"
@@ -167,7 +168,7 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_directlink" type="radio" default="1"
+        <field name="show_directlink" type="fancyradio" default="1"
                label="COM_ARS_CONFIG_SHOW_DIRECTLINK_LABEL"
                description="COM_ARS_CONFIG_SHOW_DIRECTLINK_DESC"
                class="switcher btn-group"
@@ -208,25 +209,25 @@
             <option value="3">COM_ARS_CONFIG_BACKEND_LOAD_FEF_BOTH</option>
         </field>
 
-        <field name="dark_mode_backend" type="radio" default="-1"
+        <field name="dark_mode_backend" type="list" default="-1"
                label="COM_ARS_CONFIG_BACKEND_DARKMODE_BACKEND_LABEL"
                description="COM_ARS_CONFIG_BACKEND_DARKMODE_BACKEND_DESC"
-               class="switcher btn-group">
+        >
             <option value="-1">COM_ARS_CONFIG_BACKEND_DARKMODE_AUTO</option>
             <option value="0">COM_ARS_CONFIG_BACKEND_DARKMODE_NEVER</option>
             <option value="1">COM_ARS_CONFIG_BACKEND_DARKMODE_ALWAYS</option>
         </field>
 
-        <field name="dark_mode_frontend" type="radio" default="-1"
+        <field name="dark_mode_frontend" type="list" default="-1"
                label="COM_ARS_CONFIG_BACKEND_DARKMODE_FRONTEND_LABEL"
                description="COM_ARS_CONFIG_BACKEND_DARKMODE_FRONTEND_DESC"
-               class="switcher btn-group">
+        >
             <option value="-1">COM_ARS_CONFIG_BACKEND_DARKMODE_AUTO</option>
             <option value="0">COM_ARS_CONFIG_BACKEND_DARKMODE_NEVER</option>
             <option value="1">COM_ARS_CONFIG_BACKEND_DARKMODE_ALWAYS</option>
         </field>
 
-        <field name="banUnauth" type="radio" default="0"
+        <field name="banUnauth" type="fancyradio" default="0"
                label="COM_ARS_CONFIG_BAN_FAILED_LABEL"
                description="COM_ARS_CONFIG_BAN_FAILED_DESC"
                class="switcher btn-group"

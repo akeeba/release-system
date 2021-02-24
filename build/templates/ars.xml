@@ -53,6 +53,7 @@
 		<files folder="backend">
 			<folder>Controller</folder>
 			<folder>Dispatcher</folder>
+			<folder>fields</folder>
 			<folder>Helper</folder>
 			<folder>Model</folder>
 			<folder>sql</folder>
