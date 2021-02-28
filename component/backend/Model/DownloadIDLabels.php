@@ -160,15 +160,15 @@ class DownloadIDLabels extends DataModel
 		{
 			while (empty($this->dlid))
 			{
-				$this->dlid = md5(Crypt::genRandomBytes(64));
+				$this->dlid = md5(random_bytes(64));
 
 				// Do I have another primary?
 				$query = $db->getQuery(true)
-							->select('COUNT(*)')
-							->from($db->qn('#__ars_dlidlabels'))
-							->where($db->qn('dlid') . ' = ' . $db->q($this->dlid))
-							->where($db->qn('user_id') . ' = ' . $db->q($this->user_id))
-							->where($db->qn('primary') . ' = ' . $db->q($this->primary));
+					->select('COUNT(*)')
+					->from($db->qn('#__ars_dlidlabels'))
+					->where($db->qn('dlid') . ' = ' . $db->q($this->dlid))
+					->where($db->qn('user_id') . ' = ' . $db->q($this->user_id))
+					->where($db->qn('primary') . ' = ' . $db->q($this->primary));
 
 				if ($this->ars_dlidlabel_id)
 				{
