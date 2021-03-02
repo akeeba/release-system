@@ -8,12 +8,12 @@
 <extension type="module" version="2.5.0" method="upgrade" client="site">
     <name>Akeeba Release System - My Downloads</name>
     <author>Nicholas K. Dionysopoulos</author>
-    <creationDate>2020-06-23</creationDate>
+    <creationDate>2021-03-02</creationDate>
     <copyright>Copyright (c) 2010-2017 Nicholas K. Dionysopoulos</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL v3 or later</license>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>https://www.akeeba.com</authorUrl>
-    <version>5.0.0</version>
+    <version>6.0.0</version>
     <description>MOD_ARSDOWNLOADS_DESC</description>
     <files>
         <filename module="mod_arsdownloads">mod_arsdownloads.php</filename>
