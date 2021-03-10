@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 6.0.1
+================================================================================
+~ Converted all tables to InnoDB for better performance
+
 Akeeba Release System 6.0.0
 ================================================================================
 + Rewritten with FOF 4

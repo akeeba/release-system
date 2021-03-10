@@ -673,5 +673,79 @@ ALTER TABLE `#__ars_dlidlabels` MODIFY `modified_on` DATETIME NULL DEFAULT NULL;
 UPDATE `#__ars_dlidlabels` SET `modified_on` = NULL WHERE `modified_on` = '0000-00-00 00:00:00';
       ]]></query>
         </action>
+
+        <!-- Convert tables to InnoDB -->
+        <action table="#__ars_categories" canfail="1">
+            <condition type="equals" operator="not" value="1"><![CDATA[
+SELECT COUNT(*) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE (`TABLE_NAME` = '#__ars_categories') AND (`TABLE_SCHEMA` = DATABASE()) AND (`ENGINE` = 'InnoDB');
+            ]]></condition>
+            <query><![CDATA[
+ALTER TABLE `#__ars_categories` ENGINE InnoDB;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_releases" canfail="1">
+            <condition type="equals" operator="not" value="1"><![CDATA[
+SELECT COUNT(*) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE (`TABLE_NAME` = '#__ars_releases') AND (`TABLE_SCHEMA` = DATABASE()) AND (`ENGINE` = 'InnoDB');
+            ]]></condition>
+            <query><![CDATA[
+ALTER TABLE `#__ars_releases` ENGINE InnoDB;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_items" canfail="1">
+            <condition type="equals" operator="not" value="1"><![CDATA[
+SELECT COUNT(*) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE (`TABLE_NAME` = '#__ars_items') AND (`TABLE_SCHEMA` = DATABASE()) AND (`ENGINE` = 'InnoDB');
+            ]]></condition>
+            <query><![CDATA[
+ALTER TABLE `#__ars_items` ENGINE InnoDB;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_log" canfail="1">
+            <condition type="equals" operator="not" value="1"><![CDATA[
+SELECT COUNT(*) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE (`TABLE_NAME` = '#__ars_log') AND (`TABLE_SCHEMA` = DATABASE()) AND (`ENGINE` = 'InnoDB');
+            ]]></condition>
+            <query><![CDATA[
+ALTER TABLE `#__ars_log` ENGINE InnoDB;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_updatestreams" canfail="1">
+            <condition type="equals" operator="not" value="1"><![CDATA[
+SELECT COUNT(*) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE (`TABLE_NAME` = '#__ars_updatestreams') AND (`TABLE_SCHEMA` = DATABASE()) AND (`ENGINE` = 'InnoDB');
+            ]]></condition>
+            <query><![CDATA[
+ALTER TABLE `#__ars_updatestreams` ENGINE InnoDB;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_autoitemdesc" canfail="1">
+            <condition type="equals" operator="not" value="1"><![CDATA[
+SELECT COUNT(*) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE (`TABLE_NAME` = '#__ars_autoitemdesc') AND (`TABLE_SCHEMA` = DATABASE()) AND (`ENGINE` = 'InnoDB');
+            ]]></condition>
+            <query><![CDATA[
+ALTER TABLE `#__ars_autoitemdesc` ENGINE InnoDB;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_environments" canfail="1">
+            <condition type="equals" operator="not" value="1"><![CDATA[
+SELECT COUNT(*) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE (`TABLE_NAME` = '#__ars_environments') AND (`TABLE_SCHEMA` = DATABASE()) AND (`ENGINE` = 'InnoDB');
+            ]]></condition>
+            <query><![CDATA[
+ALTER TABLE `#__ars_environments` ENGINE InnoDB;
+            ]]></query>
+        </action>
+
+        <action table="#__ars_dlidlabels" canfail="1">
+            <condition type="equals" operator="not" value="1"><![CDATA[
+SELECT COUNT(*) FROM `INFORMATION_SCHEMA`.`TABLES` WHERE (`TABLE_NAME` = '#__ars_dlidlabels') AND (`TABLE_SCHEMA` = DATABASE()) AND (`ENGINE` = 'InnoDB');
+            ]]></condition>
+            <query><![CDATA[
+ALTER TABLE `#__ars_dlidlabels` ENGINE InnoDB;
+            ]]></query>
+        </action>
+
     </sql>
 </schema>
