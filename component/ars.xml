@@ -29,9 +29,9 @@
 
     <media destination="com_ars" folder="media">
         <folder>css</folder>
+        <folder>fonts</folder>
         <folder>icons</folder>
         <folder>js</folder>
-        <folder>plugins</folder>
 
         <filename>index.html</filename>
         <filename>joomla.asset.json</filename>

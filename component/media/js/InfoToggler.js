@@ -29,4 +29,3 @@ akeeba.Loader.add(["akeeba.System", "akeeba.fef.tabs"], function ()
         })
     });
 });
-JS;

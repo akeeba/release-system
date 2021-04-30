@@ -4,33 +4,33 @@
  * @license   GNU General Public License version 3, or later
  */
 
-// Wait until akeeba.System is loaded
-akeeba.Loader.add(["akeeba.System"], function ()
+window.addEventListener("DOMContentLoaded", function ()
 {
     // Attach click event handlers to all A elements with the hasArsItemProxy class
-    akeeba.System.iterateNodes("a.hasArsItemProxy", function (item)
-    {
-        akeeba.System.addEventListener(item, "click", function (event)
-        {
-            // Cancel the default event handler
-            event.preventDefault();
-
-            var callbackName = akeeba.System.getOptions("ars.itemsProxyCallback", "");
-
-            if (callbackName === "")
+    document.querySelectorAll("a.hasArsItemProxy")
+            .forEach(function (item)
             {
-                return;
-            }
+                item.addEventListener("click", function (event)
+                {
+                    // Cancel the default event handler
+                    event.preventDefault();
 
-            // Get the row ID and title from the data attributes
-            var elTarget = event.currentTarget;
-            var rowId    = akeeba.System.data.get(elTarget, "arsrowid", 0);
-            var title    = akeeba.System.data.get(elTarget, "arstitle", "ARS Item");
+                    var callbackName = Joomla.getOptions("ars.itemsProxyCallback", "");
 
-            // Call the proxy function
-            window.parent[callbackName](rowId, title);
+                    if (callbackName === "")
+                    {
+                        return;
+                    }
 
-            return false;
-        });
-    });
+                    // Get the row ID and title from the data attributes
+                    var elTarget = event.currentTarget;
+                    var rowId    = elTarget.dataset.arsrowid ?? 0;
+                    var title    = elTarget.dataset.arstitle ?? "ARS Item";
+
+                    // Call the proxy function
+                    window.parent[callbackName](rowId, title);
+
+                    return false;
+                });
+            })
 });

@@ -1,5 +1,0 @@
-/*!
- * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
- * @license   GNU General Public License version 3, or later
- */.akeeba-renderer-fef--dark :root{color-scheme:dark}.akeeba-renderer-fef--dark [class|=ars-devrelease-changelog]{color:#efefef}.akeeba-renderer-fef--dark [class|=ars-devrelease-changelog][class$=removed]{color:#e86367}.akeeba-renderer-fef--dark [class|=ars-devrelease-changelog][class$=minor]{color:#bcbcbc}.akeeba-renderer-fef--dark .akeeba-renderer-fef [class*=akeeba-panel].chromeFalsePositive{background-color:#5d802b}@media(prefers-color-scheme: dark){[class|=ars-devrelease-changelog]{color:#efefef}[class|=ars-devrelease-changelog][class$=removed]{color:#e86367}[class|=ars-devrelease-changelog][class$=minor]{color:#bcbcbc}.akeeba-renderer-fef [class*=akeeba-panel].chromeFalsePositive{background-color:#5d802b}}/*# sourceMappingURL=frontend_dark.css.map */

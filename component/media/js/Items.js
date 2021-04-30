@@ -125,8 +125,10 @@ arsItems.showHideRows = function (populateFiles) {
     }
 };
 
-akeeba.System.documentReady(function () {
-    document.getElementById('url').addEventListener('focus', function(e){
+window.addEventListener("DOMContentLoaded", function ()
+{
+    document.getElementById("url").addEventListener("focus", function (e)
+    {
         arsItems.onLinkBlur(e);
     });
 

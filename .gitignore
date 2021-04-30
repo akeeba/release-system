@@ -4,6 +4,9 @@
 # Symlinked files/folders into the component tree
 /component/backend/ars.xml
 
+
+/node_modules
+
 # Release files
 /release
 

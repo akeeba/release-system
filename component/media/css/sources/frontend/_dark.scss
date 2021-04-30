@@ -1,15 +1,17 @@
-/*
+/*!
  * @package   AkeebaReleaseSystem
  * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
-.akeeba-renderer-fef [class*=akeeba-panel] {
-  &.chromeFalsePositive {
-    background-color: lighten($green, 40%);
+[class|="ars-devrelease-changelog"] {
+  color: $light-grey;
 
-    > div {
-      font-size: 1.4rem;
-    }
+  &[class$="removed"] {
+    color: lighten($red, 10%);
+  }
+
+  &[class$="minor"] {
+    color: darken($light-grey, 20%);
   }
 }

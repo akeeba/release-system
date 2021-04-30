@@ -6,18 +6,9 @@
 
 @import 'sources/common/variables';
 
-/**
- * Dark Mode
- *
- * This applies the color modifications to both forced dark mode and automatic dark mode
- */
-.akeeba-renderer-fef--dark {
-  :root {
-    color-scheme: dark;
-  }
+@import 'sources/frontend/bleedingedge';
 
-  @import 'sources/frontend/dark';
-}
+@import 'sources/frontend/releases';
 
 @media (prefers-color-scheme: dark) {
   @import 'sources/frontend/dark';

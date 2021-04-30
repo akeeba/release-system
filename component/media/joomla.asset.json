@@ -11,24 +11,12 @@
 			"type": "style",
 			"uri": "com_ars/backend.css"
 		},
-		{
-			"name": "com_ars.backend_dark",
-			"description": "Common backend user interface CSS, dark mode",
-			"type": "style",
-			"uri": "com_ars/backend_dark.css"
-		},
 
 		{
 			"name": "com_ars.frontend_light",
 			"description": "Common frontend user interface CSS, light mode",
 			"type": "style",
 			"uri": "com_ars/frontend.css"
-		},
-		{
-			"name": "com_ars.frontend_dark",
-			"description": "Common frontend user interface CSS, dark mode",
-			"type": "style",
-			"uri": "com_ars/frontend_dark.css"
 		},
 
 		{
@@ -62,7 +50,7 @@
 			"uri": "com_ars/ControlPanel.min.js",
 			"dependencies": [
 				"core",
-				"bootstrap.modal"
+				"com_ars.chart"
 			],
 			"attributes": {
 				"defer": true
@@ -110,7 +98,6 @@
 			"type": "preset",
 			"dependencies": [
 				"com_ars.backend_light#style",
-				"com_ars.backend_dark#style",
 
 				"com_ars.gui-helpers#script"
 			]
@@ -120,7 +107,6 @@
 			"type": "preset",
 			"dependencies": [
 				"com_ars.frontend_light#style",
-				"com_ars.frontend_dark#style"
 			]
 		}
 	]
