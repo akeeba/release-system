@@ -1,0 +1,64 @@
+<component name="libraryTable">
+  <library name="Generated files" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/component/media/js/ControlPanel.min.js" />
+        <item url="file://$PROJECT_DIR$/component/media/js/InfoToggler.min.js" />
+        <item url="file://$PROJECT_DIR$/component/media/js/ItemSelect.min.js" />
+        <item url="file://$PROJECT_DIR$/component/media/js/Items.min.js" />
+        <item url="file://$PROJECT_DIR$/component/media/js/gui-helpers.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/.bin/atob.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/.bin/babel-external-helpers.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/.bin/babel.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/.bin/browserslist.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/.bin/jsesc.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/.bin/json5.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/.bin/parser.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/.bin/regjsparser.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/.bin/semver.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/atob/bin/atob.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/atob/node-atob.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/atob/test.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/has/src/index.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/has/test/index.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/ms/index.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/ret/lib/index.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/ret/lib/positions.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/ret/lib/sets.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/ret/lib/types.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/ret/lib/util.min.js" />
+        <item url="file://$PROJECT_DIR$/node_modules/use/index.min.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/component/media/js/ControlPanel.min.js" />
+      <root url="file://$PROJECT_DIR$/component/media/js/InfoToggler.min.js" />
+      <root url="file://$PROJECT_DIR$/component/media/js/ItemSelect.min.js" />
+      <root url="file://$PROJECT_DIR$/component/media/js/Items.min.js" />
+      <root url="file://$PROJECT_DIR$/component/media/js/gui-helpers.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/.bin/atob.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/.bin/babel-external-helpers.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/.bin/babel.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/.bin/browserslist.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/.bin/jsesc.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/.bin/json5.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/.bin/parser.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/.bin/regjsparser.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/.bin/semver.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/atob/bin/atob.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/atob/node-atob.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/atob/test.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/has/src/index.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/has/test/index.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/ms/index.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/ret/lib/index.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/ret/lib/positions.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/ret/lib/sets.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/ret/lib/types.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/ret/lib/util.min.js" />
+      <root url="file://$PROJECT_DIR$/node_modules/use/index.min.js" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

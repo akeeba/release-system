@@ -1,0 +1,8 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="allowReplaceRegexp" value="Copyright \(c\)20\d{2,2}-20\d{2,2} (Nicholas|Akeeba)" />
+    <option name="keyword" value="Copyright \(c\)20\d{2,2}-20\d{2,2} (Nicholas|Akeeba)" />
+    <option name="notice" value="@package   AkeebaReleaseSystem&#10;@copyright Copyright (c)2010-&amp;#36;today.year Nicholas K. Dionysopoulos / Akeeba Ltd&#10;@license   GNU General Public License version 3, or later" />
+    <option name="myName" value="ARS" />
+  </copyright>
+</component>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="ABCOM Local" uuid="2df3b199-748d-4d78-a92b-380894aa4a15">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/abcom</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="ABCOM Joomla 4 Local" uuid="482c0cd2-96bf-4740-aeef-7bd69826f11b">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/abcom4</jdbc-url>
+      <driver-properties>
+        <property name="serverTimezone" value="Europe/Athens" />
+      </driver-properties>
+    </data-source>
+    <data-source source="LOCAL" name="joomla.datasource" uuid="2faea693-0018-4809-af0b-d85dcfb3d323">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$USER_HOME$/Sites/boot4/configuration.php</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://127.0.0.1:3306/boot4</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

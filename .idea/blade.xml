@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BladeInjectionConfiguration" default="false" rawSuffix="}}" rawPrefix="{{" contentSuffix="}&gt;}" contentPrefix="{&lt;{">
+    <directives>
+      <data directive="@append" />
+      <data directive="@atsCategorySelect" injection="true" prefix="&lt;?php echo \Akeeba\TicketSystem\Admin\Helper\Select::getCategories(" suffix="); ?&gt;" />
+      <data directive="@atsEditor" injection="true" prefix="&lt;?php \Akeeba\TicketSystem\Admin\Helper\Editor::showEditor(" suffix="); ?&gt;" />
+      <data directive="@atsFormatDate" injection="true" prefix="&lt;?php echo \Akeeba\TicketSystem\Admin\Helper\Format::date(" suffix="); ?&gt;" />
+      <data directive="@atsFormatDateTZ" injection="true" prefix="&lt;?php echo \Akeeba\TicketSystem\Admin\Helper\Format::date2(" suffix="); ?&gt;" />
+      <data directive="@atsPrioritySelect" injection="true" prefix="&lt;?php echo \Akeeba\TicketSystem\Admin\Helper\Select::priorities(" suffix="); ?&gt;" />
+      <data directive="@atsTicketStatusSelect" injection="true" prefix="&lt;?php echo \Akeeba\TicketSystem\Admin\Helper\Select::ticketstatuses(" suffix="); ?&gt;" />
+      <data directive="@css" injection="true" prefix="&lt;?php $this-&gt;addCssFile(" suffix="); ?&gt;" />
+      <data directive="@each" injection="true" prefix="&lt;?php echo $this-&gt;renderEach(" suffix="); ?&gt;" />
+      <data directive="@else" />
+      <data directive="@elseif" injection="true" prefix="&lt;?php elseif (" suffix="): ?&gt;" />
+      <data directive="@empty" injection="true" prefix="&lt;?php if(empty(" suffix=")): ?&gt;" />
+      <data directive="@endfor" />
+      <data directive="@endforeach" />
+      <data directive="@endforelse" />
+      <data directive="@endif" />
+      <data directive="@endpush" />
+      <data directive="@endrepeatable" />
+      <data directive="@endunless" />
+      <data directive="@endwhile" />
+      <data directive="@extends" injection="true" prefix="&lt;?php echo $this-&gt;loadAnytemplate(" suffix="); ?&gt;" />
+      <data directive="@fieldtitle" injection="true" prefix="&lt;?php echo FOF30\Utils\FEFHelper\BrowseView::fieldLabel(" suffix="); ?&gt;" />
+      <data directive="@for" injection="true" prefix="&lt;?php for (" suffix="): ?&gt;" />
+      <data directive="@foreach" injection="true" prefix="&lt;?php foreach(" suffix="): ?&gt;" />
+      <data directive="@forelse" injection="true" prefix="&lt;?php foreach(" suffix="): ?&gt;" />
+      <data directive="@if" injection="true" prefix="&lt;?php if (" suffix="): ?&gt;" />
+      <data directive="@include" injection="true" prefix="&lt;?php echo $this-&gt;loadAnytemplate(" suffix="); ?&gt;" />
+      <data directive="@inlineCss" injection="true" prefix="&lt;?php $this-&gt;addCssInline(" suffix="); ?&gt;" />
+      <data directive="@inlineJs" injection="true" prefix="&lt;?php $this-&gt;addJavascriptInline(" suffix="); ?&gt;" />
+      <data directive="@jhtml" injection="true" prefix="&lt;?php echo \JHtml::_(" suffix="); ?&gt;" />
+      <data directive="@jlayout" injection="true" prefix="&lt;?php echo \FOF30\Layout\LayoutHelper::render($this-&gt;container," suffix="); ?&gt;" />
+      <data directive="@js" injection="true" prefix="&lt;?php $this-&gt;addJavascriptFile(" suffix="); ?&gt;" />
+      <data directive="@jsLang" injection="true" prefix="&lt;?php \JText::script(" suffix="); ?&gt;" />
+      <data directive="@lang" injection="true" prefix="&lt;?php echo \JText::_(" suffix="); ?&gt;" />
+      <data directive="@less" injection="true" prefix="&lt;?php echo $this-&gt;addLessFile(" suffix="); ?&gt;" />
+      <data directive="@media" injection="true" prefix="&lt;?php echo $this-&gt;container-&gt;template-&gt;parsePath(" suffix="); ?&gt;" />
+      <data directive="@modelfilter" injection="true" prefix="&lt;?php echo \FOF30\Utils\FEFHelper\BrowseView::modelFilter(" suffix="); ?&gt;" />
+      <data directive="@module" injection="true" prefix="&lt;?php echo $this-&gt;container-&gt;template-&gt;loadModule(" suffix="); ?&gt;" />
+      <data directive="@modules" injection="true" prefix="&lt;?php echo $this-&gt;container-&gt;template-&gt;loadPosition(" suffix="); ?&gt;" />
+      <data directive="@overwrite" />
+      <data directive="@parseBBcode" injection="true" prefix="&lt;?php echo \Akeeba\TicketSystem\Admin\Helper\Bbcode::parseBBCode(" suffix="); ?&gt;" />
+      <data directive="@plural" injection="true" prefix="&lt;?php echo \JText::plural(" suffix="); ?&gt;" />
+      <data directive="@push" injection="true" prefix="&lt;?php $this-&gt;startSection(" suffix="); ?&gt;" />
+      <data directive="@repeatable" injection="true" prefix="&lt;?php //" suffix="?&gt;" />
+      <data directive="@route" injection="true" prefix="&lt;?php echo $this-&gt;container-&gt;template-&gt;route(" suffix="); ?&gt;" />
+      <data directive="@searchfilter" injection="true" prefix="&lt;?php echo \FOF30\Utils\FEFHelper\BrowseView::searchFilter(" suffix="); ?&gt;" />
+      <data directive="@section" injection="true" prefix="&lt;?php $this-&gt;startSection(" suffix="); ?&gt;" />
+      <data directive="@selectfilter" injection="true" prefix="&lt;?php echo \FOF30\Utils\FEFHelper\BrowseView::selectFilter(" suffix="); ?&gt;" />
+      <data directive="@show" />
+      <data directive="@sortgrid" injection="true" prefix="&lt;?php echo \FOF30\Utils\FEFHelper\BrowseView::sortGrid(" suffix="); ?&gt;" />
+      <data directive="@sprintf" injection="true" prefix="&lt;?php echo \JText::sprintf(" suffix="); ?&gt;" />
+      <data directive="@stack" injection="true" prefix="&lt;?php echo $this-&gt;yieldContent(" suffix="); ?&gt;" />
+      <data directive="@stop" />
+      <data directive="@token" injection="true" prefix="&lt;?php \JFactory::getSession()-&gt;getFormToken((" suffix="); ?&gt;" />
+      <data directive="@unless" injection="true" prefix="&lt;?php if ( ! (" suffix=")): ?&gt;" />
+      <data directive="@while" injection="true" prefix="&lt;?php while (" suffix="): ?&gt;" />
+      <data directive="@yield" injection="true" prefix="&lt;?php $this-&gt;yieldContent(" suffix="); ?&gt;" />
+      <data directive="@yieldRepeatable" injection="true" prefix="&lt;?php _fof_blade_repeatable_DUMMY(" suffix="); ?&gt;" />
+    </directives>
+  </component>
+</project>
