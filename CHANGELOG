@@ -1,12 +1,4 @@
 <?php die(); ?>
-Akeeba Release System 6.0.1
+Akeeba Release System 7.0.0
 ================================================================================
-~ Converted all tables to InnoDB for better performance
-
-Akeeba Release System 6.0.0
-================================================================================
-+ Rewritten with FOF 4
-+ Now using FEF 2 with a common JavaScript library across all Akeeba extensions
-+ Renamed ViewTemplates to tmpl (Joomla 4 convention, with fallback code for Joomla 3)
-+ Download anchor tags use the `download` attribute
-+ Yes/No options in the component and plugin options now work correctly under Joomla 4.0 beta 7 and later
+~ Rewritten using core Joomla 4 MVC and Bootstrap 5 styling

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
+
+<extension type="component" method="upgrade">
+    <name>ars</name>
+    <creationDate>##DATE##</creationDate>
+    <author>Akeeba Ltd</author>
+    <authorEmail>no-reply@akeeba.com</authorEmail>
+    <authorUrl>https://www.akeeba.com</authorUrl>
+    <copyright>Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd</copyright>
+    <license>GNU General Public License version 3 or later; see LICENSE.txt</license>
+    <version>##VERSION##</version>
+    <description>COM_ARS_XML_DESCRIPTION</description>
+    <namespace path="src">Akeeba\Component\ARS</namespace>
+
+    <files folder="frontend">
+        <folder>language</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+
+    <languages folder="language/frontend">
+        <language tag="en-GB">en-GB/com_ars.ini</language>
+    </languages>
+
+    <media destination="com_ars" folder="media">
+        <folder>css</folder>
+        <folder>icons</folder>
+        <folder>js</folder>
+        <folder>plugins</folder>
+
+        <filename>index.html</filename>
+        <filename>joomla.asset.json</filename>
+    </media>
+
+    <administration>
+        <menu>COM_ARS</menu>
+
+        <submenu>
+            <!--
+                Note that all & must be escaped to &amp; for the file to be valid
+                XML and be parsed by the installer
+            -->
+            <menu
+                    link="option=com_ars"
+                    view="controlpanel"
+                    alt="Ars/ControlPanel"
+            >
+                COM_ARS_TITLE_CONTROLPANEL
+            </menu>
+            <menu
+                    link="option=com_ars&amp;view=categories"
+                    alt="Ars/Categories"
+            >
+                COM_ARS_TITLE_CATEGORIES
+            </menu>
+            <menu
+                    link="option=com_ars&amp;view=releases"
+                    alt="Ars/Releases"
+            >
+                COM_ARS_TITLE_RELEASES
+            </menu>
+            <menu
+                    link="option=com_ars&amp;view=items"
+                    alt="Ars/Items"
+            >
+                COM_ARS_TITLE_ITEMS
+            </menu>
+            <menu
+                    link="option=com_ars&amp;view=logs"
+                    alt="Ars/Logs"
+            >
+                COM_ARS_TITLE_LOGS
+            </menu>
+            <menu
+                    link="option=com_ars&amp;view=updatestreams"
+                    alt="Ars/Updatestreams"
+            >
+                COM_ARS_TITLE_UPDATESTREAMS
+            </menu>
+            <menu
+                    link="option=com_ars&amp;view=autodescriptions"
+                    alt="Ars/Autodescriptions"
+            >
+                COM_ARS_TITLE_AUTODESCRIPTIONS
+            </menu>
+            <menu
+                    link="option=com_ars&amp;view=environments"
+                    alt="Ars/Environments"
+            >
+                COM_ARS_TITLE_ENVIRONMENTS
+            </menu>
+        </submenu>
+
+
+        <!-- Back-end files -->
+        <files folder="backend">
+            <folder>forms</folder>
+            <folder>language</folder>
+            <folder>services</folder>
+            <folder>sql</folder>
+            <folder>src</folder>
+            <folder>tmpl</folder>
+
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+        </files>
+
+        <!-- Back-end translation files -->
+        <languages folder="language/backend">
+            <language tag="en-GB">en-GB/com_ars.ini</language>
+            <language tag="en-GB">en-GB/com_ars.sys.ini</language>
+        </languages>
+    </administration>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
+
+    <scriptfile>script.com_ars.php</scriptfile>
+</extension>

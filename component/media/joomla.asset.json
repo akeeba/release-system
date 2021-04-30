@@ -1,0 +1,127 @@
+{
+	"$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+	"name": "com_ars",
+	"version": "7.0.0",
+	"description": "Akeeba Release System",
+	"license": "GPL-3.0-or-later",
+	"assets": [
+		{
+			"name": "com_ars.backend_light",
+			"description": "Common backend user interface CSS, light mode",
+			"type": "style",
+			"uri": "com_ars/backend.css"
+		},
+		{
+			"name": "com_ars.backend_dark",
+			"description": "Common backend user interface CSS, dark mode",
+			"type": "style",
+			"uri": "com_ars/backend_dark.css"
+		},
+
+		{
+			"name": "com_ars.frontend_light",
+			"description": "Common frontend user interface CSS, light mode",
+			"type": "style",
+			"uri": "com_ars/frontend.css"
+		},
+		{
+			"name": "com_ars.frontend_dark",
+			"description": "Common frontend user interface CSS, dark mode",
+			"type": "style",
+			"uri": "com_ars/frontend_dark.css"
+		},
+
+		{
+			"name": "com_ars.chart",
+			"description": "Charts.js — renders cahrts and graphs",
+			"type": "script",
+			"uri": "com_ars/Chart.bundle.min.js",
+			"dependencies": [],
+			"attributes": {
+				"defer": true
+			}
+		},
+
+		{
+			"name": "com_ars.gui-helpers",
+			"description": "Common JavaScript",
+			"type": "script",
+			"uri": "com_ars/gui-helpers.min.js",
+			"dependencies": [
+				"core"
+			],
+			"attributes": {
+				"defer": true
+			}
+		},
+
+		{
+			"name": "com_ars.controlpanel",
+			"description": "JavaScript for the Control Panel page",
+			"type": "script",
+			"uri": "com_ars/ControlPanel.min.js",
+			"dependencies": [
+				"core",
+				"bootstrap.modal"
+			],
+			"attributes": {
+				"defer": true
+			}
+		},
+		{
+			"name": "com_ars.info_toggler",
+			"description": "JavaScript for toggling information display in the frontend",
+			"type": "script",
+			"uri": "com_ars/InfoToggler.min.js",
+			"dependencies": [
+				"core"
+			],
+			"attributes": {
+				"defer": true
+			}
+		},
+		{
+			"name": "com_ars.items",
+			"description": "JavaScript for managing items in the backend",
+			"type": "script",
+			"uri": "com_ars/Items.min.js",
+			"dependencies": [
+				"core"
+			],
+			"attributes": {
+				"defer": true
+			}
+		},
+		{
+			"name": "com_ars.item_select",
+			"description": "JavaScript for managing item selection in the front- or backend",
+			"type": "script",
+			"uri": "com_ars/ItemSelect.min.js",
+			"dependencies": [
+				"core"
+			],
+			"attributes": {
+				"defer": true
+			}
+		},
+
+		{
+			"name": "com_ars.backend",
+			"type": "preset",
+			"dependencies": [
+				"com_ars.backend_light#style",
+				"com_ars.backend_dark#style",
+
+				"com_ars.gui-helpers#script"
+			]
+		},
+		{
+			"name": "com_ars.frontend",
+			"type": "preset",
+			"dependencies": [
+				"com_ars.frontend_light#style",
+				"com_ars.frontend_dark#style"
+			]
+		}
+	]
+}

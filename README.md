@@ -23,6 +23,5 @@ Necessary folder structure for building packages
 
 * **ars** This repository
 * **buildfiles** [Akeeba Build Tools](https://github.com/akeeba/buildfiles)
-* **fof4** [Framework on Framework 4.x](https://github.com/akeeba/fof)
 
 From `ars/build` run `phing git -Dversion=5.999.999.b1` to build an installable package with the fake version number `5.999.999.b1`.
