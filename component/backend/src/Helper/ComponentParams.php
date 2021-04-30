@@ -23,7 +23,7 @@ class ComponentParams
 	 *
 	 * @since   9.0.0
 	 */
-	public static function save(Registry $params): void
+	public static function save(Registry $params, string $option = 'com_ars'): void
 	{
 		/** @var DatabaseDriver $db */
 		$db   = JoomlaFactory::getContainer()->get('DatabaseDriver');
@@ -32,8 +32,9 @@ class ComponentParams
 		$sql = $db->getQuery(true)
 			->update($db->qn('#__extensions'))
 			->set($db->qn('params') . ' = ' . $db->q($data))
-			->where($db->qn('element') . ' = ' . $db->q('com_ars'))
-			->where($db->qn('type') . ' = ' . $db->q('component'));
+			->where($db->qn('element') . ' = :option')
+			->where($db->qn('type') . ' = ' . $db->q('component'))
+			->bind(':option', $option);
 
 		$db->setQuery($sql);
 
