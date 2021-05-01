@@ -127,7 +127,7 @@ class Html extends BaseView
 		$ret = array_unique($ret);
 
 		$titles = array_map(function ($environment) {
-			return \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentTitle((int) $environment);
+			return \Akeeba\Component\ARS\Administrator\Helper\Select::environmentTitle((int) $environment);
 		}, $ret);
 
 		uasort($titles, function ($a, $b) {

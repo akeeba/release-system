@@ -29,7 +29,7 @@ $item = $this->getItem();
                 <label for="category">@lang('LBL_AUTODESC_CATEGORY')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'category', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::categories(), 'category', [
                     'id' => 'category', 'list.select' => $item->category,
                     'list.attr' => ['class' => 'advancedSelect']
                 ])
@@ -51,7 +51,7 @@ $item = $this->getItem();
                 <label for="environments">@lang('LBL_ITEMS_ENVIRONMENTS')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::environments(), 'environments[]', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::environments(), 'environments[]', [
                         'id' => 'environments', 'list.select' => $item->environments,
                         'list.attr' => ['multiple' => 'multiple', 'class' => 'advancedSelect']
                     ])

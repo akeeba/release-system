@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\ReleaseSystem\Admin\Helper;
+namespace Akeeba\Component\ARS\Administrator\Helper;
 
 // Protect from unauthorized access
 defined('_JEXEC') or die();
@@ -49,7 +49,7 @@ class Cache
 		$this->domain = $domain;
 
 		// Get the cache paths
-		$this->cachePath = JPATH_CACHE . '/com_ars/' . $domain . '.ini';
+		$this->cachePath = JPATH_CACHE . '/com_ars/' . $this->domain . '.ini';
 
 		// Create a new registry
 		$this->registry = new JRegistry();

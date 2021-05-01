@@ -19,7 +19,7 @@ $i = 0;
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
-        @selectfilter('category_id', \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL', ['class' => 'advancedSelect'])
+        @selectfilter('category_id', \Akeeba\Component\ARS\Administrator\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL', ['class' => 'advancedSelect'])
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
@@ -27,11 +27,11 @@ $i = 0;
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @selectfilter('maturity', \Akeeba\ReleaseSystem\Admin\Helper\Select::maturity(false), 'COM_ARS_RELEASES_MATURITY_SELECT')
+        @selectfilter('maturity', \Akeeba\Component\ARS\Administrator\Helper\Select::maturity(false), 'COM_ARS_RELEASES_MATURITY_SELECT')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @selectfilter('access', \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(), 'COM_ARS_COMMON_SHOW_ALL_LEVELS', ['class' => 'advancedSelect'])
+        @selectfilter('access', \Akeeba\Component\ARS\Administrator\Helper\Select::accessLevel(), 'COM_ARS_COMMON_SHOW_ALL_LEVELS', ['class' => 'advancedSelect'])
     </div>
 @stop
 
@@ -99,17 +99,17 @@ $i = 0;
                 @endif
             </td>
             <td>
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Format::formatDate($row->created, true) }}
+                {{ \Akeeba\Component\ARS\Administrator\Helper\Format::formatDate($row->created, true) }}
 
             </td>
             <td>
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::accessLevel($row->access) }}
+                {{ \Akeeba\Component\ARS\Administrator\Helper\Html::accessLevel($row->access) }}
             </td>
             <td>
                 @jhtml('jgrid.published', $row->published, $i, '', $user->authorise('core.edit.state', 'com_ars'), 'cb')
             </td>
             <td>
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::language($row->language) }}
+                {{ \Akeeba\Component\ARS\Administrator\Helper\Html::language($row->language) }}
             </td>
         </tr>
     @endforeach

@@ -7,7 +7,7 @@
 
 namespace Akeeba\ReleaseSystem\Admin\View\ControlPanel;
 
-use Akeeba\ReleaseSystem\Admin\Helper\Cache;
+use Akeeba\Component\ARS\Administrator\Helper\Cache;
 use Akeeba\ReleaseSystem\Admin\Model\ControlPanel;
 use FOF40\Date\Date;
 use Joomla\CMS\Component\ComponentHelper;

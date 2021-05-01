@@ -5,12 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Html;
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
-use Akeeba\ReleaseSystem\Site\Model\Categories;
-use Akeeba\ReleaseSystem\Site\Model\Releases;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
+use Akeeba\Component\ARS\Administrator\Helper\Html;use Akeeba\Component\ARS\Administrator\Helper\Select;use Akeeba\ReleaseSystem\Site\Model\Releases;
 
 defined('_JEXEC') or die();
 
@@ -31,11 +26,11 @@ $user = $this->getContainer()->platform->getUser();
     <section class="akeeba-panel--33-66 akeeba-filter-bar-container">
         <div class="akeeba-filter-bar akeeba-filter-bar--left akeeba-form-section akeeba-form--inline">
             <div class="akeeba-filter-element akeeba-form-group">
-                @selectfilter('category', \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL')
+                @selectfilter('category', \Akeeba\Component\ARS\Administrator\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL')
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                @selectfilter('release', \Akeeba\ReleaseSystem\Admin\Helper\Select::releases(), 'COM_ARS_COMMON_SELECT_RELEASE_LABEL', ['class' => 'advancedSelect'])
+                @selectfilter('release', \Akeeba\Component\ARS\Administrator\Helper\Select::releases(), 'COM_ARS_COMMON_SELECT_RELEASE_LABEL', ['class' => 'advancedSelect'])
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
@@ -43,11 +38,11 @@ $user = $this->getContainer()->platform->getUser();
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                @selectfilter('type', \Akeeba\ReleaseSystem\Admin\Helper\Select::itemType(false), 'LBL_ITEMS_TYPE_SELECT')
+                @selectfilter('type', \Akeeba\Component\ARS\Administrator\Helper\Select::itemType(false), 'LBL_ITEMS_TYPE_SELECT')
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                @selectfilter('access', \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(), 'COM_ARS_COMMON_SHOW_ALL_LEVELS', ['class' => 'advancedSelect'])
+                @selectfilter('access', \Akeeba\Component\ARS\Administrator\Helper\Select::accessLevel(), 'COM_ARS_COMMON_SHOW_ALL_LEVELS', ['class' => 'advancedSelect'])
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
@@ -55,7 +50,7 @@ $user = $this->getContainer()->platform->getUser();
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                @selectfilter('language', \Akeeba\ReleaseSystem\Admin\Helper\Select::languages(), 'JFIELD_LANGUAGE_LABEL')
+                @selectfilter('language', \Akeeba\Component\ARS\Administrator\Helper\Select::languages(), 'JFIELD_LANGUAGE_LABEL')
             </div>
         </div>
 
@@ -191,11 +186,11 @@ $user = $this->getContainer()->platform->getUser();
                     </td>
                     <td>
                         @foreach ($row->environments as $environment)
-                            <span class="akeeba-label--teal ars-environment-icon">{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentTitle((int)$environment) }}</span>
+                            <span class="akeeba-label--teal ars-environment-icon">{{ \Akeeba\Component\ARS\Administrator\Helper\Select::environmentTitle((int)$environment) }}</span>
                         @endforeach
                     </td>
                     <td>
-                        {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::accessLevel($row->access) }}
+                        {{ \Akeeba\Component\ARS\Administrator\Helper\Html::accessLevel($row->access) }}
                     </td>
                     <td>
                         @jhtml('FEFHelp.browse.published', $row->published, $i, '', $enabled)
@@ -204,7 +199,7 @@ $user = $this->getContainer()->platform->getUser();
                         {{{ $row->hits }}}
                     </td>
                     <td>
-                        {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::language($row->language) }}
+                        {{ \Akeeba\Component\ARS\Administrator\Helper\Html::language($row->language) }}
                     </td>
                 </tr>
             @endforeach

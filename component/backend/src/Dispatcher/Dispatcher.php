@@ -27,7 +27,7 @@ class Dispatcher extends ComponentDispatcher
 		$minPHPVersion = '7.3.0';
 		$softwareName  = 'Akeeba Release System';
 
-		if (!@require_once JPATH_ADMINISTRATOR . '/component/com_ars/tmpl/common/wrongphp.php')
+		if (!@include_once JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/wrongphp.php')
 		{
 			return;
 		}
@@ -46,7 +46,7 @@ class Dispatcher extends ComponentDispatcher
 			$title = 'Akeeba Backup';
 			$isPro = false;
 
-			if (!(include_once JPATH_ADMINISTRATOR . '/component/com_ars/tmpl/commontemplates/errorhandler.php'))
+			if (!(include_once JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/errorhandler.php'))
 			{
 				throw $e;
 			}

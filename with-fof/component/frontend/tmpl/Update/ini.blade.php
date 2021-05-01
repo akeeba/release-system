@@ -9,7 +9,7 @@ defined('_JEXEC') or die();
 
 /** @var \Akeeba\ReleaseSystem\Site\View\Update\Ini $this */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Format;
+use Akeeba\Component\ARS\Administrator\Helper\Format;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
 use Akeeba\ReleaseSystem\Site\Helper\Router as RouterHelper;
 use FOF40\Date\Date;

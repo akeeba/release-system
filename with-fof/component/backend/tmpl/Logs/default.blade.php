@@ -6,11 +6,7 @@
  */
 
 /** @noinspection PhpUnusedAliasInspection */
-use Akeeba\ReleaseSystem\Admin\Helper\Html;
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
-use Akeeba\ReleaseSystem\Admin\Helper\Format;
+use Akeeba\Component\ARS\Administrator\Helper\Format;use Akeeba\Component\ARS\Administrator\Helper\Html;use Akeeba\Component\ARS\Administrator\Helper\Select;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\Logs\Html */
 
@@ -44,11 +40,11 @@ defined('_JEXEC') or die;
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @selectfilter('category', \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL', ['class' => 'advancedSelect'])
+        @selectfilter('category', \Akeeba\Component\ARS\Administrator\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL', ['class' => 'advancedSelect'])
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @selectfilter('version', \Akeeba\ReleaseSystem\Admin\Helper\Select::releases(false), 'COM_ARS_COMMON_SELECT_RELEASE_LABEL', ['class' => 'advancedSelect'])
+        @selectfilter('version', \Akeeba\Component\ARS\Administrator\Helper\Select::releases(false), 'COM_ARS_COMMON_SELECT_RELEASE_LABEL', ['class' => 'advancedSelect'])
     </div>
 @stop
 

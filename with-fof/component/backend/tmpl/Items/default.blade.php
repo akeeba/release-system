@@ -21,48 +21,48 @@ $filterCat = (int) $this->getModel()->getState('category', 0);
 @jhtml('formbehavior.chosen')
 
 @if($modal)
-	@js('media://com_ars/js/ItemSelect.js', $this->getContainer()->mediaVersion)
+    @js('media://com_ars/js/ItemSelect.js', $this->getContainer()->mediaVersion)
 @endif
 
 @extends('any:lib_fof40/Common/browse')
 
 @section('browse-filters')
-	<div class="akeeba-filter-element akeeba-form-group">
-		@selectfilter('category', \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(false, false), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL', ['class' => 'advancedSelect'])
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        @selectfilter('category', \Akeeba\Component\ARS\Administrator\Helper\Select::categories(false, false), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL', ['class' => 'advancedSelect'])
+    </div>
 
-	<div class="akeeba-filter-element akeeba-form-group">
-		@selectfilter('release', \Akeeba\ReleaseSystem\Admin\Helper\Select::releases(false, $filterCat), 'COM_ARS_COMMON_SELECT_RELEASE_LABEL', ['class' => 'advancedSelect'])
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        @selectfilter('release', \Akeeba\Component\ARS\Administrator\Helper\Select::releases(false, $filterCat), 'COM_ARS_COMMON_SELECT_RELEASE_LABEL', ['class' => 'advancedSelect'])
+    </div>
 
-	<div class="akeeba-filter-element akeeba-form-group">
-		@searchfilter('title', 'title', 'LBL_ITEMS_TITLE')
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        @searchfilter('title', 'title', 'LBL_ITEMS_TITLE')
+    </div>
 
-	<div class="akeeba-filter-element akeeba-form-group">
-		@selectfilter('type', \Akeeba\ReleaseSystem\Admin\Helper\Select::itemType(false), 'LBL_ITEMS_TYPE_SELECT')
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        @selectfilter('type', \Akeeba\Component\ARS\Administrator\Helper\Select::itemType(false), 'LBL_ITEMS_TYPE_SELECT')
+    </div>
 
-	<div class="akeeba-filter-element akeeba-form-group">
-		@selectfilter('access', \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(), 'COM_ARS_COMMON_SHOW_ALL_LEVELS', ['class' => 'advancedSelect'])
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        @selectfilter('access', \Akeeba\Component\ARS\Administrator\Helper\Select::accessLevel(), 'COM_ARS_COMMON_SHOW_ALL_LEVELS', ['class' => 'advancedSelect'])
+    </div>
 
-	<div class="akeeba-filter-element akeeba-form-group">
-		{{ \FOF40\Html\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        {{ \FOF40\Html\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
+    </div>
 
-	<div class="akeeba-filter-element akeeba-form-group">
-		@selectfilter('language', \Akeeba\ReleaseSystem\Admin\Helper\Select::languages(), 'JFIELD_LANGUAGE_LABEL')
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        @selectfilter('language', \Akeeba\Component\ARS\Administrator\Helper\Select::languages(), 'JFIELD_LANGUAGE_LABEL')
+    </div>
 @stop
 
 @section('browse-table-header')
-	<tr>
-		<th width="8%">
-			@sortgrid('ordering', '<i class="icon-menu-2"></i>')
-		</th>
-		<th width="32">
-			@jhtml('FEFHelp.browse.checkall')
+    <tr>
+        <th width="8%">
+            @sortgrid('ordering', '<i class="icon-menu-2"></i>')
+        </th>
+        <th width="32">
+            @jhtml('FEFHelp.browse.checkall')
 		</th>
 		<th>
 			@lang('LBL_ITEMS_CATEGORY')
@@ -128,31 +128,31 @@ $filterCat = (int) $this->getModel()->getState('category', 0);
 				@else
 					{{{ $row->title }}}
 				@endif
-			</td>
-			<td>
-				@if ($row->type == 'link')
-					@lang('LBL_ITEMS_TYPE_LINK')
-				@else
-					@lang('LBL_ITEMS_TYPE_FILE')
-				@endif
-			</td>
-			<td>
-				@foreach ($row->environments as $environment)
-					<span class="akeeba-label--teal ars-environment-icon">{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentTitle((int)$environment) }}</span>
-				@endforeach
-			</td>
-			<td>
-				{{ \Akeeba\ReleaseSystem\Admin\Helper\Html::accessLevel($row->access) }}
-			</td>
-			<td>
-				@jhtml('FEFHelp.browse.published', $row->published, $i, '', $enabled)
-			</td>
-			<td>
-				{{{ $row->hits }}}
-			</td>
-			<td>
-				{{ \Akeeba\ReleaseSystem\Admin\Helper\Html::language($row->language) }}
-			</td>
-		</tr>
-	@endforeach
+            </td>
+            <td>
+                @if ($row->type == 'link')
+                    @lang('LBL_ITEMS_TYPE_LINK')
+                @else
+                    @lang('LBL_ITEMS_TYPE_FILE')
+                @endif
+            </td>
+            <td>
+                @foreach ($row->environments as $environment)
+                    <span class="akeeba-label--teal ars-environment-icon">{{ \Akeeba\Component\ARS\Administrator\Helper\Select::environmentTitle((int)$environment) }}</span>
+                @endforeach
+            </td>
+            <td>
+                {{ \Akeeba\Component\ARS\Administrator\Helper\Html::accessLevel($row->access) }}
+            </td>
+            <td>
+                @jhtml('FEFHelp.browse.published', $row->published, $i, '', $enabled)
+            </td>
+            <td>
+                {{{ $row->hits }}}
+            </td>
+            <td>
+                {{ \Akeeba\Component\ARS\Administrator\Helper\Html::language($row->language) }}
+            </td>
+        </tr>
+    @endforeach
 @stop

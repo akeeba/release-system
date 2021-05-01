@@ -106,7 +106,7 @@
 			"name": "com_ars.frontend",
 			"type": "preset",
 			"dependencies": [
-				"com_ars.frontend_light#style",
+				"com_ars.frontend_light#style"
 			]
 		}
 	]

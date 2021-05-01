@@ -5,10 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
-use Joomla\CMS\Editor\Editor;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
+use Akeeba\Component\ARS\Administrator\Helper\Select;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\Releases\Html $this */
 
@@ -29,7 +26,7 @@ $item = $this->getItem();
                 <label for="category_id">@lang('COM_ARS_RELEASES_FIELD_CATEGORY')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'category_id', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::categories(), 'category_id', [
                     'id' => 'category_id', 'list.select' => $item->category_id,
                     'list.attr' => ['class' => 'advancedSelect']
                 ])
@@ -51,7 +48,7 @@ $item = $this->getItem();
                 <label for="maturity">@lang('COM_ARS_RELEASES_FIELD_MATURITY')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::maturity(true), 'maturity', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::maturity(true), 'maturity', [
                     'id' => 'maturity', 'list.select' => $item->maturity,
                 ])
             </div>
@@ -74,7 +71,7 @@ $item = $this->getItem();
                 <label for="access">@lang('JFIELD_ACCESS_LABEL')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(true), 'access', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::accessLevel(true), 'access', [
                     'id' => 'access', 'list.select' => $item->access,
                     'list.attr' => ['class' => 'advancedSelect']
                 ])
@@ -103,7 +100,7 @@ $item = $this->getItem();
                 <label for="language">@lang('JFIELD_LANGUAGE_LABEL')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::languages(), 'language', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::languages(), 'language', [
                     'id' => 'language', 'list.select' => $item->language,
                 ])
             </div>

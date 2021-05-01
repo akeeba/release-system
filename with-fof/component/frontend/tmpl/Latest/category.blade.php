@@ -11,10 +11,9 @@ defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\Model\Categories $item */
 
+use Akeeba\Component\ARS\Administrator\Helper\Format;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
-use Akeeba\ReleaseSystem\Admin\Helper\Format;
-use Joomla\CMS\Language\Text;
 
 // Do I have a release?
 if (!isset($this->releases[$item->id]))

@@ -27,7 +27,7 @@ $item = $this->getItem();
                 <label for="release_id">@lang('LBL_ITEMS_RELEASE')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::releases(true), 'release_id', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::releases(true), 'release_id', [
                     'id' => 'release_id', 'list.select' => $item->release_id,
                     'list.attr' => ['class' => 'advancedSelect']
                 ])
@@ -49,7 +49,7 @@ $item = $this->getItem();
                 <label for="type">@lang('LBL_ITEMS_TYPE')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::itemType(true), 'type', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::itemType(true), 'type', [
                     'id' => 'type', 'list.select' => $item->type,
                     'list.attr' => ['onchange' => 'arsItems.onTypeChange();']
                 ])
@@ -121,7 +121,7 @@ $item = $this->getItem();
                 <label for="access">@lang('JFIELD_ACCESS_LABEL')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(true), 'access', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::accessLevel(true), 'access', [
                     'id' => 'access', 'list.select' => $item->access,
                     'list.attr' => ['class' => 'advancedSelect']
                 ])
@@ -143,7 +143,7 @@ $item = $this->getItem();
                 <label for="environments">@lang('LBL_ITEMS_ENVIRONMENTS')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::environments(), 'environments[]', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::environments(), 'environments[]', [
                     'id' => 'environments', 'list.select' => $item->environments,
                     'list.attr' => ['multiple' => 'multiple', 'class' => 'advancedSelect']
                 ])
@@ -154,7 +154,7 @@ $item = $this->getItem();
                 <label for="updatestream">@lang('LBL_ITEMS_UPDATESTREAM')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::updateStreams(true), 'updatestream', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::updateStreams(true), 'updatestream', [
                     'id' => 'updatestream', 'list.select' => $item->updatestream,
                     'list.attr' => ['class' => 'advancedSelect']
                 ])
@@ -164,7 +164,7 @@ $item = $this->getItem();
                 <label for="language">@lang('JFIELD_LANGUAGE_LABEL')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::languages(), 'language', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::languages(), 'language', [
                     'id' => 'language', 'list.select' => $item->language,
                 ])
             </div>

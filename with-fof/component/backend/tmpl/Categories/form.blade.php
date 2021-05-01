@@ -5,11 +5,8 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Html;
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
-use Joomla\CMS\Editor\Editor;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
+use Akeeba\Component\ARS\Administrator\Helper\Html;
+use Akeeba\Component\ARS\Administrator\Helper\Select;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\Categories\Html $this */
 
@@ -44,7 +41,7 @@ $item = $this->getItem();
                 <label for="type">@lang('COM_ARS_CATEGORIES_FIELD_TYPE')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::categoryType(true), 'type', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::categoryType(true), 'type', [
                     'id' => 'type', 'list.select' => $item->type,
                 ])
 
@@ -66,7 +63,7 @@ $item = $this->getItem();
                 <label for="access">@lang('JFIELD_ACCESS_LABEL')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(true), 'access', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::accessLevel(true), 'access', [
                     'id' => 'access', 'list.select' => $item->access,
                     'list.attr' => ['class' => 'advancedSelect']
                 ])
@@ -95,7 +92,7 @@ $item = $this->getItem();
                 <label for="language">@lang('JFIELD_LANGUAGE_LABEL')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::languages(), 'language', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::languages(), 'language', [
                     'id' => 'language', 'list.select' => $item->language,
                 ])
             </div>

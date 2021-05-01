@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Akeeba\Component\ARS\Administrator\Helper\Select;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\AutoDescriptions\Html */
 
@@ -24,7 +24,7 @@ defined('_JEXEC') or die;
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @selectfilter('category', \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL')
+        @selectfilter('category', \Akeeba\Component\ARS\Administrator\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">

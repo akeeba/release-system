@@ -11,10 +11,7 @@ defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\Model\Releases $item */
 
-use Akeeba\ReleaseSystem\Site\Helper\Filter;
-use Akeeba\ReleaseSystem\Site\Helper\Router;
-use Akeeba\ReleaseSystem\Admin\Helper\Format;
-use Joomla\CMS\Language\Text;
+use Akeeba\Component\ARS\Administrator\Helper\Format;
 
 $released = $this->container->platform->getDate($item->created);
 
@@ -30,16 +27,16 @@ $released = $this->container->platform->getDate($item->created);
 	</h3>
 	<p class="text-muted">
 		<strong>@lang('LBL_RELEASES_RELEASEDON')</strong>:
-		@jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC2'))
+        @jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC2'))
 
-		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
-				data-target="ars-release-{{{ $item->id }}}-info">
-			<span class="akion-information-circled"></span>
-			@lang('COM_ARS_RELEASES_MOREINFO')
-		</button>
-	</p>
+        <button class="akeeba-btn--dark--small release-info-toggler" type="button"
+                data-target="ars-release-{{{ $item->id }}}-info">
+            <span class="akion-information-circled"></span>
+            @lang('COM_ARS_RELEASES_MOREINFO')
+        </button>
+    </p>
 
-	<div id="ars-release-{{{ $item->id }}}-info" class="akeeba-panel--info" style="display: none;">
-		{{ \Akeeba\ReleaseSystem\Admin\Helper\Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
-	</div>
+    <div id="ars-release-{{{ $item->id }}}-info" class="akeeba-panel--info" style="display: none;">
+        {{ \Akeeba\Component\ARS\Administrator\Helper\Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
+    </div>
 </div>

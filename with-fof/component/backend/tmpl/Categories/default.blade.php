@@ -5,11 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Html;
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
-use Akeeba\ReleaseSystem\Admin\Model\Categories;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
+use Akeeba\Component\ARS\Administrator\Helper\Html;use Akeeba\Component\ARS\Administrator\Helper\Select;use Akeeba\ReleaseSystem\Admin\Model\Categories;
 
 /** @var $this \Akeeba\ReleaseSystem\Admin\View\Categories\Html */
 
@@ -21,34 +17,34 @@ defined('_JEXEC') or die;
 @extends('any:lib_fof40/Common/browse')
 
 @section('browse-filters')
-	<div class="akeeba-filter-element akeeba-form-group">
-		@searchfilter('search', 'search', 'COM_ARS_CATEGORIES_FIELD_TITLE')
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        @searchfilter('search', 'search', 'COM_ARS_CATEGORIES_FIELD_TITLE')
+    </div>
 
-	<div class="akeeba-filter-element akeeba-form-group">
-		@selectfilter('type', \Akeeba\ReleaseSystem\Admin\Helper\Select::categoryType(), 'COM_ARS_LBL_COMMON_SELECTCATTYPE')
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        @selectfilter('type', \Akeeba\Component\ARS\Administrator\Helper\Select::categoryType(), 'COM_ARS_LBL_COMMON_SELECTCATTYPE')
+    </div>
 
-	<div class="akeeba-filter-element akeeba-form-group">
-		@selectfilter('access', \Akeeba\ReleaseSystem\Admin\Helper\Select::accessLevel(), 'COM_ARS_COMMON_SHOW_ALL_LEVELS', ['class' => 'advancedSelect'])
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        @selectfilter('access', \Akeeba\Component\ARS\Administrator\Helper\Select::accessLevel(), 'COM_ARS_COMMON_SHOW_ALL_LEVELS', ['class' => 'advancedSelect'])
+    </div>
 
-	<div class="akeeba-filter-element akeeba-form-group">
-		{{ \FOF40\Html\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        {{ \FOF40\Html\FEFHelper\BrowseView::publishedFilter('published', 'JPUBLISHED') }}
+    </div>
 
-	<div class="akeeba-filter-element akeeba-form-group">
-		@selectfilter('language', \Akeeba\ReleaseSystem\Admin\Helper\Select::languages(), 'JFIELD_LANGUAGE_LABEL')
-	</div>
+    <div class="akeeba-filter-element akeeba-form-group">
+        @selectfilter('language', \Akeeba\Component\ARS\Administrator\Helper\Select::languages(), 'JFIELD_LANGUAGE_LABEL')
+    </div>
 @stop
 
 @section('browse-table-header')
-	<tr>
-		<th width="8%">
-			@sortgrid('ordering', '<i class="icon-menu-2"></i>')
-		</th>
-		<th width="32">
-			@jhtml('FEFHelp.browse.checkall')
+    <tr>
+        <th width="8%">
+            @sortgrid('ordering', '<i class="icon-menu-2"></i>')
+        </th>
+        <th width="32">
+            @jhtml('FEFHelp.browse.checkall')
 		</th>
 		<th>
 			@sortgrid('title', 'COM_ARS_CATEGORIES_FIELD_TITLE')
@@ -87,24 +83,24 @@ defined('_JEXEC') or die;
 			<td>
 				<a href="index.php?option=com_ars&view=Category&id={{ $row->getId() }}">
 					{{{ $row->title }}}
-				</a> <br /> <code>{{ $row->directory }}</code>
-			</td>
-			<td>
-				@if ($row->type == 'normal')
-					@lang('COM_ARS_CATEGORIES_TYPE_NORMAL')
-				@else
-					@lang('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE')
-				@endif
-			</td>
-			<td>
-				{{ \Akeeba\ReleaseSystem\Admin\Helper\Html::accessLevel($row->access) }}
-			</td>
-			<td>
-				@jhtml('FEFHelp.browse.published', $row->published, $i, '', $enabled)
-			</td>
-			<td>
-				{{ \Akeeba\ReleaseSystem\Admin\Helper\Html::language($row->language) }}
-			</td>
-		</tr>
-	@endforeach
+                </a> <br /> <code>{{ $row->directory }}</code>
+            </td>
+            <td>
+                @if ($row->type == 'normal')
+                    @lang('COM_ARS_CATEGORIES_TYPE_NORMAL')
+                @else
+                    @lang('COM_ARS_CATEGORIES_TYPE_BLEEDINGEDGE')
+                @endif
+            </td>
+            <td>
+                {{ \Akeeba\Component\ARS\Administrator\Helper\Html::accessLevel($row->access) }}
+            </td>
+            <td>
+                @jhtml('FEFHelp.browse.published', $row->published, $i, '', $enabled)
+            </td>
+            <td>
+                {{ \Akeeba\Component\ARS\Administrator\Helper\Html::language($row->language) }}
+            </td>
+        </tr>
+    @endforeach
 @stop

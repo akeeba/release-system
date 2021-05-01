@@ -9,10 +9,7 @@ defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Items\Html $this */
 
-use Akeeba\ReleaseSystem\Site\Helper\Filter;
-use Akeeba\ReleaseSystem\Site\Helper\Router;
-use Akeeba\ReleaseSystem\Admin\Helper\Format;
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
+use Akeeba\Component\ARS\Administrator\Helper\Format;use Akeeba\Component\ARS\Administrator\Helper\Select;use Akeeba\ReleaseSystem\Site\Helper\Filter;use Akeeba\ReleaseSystem\Site\Helper\Router;
 
 $download_url =
 	Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id . '&Itemid=' . $this->Itemid);
@@ -53,25 +50,25 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 ?>
 
 <div class="ars-item-{{{ $item->id }}}">
-	<h4>
-		<a href="{{ htmlentities($download_url) }}" download>
-			{{{ $item->title }}}
-		</a>
-	</h4>
-	@unless(empty($item->environments) || !$this->params->get('show_environments',1))
-		<p>
-			@foreach($item->environments as $environment)
-				<span class="akeeba-label--teal ars-environment-icon">{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentTitle((int)$environment) }}</span>
-			@endforeach
-		</p>
-	@endunless
-	<p>
-		<a href="{{ htmlentities($download_url) }}" rel="nofollow" download>
-			<code>{{{ basename(($item->type == 'file') ? $item->filename : $item->url) }}}</code> </a>
+    <h4>
+        <a href="{{ htmlentities($download_url) }}" download>
+            {{{ $item->title }}}
+        </a>
+    </h4>
+    @unless(empty($item->environments) || !$this->params->get('show_environments',1))
+        <p>
+            @foreach($item->environments as $environment)
+                <span class="akeeba-label--teal ars-environment-icon">{{ \Akeeba\Component\ARS\Administrator\Helper\Select::environmentTitle((int)$environment) }}</span>
+            @endforeach
+        </p>
+    @endunless
+    <p>
+        <a href="{{ htmlentities($download_url) }}" rel="nofollow" download>
+            <code>{{{ basename(($item->type == 'file') ? $item->filename : $item->url) }}}</code> </a>
 
-		<a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary--small" rel="nofollow" download> <span
-					class="akion-ios-cloud-download"></span>
-			@lang('LBL_ITEM_DOWNLOAD')
+        <a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary--small" rel="nofollow" download> <span
+                    class="akion-ios-cloud-download"></span>
+            @lang('LBL_ITEM_DOWNLOAD')
 		</a>
 
 		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
@@ -157,27 +154,27 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 					<td>
 						{{{ $item->sha512 }}}
 					</td>
-				</tr>
-			@endunless
+                </tr>
+                @endunless
 
-			@unless(empty($item->environments) || !$this->params->get('show_environments',1))
-				<tr>
-					<td>
-						@lang('LBL_ITEMS_ENVIRONMENTS')
-					</td>
-					<td>
-						@foreach($item->environments as $environment)
-							<span class="akeeba-label--teal ars-environment-icon">{{ \Akeeba\ReleaseSystem\Admin\Helper\Select::environmentTitle((int)$environment) }}</span>
-						@endforeach
-					</td>
-				</tr>
-			@endunless
-		</table>
+                @unless(empty($item->environments) || !$this->params->get('show_environments',1))
+                    <tr>
+                        <td>
+                            @lang('LBL_ITEMS_ENVIRONMENTS')
+                        </td>
+                        <td>
+                            @foreach($item->environments as $environment)
+                                <span class="akeeba-label--teal ars-environment-icon">{{ \Akeeba\Component\ARS\Administrator\Helper\Select::environmentTitle((int)$environment) }}</span>
+                            @endforeach
+                        </td>
+                    </tr>
+                @endunless
+        </table>
 
-		@unless(empty($item->description))
-			<p class="ars-item-description small">
+        @unless(empty($item->description))
+            <p class="ars-item-description small">
 				<?php echo Format::preProcessMessage($item->description, 'com_ars.item_description'); ?>
-			</p>
+            </p>
 		@endunless
 
 		<div style="margin-top: 10px;">

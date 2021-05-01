@@ -9,13 +9,13 @@ defined('_JEXEC') or die;
 
 /** @var  \Akeeba\ReleaseSystem\Site\View\Latest\Html $this */
 
+use Akeeba\Component\ARS\Administrator\Helper\Format;
+use Akeeba\Component\ARS\Administrator\Helper\Select;
 use Akeeba\ReleaseSystem\Site\Helper\Filter;
 use Akeeba\ReleaseSystem\Site\Helper\Router;
-use Akeeba\ReleaseSystem\Admin\Helper\Format;
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
 
 $download_url =
-		Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id . '&Itemid=' . $this->Itemid);
+	Router::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id . '&Itemid=' . $this->Itemid);
 
 if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 {

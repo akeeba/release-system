@@ -9,9 +9,9 @@ namespace Akeeba\Component\ARS\Administrator\View\Controlpanel;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\Cache;
 use Akeeba\Component\ARS\Administrator\Mixin\TaskBasedEvents;
 use Akeeba\Component\ARS\Administrator\Model\ControlpanelModel;
-use Akeeba\ReleaseSystem\Admin\Helper\Cache;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;

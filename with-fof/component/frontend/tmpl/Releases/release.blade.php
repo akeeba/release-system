@@ -98,7 +98,7 @@ $environments = ($this->params->get('show_environments', 1) == 1) ? $this->getEn
             <h3>
                 @lang('COM_ARS_RELEASE_NOTES_LABEL')
             </h3>
-            {{ \Akeeba\ReleaseSystem\Admin\Helper\Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
+            {{ \Akeeba\Component\ARS\Administrator\Helper\Format::preProcessMessage($item->notes, 'com_ars.release_notes') }}
         </div>
 
         @if(!isset($no_link) || !$no_link)

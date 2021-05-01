@@ -5,9 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
+use Akeeba\Component\ARS\Administrator\Helper\Select;
 
 /** @var \Akeeba\ReleaseSystem\Admin\View\UpdateStreams\Html $this */
 
@@ -46,7 +44,7 @@ $item = $this->getItem();
                 </label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::updateTypes(true), 'type', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::updateTypes(true), 'type', [
                     'id' => 'type', 'list.select' => $item->type
                 ])
             </div>
@@ -57,7 +55,7 @@ $item = $this->getItem();
                 </label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'category', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::categories(), 'category', [
                     'id' => 'category', 'list.select' => $item->category,
                     'list.attr' => ['class' => 'advancedSelect']
                 ])
@@ -85,7 +83,7 @@ $item = $this->getItem();
                 </label>
 
                 @jhtml('FEFHelp.select.genericlist',
-                    \Akeeba\ReleaseSystem\Admin\Helper\Select::client_id(), 'client_id', [
+                    \Akeeba\Component\ARS\Administrator\Helper\Select::client_id(), 'client_id', [
                     'id' => 'category', 'list.select' => $item->client_id
                 ])
             </div>

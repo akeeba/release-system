@@ -5,11 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Akeeba\ReleaseSystem\Admin\Helper\Html;
-use Akeeba\ReleaseSystem\Admin\Helper\Select;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
+use Akeeba\Component\ARS\Administrator\Helper\Html;use Akeeba\Component\ARS\Administrator\Helper\Select;use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die();
 
@@ -43,11 +39,11 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @selectfilter('type', \Akeeba\ReleaseSystem\Admin\Helper\Select::updateTypes(), 'LBL_UPDATES_TYPE')
+        @selectfilter('type', \Akeeba\Component\ARS\Administrator\Helper\Select::updateTypes(), 'LBL_UPDATES_TYPE')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @selectfilter('category', \Akeeba\ReleaseSystem\Admin\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL', ['class' => 'advancedSelect'])
+        @selectfilter('category', \Akeeba\Component\ARS\Administrator\Helper\Select::categories(), 'COM_ARS_COMMON_CATEGORY_SELECT_LABEL', ['class' => 'advancedSelect'])
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
@@ -98,7 +94,7 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
                 </a>
             </td>
             <td>
-                {{ \Akeeba\ReleaseSystem\Admin\Helper\Html::decodeUpdateType($row->type) }}
+                {{ \Akeeba\Component\ARS\Administrator\Helper\Html::decodeUpdateType($row->type) }}
             </td>
             <td>
                 {{{ $row->categoryObject->title }}}
