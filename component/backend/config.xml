@@ -8,38 +8,48 @@
     <fieldset name="updatestream" label="COM_ARS_CONFIG_BACKEND_UPDATESTREAM_LABEL"
               description="COM_ARS_CONFIG_BACKEND_UPDATESTREAM_DESC">
 
-        <field name="updates_name" type="text" default="Downloads"
+        <field name="updates_name"
+               type="text"
+               default="Downloads"
                label="COM_ARS_CONFIG_UPDATES_NAME_LABEL"
                description="COM_ARS_CONFIG_UPDATES_NAME_DESC"
         />
 
-        <field name="updates_desc" type="text" default="My Downloads"
+        <field name="updates_desc"
+               type="text"
+               default="My Downloads"
                label="COM_ARS_CONFIG_UPDATES_DESC_LABEL"
                description="COM_ARS_CONFIG_UPDATES_DESC_DESC"
         />
 
-        <field name="show_checksums" type="fancyradio" default="0"
+        <field name="show_checksums"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="0"
                label="COM_ARS_CONFIG_UPDATES_SHOW_CHECKSUMS_LABEL"
                description="COM_ARS_CONFIG_UPDATES_SHOW_CHECKSUMS_DESC"
-               class="switcher btn-group"
         >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
-        <field name="minify_xml" type="fancyradio" default="1"
+        <field name="minify_xml"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_MINIFY_XML_LABEL"
                description="COM_ARS_CONFIG_MINIFY_XML_DESC"
-               class="switcher btn-group"
         >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
-        <field name="use_compatibility" type="fancyradio" default="1"
+        <field name="use_compatibility"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_USE_COMPATIBILITY_LABEL"
                description="COM_ARS_CONFIG_USE_COMPATIBILITY_DESC"
-               class="switcher btn-group"
         >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
@@ -50,18 +60,21 @@
               description="COM_ARS_CONFIG_FRONTEND_HEADER_DESC"
               addformpath="/administrator/components/com_ars/elements">
 
-        <field name="@spacer" type="spacer" default="" label="" description=""/>
-
-        <field name="begenchangelog" type="fancyradio" default="1"
+        <field name="begenchangelog"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_BEGENCHANGELOG_LABEL"
                description="COM_ARS_CONFIG_BEGENCHANGELOG_DESC"
-               class="switcher btn-group"
         >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
-        <field name="becolorisechangelog" type="fancyradio" default="1"
+        <field name="becolorisechangelog"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_BECOLORISECHANGELOG_LABEL"
                description="COM_ARS_CONFIG_BECOLORISECHANGELOG_DESC"
                class="switcher btn-group"
@@ -91,21 +104,27 @@
                 max="1000"
         />
 
-        <field name="@spacer" type="spacer" default="" label="" description=""/>
-
-        <field name="no_access_url" type="text" default="" label="COM_ARS_CONFIG_FE_NOACCESSURL_LABEL"
+        <field name="no_access_url"
+               type="text"
+               default=""
+               label="COM_ARS_CONFIG_FE_NOACCESSURL_LABEL"
                description="COM_ARS_CONFIG_FE_NOACCESSURL_DESC" size="50"/>
 
-        <field name="show_downloads" type="fancyradio" default="1"
+        <field name="show_downloads"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_SHOW_DOWNLOADS_LABEL"
                description="COM_ARS_CONFIG_SHOW_DOWNLOADS_DESC"
-               class="switcher btn-group"
         >
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_filesize" type="fancyradio" default="1"
+        <field name="show_filesize"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_SHOW_FILESIZE_LABEL"
                description="COM_ARS_CONFIG_SHOW_FILESIZE_DESC"
                class="switcher btn-group"
@@ -114,7 +133,10 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_md5" type="fancyradio" default="1"
+        <field name="show_md5"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_SHOW_MD5_LABEL"
                description="COM_ARS_CONFIG_SHOW_MD5_DESC"
                class="switcher btn-group"
@@ -123,7 +145,10 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_sha1" type="fancyradio" default="1"
+        <field name="show_sha1"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_SHOW_SHA1_LABEL"
                description="COM_ARS_CONFIG_SHOW_SHA1_DESC"
                class="switcher btn-group"
@@ -132,7 +157,10 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_sha256" type="fancyradio" default="1"
+        <field name="show_sha256"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_SHOW_SHA256_LABEL"
                description="COM_ARS_CONFIG_SHOW_SHA256_DESC"
                class="switcher btn-group"
@@ -141,7 +169,10 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_sha384" type="fancyradio" default="1"
+        <field name="show_sha384"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_SHOW_SHA384_LABEL"
                description="COM_ARS_CONFIG_SHOW_SHA384_DESC"
                class="switcher btn-group"
@@ -150,7 +181,10 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_sha512" type="fancyradio" default="1"
+        <field name="show_sha512"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_SHOW_SHA512_LABEL"
                description="COM_ARS_CONFIG_SHOW_SHA512_DESC"
                class="switcher btn-group"
@@ -159,7 +193,10 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_environments" type="fancyradio" default="1"
+        <field name="show_environments"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_LABEL"
                description="COM_ARS_CONFIG_SHOW_ENVIRONMENTS_DESC"
                class="switcher btn-group"
@@ -168,7 +205,10 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="show_directlink" type="fancyradio" default="1"
+        <field name="show_directlink"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
                label="COM_ARS_CONFIG_SHOW_DIRECTLINK_LABEL"
                description="COM_ARS_CONFIG_SHOW_DIRECTLINK_DESC"
                class="switcher btn-group"
@@ -177,60 +217,40 @@
             <option value="1">JYes</option>
         </field>
 
-        <field name="directlink_extensions" type="text" default="zip,tar,tar.gz"
-               label="COM_ARS_CONFIG_DIRECTLINKEXTENSIONS_LABEL" description="COM_ARS_CONFIG_DIRECTLINKEXTENSIONS_DESC"
+        <field name="directlink_extensions"
+               type="text"
+               default="zip,tar,tar.gz"
+               label="COM_ARS_CONFIG_DIRECTLINKEXTENSIONS_LABEL"
+               description="COM_ARS_CONFIG_DIRECTLINKEXTENSIONS_DESC"
+               showon="show_directlink:1"
                size="50"/>
-        <field name="directlink_description" type="text" default="" label="COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_LABEL"
-               description="COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_DESC" size="50"/>
+
+        <field name="directlink_description"
+               type="text"
+               default=""
+               label="COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_LABEL"
+               description="COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_DESC"
+               showon="show_directlink:1"
+               size="50"/>
     </fieldset>
 
     <fieldset name="backend" label="COM_ARS_CONFIG_BACKEND_HEADER_LABEL"
-              description="COM_ARS_CONFIG_BACKEND_HEADER_DESC" addformpath="/administrator/components/com_ars/elements">
+              description="COM_ARS_CONFIG_BACKEND_HEADER_DESC"
+              addformpath="/administrator/components/com_ars/elements">
 
-        <field name="dateformat" type="text" default="" size="30"
+        <field name="dateformat"
+               type="text"
+               default=""
+               size="30"
                label="COM_ARS_CONFIG_BACKEND_DATEFORMAT_LABEL"
                description="COM_ARS_CONFIG_BACKEND_DATEFORMAT_DESC"/>
 
-        <field name="load_fef" type="list" default="3"
-               label="COM_ARS_CONFIG_BACKEND_LOAD_FEF"
-               description="COM_ARS_CONFIG_BACKEND_LOAD_FEF_DESC">
-            <option value="0">COM_ARS_CONFIG_BACKEND_LOAD_FEF_NEVER</option>
-            <option value="1">COM_ARS_CONFIG_BACKEND_LOAD_FEF_FRONTEND</option>
-            <option value="2">COM_ARS_CONFIG_BACKEND_LOAD_FEF_BACKEND</option>
-            <option value="3">COM_ARS_CONFIG_BACKEND_LOAD_FEF_BOTH</option>
-        </field>
-
-        <field name="fef_reset" type="list" default="3"
-               label="COM_ARS_CONFIG_BACKEND_FEF_RESET"
-               description="COM_ARS_CONFIG_BACKEND_FEF_RESET_DESC">
-            <option value="0">COM_ARS_CONFIG_BACKEND_LOAD_FEF_NEVER</option>
-            <option value="1">COM_ARS_CONFIG_BACKEND_LOAD_FEF_FRONTEND</option>
-            <option value="2">COM_ARS_CONFIG_BACKEND_LOAD_FEF_BACKEND</option>
-            <option value="3">COM_ARS_CONFIG_BACKEND_LOAD_FEF_BOTH</option>
-        </field>
-
-        <field name="dark_mode_backend" type="list" default="-1"
-               label="COM_ARS_CONFIG_BACKEND_DARKMODE_BACKEND_LABEL"
-               description="COM_ARS_CONFIG_BACKEND_DARKMODE_BACKEND_DESC"
-        >
-            <option value="-1">COM_ARS_CONFIG_BACKEND_DARKMODE_AUTO</option>
-            <option value="0">COM_ARS_CONFIG_BACKEND_DARKMODE_NEVER</option>
-            <option value="1">COM_ARS_CONFIG_BACKEND_DARKMODE_ALWAYS</option>
-        </field>
-
-        <field name="dark_mode_frontend" type="list" default="-1"
-               label="COM_ARS_CONFIG_BACKEND_DARKMODE_FRONTEND_LABEL"
-               description="COM_ARS_CONFIG_BACKEND_DARKMODE_FRONTEND_DESC"
-        >
-            <option value="-1">COM_ARS_CONFIG_BACKEND_DARKMODE_AUTO</option>
-            <option value="0">COM_ARS_CONFIG_BACKEND_DARKMODE_NEVER</option>
-            <option value="1">COM_ARS_CONFIG_BACKEND_DARKMODE_ALWAYS</option>
-        </field>
-
-        <field name="banUnauth" type="fancyradio" default="0"
+        <field name="banUnauth"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="0"
                label="COM_ARS_CONFIG_BAN_FAILED_LABEL"
                description="COM_ARS_CONFIG_BAN_FAILED_DESC"
-               class="switcher btn-group"
         >
             <option value="0">JNO</option>
             <option value="1">JYES</option>
