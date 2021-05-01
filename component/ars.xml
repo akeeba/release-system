@@ -134,6 +134,4 @@
             <schemapath type="mysql">sql/updates/mysql</schemapath>
         </schemas>
     </update>
-
-    <scriptfile>script.com_ars.php</scriptfile>
 </extension>

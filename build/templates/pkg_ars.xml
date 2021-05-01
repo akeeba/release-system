@@ -38,9 +38,6 @@
         <file type="plugin" group="system" id="arsjed">plg_system_arsjed.zip</file>
     </files>
 
-    <!-- Installation script -->
-    <scriptfile>script.ars.php</scriptfile>
-
     <!-- Update servers -->
     <updateservers>
         <server type="extension" priority="1" name="Akeeba Release System Updates">
