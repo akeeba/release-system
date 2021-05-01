@@ -7,7 +7,7 @@
 
 defined('_JEXEC') || die;
 
-use Akeeba\Component\ARS\Administrator\Extension\AkeebaReleaseSystemComponent;
+use Akeeba\Component\ARS\Administrator\Extension\ArsComponent;
 use Joomla\CMS\Component\Router\RouterFactoryInterface;
 use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;
 use Joomla\CMS\Extension\ComponentInterface;
@@ -43,7 +43,7 @@ return new class implements ServiceProviderInterface {
 		$container->set(
 			ComponentInterface::class,
 			function (Container $container) {
-				$component = new AkeebaReleaseSystemComponent($container->get(ComponentDispatcherFactoryInterface::class));
+				$component = new ArsComponent($container->get(ComponentDispatcherFactoryInterface::class));
 
 				$component->setRegistry($container->get(Registry::class));
 				$component->setMVCFactory($container->get(MVCFactoryInterface::class));

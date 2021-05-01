@@ -19,7 +19,7 @@ use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
 use Psr\Container\ContainerInterface;
 
-class AkeebaReleaseSystemComponent extends MVCComponent implements
+class ArsComponent extends MVCComponent implements
 	BootableExtensionInterface, CategoryServiceInterface, RouterServiceInterface
 {
 	use HTMLRegistryAwareTrait;
