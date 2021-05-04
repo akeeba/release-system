@@ -34,11 +34,11 @@ $user = $this->getContainer()->platform->getUser();
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                @searchfilter('title', 'title', 'LBL_ITEMS_TITLE')
+                @searchfilter('title', 'title', 'COM_ARS_ITEM_FIELD_TITLE')
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                @selectfilter('type', \Akeeba\Component\ARS\Administrator\Helper\Select::itemType(false), 'LBL_ITEMS_TYPE_SELECT')
+                @selectfilter('type', \Akeeba\Component\ARS\Administrator\Helper\Select::itemType(false), 'COM_ARS_ITEM_FIELD_TYPE_SELECT')
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
@@ -104,19 +104,19 @@ $user = $this->getContainer()->platform->getUser();
                 @jhtml('FEFHelp.browse.checkall')
             </th>
             <th>
-                @lang('LBL_ITEMS_CATEGORY')
+                @lang('COM_ARS_ITEM_FIELD_CATEGORY')
             </th>
             <th>
-                @sortgrid('release', 'LBL_ITEMS_RELEASE')
+                @sortgrid('release', 'COM_ARS_ITEM_FIELD_RELEASE')
             </th>
             <th>
-                @sortgrid('title', 'LBL_ITEMS_TITLE')
+                @sortgrid('title', 'COM_ARS_ITEM_FIELD_TITLE')
             </th>
             <th>
-                @sortgrid('type', 'LBL_ITEMS_TYPE')
+                @sortgrid('type', 'COM_ARS_ITEM_FIELD_TYPE')
             </th>
             <th>
-                @lang('LBL_ITEMS_ENVIRONMENTS')
+                @lang('COM_ARS_ITEM_FIELD_ENVIRONMENTS')
             </th>
             <th>
                 @sortgrid('access', 'JFIELD_ACCESS_LABEL')
@@ -179,9 +179,9 @@ $user = $this->getContainer()->platform->getUser();
                     </td>
                     <td>
                         @if ($row->type == 'link')
-                            @lang('LBL_ITEMS_TYPE_LINK')
+                            @lang('COM_ARS_ITEM_FIELD_TYPE_LINK')
                         @else
-                            @lang('LBL_ITEMS_TYPE_FILE')
+                            @lang('COM_ARS_ITEM_FIELD_TYPE_FILE')
                         @endif
                     </td>
                     <td>

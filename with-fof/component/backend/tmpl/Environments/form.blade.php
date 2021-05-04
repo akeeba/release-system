@@ -19,16 +19,16 @@ defined('_JEXEC') or die;
     <div class="akeeba-container--50-50">
         <div>
             <div class="akeeba-form-group">
-                <label for="title">@lang('LBL_ENVIRONMENTS_TITLE')</label>
+                <label for="title">@lang('COM_ARS_ITEMS_ENVIRONMENTS_TITLE')</label>
 
                 <input type="text" name="title" id="title" value="{{{ $this->item->title }}}" />
             </div>
 
             <div class="akeeba-form-group">
-                <label for="xmltitle">@lang('LBL_ENVIRONMENT_XMLTITLE')</label>
+                <label for="xmltitle">@lang('COM_ARS_ENVIRONMENT_XMLTITLE')</label>
 
                 <input type="text" name="xmltitle" id="xmltitle" value="{{{ $this->item->xmltitle }}}" />
-                <span>@lang('LBL_ENVIRONMENT_XMLTITLE_TIP')</span>
+                <span>@lang('COM_ARS_ENVIRONMENT_XMLTITLE_TIP')</span>
             </div>
         </div>
     </div>

@@ -13,8 +13,8 @@ use Akeeba\ReleaseSystem\Admin\Model\Mixin\ClearCacheAfterActions;
 use Exception;
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
-use FOF40\Model\Mixin\Assertions;
-use FOF40\Model\Mixin\ImplodedArrays;
+use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ImplodedArrays;
 use JDatabaseQuery;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filter\InputFilter;
@@ -78,8 +78,9 @@ use Joomla\CMS\Filter\InputFilter;
 class Releases extends DataModel
 {
 	use ImplodedArrays;
-	use Assertions;
-	use Mixin\VersionedCopy {
+	use AssertionAware;
+	use Mixin\VersionedCopy
+	{
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;
 	}
 	use Mixin\ClearCacheAfterActions

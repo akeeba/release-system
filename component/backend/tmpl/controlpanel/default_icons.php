@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 <div class="card mb-2">
 	<div class="card-header">
 		<h3>
-			<?= Text::_('LBL_ARS_CPANEL_BASIC') ?>
+			<?= Text::_('COM_ARS_CPANEL_HEAD_BASIC') ?>
 		</h3>
 	</div>
 
@@ -76,7 +76,7 @@ defined('_JEXEC') or die;
 <div class="card mb-2">
 	<div class="card-header">
 		<h3>
-			<?= Text::_('LBL_ARS_CPANEL_TOOLS') ?>
+			<?= Text::_('COM_ARS_CPANEL_HEAD_TOOLS') ?>
 		</h3>
 	</div>
 

@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Admin\Model\Mixin;
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
-use FOF40\Model\Mixin\ImplodedArrays;
+use Akeeba\Component\ARS\Administrator\Mixin\ImplodedArrays;
 
 /**
  * Model for automatic item descriptions
@@ -102,7 +102,7 @@ class AutoDescriptions extends DataModel
 	 */
 	protected function getEnvironmentsAttribute($value)
 	{
-		return $this->getAttributeForImplodedArray($value);
+		return $this->stringToArray($value);
 	}
 
 	/**
@@ -114,7 +114,7 @@ class AutoDescriptions extends DataModel
 	 */
 	protected function setEnvironmentsAttribute($value)
 	{
-		return $this->setAttributeForImplodedArray($value);
+		return $this->arrayToString($value);
 	}
 
 }

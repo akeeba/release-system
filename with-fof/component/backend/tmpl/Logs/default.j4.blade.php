@@ -20,23 +20,23 @@ defined('_JEXEC') or die;
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
-        @searchfilter('itemtext', 'itemtext', 'LBL_LOGS_ITEM')
+        @searchfilter('itemtext', 'itemtext', 'COM_ARS_LOGS_FIELD_ITEM')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @searchfilter('usertext', 'usertext', 'LBL_LOGS_USER')
+        @searchfilter('usertext', 'usertext', 'COM_ARS_LOGS_FIELD_USER')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @searchfilter('referer', 'referer', 'LBL_LOGS_REFERER')
+        @searchfilter('referer', 'referer', 'COM_ARS_LOGS_FIELD_REFERER')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @searchfilter('ip', 'ip', 'LBL_LOGS_IP')
+        @searchfilter('ip', 'ip', 'COM_ARS_LOGS_FIELD_IP')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        {{ \FOF40\Html\FEFHelper\BrowseView::publishedFilter('authorized', 'LBL_LOGS_AUTHORIZED') }}
+        {{ \FOF40\Html\FEFHelper\BrowseView::publishedFilter('authorized', 'COM_ARS_LOGS_FIELD_AUTHORIZED') }}
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
@@ -54,22 +54,22 @@ defined('_JEXEC') or die;
             @jhtml('FEFHelp.browse.checkall')
         </th>
         <th>
-            @sortgrid('item_id', 'LBL_LOGS_ITEM')
+            @sortgrid('item_id', 'COM_ARS_LOGS_FIELD_ITEM')
         </th>
         <th>
-            @sortgrid('user_id', 'LBL_LOGS_USER')
+            @sortgrid('user_id', 'COM_ARS_LOGS_FIELD_USER')
             <br />
-            @sortgrid('ip', 'LBL_LOGS_IP')
+            @sortgrid('ip', 'COM_ARS_LOGS_FIELD_IP')
         </th>
         <th>
-            @sortgrid('accessed_on', 'LBL_LOGS_ACCESSED')
+            @sortgrid('accessed_on', 'COM_ARS_LOGS_FIELD_ACCESSED')
             <br /> <span class="akeeba-hidden-mobile">
-                @sortgrid('referer', 'LBL_LOGS_REFERER')
+                @sortgrid('referer', 'COM_ARS_LOGS_FIELD_REFERER')
                 <br />
             </span>
         </th>
         <th>
-            @sortgrid('authorized', 'LBL_LOGS_AUTHORIZED')
+            @sortgrid('authorized', 'COM_ARS_LOGS_FIELD_AUTHORIZED')
         </th>
     </tr>
 @stop

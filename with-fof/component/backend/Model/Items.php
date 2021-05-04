@@ -11,9 +11,9 @@ defined('_JEXEC') or die;
 
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
-use FOF40\Model\Mixin\Assertions;
-use FOF40\Model\Mixin\ImplodedArrays;
-use FOF40\Model\Mixin\JsonData;
+use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ImplodedArrays;
+use Akeeba\Component\ARS\Administrator\Mixin\JsonData;
 use JDatabaseQuery;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
@@ -99,7 +99,7 @@ use Joomla\CMS\User\User;
 class Items extends DataModel
 {
 	use ImplodedArrays;
-	use Assertions;
+	use AssertionAware;
 	use JsonData;
 	use Mixin\VersionedCopy
 	{
@@ -198,7 +198,7 @@ class Items extends DataModel
 
 	public function check(): self
 	{
-		$this->assertNotEmpty($this->release_id, 'ERR_ITEM_NEEDS_CATEGORY');
+		$this->assertNotEmpty($this->release_id, 'COM_ARS_ITEM_ERR_NEEDS_CATEGORY');
 
 		// Get some useful info
 		$db    = $this->getDBO();
@@ -313,11 +313,11 @@ class Items extends DataModel
 						break;
 				}
 
-				$this->assertNotEmpty($this->title, 'ERR_ITEM_NEEDS_TITLE');
+				$this->assertNotEmpty($this->title, 'COM_ARS_ITEM_ERR_NEEDS_TITLE');
 			}
 		}
 
-		$this->assertNotInArray($this->title, $titles, 'ERR_ITEM_NEEDS_TITLE_UNIQUE');
+		$this->assertNotInArray($this->title, $titles, 'COM_ARS_ITEM_ERR_NEEDS_TITLE_UNIQUE');
 
 		$stripDesc = strip_tags($this->description);
 		$stripDesc = trim($stripDesc);
@@ -361,20 +361,20 @@ class Items extends DataModel
 			$this->alias = (string) preg_replace('/[^A-Z0-9_-]/i', '', $alias);
 		}
 
-		$this->assertNotEmpty($this->alias, 'ERR_ITEM_NEEDS_ALIAS');
+		$this->assertNotEmpty($this->alias, 'COM_ARS_ITEM_ERR_NEEDS_ALIAS');
 
-		$this->assertNotInArray($this->alias, $aliases, 'ERR_ITEM_NEEDS_ALIAS_UNIQUE');
+		$this->assertNotInArray($this->alias, $aliases, 'COM_ARS_ITEM_ERR_NEEDS_ALIAS_UNIQUE');
 
-		$this->assertInArray($this->type, ['link', 'file'], 'ERR_ITEM_NEEDS_TYPE');
+		$this->assertInArray($this->type, ['link', 'file'], 'COM_ARS_ITEM_ERR_NEEDS_TYPE');
 
 		switch ($this->type)
 		{
 			case 'file':
-				$this->assertNotEmpty($this->filename, 'ERR_ITEM_NEEDS_FILENAME');
+				$this->assertNotEmpty($this->filename, 'COM_ARS_ITEM_ERR_NEEDS_FILENAME');
 				break;
 
 			case 'link':
-				$this->assertNotEmpty($this->url, 'ERR_ITEM_NEEDS_LINK');
+				$this->assertNotEmpty($this->url, 'COM_ARS_ITEM_ERR_NEEDS_LINK');
 				break;
 		}
 
@@ -624,7 +624,7 @@ class Items extends DataModel
 	{
 		// Default options –– basically, an empty select
 		$options   = [];
-		$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('LBL_ITEMS_FILENAME_SELECT') . ' -');
+		$options[] = HTMLHelper::_('select.option', '', '- ' . Text::_('COM_ARS_ITEM_FIELD_FILENAME_SELECT') . ' -');
 
 		// Get the directory where this category holds its files
 		/** @var Releases $releaseModel */

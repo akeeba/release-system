@@ -16,11 +16,11 @@ defined('_JEXEC') or die;
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
-        @searchfilter('title', 'title', 'LBL_AUTODESC_TITLE')
+        @searchfilter('title', 'title', 'COM_ARS_AUTODESCRIPTION_FIELD_TITLE')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @searchfilter('packname', 'packname', 'LBL_AUTODESC_PACKNAME')
+        @searchfilter('packname', 'packname', 'COM_ARS_AUTODESCRIPTION_FIELD_PACKNAME')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
@@ -38,13 +38,13 @@ defined('_JEXEC') or die;
             @jhtml('FEFHelp.browse.checkall')
         </th>
         <th>
-            @sortgrid('category', 'LBL_AUTODESC_CATEGORY')
+            @sortgrid('category', 'COM_ARS_AUTODESCRIPTION_FIELD_CATEGORY')
         </th>
         <th>
-            @sortgrid('packname', 'LBL_AUTODESC_PACKNAME')
+            @sortgrid('packname', 'COM_ARS_AUTODESCRIPTION_FIELD_PACKNAME')
         </th>
         <th>
-            @sortgrid('title', 'LBL_AUTODESC_TITLE')
+            @sortgrid('title', 'COM_ARS_AUTODESCRIPTION_FIELD_TITLE')
         </th>
         <th width="8%">
             @sortgrid('published', 'JPUBLISHED')

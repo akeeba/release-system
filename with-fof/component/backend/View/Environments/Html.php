@@ -42,8 +42,8 @@ class Html extends BaseView
 		$this->filters['title'] 	 	  = $platform->getUserStateFromRequest($hash . 'filter_title', 'search', $input);
 
 		// Construct the array of sorting fields
-		$this->sortFields = array(
-			'title' => Text::_('LBL_ENVIRONMENTS_TITLE'),
-		);
+		$this->sortFields = [
+			'title' => Text::_('COM_ARS_ITEMS_ENVIRONMENTS_TITLE'),
+		];
 	}
 }

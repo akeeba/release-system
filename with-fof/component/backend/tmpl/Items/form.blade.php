@@ -24,7 +24,7 @@ $item = $this->getItem();
     <div class="akeeba-container--50-50">
         <div>
             <div class="akeeba-form-group">
-                <label for="release_id">@lang('LBL_ITEMS_RELEASE')</label>
+                <label for="release_id">@lang('COM_ARS_ITEM_FIELD_RELEASE')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\Component\ARS\Administrator\Helper\Select::releases(true), 'release_id', [
@@ -34,7 +34,7 @@ $item = $this->getItem();
             </div>
 
             <div class="akeeba-form-group">
-                <label for="title">@lang('LBL_ITEMS_TITLE')</label>
+                <label for="title">@lang('COM_ARS_ITEM_FIELD_TITLE')</label>
 
                 <input type="text" name="title" id="title" value="{{{ $item->title }}}" />
             </div>
@@ -46,7 +46,7 @@ $item = $this->getItem();
             </div>
 
             <div class="akeeba-form-group">
-                <label for="type">@lang('LBL_ITEMS_TYPE')</label>
+                <label for="type">@lang('COM_ARS_ITEM_FIELD_TYPE')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\Component\ARS\Administrator\Helper\Select::itemType(true), 'type', [
@@ -56,49 +56,49 @@ $item = $this->getItem();
             </div>
 
             <div class="akeeba-form-group">
-                <label for="filename">@lang('LBL_ITEMS_FILE')</label>
+                <label for="filename">@lang('COM_ARS_ITEM_FIELD_FILE')</label>
 
                 <select id="filename" name="filename"></select>
             </div>
 
             <div class="akeeba-form-group">
-                <label for="url">@lang('LBL_ITEMS_LINK')</label>
+                <label for="url">@lang('COM_ARS_ITEM_FIELD_LINK')</label>
 
                 <input type="text" name="url" id="url" value="{{{ $item->url }}}" />
             </div>
 
             <div class="akeeba-form-group">
-                <label for="filesize">@lang('LBL_ITEMS_FILESIZE')</label>
+                <label for="filesize">@lang('COM_ARS_ITEM_FIELD_FILESIZE')</label>
 
                 <input type="text" name="filesize" id="filesize" value="{{{ $item->filesize }}}" />
             </div>
 
             <div class="akeeba-form-group">
-                <label for="md5">@lang('LBL_ITEMS_MD5')</label>
+                <label for="md5">@lang('COM_ARS_ITEM_FIELD_MD5')</label>
 
                 <input type="text" name="md5" id="md5" value="{{{ $item->md5 }}}" />
             </div>
 
             <div class="akeeba-form-group">
-                <label for="sha1">@lang('LBL_ITEMS_SHA1')</label>
+                <label for="sha1">@lang('COM_ARS_ITEM_FIELD_SHA1')</label>
 
                 <input type="text" name="sha1" id="sha1" value="{{{ $item->sha1 }}}" />
             </div>
 
             <div class="akeeba-form-group">
-                <label for="sha256">@lang('LBL_ITEMS_SHA256')</label>
+                <label for="sha256">@lang('COM_ARS_ITEM_FIELD_SHA256')</label>
 
                 <input type="text" name="sha256" id="sha256" value="{{{ $item->sha256 }}}" />
             </div>
 
             <div class="akeeba-form-group">
-                <label for="sha384">@lang('LBL_ITEMS_SHA384')</label>
+                <label for="sha384">@lang('COM_ARS_ITEM_FIELD_SHA384')</label>
 
                 <input type="text" name="sha384" id="sha384" value="{{{ $item->sha384 }}}" />
             </div>
 
             <div class="akeeba-form-group">
-                <label for="sha512">@lang('LBL_ITEMS_SHA512')</label>
+                <label for="sha512">@lang('COM_ARS_ITEM_FIELD_SHA512')</label>
 
                 <input type="text" name="sha512" id="sha512" value="{{{ $item->sha512 }}}" />
             </div>
@@ -140,7 +140,7 @@ $item = $this->getItem();
             </div>
 
             <div class="akeeba-form-group">
-                <label for="environments">@lang('LBL_ITEMS_ENVIRONMENTS')</label>
+                <label for="environments">@lang('COM_ARS_ITEM_FIELD_ENVIRONMENTS')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\Component\ARS\Administrator\Helper\Select::environments(), 'environments[]', [
@@ -151,7 +151,7 @@ $item = $this->getItem();
             </div>
 
             <div class="akeeba-form-group">
-                <label for="updatestream">@lang('LBL_ITEMS_UPDATESTREAM')</label>
+                <label for="updatestream">@lang('COM_ARS_ITEM_FIELD_UPDATESTREAM')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\Component\ARS\Administrator\Helper\Select::updateStreams(true), 'updatestream', [

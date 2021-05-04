@@ -27,18 +27,18 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 	<td>
 		<a href="{{ htmlentities($download_url) }}" rel="nofollow" download>
 			{{{ $item->title }}}
-		</a>
-	</td>
-	<td width="25%">
-		<a href="{{ htmlentities($download_url) }}" rel="nofollow" download class="akeeba-btn--primary--small"> <span
-					class="icon icon-download"></span>
-			@lang('LBL_ITEM_DOWNLOAD')
-		</a>
-	</td>
-	<td width="20%" class="small">
-		@unless(!$this->cparams->get('show_downloads', 1))
-			@lang('LBL_ITEMS_HITS')
-			@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
-		@endunless
-	</td>
+        </a>
+    </td>
+    <td width="25%">
+        <a href="{{ htmlentities($download_url) }}" rel="nofollow" download class="akeeba-btn--primary--small"> <span
+                    class="icon icon-download"></span>
+            @lang('LBL_ITEM_DOWNLOAD')
+        </a>
+    </td>
+    <td width="20%" class="small">
+        @unless(!$this->cparams->get('show_downloads', 1))
+            @lang('COM_ARS_ITEM_FIELD_HITS')
+            @sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
+        @endunless
+    </td>
 </tr>

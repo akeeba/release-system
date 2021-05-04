@@ -26,7 +26,7 @@ $item = $this->getItem();
             <h3>@lang('COM_ARS_RELEASE_BASIC_LABEL')</h3>
 
             <div class="akeeba-form-group">
-                <label for="category">@lang('LBL_AUTODESC_CATEGORY')</label>
+                <label for="category">@lang('COM_ARS_AUTODESCRIPTION_FIELD_CATEGORY')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\Component\ARS\Administrator\Helper\Select::categories(), 'category', [
@@ -36,19 +36,19 @@ $item = $this->getItem();
             </div>
 
             <div class="akeeba-form-group">
-                <label for="packname">@lang('LBL_AUTODESC_PACKNAME')</label>
+                <label for="packname">@lang('COM_ARS_AUTODESCRIPTION_FIELD_PACKNAME')</label>
 
                 <input type="text" name="packname" id="packname" value="{{{ $item->packname }}}" />
             </div>
 
             <div class="akeeba-form-group">
-                <label for="title">@lang('LBL_AUTODESC_TITLE')</label>
+                <label for="title">@lang('COM_ARS_AUTODESCRIPTION_FIELD_TITLE')</label>
 
                 <input type="text" name="title" id="title" value="{{{ $item->title }}}" />
             </div>
 
             <div class="akeeba-form-group">
-                <label for="environments">@lang('LBL_ITEMS_ENVIRONMENTS')</label>
+                <label for="environments">@lang('COM_ARS_ITEM_FIELD_ENVIRONMENTS')</label>
 
                 @jhtml('FEFHelp.select.genericlist',
                     \Akeeba\Component\ARS\Administrator\Helper\Select::environments(), 'environments[]', [

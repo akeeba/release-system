@@ -73,94 +73,94 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 
 		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
 				data-target="ars-item-{{{ $item->id }}}-info">
-			<span class="akion-information-circled"></span>
-			@lang('COM_ARS_RELEASES_MOREINFO')
-		</button>
-	</p>
+            <span class="akion-information-circled"></span>
+            @lang('COM_ARS_RELEASES_MOREINFO')
+        </button>
+    </p>
 
-	<div id="ars-item-{{{ $item->id }}}-info" class="akeeba-panel--info" style="display: none">
-		<table class="akeeba-table--striped ars-release-properties">
-			@unless(!$this->params->get('show_downloads', 1))
-				<tr>
-					<td>
-						@lang('LBL_ITEMS_HITS')
-					</td>
-					<td>
-						@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
-					</td>
-				</tr>
-			@endunless
-
-			@unless(empty($item->filesize) || !$this->params->get('show_filesize',1))
-				<tr>
-					<td>
-						@lang('LBL_ITEMS_FILESIZE')
-					</td>
-					<td>
-                        {{ Format::sizeFormat((int)($item->filesize)) }}
-					</td>
-				</tr>
-			@endunless
-
-			@unless(empty($item->md5) || !$this->params->get('show_md5',1))
-				<tr>
-					<td>
-						@lang('LBL_ITEMS_MD5')
-					</td>
-					<td>
-						{{{ $item->md5 }}}
-					</td>
-				</tr>
-			@endunless
-
-			@unless(empty($item->sha1) || !$this->params->get('show_sha1',1))
-				<tr>
-					<td>
-						@lang('LBL_ITEMS_SHA1')
-					</td>
-					<td>
-						{{{ $item->sha1 }}}
-					</td>
-				</tr>
-			@endunless
-
-			@unless(empty($item->sha256) || !$this->params->get('show_sha256',1))
-				<tr>
-					<td>
-						@lang('LBL_ITEMS_SHA256')
-					</td>
-					<td>
-						{{{ $item->sha256 }}}
-					</td>
-				</tr>
-			@endunless
-
-			@unless(empty($item->sha384) || !$this->params->get('show_sha384',1))
-				<tr>
-					<td>
-						@lang('LBL_ITEMS_SHA384')
-					</td>
-					<td>
-						{{{ $item->sha384 }}}
-					</td>
-				</tr>
-			@endunless
-
-			@unless(empty($item->sha512) || !$this->params->get('show_sha512',1))
-				<tr>
-					<td>
-						@lang('LBL_ITEMS_SHA512')
-					</td>
-					<td>
-						{{{ $item->sha512 }}}
-					</td>
+    <div id="ars-item-{{{ $item->id }}}-info" class="akeeba-panel--info" style="display: none">
+        <table class="akeeba-table--striped ars-release-properties">
+            @unless(!$this->params->get('show_downloads', 1))
+                <tr>
+                    <td>
+                        @lang('COM_ARS_ITEM_FIELD_HITS')
+                    </td>
+                    <td>
+                        @sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
+                    </td>
                 </tr>
-                @endunless
+            @endunless
 
-                @unless(empty($item->environments) || !$this->params->get('show_environments',1))
-                    <tr>
-                        <td>
-                            @lang('LBL_ITEMS_ENVIRONMENTS')
+            @unless(empty($item->filesize) || !$this->params->get('show_filesize',1))
+                <tr>
+                    <td>
+                        @lang('COM_ARS_ITEM_FIELD_FILESIZE')
+                    </td>
+                    <td>
+                        {{ Format::sizeFormat((int)($item->filesize)) }}
+                    </td>
+                </tr>
+            @endunless
+
+            @unless(empty($item->md5) || !$this->params->get('show_md5',1))
+                <tr>
+                    <td>
+                        @lang('COM_ARS_ITEM_FIELD_MD5')
+                    </td>
+                    <td>
+                        {{{ $item->md5 }}}
+                    </td>
+                </tr>
+            @endunless
+
+            @unless(empty($item->sha1) || !$this->params->get('show_sha1',1))
+                <tr>
+                    <td>
+                        @lang('COM_ARS_ITEM_FIELD_SHA1')
+                    </td>
+                    <td>
+                        {{{ $item->sha1 }}}
+                    </td>
+                </tr>
+            @endunless
+
+            @unless(empty($item->sha256) || !$this->params->get('show_sha256',1))
+                <tr>
+                    <td>
+                        @lang('COM_ARS_ITEM_FIELD_SHA256')
+                    </td>
+                    <td>
+                        {{{ $item->sha256 }}}
+                    </td>
+                </tr>
+            @endunless
+
+            @unless(empty($item->sha384) || !$this->params->get('show_sha384',1))
+                <tr>
+                    <td>
+                        @lang('COM_ARS_ITEM_FIELD_SHA384')
+                    </td>
+                    <td>
+                        {{{ $item->sha384 }}}
+                    </td>
+                </tr>
+            @endunless
+
+            @unless(empty($item->sha512) || !$this->params->get('show_sha512',1))
+                <tr>
+                    <td>
+                        @lang('COM_ARS_ITEM_FIELD_SHA512')
+                    </td>
+                    <td>
+                        {{{ $item->sha512 }}}
+                    </td>
+                </tr>
+            @endunless
+
+            @unless(empty($item->environments) || !$this->params->get('show_environments',1))
+                <tr>
+                    <td>
+                        @lang('COM_ARS_ITEM_FIELD_ENVIRONMENTS')
                         </td>
                         <td>
                             @foreach($item->environments as $environment)

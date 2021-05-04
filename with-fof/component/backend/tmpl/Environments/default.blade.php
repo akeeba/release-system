@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 @extends('any:lib_fof40/Common/browse')
 
 @section('browse-filters')
-    @searchfilter('search', 'search', 'LBL_ENVIRONMENTS_TITLE')
+    @searchfilter('search', 'search', 'COM_ARS_ITEMS_ENVIRONMENTS_TITLE')
 @stop
 
 @section('browse-table-header')
@@ -25,7 +25,7 @@ defined('_JEXEC') or die;
             @jhtml('FEFHelp.browse.checkall')
         </th>
         <th>
-            @sortgrid('title', 'LBL_ENVIRONMENTS_TITLE')
+            @sortgrid('title', 'COM_ARS_ITEMS_ENVIRONMENTS_TITLE')
         </th>
     </tr>
 @stop

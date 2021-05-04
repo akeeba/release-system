@@ -46,14 +46,14 @@ class Html extends BaseView
 		$this->filters['category']	 	  = $platform->getUserStateFromRequest($hash . 'filter_category', 'category', $input);
 
 		// Construct the array of sorting fields
-		$this->sortFields = array(
-			'itemtext'    => Text::_('LBL_LOGS_ITEM'),
-			'usertext'    => Text::_('LBL_LOGS_USER'),
-			'accessed_on' => Text::_('LBL_LOGS_ACCESSED'),
-			'referer'     => Text::_('LBL_LOGS_REFERER'),
-			'ip'          => Text::_('LBL_LOGS_IP'),
-			'authorized'  => Text::_('LBL_LOGS_AUTHORIZED'),
-		);
+		$this->sortFields = [
+			'itemtext'    => Text::_('COM_ARS_LOGS_FIELD_ITEM'),
+			'usertext'    => Text::_('COM_ARS_LOGS_FIELD_USER'),
+			'accessed_on' => Text::_('COM_ARS_LOGS_FIELD_ACCESSED'),
+			'referer'     => Text::_('COM_ARS_LOGS_FIELD_REFERER'),
+			'ip'          => Text::_('COM_ARS_LOGS_FIELD_IP'),
+			'authorized'  => Text::_('COM_ARS_LOGS_FIELD_AUTHORIZED'),
+		];
 
 		parent::onBeforeBrowse();
 	}

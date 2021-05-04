@@ -51,12 +51,12 @@ class Html extends BaseView
 		$this->filters['published']	= $platform->getUserStateFromRequest($hash . 'filter_published', 'published', $input);
 
 		// Construct the array of sorting fields
-		$this->sortFields = array(
-			'name'      => Text::_('LBL_UPDATES_NAME'),
-			'type'      => Text::_('LBL_UPDATES_TYPE'),
+		$this->sortFields = [
+			'name'      => Text::_('COM_ARS_STREAM_FIELD_NAME'),
+			'type'      => Text::_('COM_ARS_STREAM_FIELD_TYPE'),
 			'category'  => Text::_('COM_ARS_RELEASES_FIELD_CATEGORY'),
-			'element'   => Text::_('LBL_UPDATES_ELEMENT'),
+			'element'   => Text::_('COM_ARS_STREAM_FIELD_ELEMENT'),
 			'published' => Text::_('JPUBLISHED'),
-		);
+		];
 	}
 }

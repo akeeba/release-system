@@ -12,8 +12,8 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Admin\Model\Mixin;
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
-use FOF40\Model\Mixin\Assertions;
-use FOF40\Model\Mixin\ImplodedArrays;
+use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ImplodedArrays;
 use JDatabaseQuery;
 use Joomla\CMS\Filesystem\Folder;
 
@@ -73,7 +73,7 @@ use Joomla\CMS\Filesystem\Folder;
 class Categories extends DataModel
 {
 	use ImplodedArrays;
-	use Assertions;
+	use AssertionAware;
 	use Mixin\VersionedCopy
 	{
 		Mixin\VersionedCopy::onBeforeCopy as onBeforeCopyVersioned;

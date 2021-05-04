@@ -98,14 +98,28 @@ class Dispatcher extends ComponentDispatcher
 
 	private function applyViewAndController(): void
 	{
-		$controller = $this->input->getCmd('controller', $this->defaultController);
-		$view       = $this->input->getCmd('view', $controller);
+		$controller = $this->input->getCmd('controller', null);
+		$view       = $this->input->getCmd('view', null);
 		$task       = $this->input->getCmd('task', 'main');
 
 		if (strpos($task, '.') !== false)
 		{
 			// Explode the controller.task command.
 			[$controller, $task] = explode('.', $task);
+		}
+
+		if (empty($controller) && empty($view))
+		{
+			$controller = $this->defaultController;
+			$view       = $this->defaultController;
+		}
+		elseif (empty($controller) && !empty($view))
+		{
+			$controller = $view;
+		}
+		elseif (!empty($controller) && empty($view))
+		{
+			$view = $controller;
 		}
 
 		$controller = strtolower($controller);

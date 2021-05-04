@@ -6,7 +6,7 @@
   -->
 
 <metadata>
-        <view title="ARS_VIEW_UPDATE_TITLE">
-			<message><![CDATA[ARS_VIEW_UPDATE_DESC]]></message>
-        </view>
+    <view title="COM_ARS_VIEW_UPDATE_TITLE">
+        <message><![CDATA[COM_ARS_VIEW_UPDATE_DESC]]></message>
+    </view>
 </metadata>

@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 use Akeeba\ReleaseSystem\Admin\Model\Mixin\ClearCacheAfterActions;
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
-use FOF40\Model\Mixin\Assertions;
+use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
 use JDatabaseQuery;
 use Joomla\CMS\Crypt\Crypt;
 use Joomla\CMS\Language\Text;
@@ -44,7 +44,7 @@ use Joomla\CMS\Language\Text;
  */
 class DownloadIDLabels extends DataModel
 {
-	use Assertions;
+	use AssertionAware;
 	use ClearCacheAfterActions;
 
 	/**

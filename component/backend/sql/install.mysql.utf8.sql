@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `#__ars_categories`
 (
     `id`                bigint(20)                     NOT NULL AUTO_INCREMENT,
+    `asset_id`          int(10) UNSIGNED               NOT NULL DEFAULT 0,
     `title`             varchar(255)                   NOT NULL,
     `alias`             varchar(255)                   NOT NULL,
     `description`       mediumtext,
@@ -20,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_categories`
     `is_supported`      TINYINT                        NOT NULL DEFAULT '1',
     `language`          char(7)                        NOT NULL DEFAULT '*',
     PRIMARY KEY (`id`),
-    KEY `#___ars_categories_published` (`published`)
+    KEY `#__ars_categories_published` (`published`)
 ) ENGINE InnoDB
   DEFAULT COLLATE utf8_general_ci;
 
@@ -99,10 +100,10 @@ CREATE TABLE IF NOT EXISTS `#__ars_log`
     `ip`          VARCHAR(255)        NOT NULL,
     `authorized`  TINYINT(1)          NOT NULL DEFAULT '1',
     PRIMARY KEY `id` (`id`),
-    KEY `ars_log_accessed` (`accessed_on`),
-    KEY `ars_log_authorized` (`authorized`),
-    KEY `ars_log_itemid` (`item_id`),
-    KEY `ars_log_userid` (`user_id`)
+    KEY `#__ars_log_accessed` (`accessed_on`),
+    KEY `#__ars_log_authorized` (`authorized`),
+    KEY `#__ars_log_itemid` (`item_id`),
+    KEY `#__ars_log_userid` (`user_id`)
 ) ENGINE InnoDB
   DEFAULT COLLATE utf8_general_ci;
 

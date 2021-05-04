@@ -83,16 +83,16 @@ class Html extends BaseView
 		$this->filters['language']	 	  = $platform->getUserStateFromRequest($hash . 'filter_language', 'language', $input);
 
 		// Construct the array of sorting fields
-		$this->sortFields = array(
-			'ordering'  => Text::_('ARS_BROWSE_REPOSITORY_ORDERBY_ORDER'),
-			'release'   => Text::_('LBL_ITEMS_RELEASE'),
-			'title'     => Text::_('LBL_ITEMS_TITLE'),
-			'type'      => Text::_('LBL_ITEMS_TYPE'),
+		$this->sortFields = [
+			'ordering'  => Text::_('COM_ARS_BROWSE_REPOSITORY_ORDERBY_ORDER'),
+			'release'   => Text::_('COM_ARS_ITEM_FIELD_RELEASE'),
+			'title'     => Text::_('COM_ARS_ITEM_FIELD_TITLE'),
+			'type'      => Text::_('COM_ARS_ITEM_FIELD_TYPE'),
 			'access'    => Text::_('JFIELD_ACCESS_LABEL'),
 			'published' => Text::_('JPUBLISHED'),
 			'hits'      => Text::_('JGLOBAL_HITS'),
 			'language'  => Text::_('JFIELD_LANGUAGE_LABEL'),
-		);
+		];
 
 		$function = $this->input->getCmd('function', 'arsSelectItem');
 

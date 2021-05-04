@@ -45,11 +45,11 @@ class Html extends BaseView
 		$this->filters['category']	 	  = $platform->getUserStateFromRequest($hash . 'filter_category', 'category', $input);
 
 		// Construct the array of sorting fields
-		$this->sortFields = array(
-			'title'     => Text::_('LBL_AUTODESC_TITLE'),
+		$this->sortFields = [
+			'title'     => Text::_('COM_ARS_AUTODESCRIPTION_FIELD_TITLE'),
 			'published' => Text::_('JPUBLISHED'),
-			'packname'  => Text::_('LBL_AUTODESC_PACKNAME'),
-			'category'  => Text::_('LBL_AUTODESC_CATEGORY'),
-		);
+			'packname'  => Text::_('COM_ARS_AUTODESCRIPTION_FIELD_PACKNAME'),
+			'category'  => Text::_('COM_ARS_AUTODESCRIPTION_FIELD_CATEGORY'),
+		];
 	}
 }

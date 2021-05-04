@@ -82,19 +82,19 @@ abstract class Html
 		switch ($value)
 		{
 			case 'components':
-				return Text::_('LBL_UPDATETYPES_COMPONENTS');
+				return Text::_('COM_ARS_STREAM_UPDATETYPE_COMPONENTS');
 			case 'libraries':
-				return Text::_('LBL_UPDATETYPES_LIBRARIES');
+				return Text::_('COM_ARS_STREAM_UPDATETYPE_LIBRARIES');
 			case 'modules':
-				return Text::_('LBL_UPDATETYPES_MODULES');
+				return Text::_('COM_ARS_STREAM_UPDATETYPE_MODULES');
 			case 'packages':
-				return Text::_('LBL_UPDATETYPES_PACKAGES');
+				return Text::_('COM_ARS_STREAM_UPDATETYPE_PACKAGES');
 			case 'plugins':
-				return Text::_('LBL_UPDATETYPES_PLUGINS');
+				return Text::_('COM_ARS_STREAM_UPDATETYPE_PLUGINS');
 			case 'files':
-				return Text::_('LBL_UPDATETYPES_FILES');
+				return Text::_('COM_ARS_STREAM_UPDATETYPE_FILES');
 			case 'templates':
-				return Text::_('LBL_UPDATETYPES_TEMPLATES');
+				return Text::_('COM_ARS_STREAM_UPDATETYPE_TEMPLATES');
 			default:
 				return '';
 		}

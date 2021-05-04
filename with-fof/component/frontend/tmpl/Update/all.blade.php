@@ -14,13 +14,13 @@ echo '<' . '?';
 ?>xml version = "1.0" encoding = "utf-8" <?php echo '?' . '>' ?>
 <!-- Update stream generated automatically by Akeeba Release System on {{ gmdate('Y-m-d H:i:s') }} -->
 <extensionset name="<?php echo $this->updates_name ?>" description="<?php echo $this->updates_desc ?>">
-	@foreach (['components', 'libraries', 'modules', 'packages', 'plugins', 'files', 'templates'] as $category)
-		<category name="{{ ucfirst($category) }}"
-				  description="@lang('LBL_UPDATETYPES_' . strtoupper($category))"
-				  category="{{ $category }}"
-				  ref="{{ \Akeeba\ReleaseSystem\Site\Helper\Router::_(
+    @foreach (['components', 'libraries', 'modules', 'packages', 'plugins', 'files', 'templates'] as $category)
+        <category name="{{ ucfirst($category) }}"
+                  description="@lang('COM_ARS_STREAM_UPDATETYPE_' . strtoupper($category))"
+                  category="{{ $category }}"
+                  ref="{{ \Akeeba\ReleaseSystem\Site\Helper\Router::_(
 				  	'index.php?option=com_ars&view=update&format=xml&task=category&id=' . $category . $this->dlidRequest,
 				  	true, \Joomla\CMS\Router\Route::TLS_IGNORE, true
 				) }}" />
-	@endforeach
+    @endforeach
 </extensionset>

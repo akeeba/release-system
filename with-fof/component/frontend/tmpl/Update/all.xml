@@ -6,17 +6,17 @@
   -->
 
 <metadata>
-	<layout title="ARS_VIEW_UPDATE_ALL_TITLE">
-		<message>
-				<![CDATA[ARS_VIEW_UPDATE_ALL_DESC]]>
-		</message>
-	</layout>
-	<fields name="request">
-		<fieldset name="request">
-			<field name="format"
-				type="hidden"
-				default="xml"
-			/>
+    <layout title="COM_ARS_VIEW_UPDATE_ALL_TITLE">
+        <message>
+            <![CDATA[COM_ARS_VIEW_UPDATE_ALL_DESC]]>
+        </message>
+    </layout>
+    <fields name="request">
+        <fieldset name="request">
+            <field name="format"
+                   type="hidden"
+                   default="xml"
+            />
 		</fieldset>
 	</fields>
 </metadata>

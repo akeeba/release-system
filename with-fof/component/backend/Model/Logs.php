@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 use FOF40\Container\Container;
 use FOF40\Date\Date;
 use FOF40\Model\DataModel;
-use FOF40\Model\Mixin\Assertions;
+use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
 use FOF40\IP\IPHelper as Ip;
 use JDatabaseQuery;
 
@@ -29,7 +29,7 @@ use JDatabaseQuery;
  */
 class Logs extends DataModel
 {
-	use Assertions;
+	use AssertionAware;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.

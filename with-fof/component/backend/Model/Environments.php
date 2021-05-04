@@ -11,14 +11,14 @@ defined('_JEXEC') or die;
 
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
-use FOF40\Model\Mixin\Assertions;
-use FOF40\Model\Mixin\ImplodedArrays;
+use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ImplodedArrays;
 use JDatabaseQuery;
 
 class Environments extends DataModel
 {
 	use ImplodedArrays;
-	use Assertions;
+	use AssertionAware;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.

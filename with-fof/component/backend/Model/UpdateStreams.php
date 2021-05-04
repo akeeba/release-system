@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 use FOF40\Container\Container;
 use FOF40\Model\DataModel;
 use FOF40\Model\DataModel\Exception\NoTableColumns;
-use FOF40\Model\Mixin\Assertions;
+use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
 use JDatabaseQuery;
 
 /**
@@ -63,13 +63,13 @@ use JDatabaseQuery;
  */
 class UpdateStreams extends DataModel
 {
-	use Assertions;
+	use AssertionAware;
 
 	/**
 	 * Public constructor. Overrides the parent constructor.
 	 *
-	 * @param Container $container The configuration variables to this model
-	 * @param array     $config    Configuration values for this model
+	 * @param   Container  $container  The configuration variables to this model
+	 * @param   array      $config     Configuration values for this model
 	 *
 	 * @throws NoTableColumns
 	 * @see DataModel::__construct()
@@ -111,7 +111,7 @@ class UpdateStreams extends DataModel
 
 	public function check(): self
 	{
-		$this->assertNotEmpty($this->name, 'ERR_USTREAM_NEEDS_NAME');
+		$this->assertNotEmpty($this->name, 'COM_ARS_STREAM_ERR_NEEDS_NAME');
 
 		// If the alias is missing, auto-create a new one
 		if (!$this->alias)
@@ -121,7 +121,7 @@ class UpdateStreams extends DataModel
 		}
 
 		// If no alias could be auto-generated, fail
-		$this->assertNotEmpty($this->alias, 'ERR_USTREAM_NEEDS_ALIAS');
+		$this->assertNotEmpty($this->alias, 'COM_ARS_STREAM_ERR_NEEDS_ALIAS');
 
 		// Check alias for uniqueness
 		$db    = $this->getDBO();
@@ -146,7 +146,7 @@ class UpdateStreams extends DataModel
 		}
 
 		$this->alias = $alias;
-		$this->assertNotInArray($this->alias, $aliases, 'ERR_USTREAM_NEEDS_UNIQUE_ALIAS');
+		$this->assertNotInArray($this->alias, $aliases, 'COM_ARS_STREAM_ERR_NEEDS_UNIQUE_ALIAS');
 
 		// Automaticaly fix the type
 		if (!in_array($this->type, ['components', 'libraries', 'modules', 'packages', 'plugins', 'files', 'templates']))
@@ -155,7 +155,7 @@ class UpdateStreams extends DataModel
 		}
 
 		// Require an element name
-		$this->assertNotEmpty($this->element, 'ERR_USTREAM_NEEDS_ELEMENT');
+		$this->assertNotEmpty($this->element, 'COM_ARS_STREAM_ERR_NEEDS_ELEMENT');
 
 		if (empty($this->published) && ($this->published !== 0))
 		{
