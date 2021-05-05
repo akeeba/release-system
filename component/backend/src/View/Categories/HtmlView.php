@@ -17,7 +17,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Pagination\Pagination;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\Button\DropdownButton;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -99,6 +98,7 @@ class HtmlView extends BaseHtmlView
 
 		$canCreate    = $user->authorise('core.create', 'com_ars');
 		$canDelete    = $user->authorise('core.delete', 'com_ars');
+		$canEdit      = $user->authorise('core.edit', 'com_ars');
 		$canEditState = $user->authorise('core.edit.state', 'com_ars');
 
 		if ($canCreate)
@@ -145,6 +145,14 @@ class HtmlView extends BaseHtmlView
 				$childBar->standardButton('copy', 'COM_ARS_COMMON_COPY_LABEL')
 					->icon('fa fa-copy')
 					->task('categories.copy')
+					->listCheck(true);
+			}
+
+			if ($canCreate && $canEdit && $canEditState)
+			{
+				$childBar->popupButton('batch')
+					->text('JTOOLBAR_BATCH')
+					->selector('collapseModal')
 					->listCheck(true);
 			}
 		}

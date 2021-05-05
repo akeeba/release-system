@@ -21,6 +21,16 @@ class CategoryModel extends AdminModel
 	use CopyAware;
 
 	/**
+	 * Allowed batch commands
+	 *
+	 * @var  array
+	 */
+	protected $batch_commands = [
+		'assetgroup_id' => 'batchAccess',
+		'language_id'   => 'batchLanguage',
+	];
+
+	/**
 	 * @inheritDoc
 	 */
 	public function getForm($data = [], $loadData = true)
@@ -59,6 +69,21 @@ class CategoryModel extends AdminModel
 		return $form;
 	}
 
+	public function validate($form, $data, $group = null)
+	{
+		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+
+		if (!$user->authorise('core.admin', 'com_ars'))
+		{
+			if (isset($data['rules']))
+			{
+				unset($data['rules']);
+			}
+		}
+
+		return parent::validate($form, $data, $group);
+	}
+
 	protected function loadFormData()
 	{
 		$app  = Factory::getApplication();
@@ -92,22 +117,6 @@ class CategoryModel extends AdminModel
 			$table->modified_by = $user->id;
 		}
 	}
-
-	public function validate($form, $data, $group = null)
-	{
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
-
-		if (!$user->authorise('core.admin', 'com_ars'))
-		{
-			if (isset($data['rules']))
-			{
-				unset($data['rules']);
-			}
-		}
-
-		return parent::validate($form, $data, $group);
-	}
-
 
 	/**
 	 * @param   CategoryTable  $record

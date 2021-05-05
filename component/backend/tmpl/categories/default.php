@@ -167,6 +167,21 @@ $i = 0;
 
 					<?php // Load the pagination. ?>
 					<?= $this->pagination->getListFooter(); ?>
+
+					<?php // Load the batch processing form. ?>
+					<?php if ($user->authorise('core.create', 'com_ars')
+						&& $user->authorise('core.edit', 'com_ars')
+						&& $user->authorise('core.edit.state', 'com_ars')) : ?>
+						<?php echo HTMLHelper::_(
+							'bootstrap.renderModal',
+							'collapseModal',
+							[
+								'title'  => Text::_('COM_ARS_CATEGORIES_BATCH_OPTIONS'),
+								'footer' => $this->loadTemplate('batch_footer'),
+							],
+							$this->loadTemplate('batch_body')
+						); ?>
+					<?php endif; ?>
 				<?php endif; ?>
 
 				<input type="hidden" name="task" value=""> <input type="hidden" name="boxchecked" value="0">

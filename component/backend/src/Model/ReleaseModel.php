@@ -12,13 +12,22 @@ defined('_JEXEC') or die;
 use Akeeba\Component\ARS\Administrator\Model\Mixin\CopyAware;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\Database\ParameterType;
 
 class ReleaseModel extends AdminModel
 {
 	use CopyAware;
+
+	public function __construct($config = [], MVCFactoryInterface $factory = null, FormFactoryInterface $formFactory = null)
+	{
+		parent::__construct($config, $factory, $formFactory);
+
+		$this->_parent_table = 'Categories';
+	}
 
 	/**
 	 * @inheritDoc
