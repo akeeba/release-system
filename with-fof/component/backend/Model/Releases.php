@@ -465,15 +465,15 @@ class Releases extends DataModel
 
 	public function check(): self
 	{
-		$this->assertNotEmpty($this->category_id, 'COM_RELEASE_ERR_NEEDS_CATEGORY');
+		$this->assertNotEmpty($this->category_id, 'COM_ARS_RELEASE_ERR_NEEDS_CATEGORY');
 
 		// Get some useful info
-		$db = $this->getDBO();
+		$db    = $this->getDBO();
 		$query = $db->getQuery(true)
-			->select(array(
+			->select([
 				$db->qn('version'),
-				$db->qn('alias')
-			))->from($db->qn('#__ars_releases'))
+				$db->qn('alias'),
+			])->from($db->qn('#__ars_releases'))
 			->where($db->qn('category_id') . ' = ' . $db->q($this->category_id));
 
 		if ($this->id)
@@ -482,19 +482,19 @@ class Releases extends DataModel
 		}
 
 		$db->setQuery($query);
-		$info = $db->loadAssocList();
-		$versions = array();
-		$aliases = array();
+		$info     = $db->loadAssocList();
+		$versions = [];
+		$aliases  = [];
 
 		foreach ($info as $infoitem)
 		{
 			$versions[] = $infoitem['version'];
-			$aliases[] = $infoitem['alias'];
+			$aliases[]  = $infoitem['alias'];
 		}
 
-		$this->assertNotEmpty($this->version, 'COM_RELEASE_ERR_NEEDS_VERSION');
+		$this->assertNotEmpty($this->version, 'COM_ARS_RELEASE_ERR_NEEDS_VERSION');
 
-		$this->assertNotInArray($this->version, $versions, 'COM_RELEASE_ERR_NEEDS_VERSION_UNIQUE');
+		$this->assertNotInArray($this->version, $versions, 'COM_ARS_RELEASE_ERR_NEEDS_VERSION_UNIQUE');
 
 		// If the alias is missing, auto-create a new one
 		if (!$this->alias)
@@ -502,21 +502,21 @@ class Releases extends DataModel
 			// Get the category title
 			/** @var Categories $catModel */
 			$catModel = $this->container->factory->model('Categories')->tmpInstance();
-			$catItem = $catModel->find($this->category_id);
+			$catItem  = $catModel->find($this->category_id);
 
 			// Create a smart alias
-			$alias = strtolower($catItem->alias . '-' . $this->version);
-			$alias = str_replace(' ', '-', $alias);
-			$alias = str_replace('.', '-', $alias);
-			$this->alias = (string)preg_replace('/[^A-Z0-9_-]/i', '', $alias);
+			$alias       = strtolower($catItem->alias . '-' . $this->version);
+			$alias       = str_replace(' ', '-', $alias);
+			$alias       = str_replace('.', '-', $alias);
+			$this->alias = (string) preg_replace('/[^A-Z0-9_-]/i', '', $alias);
 		}
 
-		$this->assertNotEmpty($this->alias, 'COM_RELEASE_ERR_NEEDS_ALIAS');
+		$this->assertNotEmpty($this->alias, 'COM_ARS_RELEASE_ERR_NEEDS_ALIAS');
 
-		$this->assertNotInArray($this->alias, $aliases, 'COM_RELEASE_ERR_NEEDS_ALIAS_UNIQUE');
+		$this->assertNotInArray($this->alias, $aliases, 'COM_ARS_RELEASE_ERR_NEEDS_ALIAS_UNIQUE');
 
-		// Automaticaly fix the maturity
-		if (!in_array($this->maturity, array('alpha', 'beta', 'rc', 'stable')))
+		// Automatically fix the maturity
+		if (!in_array($this->maturity, ['alpha', 'beta', 'rc', 'stable']))
 		{
 			$this->maturity = 'beta';
 		}

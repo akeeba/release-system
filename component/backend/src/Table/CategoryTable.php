@@ -21,8 +21,10 @@ use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseDriver;
 
 /**
+ * ARS Categories table
+ *
  * @property int    $id                      Primary key
- * @property int    $asset_id                Primary key to #__assets
+ * @property int    $asset_id                Foreign key to #__assets
  * @property string $title                   Category title
  * @property string $alias                   Category alias for URL generation
  * @property string $description             Description (HTML)
@@ -157,39 +159,4 @@ class CategoryTable extends AbstractTable
 
 		return !empty($assetId) ? $assetId : parent::_getAssetParentId($table, $id);
 	}
-
-	/**
-	 * Returns an asset id for the given name or false.
-	 *
-	 * @param   string  $name  The asset name
-	 *
-	 * @return  number|boolean
-	 *
-	 * @since    3.7.0
-	 */
-	private function getAssetId($name)
-	{
-		$db    = $this->getDbo();
-		$query = $db->getQuery(true)
-			->select($db->quoteName('id'))
-			->from($db->quoteName('#__assets'))
-			->where($db->quoteName('name') . ' = :name')
-			->bind(':name', $name);
-
-		// Get the asset id from the database.
-		$db->setQuery($query);
-
-		if ($result = $db->loadResult())
-		{
-			$assetId = (int) $result;
-
-			if ($assetId)
-			{
-				return $assetId;
-			}
-		}
-
-		return false;
-	}
-
 }
