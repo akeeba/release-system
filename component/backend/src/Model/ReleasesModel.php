@@ -22,22 +22,31 @@ class ReleasesModel extends ListModel
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = [
+				'id',
+				'r.id',
+				'version',
+				'r.version',
 				'search',
 				'category_id',
+				'r.category_id',
 				'maturity',
-				'created_on',
+				'created',
+				'r.created',
 				'access',
+				'r.access',
 				'show_unauth_links',
 				'published',
 				'language',
+				'r.language',
 				'ordering',
+				'r.ordering',
 			];
 		}
 
 		parent::__construct($config, $factory);
 	}
 
-	protected function populateState($ordering = 'ordering', $direction = 'asc')
+	protected function populateState($ordering = 'r.id', $direction = 'desc')
 	{
 		$app = Factory::getApplication();
 
@@ -85,7 +94,6 @@ class ReleasesModel extends ListModel
 		$query = $db->getQuery(true)
 			->select([
 				$db->quoteName('r') . '.*',
-				$db->quoteName('c.asset_id', 'asset_id'),
 				$db->quoteName('c.title', 'cat_title'),
 				$db->quoteName('c.alias', 'cat_alias'),
 				$db->quoteName('c.type', 'cat_type'),
@@ -94,9 +102,9 @@ class ReleasesModel extends ListModel
 				$db->quoteName('ag.title', 'access_level'),
 			])
 			->from($db->qn('#__ars_releases', 'r'))
-			->join('LEFT', $db->quoteName('#__ars_categories', 'c'), $db->quoteName('c.id') . ' = ' . $db->quoteName('a.category_id'))
-			->join('LEFT', $db->quoteName('#__viewlevels', 'ag'), $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access'))
-			->join('LEFT', $db->quoteName('#__languages', 'l'), $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('a.language'));
+			->join('LEFT', $db->quoteName('#__ars_categories', 'c'), $db->quoteName('c.id') . ' = ' . $db->quoteName('r.category_id'))
+			->join('LEFT', $db->quoteName('#__viewlevels', 'ag'), $db->quoteName('ag.id') . ' = ' . $db->quoteName('r.access'))
+			->join('LEFT', $db->quoteName('#__languages', 'l'), $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('r.language'));
 
 		// Search filter
 		$search = $this->getState('filter.search');

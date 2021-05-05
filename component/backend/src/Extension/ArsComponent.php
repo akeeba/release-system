@@ -28,7 +28,7 @@ class ArsComponent extends MVCComponent implements
 
 	public function boot(ContainerInterface $container)
 	{
-		$this->getRegistry()->register('akeebabackup', new AkeebaReleaseSystem());
+		$this->getRegistry()->register('ars', new AkeebaReleaseSystem());
 	}
 
 }

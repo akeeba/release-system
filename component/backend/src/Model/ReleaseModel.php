@@ -10,7 +10,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Model\Mixin\CopyAware;
-use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
+use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -76,10 +76,27 @@ class ReleaseModel extends AdminModel
 
 	protected function prepareTable($table)
 	{
-		$date = Factory::getDate();
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		/**
+		 * Access check. This is called from save().
+		 *
+		 * The release belongs to a category. The user needs to be authorized for core.create, core.edit or
+		 * core.edit.own (depending on the table's state) to save data into the table.
+		 */
+		$user   = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$isNew  = !empty($table->getId());
+		$isOwn  = !$isNew && ($table->created_by == $user->id);
+		$asset  = 'com_ars.category.' . $table->category_id;
+		$action = $isNew ? 'core.create' : ($isOwn ? 'core.edit.own' : 'core.edit');
 
-		if (empty($table->getId()))
+		if (!$user->authorise($action, $asset) && !$user->authorise($action, 'com_ars'))
+		{
+			throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+		}
+
+		// Set up the created / modified date
+		$date = Factory::getDate();
+
+		if ($isNew)
 		{
 			// Set the values
 			$table->created_on = $date->toSql();
@@ -94,7 +111,7 @@ class ReleaseModel extends AdminModel
 	}
 
 	/**
-	 * @param   CategoryTable  $record
+	 * @param   ReleaseTable  $record
 	 *
 	 * @return  bool
 	 * @throws  \Exception
@@ -110,7 +127,10 @@ class ReleaseModel extends AdminModel
 		// Make sure the user is allowed to delete this release, per Joomla's assets rules for its parent category.
 		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
 
-		if (!$user->authorise('core.delete', 'com_ars.category.' . (int) $record->category_id))
+		if (
+			!$user->authorise('core.delete', 'com_ars.category.' . (int) $record->category_id) &&
+			!$user->authorise('core.delete', 'com_ars')
+		)
 		{
 			return false;
 		}
@@ -138,5 +158,32 @@ class ReleaseModel extends AdminModel
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Is the user allowed to change the item state?
+	 *
+	 * Since a release belongs to a category which belongs to the component we check whether the user has the
+	 * core.edit.state privilege in the category itself.
+	 *
+	 * @param   ReleaseTable  $record
+	 *
+	 * @return  bool
+	 * @throws  \Exception
+	 */
+	protected function canEditState($record)
+	{
+		// Make sure the user is allowed to delete this release, per Joomla's assets rules for its parent category.
+		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+
+		if (
+			!$user->authorise('core.edit.state', 'com_ars.category.' . (int) $record->category_id) &&
+			!$user->authorise('core.edit.state', 'com_ars')
+		)
+		{
+			return false;
+		}
+
+		return true;
 	}
 }

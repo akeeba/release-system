@@ -7,6 +7,8 @@
 
 defined('_JEXEC') || die;
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Multilanguage;
@@ -15,7 +17,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
-/** @var \Akeeba\Component\ARS\Administrator\View\Categories\HtmlView $this */
+/** @var \Akeeba\Component\ARS\Administrator\View\Releases\HtmlView $this */
 
 HTMLHelper::_('behavior.multiselect');
 
@@ -28,15 +30,17 @@ $nullDate  = Factory::getDbo()->getNullDate();
 
 if ($saveOrder && !empty($this->items))
 {
-	$saveOrderingUrl = 'index.php?option=com_ars&task=categories.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+	$saveOrderingUrl = 'index.php?option=com_ars&task=releases.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
 	HTMLHelper::_('draggablelist.draggable');
 }
 
 $i = 0;
 
+$hasCategoryFilter = !empty($this->getModel()->getState('filter.category_id'));
+$cParams = ComponentHelper::getParams('com_ars');
 ?>
 
-<form action="<?= Route::_('index.php?option=com_ars&view=categories'); ?>"
+<form action="<?= Route::_('index.php?option=com_ars&view=releases'); ?>"
 	  method="post" name="adminForm" id="adminForm">
 	<div class="row">
 		<div class="col-md-12">
@@ -51,7 +55,7 @@ $i = 0;
 				<?php else : ?>
 					<table class="table" id="articleList">
 						<caption class="visually-hidden">
-							<?= Text::_('COM_ARS_CATEGORIES_TABLE_CAPTION'); ?>, <span
+							<?= Text::_('COM_ARS_RELEASES_TABLE_CAPTION'); ?>, <span
 									id="orderedBy"><?= Text::_('JGLOBAL_SORTED_BY'); ?> </span>, <span
 									id="filteredBy"><?= Text::_('JGLOBAL_FILTERED_BY'); ?></span>
 						</caption>
@@ -61,27 +65,30 @@ $i = 0;
 								<?= HTMLHelper::_('grid.checkall'); ?>
 							</td>
 							<th scope="col" class="w-1 text-center d-none d-md-table-cell">
-								<?php echo HTMLHelper::_('searchtools.sort', '', 'ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-sort'); ?>
+								<?php echo HTMLHelper::_('searchtools.sort', '', 'r.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-sort'); ?>
 							</th>
 							<th scope="col">
-								<?= HTMLHelper::_('searchtools.sort', 'COM_ARS_CATEGORIES_FIELD_TITLE', 'title', $listDirn, $listOrder); ?>
+								<?= HTMLHelper::_('searchtools.sort', 'COM_ARS_RELEASES_FIELD_VERSION', 'r.title', $listDirn, $listOrder); ?>
+							</th>
+							<th scope="col" class="d-none d-md-table-cell">
+								<?= Text::_('COM_ARS_RELEASES_FIELD_MATURITY') ?>
 							</th>
 							<th scope="col">
-								<?= HTMLHelper::_('searchtools.sort', 'COM_ARS_CATEGORIES_FIELD_TYPE', 'type', $listDirn, $listOrder); ?>
+								<?= HTMLHelper::_('searchtools.sort', 'COM_ARS_RELEASES_FIELD_RELEASED', 'r.created', $listDirn, $listOrder); ?>
 							</th>
-							<th scope="col">
-								<?= HTMLHelper::_('searchtools.sort', 'JFIELD_ACCESS_LABEL', 'access', $listDirn, $listOrder); ?>
+							<th scope="col" class="d-none d-md-table-cell">
+								<?= HTMLHelper::_('searchtools.sort', 'JFIELD_ACCESS_LABEL', 'r.access', $listDirn, $listOrder); ?>
 							</th>
 							<?php if (Multilanguage::isEnabled()) : ?>
 								<th scope="col">
-									<?= HTMLHelper::_('searchtools.sort', 'JFIELD_LANGUAGE_LABEL', 'language', $listDirn, $listOrder); ?>
+									<?= HTMLHelper::_('searchtools.sort', 'JFIELD_LANGUAGE_LABEL', 'r.language', $listDirn, $listOrder); ?>
 								</th>
 							<?php endif; ?>
 							<th scope="col">
 								<?= Text::_('JPUBLISHED') ?>
 							</th>
 							<th scope="col" class="w-1 d-none d-md-table-cell">
-								<?= HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'id', $listDirn, $listOrder); ?>
+								<?= HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'r.id', $listDirn, $listOrder); ?>
 							</th>
 						</tr>
 						</thead>
@@ -89,21 +96,21 @@ $i = 0;
 						<?php foreach ($this->items as $item) : ?>
 							<?php
 							$canEdit    = $user->authorise('core.edit', 'com_ars')
-								|| $user->authorise('core.edit', 'com_ars.category.' . $item->id);
+								|| $user->authorise('core.edit', 'com_ars.category.' . $item->category_id);
 							$canCheckin = $user->authorise('core.manage', 'com_checkin')
 								|| $item->locked_by == $userId || is_null($item->locked_by);
 							$canEditOwn = (
 									$user->authorise('core.edit.own', 'com_ars') ||
-									$user->authorise('core.edit.own', 'com_ars.category.' . $item->id)
+									$user->authorise('core.edit.own', 'com_ars.category.' . $item->category_id)
 								) && $item->created_by == $userId;
 							$canChange  = (
 									$user->authorise('core.edit.state', 'com_ars') ||
-									$user->authorise('core.edit.state', 'com_ars.category.' . $item->id)
+									$user->authorise('core.edit.state', 'com_ars.category.' . $item->category_id)
 								) && $canCheckin;
 							?>
 							<tr class="row<?= $i++ % 2; ?>" data-draggable-group="0">
 								<td class="text-center">
-									<?= HTMLHelper::_('grid.id', $i, $item->id, !(empty($item->checked_out_time) || ($item->checked_out_time === $nullDate)), 'cid', 'cb', $item->title); ?>
+									<?= HTMLHelper::_('grid.id', $i, $item->id, !(empty($item->checked_out_time) || ($item->checked_out_time === $nullDate)), 'cid', 'cb', $item->version); ?>
 								</td>
 
 								<td class="text-center d-none d-md-table-cell">
@@ -130,20 +137,38 @@ $i = 0;
 								</td>
 								<td>
 									<?php if ($canEdit): ?>
-										<a href="<?= Route::_('index.php?option=com_ars&task=category.edit&id=' . (int) $item->id); ?>"
-										   title="<?= Text::_('JACTION_EDIT'); ?><?= $this->escape($item->title); ?>">
-											<?= $this->escape($item->title); ?>
+										<a href="<?= Route::_('index.php?option=com_ars&task=release.edit&id=' . (int) $item->id); ?>"
+										   title="<?= Text::_('JACTION_EDIT'); ?><?= $this->escape($item->version); ?>">
+											<?= $this->escape($item->version); ?>
 										</a>
 									<?php else: ?>
-										<?= $this->escape($item->title); ?>
+										<?= $this->escape($item->version); ?>
 									<?php endif ?>
+									<br/>
+									<small>
+										<strong><?= Text::_('JALIAS') ?></strong>:
+										<?= $this->escape($item->alias) ?>
+									</small>
+									<?php if (!$hasCategoryFilter): ?>
+									<br/>
+									<small>
+										<strong><?= Text::_('COM_ARS_RELEASES_FIELD_CATEGORY') ?></strong>:
+										<a href="<?= Route::_('index.php?option=com_ars&task=category.edit&id=' . $item->category_id) ?>">
+											<?= $this->escape($item->cat_title) ?>
+										</a>
+									</small>
+									<?php endif; ?>
+								</td>
+
+								<td class="d-none d-md-table-cell">
+									<?= Text::_('COM_ARS_RELEASES_MATURITY_' . $item->maturity) ?>
 								</td>
 
 								<td>
-									<?= Text::_('COM_ARS_CATEGORIES_TYPE_' . $item->type) ?>
+									<?= HTMLHelper::_('ars.formatDate', $item->created) ?>
 								</td>
 
-								<td>
+								<td class="d-none d-md-table-cell">
 									<?= $this->escape($item->access_level) ?>
 								</td>
 

@@ -31,7 +31,7 @@ class ArsItemsField extends ListField
 		foreach ($objectList as $o)
 		{
 			$this->addOption($o->title, [
-				'value' => $o->contactus_category_id,
+				'value' => $o->id,
 			]);
 		}
 

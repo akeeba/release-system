@@ -126,7 +126,10 @@ class CategoryModel extends AdminModel
 		// Make sure the user is allowed to delete this category, per Joomla's assets rules.
 		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
 
-		if (!$user->authorise('core.delete', 'com_ars.category.' . (int) $record->id))
+		if (
+			!$user->authorise('core.delete', 'com_ars.category.' . (int) $record->id) &&
+			!$user->authorise('core.delete', 'com_ars')
+		)
 		{
 			return false;
 		}

@@ -21,6 +21,7 @@
                 type="ArsCategories"
                 label="COM_ARS_RELEASES_FIELD_CATEGORY"
                 onchange="this.form.submit();"
+                required="true"
         >
         </field>
 
@@ -45,6 +46,7 @@
                 type="list"
                 label="COM_ARS_RELEASES_FIELD_MATURITY"
                 onchange="this.form.submit();"
+                required="true"
         >
             <option value="alpha">COM_ARS_RELEASES_MATURITY_ALPHA</option>
             <option value="beta">COM_ARS_RELEASES_MATURITY_BETA</option>
@@ -166,7 +168,10 @@
 
         <field
                 name="hits"
-                type="hidden"
+                type="number"
+                label="JGLOBAL_HITS"
+                class="readonly"
+                readonly="true"
                 filter="unset"
         />
 
