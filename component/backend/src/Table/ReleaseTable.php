@@ -56,7 +56,7 @@ class ReleaseTable extends AbstractTable
 
 	public function __construct(DatabaseDriver $db)
 	{
-		parent::__construct('#__ars_releases', 'id', $db);
+		parent::__construct('#__ars_releases', ['id'], $db);
 
 		$this->setColumnAlias('catid', 'category_id');
 		$this->setColumnAlias('title', 'version');
@@ -89,7 +89,7 @@ class ReleaseTable extends AbstractTable
 			])
 			->from($db->quoteName('#__ars_releases'))
 			->where($db->quoteName('category_id') . ' = :catid')
-			->bind('catid', $this->category_id);
+			->bind(':catid', $this->category_id);
 
 		if ($this->id)
 		{

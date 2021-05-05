@@ -36,22 +36,22 @@ abstract class AbstractTable extends Table
 
 	public function bind($src, $ignore = [])
 	{
-		$this->triggerEvent('onBeforeBind', [$src, $ignore]);
+		$this->triggerEvent('onBeforeBind', [&$src, &$ignore]);
 
 		$result = parent::bind($src, $ignore);
 
-		$this->triggerEvent('onAfterBind', [$result, $src, $ignore]);
+		$this->triggerEvent('onAfterBind', [&$result, $src, $ignore]);
 
 		return $result;
 	}
 
 	public function load($keys = null, $reset = true)
 	{
-		$this->triggerEvent('onBeforeLoad', [$keys, $reset]);
+		$this->triggerEvent('onBeforeLoad', [&$keys, &$reset]);
 
 		$result = parent::load($keys, $reset);
 
-		$this->triggerEvent('onAfterLoad', [$result, $keys, $reset]);
+		$this->triggerEvent('onAfterLoad', [&$result, $keys, $reset]);
 
 		return $result;
 	}
@@ -62,106 +62,106 @@ abstract class AbstractTable extends Table
 
 		$result = parent::check();
 
-		$this->triggerEvent('onAfterCheck', [$result]);
+		$this->triggerEvent('onAfterCheck', [&$result]);
 
 		return $result;
 	}
 
 	public function store($updateNulls = false)
 	{
-		$this->triggerEvent('onBeforeStore', [$updateNulls]);
+		$this->triggerEvent('onBeforeStore', [&$updateNulls]);
 
 		$result = parent::store($updateNulls);
 
-		$this->triggerEvent('onAfterStore', [$result, $updateNulls]);
+		$this->triggerEvent('onAfterStore', [&$result, $updateNulls]);
 
 		return $result;
 	}
 
 	public function save($src, $orderingFilter = '', $ignore = '')
 	{
-		$this->triggerEvent('onBeforeSave', [$src, $orderingFilter, $ignore]);
+		$this->triggerEvent('onBeforeSave', [&$src, &$orderingFilter, &$ignore]);
 
 		$result = parent::save($src, $orderingFilter, $ignore);
 
-		$this->triggerEvent('onAfterSave', [$result, $src, $orderingFilter, $ignore]);
+		$this->triggerEvent('onAfterSave', [&$result, $src, $orderingFilter, $ignore]);
 
 		return $result;
 	}
 
 	public function delete($pk = null)
 	{
-		$this->triggerEvent('onBeforeDelete', [$pk]);
+		$this->triggerEvent('onBeforeDelete', [&$pk]);
 
 		$result = parent::delete($pk);
 
-		$this->triggerEvent('onAfterDelete', [$result, $pk]);
+		$this->triggerEvent('onAfterDelete', [&$result, $pk]);
 
 		return $result;
 	}
 
 	public function checkOut($userId, $pk = null)
 	{
-		$this->triggerEvent('onBeforeCheckout', [$userId, $pk]);
+		$this->triggerEvent('onBeforeCheckout', [&$userId, &$pk]);
 
 		$result = parent::checkOut($userId, $pk);
 
-		$this->triggerEvent('onAfterCheckout', [$result, $userId, $pk]);
+		$this->triggerEvent('onAfterCheckout', [&$result, $userId, $pk]);
 
 		return $result;
 	}
 
 	public function checkIn($pk = null)
 	{
-		$this->triggerEvent('onBeforeCheckIn', [$pk]);
+		$this->triggerEvent('onBeforeCheckIn', [&$pk]);
 
 		$result = parent::checkIn($pk);
 
-		$this->triggerEvent('onAfterCheckIn', [$result, $pk]);
+		$this->triggerEvent('onAfterCheckIn', [&$result, $pk]);
 
 		return $result;
 	}
 
 	public function hit($pk = null)
 	{
-		$this->triggerEvent('onBeforeHit', [$pk]);
+		$this->triggerEvent('onBeforeHit', [&$pk]);
 
 		$result = parent::hit($pk);
 
-		$this->triggerEvent('onAfterHit', [$result, $pk]);
+		$this->triggerEvent('onAfterHit', [&$result, $pk]);
 
 		return $result;
 	}
 
 	public function reorder($where = '')
 	{
-		$this->triggerEvent('onBeforeReorder', [$where]);
+		$this->triggerEvent('onBeforeReorder', [&$where]);
 
 		$result = parent::reorder($where);
 
-		$this->triggerEvent('onAfterReorder', [$result, $where]);
+		$this->triggerEvent('onAfterReorder', [&$result, $where]);
 
 		return $result;
 	}
 
 	public function move($delta, $where = '')
 	{
-		$this->triggerEvent('onBeforeMove', [$delta, $where]);
+		$this->triggerEvent('onBeforeMove', [&$delta, &$where]);
 
 		$result = parent::move($delta, $where);
 
-		$this->triggerEvent('onAfterMove', [$result, $delta, $where]);
+		$this->triggerEvent('onAfterMove', [&$result, $delta, $where]);
 
 		return $result;
 	}
 
 	public function publish($pks = null, $state = 1, $userId = 0)
 	{
-		$this->triggerEvent('onBeforePublish', [$pks, $state, $userId]);
+		$this->triggerEvent('onBeforePublish', [&$pks, &$state, &$userId]);
 
 		$result = parent::publish($pks, $state, $userId);
 
-		$this->triggerEvent('onAfterPublish', [$result, $pks, $state, $userId]);
+		$this->triggerEvent('onAfterPublish', [&$result, $pks, $state, $userId]);
 
 		return $result;
 	}

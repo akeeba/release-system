@@ -19,27 +19,6 @@ class CategoryController extends FormController
 
 	protected $text_prefix = 'COM_ARS_CATEGORY';
 
-	protected function allowEdit($data = [], $key = 'id')
-	{
-		$categoryId = (int) isset($data[$key]) ? $data[$key] : 0;
-
-		if ($categoryId)
-		{
-			return false;
-		}
-
-		return $this->app->getIdentity()->authorise('core.edit', $this->option . '.category.' . $categoryId);
-	}
-
-	/**
-	 * Method to run batch operations.
-	 *
-	 * @param   string  $model  The model
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @since   2.5
-	 */
 	public function batch($model = null)
 	{
 		$this->checkToken();
@@ -51,5 +30,17 @@ class CategoryController extends FormController
 		$this->setRedirect(Route::_('index.php?option=com_ars&view=categories' . $this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
+	}
+
+	protected function allowEdit($data = [], $key = 'id')
+	{
+		$categoryId = (int) isset($data[$key]) ? $data[$key] : 0;
+
+		if (!$categoryId)
+		{
+			return false;
+		}
+
+		return $this->app->getIdentity()->authorise('core.edit', $this->option . '.category.' . $categoryId);
 	}
 }

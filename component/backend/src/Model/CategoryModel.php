@@ -21,6 +21,14 @@ class CategoryModel extends AdminModel
 	use CopyAware;
 
 	/**
+	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
+	 *
+	 * @var    string
+	 * @since  7.0
+	 */
+	protected $batch_copymove = false;
+
+	/**
 	 * Allowed batch commands
 	 *
 	 * @var  array

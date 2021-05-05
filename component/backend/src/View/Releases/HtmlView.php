@@ -10,7 +10,6 @@ namespace Akeeba\Component\ARS\Administrator\View\Releases;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\LoadAnyTemplate;
-use Akeeba\Component\ARS\Administrator\Model\CategoriesModel;
 use Akeeba\Component\ARS\Administrator\Model\ReleasesModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -97,9 +96,13 @@ class HtmlView extends BaseHtmlView
 
 		ToolbarHelper::title(sprintf(Text::_('COM_ARS_TITLE_RELEASES')), 'icon-ars');
 
-		$canCreate    = $user->authorise('core.create', 'com_ars');
-		$canDelete    = $user->authorise('core.delete', 'com_ars');
-		$canEditState = $user->authorise('core.edit.state', 'com_ars');
+		$catId     = $this->state->get('filter.category_id');
+		$assetName = 'com_ars' . (empty($catId) ? '' : ('.category.' . $catId));
+
+		$canCreate    = $user->authorise('core.create', $assetName);
+		$canDelete    = $user->authorise('core.delete', $assetName);
+		$canEdit      = $user->authorise('core.edit', $assetName);
+		$canEditState = $user->authorise('core.edit.state', $assetName);
 
 		if ($canCreate)
 		{
@@ -145,6 +148,14 @@ class HtmlView extends BaseHtmlView
 				$childBar->standardButton('copy', 'COM_ARS_COMMON_COPY_LABEL')
 					->icon('fa fa-copy')
 					->task('releases.copy')
+					->listCheck(true);
+			}
+
+			if ($canCreate && $canEdit && $canEditState)
+			{
+				$childBar->popupButton('batch')
+					->text('JTOOLBAR_BATCH')
+					->selector('collapseModal')
 					->listCheck(true);
 			}
 		}

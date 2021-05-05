@@ -119,29 +119,41 @@ trait CopyAware
 			return parent::generateNewTitle($categoryId, $alias, $title);
 		}
 
-		// Alter the title & alias
-		$table      = $this->getTable();
+		$table = $this->getTable();
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true)
+			->select('*')
+			->from($db->quoteName($table->getTableName()));
+
 		$aliasField = $table->getColumnAlias('alias');
+		$hasCatID   = $table->hasField('catid');
+		$catidField = $table->getColumnAlias('catid');
+		$hasTitle   = $table->hasField('title');
 		$titleField = $table->getColumnAlias('title');
 
-		$keys = [$aliasField => $alias];
+		$query->where($db->quoteName($aliasField) . ' = :alias')
+			->bind(':alias', $alias);
 
-		if ($table->hasField('catid'))
+		if ($hasCatID)
 		{
-			$catidField        = $table->getColumnAlias('catid');
-			$keys[$catidField] = $categoryId;
+			$query->where($db->quoteName($catidField) . ' = :catid')
+				->bind(':catid', $categoryId);
 		}
 
-		while ($table->load($keys))
+		while ($rawData = $db->setQuery($query)->loadAssoc() ?: '')
 		{
-			if ($title === $table->$titleField)
+			$table->reset();
+			$table->bind($rawData);
+
+			if ($hasTitle && ($title === $table->$titleField))
 			{
 				$title = StringHelper::increment($title);
 			}
 
 			$alias = StringHelper::increment($alias, 'dash');
 
-			$keys[$aliasField] = $alias;
+			$query->unbind(':alias');
+			$query->bind(':alias', $alias);
 		}
 
 		return [$title, $alias];

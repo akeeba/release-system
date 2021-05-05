@@ -22,11 +22,29 @@ class ReleaseModel extends AdminModel
 {
 	use CopyAware;
 
+	/**
+	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
+	 *
+	 * @var    string
+	 * @since  7.0
+	 */
+	protected $batch_copymove = 'category_id';
+
+	/**
+	 * Allowed batch commands
+	 *
+	 * @var  array
+	 */
+	protected $batch_commands = [
+		'assetgroup_id' => 'batchAccess',
+		'language_id'   => 'batchLanguage',
+	];
+
 	public function __construct($config = [], MVCFactoryInterface $factory = null, FormFactoryInterface $formFactory = null)
 	{
 		parent::__construct($config, $factory, $formFactory);
 
-		$this->_parent_table = 'Categories';
+		$this->_parent_table = 'Category';
 	}
 
 	/**

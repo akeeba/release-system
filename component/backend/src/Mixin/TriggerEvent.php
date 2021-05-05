@@ -34,7 +34,10 @@ trait TriggerEvent
 		// If there is an object method for this event, call it
 		if (method_exists($this, $event))
 		{
-			if (call_user_func([$this, $event], ...$arguments) === false)
+			/**
+			 * IMPORTANT! We use call_user_func_array() so we can pass arguments by reference.
+			 */
+			if (call_user_func_array([$this, $event], $arguments) === false)
 			{
 				return false;
 			}

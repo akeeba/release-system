@@ -46,6 +46,30 @@ class ReleasesModel extends ListModel
 		parent::__construct($config, $factory);
 	}
 
+	/**
+	 * Returns the ARS Categories for batch copy/move operations
+	 *
+	 * @return  array
+	 */
+	public function getCategories(): array
+	{
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select([
+				$db->quoteName('id', 'value'),
+				$db->quoteName('title', 'text'),
+			])->from($db->quoteName('#__ars_categories'));
+
+		try
+		{
+			return $db->setQuery($query)->loadAssocList() ?: [];
+		}
+		catch (\Exception $e)
+		{
+			return [];
+		}
+	}
+
 	protected function populateState($ordering = 'r.id', $direction = 'desc')
 	{
 		$app = Factory::getApplication();
