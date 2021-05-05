@@ -23,7 +23,7 @@
         <folder>tmpl</folder>
     </files>
 
-    <languages folder="language/frontend">
+    <languages folder="frontend/language">
         <language tag="en-GB">en-GB/com_ars.ini</language>
     </languages>
 
@@ -111,7 +111,7 @@
         </files>
 
         <!-- Back-end translation files -->
-        <languages folder="language/backend">
+        <languages folder="backend/language">
             <language tag="en-GB">en-GB/com_ars.ini</language>
             <language tag="en-GB">en-GB/com_ars.sys.ini</language>
         </languages>
