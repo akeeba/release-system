@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -40,6 +41,96 @@ class ItemsModel extends ListModel
 		}
 
 		parent::__construct($config, $factory);
+	}
+
+	/**
+	 * Returns a list of select options which will let the user pick a file for a release.
+	 *
+	 * Files already used in other items of the same category will not be listed to prevent the list getting too long.
+	 *
+	 * @param   int  $release_id  The numeric ID of the release selected by the user
+	 * @param   int  $item_id     The numeric ID of the current item. Leave 0 if it's a new item.
+	 *
+	 * @return  array  Array of JHtml options.
+	 * @see     Releases::directoryForRelease()
+	 */
+	public function getFilesOptions(int $release_id, int $item_id = 0): array
+	{
+		// Default options –– basically, an empty select
+		$options   = [];
+		$options[] = HTMLHelper::_('select.option', '', Text::_('COM_ARS_ITEM_FIELD_FILENAME_SELECT'));
+
+		// Get the directory where this category holds its files
+		/** @var ReleasesModel $releaseModel */
+		$releaseModel = $this->getMVCFactory()->createModel('Releases', 'Administrator');
+		$directory    = $releaseModel->directoryForRelease($release_id);
+
+		if (empty($directory))
+		{
+			return $options;
+		}
+
+		$directory .= in_array(substr($directory, -1), ['/', DIRECTORY_SEPARATOR]) ? '' : '/';
+
+		// Get all files under this directory and remove the directory prefix
+		$allFiles = Folder::files($directory, '.', true, true);
+		$allFiles = array_map(function ($thisFolder) use ($directory) {
+			$dirLen = strlen($directory);
+
+			if (substr($thisFolder, 0, $dirLen) == $directory)
+			{
+				$thisFolder = substr($thisFolder, $dirLen);
+			}
+
+			return ltrim($thisFolder, '/' . DIRECTORY_SEPARATOR);
+		}, $allFiles);
+
+		// Get a list of files already used in this category (so as not to show them again, he he!)
+		$files = [];
+		/** @var ReleaseTable $release */
+		$release = $this->getTable('Release', 'Administrator');
+
+		if (!$release->load($release_id))
+		{
+			return [];
+		}
+
+		/** @var ItemsModel $itemsModel */
+		$itemsModel = $this->getMVCFactory()->createModel('Items', 'Administrator', ['ignore_request' => true]);
+		$itemsModel->setState('filter.category_id', $release->category_id);
+		$itemsModel->setState('list.limit', 0);
+		$items = $itemsModel->getItems();
+
+		foreach ($items as $item)
+		{
+			if (empty($item->filename))
+			{
+				continue;
+			}
+
+			if ($item->id == $item_id)
+			{
+				continue;
+			}
+
+			$files[$item->id] = $item->filename;
+		}
+
+		// Produce a list of files and remove the items in the $files array
+		$files    = array_unique($files);
+		$useFiles = array_diff($allFiles, $files);
+
+		if (empty($useFiles))
+		{
+			return $options;
+		}
+
+		foreach ($useFiles as $file)
+		{
+			$options[] = HTMLHelper::_('select.option', $file, $file);
+		}
+
+		return $options;
 	}
 
 	/**

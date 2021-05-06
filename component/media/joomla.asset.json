@@ -74,7 +74,8 @@
 			"type": "script",
 			"uri": "com_ars/Items.min.js",
 			"dependencies": [
-				"core"
+				"core",
+				"com_ars.gui-helpers"
 			],
 			"attributes": {
 				"defer": true

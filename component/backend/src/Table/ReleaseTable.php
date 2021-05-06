@@ -22,7 +22,7 @@ use Joomla\Database\DatabaseDriver;
  *
  * @property int    $id                Primary key
  * @property int    $category_id       FK to #__ars_categories
- * @property int    $version           Release title a.k.a. version
+ * @property string $version           Release title a.k.a. version
  * @property string $alias             Release alias for URL generation
  * @property string $maturity          Release maturity: 'alpha','beta','rc','stable'
  * @property string $notes             Release notes, displayed in frontend

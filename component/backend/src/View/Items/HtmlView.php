@@ -85,6 +85,16 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolbar();
 
+		if ($this->getLayout() === 'modal')
+		{
+			$this->document->addScriptOptions(
+				'ars.itemsProxyCallback',
+				Factory::getApplication()->input->getCmd('function', 'arsSelectItem')
+			)
+				->getWebAssetManager()
+				->useScript('com_ars.item_select');
+		}
+
 		parent::display($tpl);
 	}
 

@@ -1,5 +1,5 @@
 <component name="CopyrightManager">
-  <settings>
+  <settings default="ARS">
     <module2copyright>
       <element module="Copyright" copyright="ARS" />
     </module2copyright>

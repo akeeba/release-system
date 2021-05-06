@@ -9,7 +9,11 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
+use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\ParameterType;
@@ -47,6 +51,56 @@ class ReleasesModel extends ListModel
 	}
 
 	/**
+	 * Get the absolute filesystem path of the files directory for a specific release ID.
+	 *
+	 * @param   int  $release_id  The release ID to get the directory for
+	 *
+	 * @return  string|null  The directory or NULL if it's not defined or does not exist
+	 * @throws  Exception
+	 * @see     Items::getFilesOptions
+	 */
+	public function directoryForRelease(int $release_id): ?string
+	{
+		if (empty($release_id))
+		{
+			return null;
+		}
+
+		/** @var ReleaseTable $releaseModel */
+		$release = $this->getTable('Release', 'Administrator');
+
+		// Get the release
+		if (!$release->load((int) $release_id))
+		{
+			return null;
+		}
+
+		/** @var CategoryTable $category */
+		$category = $this->getTable('Category', 'Administrator');
+
+		if (!$category->load($release->category_id))
+		{
+			return null;
+		}
+
+		// Get which directory to use
+		$directory = $category->directory;
+
+		if (!Folder::exists($directory))
+		{
+			$directory = JPATH_ROOT . '/' . $directory;
+		}
+
+		if (!Folder::exists($directory))
+		{
+			return null;
+		}
+
+		return $directory;
+	}
+
+
+	/**
 	 * Returns the ARS Categories for batch copy/move operations
 	 *
 	 * @return  array
@@ -64,7 +118,7 @@ class ReleasesModel extends ListModel
 		{
 			return $db->setQuery($query)->loadAssocList() ?: [];
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			return [];
 		}

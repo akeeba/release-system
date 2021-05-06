@@ -9,7 +9,7 @@ namespace Akeeba\ReleaseSystem\Site\Controller;
 
 defined('_JEXEC') or die;
 
-use Akeeba\ReleaseSystem\Admin\Controller\DownloadIDLabels;
+use Akeeba\Component\ARS\Administrator\Controller\DownloadIDLabels;
 use FOF40\Container\Container;
 use FOF40\Controller\Controller;
 use Joomla\CMS\Router\Route;

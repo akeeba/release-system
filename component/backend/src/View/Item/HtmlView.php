@@ -59,6 +59,13 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolbar();
 
+		// Push options to the page's JavaScript
+		$this->document
+			->addScriptOptions('ars.item_id', $this->item->id ?? 0)
+			->addScriptOptions('ars.item_filename', $this->item->filename ?? '')
+			->getWebAssetManager()
+			->useScript('com_ars.items');
+
 		parent::display($tpl);
 	}
 

@@ -47,6 +47,8 @@ if ($hasReleaseFilter && !$hasCategoryFilter)
 	$hasCategoryFilter = !empty($catIdFilter);
 }
 
+$modal = isset($modal) ? boolval($modal) : false;
+
 ?>
 
 <form action="<?= Route::_('index.php?option=com_ars&view=items'); ?>"
@@ -147,7 +149,14 @@ if ($hasReleaseFilter && !$hasCategoryFilter)
 								</td>
 
 								<td>
-									<?php if ($canEdit): ?>
+									<?php if ($modal): ?>
+										<a class="hasArsItemProxy"
+										   data-arsrowid="<?= $item->id ?>"
+										   data-arstitle="<?= $this->escape($item->title); ?>"
+										>
+											<?= $this->escape($item->title); ?>
+										</a>
+									<?php elseif ($canEdit): ?>
 										<a href="<?= Route::_('index.php?option=com_ars&task=item.edit&id=' . (int) $item->id); ?>"
 										   title="<?= Text::_('JACTION_EDIT'); ?><?= $this->escape($item->title); ?>">
 											<?= $this->escape($item->title); ?>
@@ -163,7 +172,7 @@ if ($hasReleaseFilter && !$hasCategoryFilter)
 								<?php if (!$hasCategoryFilter || !$hasReleaseFilter): ?>
 									<td>
 										<?php if (!$hasCategoryFilter): ?>
-											<?php if ($canEdit): ?>
+											<?php if ($canEdit && !$modal): ?>
 												<a href="<?= Route::_('index.php?option=com_ars&task=category.edit&id=' . $item->cat_id) ?>">
 													<?= $this->escape($item->cat_title) ?>
 												</a>
@@ -182,7 +191,7 @@ if ($hasReleaseFilter && !$hasCategoryFilter)
 										</span>
 										<?php else: ?>
 											<span title="<?= Text::_('COM_ARS_ITEM_FIELD_RELEASE') ?>">
-											<?php if ($canEdit): ?>
+											<?php if ($canEdit && !$modal): ?>
 												<a href="<?= Route::_('index.php?option=com_ars&task=release.edit&id=' . $item->release_id) ?>">
 													<?= $this->escape($item->version) ?>
 												</a>

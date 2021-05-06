@@ -15,14 +15,10 @@ if (typeof (akeeba) == "undefined")
 
 var arsItems = {};
 
-arsItems.onTypeChange = function (e) {
-    arsItems.showHideRows();
-};
-
 arsItems.populateFiles = function (forceSelected) {
     var itemID    = Joomla.getOptions("ars.item_id", "");
-    var releaseID = document.getElementById("release_id").value;
-    var selected  = document.getElementById("filename").value;
+    var releaseID = document.getElementById("jform_release_id").value;
+    var selected  = document.getElementById("jform_filename").value;
     var token     = Joomla.getOptions("csrf.token", "");
 
     if (forceSelected)
@@ -30,108 +26,72 @@ arsItems.populateFiles = function (forceSelected) {
         selected = forceSelected;
     }
 
-    var ajaxData = {
-        "option":     "com_ars",
-        "view":       "Ajax",
-        "format":     "raw",
-        "task":       "getFiles",
-        "item_id":    itemID,
-        "release_id": releaseID,
-        "selected":   selected
-    };
+    Joomla.request({
+        url:       `index.php?option=com_ars&view=ajax&format=raw&task=getFiles&item_id=${itemID}&release_id=${releaseID}&selected=${selected}&${token}=1`,
+        method:    "GET",
+        perform:   true,
+        onSuccess: data =>
+                   {
+                       let elFilename = document.getElementById("jform_filename");
 
-    ajaxData[token] = 1;
+                       elFilename.innerHTML = data;
+                       elFilename.removeAttribute("disabled");
 
-    var structure = {
-        type: "GET",
-        data: ajaxData,
-        success : function (data) {
-            var elFilename = document.getElementById("filename");
-
-            elFilename.innerHTML = data;
-            elFilename.removeAttribute("disabled");
-            elFilename.addEventListener('change', function (e) {
-                arsItems.onFileChange(e);
-            });
-
-            arsItems.onFileChange();
-        }
-    };
-
-    akeeba.Ajax.ajax(
-        'index.php',
-        structure
-    );
+                       arsItems.onFileChange();
+                   }
+    });
 };
 
-arsItems.onLinkBlur = function (e) {
-    var elAlias  = document.getElementById("alias");
+arsItems.onLinkBlur = function (e)
+{
+    var elAlias  = document.getElementById("jform_alias");
     var oldAlias = elAlias.value;
 
-    if (oldAlias === "")
+    if (oldAlias !== "")
     {
-        var newAlias = basename(document.getElementById("url").value);
-        var qmPos    = newAlias.indexOf("?");
-
-        if (qmPos >= 0)
-        {
-            newAlias = newAlias.substr(0, qmPos);
-        }
-
-        newAlias = newAlias.replace(" ", "-", "g");
-        newAlias = newAlias.replace(".", "-", "g");
-
-        elAlias.value = newAlias;
+        return;
     }
+
+    var newAlias = basename(document.getElementById("jform_url").value);
+    var qmPos    = newAlias.indexOf("?");
+
+    if (qmPos >= 0)
+    {
+        newAlias = newAlias.substr(0, qmPos);
+    }
+
+    newAlias = newAlias.replace(" ", "-", "g");
+
+    elAlias.value = newAlias;
 };
 
-arsItems.onFileChange = function (e) {
-    var elAlias  = document.getElementById("alias");
+arsItems.onFileChange = function (e)
+{
+    var elAlias  = document.getElementById("jform_alias");
     var oldAlias = elAlias.value;
 
-    if (oldAlias === "")
+    if (oldAlias !== "")
     {
-        var newAlias = basename(document.getElementById("filename").value);
-
-        newAlias = newAlias.replace(" ", "-", "g");
-        newAlias = newAlias.replace(".", "-", "g");
-
-        elAlias.value = newAlias;
+        return;
     }
-};
 
-arsItems.showHideRows = function (populateFiles) {
-    var elFilename = document.getElementById("filename");
-    var elURL      = document.getElementById("url");
+    var newAlias = basename(document.getElementById("jform_filename").value);
+    newAlias     = newAlias.replace(" ", "-", "g");
 
-    elFilename.parentNode.style.display = 'none';
-    elURL.parentNode.style.display = 'none';
-
-    var currentType = document.getElementById("type").value;
-
-    if (currentType === "file")
-    {
-        elFilename.parentNode.style.display = '';
-        elFilename.setAttribute("disabled", "disabled");
-
-        if ((populateFiles === undefined) || populateFiles)
-        {
-            arsItems.populateFiles();
-        }
-    }
-    else
-    {
-        elURL.parentNode.style.display = '';
-    }
+    elAlias.value = newAlias;
 };
 
 window.addEventListener("DOMContentLoaded", function ()
 {
-    document.getElementById("url").addEventListener("focus", function (e)
+    document.getElementById("jform_url").addEventListener("focus", arsItems.onLinkBlur);
+    document.getElementById("jform_filename").addEventListener("change", arsItems.onFileChange);
+    document.getElementById("jform_type").addEventListener("change", function (e)
     {
-        arsItems.onLinkBlur(e);
+        if (document.getElementById("jform_type").value === "file")
+        {
+            arsItems.populateFiles();
+        }
     });
 
-    arsItems.showHideRows(false);
     arsItems.populateFiles(Joomla.getOptions("ars.item_filename", ""));
 });
