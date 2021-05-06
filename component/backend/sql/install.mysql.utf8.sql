@@ -109,23 +109,24 @@ CREATE TABLE IF NOT EXISTS `#__ars_log`
 
 CREATE TABLE IF NOT EXISTS `#__ars_updatestreams`
 (
-    `id`               bigint(20)                                                                         NOT NULL AUTO_INCREMENT,
-    `name`             VARCHAR(255)                                                                       NOT NULL,
-    `alias`            VARCHAR(255)                                                                       NOT NULL,
-    `type`             ENUM ('components','libraries','modules','packages','plugins','files','templates') NOT NULL DEFAULT 'components',
-    `element`          VARCHAR(255)                                                                       NOT NULL,
-    `category`         BIGINT(20) UNSIGNED                                                                NOT NULL,
+    `id`               bigint(20)          NOT NULL AUTO_INCREMENT,
+    `name`             VARCHAR(255)        NOT NULL,
+    `alias`            VARCHAR(255)        NOT NULL,
+    `type`             ENUM ('components','libraries','modules','packages',
+        'plugins','files','templates')     NOT NULL DEFAULT 'components',
+    `element`          VARCHAR(255)        NOT NULL,
+    `category`         BIGINT(20) UNSIGNED NOT NULL,
     `packname`         VARCHAR(255),
-    `client_id`        int(1)                                                                             NOT NULL DEFAULT '1',
-    `folder`           varchar(255)                                                                                DEFAULT '',
-    `jedid`            bigint(20)                                                                         NOT NULL,
-    `created`          datetime                                                                           NULL     DEFAULT NULL,
-    `created_by`       int(11)                                                                            NOT NULL DEFAULT '0',
-    `modified`         datetime                                                                           NULL     DEFAULT NULL,
-    `modified_by`      int(11)                                                                            NOT NULL DEFAULT '0',
-    `checked_out`      int(11)                                                                            NOT NULL DEFAULT '0',
-    `checked_out_time` datetime                                                                           NULL     DEFAULT NULL,
-    `published`        int(11)                                                                            NOT NULL DEFAULT '1',
+    `client_id`        int(1)              NOT NULL DEFAULT '1',
+    `folder`           varchar(255)                 DEFAULT '',
+    `jedid`            bigint(20)          NOT NULL,
+    `created`          datetime            NULL     DEFAULT NULL,
+    `created_by`       int(11)             NOT NULL DEFAULT '0',
+    `modified`         datetime            NULL     DEFAULT NULL,
+    `modified_by`      int(11)             NOT NULL DEFAULT '0',
+    `checked_out`      int(11)             NOT NULL DEFAULT '0',
+    `checked_out_time` datetime            NULL     DEFAULT NULL,
+    `published`        int(11)             NOT NULL DEFAULT '1',
     PRIMARY KEY `id` (`id`),
     KEY `#__ars_updatestreams_published` (`published`),
     KEY `#__ars_updatestreams_jedid` (`jedid`)
@@ -134,22 +135,34 @@ CREATE TABLE IF NOT EXISTS `#__ars_updatestreams`
 
 CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc`
 (
-    `id`           bigint(20)          NOT NULL AUTO_INCREMENT,
-    `category`     bigint(20) unsigned NOT NULL,
-    `packname`     varchar(255)                 DEFAULT NULL,
-    `title`        varchar(255)        NOT NULL,
-    `description`  MEDIUMTEXT          NOT NULL,
-    `environments` varchar(100)                 DEFAULT NULL,
-    `published`    int(11)             NOT NULL DEFAULT '1',
+    `id`               bigint(20)          NOT NULL AUTO_INCREMENT,
+    `category`         bigint(20) unsigned NOT NULL,
+    `packname`         varchar(255)                 DEFAULT NULL,
+    `title`            varchar(255)        NOT NULL,
+    `description`      MEDIUMTEXT          NOT NULL,
+    `environments`     varchar(100)                 DEFAULT NULL,
+    `created`          datetime            NULL     DEFAULT NULL,
+    `created_by`       int(11)             NOT NULL DEFAULT '0',
+    `modified`         datetime            NULL     DEFAULT NULL,
+    `modified_by`      int(11)             NOT NULL DEFAULT '0',
+    `checked_out`      int(11)             NOT NULL DEFAULT '0',
+    `checked_out_time` datetime            NULL     DEFAULT NULL,
+    `published`        int(11)             NOT NULL DEFAULT '1',
     PRIMARY KEY `id` (`id`)
 ) ENGINE InnoDB
   DEFAULT COLLATE utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#__ars_environments`
 (
-    `id`       bigint(20)   NOT NULL AUTO_INCREMENT,
-    `title`    varchar(100) NOT NULL DEFAULT '',
-    `xmltitle` varchar(20)  NOT NULL DEFAULT '1.0',
+    `id`               bigint(20)   NOT NULL AUTO_INCREMENT,
+    `title`            varchar(100) NOT NULL DEFAULT '',
+    `xmltitle`         varchar(20)  NOT NULL DEFAULT '1.0',
+    `created`          datetime     NULL     DEFAULT NULL,
+    `created_by`       int(11)      NOT NULL DEFAULT '0',
+    `modified`         datetime     NULL     DEFAULT NULL,
+    `modified_by`      int(11)      NOT NULL DEFAULT '0',
+    `checked_out`      int(11)      NOT NULL DEFAULT '0',
+    `checked_out_time` datetime     NULL     DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE InnoDB
   DEFAULT COLLATE utf8_general_ci;
@@ -166,6 +179,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_dlidlabels`
     `created`          datetime            NULL     DEFAULT NULL,
     `modified_by`      bigint(20)          NOT NULL DEFAULT '0',
     `modified`         datetime            NULL     DEFAULT NULL,
+    `checked_out`      int(11)             NOT NULL DEFAULT '0',
+    `checked_out_time` datetime            NULL     DEFAULT NULL,
     PRIMARY KEY (`ars_dlidlabel_id`)
 ) ENGINE InnoDB
   DEFAULT COLLATE utf8_general_ci;
