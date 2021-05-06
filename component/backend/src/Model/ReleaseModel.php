@@ -103,6 +103,31 @@ class ReleaseModel extends AdminModel
 		}
 	}
 
+	protected function getReorderConditions($table)
+	{
+		/** @var CMSApplication $app */
+		$app = Factory::getApplication();
+
+		$where = [];
+
+		$fltCategory  = $app->getUserState('com_ars.releases.filter.category_id');
+		$fltPublished = $app->getUserState('com_ars.releases.filter.published');
+
+		$db = $this->getDbo();
+
+		if (is_numeric($fltCategory))
+		{
+			$where[] = $db->quoteName('category_id') . ' = ' . $db->quote((int) $fltCategory);
+		}
+
+		if (is_numeric($fltPublished))
+		{
+			$where[] = $db->quoteName('published') . ' = ' . $db->quote((int) $fltPublished);
+		}
+
+		return $where;
+	}
+
 	/**
 	 * Applies custom ACL during batch processing of records.
 	 *

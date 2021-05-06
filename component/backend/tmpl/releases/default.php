@@ -25,7 +25,7 @@ $user      = Factory::getApplication()->getIdentity() ?: Factory::getUser();
 $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
-$saveOrder = $listOrder == 'ordering';
+$saveOrder = $listOrder == 'r.ordering';
 $nullDate  = Factory::getDbo()->getNullDate();
 
 if ($saveOrder && !empty($this->items))
@@ -108,7 +108,7 @@ $cParams = ComponentHelper::getParams('com_ars');
 									$user->authorise('core.edit.state', 'com_ars.category.' . $item->category_id)
 								) && $canCheckin;
 							?>
-							<tr class="row<?= $i++ % 2; ?>" data-draggable-group="0">
+							<tr class="row<?= $i++ % 2; ?>" data-draggable-group="<?= $item->category_id ?>>">
 								<td class="text-center">
 									<?= HTMLHelper::_('grid.id', $i, $item->id, !(empty($item->checked_out_time) || ($item->checked_out_time === $nullDate)), 'cid', 'cb', $item->version); ?>
 								</td>
