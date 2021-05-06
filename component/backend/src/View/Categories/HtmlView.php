@@ -103,7 +103,7 @@ class HtmlView extends BaseHtmlView
 
 		if ($canCreate)
 		{
-			ToolbarHelper::addNew('categories.add');
+			ToolbarHelper::addNew('category.add');
 		}
 
 		if ($canDelete || $canEditState || $canCreate)

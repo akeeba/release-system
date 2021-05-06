@@ -100,6 +100,20 @@ class CategoryModel extends AdminModel
 		if (empty($data))
 		{
 			$data = $this->getItem();
+
+			// Get the primary key of the record being edited.
+			$pk = (int) $this->getState($this->getName() . '.id');
+
+			// No primary key = new record. Override default values based on the filters set in the Categories page.
+			if ($pk <= 0)
+			{
+				$data->title             = $app->getUserState('com_ars.categories.filter.search') ?: $data->title;
+				$data->published         = $app->getUserState('com_ars.categories.filter.category_id') ?: $data->published;
+				$data->show_unauth_links = $app->getUserState('com_ars.categories.filter.filter_show_unauth_links') ?: $data->show_unauth_links;
+				$data->is_supported      = $app->getUserState('com_ars.categories.filter.supported') ?: $data->is_supported;
+				$data->access            = $app->getUserState('com_ars.categories.filter.access') ?: $data->access;
+				$data->language          = $app->getUserState('com_ars.categories.filter.language') ?: $data->language;
+			}
 		}
 
 		$this->preprocessData('com_ars.category', $data);

@@ -11,13 +11,15 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Model\Mixin\CopyAware;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
+use Exception;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Event\Model\BeforeBatchEvent;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Table\Table;
 use Joomla\Database\ParameterType;
 
 class ReleaseModel extends AdminModel
@@ -77,7 +79,8 @@ class ReleaseModel extends AdminModel
 	 * @param   array  $contexts
 	 *
 	 * @return  bool
-	 * @throws  \Exception
+	 * @throws  Exception
+	 * @since   7.0.0
 	 */
 	public function batch($commands, $pks, $contexts)
 	{
@@ -100,10 +103,20 @@ class ReleaseModel extends AdminModel
 		}
 	}
 
+	/**
+	 * Applies custom ACL during batch processing of records.
+	 *
+	 * @param   BeforeBatchEvent  $event  The event to handle
+	 *
+	 * @return  void
+	 * @throws  Exception
+	 * @see     self::batch
+	 * @since   7.0.0
+	 */
 	public function onBeforeBatch(BeforeBatchEvent $event)
 	{
 		$table = $event->getArgument('src');
-		$type = $event->getArgument('type');
+		$type  = $event->getArgument('type');
 
 		if (!is_object($table) || !($table instanceof ReleaseTable))
 		{
@@ -134,7 +147,16 @@ class ReleaseModel extends AdminModel
 	}
 
 	/**
-	 * @inheritDoc
+	 * Get the add/edit form.
+	 *
+	 * This is responsible for enabling, disabling or removing fields based on the access control preferences.
+	 *
+	 * @param   array  $data
+	 * @param   bool   $loadData
+	 *
+	 * @return false|Form
+	 * @throws Exception
+	 * @since  7.0.0
 	 */
 	public function getForm($data = [], $loadData = true)
 	{
@@ -172,14 +194,42 @@ class ReleaseModel extends AdminModel
 		return $form;
 	}
 
+	/**
+	 * Load the data of an add / edit form.
+	 *
+	 * The data is loaded from the user state. If the user state is empty we load the item being edited. If there is no
+	 * item being edited we will override the default table values with the respective list filter values. This makes
+	 * sense for users. If I am filtering by category X and maturity Stable I am probably trying to see if there is a
+	 * specific stable version released in category X and, if not, create it. Using the filter values reduces the
+	 * possibility for silly mistakes on the part of the operator.
+	 *
+	 * @return array|bool|\Joomla\CMS\Object\CMSObject|mixed
+	 * @throws Exception
+	 */
 	protected function loadFormData()
 	{
+		/** @var CMSApplication $app */
 		$app  = Factory::getApplication();
 		$data = $app->getUserState('com_ars.edit.release.data', []);
 
 		if (empty($data))
 		{
 			$data = $this->getItem();
+
+			// Get the primary key of the record being edited.
+			$pk = (int) $this->getState($this->getName() . '.id');
+
+			// No primary key = new record. Override default values based on the filters set in the Releases page.
+			if ($pk <= 0)
+			{
+				$data->version           = $app->getUserState('com_ars.releases.filter.search') ?: $data->version;
+				$data->category_id       = $app->getUserState('com_ars.releases.filter.category_id') ?: $data->category_id;
+				$data->published         = $app->getUserState('com_ars.releases.filter.published') ?: $data->published;
+				$data->maturity          = $app->getUserState('com_ars.releases.filter.maturity') ?: $data->maturity;
+				$data->show_unauth_links = $app->getUserState('com_ars.releases.filter.filter_show_unauth_links') ?: $data->show_unauth_links;
+				$data->access            = $app->getUserState('com_ars.releases.filter.access') ?: $data->access;
+				$data->language          = $app->getUserState('com_ars.releases.filter.language') ?: $data->language;
+			}
 		}
 
 		$this->preprocessData('com_ars.release', $data);
@@ -189,25 +239,10 @@ class ReleaseModel extends AdminModel
 
 	protected function prepareTable($table)
 	{
-		/**
-		 * Access check. This is called from save().
-		 *
-		 * The release belongs to a category. The user needs to be authorized for core.create, core.edit or
-		 * core.edit.own (depending on the table's state) to save data into the table.
-		 */
-		$user   = Factory::getApplication()->getIdentity() ?: Factory::getUser();
-		$isNew  = !empty($table->getId());
-		$isOwn  = !$isNew && ($table->created_by == $user->id);
-		$asset  = 'com_ars.category.' . $table->category_id;
-		$action = $isNew ? 'core.create' : ($isOwn ? 'core.edit.own' : 'core.edit');
-
-		if (!$user->authorise($action, $asset) && !$user->authorise($action, 'com_ars'))
-		{
-			throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
-		}
-
 		// Set up the created / modified date
-		$date = Factory::getDate();
+		$date  = Factory::getDate();
+		$user  = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$isNew = !empty($table->getId());
 
 		if ($isNew)
 		{
@@ -224,10 +259,10 @@ class ReleaseModel extends AdminModel
 	}
 
 	/**
-	 * @param   ReleaseTable  $record
+	 * @param   ReleaseTable|object  $record
 	 *
 	 * @return  bool
-	 * @throws  \Exception
+	 * @throws  Exception
 	 */
 	protected function canDelete($record): bool
 	{
@@ -260,7 +295,7 @@ class ReleaseModel extends AdminModel
 		{
 			$result = ($db->setQuery($query)->loadResult() ?: 0) == 0;
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$result = true;
 		}
@@ -279,10 +314,10 @@ class ReleaseModel extends AdminModel
 	 * Since a release belongs to a category which belongs to the component we check whether the user has the
 	 * core.edit.state privilege in the category itself.
 	 *
-	 * @param   ReleaseTable  $record
+	 * @param   ReleaseTable|object  $record
 	 *
 	 * @return  bool
-	 * @throws  \Exception
+	 * @throws  Exception
 	 */
 	protected function canEditState($record)
 	{
