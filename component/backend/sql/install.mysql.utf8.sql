@@ -163,9 +163,9 @@ CREATE TABLE IF NOT EXISTS `#__ars_dlidlabels`
     `dlid`             CHAR(32)            NOT NULL,
     `enabled`          tinyint(3)          NOT NULL DEFAULT '1',
     `created_by`       bigint(20)          NOT NULL DEFAULT '0',
-    `created_on`       datetime            NULL     DEFAULT NULL,
+    `created`          datetime            NULL     DEFAULT NULL,
     `modified_by`      bigint(20)          NOT NULL DEFAULT '0',
-    `modified_on`      datetime            NULL     DEFAULT NULL,
+    `modified`         datetime            NULL     DEFAULT NULL,
     PRIMARY KEY (`ars_dlidlabel_id`)
 ) ENGINE InnoDB
   DEFAULT COLLATE utf8_general_ci;

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
+
+<form addfieldprefix="Akeeba\Component\ARS\Administrator\Field">
+    <fields name="filter">
+        <field
+                name="search"
+                type="text"
+                inputmode="search"
+                label="JSEARCH_FILTER"
+                hint="JSEARCH_FILTER"
+        />
+
+        <field
+                name="category_id"
+                type="ArsCategories"
+                label="COM_ARS_ITEM_FIELD_CATEGORY"
+                onchange="this.form.submit();"
+        >
+            <option value="">COM_ARS_COMMON_CATEGORY_SELECT_LABEL</option>
+        </field>
+
+        <field
+                name="release_id"
+                type="ArsReleases"
+                label="COM_ARS_ITEM_FIELD_RELEASE"
+                onchange="this.form.submit();"
+                cat_state_key="com_ars.items.filter.category_id"
+        >
+            <option value="">COM_ARS_COMMON_RELEASE_SELECT_LABEL</option>
+        </field>
+
+        <field
+                name="published"
+                type="status"
+                optionsFilter="*,0,1"
+                label="JENABLED"
+                description="JFIELD_ENABLED_DESC"
+                onchange="this.form.submit();"
+        >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+        </field>
+
+        <field
+                name="show_unauth_links"
+                type="list"
+                label="COM_ARS_COMMON_SHOW_UNAUTH_LINKS"
+                onchange="this.form.submit();"
+        >
+            <option value="">COM_ARS_COMMON_SHOW_UNAUTH_LINKS_SELECT</option>
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+                name="access"
+                type="accesslevel"
+                label="JGRID_HEADING_ACCESS"
+                multiple="true"
+                layout="joomla.form.field.list-fancy-select"
+                hint="JOPTION_SELECT_ACCESS"
+                onchange="this.form.submit();"
+        />
+
+        <field
+                name="language"
+                type="contentlanguage"
+                label="JGRID_HEADING_LANGUAGE"
+                onchange="this.form.submit();"
+        >
+            <option value="">JOPTION_SELECT_LANGUAGE</option>
+            <option value="*">JALL</option>
+        </field>
+
+    </fields>
+    <fields name="list">
+        <field
+                name="fullordering"
+                type="list"
+                label="JGLOBAL_SORT_BY"
+                statuses="*,0,1"
+                onchange="this.form.submit();"
+                default="i.id DESC"
+                validate="options"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="i.title ASC">JGLOBAL_TITLE_ASC</option>
+            <option value="i.title DESC">JGLOBAL_TITLE_DESC</option>
+            <option value="i.id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="i.id DESC">JGRID_HEADING_ID_DESC</option>
+            <option value="i.access ASC">JGRID_HEADING_ACCESS_ASC</option>
+            <option value="i.access DESC">JGRID_HEADING_ACCESS_DESC</option>
+            <option value="i.language ASC">JGRID_HEADING_LANGUAGE_ASC</option>
+            <option value="i.language DESC">JGRID_HEADING_LANGUAGE_DESC</option>
+            <option value="i.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
+            <option value="i.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
+            <option value="i.created ASC">COM_ARS_RELEASES_HEADING_RELEASED_ASC</option>
+            <option value="i.created DESC">COM_ARS_RELEASES_HEADING_RELEASED_DESC</option>
+        </field>
+
+        <field
+                name="limit"
+                type="limitbox"
+                label="JGLOBAL_LIST_LIMIT"
+                default="25"
+                onchange="this.form.submit();"
+        />
+    </fields>
+</form>

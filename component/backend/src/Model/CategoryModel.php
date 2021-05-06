@@ -66,12 +66,9 @@ class CategoryModel extends AdminModel
 		// Modify the form based on access controls.
 		if (!$canEditState)
 		{
-			if (!$canEditState)
-			{
-				$form->setFieldAttribute('published', 'disabled', 'true');
-				$form->setFieldAttribute('published', 'required', 'false');
-				$form->setFieldAttribute('published', 'filter', 'unset');
-			}
+			$form->setFieldAttribute('published', 'disabled', 'true');
+			$form->setFieldAttribute('published', 'required', 'false');
+			$form->setFieldAttribute('published', 'filter', 'unset');
 		}
 
 		return $form;
@@ -109,7 +106,7 @@ class CategoryModel extends AdminModel
 			{
 				$data->title             = $app->getUserState('com_ars.categories.filter.search') ?: $data->title;
 				$data->published         = $app->getUserState('com_ars.categories.filter.category_id') ?: $data->published;
-				$data->show_unauth_links = $app->getUserState('com_ars.categories.filter.filter_show_unauth_links') ?: $data->show_unauth_links;
+				$data->show_unauth_links = $app->getUserState('com_ars.categories.filter.show_unauth_links') ?: $data->show_unauth_links;
 				$data->is_supported      = $app->getUserState('com_ars.categories.filter.supported') ?: $data->is_supported;
 				$data->access            = $app->getUserState('com_ars.categories.filter.access') ?: $data->access;
 				$data->language          = $app->getUserState('com_ars.categories.filter.language') ?: $data->language;
@@ -129,13 +126,13 @@ class CategoryModel extends AdminModel
 		if (empty($table->getId()))
 		{
 			// Set the values
-			$table->created_on = $date->toSql();
+			$table->created    = $date->toSql();
 			$table->created_by = $user->id;
 		}
 		else
 		{
 			// Set the values
-			$table->modified_on = $date->toSql();
+			$table->modified    = $date->toSql();
 			$table->modified_by = $user->id;
 		}
 	}

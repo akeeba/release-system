@@ -30,7 +30,7 @@ $user = $this->getContainer()->platform->getUser();
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">
-                @selectfilter('release', \Akeeba\Component\ARS\Administrator\Helper\Select::releases(), 'COM_ARS_COMMON_SELECT_RELEASE_LABEL', ['class' => 'advancedSelect'])
+                @selectfilter('release', \Akeeba\Component\ARS\Administrator\Helper\Select::releases(), 'COM_ARS_COMMON_RELEASE_SELECT_LABEL', ['class' => 'advancedSelect'])
             </div>
 
             <div class="akeeba-filter-element akeeba-form-group">

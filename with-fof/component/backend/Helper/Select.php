@@ -208,7 +208,7 @@ abstract class Select
 
 		if ($addDefault)
 		{
-			array_unshift($options, JHtml::_('FEFHelp.select.option', 0, '- ' . Text::_('COM_ARS_COMMON_SELECT_RELEASE_LABEL') . ' -'));
+			array_unshift($options, JHtml::_('FEFHelp.select.option', 0, '- ' . Text::_('COM_ARS_COMMON_RELEASE_SELECT_LABEL') . ' -'));
 		}
 
 		return $options;

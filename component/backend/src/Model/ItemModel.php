@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Model\Mixin\CopyAware;
+use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
@@ -20,9 +21,8 @@ use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\Database\ParameterType;
 
-class ReleaseModel extends AdminModel
+class ItemModel extends AdminModel
 {
 	use CopyAware;
 
@@ -32,7 +32,7 @@ class ReleaseModel extends AdminModel
 	 * @var    string
 	 * @since  7.0
 	 */
-	protected $batch_copymove = 'category_id';
+	protected $batch_copymove = 'release_id';
 
 	/**
 	 * Allowed batch commands
@@ -48,31 +48,11 @@ class ReleaseModel extends AdminModel
 	{
 		parent::__construct($config, $factory, $formFactory);
 
-		$this->_parent_table = 'Category';
+		$this->_parent_table = 'Release';
 	}
 
 	/**
 	 * Override batch processing to add custom onBeforeBatch event handler.
-	 *
-	 * Joomla assumes that all items being batch processed are assets. This means it will check com_ars.release.123 for
-	 * permissions to edit or create an item (depending on the batch command). However, Releases are not assets. The
-	 * permissions are defined by the parent category. We would need to either fork all batch operations (way too much
-	 * overhead) or use the onBeforeBatch event.
-	 *
-	 * The latter is the ideal method but it normally has to be registered by plugins. Instead of requiring a plugin to
-	 * enforce a security feature we instead register an event listener for the duration of the batch processing
-	 * operation.
-	 *
-	 * Furthermore, the event listener cannot return any data (it's an immutable event the onBeforeBatch event we're
-	 * handling) therefore we wrap it with a try/catch which treats any RuntimeException thrown by the event handler as
-	 * a model error. The finally block removes the temporary listener regardless of the outcome, undoing the changes we
-	 * made to the application's event dispatcher.
-	 *
-	 * Back n August 2016 I had contributed the code in Joomla 4 which converted all internal event handlers to events
-	 * and had them go through the application's event dispatcher. This code here shows you one of the many reasons this
-	 * is important and how you can use it in real world software to work around restrictions in Joomla's core code
-	 * without forking the code and creating an unmaintainable mess. This is something we had been doing in FOF 3 since
-	 * 2015. You're welcome :)
 	 *
 	 * @param   array  $commands
 	 * @param   array  $pks
@@ -80,6 +60,8 @@ class ReleaseModel extends AdminModel
 	 *
 	 * @return  bool
 	 * @throws  Exception
+	 * @see     ReleaseModel::batch()
+	 *
 	 * @since   7.0.0
 	 */
 	public function batch($commands, $pks, $contexts)
@@ -118,7 +100,16 @@ class ReleaseModel extends AdminModel
 		$table = $event->getArgument('src');
 		$type  = $event->getArgument('type');
 
-		if (!is_object($table) || !($table instanceof ReleaseTable))
+		if (!is_object($table) || !($table instanceof ItemTable))
+		{
+			return;
+		}
+
+		// Let's get the Release so we can figure out what is the Category we belong to
+		/** @var ReleaseTable $release */
+		$release = $this->getMVCFactory()->createTable('Release', 'Administrator');
+
+		if (!$release->load($table->release_id))
 		{
 			return;
 		}
@@ -129,7 +120,7 @@ class ReleaseModel extends AdminModel
 		{
 			// Copy: we must be allowed to create items in the category
 			case 'copy':
-				if (!$user->authorise('core.create', 'com_ars.category.' . $table->category_id))
+				if (!$user->authorise('core.create', 'com_ars.category.' . $release->category_id))
 				{
 					throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 				}
@@ -137,12 +128,11 @@ class ReleaseModel extends AdminModel
 
 			// Move, access, language etc: we must be allowed to edit items in the category
 			default:
-				if (!$user->authorise('core.edit', 'com_ars.category.' . $table->category_id))
+				if (!$user->authorise('core.edit', 'com_ars.category.' . $release->category_id))
 				{
 					throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 				}
 				break;
-
 		}
 	}
 
@@ -161,8 +151,8 @@ class ReleaseModel extends AdminModel
 	public function getForm($data = [], $loadData = true)
 	{
 		$form = $this->loadForm(
-			'com_ars.release',
-			'release',
+			'com_ars.item',
+			'item',
 			[
 				'control'   => 'jform',
 				'load_data' => $loadData,
@@ -198,14 +188,14 @@ class ReleaseModel extends AdminModel
 
 		$where = [];
 
-		$fltCategory  = $app->getUserState('com_ars.releases.filter.category_id');
-		$fltPublished = $app->getUserState('com_ars.releases.filter.published');
+		$fltRelease   = $app->getUserState('com_ars.items.filter.release_id');
+		$fltPublished = $app->getUserState('com_ars.items.filter.published');
 
 		$db = $this->getDbo();
 
-		if (is_numeric($fltCategory))
+		if (is_numeric($fltRelease))
 		{
-			$where[] = $db->quoteName('category_id') . ' = ' . $db->quote((int) $fltCategory);
+			$where[] = $db->quoteName('release_id') . ' = ' . $db->quote((int) $fltRelease);
 		}
 
 		if (is_numeric($fltPublished))
@@ -232,7 +222,7 @@ class ReleaseModel extends AdminModel
 	{
 		/** @var CMSApplication $app */
 		$app  = Factory::getApplication();
-		$data = $app->getUserState('com_ars.edit.release.data', []);
+		$data = $app->getUserState('com_ars.edit.item.data', []);
 
 		if (empty($data))
 		{
@@ -244,17 +234,16 @@ class ReleaseModel extends AdminModel
 			// No primary key = new record. Override default values based on the filters set in the Releases page.
 			if ($pk <= 0)
 			{
-				$data->version           = $app->getUserState('com_ars.releases.filter.search') ?: $data->version;
-				$data->category_id       = $app->getUserState('com_ars.releases.filter.category_id') ?: $data->category_id;
-				$data->published         = $app->getUserState('com_ars.releases.filter.published') ?: $data->published;
-				$data->maturity          = $app->getUserState('com_ars.releases.filter.maturity') ?: $data->maturity;
-				$data->show_unauth_links = $app->getUserState('com_ars.releases.filter.show_unauth_links') ?: $data->show_unauth_links;
-				$data->access            = $app->getUserState('com_ars.releases.filter.access') ?: $data->access;
-				$data->language          = $app->getUserState('com_ars.releases.filter.language') ?: $data->language;
+				$data->title             = $app->getUserState('com_ars.items.filter.search') ?: $data->title;
+				$data->release_id        = $app->getUserState('com_ars.items.filter.category_id') ?: $data->release_id;
+				$data->published         = $app->getUserState('com_ars.items.filter.published') ?: $data->published;
+				$data->show_unauth_links = $app->getUserState('com_ars.items.filter.show_unauth_links') ?: $data->show_unauth_links;
+				$data->access            = $app->getUserState('com_ars.items.filter.access') ?: $data->access;
+				$data->language          = $app->getUserState('com_ars.items.filter.language') ?: $data->language;
 			}
 		}
 
-		$this->preprocessData('com_ars.release', $data);
+		$this->preprocessData('com_ars.item', $data);
 
 		return $data;
 	}
@@ -297,37 +286,23 @@ class ReleaseModel extends AdminModel
 		// Make sure the user is allowed to delete this release, per Joomla's assets rules for its parent category.
 		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
 
+		/** @var ReleaseTable $release */
+		$release = $this->getMVCFactory()->createTable('Release', 'Administrator');
+
+		if (!$release->load($record->release_id))
+		{
+			return parent::canDelete($record);
+		}
+
 		if (
-			!$user->authorise('core.delete', 'com_ars.category.' . (int) $record->category_id) &&
+			!$user->authorise('core.delete', 'com_ars.category.' . (int) $release->category_id) &&
 			!$user->authorise('core.delete', 'com_ars')
 		)
 		{
 			return false;
 		}
 
-		// Make sure there are no items under this releases
-		$db    = $this->getDbo();
-		$query = $db->getQuery(true)
-			->select('COUNT(*)')
-			->from($db->quoteName('#__ars_items'))
-			->where($db->quoteName('release_id') . ' = :release_id')
-			->bind(':release_id', $record->id, ParameterType::INTEGER);
-
-		try
-		{
-			$result = ($db->setQuery($query)->loadResult() ?: 0) == 0;
-		}
-		catch (Exception $e)
-		{
-			$result = true;
-		}
-
-		if (!$result)
-		{
-			$this->setError(Text::_('COM_ARS_CATEGORIES_NODELETE_VERSION'));
-		}
-
-		return $result;
+		return true;
 	}
 
 	/**
@@ -343,11 +318,19 @@ class ReleaseModel extends AdminModel
 	 */
 	protected function canEditState($record)
 	{
+		/** @var ReleaseTable $release */
+		$release = $this->getMVCFactory()->createTable('Release', 'Administrator');
+
+		if (!$release->load($record->release_id))
+		{
+			return parent::canEditState($record);
+		}
+
 		// Make sure the user is allowed to delete this release, per Joomla's assets rules for its parent category.
 		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
 
 		if (
-			!$user->authorise('core.edit.state', 'com_ars.category.' . (int) $record->category_id) &&
+			!$user->authorise('core.edit.state', 'com_ars.category.' . (int) $release->category_id) &&
 			!$user->authorise('core.edit.state', 'com_ars')
 		)
 		{
@@ -356,4 +339,35 @@ class ReleaseModel extends AdminModel
 
 		return true;
 	}
+
+	/**
+	 * Validate the form data.
+	 *
+	 * Overridden to allow the multiselect 'environments' list to have no items selected. In this case there is no value
+	 * returned by the form which means it can never be unset. We catch that and force it to an empty array.
+	 *
+	 * @param   Form   $form
+	 * @param   array  $data
+	 * @param   null   $group
+	 *
+	 * @return array|bool
+	 */
+	public function validate($form, $data, $group = null)
+	{
+		$validData = parent::validate($form, $data, $group);
+
+		if ($validData === false)
+		{
+			return $validData;
+		}
+
+		if (!isset($validData['environments']))
+		{
+			$validData['environments'] = [];
+		}
+
+		return $validData;
+	}
+
+
 }

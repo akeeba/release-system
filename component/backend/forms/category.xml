@@ -131,7 +131,7 @@
 
 
         <field
-                name="created_on"
+                name="created"
                 type="calendar"
                 label="JGLOBAL_CREATED_DATE"
                 translateformat="true"
@@ -148,7 +148,7 @@
         />
 
         <field
-                name="modified_on"
+                name="modified"
                 type="calendar"
                 label="JGLOBAL_FIELD_MODIFIED_LABEL"
                 translateformat="true"

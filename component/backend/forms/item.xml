@@ -17,17 +17,18 @@
         />
 
         <field
-                name="category_id"
-                type="ArsCategories"
-                label="COM_ARS_RELEASES_FIELD_CATEGORY"
+                name="release_id"
+                type="ArsReleases"
+                label="COM_ARS_ITEM_FIELD_RELEASE"
                 required="true"
+                cat_state_key="com_ars.items.filter.category_id"
         >
         </field>
 
         <field
-                name="version"
+                name="title"
                 type="text"
-                label="COM_ARS_RELEASES_FIELD_VERSION"
+                label="COM_ARS_ITEM_FIELD_TITLE"
                 default=""
                 required="true"
         />
@@ -35,28 +36,81 @@
         <field
                 name="alias"
                 type="text"
-                label="COM_ARS_CATEGORIES_FIELD_ALIAS"
+                label="COM_ARS_ITEM_FIELD_ALIAS"
                 default=""
                 required="true"
         />
 
         <field
-                name="maturity"
+                name="description"
+                type="editor"
+                label="COM_ARS_ITEM_FIELD_DESCRIPTION"
+                filter="Joomla\CMS\Component\ComponentHelper::filterText"
+        />
+
+        <field
+                name="type"
                 type="list"
-                label="COM_ARS_RELEASES_FIELD_MATURITY"
+                label="COM_ARS_ITEM_FIELD_TYPE"
                 required="true"
+                default="link"
         >
-            <option value="alpha">COM_ARS_RELEASES_MATURITY_ALPHA</option>
-            <option value="beta">COM_ARS_RELEASES_MATURITY_BETA</option>
-            <option value="rc">COM_ARS_RELEASES_MATURITY_RC</option>
-            <option value="stable">COM_ARS_RELEASES_MATURITY_STABLE</option>
+            <option value="file">COM_ARS_ITEM_FIELD_TYPE_FILE</option>
+            <option value="link">COM_ARS_ITEM_FIELD_TYPE_LINK</option>
         </field>
 
         <field
-                name="notes"
-                type="editor"
-                label="COM_ARS_RELEASE_NOTES_LABEL"
-                filter="Joomla\CMS\Component\ComponentHelper::filterText"
+                name="filename"
+                type="list"
+                label="COM_ARS_ITEM_FIELD_FILE"
+                showon="type:file"
+        >
+            <option value="">COM_ARS_ITEM_FIELD_FILENAME_SELECT</option>
+        </field>
+
+        <field
+                name="url"
+                type="url"
+                label="COM_ARS_ITEM_FIELD_LINK"
+                showon="type:link"
+        />
+
+        <field
+                name="updatestream"
+                type="ArsUpdateStreams"
+                label="COM_ARS_ITEM_FIELD_UPDATESTREAM"
+        >
+            <option value="">COM_ARS_ITEM_FIELD_UPDATESTREAM_SELECT</option>
+        </field>
+
+        <field name="filesize"
+               type="number"
+               label="COM_ARS_ITEM_FIELD_FILESIZE"
+               min="0"/>
+
+        <field name="md5"
+               type="text"
+               label="COM_ARS_ITEM_FIELD_MD5"
+        />
+
+        <field name="sha1"
+               type="text"
+               label="COM_ARS_ITEM_FIELD_SHA1"
+        />
+
+        <field name="sha256"
+               type="text"
+               label="COM_ARS_ITEM_FIELD_SHA256"
+        />
+
+        <field name="sha384"
+               type="text"
+               label="COM_ARS_ITEM_FIELD_SHA384"
+        />
+
+        <field name="sha512"
+               type="text"
+               label="COM_ARS_ITEM_FIELD_SHA512"
         />
 
         <field
@@ -79,6 +133,15 @@
                 showon="show_unauth_links:1"
         />
 
+        <field
+                name="environments"
+                type="ArsEnvironments"
+                label="COM_ARS_ITEM_FIELD_ENVIRONMENTS"
+                multiple="true"
+                layout="joomla.form.field.list-fancy-select"
+                hint="COM_ARS_ITEM_FIELD_ENVIRONMENT_SELECT"
+        >
+        </field>
 
         <field
                 name="access"

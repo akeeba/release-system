@@ -24,7 +24,7 @@ class CategoriesModel extends ListModel
 			$config['filter_fields'] = [
 				'search',
 				'type',
-				'created_on',
+				'created',
 				'access',
 				'show_unauth_links',
 				'published',

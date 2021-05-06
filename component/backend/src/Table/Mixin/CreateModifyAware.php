@@ -19,9 +19,9 @@ trait CreateModifyAware
 		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
 
 		// Set created date if not set.
-		if ($this->hasField('created_on') && !(int) $this->created_on)
+		if ($this->hasField('created') && !(int) $this->created)
 		{
-			$this->created_on = $date;
+			$this->created = $date;
 		}
 
 		if ($this->getId())
@@ -31,9 +31,9 @@ trait CreateModifyAware
 			{
 				$this->modified_by = $user->id;
 			}
-			if ($this->hasField('modified_on'))
+			if ($this->hasField('modified'))
 			{
-				$this->modified_on = $date;
+				$this->modified = $date;
 
 			}
 		}
@@ -46,9 +46,9 @@ trait CreateModifyAware
 			}
 
 			// Set modified to created date if not set
-			if ($this->hasField('modified_on') && $this->hasField('created_on') && !(int) $this->modified_on)
+			if ($this->hasField('modified') && $this->hasField('created') && !(int) $this->modified)
 			{
-				$this->modified_on = $this->created_on;
+				$this->modified = $this->created;
 			}
 
 			// Set modified_by to created_by user if not set

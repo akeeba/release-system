@@ -61,8 +61,8 @@ class CategoryTable extends AbstractTable
 	{
 		parent::__construct('#__ars_categories', 'id', $db);
 
-		$this->created    = (Factory::getApplication()->getIdentity() ?: Factory::getUser())->id;
-		$this->created_on = Factory::getDate()->toSql();
+		$this->created_by = (Factory::getApplication()->getIdentity() ?: Factory::getUser())->id;
+		$this->created    = Factory::getDate()->toSql();
 		$this->access     = 1;
 	}
 
@@ -78,6 +78,10 @@ class CategoryTable extends AbstractTable
 		return parent::bind($src, $ignore);
 	}
 
+	public function _getAssetName()
+	{
+		return 'com_ars.category.' . $this->id;
+	}
 
 	protected function onBeforeCheck()
 	{
@@ -136,11 +140,6 @@ class CategoryTable extends AbstractTable
 
 		// Clamp 'published' to [0, 1]
 		$this->published = max(0, min($this->published, 1));
-	}
-
-	public function _getAssetName()
-	{
-		return 'com_ars.category.' . $this->id;
 	}
 
 	protected function _getAssetTitle()

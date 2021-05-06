@@ -5,12 +5,13 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Component\ARS\Administrator\View\Releases;
+namespace Akeeba\Component\ARS\Administrator\View\Items;
 
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\LoadAnyTemplate;
 use Akeeba\Component\ARS\Administrator\Model\ReleasesModel;
+use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -94,11 +95,22 @@ class HtmlView extends BaseHtmlView
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
-		ToolbarHelper::title(sprintf(Text::_('COM_ARS_TITLE_RELEASES')), 'icon-ars');
+		ToolbarHelper::title(sprintf(Text::_('COM_ARS_TITLE_ITEMS')), 'icon-ars');
 
-		$catId     = $this->state->get('filter.category_id');
-		$assetName = 'com_ars' . (empty($catId) ? '' : ('.category.' . $catId));
+		$catId = $this->state->get('filter.category_id');
+		$relId = $this->state->get('filter.release_id');
 
+		if (empty($catId) && !empty($relId))
+		{
+			$release = new ReleaseTable(Factory::getContainer()->get('DatabaseDriver'));
+
+			if ($release->load($relId))
+			{
+				$catId = $release->category_id;
+			}
+		}
+
+		$assetName    = 'com_ars' . (empty($catId) ? '' : ('.category.' . $catId));
 		$canCreate    = $user->authorise('core.create', $assetName);
 		$canDelete    = $user->authorise('core.delete', $assetName);
 		$canEdit      = $user->authorise('core.edit', $assetName);
@@ -106,7 +118,7 @@ class HtmlView extends BaseHtmlView
 
 		if ($canCreate)
 		{
-			ToolbarHelper::addNew('release.add');
+			ToolbarHelper::addNew('item.add');
 		}
 
 		if ($canDelete || $canEditState || $canCreate)
@@ -123,12 +135,12 @@ class HtmlView extends BaseHtmlView
 
 			if ($canEditState)
 			{
-				$childBar->publish('releases.publish')
+				$childBar->publish('items.publish')
 					->icon('fa fa-check-circle')
 					->text('JTOOLBAR_PUBLISH')
 					->listCheck(true);
 
-				$childBar->unpublish('releases.unpublish')
+				$childBar->unpublish('items.unpublish')
 					->icon('fa fa-times-circle')
 					->text('JTOOLBAR_UNPUBLISH')
 					->listCheck(true);
@@ -138,7 +150,7 @@ class HtmlView extends BaseHtmlView
 
 			if ($canDelete)
 			{
-				$childBar->delete('releases.delete')
+				$childBar->delete('items.delete')
 					->message('JGLOBAL_CONFIRM_DELETE')
 					->listCheck(true);
 			}
@@ -154,6 +166,4 @@ class HtmlView extends BaseHtmlView
 
 		ToolbarHelper::back('COM_ARS_TITLE_CONTROLPANEL', 'index.php?option=com_ars');
 	}
-
-
 }
