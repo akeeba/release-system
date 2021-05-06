@@ -24,8 +24,10 @@ trait ColumnAliasAware
 	{
 		if ($this->hasField($name))
 		{
-			$realColumn = $this->getColumnAlias($name);
+			$realColumn        = $this->getColumnAlias($name);
 			$this->$realColumn = $value;
+
+			return;
 		}
 
 		$this->$name = $value;
