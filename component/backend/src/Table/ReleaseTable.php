@@ -10,7 +10,7 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
-use Akeeba\Component\ARS\Administrator\Table\Mixin\ClearCacheAfterActions;
+use Akeeba\Component\ARS\Administrator\Table\Mixin\ColumnAliasAware;
 use Akeeba\Component\ARS\Administrator\Table\Mixin\CreateModifyAware;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
@@ -44,7 +44,7 @@ class ReleaseTable extends AbstractTable
 {
 	use CreateModifyAware;
 	use AssertionAware;
-	use ClearCacheAfterActions;
+	use ColumnAliasAware;
 
 	/**
 	 * Indicates that columns fully support the NULL value in the database

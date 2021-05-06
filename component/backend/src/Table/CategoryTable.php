@@ -10,7 +10,6 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
-use Akeeba\Component\ARS\Administrator\Table\Mixin\ClearCacheAfterActions;
 use Akeeba\Component\ARS\Administrator\Table\Mixin\CreateModifyAware;
 use Joomla\CMS\Access\Rules;
 use Joomla\CMS\Application\ApplicationHelper;
@@ -49,7 +48,6 @@ class CategoryTable extends AbstractTable
 {
 	use CreateModifyAware;
 	use AssertionAware;
-	use ClearCacheAfterActions;
 
 	/**
 	 * Indicates that columns fully support the NULL value in the database
