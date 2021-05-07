@@ -52,10 +52,10 @@ class Html extends BaseView
 
 		// Construct the array of sorting fields
 		$this->sortFields = [
-			'name'      => Text::_('COM_ARS_STREAM_FIELD_NAME'),
-			'type'      => Text::_('COM_ARS_STREAM_FIELD_TYPE'),
+			'name'      => Text::_('COM_ARS_UPDATESTREAM_FIELD_NAME'),
+			'type'      => Text::_('COM_ARS_UPDATESTREAM_FIELD_TYPE'),
 			'category'  => Text::_('COM_ARS_RELEASES_FIELD_CATEGORY'),
-			'element'   => Text::_('COM_ARS_STREAM_FIELD_ELEMENT'),
+			'element'   => Text::_('COM_ARS_UPDATESTREAM_FIELD_ELEMENT'),
 			'published' => Text::_('JPUBLISHED'),
 		];
 	}

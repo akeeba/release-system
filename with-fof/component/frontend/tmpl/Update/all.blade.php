@@ -16,7 +16,7 @@ echo '<' . '?';
 <extensionset name="<?php echo $this->updates_name ?>" description="<?php echo $this->updates_desc ?>">
     @foreach (['components', 'libraries', 'modules', 'packages', 'plugins', 'files', 'templates'] as $category)
         <category name="{{ ucfirst($category) }}"
-                  description="@lang('COM_ARS_STREAM_UPDATETYPE_' . strtoupper($category))"
+                  description="@lang('COM_ARS_UPDATESTREAM_UPDATETYPE_' . strtoupper($category))"
                   category="{{ $category }}"
                   ref="{{ \Akeeba\ReleaseSystem\Site\Helper\Router::_(
 				  	'index.php?option=com_ars&view=update&format=xml&task=category&id=' . $category . $this->dlidRequest,

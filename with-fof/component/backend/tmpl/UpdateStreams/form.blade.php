@@ -24,7 +24,7 @@ $item = $this->getItem();
         <div>
             <div class="akeeba-form-group">
                 <label for="name">
-                    @lang('COM_ARS_STREAM_FIELD_NAME')
+                    @lang('COM_ARS_UPDATESTREAM_FIELD_NAME')
                 </label>
 
                 <input type="text" name="name" id="name" value="{{{ $item->name }}}" />
@@ -40,7 +40,7 @@ $item = $this->getItem();
 
             <div class="akeeba-form-group">
                 <label for="type">
-                    @lang('COM_ARS_STREAM_FIELD_TYPE')
+                    @lang('COM_ARS_UPDATESTREAM_FIELD_TYPE')
                 </label>
 
                 @jhtml('FEFHelp.select.genericlist',
@@ -63,7 +63,7 @@ $item = $this->getItem();
 
             <div class="akeeba-form-group">
                 <label for="packname">
-                    @lang('COM_ARS_STREAM_FIELD_PACKNAME')
+                    @lang('COM_ARS_UPDATESTREAM_FIELD_PACKNAME')
                 </label>
 
                 <input type="text" name="packname" id="packname" value="{{{ $item->packname }}}" />
@@ -71,7 +71,7 @@ $item = $this->getItem();
 
             <div class="akeeba-form-group">
                 <label for="element">
-                    @lang('COM_ARS_STREAM_FIELD_ELEMENT')
+                    @lang('COM_ARS_UPDATESTREAM_FIELD_ELEMENT')
                 </label>
 
                 <input type="text" name="element" id="element" value="{{{ $item->element }}}" />
@@ -79,7 +79,7 @@ $item = $this->getItem();
 
             <div class="akeeba-form-group">
                 <label for="client_id">
-                    @lang('COM_ARS_STREAM_FIELD_CLIENTID_LBL')
+                    @lang('COM_ARS_UPDATESTREAM_FIELD_CLIENTID_LBL')
                 </label>
 
                 @jhtml('FEFHelp.select.genericlist',
@@ -90,7 +90,7 @@ $item = $this->getItem();
 
             <div class="akeeba-form-group">
                 <label for="folder">
-                    @lang('COM_ARS_STREAM_FIELD_FOLDER')
+                    @lang('COM_ARS_UPDATESTREAM_FIELD_FOLDER')
                 </label>
 
                 <input type="text" name="folder" id="folder" value="{{{ $item->folder }}}" />
@@ -98,7 +98,7 @@ $item = $this->getItem();
 
             <div class="akeeba-form-group">
                 <label for="jedid">
-                    @lang('COM_ARS_STREAM_FIELD_JEDID')
+                    @lang('COM_ARS_UPDATESTREAM_FIELD_JEDID')
                 </label>
 
                 <input type="text" name="jedid" id="jedid" value="{{{ $item->jedid }}}" />

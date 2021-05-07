@@ -47,12 +47,12 @@ class Html extends BaseView
 		$this->filters['primary']	  = $platform->getUserStateFromRequest($hash . 'filter_primary', 'primary', $input);
 
 		// Construct the array of sorting fields
-		$this->sortFields = array(
+		$this->sortFields = [
 			'ars_dlidlabel_id' => 'ID',
-			'label'            => Text::_('COM_ARS_DLIDLABELS_FIELD_LABEL'),
+			'label'            => Text::_('COM_ARS_DOWNLOADIDLABELS_FIELD_LABEL'),
 			'username'         => Text::_('JGLOBAL_USERNAME'),
-			'dlid'             => Text::_('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID'),
+			'dlid'             => Text::_('COM_ARS_DOWNLOADIDLABELS_FIELD_DOWNLOAD_ID'),
 			'enabled'          => Text::_('JPUBLISHED'),
-		);
+		];
 	}
 }

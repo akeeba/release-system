@@ -275,9 +275,9 @@ abstract class Select
 	public static function client_id(): array
 	{
 		return [
-			JHtml::_('FEFHelp.select.option', '', '- ' . Text::_('COM_ARS_STREAM_FIELD_CLIENTID_LBL') . ' -'),
-			JHtml::_('FEFHelp.select.option', '1', Text::_('COM_ARS_STREAM_FIELD_CLIENTID_BACKEND')),
-			JHtml::_('FEFHelp.select.option', '0', Text::_('COM_ARS_STREAM_FIELD_CLIENTID_FRONTEND')),
+			JHtml::_('FEFHelp.select.option', '', '- ' . Text::_('COM_ARS_UPDATESTREAM_FIELD_CLIENTID_LBL') . ' -'),
+			JHtml::_('FEFHelp.select.option', '1', Text::_('COM_ARS_UPDATESTREAM_FIELD_CLIENTID_BACKEND')),
+			JHtml::_('FEFHelp.select.option', '0', Text::_('COM_ARS_UPDATESTREAM_FIELD_CLIENTID_FRONTEND')),
 		];
 	}
 
@@ -293,18 +293,18 @@ abstract class Select
 	public static function updateTypes(bool $addDefault = false): array
 	{
 		$options = [
-			JHtml::_('FEFHelp.select.option', 'components', Text::_('COM_ARS_STREAM_UPDATETYPE_COMPONENTS')),
-			JHtml::_('FEFHelp.select.option', 'libraries', Text::_('COM_ARS_STREAM_UPDATETYPE_LIBRARIES')),
-			JHtml::_('FEFHelp.select.option', 'modules', Text::_('COM_ARS_STREAM_UPDATETYPE_MODULES')),
-			JHtml::_('FEFHelp.select.option', 'packages', Text::_('COM_ARS_STREAM_UPDATETYPE_PACKAGES')),
-			JHtml::_('FEFHelp.select.option', 'plugins', Text::_('COM_ARS_STREAM_UPDATETYPE_PLUGINS')),
-			JHtml::_('FEFHelp.select.option', 'templates', Text::_('COM_ARS_STREAM_UPDATETYPE_TEMPLATES')),
-			JHtml::_('FEFHelp.select.option', 'files', Text::_('COM_ARS_STREAM_UPDATETYPE_FILES')),
+			JHtml::_('FEFHelp.select.option', 'components', Text::_('COM_ARS_UPDATESTREAM_UPDATETYPE_COMPONENTS')),
+			JHtml::_('FEFHelp.select.option', 'libraries', Text::_('COM_ARS_UPDATESTREAM_UPDATETYPE_LIBRARIES')),
+			JHtml::_('FEFHelp.select.option', 'modules', Text::_('COM_ARS_UPDATESTREAM_UPDATETYPE_MODULES')),
+			JHtml::_('FEFHelp.select.option', 'packages', Text::_('COM_ARS_UPDATESTREAM_UPDATETYPE_PACKAGES')),
+			JHtml::_('FEFHelp.select.option', 'plugins', Text::_('COM_ARS_UPDATESTREAM_UPDATETYPE_PLUGINS')),
+			JHtml::_('FEFHelp.select.option', 'templates', Text::_('COM_ARS_UPDATESTREAM_UPDATETYPE_TEMPLATES')),
+			JHtml::_('FEFHelp.select.option', 'files', Text::_('COM_ARS_UPDATESTREAM_UPDATETYPE_FILES')),
 		];
 
 		if ($addDefault)
 		{
-			array_unshift($options, JHtml::_('FEFHelp.select.option', '', '- ' . Text::_('COM_ARS_STREAM_FIELD_TYPE') . ' -'));
+			array_unshift($options, JHtml::_('FEFHelp.select.option', '', '- ' . Text::_('COM_ARS_UPDATESTREAM_FIELD_TYPE') . ' -'));
 		}
 
 		return $options;

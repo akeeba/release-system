@@ -22,24 +22,24 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
 
 @section('browse-page-top')
     <div class="akeeba-block--info">
-        @lang('COM_ARS_STREAM_LBL_ALLLINKS_INTRO')
+        @lang('COM_ARS_UPDATESTREAM_LBL_ALLLINKS_INTRO')
         <a href="<?php echo Uri::root() ?>index.php?option=com_ars&view=update&task=all&format=xml" target="_blank">
-            @lang('COM_ARS_STREAM_LBL_ALLLINKS')
+            @lang('COM_ARS_UPDATESTREAM_LBL_ALLLINKS')
         </a>
     </div>
 @stop
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
-        @searchfilter('name', 'name', 'COM_ARS_STREAM_FIELD_NAME')
+        @searchfilter('name', 'name', 'COM_ARS_UPDATESTREAM_FIELD_NAME')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @searchfilter('element', 'element', 'COM_ARS_STREAM_FIELD_ELEMENT')
+        @searchfilter('element', 'element', 'COM_ARS_UPDATESTREAM_FIELD_ELEMENT')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @selectfilter('type', \Akeeba\Component\ARS\Administrator\Helper\Select::updateTypes(), 'COM_ARS_STREAM_FIELD_TYPE')
+        @selectfilter('type', \Akeeba\Component\ARS\Administrator\Helper\Select::updateTypes(), 'COM_ARS_UPDATESTREAM_FIELD_TYPE')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
@@ -57,19 +57,19 @@ $siteRoot = substr(rtrim(\Joomla\CMS\Uri\Uri::base(), '/'), 0, -13);
             @jhtml('FEFHelp.browse.checkall')
         </th>
         <th>
-            @sortgrid('name', 'COM_ARS_STREAM_FIELD_NAME')
+            @sortgrid('name', 'COM_ARS_UPDATESTREAM_FIELD_NAME')
         </th>
         <th>
-            @sortgrid('type', 'COM_ARS_STREAM_FIELD_TYPE')
+            @sortgrid('type', 'COM_ARS_UPDATESTREAM_FIELD_TYPE')
         </th>
         <th>
             @sortgrid('category', 'COM_ARS_RELEASES_FIELD_CATEGORY')
         </th>
         <th>
-            @sortgrid('element', 'COM_ARS_STREAM_FIELD_ELEMENT')
+            @sortgrid('element', 'COM_ARS_UPDATESTREAM_FIELD_ELEMENT')
         </th>
         <th>
-            @lang('COM_ARS_STREAM_LBL_LINKS')
+            @lang('COM_ARS_UPDATESTREAM_LBL_LINKS')
         </th>
         <th>
             @sortgrid('published', 'JPUBLISHED')

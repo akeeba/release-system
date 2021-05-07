@@ -26,21 +26,21 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
 ?>
 
 <div class="akeeba-block--info">
-    @sprintf('COM_ARS_DLIDLABELS_MAINDLID', Filter::myDownloadID())
+    @sprintf('COM_ARS_DOWNLOADIDLABELS_MAINDLID', Filter::myDownloadID())
 </div>
 
 <form name="arsDownloadID" action="{{ htmlentities($formURI) }}" method="post" class="akeeba-form--inline">
-        <div class="akeeba-form-group">
-            <label for="enabled">
-                @lang('JSEARCH_FILTER_LABEL')
-            </label>
-            @jhtml('select.genericlist', $options, 'enabled', ['onchange' => 'this.form.submit()', 'class' => 'form-control'], 'value', 'text', $this->getModel()->getState('enabled'), false, true)
-        </div>
+    <div class="akeeba-form-group">
+        <label for="enabled">
+            @lang('JSEARCH_FILTER_LABEL')
+        </label>
+        @jhtml('select.genericlist', $options, 'enabled', ['onchange' => 'this.form.submit()', 'class' => 'form-control'], 'value', 'text', $this->getModel()->getState('enabled'), false, true)
+    </div>
 
-        <div class="akeeba-form-group">
-            <input type="text" name="label" value="{{ $this->getModel()->getState('label') }}"
-                   placeholder="@lang('COM_ARS_DLIDLABELS_FIELD_LABEL')" />
-        </div>
+    <div class="akeeba-form-group">
+        <input type="text" name="label" value="{{ $this->getModel()->getState('label') }}"
+               placeholder="@lang('COM_ARS_DOWNLOADIDLABELS_FIELD_LABEL')" />
+    </div>
 
     <div class="akeeba-form-group--actions">
         <button type="submit" class="akeeba-btn--primary--small">
@@ -48,8 +48,7 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
         </button>
 
         <a href="@route('index.php?option=com_ars&view=DownloadIDLabel&task=add&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
-           class="akeeba-btn--primary--small">
-            <span class="akion-plus-circled"></span>
+           class="akeeba-btn--primary--small"> <span class="akion-plus-circled"></span>
             @lang('JNEW')
         </a>
     </div>
@@ -63,10 +62,10 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
         <thead>
             <tr>
                 <th>
-                    @lang('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID')
+                    @lang('COM_ARS_DOWNLOADIDLABELS_FIELD_DOWNLOAD_ID')
                 </th>
                 <th>
-                    @lang('COM_ARS_DLIDLABELS_FIELD_LABEL')
+                    @lang('COM_ARS_DOWNLOADIDLABELS_FIELD_LABEL')
                 </th>
                 <th>
                     @lang('JPUBLISHED')
@@ -77,45 +76,43 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
             </tr>
         </thead>
         <tfoot>
-            <tr>
-                <td colspan="10" style="text-align: center">
-                    {{ $this->pagination->getListFooter() }}
-               </td>
-            </tr>
+        <tr>
+            <td colspan="10" style="text-align: center">
+                {{ $this->pagination->getListFooter() }}
+            </td>
+        </tr>
         </tfoot>
         <tbody>
         @if($this->items->count())
             @foreach($this->items as $item)
-            <tr>
-                <td data-th="@lang('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID')">
-                    @include('site:com_ars/DownloadIDLabels/default_dlid', ['item' => $item])
-                </td>
-                <td data-th="@lang('COM_ARS_DLIDLABELS_FIELD_LABEL')">
-                    @if($item->primary)
-                        @lang('COM_ARS_DLIDLABELS_LBL_DEFAULT')
-                    @else
-                        <a href="@route('index.php?option=com_ars&view=DownloadIDLabel&task=edit&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)">
-                        {{{ $item->label }}}
-                        </a>
-                    @endif
+                <tr>
+                    <td data-th="@lang('COM_ARS_DOWNLOADIDLABELS_FIELD_DOWNLOAD_ID')">
+                        @include('site:com_ars/DownloadIDLabels/default_dlid', ['item' => $item])
+                    </td>
+                    <td data-th="@lang('COM_ARS_DOWNLOADIDLABELS_FIELD_LABEL')">
+                        @if($item->primary)
+                            @lang('COM_ARS_DOWNLOADIDLABELS_LBL_DEFAULT')
+                        @else
+                            <a href="@route('index.php?option=com_ars&view=DownloadIDLabel&task=edit&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)">
+                                {{{ $item->label }}}
+                            </a>
+                        @endif
 
-                </td>
-                <td data-th="@lang('JPUBLISHED')">
-                    @include('site:com_ars/DownloadIDLabels/default_publish', ['item' => $item])
-                </td>
-                <td data-th="">
-                    <a href="@route('index.php?option=com_ars&view=DownloadIDLabels&task=reset&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
-                       class="akeeba-btn--orange--small" title="@lang('COM_ARS_DLIDLABELS_FIELD_RESET')">
-                        <span class="akion-refresh"></span>
-                    </a>
-                    @unless($item->primary)
-                        <a href="@route('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
-                           class="akeeba-btn--red--small" title="@lang('COM_ARS_DLIDLABELS_FIELD_TRASH')">
-                        <span class="akion-trash-b"></span>
-                    </a>
-                    @endunless
-                </td>
-            </tr>
+                    </td>
+                    <td data-th="@lang('JPUBLISHED')">
+                        @include('site:com_ars/DownloadIDLabels/default_publish', ['item' => $item])
+                    </td>
+                    <td data-th="">
+                        <a href="@route('index.php?option=com_ars&view=DownloadIDLabels&task=reset&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
+                           class="akeeba-btn--orange--small" title="@lang('COM_ARS_DOWNLOADIDLABELS_FIELD_RESET')">
+                            <span class="akion-refresh"></span> </a>
+                        @unless($item->primary)
+                            <a href="@route('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
+                               class="akeeba-btn--red--small" title="@lang('COM_ARS_DOWNLOADIDLABELS_FIELD_TRASH')">
+                                <span class="akion-trash-b"></span> </a>
+                        @endunless
+                    </td>
+                </tr>
             @endforeach
         @else
             <tr>

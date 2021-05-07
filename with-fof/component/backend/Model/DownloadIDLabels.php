@@ -114,7 +114,7 @@ class DownloadIDLabels extends DataModel
 	{
 		if ($this->primary)
 		{
-			throw new \RuntimeException(Text::_('COM_ARS_DLIDLABELS_ERR_CANTDELETEDEFAULT'));
+			throw new \RuntimeException(Text::_('COM_ARS_DOWNLOADIDLABELS_ERR_CANTDELETEDEFAULT'));
 		}
 	}
 
@@ -191,7 +191,7 @@ class DownloadIDLabels extends DataModel
 	{
 		if ($this->primary)
 		{
-			throw new \RuntimeException(Text::_("COM_ARS_DLIDLABELS_ERR_CANTUNPUBLISHDEFAULT"));
+			throw new \RuntimeException(Text::_("COM_ARS_DOWNLOADIDLABELS_ERR_CANTUNPUBLISHDEFAULT"));
 		}
 	}
 }

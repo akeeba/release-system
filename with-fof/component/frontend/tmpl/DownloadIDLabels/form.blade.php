@@ -16,13 +16,13 @@ $item = $this->getItem();
 @extends('any:lib_fof40/Common/edit')
 
 @section('edit-page-top')
-    <h3>@lang('COM_ARS_DLIDLABELS_GROUP_BASIC')</h3>
+    <h3>@lang('COM_ARS_DOWNLOADIDLABELS_GROUP_BASIC')</h3>
 @stop
 
 @section('edit-form-body')
     <div class="akeeba-form-group">
         <label for="label">
-            @lang('COM_ARS_DLIDLABELS_FIELD_LABEL')
+            @lang('COM_ARS_DOWNLOADIDLABELS_FIELD_LABEL')
         </label>
 
         <input type="text" name="label" id="label" value="{{ $item->label }}" />

@@ -111,7 +111,7 @@ class UpdateStreams extends DataModel
 
 	public function check(): self
 	{
-		$this->assertNotEmpty($this->name, 'COM_ARS_STREAM_ERR_NEEDS_NAME');
+		$this->assertNotEmpty($this->name, 'COM_ARS_UPDATESTREAM_ERR_NEEDS_NAME');
 
 		// If the alias is missing, auto-create a new one
 		if (!$this->alias)
@@ -121,7 +121,7 @@ class UpdateStreams extends DataModel
 		}
 
 		// If no alias could be auto-generated, fail
-		$this->assertNotEmpty($this->alias, 'COM_ARS_STREAM_ERR_NEEDS_ALIAS');
+		$this->assertNotEmpty($this->alias, 'COM_ARS_UPDATESTREAM_ERR_NEEDS_ALIAS');
 
 		// Check alias for uniqueness
 		$db    = $this->getDBO();
@@ -146,7 +146,7 @@ class UpdateStreams extends DataModel
 		}
 
 		$this->alias = $alias;
-		$this->assertNotInArray($this->alias, $aliases, 'COM_ARS_STREAM_ERR_NEEDS_UNIQUE_ALIAS');
+		$this->assertNotInArray($this->alias, $aliases, 'COM_ARS_UPDATESTREAM_ERR_NEEDS_UNIQUE_ALIAS');
 
 		// Automaticaly fix the type
 		if (!in_array($this->type, ['components', 'libraries', 'modules', 'packages', 'plugins', 'files', 'templates']))
@@ -155,7 +155,7 @@ class UpdateStreams extends DataModel
 		}
 
 		// Require an element name
-		$this->assertNotEmpty($this->element, 'COM_ARS_STREAM_ERR_NEEDS_ELEMENT');
+		$this->assertNotEmpty($this->element, 'COM_ARS_UPDATESTREAM_ERR_NEEDS_ELEMENT');
 
 		if (empty($this->published) && ($this->published !== 0))
 		{

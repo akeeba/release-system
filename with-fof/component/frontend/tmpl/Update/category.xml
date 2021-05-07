@@ -13,15 +13,15 @@
     </layout>
     <fields name="params">
         <fieldset name="basic" label="COM_ARS_FIELDSET_BASIC">
-            <field name="category" type="list" default="components" label="COM_ARS_STREAM_CATEGORY_TITLE"
-                   description="COM_ARS_STREAM_CATEGORY_DESC">
-                <option value="components">COM_ARS_STREAM_UPDATETYPE_COMPONENTS</option>
-                <option value="libraries">COM_ARS_STREAM_UPDATETYPE_LIBRARIES</option>
-                <option value="modules">COM_ARS_STREAM_UPDATETYPE_MODULES</option>
-                <option value="packages">COM_ARS_STREAM_UPDATETYPE_PACKAGES</option>
-                <option value="plugins">COM_ARS_STREAM_UPDATETYPE_PLUGINS</option>
-                <option value="files">COM_ARS_STREAM_UPDATETYPE_FILES</option>
-                <option value="templates">COM_ARS_STREAM_UPDATETYPE_TEMPLATES</option>
+            <field name="category" type="list" default="components" label="COM_ARS_UPDATESTREAM_CATEGORY_TITLE"
+                   description="COM_ARS_UPDATESTREAM_CATEGORY_DESC">
+                <option value="components">COM_ARS_UPDATESTREAM_UPDATETYPE_COMPONENTS</option>
+                <option value="libraries">COM_ARS_UPDATESTREAM_UPDATETYPE_LIBRARIES</option>
+                <option value="modules">COM_ARS_UPDATESTREAM_UPDATETYPE_MODULES</option>
+                <option value="packages">COM_ARS_UPDATESTREAM_UPDATETYPE_PACKAGES</option>
+                <option value="plugins">COM_ARS_UPDATESTREAM_UPDATETYPE_PLUGINS</option>
+                <option value="files">COM_ARS_UPDATESTREAM_UPDATETYPE_FILES</option>
+                <option value="templates">COM_ARS_UPDATESTREAM_UPDATETYPE_TEMPLATES</option>
             </field>
         </fieldset>
 	</fields>
