@@ -58,7 +58,7 @@ trait CopyAware
 		// Publish the items.
 		try
 		{
-			$copyMap       = $model->batchCopy(null, $cid, []);
+			$copyMap       = $model->copy($cid) ?: [];
 			$errors        = $model->getErrors();
 			$copiedSuccess = count($copyMap);
 			$copiedFailed  = count($cid) - $copiedSuccess;

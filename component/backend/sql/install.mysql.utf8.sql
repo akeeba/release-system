@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_categories`
     PRIMARY KEY (`id`),
     KEY `#__ars_categories_published` (`published`)
 ) ENGINE InnoDB
-  DEFAULT COLLATE utf8_general_ci;
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__ars_releases`
 (
@@ -50,7 +51,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_releases`
     KEY `#__ars_releases_category_id` (`category_id`),
     KEY `#__ars_releases_published` (`published`)
 ) ENGINE InnoDB
-  DEFAULT COLLATE utf8_general_ci;
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__ars_items`
 (
@@ -88,7 +90,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_items`
     KEY `#__ars_items_updatestream` (`updatestream`),
     KEY `#__ars_items_published` (`published`)
 ) ENGINE InnoDB
-  DEFAULT COLLATE utf8_general_ci;
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__ars_log`
 (
@@ -105,7 +108,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_log`
     KEY `#__ars_log_itemid` (`item_id`),
     KEY `#__ars_log_userid` (`user_id`)
 ) ENGINE InnoDB
-  DEFAULT COLLATE utf8_general_ci;
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__ars_updatestreams`
 (
@@ -131,7 +135,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_updatestreams`
     KEY `#__ars_updatestreams_published` (`published`),
     KEY `#__ars_updatestreams_jedid` (`jedid`)
 ) ENGINE InnoDB
-  DEFAULT COLLATE utf8_general_ci;
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc`
 (
@@ -150,7 +155,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc`
     `published`        int(11)             NOT NULL DEFAULT '1',
     PRIMARY KEY `id` (`id`)
 ) ENGINE InnoDB
-  DEFAULT COLLATE utf8_general_ci;
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__ars_environments`
 (
@@ -165,7 +171,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_environments`
     `checked_out_time` datetime     NULL     DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE InnoDB
-  DEFAULT COLLATE utf8_general_ci;
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__ars_dlidlabels`
 (
@@ -183,7 +190,8 @@ CREATE TABLE IF NOT EXISTS `#__ars_dlidlabels`
     `checked_out_time` datetime            NULL     DEFAULT NULL,
     PRIMARY KEY (`ars_dlidlabel_id`)
 ) ENGINE InnoDB
-  DEFAULT COLLATE utf8_general_ci;
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
 
 INSERT IGNORE INTO `#__ars_environments` (`id`, `title`, `xmltitle`)
 VALUES (1, 'Joomla! 1.5', 'joomla/1.5'),

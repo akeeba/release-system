@@ -177,18 +177,18 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
             </p>
 		@endunless
 
-		<div style="margin-top: 10px;">
-			<p>
-				<a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary" rel="nofollow" download>
-					@lang('LBL_ITEM_DOWNLOAD')
-				</a>
-			</p>
-			@unless(!$directLink)
-				<a rel="nofollow" href="{{ htmlentities($directLinkURL) }}"
-				   class="directlink hasTip" title="{{{ $this->directlink_description }}}">
-					@lang('COM_ARS_LBL_ITEM_DIRECTLINK')
-				</a>
-			@endunless
-		</div>
-	</div>
+        <div style="margin-top: 10px;">
+            <p>
+                <a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary" rel="nofollow" download>
+                    @lang('LBL_ITEM_DOWNLOAD')
+                </a>
+            </p>
+            @unless(!$directLink)
+                <a rel="nofollow" href="{{ htmlentities($directLinkURL) }}"
+                   class="directlink hasTip" title="{{{ $this->directlink_description }}}">
+                    @lang('COM_ARS_ITEM_LBL_DIRECTLINK')
+                </a>
+            @endunless
+        </div>
+    </div>
 </div>

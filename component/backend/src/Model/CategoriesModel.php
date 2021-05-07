@@ -23,6 +23,8 @@ class CategoriesModel extends ListModel
 		{
 			$config['filter_fields'] = [
 				'search',
+				'title',
+				'id',
 				'type',
 				'created',
 				'access',

@@ -19,7 +19,7 @@ defined('_JEXEC') or die;
     <div class="akeeba-container--50-50">
         <div>
             <div class="akeeba-form-group">
-                <label for="title">@lang('COM_ARS_ITEMS_ENVIRONMENTS_TITLE')</label>
+                <label for="title">@lang('COM_ARS_ENVIRONMENTS_TITLE')</label>
 
                 <input type="text" name="title" id="title" value="{{{ $this->item->title }}}" />
             </div>

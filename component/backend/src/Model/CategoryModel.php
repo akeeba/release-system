@@ -11,8 +11,11 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Model\Mixin\CopyAware;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
+use Exception;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\Database\ParameterType;
 
@@ -37,6 +40,14 @@ class CategoryModel extends AdminModel
 		'assetgroup_id' => 'batchAccess',
 		'language_id'   => 'batchLanguage',
 	];
+
+	public function __construct($config = [], MVCFactoryInterface $factory = null, FormFactoryInterface $formFactory = null)
+	{
+		parent::__construct($config, $factory, $formFactory);
+
+		$this->_parent_table = '';
+	}
+
 
 	/**
 	 * @inheritDoc
@@ -141,7 +152,7 @@ class CategoryModel extends AdminModel
 	 * @param   CategoryTable  $record
 	 *
 	 * @return  bool
-	 * @throws  \Exception
+	 * @throws  Exception
 	 */
 	protected function canDelete($record): bool
 	{
@@ -174,7 +185,7 @@ class CategoryModel extends AdminModel
 		{
 			$result = ($db->setQuery($query)->loadResult() ?: 0) == 0;
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			$result = true;
 		}

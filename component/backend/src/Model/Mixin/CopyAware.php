@@ -31,6 +31,11 @@ trait CopyAware
 	 */
 	protected $_parent_table = '_core_categories';
 
+	public function copy($pks)
+	{
+		return $this->batchCopy(0, $pks, []);
+	}
+
 	/**
 	 * Method to check the validity of the parent table ID for batch copy and move
 	 *
@@ -125,14 +130,18 @@ trait CopyAware
 			->select('*')
 			->from($db->quoteName($table->getTableName()));
 
+		$hasAlias   = $table->hasField('alias');
 		$aliasField = $table->getColumnAlias('alias');
 		$hasCatID   = $table->hasField('catid');
 		$catidField = $table->getColumnAlias('catid');
 		$hasTitle   = $table->hasField('title');
 		$titleField = $table->getColumnAlias('title');
 
-		$query->where($db->quoteName($aliasField) . ' = :alias')
-			->bind(':alias', $alias);
+		if ($hasAlias)
+		{
+			$query->where($db->quoteName($aliasField) . ' = :alias')
+				->bind(':alias', $alias);
+		}
 
 		if ($hasCatID)
 		{
@@ -150,10 +159,16 @@ trait CopyAware
 				$title = StringHelper::increment($title);
 			}
 
-			$alias = StringHelper::increment($alias, 'dash');
-
-			$query->unbind(':alias');
-			$query->bind(':alias', $alias);
+			if ($hasAlias)
+			{
+				$alias = StringHelper::increment($alias, 'dash');
+				$query->unbind(':alias');
+				$query->bind(':alias', $alias);
+			}
+			else
+			{
+				break;
+			}
 		}
 
 		return [$title, $alias];

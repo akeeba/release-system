@@ -22,7 +22,7 @@ defined('_JEXEC') or die;
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @selectfilter('type', \Akeeba\Component\ARS\Administrator\Helper\Select::categoryType(), 'COM_ARS_LBL_COMMON_SELECTCATTYPE')
+        @selectfilter('type', \Akeeba\Component\ARS\Administrator\Helper\Select::categoryType(), 'COM_ARS_COMMON_LBL_SELECTCATTYPE')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">

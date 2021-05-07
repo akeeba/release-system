@@ -83,7 +83,7 @@
                 name="is_supported"
                 type="list"
                 layout="joomla.form.field.radio.switcher"
-                label="COM_ARS_IS_SUPPORTED"
+                label="COM_ARS_CATEGORIES_FIELD_IS_SUPPORTED"
                 default="1"
                 validate="options"
         >

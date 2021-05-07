@@ -231,7 +231,7 @@ class ItemModel extends AdminModel
 			// Get the primary key of the record being edited.
 			$pk = (int) $this->getState($this->getName() . '.id');
 
-			// No primary key = new record. Override default values based on the filters set in the Releases page.
+			// No primary key = new record. Override default values based on the filters set in the Items page.
 			if ($pk <= 0)
 			{
 				$data->title             = $app->getUserState('com_ars.items.filter.search') ?: $data->title;

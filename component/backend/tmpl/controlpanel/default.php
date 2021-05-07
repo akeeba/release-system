@@ -23,9 +23,9 @@ require JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/phpversion_warnin
 <?php if ($this->needsMenuItem): ?>
 	<div class="alert alert-info">
 		<h4>
-			<?= Text::_('COM_ARS_MISSING_CATEGORIES_MENU_HEAD') ?>
+			<?= Text::_('COM_ARS_CPANEL_MISSING_CATEGORIES_MENU_HEAD') ?>
 		</h4>
-		<?= Text::_('COM_ARS_MISSING_CATEGORIES_MENU') ?>
+		<?= Text::_('COM_ARS_CPANEL_MISSING_CATEGORIES_MENU') ?>
 	</div>
 <?php endif ?>
 

@@ -285,10 +285,11 @@ class ItemTable extends AbstractTable
 			return;
 		}
 
-		$auto = array_shift($autoItems);
+		$auto = new AutodescriptionTable($this->getDbo());
+		$auto->bind($autoItems);
 
 		// Apply environments
-		$this->environments = $this->environments ?: explode(',', $auto->environments ?? '');
+		$this->environments = $this->environments ?: $auto->environments;
 
 		// Apply title
 		$this->title = trim($this->title ?? '') ?: $auto->title;
@@ -380,7 +381,7 @@ class ItemTable extends AbstractTable
 	{
 		if (isset($src['environments']) && !is_array($src['environments']))
 		{
-			$src['environments'] = empty($src['environments']) ? [] : (@json_decode($this->environments) ?: []);
+			$src['environments'] = empty($src['environments']) ? [] : (@json_decode($src['environments']) ?: []);
 		}
 	}
 }

@@ -275,9 +275,9 @@ abstract class Select
 	public static function client_id(): array
 	{
 		return [
-			JHtml::_('FEFHelp.select.option', '', '- ' . Text::_('COM_ARS_RELEASES_CLIENT_ID_LBL') . ' -'),
-			JHtml::_('FEFHelp.select.option', '1', Text::_('COM_ARS_RELEASES_CLIENTID_BACKEND')),
-			JHtml::_('FEFHelp.select.option', '0', Text::_('COM_ARS_RELEASES_CLIENTID_FRONTEND')),
+			JHtml::_('FEFHelp.select.option', '', '- ' . Text::_('COM_ARS_STREAM_FIELD_CLIENTID_LBL') . ' -'),
+			JHtml::_('FEFHelp.select.option', '1', Text::_('COM_ARS_STREAM_FIELD_CLIENTID_BACKEND')),
+			JHtml::_('FEFHelp.select.option', '0', Text::_('COM_ARS_STREAM_FIELD_CLIENTID_FRONTEND')),
 		];
 	}
 
@@ -388,7 +388,7 @@ abstract class Select
 
 		if ($addDefault)
 		{
-			array_unshift($options, JHtml::_('FEFHelp.select.option', '', '- ' . Text::_('COM_ARS_LBL_COMMON_SELECTCATTYPE') . ' -'));
+			array_unshift($options, JHtml::_('FEFHelp.select.option', '', '- ' . Text::_('COM_ARS_COMMON_LBL_SELECTCATTYPE') . ' -'));
 		}
 
 		return $options;

@@ -83,7 +83,7 @@ $item = $this->getItem();
             </div>
 
             <div class="akeeba-form-group">
-                <label for="is_supported">@lang('COM_ARS_IS_SUPPORTED')</label>
+                <label for="is_supported">@lang('COM_ARS_CATEGORIES_FIELD_IS_SUPPORTED')</label>
 
                 @jhtml('FEFHelp.select.booleanswitch', 'is_supported', $item->is_supported)
             </div>

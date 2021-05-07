@@ -79,7 +79,7 @@ $item = $this->getItem();
 
             <div class="akeeba-form-group">
                 <label for="client_id">
-                    @lang('COM_ARS_RELEASES_CLIENT_ID_LBL')
+                    @lang('COM_ARS_STREAM_FIELD_CLIENTID_LBL')
                 </label>
 
                 @jhtml('FEFHelp.select.genericlist',
