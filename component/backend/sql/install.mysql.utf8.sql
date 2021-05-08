@@ -176,19 +176,19 @@ CREATE TABLE IF NOT EXISTS `#__ars_environments`
 
 CREATE TABLE IF NOT EXISTS `#__ars_dlidlabels`
 (
-    `ars_dlidlabel_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    `id`               bigint(20) unsigned NOT NULL AUTO_INCREMENT,
     `user_id`          bigint(20) unsigned NOT NULL,
     `primary`          TINYINT(1)          NOT NULL DEFAULT 0,
-    `label`            varchar(255)        NOT NULL DEFAULT '',
+    `title`            varchar(255)        NOT NULL DEFAULT '',
     `dlid`             CHAR(32)            NOT NULL,
-    `enabled`          tinyint(3)          NOT NULL DEFAULT '1',
+    `published`        tinyint(3)          NOT NULL DEFAULT '1',
     `created_by`       bigint(20)          NOT NULL DEFAULT '0',
     `created`          datetime            NULL     DEFAULT NULL,
     `modified_by`      bigint(20)          NOT NULL DEFAULT '0',
     `modified`         datetime            NULL     DEFAULT NULL,
     `checked_out`      int(11)             NOT NULL DEFAULT '0',
     `checked_out_time` datetime            NULL     DEFAULT NULL,
-    PRIMARY KEY (`ars_dlidlabel_id`)
+    PRIMARY KEY (`id`)
 ) ENGINE InnoDB
   DEFAULT CHARSET = utf8mb4
   DEFAULT COLLATE = utf8mb4_unicode_ci;

@@ -9,3 +9,11 @@ ALTER TABLE `#__ars_dlidlabels`
 ALTER TABLE `#__ars_dlidlabels`
     CHANGE `modified_on`
         `modified` datetime NULL DEFAULT NULL;
+
+ALTER TABLE `#__ars_dlidlabels`
+    CHANGE `label`
+        `title` varchar(255) NOT NULL DEFAULT '';
+
+ALTER TABLE `#__ars_dlidlabels`
+    CHANGE `enabled`
+        `published` tinyint(3) NOT NULL DEFAULT '1';
