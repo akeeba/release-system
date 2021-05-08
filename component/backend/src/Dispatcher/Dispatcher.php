@@ -21,6 +21,13 @@ class Dispatcher extends ComponentDispatcher
 
 	protected $defaultController = 'controlpanel';
 
+	protected $viewMap = [
+		'downloadidlabel'  => 'dlidlabel',
+		'downloadidlabels' => 'dlidlabels',
+		'updatestream'     => 'stream',
+		'updatestreams'    => 'streams',
+	];
+
 	public function dispatch()
 	{
 		// Check the minimum supported PHP version
@@ -115,6 +122,7 @@ class Dispatcher extends ComponentDispatcher
 		}
 		elseif (empty($controller) && !empty($view))
 		{
+			$view = $this->mapView($view);
 			$controller = $view;
 		}
 		elseif (!empty($controller) && empty($view))
@@ -128,5 +136,12 @@ class Dispatcher extends ComponentDispatcher
 		$this->input->set('view', $view);
 		$this->input->set('controller', $controller);
 		$this->input->set('task', $task);
+	}
+
+	private function mapView(string $view)
+	{
+		$view = strtolower($view);
+
+		return $this->viewMap[$view] ?? $view;
 	}
 }
