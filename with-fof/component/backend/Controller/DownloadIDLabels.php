@@ -146,7 +146,7 @@ class DownloadIDLabels extends DataController
 
 		if ($model->primary)
 		{
-			throw new \RuntimeException(Text::_('COM_ARS_DOWNLOADIDLABELS_ERR_CANTEDITDEFAULT'), 403);
+			throw new \RuntimeException(Text::_('COM_ARS_DLIDLABELS_ERR_CANTEDITDEFAULT'), 403);
 		}
 
 		if (!$this->container->platform->isFrontend())

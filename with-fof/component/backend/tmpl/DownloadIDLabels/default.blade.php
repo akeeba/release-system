@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 
 @section('browse-filters')
     <div class="akeeba-filter-element akeeba-form-group">
-        @searchfilter('label', 'label', 'COM_ARS_DOWNLOADIDLABELS_FIELD_LABEL')
+        @searchfilter('label', 'label', 'COM_ARS_DLIDLABELS_FIELD_LABEL')
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
@@ -22,7 +22,7 @@ defined('_JEXEC') or die;
     </div>
 
     <div class="akeeba-filter-element akeeba-form-group">
-        @searchfilter('dlid', 'dlid', 'COM_ARS_DOWNLOADIDLABELS_FIELD_DOWNLOAD_ID')
+        @searchfilter('dlid', 'dlid', 'COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID')
     </div>
 @stop
 
@@ -32,19 +32,19 @@ defined('_JEXEC') or die;
             @jhtml('FEFHelp.browse.checkall')
         </th>
         <th>
-            @sortgrid('label', 'COM_ARS_DOWNLOADIDLABELS_FIELD_LABEL')
+            @sortgrid('label', 'COM_ARS_DLIDLABELS_FIELD_LABEL')
         </th>
         <th>
             @sortgrid('user_id', 'JGLOBAL_USERNAME')
         </th>
         <th>
-            @sortgrid('dlid', 'COM_ARS_DOWNLOADIDLABELS_FIELD_DOWNLOAD_ID')
+            @sortgrid('dlid', 'COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID')
         </th>
         <th width="8%">
             @sortgrid('enabled', 'JPUBLISHED')
         </th>
         <th>
-            @lang('COM_ARS_DOWNLOADIDLABELS_FIELD_RESET')
+            @lang('COM_ARS_DLIDLABELS_FIELD_RESET')
         </th>
     </tr>
 @stop
@@ -62,7 +62,7 @@ defined('_JEXEC') or die;
             </td>
             <td>
                 @if (($row->label == '_MAIN_') || $row->primary)
-                    <span class="akeeba-label--green">@lang('COM_ARS_DOWNLOADIDLABELS_LBL_DEFAULT')</span>
+                    <span class="akeeba-label--green">@lang('COM_ARS_DLIDLABELS_LBL_DEFAULT')</span>
                 @else
                     <a href="index.php?option=com_ars&view=DownloadIDLabel&task=edit&id={{ $row->ars_dlidlabel_id }}">
                         {{{ $row->label }}}
@@ -84,7 +84,7 @@ defined('_JEXEC') or die;
                 <a href="index.php?option=com_ars&view=DownloadIDLabels&task=reset&id={{{ $row->ars_dlidlabel_id }}}&{{{ $this->getContainer()->platform->getToken(true) }}}=1"
                    class="akeeba-btn--orange--small">
                     <span class="akion-refresh"></span>
-                    @lang('COM_ARS_DOWNLOADIDLABELS_FIELD_RESET')
+                    @lang('COM_ARS_DLIDLABELS_FIELD_RESET')
                 </a>
             </td>
         </tr>

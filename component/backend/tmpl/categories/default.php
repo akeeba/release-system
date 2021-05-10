@@ -91,7 +91,7 @@ $i = 0;
 							$canEdit    = $user->authorise('core.edit', 'com_ars')
 								|| $user->authorise('core.edit', 'com_ars.category.' . $item->id);
 							$canCheckin = $user->authorise('core.manage', 'com_checkin')
-								|| $item->locked_by == $userId || is_null($item->locked_by);
+								|| $item->checked_out == $userId || is_null($item->checked_out);
 							$canEditOwn = (
 									$user->authorise('core.edit.own', 'com_ars') ||
 									$user->authorise('core.edit.own', 'com_ars.category.' . $item->id)

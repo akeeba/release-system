@@ -101,6 +101,7 @@
         <files folder="backend">
             <folder>forms</folder>
             <folder>language</folder>
+            <folder>layout</folder>
             <folder>services</folder>
             <folder>sql</folder>
             <folder>src</folder>

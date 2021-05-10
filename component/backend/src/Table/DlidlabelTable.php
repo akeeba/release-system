@@ -18,6 +18,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\User\UserFactoryInterface;
 use Joomla\Database\DatabaseDriver;
+use Joomla\Utilities\ArrayHelper;
+use RuntimeException;
 
 /**
  * ARS Add-on Download IDs table
@@ -83,7 +85,7 @@ class DlidlabelTable extends AbstractTable
 
 		if ($this->id)
 		{
-			$query->where($db->qn('ars_dlidlabel_id') . ' != :id')
+			$query->where($db->qn('id') . ' != :id')
 				->bind(':id', $this->id);
 		}
 
@@ -139,7 +141,7 @@ class DlidlabelTable extends AbstractTable
 			// If it's an existing record it's OK to reuse the same Download ID (probability: 1 in 2^32).
 			if ($this->id)
 			{
-				$query->where($db->qn('ars_dlidlabel_id') . ' != :id')
+				$query->where($db->qn('id') . ' != :id')
 					->bind(':id', $this->id);
 			}
 
@@ -148,6 +150,51 @@ class DlidlabelTable extends AbstractTable
 			{
 				break;
 			}
+		}
+	}
+
+	/**
+	 * Disallow unpublishing the Main Download ID of a user.
+	 *
+	 * @param   null  $pks
+	 * @param   int   $state
+	 * @param   int   $userId
+	 *
+	 * @throws  RuntimeException
+	 */
+	protected function onBeforePublish($pks = null, $state = 1, $userId = 0)
+	{
+		// We only need to check what happens when we try to unpublish a record
+		if ($state != 0)
+		{
+			return;
+		}
+
+		// If there are no keys we're only checking this here record.
+		if (empty($pks))
+		{
+			if (($this->primary != 0))
+			{
+				throw new RuntimeException(Text::_("COM_ARS_DLIDLABELS_ERR_CANTUNPUBLISHDEFAULT"));
+			}
+
+			return;
+		}
+
+		// We have pure integer IDs so that's what I'm gonna check
+		$pks = ArrayHelper::toInteger($pks);
+
+		foreach ($pks as $id)
+		{
+			$record = clone $this;
+			$record->reset();
+
+			if (!$record->load($id) || !$record->primary)
+			{
+				continue;
+			}
+
+			throw new RuntimeException(Text::_("COM_ARS_DLIDLABELS_ERR_CANTUNPUBLISHDEFAULT"));
 		}
 	}
 }

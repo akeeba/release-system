@@ -66,7 +66,7 @@ defined('_JEXEC') or die;
 					<span class="fa fa-key"></span>
 				</div>
 				<span>
-					<?= Text::_('COM_ARS_TITLE_DOWNLOADIDLABELS') ?>
+					<?= Text::_('COM_ARS_TITLE_DLIDLABELS') ?>
 				</span> </a>
 
 		</div>

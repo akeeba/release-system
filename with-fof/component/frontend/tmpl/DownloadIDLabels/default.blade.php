@@ -26,7 +26,7 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
 ?>
 
 <div class="akeeba-block--info">
-    @sprintf('COM_ARS_DOWNLOADIDLABELS_MAINDLID', Filter::myDownloadID())
+    @sprintf('COM_ARS_DLIDLABELS_MAINDLID', Filter::myDownloadID())
 </div>
 
 <form name="arsDownloadID" action="{{ htmlentities($formURI) }}" method="post" class="akeeba-form--inline">
@@ -39,7 +39,7 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
 
     <div class="akeeba-form-group">
         <input type="text" name="label" value="{{ $this->getModel()->getState('label') }}"
-               placeholder="@lang('COM_ARS_DOWNLOADIDLABELS_FIELD_LABEL')" />
+               placeholder="@lang('COM_ARS_DLIDLABELS_FIELD_LABEL')" />
     </div>
 
     <div class="akeeba-form-group--actions">
@@ -62,10 +62,10 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
         <thead>
             <tr>
                 <th>
-                    @lang('COM_ARS_DOWNLOADIDLABELS_FIELD_DOWNLOAD_ID')
+                    @lang('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID')
                 </th>
                 <th>
-                    @lang('COM_ARS_DOWNLOADIDLABELS_FIELD_LABEL')
+                    @lang('COM_ARS_DLIDLABELS_FIELD_LABEL')
                 </th>
                 <th>
                     @lang('JPUBLISHED')
@@ -86,12 +86,12 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
         @if($this->items->count())
             @foreach($this->items as $item)
                 <tr>
-                    <td data-th="@lang('COM_ARS_DOWNLOADIDLABELS_FIELD_DOWNLOAD_ID')">
+                    <td data-th="@lang('COM_ARS_DLIDLABELS_FIELD_DOWNLOAD_ID')">
                         @include('site:com_ars/DownloadIDLabels/default_dlid', ['item' => $item])
                     </td>
-                    <td data-th="@lang('COM_ARS_DOWNLOADIDLABELS_FIELD_LABEL')">
+                    <td data-th="@lang('COM_ARS_DLIDLABELS_FIELD_LABEL')">
                         @if($item->primary)
-                            @lang('COM_ARS_DOWNLOADIDLABELS_LBL_DEFAULT')
+                            @lang('COM_ARS_DLIDLABELS_LBL_DEFAULT')
                         @else
                             <a href="@route('index.php?option=com_ars&view=DownloadIDLabel&task=edit&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)">
                                 {{{ $item->label }}}
@@ -104,12 +104,12 @@ $options[] = HTMLHelper::_('select.option', '', 'JALL');
                     </td>
                     <td data-th="">
                         <a href="@route('index.php?option=com_ars&view=DownloadIDLabels&task=reset&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
-                           class="akeeba-btn--orange--small" title="@lang('COM_ARS_DOWNLOADIDLABELS_FIELD_RESET')">
-                            <span class="akion-refresh"></span> </a>
+                           class="akeeba-btn--orange--small" title="@lang('COM_ARS_DLIDLABELS_FIELD_RESET')"> <span
+                                    class="akion-refresh"></span> </a>
                         @unless($item->primary)
                             <a href="@route('index.php?option=com_ars&view=DownloadIDLabels&task=remove&id=' . $item->ars_dlidlabel_id . '&' . $this->container->platform->getToken(true) . '=1&returnurl=' . $returnUrl)"
-                               class="akeeba-btn--red--small" title="@lang('COM_ARS_DOWNLOADIDLABELS_FIELD_TRASH')">
-                                <span class="akion-trash-b"></span> </a>
+                               class="akeeba-btn--red--small" title="@lang('COM_ARS_DLIDLABELS_FIELD_TRASH')"> <span
+                                        class="akion-trash-b"></span> </a>
                         @endunless
                     </td>
                 </tr>

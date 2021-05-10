@@ -17,20 +17,54 @@
         />
 
         <field
+                name="user_id"
+                type="user"
+                label="COM_ARS_DLIDLABELS_FIELD_USER_ID"
+        />
+
+        <field
+                name="dlid"
+                type="text"
+                label="COM_ARS_DLIDLABELS_FIELD_DLID"
+                description="COM_ARS_DLIDLABELS_FIELD_DLID_HELP"
+                readonly="true"
+                class="readonly"
+        />
+
+        <field
+                name="primary"
+                type="list"
+                layout="joomla.form.field.radio.switcher"
+                label="COM_ARS_DLIDLABELS_FIELD_PRIMARY_LABEL"
+                default="0"
+                validate="options"
+                readonly="true"
+                class="readonly"
+        >
+            <option value="0">COM_ARS_DLIDLABELS_FIELD_ADDON</option>
+            <option value="1">COM_ARS_DLIDLABELS_FIELD_PRIMARY</option>
+        </field>
+
+        <field
                 name="title"
                 type="text"
-                label="COM_ARS_ENVIRONMENTS_TITLE"
+                label="COM_ARS_ITEM_FIELD_TITLE"
                 default=""
                 required="true"
         />
 
         <field
-                name="xmltitle"
-                type="text"
-                label="COM_ARS_ENVIRONMENT_XMLTITLE"
-                default=""
-                required="true"
-        />
+                name="published"
+                type="list"
+                layout="joomla.form.field.radio.switcher"
+                label="JENABLED"
+                description="JFIELD_ENABLED_DESC"
+                default="0"
+                validate="options"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
 
         <field
                 name="created"
@@ -77,6 +111,5 @@
                 type="hidden"
                 filter="unset"
         />
-
     </fieldset>
 </form>

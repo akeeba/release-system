@@ -111,7 +111,7 @@
         />
 
         <field
-                name="checked_out_on"
+                name="checked_out_time"
                 type="hidden"
                 filter="unset"
         />

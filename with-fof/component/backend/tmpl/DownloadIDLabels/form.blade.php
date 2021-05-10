@@ -24,7 +24,7 @@ $item = $this->getItem();
         <div>
             <div class="akeeba-form-group">
                 <label for="label">
-                    @lang('COM_ARS_DOWNLOADIDLABELS_FIELD_LABEL')
+                    @lang('COM_ARS_DLIDLABELS_FIELD_LABEL')
                 </label>
 
                 <input type="text" name="label" id="label" value="{{{ $item->label }}}" />
@@ -32,7 +32,7 @@ $item = $this->getItem();
 
             <div class="akeeba-form-group">
                 <label for="label">
-                    @lang('COM_ARS_DOWNLOADIDLABELS_FIELD_USER_ID')
+                    @lang('COM_ARS_DLIDLABELS_FIELD_USER_ID')
                 </label>
 
                 @include('any:lib_fof40/Common/user_select', ['field' => 'user_id', 'item' => $item, 'required' => true])
