@@ -24,8 +24,6 @@ class Dispatcher extends ComponentDispatcher
 	protected $viewMap = [
 		'downloadidlabel'  => 'dlidlabel',
 		'downloadidlabels' => 'dlidlabels',
-		'updatestream'     => 'stream',
-		'updatestreams'    => 'streams',
 	];
 
 	public function dispatch()

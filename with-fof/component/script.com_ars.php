@@ -190,6 +190,9 @@ class Com_ArsInstallerScript extends \FOF40\InstallScript\Component
 			'media/com_ars/js/Tooltip.js',
 			'media/com_ars/js/Tooltip.min.js',
 			'media/com_ars/js/Tooltip.min.map',
+
+			// IMPORTANT! Update chart.js
+			'media/com_ars/js/Chart.bundle.min.js',
 		],
 		'folders' => [
 			// Moving to FOF 3

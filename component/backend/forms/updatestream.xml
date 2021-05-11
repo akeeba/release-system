@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
+
+<form addfieldprefix="Akeeba\Component\ARS\Administrator\Field">
+    <fieldset name="basic">
+        <field
+                name="id"
+                type="number"
+                label="JGLOBAL_FIELD_ID_LABEL"
+                default="0"
+                readonly="true"
+                class="readonly"
+        />
+
+        <field
+                name="name"
+                type="text"
+                label="COM_ARS_UPDATESTREAM_FIELD_NAME"
+                description="COM_ARS_UPDATESTREAM_FIELD_NAME_HELP"
+                default=""
+                required="true"
+        />
+
+        <field
+                name="alias"
+                type="text"
+                label="COM_ARS_UPDATESTREAM_FIELD_ALIAS"
+                description="COM_ARS_UPDATESTREAM_FIELD_ALIAS_HELP"
+                default=""
+                required="true"
+        />
+
+        <field
+                name="category"
+                type="ArsCategories"
+                label="COM_ARS_UPDATESTREAM_CATEGORY_TITLE"
+                description="COM_ARS_UPDATESTREAM_CATEGORY_DESC"
+                required="true"
+        >
+        </field>
+
+        <field
+                name="type"
+                type="list"
+                label="COM_ARS_UPDATESTREAM_FIELD_TYPE"
+                description="COM_ARS_UPDATESTREAM_FIELD_TYPE_HELP"
+                required="true"
+                default="components"
+        >
+            <option value="">COM_ARS_UPDATESTREAM_UPDATETYPE_SELECT</option>
+            <option value="components">COM_ARS_UPDATESTREAM_UPDATETYPE_COMPONENTS</option>
+            <option value="libraries">COM_ARS_UPDATESTREAM_UPDATETYPE_LIBRARIES</option>
+            <option value="modules">COM_ARS_UPDATESTREAM_UPDATETYPE_MODULES</option>
+            <option value="packages">COM_ARS_UPDATESTREAM_UPDATETYPE_PACKAGES</option>
+            <option value="plugins">COM_ARS_UPDATESTREAM_UPDATETYPE_PLUGINS</option>
+            <option value="files">COM_ARS_UPDATESTREAM_UPDATETYPE_FILES</option>
+            <option value="templates">COM_ARS_UPDATESTREAM_UPDATETYPE_TEMPLATES</option>
+        </field>
+
+        <field
+                name="element"
+                type="text"
+                label="COM_ARS_UPDATESTREAM_FIELD_ELEMENT"
+                description="COM_ARS_UPDATESTREAM_FIELD_ELEMENT_HELP"
+                default=""
+                required="true"
+        />
+
+        <field
+                name="packname"
+                type="text"
+                label="COM_ARS_UPDATESTREAM_FIELD_PACKNAME"
+                description="COM_ARS_UPDATESTREAM_FIELD_PACKNAME_HELP"
+                default=""
+                required="true"
+        />
+
+        <field
+                name="client_id"
+                type="list"
+                label="COM_ARS_UPDATESTREAM_FIELD_CLIENTID_LBL"
+                required="true"
+                default="0"
+                validate="options"
+                showon="type:modules[OR]type:templates"
+        >
+            <option value="0">COM_ARS_UPDATESTREAM_FIELD_CLIENTID_FRONTEND</option>
+            <option value="1">COM_ARS_UPDATESTREAM_FIELD_CLIENTID_BACKEND</option>
+        </field>
+
+        <field
+                name="folder"
+                type="text"
+                label="COM_ARS_UPDATESTREAM_FIELD_FOLDER"
+                default=""
+                showon="type:plugins"
+        />
+
+        <field
+                name="jedid"
+                type="number"
+                label="COM_ARS_UPDATESTREAM_FIELD_JEDID"
+                description="COM_ARS_UPDATESTREAM_FIELD_JEDID_HELP"
+                default=""
+        />
+
+        <field
+                name="published"
+                type="list"
+                layout="joomla.form.field.radio.switcher"
+                label="JENABLED"
+                description="JFIELD_ENABLED_DESC"
+                default="0"
+                validate="options"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+                name="created"
+                type="calendar"
+                label="JGLOBAL_CREATED_DATE"
+                translateformat="true"
+                showtime="true"
+                size="22"
+                filter="user_utc"
+        />
+
+        <field
+                name="created_by"
+                type="user"
+                label="JGLOBAL_FIELD_CREATED_BY_LABEL"
+                validate="UserId"
+        />
+
+        <field
+                name="modified"
+                type="calendar"
+                label="JGLOBAL_FIELD_MODIFIED_LABEL"
+                translateformat="true"
+                showtime="true"
+                size="22"
+                filter="user_utc"
+        />
+
+        <field
+                name="modified_by"
+                type="user"
+                label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
+                validate="UserId"
+        />
+
+        <field
+                name="checked_out"
+                type="hidden"
+                filter="unset"
+        />
+
+        <field
+                name="checked_out_time"
+                type="hidden"
+                filter="unset"
+        />
+    </fieldset>
+</form>

@@ -1,0 +1,60 @@
+Converting to Core MVC
+================================================================================
+
+Backend
+    Views
+        Download logs
+
+Frontend
+    Views
+        Categories
+        Releases
+        Items
+        Download (controller only)
+        Latest
+        Updates
+        Download IDs
+    Router
+
+Plugins
+    Content
+        ARS download ID
+        ARS latest version
+    Editor buttons
+        ARS link
+    System
+        ARS integration with JED latest version download
+
+Modules
+    Admin
+        *NEW* Downloads graph
+    Site
+        My Downloads
+
+API
+    Releases
+    Items
+    Reimplement Release Maker to use the new JSON API
+
+Removed extensions
+    Site module: mod_arsdlid
+
+Documentation
+
+================================================================================
+Done
+================================================================================
+Backend
+    Installation script
+    SQL
+    Helpers
+        Save component parameters
+    Views
+        Control panel
+        Categories
+        Releases
+        Items
+        Automatic item descriptions
+        Environments
+        Download IDs
+        Update streams

@@ -14,7 +14,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\ParameterType;
 
-class AutodescriptionsModel extends ListModel
+class UpdatestreamsModel extends ListModel
 {
 	public function __construct($config = [], MVCFactoryInterface $factory = null)
 	{
@@ -24,7 +24,7 @@ class AutodescriptionsModel extends ListModel
 				'search',
 				'id', 'a.id',
 				'category_id', 'c.id',
-				'title', 'a.title',
+				'name', 'a.name',
 				'created', 'a.created',
 				'published', 'a.published',
 			];
@@ -33,7 +33,7 @@ class AutodescriptionsModel extends ListModel
 		parent::__construct($config, $factory);
 	}
 
-	protected function populateState($ordering = 'a.id', $direction = 'desc')
+	protected function populateState($ordering = 'a.id', $direction = 'asc')
 	{
 		$app = Factory::getApplication();
 
@@ -69,7 +69,7 @@ class AutodescriptionsModel extends ListModel
 				$db->quoteName('c.alias', 'cat_alias'),
 				$db->quoteName('c.type', 'cat_type'),
 			])
-			->from($db->qn('#__ars_autoitemdesc', 'a'))
+			->from($db->qn('#__ars_updatestreams', 'a'))
 			->join('LEFT', $db->quoteName('#__ars_categories', 'c'), $db->quoteName('c.id') . ' = ' . $db->quoteName('a.category'));
 
 		// Search filter
@@ -86,14 +86,8 @@ class AutodescriptionsModel extends ListModel
 			else
 			{
 				$search = '%' . $search . '%';
-				$query->where(
-					'(' .
-					$db->qn('a.title') . ' LIKE :search1' . ' OR ' .
-					$db->qn('a.description') . ' LIKE :search2'
-					. ')'
-				)
-					->bind(':search1', $search)
-					->bind(':search2', $search);
+				$query->where($db->qn('a.name') . ' LIKE :search')
+					->bind(':search', $search);
 			}
 		}
 
