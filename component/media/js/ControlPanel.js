@@ -19,7 +19,10 @@ window.akeeba.ReleaseSystem.ControlPanel.showCharts = function ()
         var item = data[i];
         lineLabels.push(item.date);
         dlPoints.push(
-            parseInt(item.count * 100) / 100
+            {
+                "x": item.date,
+                "y": parseInt(item.count * 100) / 100
+            }
         );
     }
 
@@ -29,7 +32,6 @@ window.akeeba.ReleaseSystem.ControlPanel.showCharts = function ()
             labels:   lineLabels,
             datasets: [
                 {
-                    label:       "",
                     data:        dlPoints,
                     fill:        false,
                     borderColor: "rgb(75, 192, 192)",
@@ -43,14 +45,24 @@ window.akeeba.ReleaseSystem.ControlPanel.showCharts = function ()
                     display: false
                 }
             },
-            scales:  {
-                yAxes: [
-                    {
-                        ticks: {
-                            beginAtZero: true
-                        }
+            scales: {
+                x: {
+                    type:  "time",
+                    time:  {
+                        round:         "day",
+                        tooltipFormat: "ll",
+                        unit:          "day",
+                        minUnit:       "day",
+                    },
+                    ticks: {
+                        color: "#F0AD4E"
                     }
-                ]
+                },
+                y: {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }
             }
         }
     });

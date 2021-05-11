@@ -21,10 +21,31 @@
 
 		{
 			"name": "com_ars.chart",
-			"description": "Charts.js — renders cahrts and graphs",
+			"description": "Charts.js — renders charts and graphs",
 			"type": "script",
-			"uri": "com_ars/Chart.bundle.min.js",
-			"dependencies": [],
+			"uri": "https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js",
+			"attributes": {
+				"defer": true
+			}
+		},
+		{
+			"name": "com_ars.chart_moment_adapter",
+			"description": "Moment adapter for Charts.js",
+			"type": "script",
+			"dependencies": [
+				"com_ars.chart",
+				"com_ars.moment"
+			],
+			"uri": "https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@0.1.1",
+			"attributes": {
+				"defer": true
+			}
+		},
+		{
+			"name": "com_ars.moment",
+			"description": "Moment — handles date conversions in JavaScript",
+			"type": "script",
+			"uri": "https://cdn.jsdelivr.net/npm/moment@2.27.0",
 			"attributes": {
 				"defer": true
 			}
@@ -50,7 +71,7 @@
 			"uri": "com_ars/ControlPanel.min.js",
 			"dependencies": [
 				"core",
-				"com_ars.chart"
+				"com_ars.chart_moment_adapter"
 			],
 			"attributes": {
 				"defer": true
