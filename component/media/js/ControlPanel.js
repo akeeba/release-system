@@ -29,6 +29,7 @@ window.akeeba.ReleaseSystem.ControlPanel.showCharts = function ()
             labels:   lineLabels,
             datasets: [
                 {
+                    label:       "",
                     data:        dlPoints,
                     fill:        false,
                     borderColor: "rgb(75, 192, 192)",
@@ -37,10 +38,12 @@ window.akeeba.ReleaseSystem.ControlPanel.showCharts = function ()
             ]
         },
         options: {
-            legend: {
-                display: false
+            plugins: {
+                legend: {
+                    display: false
+                }
             },
-            scales: {
+            scales:  {
                 yAxes: [
                     {
                         ticks: {
