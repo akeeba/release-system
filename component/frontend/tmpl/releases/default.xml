@@ -11,12 +11,24 @@
             <![CDATA[COM_ARS_VIEW_CATEGORY_DESC]]>
         </message>
     </layout>
-    <fields name="params">
+    <fields name="params" addfieldprefix="Akeeba\Component\ARS\Administrator\Field">
         <fieldset name="basic" label="COM_ARS_FIELDSET_BASIC">
-            <field name="category_id" type="sql" default="0" label="COM_ARS_COMMON_CATEGORY_SELECT_LABEL" description=""
-                   query="SELECT `id`, `title` FROM `#__ars_categories`" key_field="id" value_field="title"/>
-            <field name="rel_orderby" type="list" default="order" label="COM_ARS_RELEASES_ORDERBY_LBL"
-                   description="COM_ARS_RELEASES_ORDERBY_DESC">
+            <field
+                    name="category_id"
+                    type="ArsCategories"
+                    label="COM_ARS_RELEASES_FIELD_CATEGORY"
+                    required="true"
+            >
+                <option value="">COM_ARS_COMMON_CATEGORY_SELECT_LABEL</option>
+            </field>
+
+            <field
+                    name="rel_orderby"
+                    type="list"
+                    label="COM_ARS_RELEASES_ORDERBY_LBL"
+                    description="COM_ARS_RELEASES_ORDERBY_DESC"
+                    default="order"
+            >
                 <option value="none">COM_ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
                 <option value="alpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
                 <option value="ralpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
@@ -24,9 +36,14 @@
                 <option value="rcreated">COM_ARS_BROWSE_REPOSITORY_ORDERBY_RCREATED</option>
                 <option value="order">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
             </field>
-            <field name="@spacer" type="spacer" default="" label="" description=""/>
-            <field name="items_orderby" type="list" default="order" label="COM_ARS_ITEMS_ORDERBY_LBL"
-                   description="COM_ARS_ITEMS_ORDERBY_DESC">
+
+            <field
+                    name="items_orderby"
+                    type="list"
+                    label="COM_ARS_ITEMS_ORDERBY_LBL"
+                    description="COM_ARS_ITEMS_ORDERBY_DESC"
+                    default="order"
+            >
                 <option value="none">COM_ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
                 <option value="alpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
                 <option value="ralpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
@@ -36,15 +53,25 @@
             </field>
         </fieldset>
         <fieldset name="advanced" label="COM_ARS_FIELDSET_ADVANCED">
-            <field name="show_pagination" type="list" default="2" label="COM_ARS_BROWSE_REPOSITORY_PAGINATION_LBL"
-                   description="COM_ARS_BROWSE_REPOSITORY_PAGINATION_DESC">
+            <field
+                    name="show_pagination"
+                    type="list"
+                    label="JGLOBAL_PAGINATION_LABEL"
+                    default="2"
+                    validate="options"
+            >
                 <option value="0">JHide</option>
                 <option value="1">JShow</option>
                 <option value="2">JGlobal_Auto</option>
             </field>
-            <field name="show_pagination_results" type="radio" default="1"
-                   label="COM_ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_LBL"
-                   description="COM_ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_DESC">
+
+            <field
+                    name="show_pagination_results"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    default="1"
+                    label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+            >
                 <option value="0">JHide</option>
                 <option value="1">JShow</option>
             </field>

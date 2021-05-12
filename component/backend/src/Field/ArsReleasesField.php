@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\GroupedlistField;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Database\DatabaseDriver;
 
 class ArsReleasesField extends GroupedlistField
@@ -79,6 +80,11 @@ class ArsReleasesField extends GroupedlistField
 			{
 				$this->addGroup($label, $options);
 			}
+		}
+
+		if (in_array('advancedSelect', explode(' ', trim($this->class))))
+		{
+			HTMLHelper::_('formbehavior.chosen');
 		}
 
 		return parent::getInput();

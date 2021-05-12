@@ -8,6 +8,8 @@
 defined('_JEXEC') or die;
 
 /** @var  \Akeeba\Component\ARS\Site\View\Categories\HtmlView $this */
+
+$grouping = $this->params->get('grouping', 'normal');
 ?>
 
 <div class="item-page<?= $this->escape($this->params->get('pageclass_sfx')) ?>">
@@ -17,16 +19,23 @@ defined('_JEXEC') or die;
 		</div>
 	<?php endif; ?>
 
-	<?php if ($this->params->get('grouping', 'normal') == 'none'): ?>
-		<?= $this->loadAnyTemplate('categories/generic', true, ['section' => 'all', 'title' => '']) ?>
-	<?php elseif (!empty($this->customHtmlFile)): ?>
+	<?php if (!empty($this->customHtmlFile)): ?>
 		<?= $this->loadAnyTemplate('categories/customrepo', true, ['renderSection' => 'all', 'title' => '']) ?>
-	<?php else: ?>
+	<?php elseif($grouping == 'normal'): ?>
 		<?= $this->loadAnyTemplate('categories/generic', true, [
 			'section' => 'normal', 'title' => 'COM_ARS_CATEGORY_TYPE_NORMAL',
 		]) ?>
 		<?= $this->loadAnyTemplate('categories/generic', true, [
 			'section' => 'bleedingedge', 'title' => 'COM_ARS_CATEGORY_TYPE_BLEEDINGEDGE',
 		]) ?>
+	<?php elseif($grouping == 'bleedingedge'): ?>
+		<?= $this->loadAnyTemplate('categories/generic', true, [
+			'section' => 'bleedingedge', 'title' => 'COM_ARS_CATEGORY_TYPE_BLEEDINGEDGE',
+		]) ?>
+		<?= $this->loadAnyTemplate('categories/generic', true, [
+			'section' => 'normal', 'title' => 'COM_ARS_CATEGORY_TYPE_NORMAL',
+		]) ?>
+	<?php else: ?>
+		<?= $this->loadAnyTemplate('categories/generic', true, ['section' => 'all', 'title' => '']) ?>
 	<?php endif; ?>
 </div>

@@ -49,8 +49,9 @@ class CategoriesController extends BaseController
 
 		// Now, let's apply some filtering
 		/** @var CategoriesModel $model */
-		$model = $this->getModel();
-		$user  = $this->app->getIdentity() ?: Factory::getUser();
+		$model = $this->getModel('', '', ['ignore_request' => true]);
+
+		$user = $this->app->getIdentity() ?: Factory::getUser();
 
 		// Only show published releases the user can access (or those allowing the display of unauthorized link)
 		$model->setState('filter.published', 1);
@@ -58,7 +59,7 @@ class CategoriesController extends BaseController
 		$model->setState('filter.allowUnauth', 1);
 
 		// Only show still supported software?
-		$model->setState('filter.supported', ($params->get('onlySupported', 0) == 1) ? 1 : '');
+		$model->setState('filter.supported', ($params->get('cat_is_supported', 0) == 1) ? 1 : '');
 
 		// Language filter, for multi-language sites
 		$model->setState('filter.language', '');

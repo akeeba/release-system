@@ -14,9 +14,28 @@
     <fields name="params">
         <fieldset name="basic" label="COM_ARS_FIELDSET_BASIC">
             <field name="grouping" type="hidden" default="normal"/>
+            <field name="useCustomRepoFile" type="hidden" default="0"/>
 
-            <field name="orderby" type="list" default="order" label="COM_ARS_BROWSE_REPOSITORY_ORDERBY_LBL"
-                   description="COM_ARS_BROWSE_REPOSITORY_ORDERBY_DESC">
+            <field
+                    name="cat_is_supported"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    label="COM_ARS_CATEGORY_IS_SUPPORTED_LBL"
+                    description="COM_ARS_CATEGORY_IS_SUPPORTED_DESC"
+                    default="0"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+            <field
+                    name="orderby"
+                    type="list"
+                    default="order"
+                    label="COM_ARS_BROWSE_REPOSITORY_ORDERBY_LBL"
+                    description="COM_ARS_BROWSE_REPOSITORY_ORDERBY_DESC"
+                    validate="options"
+            >
                 <option value="none">COM_ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
                 <option value="alpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
                 <option value="ralpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
@@ -25,9 +44,13 @@
                 <option value="order">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
             </field>
 
-            <field name="@spacer" type="spacer" default="" label="" description=""/>
-            <field name="rel_orderby" type="list" default="order" label="COM_ARS_RELEASES_ORDERBY_LBL"
-                   description="COM_ARS_RELEASES_ORDERBY_DESC">
+            <field
+                    name="rel_orderby"
+                    type="list"
+                    label="COM_ARS_RELEASES_ORDERBY_LBL"
+                    description="COM_ARS_RELEASES_ORDERBY_DESC"
+                    default="order"
+            >
                 <option value="none">COM_ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
                 <option value="alpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
                 <option value="ralpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
@@ -36,9 +59,13 @@
                 <option value="order">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
             </field>
 
-            <field name="@spacer" type="spacer" default="" label="" description=""/>
-            <field name="items_orderby" type="list" default="order" label="COM_ARS_ITEMS_ORDERBY_LBL"
-                   description="COM_ARS_ITEMS_ORDERBY_DESC">
+            <field
+                    name="items_orderby"
+                    type="list"
+                    label="COM_ARS_ITEMS_ORDERBY_LBL"
+                    description="COM_ARS_ITEMS_ORDERBY_DESC"
+                    default="order"
+            >
                 <option value="none">COM_ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
                 <option value="alpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
                 <option value="ralpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
@@ -49,15 +76,34 @@
         </fieldset>
 
         <fieldset name="advanced" label="COM_ARS_FIELDSET_ADVANCED">
-            <field name="show_pagination" type="list" default="2" label="COM_ARS_BROWSE_REPOSITORY_PAGINATION_LBL"
-                   description="COM_ARS_BROWSE_REPOSITORY_PAGINATION_DESC">
+            <field
+                    name="pagination_info"
+                    type="note"
+                    label="COM_ARS_CATEGORIES_LBL_PAGINATION_INFO_HEADING"
+                    description="COM_ARS_CATEGORIES_LBL_PAGINATION_INFO"
+                    heading="h4"
+                    class="alert alert-info"
+            />
+
+            <field
+                    name="show_pagination"
+                    type="list"
+                    label="JGLOBAL_PAGINATION_LABEL"
+                    default="2"
+                    validate="options"
+            >
                 <option value="0">JHide</option>
                 <option value="1">JShow</option>
                 <option value="2">JGlobal_Auto</option>
             </field>
-            <field name="show_pagination_results" type="radio" default="1"
-                   label="COM_ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_LBL"
-                   description="COM_ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_DESC">
+
+            <field
+                    name="show_pagination_results"
+                    type="radio"
+                    layout="joomla.form.field.radio.switcher"
+                    default="1"
+                    label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+            >
                 <option value="0">JHide</option>
                 <option value="1">JShow</option>
             </field>

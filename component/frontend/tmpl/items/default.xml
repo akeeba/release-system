@@ -12,13 +12,26 @@
         </message>
     </layout>
 
-    <fields name="params">
+    <fields name="params" addfieldprefix="Akeeba\Component\ARS\Administrator\Field">
         <fieldset name="basic" label="COM_ARS_FIELDSET_BASIC">
-            <field name="release_id" type="sql" default="0" label="COM_ARS_VIEW_RELEASE_SELECT" description=""
-                   query="select `r`.`id`, concat(`c`.`title`,' ',`r`.`version`) as `title` from `#__ars_releases` as `r` inner join `#__ars_categories` as `c` on(`c`.`id` = `r`.`category_id`) WHERE `c`.`published` = 1 and `r`.`published` = 1 order by `c`.`ordering` ASC, `r`.`ordering` ASC"
-                   key_field="id" value_field="title"/>
-            <field name="items_orderby" type="list" default="order" label="COM_ARS_ITEMS_ORDERBY_LBL"
-                   description="COM_ARS_ITEMS_ORDERBY_DESC">
+            <field
+                    name="release_id"
+                    type="ArsReleases"
+                    label="COM_ARS_ITEM_FIELD_RELEASE"
+                    required="true"
+                    filter="integer"
+                    class="advancedSelect"
+            >
+                <option value="">COM_ARS_COMMON_RELEASE_SELECT_LABEL</option>
+            </field>
+
+            <field
+                    name="items_orderby"
+                    type="list"
+                    label="COM_ARS_ITEMS_ORDERBY_LBL"
+                    description="COM_ARS_ITEMS_ORDERBY_DESC"
+                    default="order"
+            >
                 <option value="none">COM_ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
                 <option value="alpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
                 <option value="ralpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_RALPHA</option>
@@ -28,15 +41,15 @@
             </field>
         </fieldset>
         <fieldset name="advanced" label="COM_ARS_FIELDSET_ADVANCED">
-            <field name="show_pagination" type="list" default="2" label="COM_ARS_BROWSE_REPOSITORY_PAGINATION_LBL"
-                   description="COM_ARS_BROWSE_REPOSITORY_PAGINATION_DESC">
+            <field name="show_pagination" type="list" default="2" label="JGLOBAL_PAGINATION_LABEL"
+            >
                 <option value="0">JHide</option>
                 <option value="1">JShow</option>
                 <option value="2">JGlobal_Auto</option>
             </field>
             <field name="show_pagination_results" type="radio" default="1"
-                   label="COM_ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_LBL"
-                   description="COM_ARS_BROWSE_REPOSITORY_PAGINATION_RESULTS_DESC">
+                   label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+            >
                 <option value="0">JHide</option>
                 <option value="1">JShow</option>
             </field>
