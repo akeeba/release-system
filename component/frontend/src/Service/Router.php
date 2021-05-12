@@ -56,32 +56,35 @@ class Router extends RouterView
 		$this->setMVCFactory($factory);
 
 		$categories = new RouterViewConfiguration('categories');
+		$categories->addLayout('repository');
+		$categories->addLayout('normal');
+		$categories->addLayout('bleedingedge');
 		$this->registerView($categories);
-
-		$latest = new RouterViewConfiguration('latest');
-		$this->registerView($latest);
 
 		$releases = new RouterViewConfiguration('releases');
 		$releases->setKey('category_id');
-		$releases->setParent($categories);
+		$releases->setParent($categories, 'category_id');
 		$this->registerView($releases);
 
 		$items = new RouterViewConfiguration('items');
-		$releases->setKey('release_id');
-		$releases->setParent($releases);
+		$items->setKey('release_id');
+		$items->setParent($releases, 'release_id');
 		$this->registerView($items);
 
 		$item = new RouterViewConfiguration('item');
-		$releases->setKey('item_id');
-		$releases->setParent($items);
+		$item->setKey('item_id');
+		$item->setParent($items, 'item_id');
 		$this->registerView($item);
+
+		$latest = new RouterViewConfiguration('latest');
+		$this->registerView($latest);
 
 		$dlidlabels = new RouterViewConfiguration('dlidlabels');
 		$this->registerView($dlidlabels);
 
 		$dlidlabel = new RouterViewConfiguration('dlidlabel');
 		$dlidlabel->setKey('id');
-		$dlidlabel->setParent($dlidlabels);
+		$dlidlabel->setParent($dlidlabels, 'id');
 		$this->registerView($dlidlabel);
 
 		$update = new RouterViewConfiguration('update');
@@ -173,12 +176,12 @@ class Router extends RouterView
 		return $query;
 	}
 
-	public function getCategorySegment($id, $query)
+	public function getReleasesSegment($category_id, $query)
 	{
 		/** @var CategoryTable $category */
 		$category = $this->getMVCFactory()->createTable('Category', 'Administrator');
 
-		if (!$category->load((int) $id))
+		if (!$category->load((int) $category_id))
 		{
 			return [];
 		}
@@ -186,7 +189,7 @@ class Router extends RouterView
 		return [$category->alias];
 	}
 
-	public function getCategoryId($segment, $query)
+	public function getReleasesId($segment, $query)
 	{
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
@@ -198,22 +201,12 @@ class Router extends RouterView
 		return $db->setQuery($query)->loadResult() ?: false;
 	}
 
-	public function getCategoriesSegment($id, $query)
-	{
-		return $this->getCategorySegment($id, $query);
-	}
-
-	public function getCategoriesId($segment, $query)
-	{
-		return $this->getCategoryId($segment, $query);
-	}
-
-	public function getReleaseSegment($id, $query)
+	public function getItemsSegment($release_id, $query)
 	{
 		/** @var ReleaseTable $release */
 		$release = $this->getMVCFactory()->createTable('Release', 'Administrator');
 
-		if (!$release->load((int) $id))
+		if (!$release->load((int) $release_id))
 		{
 			return [];
 		}
@@ -221,7 +214,7 @@ class Router extends RouterView
 		return [$release->alias];
 	}
 
-	public function getReleaseId($segment, $query)
+	public function getItemsId($segment, $query)
 	{
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
@@ -233,22 +226,12 @@ class Router extends RouterView
 		return $db->setQuery($query)->loadResult() ?: false;
 	}
 
-	public function getReleasesSegment($id, $query)
-	{
-		return $this->getReleaseSegment($id, $query);
-	}
-
-	public function getReleasesId($segment, $query)
-	{
-		return $this->getReleaseId($segment, $query);
-	}
-
-	public function getItemSegment($id, $query)
+	public function getItemSegment($item_id, $query)
 	{
 		/** @var ItemTable $item */
 		$item = $this->getMVCFactory()->createTable('Item', 'Administrator');
 
-		if (!$item->load((int) $id))
+		if (!$item->load((int) $item_id))
 		{
 			return [];
 		}
@@ -266,16 +249,6 @@ class Router extends RouterView
 			->bind(':alias', $segment);
 
 		return $db->setQuery($query)->loadResult() ?: false;
-	}
-
-	public function getItemsSegment($id, $query)
-	{
-		return $this->getItemSegment($id, $query);
-	}
-
-	public function getItemsId($segment, $query)
-	{
-		return $this->getItemId($segment, $query);
 	}
 
 	public function getUpdateSegment($id, $query)

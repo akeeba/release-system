@@ -3,7 +3,6 @@ Converting to Core MVC
 
 Frontend
     Views
-        Categories
         Releases
         Items
         Download (controller only)
@@ -55,4 +54,6 @@ Backend
         Update streams
         Download logs
 Frontend
+    Views
+        Categories
     Router
