@@ -18,15 +18,15 @@ $released = $this->container->platform->getDate($item->created);
 ?>
 
 <div class="ars-release-{{{ $item->id }}} ars-release-{{ $this->release->category->is_supported ? 'supported' : 'unsupported' }}">
-	<h3 class="text-muted">
-		{{{ $item->category->title }}}
-		{{{ $item->version }}}
-		<span class="akeeba-label--grey--small">
+    <h3 class="text-muted">
+        {{{ $item->category->title }}}
+        {{{ $item->version }}}
+        <span class="akeeba-label--grey--small">
 			@lang('COM_ARS_RELEASES_MATURITY_' . $item->maturity)
 		</span>
-	</h3>
-	<p class="text-muted">
-		<strong>@lang('LBL_RELEASES_RELEASEDON')</strong>:
+    </h3>
+    <p class="text-muted">
+        <strong>@lang('COM_ARS_RELEASE_LBL_RELEASEDON')</strong>:
         @jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC2'))
 
         <button class="akeeba-btn--dark--small release-info-toggler" type="button"

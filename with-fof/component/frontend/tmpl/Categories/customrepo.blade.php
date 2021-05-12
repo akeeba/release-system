@@ -20,6 +20,6 @@ $customHTML = @file_get_contents($this->customHtmlFile);
 @unless(empty($customHTML))
     {{ Joomla\CMS\HTML\HTMLHelper::_('content.prepare', $customHTML) }}
 @else
-    @include('site:com_ars/Categories/generic', ['section' => 'normal', 'title' => 'ARS_CATEGORY_NORMAL'])
-    @include('site:com_ars/Categories/generic', ['section' => 'bleedingedge', 'title' => 'ARS_CATEGORY_BLEEDINGEDGE'])
+    @include('site:com_ars/Categories/generic', ['section' => 'normal', 'title' => 'COM_ARS_CATEGORY_TYPE_NORMAL'])
+    @include('site:com_ars/Categories/generic', ['section' => 'bleedingedge', 'title' => 'COM_ARS_CATEGORY_TYPE_BLEEDINGEDGE'])
 @endunless

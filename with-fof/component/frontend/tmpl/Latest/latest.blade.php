@@ -23,7 +23,7 @@ defined('_JEXEC') or die;
     @if($this->params->get('grouping', 'normal') == 'none')
         @include('site:com_ars/Latest/generic', ['section' => 'all', 'title' => ''])
     @else
-        @include('site:com_ars/Latest/generic', ['section' => 'normal', 'title' => 'ARS_CATEGORY_NORMAL'])
-        @include('site:com_ars/Latest/generic', ['section' => 'bleedingedge', 'title' => 'ARS_CATEGORY_BLEEDINGEDGE'])
+        @include('site:com_ars/Latest/generic', ['section' => 'normal', 'title' => 'COM_ARS_CATEGORY_TYPE_NORMAL'])
+        @include('site:com_ars/Latest/generic', ['section' => 'bleedingedge', 'title' => 'COM_ARS_CATEGORY_TYPE_BLEEDINGEDGE'])
     @endif
 </div>

@@ -57,7 +57,7 @@ class Update extends Controller
 			}
 			elseif (($viewType == 'ini') && empty($id))
 			{
-				throw new \RuntimeException(Text::_('ARS_ERR_NOUPDATESOURCE'), 500);
+				throw new \RuntimeException(Text::_('COM_ARS_COMMON_ERR_NOUPDATESOURCE'), 500);
 			}
 			elseif ($viewType == 'ini')
 			{
@@ -65,7 +65,7 @@ class Update extends Controller
 			}
 			elseif (($viewType == 'raw') && empty($id))
 			{
-				throw new \RuntimeException(Text::_('ARS_ERR_NOUPDATESOURCE'), 500);
+				throw new \RuntimeException(Text::_('COM_ARS_COMMON_ERR_NOUPDATESOURCE'), 500);
 			}
 			elseif ($viewType == 'raw')
 			{
@@ -183,7 +183,7 @@ class Update extends Controller
 
 		if (empty($cat))
 		{
-			throw new \RuntimeException(Text::_('ARS_ERR_NOUPDATESOURCE'), 500);
+			throw new \RuntimeException(Text::_('COM_ARS_COMMON_ERR_NOUPDATESOURCE'), 500);
 		}
 
 		// Required for caching

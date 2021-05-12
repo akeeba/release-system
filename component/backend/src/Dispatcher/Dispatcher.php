@@ -31,6 +31,7 @@ class Dispatcher extends ComponentDispatcher
 		// Check the minimum supported PHP version
 		$minPHPVersion = '7.3.0';
 		$softwareName  = 'Akeeba Release System';
+		$silentResults = $this->app->isClient('site');
 
 		if (!@include_once JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/wrongphp.php')
 		{

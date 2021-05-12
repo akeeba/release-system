@@ -68,7 +68,7 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 
         <a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary--small" rel="nofollow" download> <span
                     class="akion-ios-cloud-download"></span>
-            @lang('LBL_ITEM_DOWNLOAD')
+            @lang('COM_ARS_ITEM_LBL_DOWNLOAD')
 		</a>
 
 		<button class="akeeba-btn--dark--small release-info-toggler" type="button"
@@ -86,7 +86,7 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
                         @lang('COM_ARS_ITEM_FIELD_HITS')
                     </td>
                     <td>
-                        @sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
+                        @sprintf(($item->hits == 1 ? 'COM_ARS_RELEASE_LBL_TIME' : 'COM_ARS_RELEASE_LBL_TIMES'), $item->hits)
                     </td>
                 </tr>
             @endunless
@@ -180,7 +180,7 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
         <div style="margin-top: 10px;">
             <p>
                 <a href="{{ htmlentities($download_url) }}" class="akeeba-btn--primary" rel="nofollow" download>
-                    @lang('LBL_ITEM_DOWNLOAD')
+                    @lang('COM_ARS_ITEM_LBL_DOWNLOAD')
                 </a>
             </p>
             @unless(!$directLink)

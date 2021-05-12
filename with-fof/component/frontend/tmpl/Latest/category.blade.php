@@ -74,36 +74,36 @@ switch ($release->maturity)
 	</div>
 
 	<table class="akeeba-table--striped">
-		<tr>
-			<td>
-				@lang('COM_ARS_RELEASES_FIELD_MATURITY')
-			</td>
-			<td colspan="2">
-				@lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($release->maturity))
-			</td>
-		</tr>
-		<tr>
-			<td>
-				@lang('LBL_RELEASES_RELEASEDON')
-			</td>
-			<td colspan="2">
-				@jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC2'))
-			</td>
-		</tr>
+        <tr>
+            <td>
+                @lang('COM_ARS_RELEASES_FIELD_MATURITY')
+            </td>
+            <td colspan="2">
+                @lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($release->maturity))
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @lang('COM_ARS_RELEASE_LBL_RELEASEDON')
+            </td>
+            <td colspan="2">
+                @jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC2'))
+            </td>
+        </tr>
 
-		@foreach($release->items->sortBy($this->params->get('items_orderby', 'ordering'))->filter(function ($item)
-		{
-			if (!$item->enabled) return false;
+        @foreach($release->items->sortBy($this->params->get('items_orderby', 'ordering'))->filter(function ($item)
+        {
+            if (!$item->enabled) return false;
 
-			return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true, $this->container->platform->getUser()->getAuthorisedViewLevels());
-		}) as $i)
-		@include('site:com_ars/Latest/item', ['item' => $i, 'Itemid' => $this->Itemid])
-		@endforeach
-	</table>
+            return \Akeeba\ReleaseSystem\Site\Helper\Filter::filterItem($item, true, $this->container->platform->getUser()->getAuthorisedViewLevels());
+        }) as $i)
+            @include('site:com_ars/Latest/item', ['item' => $i, 'Itemid' => $this->Itemid])
+        @endforeach
+    </table>
 
-	<p style="margin-top:15px">
-		<a href="{{ htmlentities($release_url) }}" class="akeeba-btn--primary">
-			@lang('LBL_RELEASE_VIEWITEMS')
-		</a>
-	</p>
+    <p style="margin-top:15px">
+        <a href="{{ htmlentities($release_url) }}" class="akeeba-btn--primary">
+            @lang('COM_ARS_RELEASE_LBL_VIEW_ITEMS')
+        </a>
+    </p>
 </div>

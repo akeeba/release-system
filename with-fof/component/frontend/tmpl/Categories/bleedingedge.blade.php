@@ -11,11 +11,11 @@ defined('_JEXEC') or die;
 ?>
 
 <div class="item-page{{{ $this->params->get('pageclass_sfx') }}}">
-	@if($this->params->get('show_page_heading'))
-	<div class="page-header">
-		<h1>{{{ $this->params->get('page_heading', $this->menu->title) }}}</h1>
-	</div>
-	@endif
+    @if($this->params->get('show_page_heading'))
+        <div class="page-header">
+            <h1>{{{ $this->params->get('page_heading', $this->menu->title) }}}</h1>
+        </div>
+    @endif
 
-	@include('site:com_ars/Categories/generic', ['section' => 'bleedingedge', 'title' => 'ARS_CATEGORY_BLEEDINGEDGE'])
+    @include('site:com_ars/Categories/generic', ['section' => 'bleedingedge', 'title' => 'COM_ARS_CATEGORY_TYPE_BLEEDINGEDGE'])
 </div>

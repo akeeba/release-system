@@ -21,17 +21,17 @@ defined('_JEXEC') or die;
 		</div>
 	@endif
 
-	@include('site:com_ars/Items/release', ['id' => $this->release->id, 'item' => $this->release, 'Itemid' => $this->Itemid, 'no_link' => true])
+    @include('site:com_ars/Items/release', ['id' => $this->release->id, 'item' => $this->release, 'Itemid' => $this->Itemid, 'no_link' => true])
 
-	<div class="ars-items ars-items-{{ $this->release->category->is_supported ? 'supported' : 'unsupported' }}">
-		@if(count($this->items))
-			@foreach($this->items as $item)
-				@include('site:com_ars/Items/item', ['item' => $item, 'Itemid' => $this->Itemid])
-			@endforeach
-	@else
-		<div class="ars-noitems">
-			@lang('ARS_NO_ITEMS')
-		</div>
-	@endif
-	</div>
+    <div class="ars-items ars-items-{{ $this->release->category->is_supported ? 'supported' : 'unsupported' }}">
+        @if(count($this->items))
+            @foreach($this->items as $item)
+                @include('site:com_ars/Items/item', ['item' => $item, 'Itemid' => $this->Itemid])
+            @endforeach
+        @else
+            <div class="ars-noitems">
+                @lang('COM_ARS_COMMON_ERR_NO_ITEMS')
+            </div>
+        @endif
+    </div>
 </div>

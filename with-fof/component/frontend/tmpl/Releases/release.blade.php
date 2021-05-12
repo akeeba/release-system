@@ -67,7 +67,7 @@ $environments = ($this->params->get('show_environments', 1) == 1) ? $this->getEn
         </p>
     @endunless
     <p>
-        <strong>@lang('LBL_RELEASES_RELEASEDON')</strong>:
+        <strong>@lang('COM_ARS_RELEASE_LBL_RELEASEDON')</strong>:
         @jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC1'))
         <button class="akeeba-btn--dark--small release-info-toggler" type="button"
                 data-target="ars-release-{{{ $item->id }}}-info">
@@ -83,13 +83,13 @@ $environments = ($this->params->get('show_environments', 1) == 1) ? $this->getEn
                 <td>@lang('COM_ARS_RELEASES_MATURITY_'.  strtoupper($item->maturity))</td>
             </tr>
             <tr>
-                <td>@lang('LBL_RELEASES_RELEASEDON')</td>
+                <td>@lang('COM_ARS_RELEASE_LBL_RELEASEDON')</td>
                 <td>@jhtml('date', $released, \Joomla\CMS\Language\Text::_('DATE_FORMAT_LC1'))</td>
             </tr>
             @if($this->params->get('show_downloads', 1))
                 <tr>
-                    <td>@lang('LBL_RELEASES_HITS')</td>
-                    <td>@sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)</td>
+                    <td>@lang('COM_ARS_RELEASE_LBL_HITS')</td>
+                    <td>@sprintf(($item->hits == 1 ? 'COM_ARS_RELEASE_LBL_TIME' : 'COM_ARS_RELEASE_LBL_TIMES'), $item->hits)</td>
                 </tr>
             @endif
         </table>
@@ -104,7 +104,7 @@ $environments = ($this->params->get('show_environments', 1) == 1) ? $this->getEn
         @if(!isset($no_link) || !$no_link)
             <p style="margin-top: 15px;">
                 <a href="{{ htmlentities($release_url) }}" class="akeeba-btn--primary">
-                    @lang('LBL_RELEASE_VIEWITEMS')
+                    @lang('COM_ARS_RELEASE_LBL_VIEW_ITEMS')
                 </a>
             </p>
         @endif

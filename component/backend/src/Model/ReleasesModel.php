@@ -149,6 +149,8 @@ class ReleasesModel extends ListModel
 		$language = $app->getUserStateFromRequest($this->context . 'filter.language', 'filter_language', '', 'string');
 		$this->setState('filter.language', $language);
 
+		$this->setState('filter.allowUnauth', 0);
+
 		parent::populateState($ordering, $direction);
 	}
 
@@ -246,17 +248,40 @@ class ReleasesModel extends ListModel
 		}
 
 		// Access filter
-		$access = $this->getState('filter.access');
+		$access      = $this->getState('filter.access');
+		$allowUnauth = $this->getState('filter.allowUnauth', 0) == 1;
 
 		if (is_numeric($access))
 		{
-			$query->where($db->quoteName('r.access') . ' = :access')
-				->bind(':access', $access, ParameterType::INTEGER);
+			if ($allowUnauth)
+			{
+				$query->extendWhere('AND', [
+					$db->quoteName('r.access') . ' = :access',
+					$db->quoteName('r.show_unauth_links') . ' = ' . $db->quote(1),
+				], 'OR')
+					->bind(':access', $access, ParameterType::INTEGER);
+			}
+			else
+			{
+				$query->where($db->quoteName('r.access') . ' = :access')
+					->bind(':access', $access, ParameterType::INTEGER);
+			}
 		}
 		elseif (is_array($access))
 		{
 			$access = ArrayHelper::toInteger($access);
-			$query->whereIn($db->quoteName('r.access'), $access);
+
+			if ($allowUnauth)
+			{
+				$query->extendWhere('AND', [
+					$db->quoteName('r.access') . ' IN(' . implode(',', $query->bindArray($access, ParameterType::INTEGER)) . ')',
+					$db->quoteName('r.show_unauth_links') . ' = ' . $db->quote(1),
+				], 'OR');
+			}
+			else
+			{
+				$query->whereIn($db->quoteName('r.access'), $access);
+			}
 		}
 
 		// Language filter
@@ -264,8 +289,15 @@ class ReleasesModel extends ListModel
 
 		if (!empty($language))
 		{
-			$query->where($db->quoteName('r.language') . ' = :language')
-				->bind(':language', $language);
+			if (is_scalar($language))
+			{
+				$query->where($db->quoteName('r.language') . ' = :language')
+					->bind(':language', $language);
+			}
+			else
+			{
+				$query->whereIn($db->quoteName('r.language'), $language, ParameterType::STRING);
+			}
 		}
 
 		// List ordering clause

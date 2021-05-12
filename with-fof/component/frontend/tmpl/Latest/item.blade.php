@@ -32,13 +32,13 @@ if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
     <td width="25%">
         <a href="{{ htmlentities($download_url) }}" rel="nofollow" download class="akeeba-btn--primary--small"> <span
                     class="icon icon-download"></span>
-            @lang('LBL_ITEM_DOWNLOAD')
+            @lang('COM_ARS_ITEM_LBL_DOWNLOAD')
         </a>
     </td>
     <td width="20%" class="small">
         @unless(!$this->cparams->get('show_downloads', 1))
             @lang('COM_ARS_ITEM_FIELD_HITS')
-            @sprintf(($item->hits == 1 ? 'LBL_RELEASES_TIME' : 'LBL_RELEASES_TIMES'), $item->hits)
+            @sprintf(($item->hits == 1 ? 'COM_ARS_RELEASE_LBL_TIME' : 'COM_ARS_RELEASE_LBL_TIMES'), $item->hits)
         @endunless
     </td>
 </tr>

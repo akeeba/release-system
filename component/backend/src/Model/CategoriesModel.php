@@ -61,6 +61,8 @@ class CategoriesModel extends ListModel
 		$language = $app->getUserStateFromRequest($this->context . 'filter.language', 'filter_language', '', 'string');
 		$this->setState('filter.language', $language);
 
+		$this->setState('filter.allowUnauth', 0);
+
 		parent::populateState($ordering, $direction);
 	}
 
@@ -72,6 +74,7 @@ class CategoriesModel extends ListModel
 		$id .= ':' . $this->getState('filter.show_unauth_links');
 		$id .= ':' . $this->getState('filter.supported');
 		$id .= ':' . $this->getState('filter.language');
+		$id .= ':' . $this->getState('filter.allowUnauth');
 		$id .= ':' . serialize($this->getState('filter.access'));
 
 		return parent::getStoreId($id);
@@ -144,17 +147,40 @@ class CategoriesModel extends ListModel
 		}
 
 		// Access filter
-		$access = $this->getState('filter.access');
+		$access      = $this->getState('filter.access');
+		$allowUnauth = $this->getState('filter.allowUnauth', 0) == 1;
 
 		if (is_numeric($access))
 		{
-			$query->where($db->quoteName('c.access') . ' = :access')
-				->bind(':access', $access, ParameterType::INTEGER);
+			if ($allowUnauth)
+			{
+				$query->extendWhere('AND', [
+					$db->quoteName('c.access') . ' = :access',
+					$db->quoteName('c.show_unauth_links') . ' = ' . $db->quote(1),
+				], 'OR')
+					->bind(':access', $access, ParameterType::INTEGER);
+			}
+			else
+			{
+				$query->where($db->quoteName('c.access') . ' = :access')
+					->bind(':access', $access, ParameterType::INTEGER);
+			}
 		}
 		elseif (is_array($access))
 		{
 			$access = ArrayHelper::toInteger($access);
-			$query->whereIn($db->quoteName('c.access'), $access);
+
+			if ($allowUnauth)
+			{
+				$query->extendWhere('AND', [
+					$db->quoteName('c.access') . ' IN(' . implode(',', $query->bindArray($access, ParameterType::INTEGER)) . ')',
+					$db->quoteName('c.show_unauth_links') . ' = ' . $db->quote(1),
+				], 'OR');
+			}
+			else
+			{
+				$query->whereIn($db->quoteName('c.access'), $access);
+			}
 		}
 
 		// Language filter
@@ -162,8 +188,15 @@ class CategoriesModel extends ListModel
 
 		if (!empty($language))
 		{
-			$query->where($db->quoteName('c.language') . ' = :language')
-				->bind(':language', $language);
+			if (is_scalar($language))
+			{
+				$query->where($db->quoteName('c.language') . ' = :language')
+					->bind(':language', $language);
+			}
+			else
+			{
+				$query->whereIn($db->quoteName('c.language'), $language, ParameterType::STRING);
+			}
 		}
 
 		// List ordering clause
