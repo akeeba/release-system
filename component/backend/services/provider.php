@@ -38,7 +38,7 @@ return new class implements ServiceProviderInterface {
 	{
 		$container->registerServiceProvider(new MVCFactory('Akeeba\\Component\\ARS'));
 		$container->registerServiceProvider(new ComponentDispatcherFactory('Akeeba\\Component\\ARS'));
-		$container->registerServiceProvider(new RouterFactory('\\Akeeba\\Component\\ARS'));
+		$container->registerServiceProvider(new \Akeeba\Component\ARS\Administrator\Provider\RouterFactory('\\Akeeba\\Component\\ARS'));
 
 		$container->set(
 			ComponentInterface::class,

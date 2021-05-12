@@ -10,7 +10,6 @@ Frontend
         Latest
         Updates
         Download IDs
-    Router
 
 Plugins
     Content
@@ -55,3 +54,5 @@ Backend
         Download IDs
         Update streams
         Download logs
+Frontend
+    Router
