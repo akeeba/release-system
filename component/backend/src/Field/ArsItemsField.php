@@ -11,9 +11,10 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\GroupedlistField;
 use Joomla\CMS\Form\Field\ListField;
 
-class ArsItemsField extends ArsReleasesField
+class ArsItemsField extends GroupedlistField
 {
 	protected $type = 'ArsItems';
 
@@ -118,5 +119,40 @@ class ArsItemsField extends ArsReleasesField
 		}
 
 		return parent::getInput();
+	}
+
+	public function addOption($text, $attributes = [], $target = null)
+	{
+		$target = $target ?? $this->element;
+
+		if ($text && $target instanceof \SimpleXMLElement)
+		{
+			$child = $target->addChild('option', $text);
+
+			foreach ($attributes as $name => $value)
+			{
+				$child->addAttribute($name, $value);
+			}
+		}
+
+		return $this;
+	}
+
+	public function addGroup($label, $options = [])
+	{
+		if ($label && $this->element instanceof \SimpleXMLElement)
+		{
+			$child = $this->element->addChild('group');
+			$child->addAttribute('label', $label);
+
+			foreach ($options as $option)
+			{
+				$this->addOption($option->version, [
+					'value' => $option->id,
+				], $child);
+			}
+		}
+
+		return $this;
 	}
 }

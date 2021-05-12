@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
+
+<form addfieldprefix="Akeeba\Component\ARS\Administrator\Field">
+    <fields name="filter">
+        <field
+                name="search"
+                type="text"
+                inputmode="search"
+                label="COM_ARS_LOGS_FIELD_IP"
+                hint="COM_ARS_LOGS_FIELD_IP"
+        />
+
+        <field
+                name="category_id"
+                type="ArsCategories"
+                label="COM_ARS_ITEM_FIELD_CATEGORY"
+                onchange="this.form.submit();"
+        >
+            <option value="">COM_ARS_COMMON_CATEGORY_SELECT_LABEL</option>
+        </field>
+
+        <field
+                name="release_id"
+                type="ArsReleases"
+                label="COM_ARS_ITEM_FIELD_RELEASE"
+                onchange="this.form.submit();"
+                cat_state_key="com_ars.logs.filter.category_id"
+                showon="category_id!:"
+        >
+            <option value="">COM_ARS_COMMON_RELEASE_SELECT_LABEL</option>
+        </field>
+
+        <field
+                name="item_id"
+                type="ArsItems"
+                label="COM_ARS_LOGS_FIELD_ITEM"
+                onchange="this.form.submit();"
+                cat_state_key="com_ars.logs.filter.category_id"
+                rel_state_key="com_ars.logs.filter.release_id"
+                showon="release_id!:"
+        >
+            <option value="">COM_ARS_COMMON_ITEM_SELECT_LABEL</option>
+        </field>
+
+        <field
+                name="user_id"
+                type="user"
+                label="COM_ARS_LOGS_FIELD_USER"
+                onchange="this.form.submit();"
+                validate="UserId"
+        />
+
+        <field
+                name="referer"
+                type="text"
+                inputmode="search"
+                label="COM_ARS_LOGS_FIELD_REFERER"
+                hint="COM_ARS_LOGS_FIELD_REFERER"
+        />
+
+        <field
+                name="authorized"
+                type="status"
+                optionsFilter="*,0,1"
+                label="COM_ARS_LOGS_FIELD_AUTHORIZED"
+                onchange="this.form.submit();"
+        >
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+        </field>
+
+    </fields>
+    <fields name="list">
+        <field
+                name="fullordering"
+                type="list"
+                label="JGLOBAL_SORT_BY"
+                statuses="*,0,1"
+                onchange="this.form.submit();"
+                default="l.id desc"
+                validate="options"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="i.title ASC">JGLOBAL_TITLE_ASC</option>
+            <option value="i.title DESC">JGLOBAL_TITLE_DESC</option>
+            <option value="l.id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="l.id DESC">JGRID_HEADING_ID_DESC</option>
+            <option value="l.accessed_on ASC">COM_ARS_LOGS_HEADING_ACCESSED_ASC</option>
+            <option value="l.accessed_on DESC">COM_ARS_LOGS_HEADING_ACCESSED_DESC</option>
+        </field>
+
+        <field
+                name="limit"
+                type="limitbox"
+                label="JGLOBAL_LIST_LIMIT"
+                default="25"
+                onchange="this.form.submit();"
+        />
+    </fields>
+</form>

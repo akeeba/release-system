@@ -1,10 +1,6 @@
 Converting to Core MVC
 ================================================================================
 
-Backend
-    Views
-        Download logs
-
 Frontend
     Views
         Categories
@@ -58,3 +54,4 @@ Backend
         Environments
         Download IDs
         Update streams
+        Download logs
