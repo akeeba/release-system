@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/component/frontend/src" isTestSource="false" packagePrefix="Akeeba\Component\ARS\Site" />
       <excludeFolder url="file://$MODULE_DIR$/with-fof/component/backend/vendor/akeeba/s3" />
       <excludeFolder url="file://$MODULE_DIR$/with-fof/component/backend/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/with-fof" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
