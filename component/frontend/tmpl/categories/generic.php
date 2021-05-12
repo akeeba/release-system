@@ -16,16 +16,18 @@ use Joomla\CMS\Language\Text;
  * @var string    $tile
  */
 ?>
-<div class="ars-categories-<?= $section ?>">
+<div class="ars-categories-<?= $section ?> mb-4">
 	<?php if (!empty($title)): ?>
 		<div class="page-header">
-			<h2><?= Text::_($title) ?></h2>
+			<h2 class="border-bottom border-2">
+				<?= Text::_($title) ?>
+			</h2>
 		</div>
 	<?php endif; ?>
 
 	<?php if (empty($this->items)): ?>
-		<p class="muted ars-no-items">
-			<?= Text::_('ARS_NO_CATEGORIES') ?>
+		<p class="muted ars-no-items alert alert-warning">
+			<?= Text::_('COM_ARS_COMMON_ERR_NO_CATEGORIES') ?>
 		</p>
 	<?php else:
 		foreach ($this->items as $id => $item)
