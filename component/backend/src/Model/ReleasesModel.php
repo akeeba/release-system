@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
+use Akeeba\Component\ARS\Site\Model\ItemsModel;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
@@ -122,6 +123,56 @@ class ReleasesModel extends ListModel
 		{
 			return [];
 		}
+	}
+
+	public function getEnvironments(object $release): array
+	{
+		$ret = [];
+
+		/** @var ItemsModel $itemsModel */
+		$itemsModel = $this->getMVCFactory()->createModel('Items', 'Administrator');
+		$itemsModel->setState('filter.release_id', $release->id);
+		$items = $itemsModel->getItems();
+
+		foreach ($items as $item)
+		{
+			$environments = $item->environments;
+
+			if (empty($environments) || !is_array($environments))
+			{
+				continue;
+			}
+
+			$ret = array_merge($ret, $environments);
+		}
+
+		if (empty($ret))
+		{
+			return $ret;
+		}
+
+		$ret = array_unique($ret);
+
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('title'))
+			->from($db->quoteName('#__ars_environments'))
+			->whereIn($db->quoteName('id'), $ret);
+		$titles = $db->setQuery($query)->loadColumn();
+
+		uasort($titles, function ($a, $b) {
+			$partsA = explode(' ', $a, 2);
+			$partsB = explode(' ', $b, 2);
+
+			if (($partsA[0] != $partsB[0]) || (count($partsA) < 2) || (count($partsB) < 2))
+			{
+				return $a <=> $b;
+			}
+
+			return version_compare($partsA[1], $partsB[1]);
+		});
+
+		return $titles;
 	}
 
 	protected function populateState($ordering = 'r.id', $direction = 'desc')

@@ -51,7 +51,7 @@ HTMLHelper::_('bootstrap.collapse', '.ars-collapse');
 
 		<a href="<?= htmlentities($category_url) ?>" class="btn btn-sm btn-dark">
 			<span class="fa fa-folder"></span>
-			<?= Text::_('COM_ARS_CATEGORIES_AVAILABLEVERSIONS') ?>
+			<?= Text::_('COM_ARS_CATEGORIES_LBL_AVAILABLEVERSIONS') ?>
 		</a>
 	</p>
 

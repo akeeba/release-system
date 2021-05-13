@@ -20,7 +20,7 @@ class AkeebaReleaseSystem
 {
 	private static $dateFormat = null;
 
-	public static function formatDate($date, $local = true)
+	public static function formatDate($date, $local = true, $dateFormat = null)
 	{
 		$date = new Date($date, 'GMT');
 
@@ -33,7 +33,9 @@ class AkeebaReleaseSystem
 			$date->setTimezone($tz);
 		}
 
-		return $date->format(self::getDateFormat(), $local);
+		$dateFormat = $dateFormat ?: self::getDateFormat();
+
+		return $date->format($dateFormat, $local);
 	}
 
 	/**
