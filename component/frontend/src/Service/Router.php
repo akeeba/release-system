@@ -68,12 +68,14 @@ class Router extends RouterView
 
 		$items = new RouterViewConfiguration('items');
 		$items->setKey('release_id');
-		$items->setParent($releases, 'release_id');
+		$items->setParent($releases, 'category_id');
+		$items->addLayout('default');
+		$items->addLayout('modal');
 		$this->registerView($items);
 
 		$item = new RouterViewConfiguration('item');
 		$item->setKey('item_id');
-		$item->setParent($items, 'item_id');
+		$item->setParent($items, 'release_id');
 		$this->registerView($item);
 
 		$latest = new RouterViewConfiguration('latest');
