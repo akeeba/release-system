@@ -114,7 +114,7 @@ class ItemModel extends AdminModel
 			return;
 		}
 
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		switch ($type)
 		{
@@ -252,7 +252,7 @@ class ItemModel extends AdminModel
 	{
 		// Set up the created / modified date
 		$date  = Factory::getDate();
-		$user  = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user  = Factory::getApplication()->getIdentity();
 		$isNew = !empty($table->getId());
 
 		if ($isNew)
@@ -284,7 +284,7 @@ class ItemModel extends AdminModel
 		}
 
 		// Make sure the user is allowed to delete this release, per Joomla's assets rules for its parent category.
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		/** @var ReleaseTable $release */
 		$release = $this->getMVCFactory()->createTable('Release', 'Administrator');
@@ -327,7 +327,7 @@ class ItemModel extends AdminModel
 		}
 
 		// Make sure the user is allowed to delete this release, per Joomla's assets rules for its parent category.
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if (
 			!$user->authorise('core.edit.state', 'com_ars.category.' . (int) $release->category_id) &&

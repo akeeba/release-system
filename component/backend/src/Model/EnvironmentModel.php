@@ -94,7 +94,7 @@ class EnvironmentModel extends AdminModel
 	protected function prepareTable($table)
 	{
 		$date = Factory::getDate();
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if (empty($table->getId()))
 		{

@@ -13,6 +13,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Database\DatabaseDriver;
 
 defined('_JEXEC') || die;
 
@@ -27,7 +28,7 @@ class AkeebaReleaseSystem
 		if ($local)
 		{
 			$app  = Factory::getApplication();
-			$user = $app->getIdentity() ?: Factory::getUser();
+			$user = $app->getIdentity();
 			$zone = $user->getParam('timezone', $app->get('offset', 'UTC'));
 			$tz   = new \DateTimeZone($zone);
 			$date->setTimezone($tz);
@@ -77,6 +78,38 @@ class AkeebaReleaseSystem
 		else
 		{
 			return $filesize . " bytes";
+		}
+	}
+
+	public static function downloadId($userId = null): string
+	{
+		if (is_null($userId))
+		{
+			$userId = Factory::getApplication()->getIdentity()->id;
+		}
+
+		if (empty($userId))
+		{
+			return '';
+		}
+
+		/** @var DatabaseDriver $db */
+		$db = Factory::getContainer()->get('DatabaseDriver');
+		$query = $db->getQuery(true)
+			->select($db->quoteName('dlid'))
+			->from($db->quoteName('#__ars_dlidlabels'))
+			->where($db->quoteName('user_id') . ' = :user_id')
+			->where($db->quoteName('primary') . ' = 1')
+			->where($db->quoteName('published') . ' = 1')
+			->bind(':user_id', $userId);
+
+		try
+		{
+			return $db->setQuery($query)->loadResult() ?: '';
+		}
+		catch (\Exception $e)
+		{
+			return '';
 		}
 	}
 

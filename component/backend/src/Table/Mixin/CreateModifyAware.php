@@ -40,7 +40,7 @@ trait CreateModifyAware
 	public function onBeforeStore($updateNulls = false)
 	{
 		$date = Factory::getDate()->toSql();
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		// Set created date if not set.
 		if ($this->updateCreated && $this->hasField('created') && !(int) $this->created)

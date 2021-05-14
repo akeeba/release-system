@@ -50,7 +50,7 @@ class CategoriesController extends BaseController
 		/** @var CategoriesModel $model */
 		$model = $this->getModel('', '', ['ignore_request' => true]);
 
-		$user = $this->app->getIdentity() ?: Factory::getUser();
+		$user = $this->app->getIdentity();
 
 		// Only show published releases the user can access (or those allowing the display of unauthorized link)
 		$model->setState('filter.published', 1);

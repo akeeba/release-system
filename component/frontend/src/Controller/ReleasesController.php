@@ -44,7 +44,7 @@ class ReleasesController extends BaseController
 		]);
 
 		$params      = $this->app->getParams();
-		$user        = $this->app->getIdentity() ?: Factory::getUser();
+		$user        = $this->app->getIdentity();
 		$category_id = $this->input->getInt('category_id', $params->get('category_id', 0));
 
 		// Category access control

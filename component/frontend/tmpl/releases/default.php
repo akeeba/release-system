@@ -39,7 +39,6 @@ use Joomla\CMS\Language\Text;
 		<?php endif; ?>
 	</div>
 
-	<!-- TODO Pagination -->
 	<?php if (($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->pagesTotal > 1)) : ?>
 		<div class="com-ars-releases__pagination w-100">
 			<?php if ($this->params->def('show_pagination_results', 1)) : ?>

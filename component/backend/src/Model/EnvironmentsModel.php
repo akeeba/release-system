@@ -32,6 +32,24 @@ class EnvironmentsModel extends ListModel
 		parent::__construct($config, $factory);
 	}
 
+	/**
+	 * Returns a mapping of environment IDs to their titles
+	 *
+	 * @return  array
+	 */
+	public function getEnvironmentTitles(): array
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select([
+				$db->quoteName('id'),
+				$db->quoteName('title'),
+			])
+			->from($db->quoteName('#__ars_environments'));
+
+		return $db->setQuery($query)->loadAssocList('id', 'title') ?: [];
+	}
+
 	protected function populateState($ordering = 'a.title', $direction = 'asc')
 	{
 		$app = Factory::getApplication();

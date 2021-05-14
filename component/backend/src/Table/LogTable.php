@@ -40,7 +40,7 @@ class LogTable extends AbstractTable
 
 		if (empty($this->user_id))
 		{
-			$user          = $app->getIdentity() ?: Factory::getUser();
+			$user          = $app->getIdentity();
 			$this->user_id = $user->id;
 		}
 

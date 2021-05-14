@@ -61,7 +61,7 @@ class ReleaseTable extends AbstractTable
 		$this->setColumnAlias('catid', 'category_id');
 		$this->setColumnAlias('title', 'version');
 
-		$this->created_by = (Factory::getApplication()->getIdentity() ?: Factory::getUser())->id;
+		$this->created_by = Factory::getApplication()->getIdentity()->id;
 		$this->created    = Factory::getDate()->toSql();
 		$this->access     = 1;
 	}

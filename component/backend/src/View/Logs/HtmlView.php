@@ -88,7 +88,7 @@ class HtmlView extends BaseHtmlView
 
 	private function addToolbar()
 	{
-		$user    = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user    = Factory::getApplication()->getIdentity();
 		$toolbar = Toolbar::getInstance('toolbar');
 
 		ToolbarHelper::title(sprintf(Text::_('COM_ARS_TITLE_LOGS')), 'icon-ars');

@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Site\Controller\Mixin;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Model\ItemsModel;
 use Akeeba\Component\ARS\Site\Model\CategoriesModel;
 use Akeeba\Component\ARS\Site\Model\ReleasesModel;
 
@@ -92,7 +93,7 @@ trait ARSViewParamsAware
 		}
 	}
 
-	protected function applyItemsOrderBy(?string $orderBy, ReleasesModel $model)
+	protected function applyItemsOrderBy(?string $orderBy, ItemsModel $model)
 	{
 		$orderBy = $orderBy ?? 'none';
 

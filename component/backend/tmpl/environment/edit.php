@@ -18,7 +18,7 @@ $wa = $this->document->getWebAssetManager();
 $wa->useScript('keepalive')
 	->useScript('form.validate');
 
-$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+$user = Factory::getApplication()->getIdentity();
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_ars&view=environment&layout=edit&id=' . (int) $this->item->id); ?>"

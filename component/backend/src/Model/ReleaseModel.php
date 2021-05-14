@@ -123,7 +123,7 @@ class ReleaseModel extends AdminModel
 			return;
 		}
 
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		switch ($type)
 		{
@@ -263,7 +263,7 @@ class ReleaseModel extends AdminModel
 	{
 		// Set up the created / modified date
 		$date  = Factory::getDate();
-		$user  = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user  = Factory::getApplication()->getIdentity();
 		$isNew = !empty($table->getId());
 
 		if ($isNew)
@@ -295,7 +295,7 @@ class ReleaseModel extends AdminModel
 		}
 
 		// Make sure the user is allowed to delete this release, per Joomla's assets rules for its parent category.
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if (
 			!$user->authorise('core.delete', 'com_ars.category.' . (int) $record->category_id) &&
@@ -344,7 +344,7 @@ class ReleaseModel extends AdminModel
 	protected function canEditState($record)
 	{
 		// Make sure the user is allowed to delete this release, per Joomla's assets rules for its parent category.
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if (
 			!$user->authorise('core.edit.state', 'com_ars.category.' . (int) $record->category_id) &&

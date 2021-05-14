@@ -223,7 +223,7 @@ class DlidlabelModel extends AdminModel
 	{
 		// Set up the created / modified date
 		$date  = Factory::getDate();
-		$user  = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user  = Factory::getApplication()->getIdentity();
 		$isNew = !empty($table->getId());
 
 		if ($isNew)
@@ -248,7 +248,7 @@ class DlidlabelModel extends AdminModel
 	 */
 	protected function canDelete($record): bool
 	{
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if ($record->user_id == $user->id)
 		{
@@ -271,7 +271,7 @@ class DlidlabelModel extends AdminModel
 	 */
 	protected function canEditState($record)
 	{
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if ($record->user_id == $user->id)
 		{

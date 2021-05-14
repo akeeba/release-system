@@ -80,7 +80,7 @@ trait CopyAware
 
 		// Check that the user has create permission for the component
 		$extension = Factory::getApplication()->input->get('option', '');
-		$user      = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user      = Factory::getApplication()->getIdentity();
 
 		// If the parent table has no asset I will only check if I can create items in the component
 		if (!$categoryTable->hasField('asset_id'))

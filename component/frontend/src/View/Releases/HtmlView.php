@@ -91,7 +91,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$releaseUrl = Route::_(sprintf("index.php?option=com_ars&view=items&release_id=%u&Itemid=%u", $release->id, $this->Itemid));
 
-		$hasAccess = in_array($release->access, (Factory::getApplication()->getIdentity() ?: Factory::getUser())->getAuthorisedViewLevels());
+		$hasAccess = in_array($release->access, Factory::getApplication()->getIdentity()->getAuthorisedViewLevels());
 
 		if ($hasAccess)
 		{

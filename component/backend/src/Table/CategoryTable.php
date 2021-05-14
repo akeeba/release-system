@@ -61,7 +61,7 @@ class CategoryTable extends AbstractTable
 	{
 		parent::__construct('#__ars_categories', 'id', $db);
 
-		$this->created_by = (Factory::getApplication()->getIdentity() ?: Factory::getUser())->id;
+		$this->created_by = Factory::getApplication()->getIdentity()->id;
 		$this->created    = Factory::getDate()->toSql();
 		$this->access     = 1;
 	}

@@ -87,7 +87,7 @@ class CategoryModel extends AdminModel
 
 	public function validate($form, $data, $group = null)
 	{
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if (!$user->authorise('core.admin', 'com_ars'))
 		{
@@ -132,7 +132,7 @@ class CategoryModel extends AdminModel
 	protected function prepareTable($table)
 	{
 		$date = Factory::getDate();
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if (empty($table->getId()))
 		{
@@ -163,7 +163,7 @@ class CategoryModel extends AdminModel
 		}
 
 		// Make sure the user is allowed to delete this category, per Joomla's assets rules.
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if (
 			!$user->authorise('core.delete', 'com_ars.category.' . (int) $record->id) &&

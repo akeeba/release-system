@@ -34,7 +34,7 @@ class AjaxController extends BaseController
 		}
 
 		// Make sure the user has the create, edit or edit.own ACL privilege
-		$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if (
 			!$user->authorise('core.create', 'com_ars') &&

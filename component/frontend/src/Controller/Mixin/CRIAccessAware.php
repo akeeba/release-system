@@ -8,6 +8,8 @@
 namespace Akeeba\Component\ARS\Site\Controller\Mixin;
 
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
+use Akeeba\Component\ARS\Administrator\Table\ItemTable;
+use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Multilanguage;
@@ -21,7 +23,7 @@ use RuntimeException;
 trait CRIAccessAware
 {
 	/**
-	 * Makes sure the category exists
+	 * Makes sure the category exists and the user has access to it
 	 *
 	 * @param   int  $category_id  The category ID to check
 	 *
@@ -30,42 +32,83 @@ trait CRIAccessAware
 	 */
 	protected function accessControlCategory(int $category_id): CategoryTable
 	{
-		// Does the category exist?
-		/** @var CategoryTable $category */
-		$category = $this->getModel('Category', 'Administrator')->getTable();
+		return $this->accessControlFor('Category', $category_id);
+	}
 
-		if (!$category->load($category_id))
+	/**
+	 * Makes sure the release exists and the user has access to it
+	 *
+	 * @param   int  $release_id  The release ID to check
+	 *
+	 * @return  ReleaseTable  The loaded release table object
+	 * @throws  Exception
+	 */
+	protected function accessControlRelease(int $release_id): ReleaseTable
+	{
+		return $this->accessControlFor('Release', $release_id);
+	}
+
+	/**
+	 * Makes sure the item exists and the user has access to it
+	 *
+	 * @param   int  $item_id  The release ID to check
+	 *
+	 * @return  ItemTable  The loaded item table object
+	 * @throws  Exception
+	 */
+	protected function accessControlItem(int $item_id): ItemTable
+	{
+		return $this->accessControlFor('Item', $item_id);
+	}
+
+	/**
+	 * Makes sure the category, release or item exists and the user has access to it
+	 *
+	 * @param   int  $primaryKey  The category ID to check
+	 *
+	 * @return  CategoryTable|ReleaseTable|ItemTable  The loaded table object
+	 * @throws  Exception
+	 */
+	private function accessControlFor(string $tableType, int $primaryKey)
+	{
+		// Does the record exist?
+		/** @var CategoryTable|ReleaseTable|ItemTable $object */
+		$object = $this->getModel($tableType, 'Administrator')->getTable();
+
+		$notFoundKey = sprintf('COM_ARS_%s_ERR_NOT_FOUND', $tableType);
+
+		if (!$object->load($primaryKey))
 		{
-			throw new RuntimeException(Text::_('COM_ARS_CATEGORY_ERR_NOT_FOUND'), 404);
+			throw new RuntimeException(Text::_($notFoundKey), 404);
 		}
 
-		// Is the category unpublished?
-		if ($category->published != 1)
+		// Is the record unpublished?
+		if ($object->published != 1)
 		{
-			throw new RuntimeException(Text::_('COM_ARS_CATEGORY_ERR_NOT_FOUND'), 404);
+			throw new RuntimeException(Text::_($notFoundKey), 404);
 		}
 
-		// Is the category the correct language?
-		if (Multilanguage::isEnabled() && !in_array($category->language, ['*', $this->app->getLanguage()->getTag()]))
+		// Is the record in the correct language?
+		if (Multilanguage::isEnabled() && !in_array($object->language, ['*', $this->app->getLanguage()->getTag()]))
 		{
-			throw new RuntimeException(Text::_('COM_ARS_CATEGORY_ERR_NOT_FOUND'), 404);
+			throw new RuntimeException(Text::_($notFoundKey), 404);
 		}
 
-		// Does the user have access to the category?
-		if (in_array($category->access, ($this->app->getIdentity() ?: Factory::getUser())->getAuthorisedViewLevels()))
+		// Does the user have access to the record?
+		if (in_array($object->access, $this->app->getIdentity()->getAuthorisedViewLevels()))
 		{
 			// Access granted, no need for further action.
-			return $category;
+			return $object;
 		}
 
 		// Am I supposed to redirect the user?
-		if (!$category->show_unauth_links)
+		if (!$object->show_unauth_links)
 		{
 			throw new RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 		}
 
 		$params      = $this->app->getParams();
-		$redirectUrl = ($category->redirect_unauth ?: $params->get('no_access_url', null)) ?: 'index.php';
+		$redirectUrl = ($object->redirect_unauth ?: $params->get('no_access_url', null)) ?: 'index.php';
 
 		// Do I need to route the redirection URL?
 		if ((substr($redirectUrl, 0, 7) !== 'http://') && (substr($redirectUrl, 0, 7) !== 'https://'))
@@ -83,7 +126,7 @@ trait CRIAccessAware
 		$this->redirect();
 
 		// This line never executes. It's only here to appease static code analysers.
-		return $category;
+		return $object;
 	}
 
 }

@@ -21,7 +21,7 @@ use Joomla\CMS\Router\Route;
  */
 
 $category_url = Route::_(sprintf("index.php?option=com_ars&view=releases&category_id=%s&Itemid=%s", $item->id, $this->Itemid));
-$user         = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+$user         = Factory::getApplication()->getIdentity();
 
 if (!in_array($item->access, $user->getAuthorisedViewLevels()))
 {
