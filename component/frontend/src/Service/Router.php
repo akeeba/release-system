@@ -150,7 +150,7 @@ class Router extends RouterView
 		switch (($query['view'] ?? ''))
 		{
 			case 'items':
-				$query['category_id'] = ($query['category_id'] ?? null) ?: $this->getCategoryForRelease($query['release_id']);
+				$query['category_id'] = ($query['category_id'] ?? null) ?: $this->getCategoryForRelease($query['release_id'] ?? 0);
 				break;
 
 			case 'item':

@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 
 /** @var \Akeeba\Component\ARS\Administrator\View\Items\HtmlView $this */
 
@@ -49,9 +50,20 @@ if ($hasReleaseFilter && !$hasCategoryFilter)
 
 $modal = isset($modal) ? boolval($modal) : false;
 
+$actionUrl = 'index.php?option=com_ars&view=items';
+
+if (Factory::getApplication()->isClient('site'))
+{
+	$actionUrl = Uri::root() . $actionUrl . '&layout=modal&tmpl=component';
+}
+else
+{
+	$actionUrl = Route::_($actionUrl);
+}
+
 ?>
 
-<form action="<?= Route::_('index.php?option=com_ars&view=items'); ?>"
+<form action="<?= $actionUrl; ?>"
 	  method="post" name="adminForm" id="adminForm">
 	<div class="row">
 		<div class="col-md-12">
