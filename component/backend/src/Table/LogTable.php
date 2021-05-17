@@ -58,7 +58,7 @@ class LogTable extends AbstractTable
 
 		if (empty($this->referer) && isset($_SERVER['HTTP_REFERER']))
 		{
-			$this->referer = $_SERVER['HTTP_REFERER'];
+			$this->referer = $app->input->server->getString('HTTP_REFERER', '');
 		}
 
 		if (empty($this->ip))

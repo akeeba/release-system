@@ -30,9 +30,9 @@ trait CRIAccessAware
 	 * @return  CategoryTable  The loaded category table object
 	 * @throws  Exception
 	 */
-	protected function accessControlCategory(int $category_id): CategoryTable
+	protected function accessControlCategory(int $category_id, bool $redirectImmediately = true): ?CategoryTable
 	{
-		return $this->accessControlFor('Category', $category_id);
+		return $this->accessControlFor('Category', $category_id, $redirectImmediately);
 	}
 
 	/**
@@ -43,9 +43,9 @@ trait CRIAccessAware
 	 * @return  ReleaseTable  The loaded release table object
 	 * @throws  Exception
 	 */
-	protected function accessControlRelease(int $release_id): ReleaseTable
+	protected function accessControlRelease(int $release_id, bool $redirectImmediately = true): ?ReleaseTable
 	{
-		return $this->accessControlFor('Release', $release_id);
+		return $this->accessControlFor('Release', $release_id, $redirectImmediately);
 	}
 
 	/**
@@ -56,9 +56,9 @@ trait CRIAccessAware
 	 * @return  ItemTable  The loaded item table object
 	 * @throws  Exception
 	 */
-	protected function accessControlItem(int $item_id): ItemTable
+	protected function accessControlItem(int $item_id, bool $redirectImmediately = true): ?ItemTable
 	{
-		return $this->accessControlFor('Item', $item_id);
+		return $this->accessControlFor('Item', $item_id, $redirectImmediately);
 	}
 
 	/**
@@ -69,7 +69,7 @@ trait CRIAccessAware
 	 * @return  CategoryTable|ReleaseTable|ItemTable  The loaded table object
 	 * @throws  Exception
 	 */
-	private function accessControlFor(string $tableType, int $primaryKey)
+	private function accessControlFor(string $tableType, int $primaryKey, bool $redirectImmediately = true)
 	{
 		// Does the record exist?
 		/** @var CategoryTable|ReleaseTable|ItemTable $object */
@@ -123,7 +123,15 @@ trait CRIAccessAware
 		}
 
 		$this->setRedirect($redirectUrl);
-		$this->redirect();
+
+		if ($redirectImmediately)
+		{
+			$this->redirect();
+		}
+		else
+		{
+			return null;
+		}
 
 		// This line never executes. It's only here to appease static code analysers.
 		return $object;

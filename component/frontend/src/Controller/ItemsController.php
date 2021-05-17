@@ -97,7 +97,7 @@ class ItemsController extends BaseController
 
 		// Push data to the view
 		/** @var \Akeeba\Component\ARS\Site\View\Items\HtmlView $view */
-		$view           = $this->getView();
+		$view           = $this->getView('items', 'html');
 		$view->category = $category;
 		$view->release  = $release;
 

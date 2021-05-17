@@ -3,9 +3,6 @@ Converting to Core MVC
 
 Frontend
     Views
-        Releases
-        Items
-        Download (controller only)
         Latest
         Updates
         Download IDs
@@ -56,4 +53,7 @@ Backend
 Frontend
     Views
         Categories
+        Releases
+        Items
+        Item controller (download task only, no model or view)
     Router
