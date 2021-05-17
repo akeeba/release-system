@@ -201,6 +201,8 @@ class ReleasesModel extends ListModel
 		$this->setState('filter.language', $language);
 
 		$this->setState('filter.allowUnauth', 0);
+		$this->setState('filter.minMaturity', 'alpha');
+		$this->setState('filter.latest', false);
 
 		parent::populateState($ordering, $direction);
 	}
@@ -214,6 +216,8 @@ class ReleasesModel extends ListModel
 		$id .= ':' . $this->getState('filter.maturity');
 		$id .= ':' . $this->getState('filter.show_unauth_links');
 		$id .= ':' . $this->getState('filter.language');
+		$id .= ':' . $this->getState('filter.minMaturity');
+		$id .= ':' . ($this->getState('filter.latest') ? 'latest' : '');
 		$id .= ':' . serialize($this->getState('filter.access'));
 
 		return parent::getStoreId($id);
@@ -349,6 +353,42 @@ class ReleasesModel extends ListModel
 			{
 				$query->whereIn($db->quoteName('r.language'), $language, ParameterType::STRING);
 			}
+		}
+
+		// Latest releases filter
+		$latest = $this->getState('filter.latest', false);
+
+		if ($latest === true)
+		{
+			$latestIDsQuery = $db->getQuery(true)
+				->select($db->qn('r1.id'))
+				->from($db->qn('#__ars_releases') . ' AS ' . $db->qn('r1'))
+				->leftJoin($db->qn('#__ars_releases') . ' AS ' . $db->qn('r2') . ' ON (' .
+					$db->qn('r1.category_id') . ' = ' . $db->qn('r2.category_id') . ' AND ' .
+					$db->qn('r1.ordering') . ' > ' . $db->qn('r2.ordering') .
+					($published !== '' ? (' AND ' . $db->qn('r2.published') . ' = ' . $db->q($published)) : '')
+					. ')')
+				->where($db->qn('r2.ordering') . ' IS NULL');
+
+			$query->where($db->quoteName('r.id') . ' IN(' . $latestIDsQuery . ')');
+		}
+
+		// Minimum maturity filter
+		$minMaturity = $this->getState('filter.minMaturity', 'alpha');
+
+		switch ($minMaturity)
+		{
+			case 'beta':
+				$maturityItems = ['beta', 'rc', 'stable'];
+				$query->whereIn($db->quoteName('maturity'), $maturityItems, ParameterType::STRING);
+				break;
+			case 'rc':
+				$maturityItems = ['rc', 'stable'];
+				$query->whereIn($db->quoteName('maturity'), $maturityItems, ParameterType::STRING);
+				break;
+			case 'stable':
+				$query->where($db->quoteName('maturity') . ' = ' . $db->quote('stable'));
+				break;
 		}
 
 		// List ordering clause

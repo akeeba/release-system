@@ -250,9 +250,16 @@ class ItemsModel extends ListModel
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
+		$fltRelease = $this->getState('filter.release_id');
+
+		if (is_array($fltRelease))
+		{
+			$fltRelease = implode(',', $fltRelease);
+		}
+
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.category_id');
-		$id .= ':' . $this->getState('filter.release_id');
+		$id .= ':' . $fltRelease;
 		$id .= ':' . $this->getState('filter.published');
 		$id .= ':' . $this->getState('filter.show_unauth_links');
 		$id .= ':' . $this->getState('filter.language');
@@ -324,6 +331,10 @@ class ItemsModel extends ListModel
 		{
 			$query->where($db->quoteName('i.release_id') . ' = :relid')
 				->bind(':relid', $releaseId, ParameterType::INTEGER);
+		}
+		elseif (is_array($releaseId))
+		{
+			$query->whereIn($db->quoteName('i.release_id'), $releaseId);
 		}
 
 		// Published filter
