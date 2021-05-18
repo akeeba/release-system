@@ -49,7 +49,7 @@ class Dispatcher extends ComponentDispatcher
 		}
 		catch (Throwable $e)
 		{
-			$title = 'Akeeba Backup';
+			$title = 'Akeeba Release System';
 			$isPro = false;
 
 			if (!(include_once JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/errorhandler.php'))

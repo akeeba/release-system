@@ -50,6 +50,24 @@ class EnvironmentsModel extends ListModel
 		return $db->setQuery($query)->loadAssocList('id', 'title') ?: [];
 	}
 
+	/**
+	 * Returns a mapping of environment IDs to their xml titles
+	 *
+	 * @return  array
+	 */
+	public function getEnvironmentXMLTitles(): array
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select([
+				$db->quoteName('id'),
+				$db->quoteName('xmltitle'),
+			])
+			->from($db->quoteName('#__ars_environments'));
+
+		return $db->setQuery($query)->loadAssocList('id', 'xmltitle') ?: [];
+	}
+
 	protected function populateState($ordering = 'a.title', $direction = 'asc')
 	{
 		$app = Factory::getApplication();
