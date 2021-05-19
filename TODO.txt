@@ -1,9 +1,10 @@
 Converting to Core MVC
 ================================================================================
 
+Frontend
+    Download ID views, copy Download ID button (needs to be implemented in JavaScript).
+
 Plugins
-    Content
-        ARS latest version
     Editor buttons
         ARS link
     System
@@ -57,3 +58,4 @@ Frontend
 Plugins
     Content
         ARS download ID
+        ARS latest version

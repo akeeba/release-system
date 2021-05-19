@@ -195,7 +195,10 @@ class ReleasesModel extends ListModel
 		$this->setState('filter.show_unauth_links', ($showUnauthLinks === '') ? $showUnauthLinks : (int) $showUnauthLinks);
 
 		$access = $app->getUserStateFromRequest($this->context . 'filter.access', 'filter_access', '', 'string');
-		$this->setState('filter.access', ($access === '') ? $access : (int) $access);
+		$access = is_array($access) ? ArrayHelper::toInteger($access) : (
+		($access === '') ? $access : (int) $access
+		);
+		$this->setState('filter.access', $access);
 
 		$language = $app->getUserStateFromRequest($this->context . 'filter.language', 'filter_language', '', 'string');
 		$this->setState('filter.language', $language);
