@@ -3,7 +3,6 @@ Converting to Core MVC
 
 Plugins
     Content
-        ARS download ID
         ARS latest version
     Editor buttons
         ARS link
@@ -54,3 +53,7 @@ Frontend
         Updates
         Download IDs
     Router
+
+Plugins
+    Content
+        ARS download ID
