@@ -78,18 +78,6 @@
 			}
 		},
 		{
-			"name": "com_ars.info_toggler",
-			"description": "JavaScript for toggling information display in the frontend",
-			"type": "script",
-			"uri": "com_ars/InfoToggler.min.js",
-			"dependencies": [
-				"core"
-			],
-			"attributes": {
-				"defer": true
-			}
-		},
-		{
 			"name": "com_ars.items",
 			"description": "JavaScript for managing items in the backend",
 			"type": "script",
@@ -107,6 +95,18 @@
 			"description": "JavaScript for managing item selection in the front- or backend",
 			"type": "script",
 			"uri": "com_ars/ItemSelect.min.js",
+			"dependencies": [
+				"core"
+			],
+			"attributes": {
+				"defer": true
+			}
+		},
+		{
+			"name": "com_ars.copy_button",
+			"description": "JavaScript to implement the copy to clipboard button",
+			"type": "script",
+			"uri": "com_ars/CopyButton.min.js",
 			"dependencies": [
 				"core"
 			],

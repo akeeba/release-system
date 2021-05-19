@@ -82,6 +82,11 @@ class HtmlView extends BaseHtmlView
 			throw new GenericDataException(implode("\n", $errors), 500);
 		}
 
+		$this->document->getWebAssetManager()
+			->useScript('com_ars.copy_button');
+		Text::script('COM_ARS_DLIDLABELS_LBL_COPIED');
+		Text::script('COM_ARS_DLIDLABELS_LBL_COPY_FAIL');
+
 		parent::display($tpl);
 	}
 }

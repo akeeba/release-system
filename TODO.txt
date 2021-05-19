@@ -1,9 +1,6 @@
 Converting to Core MVC
 ================================================================================
 
-Frontend
-    Download ID views, copy Download ID button (needs to be implemented in JavaScript).
-
 Plugins
     Editor buttons
         ARS link
