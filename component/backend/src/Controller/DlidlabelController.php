@@ -11,8 +11,10 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
 use Akeeba\Component\ARS\Administrator\Model\DlidlabelModel;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Router\Route;
+use RuntimeException;
 
 class DlidlabelController extends FormController
 {
@@ -45,6 +47,12 @@ class DlidlabelController extends FormController
 			return false;
 		}
 
+		if ($record->primary)
+		{
+			throw new RuntimeException(Text::_('COM_ARS_DLIDLABELS_ERR_CANTEDITDEFAULT'), 403);
+		}
+
 		return true;
 	}
+
 }

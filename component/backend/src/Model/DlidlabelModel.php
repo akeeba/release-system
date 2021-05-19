@@ -168,7 +168,11 @@ class DlidlabelModel extends AdminModel
 			}
 
 			if (!$table->save([
-				'dlid' => null,
+				/**
+				 * IMPORTANT! Do NOT use NULL. NULLs are ignored. An empty string is not and causes the Table to
+				 * regenerate the Download ID to satisfy the restrictions we are placing on the column during check().
+				 */
+				'dlid' => '',
 			]))
 			{
 				$this->setError($table->getError());

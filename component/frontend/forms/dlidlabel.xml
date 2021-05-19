@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
+
+<form addfieldprefix="Akeeba\Component\ARS\Administrator\Field">
+    <fieldset name="basic">
+        <field
+                name="id"
+                type="hidden"
+                label="JGLOBAL_FIELD_ID_LABEL"
+                default="0"
+                readonly="true"
+                class="readonly"
+        />
+
+        <field
+                name="title"
+                type="text"
+                label="COM_ARS_ITEM_FIELD_TITLE"
+                default=""
+                required="true"
+        />
+
+        <field
+                name="published"
+                type="list"
+                layout="joomla.form.field.radio.switcher"
+                label="JENABLED"
+                default="0"
+                validate="options"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+    </fieldset>
+</form>

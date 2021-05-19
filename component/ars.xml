@@ -18,6 +18,7 @@
     <namespace path="src">Akeeba\Component\ARS</namespace>
 
     <files folder="frontend">
+        <folder>forms</folder>
         <folder>language</folder>
         <folder>src</folder>
         <folder>tmpl</folder>

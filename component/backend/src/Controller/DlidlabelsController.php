@@ -34,8 +34,10 @@ class DlidlabelsController extends AdminController
 	 */
 	public function reset()
 	{
+		$app = $this->app;
+
 		// Check for request forgeries
-		$this->checkToken();
+		$this->checkToken($app->isClient('site') ? 'get' : 'post');
 
 		// Get items to remove from the request.
 		$cid = $this->input->get('cid', [], 'array');

@@ -1,10 +1,6 @@
 Converting to Core MVC
 ================================================================================
 
-Frontend
-    Views
-        Download IDs
-
 Plugins
     Content
         ARS download ID
@@ -56,4 +52,5 @@ Frontend
         Item controller (download task only, no model or view)
         Latest
         Updates
+        Download IDs
     Router
