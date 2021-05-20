@@ -58,7 +58,7 @@ if (Factory::getApplication()->isClient('site'))
 }
 else
 {
-	$actionUrl = Route::_($actionUrl);
+	$actionUrl = Route::_($actionUrl . ($modal ? '&layout=modal&tmpl=component' : ''));
 }
 
 ?>
@@ -193,7 +193,7 @@ else
 											<?php endif; ?>
 											<br />
 											<span title="<?= Text::_('COM_ARS_ITEM_FIELD_RELEASE') ?>">
-											<?php if ($canEdit): ?>
+											<?php if ($canEdit && !$modal): ?>
 												<a href="<?= Route::_('index.php?option=com_ars&task=release.edit&id=' . $item->release_id) ?>">
 													<?= $this->escape($item->version) ?>
 												</a>

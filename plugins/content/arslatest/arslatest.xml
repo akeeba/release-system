@@ -29,6 +29,4 @@
         <language tag="en-GB">en-GB/plg_content_arslatest.sys.ini</language>
     </languages>
 
-    <scriptfile>script.php</scriptfile>
-
 </extension>

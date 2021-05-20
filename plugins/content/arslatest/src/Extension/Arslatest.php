@@ -39,7 +39,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 	private $filesPerRelease = [];
 
 	/**
-	 * Should this plugin be allowed to run? True if FOF can be loaded and the ARS component is enabled
+	 * Should this plugin be allowed to run? True if the ARS component is enabled.
 	 *
 	 * @var  bool
 	 */

@@ -2,8 +2,6 @@ Converting to Core MVC
 ================================================================================
 
 Plugins
-    Editor buttons
-        ARS link
     System
         ARS integration with JED latest version download
 
@@ -56,3 +54,5 @@ Plugins
     Content
         ARS download ID
         ARS latest version
+    Editor buttons
+        ARS link

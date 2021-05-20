@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/component/frontend/src" isTestSource="false" packagePrefix="Akeeba\Component\ARS\Site" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/content/arsdlid/src" isTestSource="false" packagePrefix="Joomla\Plugin\Content\Arsdlid" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/content/arslatest/src" isTestSource="false" packagePrefix="Joomla\Plugin\Content\Arslatest" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/editors-xtd/arslink/src" isTestSource="false" packagePrefix="Joomla\Plugin\Button\Arslink" />
       <excludeFolder url="file://$MODULE_DIR$/with-fof/component/backend/vendor/akeeba/s3" />
       <excludeFolder url="file://$MODULE_DIR$/with-fof/component/backend/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/with-fof" />
