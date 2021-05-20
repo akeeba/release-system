@@ -119,6 +119,12 @@
         </languages>
     </administration>
 
+    <api>
+        <files folder="api">
+            <folder>src</folder>
+        </files>
+    </api>
+
     <install>
         <sql>
             <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>

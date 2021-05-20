@@ -8,8 +8,6 @@ Modules
         My Downloads
 
 API
-    Releases
-    Items
     Reimplement Release Maker to use the new JSON API
 
 Removed extensions

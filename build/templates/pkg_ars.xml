@@ -36,6 +36,9 @@
 
         <!-- Plugins: system -->
         <file type="plugin" group="system" id="arsjed">plg_system_arsjed.zip</file>
+
+        <!-- Plugins: webservices -->
+        <file type="plugin" group="webservices" id="ars">plg_webservices_arsjed.zip</file>
     </files>
 
     <!-- Update servers -->

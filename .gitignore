@@ -8,3 +8,6 @@
 
 # Temporary stuff
 /*.txt
+
+# phpStorm HTTP Client private config file
+http-client.private.env.json

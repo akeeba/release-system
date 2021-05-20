@@ -1,0 +1,11 @@
+GET {{host}}/api/index.php/v1/ars/categories
+Accept: application/vnd.api+json
+Authorization: Bearer {{token}}
+
+###
+
+GET {{host}}/api/index.php/v1/ars/releases
+Accept: application/vnd.api+json
+Authorization: Bearer {{token}}
+
+###
