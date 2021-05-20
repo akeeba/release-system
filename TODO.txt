@@ -1,10 +1,6 @@
 Converting to Core MVC
 ================================================================================
 
-Plugins
-    System
-        ARS integration with JED latest version download
-
 Modules
     Admin
         *NEW* Downloads graph
@@ -56,3 +52,5 @@ Plugins
         ARS latest version
     Editor buttons
         ARS link
+    System
+        ARS integration with JED latest version download

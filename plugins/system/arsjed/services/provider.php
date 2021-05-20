@@ -14,7 +14,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Content\Arsdlid\Extension\Arsdlid;
+use Joomla\Plugin\System\Arsjed\Extension\Arsjed;
 
 return new class implements ServiceProviderInterface {
 	/**
@@ -31,14 +31,12 @@ return new class implements ServiceProviderInterface {
 		$container->set(
 			PluginInterface::class,
 			function (Container $container) {
-				$plugin     = PluginHelper::getPlugin('content', 'arslatest');
+				$plugin     = PluginHelper::getPlugin('content', 'arsdlid');
 				$dispatcher = $container->get(DispatcherInterface::class);
-				$factory    = $container->get(MVCFactoryInterface::class);
 
-				return new Arsdlid(
+				return new Arsjed(
 					$dispatcher,
-					(array) $plugin,
-					$factory
+					(array) $plugin
 				);
 			}
 		);

@@ -57,8 +57,6 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 	 * Returns an array of events this subscriber will listen to.
 	 *
 	 * @return  array
-	 *
-	 * @since   9.0.0
 	 */
 	public static function getSubscribedEvents(): array
 	{

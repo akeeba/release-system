@@ -5,26 +5,28 @@
   ~ @license   GNU General Public License version 3, or later
   -->
 
-<extension version="2.5.0" type="plugin" group="system" method="upgrade">
+<extension version="4.0.0" type="plugin" group="system" method="upgrade">
     <name>PLG_SYSTEM_ARSJED</name>
+    <version>6.0.0</version>
+    <creationDate>2021-03-02</creationDate>
     <author>Nicholas K. Dionysopoulos</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>https://www.akeeba.com</authorUrl>
-    <copyright>Copyright (c)2010-2020 Nicholas K. Dionysopoulos</copyright>
+    <copyright>Copyright (c)2010-2021 Nicholas K. Dionysopoulos</copyright>
     <license>GNU General Public License version 3, or later</license>
-    <creationDate>2021-03-02</creationDate>
-    <version>6.0.0</version>
     <description>PLG_SYSTEM_ARSJED_XML_DESCRIPTION</description>
+    <namespace path="src">Joomla\Plugin\System\Arsjed</namespace>
     <files>
+        <folder>services</folder>
+        <folder>src</folder>
+
         <filename plugin="arsjed">arsjed.php</filename>
         <filename>.htaccess</filename>
         <filename>web.config</filename>
     </files>
     <languages folder="language">
-        <language tag="en-GB">en-GB/en-GB.plg_system_arsjed.ini</language>
-        <language tag="en-GB">en-GB/en-GB.plg_system_arsjed.sys.ini</language>
+        <language tag="en-GB">en-GB/plg_system_arsjed.ini</language>
+        <language tag="en-GB">en-GB/plg_system_arsjed.sys.ini</language>
     </languages>
-
-    <scriptfile>script.php</scriptfile>
 
 </extension>

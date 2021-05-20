@@ -5,9 +5,9 @@
  * @license   GNU General Public License version 3, or later
  */
 
-use Joomla\CMS\Plugin\CMSPlugin;
+defined('_JEXEC') or die();
 
-defined('_JEXEC') || die;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 /**
  * Temporary workaround due to Joomla 4 extension installer bugs
@@ -34,6 +34,6 @@ defined('_JEXEC') || die;
  * That is why you see this weird empty plugin file here. No, we're not insane, we did not forget to implement the
  * plugin, we are just working around some problems in Joomla 4.
  */
-class plgContentArsdlid extends CMSPlugin
+class plgSystemArsjed extends CMSPlugin
 {
 }
