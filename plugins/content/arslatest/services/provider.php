@@ -14,7 +14,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Content\Arsdlid\Extension\Arslatest;
+use Joomla\Plugin\Content\Arsdlid\Extension\Arsdlid;
 
 return new class implements ServiceProviderInterface {
 	/**
@@ -37,7 +37,7 @@ return new class implements ServiceProviderInterface {
 				$dispatcher = $container->get(DispatcherInterface::class);
 				$factory    = $container->get(MVCFactoryInterface::class);
 
-				return new Arslatest(
+				return new Arsdlid(
 					$dispatcher,
 					(array) $plugin,
 					$factory
