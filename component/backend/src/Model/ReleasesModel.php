@@ -255,6 +255,12 @@ class ReleasesModel extends ListModel
 				$query->where($db->quoteName('r.id') . ' = :id')
 					->bind(':id', $ids, ParameterType::INTEGER);
 			}
+			elseif (stripos($search, 'version:') === 0)
+			{
+				$version = substr($search, 8);
+				$query->where($db->quoteName('r.version') . ' = :version')
+					->bind(':version', $version, ParameterType::STRING);
+			}
 			else
 			{
 				$search = '%' . $search . '%';

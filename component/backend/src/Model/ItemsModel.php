@@ -301,6 +301,20 @@ class ItemsModel extends ListModel
 				$query->where($db->quoteName('i.id') . ' = :id')
 					->bind(':id', $ids, ParameterType::INTEGER);
 			}
+			elseif (stripos($search, 'file:') === 0)
+			{
+				$filename = substr($search, 5);
+				$query->where($db->quoteName('i.type') . ' = ' . $db->quote('file'))
+					->where($db->quoteName('i.filename') . ' = :filename')
+					->bind(':filename', $filename, ParameterType::STRING);
+			}
+			elseif (stripos($search, 'link:') === 0)
+			{
+				$url = substr($search, 5);
+				$query->where($db->quoteName('i.type') . ' = ' . $db->quote('link'))
+					->where($db->quoteName('i.url') . ' = :url')
+					->bind(':url', $url, ParameterType::STRING);
+			}
 			else
 			{
 				$search = '%' . $search . '%';

@@ -30,7 +30,6 @@
                 type="text"
                 label="COM_ARS_ITEM_FIELD_TITLE"
                 default=""
-                required="true"
         />
 
         <field
@@ -38,7 +37,6 @@
                 type="text"
                 label="COM_ARS_ITEM_FIELD_ALIAS"
                 default=""
-                required="true"
         />
 
         <field
