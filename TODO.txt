@@ -4,14 +4,10 @@ Converting to Core MVC
 Modules
     Admin
         *NEW* Downloads graph
-    Site
-        My Downloads
 
-API
-    Reimplement Release Maker to use the new JSON API
-
-Removed extensions
-    Site module: mod_arsdlid
+Post installation
+    Remove site module: mod_arsdlid
+    Enable once: plg_webservices_ars
 
 Documentation
 
@@ -52,3 +48,7 @@ Plugins
         ARS link
     System
         ARS integration with JED latest version download
+
+Modules
+    Site
+        My Downloads

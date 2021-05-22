@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/plugins/content/arslatest/src" isTestSource="false" packagePrefix="Joomla\Plugin\Content\Arslatest" />
       <sourceFolder url="file://$MODULE_DIR$/component/api/src" isTestSource="false" packagePrefix="Akeeba\Component\ARS\Api" />
       <sourceFolder url="file://$MODULE_DIR$/plugins/system/arsjed/src" isTestSource="false" packagePrefix="Joomla\Plugin\System\Arsjed" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/site/arsdownloads/src" isTestSource="false" packagePrefix="Joomla\Module\Arsdownload\Site" />
       <excludeFolder url="file://$MODULE_DIR$/with-fof/component/backend/vendor/akeeba/s3" />
       <excludeFolder url="file://$MODULE_DIR$/with-fof/component/backend/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/with-fof" />

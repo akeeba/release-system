@@ -6,44 +6,115 @@
   -->
 
 <extension type="module" version="2.5.0" method="upgrade" client="site">
-    <name>Akeeba Release System - My Downloads</name>
-    <author>Nicholas K. Dionysopoulos</author>
+    <name>MOD_ARSDOWNLOADS</name>
+    <version>6.0.0</version>
     <creationDate>2021-03-02</creationDate>
-    <copyright>Copyright (c) 2010-2017 Nicholas K. Dionysopoulos</copyright>
-    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL v3 or later</license>
+    <author>Nicholas K. Dionysopoulos</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>https://www.akeeba.com</authorUrl>
-    <version>6.0.0</version>
+    <copyright>Copyright (c) 2010-2021 Nicholas K. Dionysopoulos</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL v3 or later</license>
     <description>MOD_ARSDOWNLOADS_DESC</description>
+    <namespace path="src">Joomla\Module\Arsdownload</namespace>
     <files>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+
         <filename module="mod_arsdownloads">mod_arsdownloads.php</filename>
         <filename>.htaccess</filename>
         <filename>web.config</filename>
-        <folder>tmpl</folder>
     </files>
+
     <languages folder="language">
-        <language tag="en-GB">en-GB/en-GB.mod_arsdownloads.ini</language>
-        <language tag="en-GB">en-GB/en-GB.mod_arsdownloads.sys.ini</language>
+        <language tag="en-GB">en-GB/mod_arsdownloads.ini</language>
+        <language tag="en-GB">en-GB/mod_arsdownloads.sys.ini</language>
     </languages>
+
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field name="cache" type="list" default="1" label="Caching"
-                       description="Select whether to cache the content of this module">
-                    <option value="0">Never</option>
+                <field name="streams"
+                       type="sql"
+                       multiple="true"
+                       label="MOD_ARSDOWNLOADS_OPT_STREAMS_LBL"
+                       description="MOD_ARSDOWNLOADS_OPT_STREAMS_DESC"
+                       sql_select="id, name"
+                       sql_from="#__ars_updatestreams"
+                       key_field="id"
+                       value_field="name"
+                       required="true"
+                       default=""
+                       class="form-select"
+                       size="10"
+                />
+
+                <field name="pretext"
+                       type="textarea"
+                       cols="30"
+                       rows="5"
+                       default=""
+                       label="MOD_ARSDOWNLOADS_OPT_PRETEXT_LBL"
+                       description="MOD_ARSDOWNLOADS_OPT_PRETEXT_DESC"
+                       filter="safehtml"/>
+
+                <field name="posttext"
+                       type="textarea"
+                       cols="30"
+                       rows="5"
+                       default=""
+                       label="MOD_ARSDOWNLOADS_OPT_POSTTEXT_LBL"
+                       description="MOD_ARSDOWNLOADS_OPT_POSTTEXT_DESC"
+                       filter="safehtml"/>
+
+            </fieldset>
+            <fieldset name="advanced">
+
+                <field
+                        name="layout"
+                        type="modulelayout"
+                        label="JFIELD_ALT_LAYOUT_LABEL"
+                        class="form-select"
+                        validate="moduleLayout"
+                />
+
+                <field
+                        name="moduleclass_sfx"
+                        type="textarea"
+                        label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                        rows="3"
+                        validate="CssIdentifier"
+                />
+
+                <field
+                        name="cache"
+                        type="list"
+                        label="COM_MODULES_FIELD_CACHING_LABEL"
+                        default="1"
+                        filter="integer"
+                        validate="options"
+                >
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
                 </field>
-                <field name="@spacer" type="spacer" default="" label="" description=""/>
-                <field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix"
-                       description="PARAMMODULECLASSSUFFIX"/>
-                <field name="@spacer" type="spacer" default="" label="" description=""/>
-                <field name="streams" type="text" size="20" default="" label="MOD_ARSDOWNLOADS_OPT_STREAMS_LBL"
-                       description="MOD_ARSDOWNLOADS_OPT_STREAMS_DESC"/>
-                <field name="pretext" type="textarea" cols="30" rows="5" default=""
-                       label="MOD_ARSDOWNLOADS_OPT_PRETEXT_LBL" description="MOD_ARSDOWNLOADS_OPT_PRETEXT_DESC"
-                       filter="safehtml"/>
-                <field name="posttext" type="textarea" cols="30" rows="5" default=""
-                       label="MOD_ARSDOWNLOADS_OPT_POSTTEXT_LBL" description="MOD_ARSDOWNLOADS_OPT_POSTTEXT_DESC"
-                       filter="safehtml"/>
+
+                <field
+                        name="cache_time"
+                        type="number"
+                        label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+                        default="900"
+                        filter="integer"
+                />
+
+                <!--
+                 Using the "safeuri" cache mode the authorized view levels become part of the caching key, along with
+                 the module ID. Therefore only users with identical view levels - therefore identical downloads access
+                 - will only ever see the same cached content.
+                 -->
+                <field
+                        name="cachemode"
+                        type="hidden"
+                        default="safeuri"
+                />
             </fieldset>
         </fields>
     </config>
