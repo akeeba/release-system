@@ -9,6 +9,7 @@
 	<import file="${phing.dir}/../../buildfiles/phing/common.xml" />
 
 	<fileset dir="${dirs.component}" id="component">
+		<include name="api/**"/>
 		<include name="backend/**"/>
 		<include name="frontend/**"/>
 		<include name="language/**"/>

@@ -38,13 +38,11 @@
         <file type="plugin" group="system" id="arsjed">plg_system_arsjed.zip</file>
 
         <!-- Plugins: webservices -->
-        <file type="plugin" group="webservices" id="ars">plg_webservices_arsjed.zip</file>
+        <file type="plugin" group="webservices" id="ars">plg_webservices_ars.zip</file>
     </files>
 
     <!-- Update servers -->
     <updateservers>
-        <server type="extension" priority="1" name="Akeeba Release System Updates">
-            https://raw.githubusercontent.com/akeeba/release-system/master/update/pkg_ars_updates.xml
-        </server>
+        <server type="extension" priority="1" name="Akeeba Release System Updates">https://raw.githubusercontent.com/akeeba/release-system/master/update/pkg_ars_updates.xml</server>
     </updateservers>
 </extension>
