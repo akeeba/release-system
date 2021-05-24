@@ -5,10 +5,6 @@ Modules
     Admin
         *NEW* Downloads graph
 
-Post installation
-    Remove site module: mod_arsdlid
-    Enable once: plg_webservices_ars
-
 Documentation
 
 ================================================================================
