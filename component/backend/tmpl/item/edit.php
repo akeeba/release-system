@@ -49,6 +49,8 @@ $user = Factory::getApplication()->getIdentity();
 					<?= $this->form->getField('environments')->renderField(); ?>
 					<?= $this->form->getField('updatestream')->renderField(); ?>
 					<?= $this->form->getField('language')->renderField(); ?>
+					<?= $this->form->getField('created')->renderField(); ?>
+					<?= $this->form->getField('created_by')->renderField(); ?>
 					<?= $this->form->getField('ordering')->renderField(); ?>
 				</div>
 			</div>

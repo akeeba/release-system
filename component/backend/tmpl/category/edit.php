@@ -40,6 +40,8 @@ $user = Factory::getApplication()->getIdentity();
 					<?= $this->form->getField('show_unauth_links')->renderField(); ?>
 					<?= $this->form->getField('redirect_unauth')->renderField(); ?>
 					<?= $this->form->getField('is_supported')->renderField(); ?>
+					<?= $this->form->getField('created')->renderField(); ?>
+					<?= $this->form->getField('created_by')->renderField(); ?>
 					<?= $this->form->getField('language')->renderField(); ?>
 				</div>
 			</div>
