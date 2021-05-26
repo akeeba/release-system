@@ -137,13 +137,13 @@ class UpgradeModel extends BaseModel
 		'plg_content_arsdlid',
 		'plg_content_arslatest',
 		'plg_editors-xtd_arslink',
-		'plg_system_arsjed',
 		'plg_webservices_ars',
 	];
 
 	/** @var string[] Extensions to always uninstall if they are still installed (runs on install and upgrade) */
 	private const REMOVE_EXTENSIONS = [
 		'mod_arsdlid',
+		'plg_system_arsjed',
 	];
 
 	/** @var string Relative directory to the custom handlers */

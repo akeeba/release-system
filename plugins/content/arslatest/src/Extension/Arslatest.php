@@ -129,20 +129,6 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 				return $this->parseStreamLink($content);
 				break;
 
-			case 'installfromweb':
-				$app = Factory::getApplication();
-
-				$installat  = $app->getSession()->get('arsjed.installat', null);
-				$installapp = $app->getSession()->get('arsjed.installapp', null);
-
-				if (!empty($installapp) && !empty($installat))
-				{
-					return $this->parseIFWLink();
-				}
-
-				return $this->parseStreamLink($content);
-				break;
-
 			default:
 				return '';
 		}
@@ -195,7 +181,8 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 		if (count($parts) == 2)
 		{
 			$op = trim($parts[0]);
-			if (in_array($op, ['RELEASE', 'RELEASE_LINK', 'STREAMLINK', 'INSTALLFROMWEB']))
+
+			if (in_array($op, ['RELEASE', 'RELEASE_LINK', 'STREAMLINK']))
 			{
 				$content = trim($parts[1]);
 			}
@@ -225,20 +212,9 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			}
 		}
 
-		if (empty($op))
-		{
-			$content = '';
-		}
-
-		if (empty($content))
-		{
-			$op = '';
-		}
-
-		if (empty($content))
-		{
-			$pattern = '';
-		}
+		$content = empty($op) ? '' : $content;
+		$op      = empty($content) ? '' : $op;
+		$pattern = empty($content) ? '' : $pattern;
 
 		return [$op, $content, $pattern];
 	}
@@ -374,34 +350,4 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 
 		return $link;
 	}
-
-	/**
-	 * Provide the Install from Web link
-	 *
-	 * @return string
-	 */
-	private function parseIFWLink(): string
-	{
-		$app = Factory::getApplication();
-
-
-		$installat  = $app->getSession()->get('arsjed.installat', null);
-		$installapp = (int) ($app->getSession()->get('arsjed.installapp', null));
-
-		// Find the stream ID based on the $installapp key
-		$db    = Factory::getDbo();
-		$query = $db->getQuery(true)
-			->select($db->qn('id'))
-			->from('#__ars_updatestreams')
-			->where($db->qn('jedid') . '=' . $db->q($installapp));
-		$db->setQuery($query);
-		$streamId = $db->loadResult();
-
-		$downloadLink = $this->parseStreamLink($streamId);
-
-		$link = $installat . '&installfrom=' . base64_encode($downloadLink);
-
-		return $link;
-	}
-
 }

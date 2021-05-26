@@ -35,7 +35,6 @@ $user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
 			<?= $this->form->getField('packname')->renderField(); ?>
 			<?= $this->form->getField('client_id')->renderField(); ?>
 			<?= $this->form->getField('folder')->renderField(); ?>
-			<?= $this->form->getField('jedid')->renderField(); ?>
 			<?= $this->form->getField('published')->renderField(); ?>
 		</div>
 	</div>

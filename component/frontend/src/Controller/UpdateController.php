@@ -11,15 +11,21 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
 use Akeeba\Component\ARS\Administrator\Mixin\RegisterControllerTasks;
+use Akeeba\Component\ARS\Administrator\Table\UpdatestreamTable;
 use Akeeba\Component\ARS\Site\Controller\Mixin\DisplayAware;
 use Akeeba\Component\ARS\Site\Model\UpdateModel;
 use Akeeba\Component\ARS\Site\View\Update\IniView;
 use Akeeba\Component\ARS\Site\View\Update\XmlView;
 use Joomla\CMS\Document\FactoryInterface;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Rule\UrlRule;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use RuntimeException;
+use SimpleXMLElement;
 
 class UpdateController extends BaseController
 {
@@ -223,9 +229,46 @@ class UpdateController extends BaseController
 		$downloadItem = array_shift($items);
 
 		$this->input->set('item_id', $downloadItem->item_id ?? 0);
+		/** @var ItemController $downloadController */
 		$downloadController = $this->factory->createController('item', 'site', [], $this->app, $this->input);
 
+		// Is this a JED Install From Web request?
+		$installAt  = $this->input->getBase64('installat');
+		$installApp = $this->input->getBase64('installapp');
+
+		// -- No, regular download
+		if (!$this->isJEDRequest($installAt, $installApp, $id))
+		{
+			$downloadController->execute('download');
+			$downloadController->redirect();
+
+			return;
+		}
+
+		// -- Yes, this is Install from Web. We need different handling.
+		// ---- Perform pre-download checks, possibly redirecting OR showing an error page for unauthorized downloads.
+		$downloadController->performDownload = false;
 		$downloadController->execute('download');
+		$downloadController->redirect();
+
+		// ---- If I am here the download is permitted. Do I need to add a Download ID to the URL?
+		$downloadIdSuffix = '';
+		$user             = $this->app->getIdentity();
+
+		if (!$user->guest)
+		{
+			$downloadIdSuffix = '&dlid=' . HTMLHelper::_('ars.downloadId');
+		}
+
+		// ---- Create the download URL for this item, possibly including a Download ID
+		$downloadURL = Route::_('index.php?option=com_ars&view=item&task=download&item_id=' . $downloadItem->item_id . $downloadIdSuffix, false, Route::TLS_IGNORE, true);
+
+		// ---- Modify the installat URL so that it points to the new Download URL
+		$uri = new Uri(base64_decode($installAt));
+		$uri->setVar('installfrom', base64_encode($downloadURL));
+
+		// DO NOT use the Controller's setRedirect since it's always an external URL!
+		$this->app->redirect($uri->toString());
 	}
 
 	protected function onBeforeExecute(&$task)
@@ -319,5 +362,44 @@ class UpdateController extends BaseController
 		{
 			$this->app->close();
 		}
+	}
+
+	private function isJEDRequest(?string $installAt, $installApp, ?int $stream_id): bool
+	{
+		$installAt  = trim($installAt ?? '');
+		$installApp = (int) trim($installApp ?? '0');
+		$stream_id  = $stream_id ?? 0;
+
+		if (empty($installAt) || empty($installApp) || empty($stream_id))
+		{
+			return false;
+		}
+
+		// Validate the $installApp (JED ID) against the Update Stream
+		/** @var UpdatestreamTable $stream */
+		$stream = $this->getModel()->getTable('updatestream', 'administrator');
+
+		if ($stream->load($stream_id) === false)
+		{
+			return false;
+		}
+
+		if (empty($stream->jedid) || ($stream->jedid != $installApp))
+		{
+			return false;
+		}
+
+		// Validate $installAt is a valid base64 encoded URL
+		$url = @base64_decode($installAt);
+
+		if (empty($url))
+		{
+			return false;
+		}
+
+		$field = new SimpleXMLElement('<field></field>');
+		$rule  = new UrlRule();
+
+		return $rule->test($field, $url) === true;
 	}
 }

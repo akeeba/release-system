@@ -461,7 +461,7 @@ class ItemModel extends BaseDatabaseModel
 
 			$this->assertNotEmpty($matchingRecord, 'Unknown Download ID');
 			$this->assertNotEmpty($matchingRecord->dlid ?? '', 'Invalid Download ID record');
-			$this->assert($user_id == ($matchingRecord->user_id ?? 0), 'Invalid User ID');
+			$this->assert(empty($user_id) || ($user_id == ($matchingRecord->user_id ?? 0)), 'Invalid User ID');
 			$this->assert($downloadId == ($matchingRecord->dlid ?? ''), 'Invalid Download ID');
 
 		}

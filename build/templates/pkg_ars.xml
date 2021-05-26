@@ -33,9 +33,6 @@
         <!-- Plugins: editors-xtd -->
         <file type="plugin" group="editors-xtd" id="arslink">plg_editors-xtd_arslink.zip</file>
 
-        <!-- Plugins: system -->
-        <file type="plugin" group="system" id="arsjed">plg_system_arsjed.zip</file>
-
         <!-- Plugins: webservices -->
         <file type="plugin" group="webservices" id="ars">plg_webservices_ars.zip</file>
     </files>
