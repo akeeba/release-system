@@ -119,12 +119,9 @@ class CategoryTable extends AbstractTable
 
 		$this->assertNotEmpty($check, 'COM_ARS_CATEGORY_ERR_NEEDS_DIRECTORY');
 
-		if (!Folder::exists($this->directory))
-		{
-			$directory = JPATH_SITE . '/' . $this->directory;
+		$directory = JPATH_SITE . '/' . $this->directory;
 
-			$this->assert(Folder::exists($directory), 'COM_ARS_CATEGORY_ERR_DIRECTORY_NOT_EXISTS');
-		}
+		$this->assert(Folder::exists($directory), 'COM_ARS_CATEGORY_ERR_DIRECTORY_NOT_EXISTS');
 
 		// Automatically fix the type
 		if (!in_array($this->type, ['normal', 'bleedingedge']))

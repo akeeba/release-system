@@ -190,14 +190,11 @@ class ItemTable extends AbstractTable
 
 				if (!empty($folder))
 				{
+					$folder = JPATH_ROOT . '/' . $folder;
+
 					if (!Folder::exists($folder))
 					{
-						$folder = JPATH_ROOT . '/' . $folder;
-
-						if (!Folder::exists($folder))
-						{
-							$folder = null;
-						}
+						$folder = null;
 					}
 
 					if (!empty($folder))

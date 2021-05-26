@@ -85,12 +85,7 @@ class ReleasesModel extends ListModel
 		}
 
 		// Get which directory to use
-		$directory = $category->directory;
-
-		if (!Folder::exists($directory))
-		{
-			$directory = JPATH_ROOT . '/' . $directory;
-		}
+		$directory = JPATH_ROOT . '/' . $directory;
 
 		if (!Folder::exists($directory))
 		{
