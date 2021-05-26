@@ -29,16 +29,6 @@ class ItemController extends BaseController
 	use AssertionAware;
 
 	/**
-	 * True to perform the download (default).
-	 *
-	 * This is set to false in the UpdateController to do all the pre-download checks but not actually download
-	 * anything.
-	 *
-	 * @var bool
-	 */
-	public $performDownload = true;
-
-	/**
 	 * Downloads an item to the user's browser
 	 *
 	 * @throws Exception
@@ -52,10 +42,7 @@ class ItemController extends BaseController
 		$model = $this->getModel() ?: $this->getModel('Item', 'Site');
 
 		// Log in a user if I have to
-		if ($this->performDownload)
-		{
-			$model->loginUser();
-		}
+		$model->loginUser();
 
 		try
 		{
@@ -73,11 +60,6 @@ class ItemController extends BaseController
 
 			// Make sure this is a valid download item (link or pointing to an existing file)
 			$model->preDownloadCheck($item, $category);
-
-			if (!$this->performDownload)
-			{
-				return;
-			}
 
 			// Hit the item
 			$item->save([
@@ -127,20 +109,14 @@ class ItemController extends BaseController
 
 			if (!empty($this->redirect))
 			{
-				if ($this->performDownload)
-				{
-					$model->logoutUser();
-				}
+				$model->logoutUser();
 
 				$this->setRedirect($noAccessURL);
 
 				return;
 			}
 
-			if ($this->performDownload)
-			{
-				$model->logoutUser();
-			}
+			$model->logoutUser();
 
 			throw new RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}

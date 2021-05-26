@@ -101,14 +101,6 @@
         />
 
         <field
-                name="jedid"
-                type="number"
-                label="COM_ARS_UPDATESTREAM_FIELD_JEDID"
-                description="COM_ARS_UPDATESTREAM_FIELD_JEDID_HELP"
-                default=""
-        />
-
-        <field
                 name="published"
                 type="list"
                 layout="joomla.form.field.radio.switcher"

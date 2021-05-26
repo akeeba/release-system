@@ -123,7 +123,6 @@ CREATE TABLE IF NOT EXISTS `#__ars_updatestreams`
     `packname`         VARCHAR(255),
     `client_id`        int(1)              NOT NULL DEFAULT '1',
     `folder`           varchar(255)                 DEFAULT '',
-    `jedid`            bigint(20)          NOT NULL,
     `created`          datetime            NULL     DEFAULT NULL,
     `created_by`       int(11)             NOT NULL DEFAULT '0',
     `modified`         datetime            NULL     DEFAULT NULL,
@@ -132,8 +131,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_updatestreams`
     `checked_out_time` datetime            NULL     DEFAULT NULL,
     `published`        int(11)             NOT NULL DEFAULT '1',
     PRIMARY KEY `id` (`id`),
-    KEY `#__ars_updatestreams_published` (`published`),
-    KEY `#__ars_updatestreams_jedid` (`jedid`)
+    KEY `#__ars_updatestreams_published` (`published`)
 ) ENGINE InnoDB
   DEFAULT CHARSET = utf8mb4
   DEFAULT COLLATE = utf8mb4_unicode_ci;

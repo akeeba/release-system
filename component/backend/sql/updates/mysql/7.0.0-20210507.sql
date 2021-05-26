@@ -124,3 +124,7 @@ ALTER TABLE `#__ars_environments`
     DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE = utf8mb4_unicode_ci;
 ALTER TABLE `#__ars_dlidlabels`
     DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE = utf8mb4_unicode_ci;
+
+-- Drop the JED ID which is no longer used
+ALTER TABLE `#__ars_updatestreams`
+    DROP COLUMN `jedid`;

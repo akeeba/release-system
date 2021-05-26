@@ -29,7 +29,6 @@ use Joomla\Event\DispatcherInterface;
  * @property string $pockname          fnmatch pattern for the files to be matched by this stream
  * @property int    $client_id         Joomla client ID
  * @property string $folder            Folder, for plugins
- * @property int    $jedid             JED extension ID
  * @property string $created           Created date and time
  * @property int    $created_by        Created by this user
  * @property string $modified          Modified date and time
