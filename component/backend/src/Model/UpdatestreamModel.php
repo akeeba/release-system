@@ -117,7 +117,7 @@ class UpdatestreamModel extends AdminModel
 	{
 		/** @var CMSApplication $app */
 		$app  = Factory::getApplication();
-		$data = $app->getUserState('com_ars.edit.autodescription.data', []);
+		$data = $app->getUserState('com_ars.edit.updatestream.data', []);
 
 		if (empty($data))
 		{
