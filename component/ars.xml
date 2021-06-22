@@ -6,7 +6,7 @@
   -->
 
 <extension type="component" method="upgrade">
-    <name>ars</name>
+    <name>com_ars</name>
     <creationDate>##DATE##</creationDate>
     <author>Akeeba Ltd</author>
     <authorEmail>no-reply@akeeba.com</authorEmail>

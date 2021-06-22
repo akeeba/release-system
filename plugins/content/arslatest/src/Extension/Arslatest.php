@@ -9,9 +9,11 @@ namespace Joomla\Plugin\Content\Arslatest\Extension;
 
 defined('_JEXEC') || die;
 
+use Akeeba\Component\ARS\Administrator\Model\UpdatestreamsModel;
 use Akeeba\Component\ARS\Site\Model\DlidlabelsModel;
 use Akeeba\Component\ARS\Site\Model\ItemsModel;
 use Akeeba\Component\ARS\Site\Model\ReleasesModel;
+use Akeeba\Component\ARS\Site\Model\UpdateModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Multilanguage;
@@ -44,6 +46,14 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 	 * @var  bool
 	 */
 	private $enabled = true;
+
+	/**
+	 * Information about the latest available item in a stream, indexed by the update stream ID.
+	 *
+	 * @var   array
+	 * @since 6.0.1
+	 */
+	private $streamInfo = [];
 
 	public function __construct(&$subject, $config, MVCFactoryInterface $mvcFactory)
 	{
@@ -125,6 +135,18 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 				return $this->parseItemLink($content, $pattern);
 				break;
 
+			case 'stream_release':
+				$ret = $this->parseStreamRelease($content);
+				break;
+
+			case 'stream_release_link':
+				$ret = $this->parseStreamReleaseLink($content);
+				break;
+
+			case 'stream_item_link':
+				$ret = $this->parseStreamItemLink($content);
+				break;
+
 			case 'stream_link':
 				return $this->parseStreamLink($content);
 				break;
@@ -165,6 +187,26 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			$this->categoryLatest[$release->category_id] = $release;
 		}
 
+		/** @var UpdatestreamsModel $streamModel */
+		$streamModel = $this->mvcFactory->createModel('UpdateStreams', 'Administrator', ['ignore_request' => true]);
+		$model->setState('filter.published', 1);
+		$model->setState('list.start', 0);
+		$model->setState('list.limit', 0);
+
+		foreach ($streamModel->getItems() ?: [] as $stream)
+		{
+			/** @var UpdateModel $updateModel */
+			$updateModel = $this->mvcFactory->createModel('Update', 'Site', ['ignore_request' => true]);
+			$items       = $updateModel->getItems($stream->id);
+
+			if (empty($items))
+			{
+				return;
+			}
+
+			$this->streamInfo[$stream->id] = array_shift($items);
+		}
+
 		$this->prepared = true;
 	}
 
@@ -182,7 +224,10 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 		{
 			$op = trim($parts[0]);
 
-			if (in_array($op, ['RELEASE', 'RELEASE_LINK', 'STREAMLINK']))
+			if (in_array($op, [
+				'RELEASE', 'RELEASE_LINK', 'STREAM_RELEASE', 'STREAM_RELEASE_LINK', 'STREAM_ITEM_LINK', 'STREAM_LINK',
+				'INSTALLFROMWEB',
+			]))
 			{
 				$content = trim($parts[1]);
 			}
@@ -297,6 +342,44 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 		}
 
 		return Route::_('index.php?option=com_ars&view=item&task=download&format=raw&item_id=' . $item->id);
+	}
+
+	private function parseStreamRelease(string $content): string
+	{
+		$stream_id = (int) $content;
+
+		if (!isset($this->streamInfo[$stream_id]))
+		{
+			return '';
+		}
+
+		return $this->streamInfo[$stream_id]->version;
+	}
+
+	private function parseStreamReleaseLink(string $content): string
+	{
+		$stream_id = (int) $content;
+
+		if (!isset($this->streamInfo[$stream_id]))
+		{
+			return '';
+		}
+
+		$link = Route::_('index.php?option=com_ars&view=Items&release_id=' . $this->streamInfo[$stream_id]->release_id);
+
+		return $link;
+	}
+
+	private function parseStreamItemLink(string $content)
+	{
+		$stream_id = (int) $content;
+
+		if (!isset($this->streamInfo[$stream_id]))
+		{
+			return '';
+		}
+
+		return Route::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $this->streamInfo[$stream_id]->item_id);
 	}
 
 	private function getFilesForRelease(int $release_id)
