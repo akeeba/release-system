@@ -1,6 +1,7 @@
 <?php die(); ?>
 Akeeba Release System 6.0.1
 ================================================================================
++ The Latest Releases plugin can now show version info and generate links based on the update stream ID
 ~ Converted all tables to InnoDB for better performance
 
 Akeeba Release System 6.0.0

@@ -6,15 +6,17 @@
  */
 
 // Protect from unauthorized access
-use Akeeba\ReleaseSystem\Site\Helper\Filter;
+defined('_JEXEC') or die();
+
 use Akeeba\ReleaseSystem\Admin\Model\Releases;
+use Akeeba\ReleaseSystem\Site\Helper\Filter;
+use Akeeba\ReleaseSystem\Site\Model\Update;
+use Akeeba\ReleaseSystem\Site\Model\UpdateStreams;
 use FOF40\Container\Container;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Router\Route;
 use Joomla\String\StringHelper;
-
-defined('_JEXEC') or die();
 
 class plgContentArslatest extends CMSPlugin
 {
@@ -29,10 +31,10 @@ class plgContentArslatest extends CMSPlugin
 	private $prepared = false;
 
 	/** @var array Category titles to category IDs */
-	private $categoryTitles = array();
+	private $categoryTitles = [];
 
 	/** @var array The latest release per category, including files */
-	private $categoryLatest = array();
+	private $categoryLatest = [];
 
 	/**
 	 * Should this plugin be allowed to run? True if FOF can be loaded and the ARS component is enabled
@@ -41,7 +43,15 @@ class plgContentArslatest extends CMSPlugin
 	 */
 	private $enabled = true;
 
-	public function __construct(&$subject, $config = array())
+	/**
+	 * Information about the latest available item in a stream, indexed by the update stream ID.
+	 *
+	 * @var   array
+	 * @since 6.0.1
+	 */
+	private $streamInfo = [];
+
+	public function __construct(&$subject, $config = [])
 	{
 		parent::__construct($subject, $config);
 
@@ -67,10 +77,10 @@ class plgContentArslatest extends CMSPlugin
 	/**
 	 * Content preparation plugin hook
 	 *
-	 * @param string $context
-	 * @param object $row
-	 * @param array  $params
-	 * @param int    $limitstart
+	 * @param   string  $context
+	 * @param   object  $row
+	 * @param   array   $params
+	 * @param   int     $limitstart
 	 */
 	public function onContentPrepare($context, &$row, &$params, $limitstart = 0)
 	{
@@ -90,7 +100,7 @@ class plgContentArslatest extends CMSPlugin
 			}
 
 			$regex = "#{arslatest(.*?)}#s";
-			$text  = preg_replace_callback($regex, array($this, 'process'), $text);
+			$text  = preg_replace_callback($regex, [$this, 'process'], $text);
 		}
 
 		if (is_object($row))
@@ -101,6 +111,8 @@ class plgContentArslatest extends CMSPlugin
 		{
 			$row = $text;
 		}
+
+		return true;
 	}
 
 	/**
@@ -122,6 +134,15 @@ class plgContentArslatest extends CMSPlugin
 				break;
 			case 'item_link':
 				$ret = $this->parseItemLink($content, $pattern);
+				break;
+			case 'stream_release':
+				$ret = $this->parseStreamRelease($content);
+				break;
+			case 'stream_release_link':
+				$ret = $this->parseStreamReleaseLink($content);
+				break;
+			case 'stream_item_link':
+				$ret = $this->parseStreamItemLink($content);
 				break;
 			case 'stream_link':
 				$ret = $this->parseStreamLink($content);
@@ -172,13 +193,31 @@ class plgContentArslatest extends CMSPlugin
 			/** @var \Akeeba\ReleaseSystem\Admin\Model\Releases $release */
 			foreach ($releases as $release)
 			{
-				$cat                                 = $release->category;
-				$cat->title                          = trim(strtoupper($cat->title));
-				$cats[]                              = $cat;
-				$this->categoryTitles[ $cat->title ] = $cat->id;
-				$this->categoryLatest[ $cat->id ]    = $release;
+				$cat                               = $release->category;
+				$cat->title                        = trim(strtoupper($cat->title));
+				$cats[]                            = $cat;
+				$this->categoryTitles[$cat->title] = $cat->id;
+				$this->categoryLatest[$cat->id]    = $release;
 			}
 		}
+
+		/** @var UpdateStreams $streamModel */
+		$streamModel = $container->factory->model('UpdateStreams')->tmpInstance();
+		$streamModel->reset()
+			->published(1);
+
+		$streamModel->get(true)->each(function (UpdateStreams $stream) use ($container) {
+			/** @var Update $updateModel */
+			$updateModel = $container->factory->model('Update')->tmpInstance();
+			$items       = $updateModel->getItems($stream->id);
+
+			if (empty($items))
+			{
+				return;
+			}
+
+			$this->streamInfo[$stream->id] = array_shift($items);
+		});
 
 		$this->prepared = true;
 	}
@@ -196,7 +235,10 @@ class plgContentArslatest extends CMSPlugin
 		if (count($parts) == 2)
 		{
 			$op = trim($parts[0]);
-			if (in_array($op, array('RELEASE', 'RELEASE_LINK', 'STREAMLINK', 'INSTALLFROMWEB')))
+			if (in_array($op, [
+				'RELEASE', 'RELEASE_LINK', 'STREAM_RELEASE', 'STREAM_RELEASE_LINK', 'STREAM_ITEM_LINK', 'STREAM_LINK',
+				'INSTALLFROMWEB',
+			]))
 			{
 				$content = trim($parts[1]);
 			}
@@ -241,7 +283,7 @@ class plgContentArslatest extends CMSPlugin
 			$pattern = '';
 		}
 
-		return array($op, $content, $pattern);
+		return [$op, $content, $pattern];
 	}
 
 	/**
@@ -255,7 +297,7 @@ class plgContentArslatest extends CMSPlugin
 
 		if (array_key_exists($content, $this->categoryTitles))
 		{
-			$catid = $this->categoryTitles[ $content ];
+			$catid = $this->categoryTitles[$content];
 		}
 		else
 		{
@@ -268,7 +310,7 @@ class plgContentArslatest extends CMSPlugin
 			return $release;
 		}
 
-		$release = $this->categoryLatest[ $catid ];
+		$release = $this->categoryLatest[$catid];
 
 		if (empty($release))
 		{
@@ -312,10 +354,10 @@ class plgContentArslatest extends CMSPlugin
 		$link      = Route::_('index.php?option=com_ars&view=Items&release_id=' . $release->id);
 		$container = \FOF40\Container\Container::getInstance('com_ars');
 
-        if (!Filter::filterItem($release, false) && !empty($release->redirect_unauth))
-        {
-	        $link = $release->redirect_unauth;
-        }
+		if (!Filter::filterItem($release, false) && !empty($release->redirect_unauth))
+		{
+			$link = $release->redirect_unauth;
+		}
 
 		return $link;
 	}
@@ -375,6 +417,44 @@ class plgContentArslatest extends CMSPlugin
 		return $link;
 	}
 
+	private function parseStreamRelease(string $content): string
+	{
+		$stream_id = (int) $content;
+
+		if (!isset($this->streamInfo[$stream_id]))
+		{
+			return '';
+		}
+
+		return $this->streamInfo[$stream_id]->version;
+	}
+
+	private function parseStreamReleaseLink(string $content): string
+	{
+		$stream_id = (int) $content;
+
+		if (!isset($this->streamInfo[$stream_id]))
+		{
+			return '';
+		}
+
+		$link = Route::_('index.php?option=com_ars&view=Items&release_id=' . $this->streamInfo[$stream_id]->release_id);
+
+		return $link;
+	}
+
+	private function parseStreamItemLink(string $content)
+	{
+		$stream_id = (int) $content;
+
+		if (!isset($this->streamInfo[$stream_id]))
+		{
+			return '';
+		}
+
+		return Route::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $this->streamInfo[$stream_id]->item_id);
+	}
+
 	private function parseStreamLink(string $content): string
 	{
 		static $dlid = '';
@@ -386,7 +466,7 @@ class plgContentArslatest extends CMSPlugin
 			$dlid = \Akeeba\ReleaseSystem\Site\Helper\Filter::myDownloadID();
 		}
 
-		$url  = 'index.php?option=com_ars&view=update&task=Item&format=raw&id=' . (int) $content;
+		$url = 'index.php?option=com_ars&view=update&task=Item&format=raw&id=' . (int) $content;
 
 		if (!empty($dlid))
 		{
@@ -411,9 +491,9 @@ class plgContentArslatest extends CMSPlugin
 		// Find the stream ID based on the $installapp key
 		$db    = $this->container->db;
 		$query = $db->getQuery(true)
-		            ->select($db->qn('id'))
-		            ->from('#__ars_updatestreams')
-		            ->where($db->qn('jedid') . '=' . $db->q($installapp));
+			->select($db->qn('id'))
+			->from('#__ars_updatestreams')
+			->where($db->qn('jedid') . '=' . $db->q($installapp));
 		$db->setQuery($query);
 		$streamId = $db->loadResult();
 
