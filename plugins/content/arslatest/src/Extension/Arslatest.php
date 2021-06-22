@@ -14,6 +14,7 @@ use Akeeba\Component\ARS\Site\Model\DlidlabelsModel;
 use Akeeba\Component\ARS\Site\Model\ItemsModel;
 use Akeeba\Component\ARS\Site\Model\ReleasesModel;
 use Akeeba\Component\ARS\Site\Model\UpdateModel;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Multilanguage;
@@ -21,6 +22,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Router\Route;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use Joomla\String\StringHelper;
@@ -28,6 +30,16 @@ use Joomla\String\StringHelper;
 class Arslatest extends CMSPlugin implements SubscriberInterface
 {
 	use MVCFactoryAwareTrait;
+
+	/**
+	 * @var SiteApplication
+	 */
+	protected $app;
+
+	/**
+	 * @var DatabaseDriver
+	 */
+	protected $db;
 
 	/** @var bool Is this category prepared? */
 	private $prepared = false;
@@ -136,15 +148,15 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 				break;
 
 			case 'stream_release':
-				$ret = $this->parseStreamRelease($content);
+				$ret = $this->parseStreamRelease($content, $pattern);
 				break;
 
 			case 'stream_release_link':
-				$ret = $this->parseStreamReleaseLink($content);
+				$ret = $this->parseStreamReleaseLink($content, $pattern);
 				break;
 
 			case 'stream_item_link':
-				$ret = $this->parseStreamItemLink($content);
+				$ret = $this->parseStreamItemLink($content, $pattern);
 				break;
 
 			case 'stream_link':
@@ -158,7 +170,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 
 	private function initialise(): void
 	{
-		$app  = Factory::getApplication();
+		$app  = $this->app;
 		$user = $app->getIdentity();
 
 		/** @var ReleasesModel $model */
@@ -195,6 +207,14 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 
 		foreach ($streamModel->getItems() ?: [] as $stream)
 		{
+			static $j3Env, $j4Env;
+
+			if (!is_array($j3Env))
+			{
+				$j3Env = $this->getEnvironments('joomla/3.');
+				$j4Env = $this->getEnvironments('joomla/4.');
+			}
+
 			/** @var UpdateModel $updateModel */
 			$updateModel = $this->mvcFactory->createModel('Update', 'Site', ['ignore_request' => true]);
 			$items       = $updateModel->getItems($stream->id);
@@ -204,10 +224,52 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 				return;
 			}
 
-			$this->streamInfo[$stream->id] = array_shift($items);
+			$found   = false;
+			$j3Items = array_filter($items, function ($item) use (&$found, $j3Env) {
+				if ($found)
+				{
+					return false;
+				}
+
+				$found = !empty(array_intersect($item->environments, $j3Env));
+
+				return $found;
+			});
+
+			$found   = false;
+			$j4Items = array_filter($items, function ($item) use (&$found, $j4Env) {
+				if ($found)
+				{
+					return false;
+				}
+
+				$found = !empty(array_intersect($item->environments, $j4Env));
+
+				return $found;
+			});
+
+			$this->streamInfo[$stream->id] = [
+				'ALL' => array_shift($items),
+				'J3'  => empty($j3Items) ? null : array_shift($j3Items),
+				'J4'  => empty($j4Items) ? null : array_shift($j4Items),
+			];
 		}
 
 		$this->prepared = true;
+	}
+
+	private function getEnvironments($xmltitleMatches = 'joomla/3.')
+	{
+		$xmltitleMatches = '%' . trim($xmltitleMatches, '%') . '%';
+
+		$db    = $this->db;
+		$query = $db->getQuery(true)
+			->select($db->quoteName('id'))
+			->from($db->quoteName('#__ars_environments'))
+			->where($db->quoteName('xmltitle') . ' LIKE :search')
+			->bind(':search', $xmltitleMatches);
+
+		return $db->setQuery($query)->loadColumn() ?: [];
 	}
 
 	private function analyzeString(string $string): array
@@ -224,12 +286,20 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 		{
 			$op = trim($parts[0]);
 
-			if (in_array($op, [
-				'RELEASE', 'RELEASE_LINK', 'STREAM_RELEASE', 'STREAM_RELEASE_LINK', 'STREAM_ITEM_LINK', 'STREAM_LINK',
-				'INSTALLFROMWEB',
-			]))
+			if (in_array($op, ['RELEASE', 'RELEASE_LINK', 'STREAM_LINK', 'INSTALLFROMWEB']))
 			{
 				$content = trim($parts[1]);
+			}
+			elseif (in_array($op, ['STREAM_RELEASE', 'STREAM_RELEASE_LINK', 'STREAM_ITEM_LINK']))
+			{
+				$parts = explode(' ', trim($parts[1]), 2);
+
+				if (count($parts) === 1)
+				{
+					$parts[] = 'ALL';
+				}
+
+				[$content, $pattern] = $parts;
 			}
 			elseif ($op == 'ITEM_LINK')
 			{
@@ -344,42 +414,45 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 		return Route::_('index.php?option=com_ars&view=item&task=download&format=raw&item_id=' . $item->id);
 	}
 
-	private function parseStreamRelease(string $content): string
+	private function parseStreamRelease(string $content, ?string $pattern): string
 	{
 		$stream_id = (int) $content;
+		$pattern   = $pattern ?: '';
 
-		if (!isset($this->streamInfo[$stream_id]))
+		if (!isset($this->streamInfo[$stream_id][$pattern]) || empty($this->streamInfo[$stream_id][$pattern]))
 		{
 			return '';
 		}
 
-		return $this->streamInfo[$stream_id]->version;
+		return $this->streamInfo[$stream_id][$pattern]->version;
 	}
 
-	private function parseStreamReleaseLink(string $content): string
+	private function parseStreamReleaseLink(string $content, ?string $pattern): string
 	{
 		$stream_id = (int) $content;
+		$pattern   = $pattern ?: '';
 
-		if (!isset($this->streamInfo[$stream_id]))
+		if (!isset($this->streamInfo[$stream_id][$pattern]) || empty($this->streamInfo[$stream_id][$pattern]))
 		{
 			return '';
 		}
 
-		$link = Route::_('index.php?option=com_ars&view=Items&release_id=' . $this->streamInfo[$stream_id]->release_id);
+		$link = Route::_('index.php?option=com_ars&view=Items&release_id=' . $this->streamInfo[$stream_id][$pattern]->release_id);
 
 		return $link;
 	}
 
-	private function parseStreamItemLink(string $content)
+	private function parseStreamItemLink(string $content, ?string $pattern)
 	{
 		$stream_id = (int) $content;
+		$pattern   = $pattern ?: '';
 
-		if (!isset($this->streamInfo[$stream_id]))
+		if (!isset($this->streamInfo[$stream_id][$pattern]) || empty($this->streamInfo[$stream_id][$pattern]))
 		{
 			return '';
 		}
 
-		return Route::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $this->streamInfo[$stream_id]->item_id);
+		return Route::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $this->streamInfo[$stream_id][$pattern]->item_id);
 	}
 
 	private function getFilesForRelease(int $release_id)
@@ -389,7 +462,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			return $this->filesPerRelease[$release_id];
 		}
 
-		$app  = Factory::getApplication();
+		$app  = $this->app;
 		$user = $app->getIdentity();
 
 		/** @var ItemsModel $model */
