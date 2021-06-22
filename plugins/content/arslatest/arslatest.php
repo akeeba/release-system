@@ -136,13 +136,13 @@ class plgContentArslatest extends CMSPlugin
 				$ret = $this->parseItemLink($content, $pattern);
 				break;
 			case 'stream_release':
-				$ret = $this->parseStreamRelease($content);
+				$ret = $this->parseStreamRelease($content, $pattern);
 				break;
 			case 'stream_release_link':
-				$ret = $this->parseStreamReleaseLink($content);
+				$ret = $this->parseStreamReleaseLink($content, $pattern);
 				break;
 			case 'stream_item_link':
-				$ret = $this->parseStreamItemLink($content);
+				$ret = $this->parseStreamItemLink($content, $pattern);
 				break;
 			case 'stream_link':
 				$ret = $this->parseStreamLink($content);
@@ -207,6 +207,23 @@ class plgContentArslatest extends CMSPlugin
 			->published(1);
 
 		$streamModel->get(true)->each(function (UpdateStreams $stream) use ($container) {
+			static $j3Env, $j4Env;
+
+			if (!is_array($j3Env))
+			{
+				$j3Env = $this->container->factory->model('Environments')->tmpInstance()
+					->xmltitle([
+						'method' => 'partial',
+						'value'  => 'joomla/3.',
+					])->get(true)->fetch('id')->toArray();
+
+				$j4Env = $this->container->factory->model('Environments')->tmpInstance()
+					->xmltitle([
+						'method' => 'partial',
+						'value'  => 'joomla/4.',
+					])->get(true)->fetch('id')->toArray();
+			}
+
 			/** @var Update $updateModel */
 			$updateModel = $container->factory->model('Update')->tmpInstance();
 			$items       = $updateModel->getItems($stream->id);
@@ -216,7 +233,35 @@ class plgContentArslatest extends CMSPlugin
 				return;
 			}
 
-			$this->streamInfo[$stream->id] = array_shift($items);
+			$found   = false;
+			$j3Items = array_filter($items, function ($item) use (&$found, $j3Env) {
+				if ($found)
+				{
+					return false;
+				}
+
+				$found = !empty(array_intersect($item->environments, $j3Env));
+
+				return $found;
+			});
+
+			$found   = false;
+			$j4Items = array_filter($items, function ($item) use (&$found, $j4Env) {
+				if ($found)
+				{
+					return false;
+				}
+
+				$found = !empty(array_intersect($item->environments, $j4Env));
+
+				return $found;
+			});
+
+			$this->streamInfo[$stream->id] = [
+				'ALL' => array_shift($items),
+				'J3'  => empty($j3Items) ? null : array_shift($j3Items),
+				'J4'  => empty($j4Items) ? null : array_shift($j4Items),
+			];
 		});
 
 		$this->prepared = true;
@@ -235,12 +280,20 @@ class plgContentArslatest extends CMSPlugin
 		if (count($parts) == 2)
 		{
 			$op = trim($parts[0]);
-			if (in_array($op, [
-				'RELEASE', 'RELEASE_LINK', 'STREAM_RELEASE', 'STREAM_RELEASE_LINK', 'STREAM_ITEM_LINK', 'STREAM_LINK',
-				'INSTALLFROMWEB',
-			]))
+			if (in_array($op, ['RELEASE', 'RELEASE_LINK', 'STREAM_LINK', 'INSTALLFROMWEB']))
 			{
 				$content = trim($parts[1]);
+			}
+			elseif (in_array($op, ['STREAM_RELEASE', 'STREAM_RELEASE_LINK', 'STREAM_ITEM_LINK']))
+			{
+				$parts = explode(' ', trim($parts[1]), 2);
+
+				if (count($parts) === 1)
+				{
+					$parts[] = 'ALL';
+				}
+
+				[$content, $pattern] = $parts;
 			}
 			elseif ($op == 'ITEM_LINK')
 			{
@@ -407,8 +460,6 @@ class plgContentArslatest extends CMSPlugin
 
 		$link = Route::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $item->id);
 
-		$container = \FOF40\Container\Container::getInstance('com_ars');
-
 		if (!Filter::filterItem($item, false) && !empty($item->redirect_unauth))
 		{
 			$link = $item->redirect_unauth;
@@ -417,42 +468,45 @@ class plgContentArslatest extends CMSPlugin
 		return $link;
 	}
 
-	private function parseStreamRelease(string $content): string
+	private function parseStreamRelease(string $content, ?string $pattern): string
 	{
 		$stream_id = (int) $content;
+		$pattern   = $pattern ?: '';
 
-		if (!isset($this->streamInfo[$stream_id]))
+		if (!isset($this->streamInfo[$stream_id][$pattern]) || empty($this->streamInfo[$stream_id][$pattern]))
 		{
 			return '';
 		}
 
-		return $this->streamInfo[$stream_id]->version;
+		return $this->streamInfo[$stream_id][$pattern]->version;
 	}
 
-	private function parseStreamReleaseLink(string $content): string
+	private function parseStreamReleaseLink(string $content, ?string $pattern): string
 	{
 		$stream_id = (int) $content;
+		$pattern   = $pattern ?: '';
 
-		if (!isset($this->streamInfo[$stream_id]))
+		if (!isset($this->streamInfo[$stream_id][$pattern]) || empty($this->streamInfo[$stream_id][$pattern]))
 		{
 			return '';
 		}
 
-		$link = Route::_('index.php?option=com_ars&view=Items&release_id=' . $this->streamInfo[$stream_id]->release_id);
+		$link = Route::_('index.php?option=com_ars&view=Items&release_id=' . $this->streamInfo[$stream_id][$pattern]->release_id);
 
 		return $link;
 	}
 
-	private function parseStreamItemLink(string $content)
+	private function parseStreamItemLink(string $content, ?string $pattern)
 	{
 		$stream_id = (int) $content;
+		$pattern   = $pattern ?: '';
 
-		if (!isset($this->streamInfo[$stream_id]))
+		if (!isset($this->streamInfo[$stream_id][$pattern]) || empty($this->streamInfo[$stream_id][$pattern]))
 		{
 			return '';
 		}
 
-		return Route::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $this->streamInfo[$stream_id]->item_id);
+		return Route::_('index.php?option=com_ars&view=Item&task=download&format=raw&id=' . $this->streamInfo[$stream_id][$pattern]->item_id);
 	}
 
 	private function parseStreamLink(string $content): string
