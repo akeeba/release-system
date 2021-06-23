@@ -246,15 +246,16 @@ class ItemTable extends AbstractTable
 		$db = $this->getDbo();
 
 		$subQuery = $db->getQuery(true)
-			->select($db->qn('category_id'))
-			->from($db->qn('#__ars_releases'))
-			->where($db->qn('id') . ' = ' . $db->q($this->release_id));
+			->select($db->quoteName('category_id'))
+			->from($db->quoteName('#__ars_releases'))
+			->where($db->quoteName('id') . ' = ' . $db->q($this->release_id));
 
 		$query = $db->getQuery(true)
 			->select('*')
-			->from($db->qn('#__ars_autoitemdesc'))
-			->where($db->qn('category') . ' IN (' . $subQuery . ')')
-			->where($db->qn('published') . ' != 0');
+			->from($db->quoteName('#__ars_autoitemdesc'))
+			->where($db->quoteName('category') . ' IN (' . $subQuery . ')')
+			->where($db->quoteName('published') . ' != 0')
+			->order($db->quoteName('id') . ' ASC');
 
 		$autoItems = $db->setQuery($query)->loadObjectList() ?: [];
 
@@ -283,7 +284,7 @@ class ItemTable extends AbstractTable
 		}
 
 		$auto = new AutodescriptionTable($this->getDbo());
-		$auto->bind($autoItems);
+		$auto->bind(array_shift($autoItems));
 
 		// Apply environments
 		$this->environments = $this->environments ?: $auto->environments;
