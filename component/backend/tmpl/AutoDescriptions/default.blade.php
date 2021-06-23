@@ -37,6 +37,9 @@ defined('_JEXEC') or die;
         <th width="32">
             @jhtml('FEFHelp.browse.checkall')
         </th>
+        <th width="32">
+            @sortgrid('id', 'JGLOBAL_FIELD_ID_LABEL')
+        </th>
         <th>
             @sortgrid('category', 'LBL_AUTODESC_CATEGORY')
         </th>
@@ -63,6 +66,9 @@ defined('_JEXEC') or die;
         <tr>
             <td>
                 @jhtml('FEFHelp.browse.id', ++$i, $row->getId())
+            </td>
+            <td>
+				<?= (int) $row->getId() ?>
             </td>
             <td>
                 {{{ $row->categoryObject->title }}}

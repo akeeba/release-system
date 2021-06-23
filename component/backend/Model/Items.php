@@ -235,7 +235,8 @@ class Items extends DataModel
 			->select('*')
 			->from($db->qn('#__ars_autoitemdesc'))
 			->where($db->qn('category') . ' IN (' . $subQuery . ')')
-			->where('NOT(' . $db->qn('published') . '=' . $db->q(0) . ')');
+			->where('NOT(' . $db->qn('published') . '=' . $db->q(0) . ')')
+			->order($db->qn('id') . ' ASC');
 
 		$db->setQuery($query);
 
