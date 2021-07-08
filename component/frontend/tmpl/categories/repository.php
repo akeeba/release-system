@@ -15,7 +15,7 @@ $grouping = $this->params->get('grouping', 'normal');
 <div class="item-page<?= $this->escape($this->params->get('pageclass_sfx')) ?>">
 	<?php if ($this->params->get('show_page_heading')): ?>
 		<div class="page-header">
-			<h2>{{{ $this->params->get('page_heading', $this->menu->title) }}}</h2>
+			<h2><?= $this->params->get('page_heading', $this->menu->title) ?></h2>
 		</div>
 	<?php endif; ?>
 
