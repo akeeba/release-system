@@ -13,6 +13,7 @@ use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
 use Akeeba\Component\ARS\Administrator\Mixin\RegisterControllerTasks;
 use Akeeba\Component\ARS\Administrator\Mixin\ReusableModels;
 use Akeeba\Component\ARS\Administrator\Model\ControlpanelModel;
+use Akeeba\Component\ARS\Administrator\Model\UpgradeModel;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -37,6 +38,12 @@ class ControlpanelController extends BaseController
 		$model = $this->getModel();
 
 		$model->saveMagicVariables();
+
+		// Make sure all of my extensions are assigned to my package.
+		/** @var UpgradeModel $upgradeModel */
+		$upgradeModel = $this->getModel('Upgrade', 'Administrator');
+		$upgradeModel->adoptMyExtensions();
+
 
 		$this->display(false);
 	}
