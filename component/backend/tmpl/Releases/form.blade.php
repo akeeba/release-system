@@ -100,8 +100,8 @@ $item = $this->getItem();
                     @jhtml('calendar', $item->created, 'created', 'created')
                 @else
                     <input
-                            type="datetime-local"
-                            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
+                            type="date"
+                            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
                             name="created"
                             id="created"
                             value="{{{ $item->created }}}"

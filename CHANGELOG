@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 6.0.2
+================================================================================
+~ Changes in Joomla 4.0.0-RC5 broke the date and time input fields. Now using native HTML 5 controls.
+
 Akeeba Release System 6.0.1
 ================================================================================
 + The Latest Releases plugin can now show version info and generate links based on the update stream ID
