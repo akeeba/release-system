@@ -96,7 +96,18 @@ $item = $this->getItem();
             <div class="akeeba-form-group">
                 <label for="created">@lang('COM_ARS_RELEASES_FIELD_RELEASED')</label>
 
-                @jhtml('calendar', $item->created, 'created', 'created')
+                @if (version_compare(JVERSION, '3.999.999', 'le'))
+                    @jhtml('calendar', $item->created, 'created', 'created')
+                @else
+                    <input
+                            type="datetime-local"
+                            pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
+                            name="created"
+                            id="created"
+                            value="{{{ $item->created }}}"
+                    >
+                @endif
+
             </div>
 
             <div class="akeeba-form-group">
