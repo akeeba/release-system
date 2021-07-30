@@ -9,6 +9,7 @@ namespace Akeeba\ReleaseSystem\Admin\Controller;
 
 defined('_JEXEC') or die;
 
+use Akeeba\ReleaseSystem\Admin\Model\Updates;
 use Exception;
 use FOF40\Container\Container;
 use FOF40\Controller\Controller;
@@ -37,6 +38,10 @@ class ControlPanel extends Controller
 		$model
 			->checkAndFixDatabase()
 			->saveMagicVariables();
+
+		/** @var Updates $updatesModel */
+		$updatesModel = $this->getModel('Updates');
+		$updatesModel->refreshUpdateSite();
 
 		ViewManifestMigration::migrateJoomla4MenuXMLFiles($this->container);
 		ViewManifestMigration::removeJoomla3LegacyViews($this->container);

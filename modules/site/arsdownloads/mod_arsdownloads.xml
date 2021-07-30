@@ -8,7 +8,7 @@
 <extension type="module" version="2.5.0" method="upgrade" client="site">
     <name>Akeeba Release System - My Downloads</name>
     <author>Nicholas K. Dionysopoulos</author>
-    <creationDate>2021-07-26</creationDate>
+    <creationDate>2021-07-30</creationDate>
     <copyright>Copyright (c) 2010-2017 Nicholas K. Dionysopoulos</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL v3 or later</license>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>

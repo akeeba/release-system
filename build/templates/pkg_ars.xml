@@ -44,7 +44,7 @@
     <!-- Update servers -->
     <updateservers>
         <server type="extension" priority="1" name="Akeeba Release System Updates">
-            https://raw.githubusercontent.com/akeeba/release-system/master/update/pkg_ars_updates.xml
+            https://cdn.akeeba.com/updates/ars.xml
         </server>
     </updateservers>
 </extension>
