@@ -31,6 +31,12 @@ class Pkg_ArsInstallerScript
 	 */
 	public function postflight(string $type, PackageAdapter $parent): bool
 	{
+		// Do not run on uninstall.
+		if ($type === 'uninstall')
+		{
+			return true;
+		}
+
 		$model = $this->getUpgradeModel();
 
 		if (empty($model))
