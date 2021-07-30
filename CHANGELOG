@@ -3,6 +3,7 @@ Akeeba Release System 6.0.2
 ================================================================================
 ~ Changes in Joomla 4.0.0-RC5 broke the date and time input fields. Now using native HTML 5 controls.
 ~ Keep Update Site information up-to-date and adopt orphaned subextensions
+# [HIGH] Uninstallation broken on Joomla 4 due to different installation script event handling.
 
 Akeeba Release System 6.0.1
 ================================================================================

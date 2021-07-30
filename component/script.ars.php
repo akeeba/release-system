@@ -85,6 +85,12 @@ class Pkg_ArsInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
+		// Do not run on uninstall.
+		if ($type === 'uninstall')
+		{
+			return true;
+		}
+
 		// Check the minimum PHP version
 		if (!version_compare(PHP_VERSION, $this->minimumPHPVersion, 'ge'))
 		{
@@ -132,6 +138,12 @@ class Pkg_ArsInstallerScript
 	 */
 	public function postflight($type, $parent)
 	{
+		// Do not run on uninstall.
+		if ($type === 'uninstall')
+		{
+			return;
+		}
+
 		/**
 		 * Try to install FEF. We only need to do this in postflight. A failure, while detrimental to the display of the
 		 * extension, is non-fatal to the installation and can be rectified by manual installation of the FEF package.
