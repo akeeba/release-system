@@ -14,22 +14,18 @@ use Joomla\CMS\Language\Text;
 ?>
 
 <div class="card">
-	<div class="card-header">
-		<h3>
-			<?= Text::_('COM_ARS_CPANEL_DLSTATSMONTHLY_LABEL') ?>
-		</h3>
-	</div>
+	<h3 class="card-header">
+		<?= Text::_('COM_ARS_CPANEL_DLSTATSMONTHLY_LABEL') ?>
+	</h3>
 	<div class="card-body">
 		<canvas id="mdrChart" width="400" height="200"></canvas>
 	</div>
 </div>
 
 <div class="card">
-	<div class="card-header">
-		<h3>
-			<?= Text::_('COM_ARS_CPANEL_DLSTATSDETAILS_LABEL') ?>
-		</h3>
-	</div>
+	<h3 class="card-header">
+		<?= Text::_('COM_ARS_CPANEL_DLSTATSDETAILS_LABEL') ?>
+	</h3>
 	<div class="card-body">
 		<table class="table table-striped">
 			<tr>

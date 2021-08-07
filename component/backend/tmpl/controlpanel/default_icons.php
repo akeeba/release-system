@@ -15,11 +15,9 @@ defined('_JEXEC') or die;
 
 ?>
 <div class="card mb-2">
-	<div class="card-header">
-		<h3>
-			<?= Text::_('COM_ARS_CPANEL_HEAD_BASIC') ?>
-		</h3>
-	</div>
+	<h3 class="card-header">
+		<?= Text::_('COM_ARS_CPANEL_HEAD_BASIC') ?>
+	</h3>
 
 	<div class="card-body">
 		<div class="d-flex flex-row flex-wrap align-items-stretch">
@@ -74,11 +72,9 @@ defined('_JEXEC') or die;
 </div>
 
 <div class="card mb-2">
-	<div class="card-header">
-		<h3>
-			<?= Text::_('COM_ARS_CPANEL_HEAD_TOOLS') ?>
-		</h3>
-	</div>
+	<h3 class="card-header">
+		<?= Text::_('COM_ARS_CPANEL_HEAD_TOOLS') ?>
+	</h3>
 
 	<div class="card-body">
 		<div class="d-flex flex-row flex-wrap align-items-stretch">
