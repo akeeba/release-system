@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.0.1
+================================================================================
+# [MEDIUM] Extensions not enabled automatically on installation.
+
 Akeeba Release System 7.0.0
 ================================================================================
 ~ Rewritten using core Joomla 4 MVC and Bootstrap 5 styling

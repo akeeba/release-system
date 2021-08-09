@@ -445,7 +445,7 @@ class UpgradeModel extends BaseModel
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->update($db->quoteName('#__extensions'))
-			->set($db->qn('state') . ' = 1')
+			->set($db->qn('enabled') . ' = 1')
 			->whereIn($db->quoteName('extension_id'), $extensionIDs);
 		try
 		{
