@@ -166,6 +166,8 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			default:
 				return '';
 		}
+
+		return '';
 	}
 
 	private function initialise(): void
