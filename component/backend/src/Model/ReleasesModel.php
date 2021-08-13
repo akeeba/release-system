@@ -133,6 +133,12 @@ class ReleasesModel extends ListModel
 		{
 			$environments = $item->environments;
 
+			if (!empty($environments) && is_string($environments))
+			{
+				$test         = @json_decode($environments);
+				$environments = $test ?? array_map('intval', explode(',', $environments));
+			}
+
 			if (empty($environments) || !is_array($environments))
 			{
 				continue;
