@@ -26,7 +26,7 @@ if (count($this->items))
 		return 'php/' . $x;
 	}, $parsedPlatforms['php']));
 
-	$moreURL = Route::_('index.php?option=com_ars&view=Items&release_id=' . $item->release_id, false, Route::TLS_IGNORE, true);
+	$moreURL = Route::_('index.php?option=com_ars&view=items&&release_id=' . $item->release_id . '&category_id=' . $item->category, false, Route::TLS_IGNORE, true);
 	$date    = new Date($item->created);
 }
 

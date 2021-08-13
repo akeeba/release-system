@@ -3,6 +3,7 @@ Akeeba Release System 7.0.2
 ================================================================================
 # [MEDIUM] Warnings listing release items
 # [MEDIUM] Download links in release items list were wrong
+# [MEDIUM] Links in update streams were wrong
 # [HIGH] Content - Akeeba Release System Latest Releases plugin wouldn't load
 
 Akeeba Release System 7.0.1

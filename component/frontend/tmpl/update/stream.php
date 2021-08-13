@@ -13,7 +13,9 @@ use Joomla\CMS\Uri\Uri;
 
 /** @var \Akeeba\Component\ARS\Site\View\Update\XmlView $this */
 
-$showChecksums = $this->showChecksums ?? false;
+// Joomla 4 displays a warning if the checksum is not present. So, I need to always include it.
+//$showChecksums = $this->showChecksums ?? false;
+$showChecksums = true;
 
 $streamTypeMap = [
 	'components' => 'component',
@@ -72,7 +74,7 @@ foreach ($this->items as $item)
 		$update->addChild('version', $item->version);
 
 		$infoUrl = $update->addChild('infourl', Route::_(
-			'index.php?option=com_ars&view=Items&release_id=' . $item->release_id,
+			'index.php?option=com_ars&view=items&release_id=' . $item->release_id . '&category_id=' . $item->category,
 			true, Route::TLS_IGNORE, true
 		));
 		$infoUrl->addAttribute('title', sprintf('%s %s', $item->cat_title, $item->version));

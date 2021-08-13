@@ -66,49 +66,41 @@ trait Common
 			return ['', ''];
 		}
 
+		$basename = basename($item->itemtype == 'file' ? $item->filename : $item->url);
+		$lastDot  = strrpos($basename, '.');
+		$format   = 'raw';
+
+		if ($lastDot !== false)
+		{
+			$format = substr($basename, $lastDot + 1);
+		}
+
+		if (substr(strtolower($basename), -7) == '.tar.gz')
+		{
+			$format = 'tgz';
+		}
+		elseif (substr(strtolower($basename), -8) == '.tar.bz2')
+		{
+			$format = 'tbz2';
+		}
+		elseif (substr(strtolower($basename), -4) == '.tbz')
+		{
+			$format = 'tbz2';
+		}
+		elseif (substr(strtolower($basename), -5) == '.tbz2')
+		{
+			$format = 'tbz2';
+		}
+
 		$downloadURL = Route::_(sprintf(
-			"index.php?option=com_ars&view=Item&task=download&format=raw&item_id=%d%s",
-			$item->item_id, $this->dlidRequest
+			"index.php?option=com_ars&view=item&format=%s&category_id=%d&release_id=%d&item_id=%d%s",
+			$format, $item->category, $item->release_id, $item->item_id, $this->dlidRequest
 		),
-			false, Route::TLS_IGNORE, true);
+			true, Route::TLS_IGNORE, true);
 
 		if ($item->itemtype == 'link')
 		{
 			$downloadURL = $item->url;
-		}
-
-		if (substr(strtolower($downloadURL), -4) == '.zip')
-		{
-			$format = 'zip';
-		}
-		elseif (substr(strtolower($downloadURL), -4) == '.tgz')
-		{
-			$format = 'tgz';
-		}
-		elseif (substr(strtolower($downloadURL), -7) == '.tar.gz')
-		{
-			$format = 'tgz';
-		}
-		elseif (substr(strtolower($downloadURL), -4) == '.tar')
-		{
-			$format = 'tar';
-		}
-		elseif (substr(strtolower($downloadURL), -8) == '.tar.bz2')
-		{
-			$format = 'tbz2';
-		}
-		elseif (substr(strtolower($downloadURL), -4) == '.tbz')
-		{
-			$format = 'tbz2';
-		}
-		elseif (substr(strtolower($downloadURL), -5) == '.tbz2')
-		{
-			$format = 'tbz2';
-		}
-		else
-		{
-			$fileNameParts = explode('.', $downloadURL);
-			$format        = array_pop($fileNameParts);
 		}
 
 		if ($item->itemtype == 'link')
