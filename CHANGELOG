@@ -1,6 +1,7 @@
 <?php die(); ?>
 Akeeba Release System 7.0.2
 ================================================================================
+# [MEDIUM] Warnings listing release items
 # [HIGH] Content - Akeeba Release System Latest Releases plugin wouldn't load
 
 Akeeba Release System 7.0.1

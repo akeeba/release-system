@@ -17,6 +17,7 @@ use Akeeba\Component\ARS\Site\Helper\Breadcrumbs;
 use Akeeba\Component\ARS\Site\Model\EnvironmentsModel;
 use Akeeba\Component\ARS\Site\Model\ReleasesModel;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -114,9 +115,10 @@ class HtmlView extends BaseHtmlView
 		$model = $this->getModel();
 
 		/** @var SiteApplication $app */
-		$app    = Factory::getApplication();
-		$params = $app->getParams();
-		$user   = $app->getIdentity();
+		$app     = Factory::getApplication();
+		$params  = $app->getParams();
+		$cParams = ComponentHelper::getParams('com_ars');
+		$user    = $app->getIdentity();
 
 		$this->items = $model->getItems();
 
@@ -128,17 +130,17 @@ class HtmlView extends BaseHtmlView
 
 		// DirectLink information
 		$this->downloadId = HTMLHelper::_('ars.downloadId', $user->id);
-		$this->directlink = $params->get('show_directlink', 1) && !$user->guest;
+		$this->directlink = $cParams->get('show_directlink', 1) && !$user->guest;
 
 		if ($this->directlink)
 		{
-			$linkExtensions = explode(',', $params->get('directlink_extensions', 'zip,tar,tar.gz,tgz,tbz,tar.bz2')) ?: [];
+			$linkExtensions = explode(',', $cParams->get('directlink_extensions', 'zip,tar,tar.gz,tgz,tbz,tar.bz2')) ?: [];
 
 			$this->directlink_extensions = array_map(function ($ext) {
 				return '.' . trim($ext, '. \t\n\r\0\0x0B');
 			}, $linkExtensions);
 
-			$this->directlink_description = $params->get('directlink_description', Text::_('COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_DEFAULT'));
+			$this->directlink_description = $cParams->get('directlink_description', Text::_('COM_ARS_CONFIG_DIRECTLINKDESCRIPTION_DEFAULT'));
 		}
 
 		// Get the ordering
@@ -150,38 +152,6 @@ class HtmlView extends BaseHtmlView
 		$this->params     = $app->getParams();
 		$this->Itemid     = $app->input->getInt('Itemid', 0);
 		$this->menu       = $app->getMenu()->getActive();
-	}
-
-	private function onBeforeModal($tpl)
-	{
-		// Load the model
-		/** @var ReleasesModel $model */
-		$model = $this->getModel();
-
-		/** @var SiteApplication $app */
-		$app    = Factory::getApplication();
-
-		$this->items = $model->getItems();
-
-		// Get the ordering
-		$this->order     = $model->getState('list.order', 'id');
-		$this->order_Dir = $model->getState('list.direction', 'desc');
-
-		// Pass page params
-		$this->pagination = $model->getPagination();
-		$this->params     = $app->getParams();
-		$this->Itemid     = $app->input->getInt('Itemid', 0);
-		$this->menu       = $app->getMenu()->getActive();
-
-		// Adapt pagination
-		$this->pagination->setAdditionalUrlParam('option', 'com_ars');
-		$this->pagination->setAdditionalUrlParam('view', 'items');
-		$this->pagination->setAdditionalUrlParam('layout', 'modal');
-		$this->pagination->setAdditionalUrlParam('tmpl', 'component');
-		$this->pagination->setAdditionalUrlParam('Itemid', '');
-
-		$this->document
-			->addScriptOptions('ars.itemsProxyCallback', $this->modalFunction);
 	}
 
 	public function getItemUrl(object $item): array
@@ -212,7 +182,7 @@ class HtmlView extends BaseHtmlView
 
 	public function getDirectLink(object $item, string $downloadUrl): ?string
 	{
-		$basename = ($item->type == 'file') ? $item->filename : $item->url;
+		$basename   = ($item->type == 'file') ? $item->filename : $item->url;
 		$directLink = false;
 
 		if (empty($basename))
@@ -253,5 +223,37 @@ class HtmlView extends BaseHtmlView
 		}
 
 		return $map[$id] ?? null;
+	}
+
+	private function onBeforeModal($tpl)
+	{
+		// Load the model
+		/** @var ReleasesModel $model */
+		$model = $this->getModel();
+
+		/** @var SiteApplication $app */
+		$app = Factory::getApplication();
+
+		$this->items = $model->getItems();
+
+		// Get the ordering
+		$this->order     = $model->getState('list.order', 'id');
+		$this->order_Dir = $model->getState('list.direction', 'desc');
+
+		// Pass page params
+		$this->pagination = $model->getPagination();
+		$this->params     = $app->getParams();
+		$this->Itemid     = $app->input->getInt('Itemid', 0);
+		$this->menu       = $app->getMenu()->getActive();
+
+		// Adapt pagination
+		$this->pagination->setAdditionalUrlParam('option', 'com_ars');
+		$this->pagination->setAdditionalUrlParam('view', 'items');
+		$this->pagination->setAdditionalUrlParam('layout', 'modal');
+		$this->pagination->setAdditionalUrlParam('tmpl', 'component');
+		$this->pagination->setAdditionalUrlParam('Itemid', '');
+
+		$this->document
+			->addScriptOptions('ars.itemsProxyCallback', $this->modalFunction);
 	}
 }

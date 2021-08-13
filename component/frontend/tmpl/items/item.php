@@ -18,7 +18,7 @@ use Joomla\CMS\Language\Text;
 
 [$downloadUrl, $directLink] = $this->getItemUrl($item);
 $directLink    = $this->directlink && $directLink;
-$directLinkURL = $this->getDirectLink($item, $downloadUrl);
+$directLinkURL = $directLink ? $this->getDirectLink($item, $downloadUrl) : '';
 
 HTMLHelper::_('bootstrap.collapse', '.ars-collapse');
 
