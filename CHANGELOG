@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.0.2
+================================================================================
+# [HIGH] Content - Akeeba Release System Latest Releases plugin wouldn't load
+
 Akeeba Release System 7.0.1
 ================================================================================
 # [MEDIUM] Extensions not enabled automatically on installation.
