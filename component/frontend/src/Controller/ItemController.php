@@ -16,10 +16,13 @@ use Akeeba\Component\ARS\Administrator\Table\LogTable;
 use Akeeba\Component\ARS\Site\Controller\Mixin\CRIAccessAware;
 use Akeeba\Component\ARS\Site\Model\ItemModel;
 use Exception;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Router\Route;
+use Joomla\Input\Input;
 use RuntimeException;
 
 class ItemController extends BaseController
@@ -27,6 +30,14 @@ class ItemController extends BaseController
 	use ControllerEvents;
 	use CRIAccessAware;
 	use AssertionAware;
+
+	public function __construct($config = [], MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null)
+	{
+		parent::__construct($config, $factory, $app, $input);
+
+		$this->registerDefaultTask('download');
+	}
+
 
 	/**
 	 * Downloads an item to the user's browser

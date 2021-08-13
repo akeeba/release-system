@@ -156,7 +156,16 @@ class HtmlView extends BaseHtmlView
 
 	public function getItemUrl(object $item): array
 	{
-		$itemUrl = Route::_(sprintf("index.php?option=com_ars&view=item&task=download&format=raw&item_id=%s&Itemid=%s", $item->id, $this->Itemid));
+		$basename  = basename($item->type == 'file' ? $item->filename : $item->url);
+		$lastDot   = strrpos($basename, '.');
+		$extension = 'raw';
+
+		if ($lastDot !== false)
+		{
+			$extension = substr($basename, $lastDot + 1);
+		}
+
+		$itemUrl = Route::_(sprintf("index.php?option=com_ars&view=item&format=%s&category_id=%d&release_id=%d&item_id=%s&Itemid=%s", $extension, $item->cat_id, $item->release_id, $item->id, $this->Itemid));
 
 		$hasAccess = in_array($item->access, Factory::getApplication()->getIdentity()->getAuthorisedViewLevels());
 
