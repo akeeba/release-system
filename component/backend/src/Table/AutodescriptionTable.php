@@ -91,6 +91,11 @@ class AutodescriptionTable extends AbstractTable
 
 	protected function onBeforeBind(&$src, &$ignore = [])
 	{
+		if (is_object($src))
+		{
+			$src = (array) $src;
+		}
+
 		if (isset($src['environments']) && !is_array($src['environments']))
 		{
 			$source              = $src['environments'] ?? '[]';
