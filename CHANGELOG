@@ -1,10 +1,11 @@
 <?php die(); ?>
 Akeeba Release System 7.0.2
 ================================================================================
+# [HIGH] Content - Akeeba Release System Latest Releases plugin wouldn't load
+# [HIGH] Does not work on Windows on the latest Joomla 4 RC versions
 # [MEDIUM] Warnings listing release items
 # [MEDIUM] Download links in release items list were wrong
 # [MEDIUM] Links in update streams were wrong
-# [HIGH] Content - Akeeba Release System Latest Releases plugin wouldn't load
 # [LOW] Environments not shown when displaying releases in a category
 
 Akeeba Release System 7.0.1
