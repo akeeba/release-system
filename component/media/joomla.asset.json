@@ -1,7 +1,7 @@
 {
 	"$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
 	"name": "com_ars",
-	"version": "7.0.1",
+	"version": "7.0.2",
 	"description": "Akeeba Release System",
 	"license": "GPL-3.0-or-later",
 	"assets": [

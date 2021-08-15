@@ -14,8 +14,8 @@ and packaging.
 -->
 <extension version="4.0.0" type="plugin" group="editors-xtd" method="upgrade">
     <name>PLG_EDITORS-XTD_ARSLINK</name>
-    <version>7.0.1</version>
-    <creationDate>2021-08-12</creationDate>
+    <version>7.0.2</version>
+    <creationDate>2021-08-15</creationDate>
     <author>Nicholas K. Dionysopoulos / Akeeba Ltd</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>www.akeeba.com</authorUrl>
