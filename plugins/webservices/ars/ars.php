@@ -27,7 +27,7 @@ class PlgWebservicesArs extends CMSPlugin
 	protected $autoloadLanguage = true;
 
 	/**
-	 * Registers com_banners's API's routes in the application
+	 * Registers the API routes in the application
 	 *
 	 * @param   ApiRouter  &$router  The API Routing object
 	 *

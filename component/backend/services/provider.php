@@ -20,7 +20,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
 /**
- * The banners service provider.
+ * The service provider.
  *
  * @since  9.0.0
  */
