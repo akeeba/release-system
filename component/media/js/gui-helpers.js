@@ -3,6 +3,7 @@
  * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
+"use strict";
 
 /**
  * Setup (required for Joomla! 3)
@@ -28,11 +29,15 @@ Math.uuid = (function() {
   return function (len, radix) {
     var chars = CHARS, uuid = [];
     radix = radix || chars.length;
+	  var i;
 
     if (len) {
       // Compact form
-      for (var i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
-    } else {
+		for (i = 0; i < len; i++)
+		{
+			uuid[i] = chars[0 | Math.random() * radix];
+		}
+	} else {
       // rfc4122, version 4 form
       var r;
 
@@ -42,12 +47,14 @@ Math.uuid = (function() {
 
       // Fill in random data.  At i==19 set the high bits of clock sequence as
       // per rfc4122, sec. 4.1.5
-      for (var i = 0; i < 36; i++) {
-        if (!uuid[i]) {
-          r = 0 | Math.random()*16;
-          uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
-        }
-      }
+		for (i = 0; i < 36; i++)
+		{
+			if (!uuid[i])
+			{
+				r       = 0 | Math.random() * 16;
+				uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+			}
+		}
     }
 
     return uuid.join('');
@@ -70,6 +77,7 @@ function number_format( number, decimals, dec_point, thousands_sep ) {
 	var n = number, c = isNaN(decimals = Math.abs(decimals)) ? 2 : decimals;
 	var d = dec_point == undefined ? "," : dec_point;
 	var t = thousands_sep == undefined ? "." : thousands_sep, s = n < 0 ? "-" : "";
+	var j = 0;
 	var i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
 	
 	return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
