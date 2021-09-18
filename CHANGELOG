@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.0.3
+================================================================================
+# [HIGH] Not setting the ordering field value can cause saving categories, releases or items to fail.
+
 Akeeba Release System 7.0.2
 ================================================================================
 # [HIGH] Content - Akeeba Release System Latest Releases plugin wouldn't load

@@ -129,5 +129,8 @@ class ReleaseTable extends AbstractTable
 
 		// Clamp 'published' to [0, 1]
 		$this->published = max(0, min($this->published, 1));
+
+		// Make sure a non-empty ordering is set
+		$this->ordering = $this->ordering ?? 0;
 	}
 }

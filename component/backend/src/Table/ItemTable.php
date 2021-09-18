@@ -231,6 +231,9 @@ class ItemTable extends AbstractTable
 				$dummy = @unlink($filename) || File::delete($filename);
 			}
 		}
+
+		// Make sure a non-empty ordering is set
+		$this->ordering = $this->ordering ?? 0;
 	}
 
 	/**
