@@ -205,7 +205,7 @@ class Download extends Model
 
 		// Use 1M chunks for echoing the data to the browser
 		$chunksize = 1024 * 1024; //1M chunks
-		$handle    = @fopen($filename, 'rb');
+		$handle = @fopen($filename, 'r');
 
 		if ($handle !== false)
 		{

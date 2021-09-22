@@ -222,7 +222,7 @@ BANNER;
 	private function getDataFromFile(string $inFile): array
 	{
 		$data = [];
-		$fp   = @fopen($inFile, 'rt');
+		$fp   = @fopen($inFile, 'r');
 
 		if ($fp === false)
 		{
