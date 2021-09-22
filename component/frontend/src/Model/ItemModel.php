@@ -262,7 +262,7 @@ class ItemModel extends BaseDatabaseModel
 
 		// Use 1M chunks for echoing the data to the browser
 		$chunkSize = self::CHUNK_SIZE; //1M chunks
-		$handle    = @fopen($filename, 'rb');
+		$handle    = @fopen($filename, 'r');
 
 		if ($handle === false)
 		{
