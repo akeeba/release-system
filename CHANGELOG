@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 6.0.3
+================================================================================
+# [HIGH] Joomla 3 & 4 common package overrides Joomla 4 dedicated package in ARS Latest content plugin
+
 Akeeba Release System 6.0.2
 ================================================================================
 ~ Changes in Joomla 4.0.0-RC5 broke the date and time input fields. Now using native HTML 5 controls.
