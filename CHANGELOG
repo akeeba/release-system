@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.0.4
+================================================================================
+# [HIGH] Joomla 3 & 4 common package overrides Joomla 4 dedicated package in ARS Latest content plugin
+
 Akeeba Release System 7.0.3
 ================================================================================
 # [HIGH] Not setting the ordering field value can cause saving categories, releases or items to fail.

@@ -223,6 +223,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 				continue;
 			}
 
+			// Any Joomla 3 items
 			$found   = false;
 			$j3Items = array_filter($items, function ($item) use (&$found, $j3Env) {
 				if ($found)
@@ -235,6 +236,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 				return $found;
 			});
 
+			// Any Joomla 4 items
 			$found   = false;
 			$j4Items = array_filter($items, function ($item) use (&$found, $j4Env) {
 				if ($found)
@@ -246,6 +248,25 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 
 				return $found;
 			});
+
+			// Joomla 4 items which ARE NOT available on Joomla 3
+			$found   = false;
+			$altJ4Items = array_filter($items, function ($item) use (&$found, $j4Env, $j3Env) {
+				if ($found)
+				{
+					return false;
+				}
+
+				$found = !empty(array_intersect($item->environments, $j4Env)) && empty(array_intersect($item->environments, $j3Env));
+
+				return $found;
+			});
+
+			// Prefer the Joomla 4–specific items
+			if (!empty($altJ4Items))
+			{
+				$j4Items = $altJ4Items;
+			}
 
 			$this->streamInfo[$stream->id] = [
 				'ALL' => array_shift($items),
