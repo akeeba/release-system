@@ -117,13 +117,18 @@ class UpdateModel extends BaseDatabaseModel
 
 		$ret = $db->setQuery($query)->loadObjectList();
 
+		// Order updates by version, listing the latest version on top.
+		usort($ret, function ($a, $b) {
+			return version_compare($b->version, $a->version);
+		});
+
 		if (is_array($ret) && !empty($ret))
 		{
 			foreach ($ret as &$item)
 			{
-				$environments = $item->environments;
-				$environments = empty($environments) ? array() : json_decode($environments);
-				$environments = empty($environments) ? array() : $environments;
+				$environments       = $item->environments;
+				$environments       = empty($environments) ? [] : json_decode($environments);
+				$environments       = empty($environments) ? [] : $environments;
 				$item->environments = $environments;
 			}
 		}
