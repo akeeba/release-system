@@ -110,23 +110,28 @@ class Update extends Model
 					->join('RIGHT', $db->qn('#__ars_updatestreams') . ' AS ' . $db->qn('u') . ' ON(' .
 						$db->qn('u') . '.' . $db->qn('id') . ' = ' . $db->qn('i') . '.' . $db->qn('updatestream')
 						. ')')
-					->where($db->qn('u') . '.' . $db->qn('id') . ' = ' . $db->q($id))
-					->where($db->qn('u') . '.' . $db->qn('published') . ' = ' . $db->q('1'))
-					->where($db->qn('i') . '.' . $db->qn('published') . ' = ' . $db->q('1'))
-					->where($db->qn('r') . '.' . $db->qn('published') . ' = ' . $db->q('1'))
-					->where($db->qn('c') . '.' . $db->qn('published') . ' = ' . $db->q('1'))
-					->order($db->qn('r') . '.' . $db->qn('created') . ' DESC');
+			->where($db->qn('u') . '.' . $db->qn('id') . ' = ' . $db->q($id))
+			->where($db->qn('u') . '.' . $db->qn('published') . ' = ' . $db->q('1'))
+			->where($db->qn('i') . '.' . $db->qn('published') . ' = ' . $db->q('1'))
+			->where($db->qn('r') . '.' . $db->qn('published') . ' = ' . $db->q('1'))
+			->where($db->qn('c') . '.' . $db->qn('published') . ' = ' . $db->q('1'))
+			->order($db->qn('r') . '.' . $db->qn('created') . ' DESC');
 		$db->setQuery($query);
 
 		$ret = $db->loadObjectList();
+
+		// Order updates by version, listing the latest version on top.
+		usort($ret, function ($a, $b) {
+			return version_compare($b->version, $a->version);
+		});
 
 		if (is_array($ret) && !empty($ret))
 		{
 			foreach ($ret as &$item)
 			{
-				$environments = $item->environments;
-				$environments = empty($environments) ? array() : json_decode($environments);
-				$environments = empty($environments) ? array() : $environments;
+				$environments       = $item->environments;
+				$environments       = empty($environments) ? [] : json_decode($environments);
+				$environments       = empty($environments) ? [] : $environments;
 				$item->environments = $environments;
 			}
 		}

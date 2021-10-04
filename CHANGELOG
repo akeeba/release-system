@@ -2,6 +2,7 @@
 Akeeba Release System 6.0.3
 ================================================================================
 # [HIGH] Joomla 3 & 4 common package overrides Joomla 4 dedicated package in ARS Latest content plugin
+# [HIGH] Update streams do not list releases in version order descending as they should
 
 Akeeba Release System 6.0.2
 ================================================================================
