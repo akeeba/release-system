@@ -28,7 +28,10 @@ trait CopyAware
 	public function copy()
 	{
 		// Check for request forgeries
-		$this->checkToken();
+		if (!$this->checkToken())
+		{
+			throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+		}
 
 		// Get items to publish from the request.
 		$cid = $this->input->get('cid', [], 'array');

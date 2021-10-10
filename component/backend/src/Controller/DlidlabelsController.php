@@ -37,7 +37,10 @@ class DlidlabelsController extends AdminController
 		$app = $this->app;
 
 		// Check for request forgeries
-		$this->checkToken($app->isClient('site') ? 'get' : 'post');
+		if (!$this->checkToken($app->isClient('site') ? 'get' : 'post'))
+		{
+			throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+		}
 
 		// Get items to remove from the request.
 		$cid = $this->input->get('cid', [], 'array');

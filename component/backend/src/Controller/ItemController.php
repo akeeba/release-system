@@ -13,6 +13,7 @@ use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
 use Akeeba\Component\ARS\Administrator\Model\ItemsModel;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Router\Route;
 
@@ -24,7 +25,10 @@ class ItemController extends FormController
 
 	public function batch($model = null)
 	{
-		$this->checkToken();
+		if (!$this->checkToken())
+		{
+			throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+		}
 
 		// Set the model
 		$model = $this->getModel('Item', '', []);
