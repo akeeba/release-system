@@ -25,10 +25,7 @@ class AjaxController extends BaseController
 	function getFiles(): void
 	{
 		// Token check
-		if (!$this->checkToken($this->input->getMethod()))
-		{
-			throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
-		}
+		$this->checkToken($this->input->getMethod());
 
 		// Make sure this is a raw view
 		if ($this->input->getCmd('format', 'html') != 'raw')

@@ -12,7 +12,6 @@ defined('_JEXEC') or die;
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Router\Route;
 
@@ -24,10 +23,7 @@ class ReleaseController extends FormController
 
 	public function batch($model = null)
 	{
-		if (!$this->checkToken())
-		{
-			throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
-		}
+		$this->checkToken();
 
 		// Set the model
 		$model = $this->getModel('Release', '', []);

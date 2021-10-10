@@ -10,7 +10,6 @@ namespace Akeeba\Component\ARS\Administrator\Controller;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Router\Route;
 
@@ -22,10 +21,7 @@ class CategoryController extends FormController
 
 	public function batch($model = null)
 	{
-		if (!$this->checkToken())
-		{
-			throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
-		}
+		$this->checkToken();
 
 		// Set the model
 		$model = $this->getModel('Category', '', []);
