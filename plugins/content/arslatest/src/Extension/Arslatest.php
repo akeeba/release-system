@@ -99,7 +99,8 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			return;
 		}
 
-		[$context, $row, $params, $limitstart] = $event->getArguments();
+		$context = $event->getArgument(0);
+		$row     = $event->getArgument(1);
 
 		$text = is_object($row) ? $row->text : $row;
 
