@@ -22,7 +22,7 @@ defined('_JEXEC') or die;
 	<div class="card-body">
 		<div class="d-flex flex-row flex-wrap align-items-stretch">
 
-			<a class="text-center btn btn-outline-primary border-0" style="width: 10em"
+			<a class="text-center align-self-stretch btn btn-outline-primary border-0" style="width: 10em"
 			   href="<?= Route::_('index.php?option=com_ars&view=categories') ?>">
 				<div class="bg-primary text-white d-block text-center p-3 h2">
 					<span class="fa fa-folder"></span>
@@ -31,7 +31,7 @@ defined('_JEXEC') or die;
 					<?= Text::_('COM_ARS_TITLE_CATEGORIES') ?>
 				</span> </a>
 
-			<a class="text-center btn btn-outline-primary border-0" style="width: 10em"
+			<a class="text-center align-self-stretch btn btn-outline-primary border-0" style="width: 10em"
 			   href="<?= Route::_('index.php?option=com_ars&view=releases') ?>">
 				<div class="bg-primary text-white d-block text-center p-3 h2">
 					<span class="fa fa-folder-open"></span>
@@ -40,7 +40,7 @@ defined('_JEXEC') or die;
 					<?= Text::_('COM_ARS_TITLE_RELEASES') ?>
 				</span> </a>
 
-			<a class="text-center btn btn-outline-dark border-0" style="width: 10em"
+			<a class="text-center align-self-stretch btn btn-outline-dark border-0" style="width: 10em"
 			   href="<?= Route::_('index.php?option=com_ars&view=items') ?>">
 				<div class="bg-dark text-white d-block text-center p-3 h2">
 					<span class="fa fa-list"></span>
@@ -49,7 +49,7 @@ defined('_JEXEC') or die;
 					<?= Text::_('COM_ARS_TITLE_ITEMS') ?>
 				</span> </a>
 
-			<a class="text-center btn btn-outline-warning border-0 text-dark" style="width: 10em"
+			<a class="text-center align-self-stretch btn btn-outline-warning border-0 text-dark" style="width: 10em"
 			   href="<?= Route::_('index.php?option=com_ars&view=environments') ?>">
 				<div class="bg-warning text-dark d-block text-center p-3 h2">
 					<span class="fa fa-th-large"></span>
@@ -58,7 +58,7 @@ defined('_JEXEC') or die;
 					<?= Text::_('COM_ARS_TITLE_ENVIRONMENTS') ?>
 				</span> </a>
 
-			<a class="text-center btn btn-outline-danger border-0" style="width: 10em"
+			<a class="text-center align-self-stretch btn btn-outline-danger border-0" style="width: 10em"
 			   href="<?= Route::_('index.php?option=com_ars&view=downloadidlabels') ?>">
 				<div class="bg-danger text-white d-block text-center p-3 h2">
 					<span class="fa fa-key"></span>
@@ -79,7 +79,7 @@ defined('_JEXEC') or die;
 	<div class="card-body">
 		<div class="d-flex flex-row flex-wrap align-items-stretch">
 
-			<a class="text-center btn btn-outline-dark border-0" style="width: 10em"
+			<a class="text-center align-self-stretch btn btn-outline-dark border-0" style="width: 10em"
 			   href="<?= Route::_('index.php?option=com_ars&view=autodescriptions') ?>">
 				<div class="bg-dark text-white d-block text-center p-3 h2">
 					<span class="fa fa-magic"></span>
@@ -88,7 +88,7 @@ defined('_JEXEC') or die;
 					<?= Text::_('COM_ARS_TITLE_AUTODESCRIPTIONS') ?>
 				</span> </a>
 
-			<a class="text-center btn btn-outline-primary border-0" style="width: 10em"
+			<a class="text-center align-self-stretch btn btn-outline-primary border-0" style="width: 10em"
 			   href="<?= Route::_('index.php?option=com_ars&view=updatestreams') ?>">
 				<div class="bg-primary text-white d-block text-center p-3 h2">
 					<span class="fa fa-info-circle"></span>
@@ -97,7 +97,7 @@ defined('_JEXEC') or die;
 					<?= Text::_('COM_ARS_TITLE_UPDATESTREAMS') ?>
 				</span> </a>
 
-			<a class="text-center btn btn-outline-primary border-0" style="width: 10em"
+			<a class="text-center align-self-stretch btn btn-outline-primary border-0" style="width: 10em"
 			   href="<?= Route::_('index.php?option=com_ars&view=logs') ?>">
 				<div class="bg-primary text-white d-block text-center p-3 h2">
 					<span class="fa fa-clipboard-list"></span>

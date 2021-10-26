@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.0.5
+================================================================================
+# [LOW] Bootstrap 5.1.2 included in Joomla 4.0.4 broke the CSS for Control Panel icons
+
 Akeeba Release System 7.0.4
 ================================================================================
 # [HIGH] Joomla 3 & 4 common package overrides Joomla 4 dedicated package in ARS Latest content plugin
