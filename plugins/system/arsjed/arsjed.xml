@@ -12,8 +12,8 @@
     <authorUrl>https://www.akeeba.com</authorUrl>
     <copyright>Copyright (c)2010-2020 Nicholas K. Dionysopoulos</copyright>
     <license>GNU General Public License version 3, or later</license>
-    <creationDate>2021-08-12</creationDate>
-    <version>6.0.2</version>
+    <creationDate>2021-10-26</creationDate>
+    <version>6.0.3</version>
     <description>PLG_SYSTEM_ARSJED_XML_DESCRIPTION</description>
     <files>
         <filename plugin="arsjed">arsjed.php</filename>
