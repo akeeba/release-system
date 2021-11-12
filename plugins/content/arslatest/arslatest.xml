@@ -17,10 +17,9 @@
     <description>PLG_CONTENT_ARSLATEST_XML_DESCRIPTION</description>
     <namespace path="src">Joomla\Plugin\Content\Arslatest</namespace>
     <files>
-        <folder>services</folder>
+        <folder plugin="arslatest">services</folder>
         <folder>src</folder>
 
-        <filename plugin="arslatest">arslatest.php</filename>
         <filename>.htaccess</filename>
         <filename>web.config</filename>
     </files>
