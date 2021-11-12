@@ -17,10 +17,9 @@
     <description>PLG_CONTENT_ARSDLID_DESCRIPTION</description>
     <namespace path="src">Joomla\Plugin\Content\Arsdlid</namespace>
     <files>
-        <folder>services</folder>
+        <folder plugin="arsdlid">services</folder>
         <folder>src</folder>
 
-        <filename plugin="arsdlid">arsdlid.php</filename>
         <filename>.htaccess</filename>
         <filename>web.config</filename>
     </files>
