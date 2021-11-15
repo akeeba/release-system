@@ -12,7 +12,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Router\Route;
 
 class plgButtonArslink extends CMSPlugin
 {
@@ -55,7 +54,7 @@ class plgButtonArslink extends CMSPlugin
 function arsSelectItem(id, title)
 {
 	var editor = Joomla.getOptions('xtd-arslink').editor;
-	
+
 	if (Joomla.editors.instances[editor].getSelection()) {
       Joomla.editors.instances[editor].replaceSelection(
           '<a href=\"index.php?option=com_ars&amp;view=item&amp;task=download&amp;format=raw&amp;item_id='+id+'\">'+
@@ -67,7 +66,7 @@ function arsSelectItem(id, title)
           '<a href=\"index.php?option=com_ars&amp;view=item&amp;task=download&amp;format=raw&amp;item_id='+id+'\">'+title+'</a>'
       );
     }
-	
+
 	if (Joomla.Modal) {
       Joomla.Modal.getCurrent().close();
     }
