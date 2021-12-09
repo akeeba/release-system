@@ -20,6 +20,7 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 	 * * class_priority_medium: CSS class for medium priority warnings
 	 * * class_priority_high: CSS class for high priority errors
 	 * * warn_about_maintenance: should I warn about PHP versions which have entered maintenance mode? Def: TRUE.
+	 * * maintenance_period: how long after we enter maintenance period should I warn the user? Def: P6M.
 	 * * eol_period_too_old: how long after EOL is the PHP version considered dangerous, as DateInterval text, e.g. P3M
 	 * * longVersion: current PHP version, long format, e.g. "7.3.1-12ubuntu3.2". Skip to automatically determine.
 	 * * shortVersion: current PHP version, short format, e.g. "7.3". Skip to automatically determine.
@@ -65,12 +66,14 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 		);
 
 		// Make sure I have all necessary configuration variables
+		$useFef = !defined('JVERSION') || version_compare(JVERSION, '4.0.0', 'lt');
 		$config = array_merge(array(
 			'softwareName'           => 'This software',
-			'class_priority_low'     => 'akeeba-block--info',
-			'class_priority_medium'  => 'akeeba-block--warning',
-			'class_priority_high'    => 'akeeba-block--failure',
+			'class_priority_low'     => $useFef ? 'akeeba-block--info' : 'alert alert-info',
+			'class_priority_medium'  => $useFef ? 'akeeba-block--warning' : 'alert alert-warning',
+			'class_priority_high'    => $useFef ? 'akeeba-block--failure' : 'alert alert-danger',
 			'warn_about_maintenance' => true,
+			'maintenance_period'     => 'P6M',
 			'eol_period_too_old'     => 'P3M',
 			'longVersion'            => PHP_VERSION,
 			'shortVersion'           => sprintf('%d.%d', PHP_MAJOR_VERSION, PHP_MINOR_VERSION),
@@ -83,6 +86,7 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 		$class_priority_medium  = $config['class_priority_medium'];
 		$class_priority_high    = $config['class_priority_high'];
 		$warn_about_maintenance = $config['warn_about_maintenance'];
+		$maintenance_period     = $config['maintenance_period'];
 		$eol_period_too_old     = $config['eol_period_too_old'];
 		$longVersion            = $config['longVersion'];
 		$shortVersion           = $config['shortVersion'];
@@ -117,6 +121,12 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 			$ancientDate   = clone $eolDate;
 			$ancientDate->add($ancientPeriod);
 
+			if (!empty($maintenance_period))
+			{
+				$maintenancePeriod = new DateInterval($maintenance_period);
+				$securityDate      = $securityDate->add($maintenancePeriod);
+			}
+
 			/**
 			 * Ancient:  This PHP version has reached end-of-life more than $eol_period_too_old ago
 			 * EOL:      This PHP version has reached end-of-life
@@ -143,12 +153,10 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 				<h3>PHP version <?php echo $shortVersion ?> is newer than this software supports</h3>
 
 				<p>
-					Your site is currently using PHP <?php echo $longVersion ?>. This version of PHP not supported by
-					your currently installed version of <?php echo $softwareName ?>. We cannot guarantee that
-					<?php echo $softwareName ?> will work correctly on your site.
+					Your site is currently using PHP <?php echo $longVersion ?>. This version of PHP was released after your currently installed version of <?php echo $softwareName ?> was released. As a result, we cannot guarantee that <?php echo $softwareName ?> will work correctly on your site.
 				</p>
 				<p>
-					You can check <a href="https://www.akeeba.com/compatiblity.html">our Compatibility page</a> to see which versions of <?php echo $softwareName ?> are supported on PHP <?php echo $shortVersion ?>. If none is available yet you will need to wait 1-3 months, using an earlier and supported version of PHP in the meantime. You can ask your host or your system administrator for instructions on downgrading PHP.
+					Please check for an updated version of <?php echo $softwareName ?>. Kindly note that it usually takes us a few days to weeks after the initial (X.Y<strong>.0</strong>) PHP version release before we publish a version of our software which supports it.
 				</p>
 			</div>
 		<?php elseif ($isAncient): ?>
@@ -182,13 +190,10 @@ if (!function_exists('akeeba_common_phpversion_warning'))
 			?>
 			<!-- Your PHP version has entered “Security Support” and will become EOL rather soon -->
 			<div class="<?php echo $class_priority_low ?>">
-				<h3>Older PHP version <?php echo $shortVersion ?></h3>
+				<h3>PHP <?php echo $shortVersion ?> is approaching End–of–Life</h3>
 
 				<p>
-					Your site is currently using PHP <?php echo $longVersion ?>. This version of PHP has entered its “Security maintenance” phase since <?php echo $securityDateFormatted ?> and has stopped receiving bug fixes. It will stop receiving security updates on <?php echo $eolDateFormatted ?> at which point it will be unsuitable for use on a live site.
-				</p>
-				<p>
-					<?php echo $softwareName ?> will stop supporting your version of PHP soon after it becomes End-of-Life on <?php echo $eolDateFormatted ?>. We recommend that you plan your migration to a newer version of PHP before that date. You can check <a href="https://www.akeeba.com/compatiblity.html">our Compatibility page</a> to see which versions of PHP are supported by each version of our software, select the newest one that fits your site's needs and upgrade your site to it. You can ask your host or your system administrator for instructions on upgrading PHP. It's easy and it will make your site faster and more secure.
+					Your site is currently using PHP <?php echo $longVersion ?>. This version of PHP has entered its “Security maintenance” phase since <?php echo $securityDateFormatted ?> and has stopped receiving bug fixes. It will stop receiving security updates on <?php echo $eolDateFormatted ?> at which point it will be unsuitable for use on a live site. We recommend updating to a newer PHP version as soon as possible.
 				</p>
 			</div>
 		<?php
@@ -203,12 +208,13 @@ if (!defined('KICKSTART'))
 {
 	try
 	{
+		$useFef = !defined('JVERSION') || version_compare(JVERSION, '4.0.0', 'lt');
 		akeeba_common_phpversion_warning(array(
 			// Configuration -- Override before calling this script
 			'softwareName'           => isset($softwareName) ? $softwareName : 'This software',
-			'class_priority_low'     => isset($class_priority_low) ? $class_priority_low : 'akeeba-block--info',
-			'class_priority_medium'  => isset($class_priority_medium) ? $class_priority_medium : 'akeeba-block--warning',
-			'class_priority_high'    => isset($class_priority_high) ? $class_priority_high : 'akeeba-block--failure',
+			'class_priority_low'     => $useFef ? 'akeeba-block--info' : 'alert alert-info',
+			'class_priority_medium'  => $useFef ? 'akeeba-block--warning' : 'alert alert-warning',
+			'class_priority_high'    => $useFef ? 'akeeba-block--failure' : 'alert alert-danger',
 			'warn_about_maintenance' => isset($warn_about_maintenance) ? ((bool) $warn_about_maintenance) : true,
 			'eol_period_too_old'     => isset($eol_period_too_old) ? $eol_period_too_old : 'P3M',
 			// Override these to test the script
