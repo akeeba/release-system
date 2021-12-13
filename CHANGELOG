@@ -2,6 +2,7 @@
 Akeeba Release System 7.0.5
 ================================================================================
 # [LOW] Bootstrap 5.1.2 included in Joomla 4.0.4 broke the CSS for Control Panel icons
+# [LOW] Number of views not displayed correctly on the release page
 
 Akeeba Release System 7.0.4
 ================================================================================

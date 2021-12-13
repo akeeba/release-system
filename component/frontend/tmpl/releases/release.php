@@ -104,7 +104,9 @@ HTMLHelper::_('bootstrap.collapse', '.ars-collapse');
 				<?php if ($this->params->get('show_downloads', 1)): ?>
 					<tr>
 						<td><?= Text::_('COM_ARS_RELEASE_LBL_HITS') ?></td>
-						<td><?= Text::sprintf(($item->hits == 1 ? 'COM_ARS_RELEASE_LBL_TIME' : 'COM_ARS_RELEASE_LBL_TIMES'), $item->hits) ?></td>
+						<td>
+							<?= Text::plural('COM_ARS_RELEASE_LBL_TIME', $item->hits) ?>
+						</td>
 					</tr>
 				<?php endif ?>
 			</table>
