@@ -43,6 +43,19 @@ class ItemsModel extends ListModel
 		parent::__construct($config, $factory);
 	}
 
+	public function getCategoryFromRelease(int $releaseId)
+	{
+		/** @var ReleaseTable $release */
+		$release = $this->getMVCFactory()->createTable('Release', 'Administrator');
+
+		if (!$release->load($releaseId))
+		{
+			return null;
+		}
+
+		return $release->category_id;
+	}
+
 	/**
 	 * Returns a list of select options which will let the user pick a file for a release.
 	 *
@@ -202,70 +215,6 @@ class ItemsModel extends ListModel
 				}, $records);
 			}, $this->getReleases())
 		);
-	}
-
-	public function getCategoryFromRelease(int $releaseId)
-	{
-		/** @var ReleaseTable $release */
-		$release = $this->getMVCFactory()->createTable('Release', 'Administrator');
-
-		if (!$release->load($releaseId))
-		{
-			return null;
-		}
-
-		return $release->category_id;
-	}
-
-	protected function populateState($ordering = 'r.id', $direction = 'desc')
-	{
-		$app = Factory::getApplication();
-
-		$search = $app->getUserStateFromRequest($this->context . 'filter.search', 'filter_search', '', 'string');
-		$this->setState('filter.search', $search);
-
-		$catid = $app->getUserStateFromRequest($this->context . 'filter.category_id', 'filter_category_id', '', 'string');
-		$this->setState('filter.category_id', ($catid === '') ? $catid : (int) $catid);
-
-		$releaseId = $app->getUserStateFromRequest($this->context . 'filter.release_id', 'filter_release_id', '', 'string');
-		$this->setState('filter.release_id', ($releaseId === '') ? $releaseId : (int) $releaseId);
-
-		$published = $app->getUserStateFromRequest($this->context . 'filter.published', 'filter_published', '', 'string');
-		$this->setState('filter.published', ($published === '') ? $published : (int) $published);
-
-		$showUnauthLinks = $app->getUserStateFromRequest($this->context . 'filter.filter_show_unauth_links', 'filter_show_unauth_links', '', 'string');
-		$this->setState('filter.show_unauth_links', ($showUnauthLinks === '') ? $showUnauthLinks : (int) $showUnauthLinks);
-
-		$access = $app->getUserStateFromRequest($this->context . 'filter.access', 'filter_access', '', 'string');
-		$this->setState('filter.access', ($access === '') ? $access : (int) $access);
-
-		$language = $app->getUserStateFromRequest($this->context . 'filter.language', 'filter_language', '', 'string');
-		$this->setState('filter.language', $language);
-
-		$this->setState('filter.allowUnauth', 0);
-
-		parent::populateState($ordering, $direction);
-	}
-
-	protected function getStoreId($id = '')
-	{
-		// Compile the store id.
-		$fltRelease = $this->getState('filter.release_id');
-
-		if (is_array($fltRelease))
-		{
-			$fltRelease = implode(',', $fltRelease);
-		}
-
-		$id .= ':' . $this->getState('filter.search');
-		$id .= ':' . $this->getState('filter.category_id');
-		$id .= ':' . $fltRelease;
-		$id .= ':' . $this->getState('filter.published');
-		$id .= ':' . $this->getState('filter.show_unauth_links');
-		$id .= ':' . $this->getState('filter.language');
-		$id .= ':' . serialize($this->getState('filter.access'));
-
-		return parent::getStoreId($id);
 	}
 
 	protected function getListQuery()
@@ -430,5 +379,56 @@ class ItemsModel extends ListModel
 		$query->order($ordering);
 
 		return $query;
+	}
+
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$fltRelease = $this->getState('filter.release_id');
+
+		if (is_array($fltRelease))
+		{
+			$fltRelease = implode(',', $fltRelease);
+		}
+
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.category_id');
+		$id .= ':' . $fltRelease;
+		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.show_unauth_links');
+		$id .= ':' . serialize($this->getState('filter.language'));
+		$id .= ':' . serialize($this->getState('filter.access'));
+
+		return parent::getStoreId($id);
+	}
+
+	protected function populateState($ordering = 'r.id', $direction = 'desc')
+	{
+		$app = Factory::getApplication();
+
+		$search = $app->getUserStateFromRequest($this->context . 'filter.search', 'filter_search', '', 'string');
+		$this->setState('filter.search', $search);
+
+		$catid = $app->getUserStateFromRequest($this->context . 'filter.category_id', 'filter_category_id', '', 'string');
+		$this->setState('filter.category_id', ($catid === '') ? $catid : (int) $catid);
+
+		$releaseId = $app->getUserStateFromRequest($this->context . 'filter.release_id', 'filter_release_id', '', 'string');
+		$this->setState('filter.release_id', ($releaseId === '') ? $releaseId : (int) $releaseId);
+
+		$published = $app->getUserStateFromRequest($this->context . 'filter.published', 'filter_published', '', 'string');
+		$this->setState('filter.published', ($published === '') ? $published : (int) $published);
+
+		$showUnauthLinks = $app->getUserStateFromRequest($this->context . 'filter.filter_show_unauth_links', 'filter_show_unauth_links', '', 'string');
+		$this->setState('filter.show_unauth_links', ($showUnauthLinks === '') ? $showUnauthLinks : (int) $showUnauthLinks);
+
+		$access = $app->getUserStateFromRequest($this->context . 'filter.access', 'filter_access', '', 'string');
+		$this->setState('filter.access', ($access === '') ? $access : (int) $access);
+
+		$language = $app->getUserStateFromRequest($this->context . 'filter.language', 'filter_language', '', 'string');
+		$this->setState('filter.language', $language);
+
+		$this->setState('filter.allowUnauth', 0);
+
+		parent::populateState($ordering, $direction);
 	}
 }
