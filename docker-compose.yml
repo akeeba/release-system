@@ -1,0 +1,8 @@
+version: '3.5'
+
+services:
+  ars:
+    image: digitpeak/dpdocker-cli:8.0
+    command: /usr/src/release-system/build/build.sh
+    volumes:
+      - .:/usr/src/release-system
