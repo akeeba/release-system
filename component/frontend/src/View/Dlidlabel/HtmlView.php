@@ -10,13 +10,13 @@ namespace Akeeba\Component\ARS\Site\View\Dlidlabel;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Model\CategoryModel;
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\Toolbar;
-use Joomla\CMS\Toolbar\ToolbarHelper;
 
 class HtmlView extends BaseHtmlView
 {
@@ -44,6 +44,15 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected $state;
 
+	/**
+	 * Base64-encoded return URL for the list form and all action URLs
+	 *
+	 * @var   string
+	 * @since 7.0.5
+	 */
+	public $returnURL;
+
+	/** @inheritdoc */
 	public function display($tpl = null): void
 	{
 		/** @var CategoryModel $model */
@@ -63,9 +72,18 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolbar();
 
+		$this->returnURL = $this->returnURL ?: Route::_('index.php?option=com_ars&view=dlidlabels');
+
 		parent::display($tpl);
 	}
 
+	/**
+	 * Set up the toolbar
+	 *
+	 * @return  void
+	 * @throws  Exception
+	 * @since   7.0.0
+	 */
 	protected function addToolbar(): void
 	{
 		Factory::getApplication()->input->set('hidemainmenu', true);

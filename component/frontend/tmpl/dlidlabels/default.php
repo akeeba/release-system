@@ -29,8 +29,6 @@ $token     = $app->getFormToken();
 
 $i = 0;
 
-$userLayout = new FileLayout('akeeba.ars.common.user', JPATH_ADMINISTRATOR . '/components/com_ars/layout');
-
 ?>
 <form action="<?= Route::_('index.php?option=com_ars&view=dlidlabels'); ?>"
 	  method="post" name="adminForm" id="adminForm">
@@ -43,7 +41,7 @@ $userLayout = new FileLayout('akeeba.ars.common.user', JPATH_ADMINISTRATOR . '/c
 				<?= LayoutHelper::render('joomla.searchtools.default', ['view' => $this]) ?>
 				<div class="card card-body my-2">
 					<div>
-						<a href="<?= Route::_(sprintf("index.php?option=com_ars&view=dlidlabel&task=add&Itemid=%s", $Itemid)) ?>"
+						<a href="<?= Route::_(sprintf("index.php?option=com_ars&view=newdlidlabel&Itemid=%s&returnurl=%s", $Itemid, $this->returnURL)) ?>"
 						   class="btn btn-success">
 							<span class="fa fa-plus-circle"></span>
 							<?= Text::_('JGLOBAL_FIELD_ADD') ?>
@@ -97,7 +95,7 @@ $userLayout = new FileLayout('akeeba.ars.common.user', JPATH_ADMINISTRATOR . '/c
 										? (sprintf('<strong>%s</strong>', Text::_('COM_ARS_DLIDLABELS_FIELD_PRIMARY')))
 										: $this->escape($item->title); ?>
 									<?php if ($canEdit): ?>
-										<a href="<?= Route::_('index.php?option=com_ars&view=dlidlabel&task=edit&id=' . (int) $item->id); ?>"
+										<a href="<?= Route::_(sprintf("index.php?option=com_ars&view=dlidlabel&task=edit&id=%d&returnurl=%s", (int) $item->id, $this->returnURL)); ?>"
 										   title="<?= Text::_('JACTION_EDIT'); ?><?= strip_tags($title) ?>">
 											<?= $title ?>
 										</a>
@@ -129,12 +127,12 @@ $userLayout = new FileLayout('akeeba.ars.common.user', JPATH_ADMINISTRATOR . '/c
 								</td>
 
 								<td class="d-none d-md-table-cell" style="width: 6em">
-									<a href="<?= Route::_(sprintf('index.php?option=com_ars&view=dlidlabels&task=reset&cid[]=%d&%s=1&Itemid=%s', $item->id, $token, $Itemid)) ?>"
+									<a href="<?= Route::_(sprintf('index.php?option=com_ars&view=dlidlabels&task=reset&cid[]=%d&%s=1&Itemid=%s&returnurl=%s', $item->id, $token, $Itemid, $this->returnURL)) ?>"
 									   class="btn btn-warning btn-sm hasTooltip"
 									   title="<?= Text::_('COM_ARS_DLIDLABELS_FIELD_RESET') ?>"
 									> <span class="fa fa-sync-alt"></span> </a>
 
-									<a href="<?= Route::_(sprintf('index.php?option=com_ars&view=dlidlabels&task=delete&cid[]=%d&%s=1&Itemid=%s', $item->id, $token, $Itemid)) ?>"
+									<a href="<?= Route::_(sprintf('index.php?option=com_ars&view=dlidlabels&task=delete&cid[]=%d&%s=1&Itemid=%s&returnurl=%s', $item->id, $token, $Itemid, $this->returnURL)) ?>"
 									   class="btn btn-danger btn-sm hasTooltip ms-2"
 									   title="<?= Text::_('COM_ARS_DLIDLABELS_FIELD_TRASH') ?>"
 									> <span class="fa fa-trash"></span> </a>
@@ -149,6 +147,8 @@ $userLayout = new FileLayout('akeeba.ars.common.user', JPATH_ADMINISTRATOR . '/c
 				<?php endif; ?>
 
 				<input type="hidden" name="task" value=""> <input type="hidden" name="boxchecked" value="0">
+				<input type="hidden" name="boxchecked" value="0">
+				<input type="hidden" name="returnurl" value="<?= $this->returnURL ?>">
 				<?= HTMLHelper::_('form.token'); ?>
 			</div>
 		</div>

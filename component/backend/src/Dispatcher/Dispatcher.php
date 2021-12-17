@@ -102,7 +102,7 @@ class Dispatcher extends ComponentDispatcher
 
 	}
 
-	private function applyViewAndController(): void
+	protected function applyViewAndController(): void
 	{
 		$controller = $this->input->getCmd('controller', null);
 		$view       = $this->input->getCmd('view', null);
@@ -137,7 +137,7 @@ class Dispatcher extends ComponentDispatcher
 		$this->input->set('task', $task);
 	}
 
-	private function mapView(string $view)
+	protected function mapView(string $view)
 	{
 		$view = strtolower($view);
 

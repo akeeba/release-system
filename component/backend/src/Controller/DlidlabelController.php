@@ -9,18 +9,37 @@ namespace Akeeba\Component\ARS\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Controller\Mixin\ReturnURLAware;
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
+use Akeeba\Component\ARS\Administrator\Mixin\ReusableModels;
 use Akeeba\Component\ARS\Administrator\Model\DlidlabelModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
-use Joomla\CMS\Router\Route;
 use RuntimeException;
 
 class DlidlabelController extends FormController
 {
 	use ControllerEvents;
+	use ReturnURLAware;
+	use ReusableModels;
 
 	protected $text_prefix = 'COM_ARS_DLIDLABEL';
+
+	/**
+	 * The URL view item variable.
+	 *
+	 * @var    string
+	 * @since  7.0.5
+	 */
+	protected $view_item = 'dlidlabel';
+
+	/**
+	 * The URL view list variable.
+	 *
+	 * @var    string
+	 * @since  7.0.5
+	 */
+	protected $view_list = 'dlidlabels';
 
 	protected function allowEdit($data = [], $key = 'id')
 	{

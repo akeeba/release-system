@@ -10,40 +10,10 @@ namespace Akeeba\Component\ARS\Site\Controller;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Controller\DlidlabelController as AdminDlidlabelController;
-use Akeeba\Component\ARS\Administrator\Table\DlidlabelTable;
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 class DlidlabelController extends AdminDlidlabelController
 {
-	public function onBeforeMain()
-	{
-		$user = $this->app->getIdentity();
-		$id   = $this->input->getInt('id', 0);
-
-		if ($user->guest)
-		{
-			throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
-		}
-
-		if (!$id)
-		{
-			return;
-		}
-
-		/** @var DlidlabelTable $dlidTable */
-		$dlidTable = $this->getModel()->getTable();
-
-		if (!$dlidTable->load($id))
-		{
-			throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
-		}
-
-		if ($dlidTable->user_id != $user->id)
-		{
-			throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
-		}
-	}
-
 	protected function allowAdd($data = [])
 	{
 		if (parent::allowAdd($data))
@@ -73,5 +43,24 @@ class DlidlabelController extends AdminDlidlabelController
 		return ($user->guest != 1) && ($user_id == $user->id);
 	}
 
+	protected function onBeforeExecute(&$task)
+	{
+		$returnUrl                  = $this->getReturnUrl();
+		$this->getView()->returnURL = $returnUrl ?: base64_encode(Route::_('index.php?option=com_ars&view=dlidlabels'));
+	}
 
+	protected function onAfterExecute($task)
+	{
+		switch ($task)
+		{
+			case 'main':
+			case 'edit':
+			case 'add':
+				break;
+
+			default:
+				$this->applyReturnUrl();
+				break;
+		}
+	}
 }

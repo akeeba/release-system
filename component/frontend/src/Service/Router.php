@@ -89,6 +89,11 @@ class Router extends RouterView
 		$dlidlabel->setParent($dlidlabels, 'id');
 		$this->registerView($dlidlabel);
 
+		$newdlidlabel = new RouterViewConfiguration('newdlidlabel');
+		$newdlidlabel
+			->setParent($dlidlabels);
+		$this->registerView($newdlidlabel);
+
 		$update = new RouterViewConfiguration('update');
 		$update->setKey('stream_id');
 		$update->addLayout('all');
