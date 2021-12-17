@@ -25,3 +25,13 @@ Necessary folder structure for building packages
 * **buildfiles** [Akeeba Build Tools](https://github.com/akeeba/buildfiles)
 
 From `ars/build` run `phing git -Dversion=5.999.999.b1` to build an installable package with the fake version number `5.999.999.b1`.
+
+## Build with docker compose
+
+The included docker compose file allows you to build ARS without the hassle of installing the dependencies locally on your host. A zip file will be created in the _release_ folder which can be installed on your Joomla web site. To make a release, run the following command in the root folder of this project. 
+
+`docker-compose run ars`
+
+If you want to define the version of the package, run the following command:
+
+`docker-compose run -e VERSION=7.0.5 ars`
