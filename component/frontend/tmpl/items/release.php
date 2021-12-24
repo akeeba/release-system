@@ -57,7 +57,7 @@ switch ($item->maturity)
 	<div class="text-muted d-flex mb-2">
 		<div class="flex-grow-1">
 			<strong><?= Text::_('COM_ARS_RELEASE_LBL_RELEASEDON') ?></strong>:
-			<?= HTMLHelper::_('ars.formatDate', $item->created, Text::_('DATE_FORMAT_LC2')) ?>
+			<?= HTMLHelper::_('date', $item->created, Text::_('DATE_FORMAT_LC2')) ?>
 		</div>
 		<div>
 			<button class="btn btn-dark btn-sm release-info-toggler" type="button"

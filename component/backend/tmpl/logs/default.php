@@ -154,7 +154,7 @@ $userLayout = new FileLayout('akeeba.ars.common.user', JPATH_ADMINISTRATOR . '/c
 
 								<td>
 									<div class="fw-bold">
-										<?= HTMLHelper::_('ars.formatDate', $item->accessed_on, true) ?>
+										<?= HTMLHelper::_('date', $item->accessed_on, true) ?>
 									</div>
 									<div class="text-monospace text-success my-1">
 										<?= $this->escape($item->ip) ?>

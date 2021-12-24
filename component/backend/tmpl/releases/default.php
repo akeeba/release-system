@@ -168,7 +168,7 @@ $cParams = ComponentHelper::getParams('com_ars');
 								</td>
 
 								<td>
-									<?= HTMLHelper::_('ars.formatDate', $item->created) ?>
+									<?= HTMLHelper::_('date', $item->created) ?>
 								</td>
 
 								<td class="d-none d-md-table-cell">
