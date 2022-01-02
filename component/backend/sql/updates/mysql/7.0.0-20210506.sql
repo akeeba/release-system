@@ -1,3 +1,9 @@
+/**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
 -- Missing columns, #__ars_autoitemdesc
 
 ALTER TABLE `#__ars_autoitemdesc`

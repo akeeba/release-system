@@ -1,3 +1,9 @@
+/**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
 CREATE TABLE IF NOT EXISTS `#__ars_categories` (
     `id`                bigint(20)                     NOT NULL AUTO_INCREMENT,
     `asset_id`          int(10) UNSIGNED               NOT NULL DEFAULT 0,

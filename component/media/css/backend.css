@@ -1,13 +1,5 @@
 /*!
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
- *//*!
- * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
- * @license   GNU General Public License version 3, or later
- */@font-face{font-family:"Akeeba Products";src:url("../fonts/Akeeba-Products.woff");font-display:swap}.icon-ars:before,.icon-ars-j4:before{font-family:"Akeeba Products" !important;font-style:normal !important;font-weight:normal !important;line-height:1 !important;display:inline-block;-webkit-font-smoothing:antialiased;position:relative;-moz-osx-font-smoothing:grayscale;content:"R"}.ars-environment-icon{margin-right:.5em !important}/*!
- * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd
- * @license   GNU General Public License version 3, or later
- */div.com_ars.view-Logs div.ars-logs-accessed-on{font-weight:500;margin-bottom:.5em}div.com_ars.view-Logs div.ars-logs-ip{color:#e2363c;margin-bottom:.5em}div.com_ars.view-Logs div.ars-logs-referer{font-size:smaller;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}/*# sourceMappingURL=backend.css.map */
+ */@font-face{font-family:"Akeeba Products";src:url("../fonts/Akeeba-Products.woff");font-display:swap}.icon-ars:before,.icon-ars-j4:before{font-family:"Akeeba Products" !important;font-style:normal !important;font-weight:normal !important;line-height:1 !important;display:inline-block;-webkit-font-smoothing:antialiased;position:relative;-moz-osx-font-smoothing:grayscale;content:"R"}.ars-environment-icon{margin-right:.5em !important}div.com_ars.view-Logs div.ars-logs-accessed-on{font-weight:500;margin-bottom:.5em}div.com_ars.view-Logs div.ars-logs-ip{color:#e2363c;margin-bottom:.5em}div.com_ars.view-Logs div.ars-logs-referer{font-size:smaller;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}/*# sourceMappingURL=backend.css.map */
