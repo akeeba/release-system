@@ -1,5 +1,11 @@
 <?php
 /**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
+/**
  * PHP Exception Handler
  *
  * @copyright Copyright (c) 2018-2021 Nicholas K. Dionysopoulos / Akeeba Ltd

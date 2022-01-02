@@ -1,14 +1,1 @@
-{
-	"version": 3,
-	"sourceRoot": "",
-	"sources": [
-		"uncompressed/frontend.scss",
-		"uncompressed/sources/frontend/_bleedingedge.scss",
-		"uncompressed/sources/common/_variables.scss",
-		"uncompressed/sources/frontend/_releases.scss",
-		"uncompressed/sources/frontend/_chrome.scss"
-	],
-	"names": [],
-	"mappings": "AAAA;AAAA;AAAA;AAAA;AAAA,GCSA,kCACE,MCHK,QDKL,gDACE,MCDI,QDEJ,iBAGF,kDACE,MCTE,QDYJ,iDACE,MCdG,QDiBL,gDACE,cACA,kBAGF,oDACE,MClBK,QDmBL,iBACA,kBEtBF,uDACE,oBAEA,2DACE,qBAOF,0BACE,qBAKF,6DACE,qBACA,qBCvBJ,+DACE,yBAEA,mEACE",
-	"file": "frontend.css"
-}
+{"version":3,"sourceRoot":"","sources":["uncompressed/frontend.scss","uncompressed/sources/frontend/_bleedingedge.scss","uncompressed/sources/common/_variables.scss","uncompressed/sources/frontend/_releases.scss","uncompressed/sources/frontend/_chrome.scss"],"names":[],"mappings":"AAAA;AAAA;AAAA;AAAA;AAAA,GCSA,kCACE,MCHK,QDKL,gDACE,MCDI,QDEJ,iBAGF,kDACE,MCTE,QDYJ,iDACE,MCdG,QDiBL,gDACE,cACA,kBAGF,oDACE,MClBK,QDmBL,iBACA,kBEtBF,uDACE,oBAEA,2DACE,qBAOF,0BACE,qBAKF,6DACE,qBACA,qBCvBJ,+DACE,yBAEA,mEACE","file":"frontend.css"}
