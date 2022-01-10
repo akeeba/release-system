@@ -66,7 +66,7 @@ HTMLHelper::_('bootstrap.collapse', '.ars-collapse');
 	<div class="d-flex">
 		<div class="flex-grow-1">
 			<strong><?= Text::_('COM_ARS_RELEASE_LBL_RELEASEDON') ?></strong>:
-			<?= HTMLHelper::_('ars.formatDate', $item->created, Text::_('DATE_FORMAT_LC1')) ?>
+			<?= HTMLHelper::_('ars.formatDate', $item->created, true, Text::_('DATE_FORMAT_LC1')) ?>
 		</div>
 		<div>
 			<button class="btn btn-dark btn-sm release-info-toggler" type="button"
@@ -98,7 +98,7 @@ HTMLHelper::_('bootstrap.collapse', '.ars-collapse');
 						<?= Text::_('COM_ARS_RELEASE_LBL_RELEASEDON') ?>
 					</td>
 					<td>
-						<?= HTMLHelper::_('ars.formatDate', $item->created, Text::_('DATE_FORMAT_LC1')) ?>
+						<?= HTMLHelper::_('ars.formatDate', $item->created, true, Text::_('DATE_FORMAT_LC1')) ?>
 					</td>
 				</tr>
 				<?php if ($this->params->get('show_downloads', 1)): ?>
