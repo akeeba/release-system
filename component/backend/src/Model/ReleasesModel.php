@@ -125,7 +125,7 @@ class ReleasesModel extends ListModel
 		$ret = [];
 
 		/** @var ItemsModel $itemsModel */
-		$itemsModel = $this->getMVCFactory()->createModel('Items', 'Administrator');
+		$itemsModel = $this->getMVCFactory()->createModel('Items', 'Administrator', ['ignore_request' => true]);
 		$itemsModel->setState('filter.release_id', $release->id);
 		$items = $itemsModel->getItems();
 
