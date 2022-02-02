@@ -94,7 +94,7 @@ trait LoadAnyTemplate
 			// Apply the new base layout
 			$this->setLayout($layout);
 			// Get the subtemplate (null here means load the base layout file)
-			$ret = $this->loadTemplate($tpl, false, $extraVariables);
+			$ret = $this->loadATemplate($tpl, false, $extraVariables);
 		}
 		catch (Throwable $e)
 		{
@@ -158,7 +158,7 @@ HTML;
 	 * @throws Exception
 	 * @since   9.0.0
 	 */
-	public function loadTemplate($tpl = null, bool $fallbackToDefault = true, array $extraVariables = []): string
+	public function loadATemplate($tpl = null, bool $fallbackToDefault = true, array $extraVariables = []): string
 	{
 		// Clear prior output
 		$this->_output = null;
