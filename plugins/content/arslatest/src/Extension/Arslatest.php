@@ -200,7 +200,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 		}
 
 		/** @var UpdatestreamsModel $streamModel */
-		$streamModel = $this->mvcFactory->createModel('UpdateStreams', 'Administrator', ['ignore_request' => true]);
+		$streamModel = $this->mvcFactory->createModel('Updatestreams', 'Administrator', ['ignore_request' => true]);
 		$streamModel->setState('filter.published', 1);
 		$streamModel->setState('list.start', 0);
 		$streamModel->setState('list.limit', 0);
