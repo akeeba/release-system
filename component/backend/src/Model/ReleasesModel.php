@@ -85,6 +85,17 @@ class ReleasesModel extends ListModel
 		}
 
 		// Get which directory to use
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('category_id'))
+			->from($db->quoteName('#__ars_releases'))
+			->where($db->quoteName('id') . " = " .  $release_id);
+		$category_id = $db->setQuery($query)->loadResult();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('directory'))
+			->from($db->quoteName('#__ars_categories'))
+			->where($db->quoteName('id') . " = " . $category_id);
+		$directory = $db->setQuery($query)->loadResult();
 		$directory = JPATH_ROOT . '/' . $directory;
 
 		if (!Folder::exists($directory))
