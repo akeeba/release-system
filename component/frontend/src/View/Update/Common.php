@@ -93,7 +93,7 @@ trait Common
 		}
 
 		$downloadURL = Route::_(sprintf(
-			"index.php?option=com_ars&view=item&format=%s&category_id=%d&release_id=%d&item_id=%d%s",
+			"index.php?option=com_ars&view=item&format=%s&category_id=%d&release_id=%d&item_id=%d%s&Itemid=50",
 			$format, $item->category, $item->release_id, $item->item_id, $this->dlidRequest
 		),
 			true, Route::TLS_IGNORE, true);
