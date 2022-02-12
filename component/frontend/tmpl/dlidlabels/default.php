@@ -95,7 +95,7 @@ $i = 0;
 										? (sprintf('<strong>%s</strong>', Text::_('COM_ARS_DLIDLABELS_FIELD_PRIMARY')))
 										: $this->escape($item->title); ?>
 									<?php if ($canEdit): ?>
-										<a href="<?= Route::_(sprintf("index.php?option=com_ars&view=dlidlabel&task=edit&id=%d&returnurl=%s", (int) $item->id, $this->returnURL)); ?>"
+										<a href="<?= Route::_(sprintf("index.php?option=com_ars&view=dlidlabel&task=edit&id=%d&returnurl=%s&Itemid=%d", (int) $item->id, $this->returnURL, $Itemid)); ?>"
 										   title="<?= Text::_('JACTION_EDIT'); ?><?= strip_tags($title) ?>">
 											<?= $title ?>
 										</a>

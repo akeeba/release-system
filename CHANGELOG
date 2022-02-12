@@ -3,6 +3,7 @@ Akeeba Release System 7.0.5
 ================================================================================
 + Ability to delete item files in the API application (gh-195)
 ~ Normalise use of ars.dateFormat helper (gh-199)
+# [HIGH] Cannot edit an Add-on Download ID on some sites
 # [HIGH] Adding a new download ID results in 404 (gh-196)
 # [MEDIUM] Warnings shown on multi–language sites
 # [LOW] Bootstrap 5.1.2 included in Joomla 4.0.4 broke the CSS for Control Panel icons

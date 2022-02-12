@@ -184,6 +184,18 @@ class Router extends RouterView
 		return $query;
 	}
 
+	public function getDlidlabelSegment($dlidlabelId, $query)
+	{
+		return [$dlidlabelId];
+	}
+
+	public function getDlidlabelId($segment, $query)
+	{
+		$segment = is_numeric($segment) ? (int) $segment : null;
+
+		return (is_int($segment) && ($segment > 0)) ? $segment : false;
+	}
+
 	public function getReleasesSegment($category_id, $query)
 	{
 		/** @var CategoryTable $category */

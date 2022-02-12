@@ -10,10 +10,38 @@ namespace Akeeba\Component\ARS\Site\Controller;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Controller\DlidlabelController as AdminDlidlabelController;
+use Akeeba\Component\ARS\Administrator\Controller\Mixin\ReturnURLAware;
 use Joomla\CMS\Router\Route;
 
 class DlidlabelController extends AdminDlidlabelController
 {
+	use ReturnURLAware {
+		ReturnURLAware::getRedirectToItemAppend as applyReturnURLOnItemAppend;
+	}
+
+	/**
+	 * Gets the URL arguments to append to an item redirect.
+	 *
+	 * @param   integer  $recordId  The primary key id for the item.
+	 * @param   string   $urlVar    The name of the URL variable for the id.
+	 *
+	 * @return  string  The arguments to append to the redirect URL.
+	 *
+	 * @since   7.0.6
+	 */
+	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
+	{
+		$ret    = $this->applyReturnURLOnItemAppend($recordId, $urlVar);
+		$Itemid = $this->input->get('Itemid', null);
+
+		if (is_numeric($Itemid) && ($Itemid > 0))
+		{
+			$ret .= '&Itemid=' . urlencode((int) $Itemid);
+		}
+
+		return $ret;
+	}
+
 	protected function allowAdd($data = [])
 	{
 		if (parent::allowAdd($data))
