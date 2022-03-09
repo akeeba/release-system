@@ -129,7 +129,7 @@ class ItemController extends BaseController
 
 			$model->logoutUser();
 
-			throw new RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+			throw new RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403, $e);
 		}
 	}
 

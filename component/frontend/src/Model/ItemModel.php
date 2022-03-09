@@ -81,7 +81,7 @@ class ItemModel extends BaseDatabaseModel
 		}
 		catch (Exception $e)
 		{
-			throw new RuntimeException('Not found', 404);
+			throw new RuntimeException('Not found', 404, $e);
 		}
 	}
 

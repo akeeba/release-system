@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.0.6
+================================================================================
++ Report parent exceptions when throwing a 403 during item download
+
 Akeeba Release System 7.0.5
 ================================================================================
 + Ability to delete item files in the API application (gh-195)
