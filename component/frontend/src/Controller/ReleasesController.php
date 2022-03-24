@@ -74,7 +74,7 @@ class ReleasesController extends BaseController
 		}
 
 		// Apply the Order By from the page parameters (default: ordering)
-		$this->applyReleaseOrderBy($params->get('orderby', 'order'), $model);
+		$this->applyReleaseOrderBy($params->get('rel_orderby', 'order'), $model);
 
 		// Get pagination options from the request
 		$value = $this->app->input->get('limit', $this->app->get('list_limit', 0), 'uint');
