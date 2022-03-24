@@ -1,3 +1,6 @@
+### Package XML file (copy)
+/pkg_*.xml
+
 # Symlinked files/folders into the component tree
 /component/backend/ars.xml
 
