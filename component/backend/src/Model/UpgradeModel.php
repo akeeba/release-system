@@ -18,6 +18,7 @@ use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\MVC\Model\BaseModel;
 use Joomla\CMS\MVC\Model\DatabaseAwareTrait;
 use Joomla\CMS\Table\Extension;
+use Joomla\CMS\User\UserHelper;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\ParameterType;
 use RuntimeException;
@@ -497,8 +498,72 @@ class UpgradeModel extends BaseModel
 				continue;
 			}
 
-			Folder::delete($folder);
+			$this->deleteFolder($folder);
 		}
+	}
+
+	private function deleteFolder(string $path): bool
+	{
+		// If the folder does not exist in the requested form return early.
+		$hasMixedCase = is_dir($path);
+
+		if (!$hasMixedCase)
+		{
+			return false;
+		}
+
+		// If the folder is all lowercase return early.
+		$baseName          = basename($path);
+		$lowercaseBaseName = strtolower($baseName);
+
+		if ($baseName === $lowercaseBaseName)
+		{
+			return $hasMixedCase && Folder::delete($path);
+		}
+
+		// We have a mixed case folder. Further investigation necessary.
+		$altPath      = dirname($path) . '/' . $lowercaseBaseName;
+		$hasLowercase = is_dir($altPath);
+
+		// If the lowercase path does not exist we have a case-sensitive filesystem. Return early.
+		if (!$hasLowercase)
+		{
+			return $hasMixedCase && Folder::delete($path);
+		}
+
+		// Both folders exist. Are they the same?
+		$testBasename      = UserHelper::genRandomPassword(8) . '.dat';
+		$data              = UserHelper::genRandomPassword(32);
+		$lowercaseTestFile = $altPath . '/' . $testBasename;
+		$uppercaseTestFile = $path . '/' . $testBasename;
+
+		File::write($lowercaseTestFile, $data);
+
+		$readData = file_get_contents($uppercaseTestFile);
+
+		File::delete($lowercaseTestFile);
+
+		// The two folders are different. We have a case-sensitive filesystem. Proceed with deletion.
+		if ($readData !== $data)
+		{
+			return Folder::delete($path);
+		}
+
+		/**
+		 * The two folders are identical.
+		 *
+		 * It is impossible to know if the folder is written on disk as lowercase or mixed case. We must rename it to
+		 * all lowercase. If we don't, moving the site to a case-sensitive filesystem will break it (the folder will be
+		 * in the wrong case!). Therefore we have to do a two-step process to effect the rename on a case-insensitive
+		 * filesystem...
+		 */
+		$intermediateBasename = $lowercaseBaseName . '_' . UserHelper::genRandomPassword(8);
+		$intermediatePath     = dirname($path) . '/' . $intermediateBasename;
+
+		Folder::move($path, $intermediatePath);
+		Folder::move($intermediatePath, $altPath);
+
+		return false;
 	}
 
 	/**
