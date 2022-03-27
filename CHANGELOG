@@ -2,6 +2,7 @@
 Akeeba Release System 7.0.6
 ================================================================================
 + Report parent exceptions when throwing a 403 during item download
+# [LOW] Frontend releases could not be sorted by the ordering field
 
 Akeeba Release System 7.0.5
 ================================================================================
