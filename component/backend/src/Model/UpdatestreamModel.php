@@ -144,7 +144,7 @@ class UpdatestreamModel extends AdminModel
 		// Set up the created / modified date
 		$date  = Factory::getDate();
 		$user  = Factory::getApplication()->getIdentity();
-		$isNew = !empty($table->getId());
+		$isNew = empty($table->getId());
 
 		if ($isNew)
 		{
