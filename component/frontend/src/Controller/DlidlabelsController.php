@@ -39,4 +39,8 @@ class DlidlabelsController extends AdminDlidlabelsController
 		$this->applyReturnUrl();
 	}
 
+	public function checkToken($method = 'request', $redirect = true)
+	{
+		return parent::checkToken($method, $redirect);
+	}
 }

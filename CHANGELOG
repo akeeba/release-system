@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.0.7
+================================================================================
+~ Cannot delete add-on Download IDs since Joomla 4.1.1
+
 Akeeba Release System 7.0.6
 ================================================================================
 + Report parent exceptions when throwing a 403 during item download
