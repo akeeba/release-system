@@ -21,6 +21,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\User\User;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
@@ -171,7 +172,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 	private function initialise(): void
 	{
 		$app  = $this->app;
-		$user = $app->getIdentity();
+		$user = $app->getIdentity() ?: new User();
 
 		/** @var ReleasesModel $model */
 		$model = $this->mvcFactory->createModel('Releases', 'Site', ['ignore_request' => true]);
@@ -484,7 +485,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 		}
 
 		$app  = $this->app;
-		$user = $app->getIdentity();
+		$user = $app->getIdentity() ?: new User();
 
 		/** @var ItemsModel $model */
 		$model = $this->mvcFactory->createModel('items', 'site', ['ignore_request' => true]);

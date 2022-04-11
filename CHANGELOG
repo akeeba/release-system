@@ -3,6 +3,7 @@ Akeeba Release System 7.0.7
 ================================================================================
 # [HIGH] BleedingEdge categories view shows normal categories, not BleedingEdge
 # [HIGH] Cannot delete add-on Download IDs since Joomla 4.1.1
+# [MEDIUM] Content plugins could break in Console applications because there's no application identity user
 
 Akeeba Release System 7.0.6
 ================================================================================
