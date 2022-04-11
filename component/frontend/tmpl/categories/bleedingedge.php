@@ -18,5 +18,5 @@ defined('_JEXEC') or die;
 		</div>
 	<?php endif; ?>
 
-	<?= $this->loadAnyTemplate('categories/generic', true, ['section' => 'normal', 'title' => 'COM_ARS_CATEGORY_TYPE_BLEEDINGEDGE']) ?>
+	<?= $this->loadAnyTemplate('categories/generic', true, ['section' => 'bleedingedge', 'title' => 'COM_ARS_CATEGORY_TYPE_BLEEDINGEDGE']) ?>
 </div>
