@@ -14,6 +14,7 @@ use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Akeeba\Component\ARS\Administrator\Table\UpdatestreamTable;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\Router\RouterView;
 use Joomla\CMS\Component\Router\RouterViewConfiguration;
 use Joomla\CMS\Component\Router\Rules\MenuRules;
@@ -25,6 +26,7 @@ use Joomla\CMS\MVC\Factory\MVCFactory;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\MVC\Model\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 class Router extends RouterView
 {
@@ -103,16 +105,22 @@ class Router extends RouterView
 		$update->addLayout('download');
 		$this->registerView($update);
 
+		// Migrate legacy menu items
+		$allItems             = $menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id);
+		array_walk($allItems, [$this, 'migrateMenuItem']);
+
 		parent::__construct($app, $menu);
 
 		// The menu rules are fucking broken!
-		//$this->attachRule(new MenuRules($this));
+		$this->attachRule(new MenuRules($this));
 		$this->attachRule(new StandardRules($this));
 		$this->attachRule(new NomenuRules($this));
 	}
 
-	public function build(&$query)
+	public function preprocess($query)
 	{
+		$query = parent::preprocess($query);
+
 		// Don't let the controller be set in a SEF URL.
 		if (isset($query['controller']))
 		{
@@ -134,10 +142,6 @@ class Router extends RouterView
 			$query['view'] = $this->translateOldViewName($query['view']);
 		}
 
-		// Lowercase the menu item's view, if defined; addresses Formal case views in the previous versions.
-		$item = $this->menu->getItem($query['Itemid'] ?? null) ?: null;
-		$this->migrateMenuItem($item);
-
 		/**
 		 * Set the parent IDs for the Category --> Release --> Item hierarchy.
 		 *
@@ -153,32 +157,22 @@ class Router extends RouterView
 		 * - "items" has a "release_id" but is missing the category_id.
 		 * - "item" has an "item_id" but is missing the release_id and the category_id
 		 */
-		switch (($query['view'] ?? ''))
+		switch ($query['view'])
 		{
 			case 'items':
-				$query['category_id'] = ($query['category_id'] ?? null) ?: $this->getCategoryForRelease($query['release_id'] ?? 0);
+				$query['category_id'] = $query['category_id'] ?: $this->getCategoryForRelease($query['release_id']);
 				break;
 
 			case 'item':
-				$query['release_id']  = ($query['release_id'] ?? null) ?: $this->getReleaseForItem($query['item_id']);
-				$query['category_id'] = ($query['category_id'] ?? null) ?: $this->getCategoryForRelease($query['release_id']);
+				$query['release_id'] = $query['release_id'] ?: $this->getReleaseForItem($query['item_id']);
+				$query['category_id'] = $query['category_id'] ?: $this->getCategoryForRelease($query['release_id']);
+
+				if (($query['task'] ?? '') === 'download' && ($query['format'] ?? '') === 'raw')
+				{
+					unset($query['task']);
+				}
+
 				break;
-		}
-
-		return parent::build($query);
-	}
-
-	public function parse(&$segments)
-	{
-		// Address old versions' view names
-		$active = $this->menu->getActive() ?: null;
-		$this->migrateMenuItem($active);
-
-		$query = parent::parse($segments);
-
-		if (isset($query['view']))
-		{
-			$query['view'] = $this->translateOldViewName($query['view']);
 		}
 
 		return $query;
@@ -212,13 +206,13 @@ class Router extends RouterView
 	public function getReleasesId($segment, $query)
 	{
 		$db    = $this->getDbo();
-		$query = $db->getQuery(true)
+		$sql = $db->getQuery(true)
 			->select($db->quoteName('id'))
 			->from($db->quoteName('#__ars_categories'))
 			->where($db->quoteName('alias') . ' = :alias')
 			->bind(':alias', $segment);
 
-		return $db->setQuery($query)->loadResult() ?: false;
+		return $db->setQuery($sql)->loadResult() ?: false;
 	}
 
 	public function getItemsSegment($release_id, $query)
@@ -236,14 +230,21 @@ class Router extends RouterView
 
 	public function getItemsId($segment, $query)
 	{
+		$catId = $query['category_id'] ?? null;
 		$db    = $this->getDbo();
-		$query = $db->getQuery(true)
-			->select($db->quoteName('id'))
-			->from($db->quoteName('#__ars_releases'))
-			->where($db->quoteName('alias') . ' = :alias')
-			->bind(':alias', $segment);
+		$sql   = $db->getQuery(true)
+		            ->select($db->quoteName('id'))
+		            ->from($db->quoteName('#__ars_releases'))
+		            ->where($db->quoteName('alias') . ' = :alias')
+		            ->bind(':alias', $segment);
 
-		return $db->setQuery($query)->loadResult() ?: false;
+		if ($catId)
+		{
+			$sql->where($db->quoteName('category_id') . ' = :cat_id')
+			    ->bind(':cat_id', $catId, ParameterType::INTEGER);
+		}
+
+		return $db->setQuery($sql)->loadResult() ?: false;
 	}
 
 	public function getItemSegment($item_id, $query)
@@ -261,14 +262,21 @@ class Router extends RouterView
 
 	public function getItemId($segment, $query)
 	{
+		$releaseId = $query['release_id'] ?? null;
 		$db    = $this->getDbo();
-		$query = $db->getQuery(true)
+		$sql = $db->getQuery(true)
 			->select($db->quoteName('id'))
 			->from($db->quoteName('#__ars_items'))
 			->where($db->quoteName('alias') . ' = :alias')
 			->bind(':alias', $segment);
 
-		return $db->setQuery($query)->loadResult() ?: false;
+		if ($releaseId)
+		{
+			$sql->where($db->quoteName('release_id') . ' = :release_id')
+			    ->bind(':release_id', $releaseId, ParameterType::INTEGER);
+		}
+
+		return $db->setQuery($sql)->loadResult() ?: false;
 	}
 
 	public function getUpdateSegment($id, $query)
@@ -287,13 +295,13 @@ class Router extends RouterView
 	public function getUpdateId($segment, $query)
 	{
 		$db    = $this->getDbo();
-		$query = $db->getQuery(true)
+		$sql = $db->getQuery(true)
 			->select($db->quoteName('id'))
 			->from($db->quoteName('#__ars_items'))
 			->where($db->quoteName('alias') . ' = :alias')
 			->bind(':alias', $segment);
 
-		return $db->setQuery($query)->loadResult() ?: false;
+		return $db->setQuery($sql)->loadResult() ?: false;
 	}
 
 	public function getUpdatesSegment($id, $query)
@@ -354,17 +362,26 @@ class Router extends RouterView
 		{
 			case 'releases':
 				// Releases view used to define catid instead of category_id
-				$item->query['category_id'] = $item->query['category_id'] ?? $item->query['catid'] ?? 0;
+				$item->query['category_id'] = ($item->query['category_id'] ?? 0)
+					?: ($item->query['catid'] ?? 0)
+						?: $item->getParams()->get('catid')
+							?: 0;
 				break;
 
 			case 'items':
 				// Items view used to define relid instead of release_id
-				$item->query['release_id'] = $item->query['release_id'] ?? $item->query['relid'] ?? 0;
+				$item->query['release_id'] = ($item->query['release_id'] ?? 0)
+					?: ($item->query['relid'] ?? 0)
+						?: $item->getParams()->get('relid')
+							?: 0;
 				break;
 
 			case 'update':
 				// Update view used to define streamid instead of stream_id
-				$item->query['stream_id'] = $item->query['stream_id'] ?? $item->query['streamid'] ?? 0;
+				$item->query['stream_id'] = ($item->query['stream_id'] ?? 0)
+					?: ($item->query['streamid'] ?? 0)
+						?: $item->getParams()->get('streamid')
+							?: 0;
 				break;
 		}
 	}
@@ -392,27 +409,27 @@ class Router extends RouterView
 	private function getReleaseToCategoryMap(): array
 	{
 		$db    = $this->getDbo();
-		$query = $db->getQuery(true)
+		$sql = $db->getQuery(true)
 			->select([
 				$db->quoteName('id'),
 				$db->quoteName('category_id'),
 			])
 			->from($db->quoteName('#__ars_releases'));
 
-		return $db->setQuery($query)->loadAssocList('id', 'category_id') ?? [];
+		return $db->setQuery($sql)->loadAssocList('id', 'category_id') ?? [];
 	}
 
 	private function getItemToReleaseMap(): array
 	{
 		$db    = $this->getDbo();
-		$query = $db->getQuery(true)
+		$sql = $db->getQuery(true)
 			->select([
 				$db->quoteName('id'),
 				$db->quoteName('release_id'),
 			])
 			->from($db->quoteName('#__ars_items'));
 
-		return $db->setQuery($query)->loadAssocList('id', 'release_id') ?? [];
+		return $db->setQuery($sql)->loadAssocList('id', 'release_id') ?? [];
 	}
 
 }
