@@ -151,7 +151,7 @@ class Router extends RouterView
 		// Joomla 4 always adds the current (or default) menu item's Itemid. I don't want it, it makes for wonky URLs.
 		if (isset($query['Itemid']) && ($query['Itemid'] == $defaultItemid || $query['Itemid'] == $currentItemid))
 		{
-			unset($query['Itemid']);
+			//unset($query['Itemid']);
 		}
 
 		/**
@@ -299,8 +299,13 @@ class Router extends RouterView
 		return null;
 	}
 
-	private function getItemIdForView(string $viewName): ?int
+	private function getItemIdForView(?string $viewName): ?int
 	{
+		if (empty($viewName))
+		{
+			return null;
+		}
+
 		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
 		{
 			if (($menu->query['view'] ?? '') === $viewName)
