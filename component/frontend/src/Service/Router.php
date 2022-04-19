@@ -106,7 +106,7 @@ class Router extends RouterView
 		$this->registerView($update);
 
 		// Migrate legacy menu items
-		$allItems             = $menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id);
+		$allItems = $menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id);
 		array_walk($allItems, [$this, 'migrateMenuItem']);
 
 		parent::__construct($app, $menu);
@@ -117,6 +117,7 @@ class Router extends RouterView
 		$this->attachRule(new NomenuRules($this));
 	}
 
+	/** @inheritDoc */
 	public function preprocess($query)
 	{
 		$query = parent::preprocess($query);
@@ -151,7 +152,7 @@ class Router extends RouterView
 		// Joomla 4 always adds the current (or default) menu item's Itemid. I don't want it, it makes for wonky URLs.
 		if (isset($query['Itemid']) && ($query['Itemid'] == $defaultItemid || $query['Itemid'] == $currentItemid))
 		{
-			//unset($query['Itemid']);
+			unset($query['Itemid']);
 		}
 
 		/**
@@ -206,7 +207,7 @@ class Router extends RouterView
 
 			case 'items':
 				$query['category_id'] = $query['category_id'] ?: $this->getCategoryForRelease($query['release_id']);
-				$query['Itemid'] = $query['Itemid']
+				$query['Itemid']      = $query['Itemid']
 					?? $this->getItemIdForRelease($query['release_id'])
 					?? $this->getItemIdForCategory($query['category_id'])
 					?? $this->getItemIdForRepository()
@@ -214,7 +215,7 @@ class Router extends RouterView
 				break;
 
 			case 'item':
-				$query['release_id'] = $query['release_id'] ?: $this->getReleaseForItem($query['item_id']);
+				$query['release_id']  = $query['release_id'] ?: $this->getReleaseForItem($query['item_id']);
 				$query['category_id'] = $query['category_id'] ?: $this->getCategoryForRelease($query['release_id']);
 
 				if (($query['task'] ?? '') === 'download' && ($query['format'] ?? '') === 'raw')
@@ -242,8 +243,21 @@ class Router extends RouterView
 		return $query;
 	}
 
-	private function getItemIdForItem(int $id): ?int
+	/**
+	 * Get the menu item ID linked to a specific Item download. NULL if there is no such menu item.
+	 *
+	 * @param   int  $id  The Item id to download
+	 *
+	 * @return  int|null
+	 * @since   7.0.7
+	 */
+	private function getItemIdForItem(?int $id): ?int
 	{
+		if (empty($id))
+		{
+			return null;
+		}
+
 		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
 		{
 			if (($menu->query['view'] ?? '') === 'item' && ($menu->query['item_id'] ?? '') == $id)
@@ -255,8 +269,21 @@ class Router extends RouterView
 		return null;
 	}
 
-	private function getItemIdForRelease(int $id): ?int
+	/**
+	 * Get the menu item ID linked to a specific items listing. NULL if there is no such menu item.
+	 *
+	 * @param   int  $id  The release ID to list items for
+	 *
+	 * @return  int|null
+	 * @since   7.0.7
+	 */
+	private function getItemIdForRelease(?int $id): ?int
 	{
+		if (empty($id))
+		{
+			return null;
+		}
+
 		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
 		{
 			if (($menu->query['view'] ?? '') === 'items' && ($menu->query['release_id'] ?? '') == $id)
@@ -268,8 +295,21 @@ class Router extends RouterView
 		return null;
 	}
 
-	private function getItemIdForCategory(int $id): ?int
+	/**
+	 * Get the menu item ID linked to a specific releases listing. NULL if there is no such menu item.
+	 *
+	 * @param   int  $id  The category ID to list releases for
+	 *
+	 * @return  int|null
+	 * @since   7.0.7
+	 */
+	private function getItemIdForCategory(?int $id): ?int
 	{
+		if (empty($id))
+		{
+			return null;
+		}
+
 		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
 		{
 			if (($menu->query['view'] ?? '') === 'releases' && ($menu->query['category_id'] ?? '') == $id)
@@ -281,6 +321,14 @@ class Router extends RouterView
 		return null;
 	}
 
+	/**
+	 * Get the menu item ID for the respository page. NULL if there is no such menu item.
+	 *
+	 * @param   string|null  $layout  Optional layout to look for.
+	 *
+	 * @return  int|null
+	 * @since   7.0.0
+	 */
 	private function getItemIdForRepository(?string $layout = null): ?int
 	{
 		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
@@ -299,6 +347,14 @@ class Router extends RouterView
 		return null;
 	}
 
+	/**
+	 * Get the menu item ID for a specific ARS view. NULL if there is no such menu item.
+	 *
+	 * @param   string|null  $viewName  The name of the view to search for
+	 *
+	 * @return  int|null
+	 * @since   7.0.7
+	 */
 	private function getItemIdForView(?string $viewName): ?int
 	{
 		if (empty($viewName))
@@ -316,7 +372,6 @@ class Router extends RouterView
 
 		return null;
 	}
-
 
 	public function getDlidlabelSegment($dlidlabelId, $query)
 	{
@@ -345,12 +400,12 @@ class Router extends RouterView
 
 	public function getReleasesId($segment, $query)
 	{
-		$db    = $this->getDbo();
+		$db  = $this->getDbo();
 		$sql = $db->getQuery(true)
-			->select($db->quoteName('id'))
-			->from($db->quoteName('#__ars_categories'))
-			->where($db->quoteName('alias') . ' = :alias')
-			->bind(':alias', $segment);
+		          ->select($db->quoteName('id'))
+		          ->from($db->quoteName('#__ars_categories'))
+		          ->where($db->quoteName('alias') . ' = :alias')
+		          ->bind(':alias', $segment);
 
 		return $db->setQuery($sql)->loadResult() ?: false;
 	}
@@ -403,12 +458,12 @@ class Router extends RouterView
 	public function getItemId($segment, $query)
 	{
 		$releaseId = $query['release_id'] ?? null;
-		$db    = $this->getDbo();
-		$sql = $db->getQuery(true)
-			->select($db->quoteName('id'))
-			->from($db->quoteName('#__ars_items'))
-			->where($db->quoteName('alias') . ' = :alias')
-			->bind(':alias', $segment);
+		$db        = $this->getDbo();
+		$sql       = $db->getQuery(true)
+		                ->select($db->quoteName('id'))
+		                ->from($db->quoteName('#__ars_items'))
+		                ->where($db->quoteName('alias') . ' = :alias')
+		                ->bind(':alias', $segment);
 
 		if ($releaseId)
 		{
@@ -434,12 +489,12 @@ class Router extends RouterView
 
 	public function getUpdateId($segment, $query)
 	{
-		$db    = $this->getDbo();
+		$db  = $this->getDbo();
 		$sql = $db->getQuery(true)
-			->select($db->quoteName('id'))
-			->from($db->quoteName('#__ars_items'))
-			->where($db->quoteName('alias') . ' = :alias')
-			->bind(':alias', $segment);
+		          ->select($db->quoteName('id'))
+		          ->from($db->quoteName('#__ars_items'))
+		          ->where($db->quoteName('alias') . ' = :alias')
+		          ->bind(':alias', $segment);
 
 		return $db->setQuery($sql)->loadResult() ?: false;
 	}
@@ -548,26 +603,26 @@ class Router extends RouterView
 
 	private function getReleaseToCategoryMap(): array
 	{
-		$db    = $this->getDbo();
+		$db  = $this->getDbo();
 		$sql = $db->getQuery(true)
-			->select([
-				$db->quoteName('id'),
-				$db->quoteName('category_id'),
-			])
-			->from($db->quoteName('#__ars_releases'));
+		          ->select([
+			          $db->quoteName('id'),
+			          $db->quoteName('category_id'),
+		          ])
+		          ->from($db->quoteName('#__ars_releases'));
 
 		return $db->setQuery($sql)->loadAssocList('id', 'category_id') ?? [];
 	}
 
 	private function getItemToReleaseMap(): array
 	{
-		$db    = $this->getDbo();
+		$db  = $this->getDbo();
 		$sql = $db->getQuery(true)
-			->select([
-				$db->quoteName('id'),
-				$db->quoteName('release_id'),
-			])
-			->from($db->quoteName('#__ars_items'));
+		          ->select([
+			          $db->quoteName('id'),
+			          $db->quoteName('release_id'),
+		          ])
+		          ->from($db->quoteName('#__ars_items'));
 
 		return $db->setQuery($sql)->loadAssocList('id', 'release_id') ?? [];
 	}
