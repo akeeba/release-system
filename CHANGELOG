@@ -5,6 +5,7 @@ Akeeba Release System 7.0.7
 # [HIGH] BleedingEdge categories view shows normal categories, not BleedingEdge
 # [HIGH] Cannot delete add-on Download IDs since Joomla 4.1.1
 # [HIGH] URL routing issues
+# [HIGH] My Downloads module generated the wrong URLs
 
 Akeeba Release System 7.0.6
 ================================================================================
