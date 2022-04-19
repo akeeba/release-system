@@ -59,7 +59,7 @@ defined('_JEXEC') or die;
 				</span> </a>
 
 			<a class="text-center align-self-stretch btn btn-outline-danger border-0" style="width: 10em"
-			   href="<?= Route::_('index.php?option=com_ars&view=downloadidlabels') ?>">
+			   href="<?= Route::_('index.php?option=com_ars&view=dlidlabels') ?>">
 				<div class="bg-danger text-white d-block text-center p-3 h2">
 					<span class="fa fa-key"></span>
 				</div>

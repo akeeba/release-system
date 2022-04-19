@@ -128,6 +128,10 @@ class Dispatcher extends ComponentDispatcher
 		{
 			$view = $controller;
 		}
+		else
+		{
+			$view = $controller;
+		}
 
 		$controller = strtolower($controller);
 		$view       = strtolower($view);
