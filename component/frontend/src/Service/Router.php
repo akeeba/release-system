@@ -142,6 +142,18 @@ class Router extends RouterView
 			$query['view'] = $this->translateOldViewName($query['view']);
 		}
 
+		// Get the default and current Itemid
+		$activeMenuItem  = $this->menu->getActive();
+		$defaultMenuItem = $this->menu->getDefault();
+		$defaultItemid   = $defaultMenuItem ? $defaultMenuItem->id : 0;
+		$currentItemid   = $activeMenuItem ? $activeMenuItem->id : $defaultItemid;
+
+		// Joomla 4 always adds the current (or default) menu item's Itemid. I don't want it, it makes for wonky URLs.
+		if (isset($query['Itemid']) && ($query['Itemid'] == $defaultItemid || $query['Itemid'] == $currentItemid))
+		{
+			unset($query['Itemid']);
+		}
+
 		/**
 		 * Set the parent IDs for the Category --> Release --> Item hierarchy.
 		 *
@@ -159,8 +171,46 @@ class Router extends RouterView
 		 */
 		switch ($query['view'])
 		{
+			case 'newdlidlabel':
+				$query['Itemid'] = $query['Itemid']
+					?? $this->getItemIdForView($query['view'])
+					?? $this->getItemIdForView('dlidlabels')
+					?? $this->getItemIdForView('dlidlabel')
+					?? $this->getItemIdForRepository()
+					?? $currentItemid ?? $defaultItemid;
+				break;
+
+			case 'dlidlabel':
+			case 'dlidlabels':
+				$altView = ($query['view'] === 'dlidlabel') ? 'dlidlabels' : 'dlidlabel';
+
+				$query['Itemid'] = $query['Itemid']
+					?? $this->getItemIdForView($query['view'])
+					?? $this->getItemIdForView($altView)
+					?? $this->getItemIdForRepository()
+					?? $currentItemid ?? $defaultItemid;
+				break;
+
+			case 'categories':
+				$query['Itemid'] = $query['Itemid']
+					?? $this->getItemIdForRepository($query['layout'])
+					?? $currentItemid ?? $defaultItemid;
+				break;
+
+			case 'releases':
+				$query['Itemid'] = $query['Itemid']
+					?? $this->getItemIdForCategory($query['category_id'])
+					?? $this->getItemIdForRepository()
+					?? $currentItemid ?? $defaultItemid;
+				break;
+
 			case 'items':
 				$query['category_id'] = $query['category_id'] ?: $this->getCategoryForRelease($query['release_id']);
+				$query['Itemid'] = $query['Itemid']
+					?? $this->getItemIdForRelease($query['release_id'])
+					?? $this->getItemIdForCategory($query['category_id'])
+					?? $this->getItemIdForRepository()
+					?? $currentItemid ?? $defaultItemid;
 				break;
 
 			case 'item':
@@ -172,11 +222,96 @@ class Router extends RouterView
 					unset($query['task']);
 				}
 
+				$query['Itemid'] = $query['Itemid']
+					?? $this->getItemIdForItem($query['item_id'])
+					?? $this->getItemIdForRelease($query['release_id'])
+					?? $this->getItemIdForCategory($query['category_id'])
+					?? $this->getItemIdForRepository()
+					?? $currentItemid ?? $defaultItemid;
+
+				break;
+
+			default:
+				$query['Itemid'] = $query['Itemid']
+					?? $this->getItemIdForView($query['view'])
+					?? $this->getItemIdForRepository()
+					?? $currentItemid ?? $defaultItemid;
 				break;
 		}
 
 		return $query;
 	}
+
+	private function getItemIdForItem(int $id): ?int
+	{
+		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
+		{
+			if (($menu->query['view'] ?? '') === 'item' && ($menu->query['item_id'] ?? '') == $id)
+			{
+				return $menu->id;
+			}
+		}
+
+		return null;
+	}
+
+	private function getItemIdForRelease(int $id): ?int
+	{
+		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
+		{
+			if (($menu->query['view'] ?? '') === 'items' && ($menu->query['release_id'] ?? '') == $id)
+			{
+				return $menu->id;
+			}
+		}
+
+		return null;
+	}
+
+	private function getItemIdForCategory(int $id): ?int
+	{
+		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
+		{
+			if (($menu->query['view'] ?? '') === 'releases' && ($menu->query['category_id'] ?? '') == $id)
+			{
+				return $menu->id;
+			}
+		}
+
+		return null;
+	}
+
+	private function getItemIdForRepository(?string $layout = null): ?int
+	{
+		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
+		{
+			if (($menu->query['view'] ?? '') === 'categories')
+			{
+				if ($layout !== null && ($menu->query['layout'] ?? null) != $layout)
+				{
+					continue;
+				}
+
+				return $menu->id;
+			}
+		}
+
+		return null;
+	}
+
+	private function getItemIdForView(string $viewName): ?int
+	{
+		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
+		{
+			if (($menu->query['view'] ?? '') === $viewName)
+			{
+				return $menu->id;
+			}
+		}
+
+		return null;
+	}
+
 
 	public function getDlidlabelSegment($dlidlabelId, $query)
 	{
