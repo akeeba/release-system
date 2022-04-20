@@ -243,136 +243,6 @@ class Router extends RouterView
 		return $query;
 	}
 
-	/**
-	 * Get the menu item ID linked to a specific Item download. NULL if there is no such menu item.
-	 *
-	 * @param   int  $id  The Item id to download
-	 *
-	 * @return  int|null
-	 * @since   7.0.7
-	 */
-	private function getItemIdForItem(?int $id): ?int
-	{
-		if (empty($id))
-		{
-			return null;
-		}
-
-		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
-		{
-			if (($menu->query['view'] ?? '') === 'item' && ($menu->query['item_id'] ?? '') == $id)
-			{
-				return $menu->id;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Get the menu item ID linked to a specific items listing. NULL if there is no such menu item.
-	 *
-	 * @param   int  $id  The release ID to list items for
-	 *
-	 * @return  int|null
-	 * @since   7.0.7
-	 */
-	private function getItemIdForRelease(?int $id): ?int
-	{
-		if (empty($id))
-		{
-			return null;
-		}
-
-		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
-		{
-			if (($menu->query['view'] ?? '') === 'items' && ($menu->query['release_id'] ?? '') == $id)
-			{
-				return $menu->id;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Get the menu item ID linked to a specific releases listing. NULL if there is no such menu item.
-	 *
-	 * @param   int  $id  The category ID to list releases for
-	 *
-	 * @return  int|null
-	 * @since   7.0.7
-	 */
-	private function getItemIdForCategory(?int $id): ?int
-	{
-		if (empty($id))
-		{
-			return null;
-		}
-
-		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
-		{
-			if (($menu->query['view'] ?? '') === 'releases' && ($menu->query['category_id'] ?? '') == $id)
-			{
-				return $menu->id;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Get the menu item ID for the respository page. NULL if there is no such menu item.
-	 *
-	 * @param   string|null  $layout  Optional layout to look for.
-	 *
-	 * @return  int|null
-	 * @since   7.0.0
-	 */
-	private function getItemIdForRepository(?string $layout = null): ?int
-	{
-		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
-		{
-			if (($menu->query['view'] ?? '') === 'categories')
-			{
-				if ($layout !== null && ($menu->query['layout'] ?? null) != $layout)
-				{
-					continue;
-				}
-
-				return $menu->id;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Get the menu item ID for a specific ARS view. NULL if there is no such menu item.
-	 *
-	 * @param   string|null  $viewName  The name of the view to search for
-	 *
-	 * @return  int|null
-	 * @since   7.0.7
-	 */
-	private function getItemIdForView(?string $viewName): ?int
-	{
-		if (empty($viewName))
-		{
-			return null;
-		}
-
-		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
-		{
-			if (($menu->query['view'] ?? '') === $viewName)
-			{
-				return $menu->id;
-			}
-		}
-
-		return null;
-	}
-
 	public function getDlidlabelSegment($dlidlabelId, $query)
 	{
 		return [$dlidlabelId];
@@ -507,6 +377,136 @@ class Router extends RouterView
 	public function getUpdatesId($segment, $query)
 	{
 		return $this->getUpdateId($segment, $query);
+	}
+
+	/**
+	 * Get the menu item ID linked to a specific Item download. NULL if there is no such menu item.
+	 *
+	 * @param   int  $id  The Item id to download
+	 *
+	 * @return  int|null
+	 * @since   7.0.7
+	 */
+	private function getItemIdForItem(?int $id): ?int
+	{
+		if (empty($id))
+		{
+			return null;
+		}
+
+		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
+		{
+			if (($menu->query['view'] ?? '') === 'item' && ($menu->query['item_id'] ?? '') == $id)
+			{
+				return $menu->id;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get the menu item ID linked to a specific items listing. NULL if there is no such menu item.
+	 *
+	 * @param   int  $id  The release ID to list items for
+	 *
+	 * @return  int|null
+	 * @since   7.0.7
+	 */
+	private function getItemIdForRelease(?int $id): ?int
+	{
+		if (empty($id))
+		{
+			return null;
+		}
+
+		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
+		{
+			if (($menu->query['view'] ?? '') === 'items' && ($menu->query['release_id'] ?? '') == $id)
+			{
+				return $menu->id;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get the menu item ID linked to a specific releases listing. NULL if there is no such menu item.
+	 *
+	 * @param   int  $id  The category ID to list releases for
+	 *
+	 * @return  int|null
+	 * @since   7.0.7
+	 */
+	private function getItemIdForCategory(?int $id): ?int
+	{
+		if (empty($id))
+		{
+			return null;
+		}
+
+		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
+		{
+			if (($menu->query['view'] ?? '') === 'releases' && ($menu->query['category_id'] ?? '') == $id)
+			{
+				return $menu->id;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get the menu item ID for the respository page. NULL if there is no such menu item.
+	 *
+	 * @param   string|null  $layout  Optional layout to look for.
+	 *
+	 * @return  int|null
+	 * @since   7.0.0
+	 */
+	private function getItemIdForRepository(?string $layout = null): ?int
+	{
+		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
+		{
+			if (($menu->query['view'] ?? '') === 'categories')
+			{
+				if ($layout !== null && ($menu->query['layout'] ?? null) != $layout)
+				{
+					continue;
+				}
+
+				return $menu->id;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get the menu item ID for a specific ARS view. NULL if there is no such menu item.
+	 *
+	 * @param   string|null  $viewName  The name of the view to search for
+	 *
+	 * @return  int|null
+	 * @since   7.0.7
+	 */
+	private function getItemIdForView(?string $viewName): ?int
+	{
+		if (empty($viewName))
+		{
+			return null;
+		}
+
+		foreach ($this->menu->getItems('component_id', ComponentHelper::getComponent('com_ars')->id) as $menu)
+		{
+			if (($menu->query['view'] ?? '') === $viewName)
+			{
+				return $menu->id;
+			}
+		}
+
+		return null;
 	}
 
 	/**

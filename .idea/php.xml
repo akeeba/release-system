@@ -4,8 +4,8 @@
     <include_path>
       <path value="$PROJECT_DIR$/../../dionysopoulos/joomlatypehints/generated_hints" />
       <path value="$PROJECT_DIR$/../../master/joomla4" />
-      <path value="$USER_HOME$/Sites/boot4/configuration.php" />
-      <path value="$USER_HOME$/Sites/boot4" />
+      <path value="$USER_HOME$/Sites/abcom4/configuration.php" />
+      <path value="$USER_HOME$/Sites/abcom4" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

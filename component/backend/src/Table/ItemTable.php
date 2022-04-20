@@ -149,7 +149,7 @@ class ItemTable extends AbstractTable
 			$filename  = pathinfo($filename, PATHINFO_FILENAME);
 
 			$this->alias = ApplicationHelper::stringURLSafe($filename) .
-				(empty($extension) ? '' : ('.' . ApplicationHelper::stringURLSafe($extension)));
+				(empty($extension) ? '' : ('-' . ApplicationHelper::stringURLSafe($extension)));
 		}
 
 		$this->assertNotEmpty($this->alias, 'COM_ARS_ITEM_ERR_NEEDS_ALIAS');
