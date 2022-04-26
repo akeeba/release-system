@@ -170,7 +170,7 @@ class Router extends RouterView
 		 * - "items" has a "release_id" but is missing the category_id.
 		 * - "item" has an "item_id" but is missing the release_id and the category_id
 		 */
-		switch ($query['view'])
+		switch ($query['view'] ?? 'categories')
 		{
 			case 'newdlidlabel':
 				$query['Itemid'] = $query['Itemid']
