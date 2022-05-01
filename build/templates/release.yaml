@@ -9,10 +9,9 @@ release:
 
 # Akeeba Release System API connection
 api:
+  type: 'joomla'
   endpoint: '%%API.ENDPOINT%%'
   connector: '%%API.CONNECTOR%%'
-  username: '%%API.USERNAME%%'
-  password: '%%API.PASSWORD%%'
   token: '%%API.TOKEN%%'
   cacert: '%%CUSTOMCACERT%%'
 
