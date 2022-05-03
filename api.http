@@ -1,44 +1,77 @@
 GET {{host}}/api/index.php/v1/ars/categories
 Accept: application/vnd.api+json
-Authorization: Bearer {{token}}
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
 
 ###
 
 GET {{host}}/api/index.php/v1/ars/categories?search=Data+Compliance
 Accept: application/vnd.api+json
-Authorization: Bearer {{token}}
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
 
 ###
 
 GET {{host}}/api/index.php/v1/ars/releases
 Accept: application/vnd.api+json
-Authorization: Bearer {{token}}
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
 
 ###
 
 GET {{host}}/api/index.php/v1/ars/releases?category_id=1&search=version%3A1.0.0
 Accept: application/vnd.api+json
-Authorization: Bearer {{token}}
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
 
 ###
 
 GET {{host}}/api/index.php/v1/ars/items?release_id=81&search=link:https://d16g1oj796wk12.cloudfront.net/downloads/test_package/2.0.0/pkg_test-core.zip
 Accept: application/vnd.api+json
-Authorization: Bearer {{token}}
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
 
 ###
 
 GET {{host}}/api/index.php/v1/ars/items/161
 Accept: application/vnd.api+json
-Authorization: Bearer {{token}}
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+###
+GET {{host}}/api/index.php/v1/ars/releases/81
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
 
 ###
 
-GET {{host}}/api/index.php/v1/ars/releases/81
+PATCH {{host}}/api/index.php/v1/ars/releases/81
 Accept: application/vnd.api+json
-Authorization: Bearer {{token}}
-Content-Type: application/x-www-form-urlencoded
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: text/json
 
-data%5Bid%5D=81&data%5Bcategory_id%5D=1&data%5Bversion%5D=2.0.0&data%5Balias%5D=2-0-0&data%5Bmaturity%5D=stable&data%5Bnotes%5D=%3C%21--%0A++%7E+%40package++++AkeebaReleaseMaker%0A++%7E+%40copyright++Copyright+%28c%292012-2021+Nicholas+K.+Dionysopoulos+%2F+Akeeba+Ltd%0A++%7E+%40license++++GNU+General+Public+License+version+3%2C+or+later%0A++--%3E%0A%0A%3Ch3%3ERelease+highlights%3C%2Fh3%3E%0A%3Cp%3E%0A%09%3Cstrong%3EManual+testing%3C%2Fstrong%3E+of+the+releases.%0A%3C%2Fp%3E%3Ch3%3EChangelog%3C%2Fh3%3E%0A%3Ch4%3ECritical+bugs+and+important+changes%3C%2Fh4%3E%0A%3Cul%3E%0A%09%3Cli%3EFixed+a+security+issue%3C%2Fli%3E%0A%3C%2Ful%3E%0A%3Ch4%3ENew+features%3C%2Fh4%3E%0A%3Cul%3E%0A%09%3Cli%3EAdded+cool%2C+new+feature%3C%2Fli%3E%0A%3C%2Ful%3E%0A%3Ch4%3ERemoved+features%3C%2Fh4%3E%0A%3Cul%3E%0A%09%3Cli%3ERemoved+rotten%2C+old+feature%3C%2Fli%3E%0A%3C%2Ful%3E%0A%3Ch4%3EBug+fixes%3C%2Fh4%3E%0A%3Cul%3E%0A%09%3Cli%3EA+bug+of+unspecified+priority+was+afflicting+the+software%3C%2Fli%3E%0A%09%3Cli%3E%5BHIGH%5D+High+priority+bug+was+afflicting+the+software%3C%2Fli%3E%0A%09%3Cli%3E%5BLOW%5D+Low+priority+bug+was+afflicting+the+software%3C%2Fli%3E%0A%09%3Cli%3E%5BMEDIUM%5D+Medium+priority+bug+was+afflicting+the+software%3C%2Fli%3E%0A%3C%2Ful%3E%0A%3Ch4%3EMiscellaneous+changes%3C%2Fh4%3E%0A%3Cul%3E%0A%09%3Cli%3EMade+a+minor+change%3C%2Fli%3E%0A%3C%2Ful%3E%0A&data%5Bhits%5D=0&data%5Bcreated%5D=2021-05-21+12%3A48%3A18&data%5Bcreated_by%5D=70&data%5Bmodified%5D=2021-05-21+12%3A48%3A18&data%5Bmodified_by%5D=70&data%5Bchecked_out%5D=70&data%5Bchecked_out_time%5D=2021-05-21+14%3A04%3A03&data%5Bordering%5D=0&data%5Baccess%5D=1&data%5Bshow_unauth_links%5D=0&data%5Bredirect_unauth%5D=&data%5Bpublished%5D=0&data%5Blanguage%5D=%2A
+{
+      "id": 81,
+      "category_id": 1,
+      "version": "3.0.0",
+      "alias": "3-0-0",
+      "maturity": "stable",
+      "notes": "Once upon a time, in a galaxy far, far away someone created a random UUID4: {{$uuid}}",
+      "hits": 0,
+      "created": "2021-06-04 04:47:18",
+      "created_by": 0,
+      "modified": "2022-05-03 10:28:26",
+      "modified_by": 70,
+      "checked_out": 0,
+      "checked_out_time": "0000-00-00 00:00:00",
+      "ordering": 0,
+      "access": 11,
+      "show_unauth_links": 0,
+      "redirect_unauth": "",
+      "published": 1,
+      "language": "*"
+}
 
 ###
