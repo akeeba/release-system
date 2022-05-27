@@ -1,0 +1,64 @@
+# Basic release information
+release:
+  version: '%%VERSION%%'
+  date: '%%DATE%%'
+  category: 15
+  access: 1
+  release_notes: '%%DEFAULT_RELEASE_NOTES%%'
+  changelog: '%%DEFAULT_CHANGELOG%%'
+
+# Akeeba Release System API connection
+api:
+  type: 'joomla'
+  endpoint: '%%API.ENDPOINT%%'
+  connector: '%%API.CONNECTOR%%'
+  token: '%%API.TOKEN%%'
+  cacert: '%%CUSTOMCACERT%%'
+
+steps: [%%RELEASESTEPS%%]
+
+# File upload connections
+connections:
+  s3:
+    type: 's3'
+    access: '%%S3.ACCESS%%'
+    secret: '%%S3.SECRET%%'
+    bucket: '%%S3.BUCKET%%'
+    tls: true
+    signature: '%%S3.SIGNATURE%%'
+    region: '%%S3.REGION%%'
+    directory: 'downloads/ars'
+    cdnhostname: '%%S3.CDNHOSTNAME%%'
+    acl: 'public-read'
+    storage_class: 'STANDARD'
+    maximum_age: 600
+  sftp:
+    type: '%%PRO.METHOD%%'
+    directory: '%%SFTP.DIR%%'
+    hostname: '%%SFTP.HOST%%'
+    port: '%%SFTP.PORT%%'
+    username: '%%SFTP.USERNAME%%'
+    password: '%%SFTP.PASSWORD%%'
+    public_key: '%%SFTP.PUBKEYFILE%%'
+    private_key: '%%SFTP.PRIVKEYFILE%%'
+    private_key_password: '%%SFTP.PRIVKEYFILE.PASS%%'
+    timeout: 900
+
+# Release source files configuration.
+files:
+  -
+    title: 'Akeeba Release System'
+    connection: s3
+    source: '%%RELEASEDIR%%/pkg_ars*.zip'
+    access: 1
+
+# Update sources
+updates:
+  -
+    title: 'Akeeba Release System updates'
+    connection: s3
+    directory: 'updates'
+    stream: 9
+    base_name: 'ars'
+    formats:
+      - 'xml'
