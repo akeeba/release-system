@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.0.8
+================================================================================
+~ Show ordering in custom repository menu items
+
 Akeeba Release System 7.0.7
 ================================================================================
 + Add Show Inline Help support in component options for Joomla 4.1

@@ -67,7 +67,6 @@
                     label="COM_ARS_BROWSE_REPOSITORY_ORDERBY_LBL"
                     description="COM_ARS_BROWSE_REPOSITORY_ORDERBY_DESC"
                     validate="options"
-                    showon="useCustomRepoFile:0"
             >
                 <option value="none">COM_ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
                 <option value="alpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
@@ -83,7 +82,6 @@
                     label="COM_ARS_RELEASES_ORDERBY_LBL"
                     description="COM_ARS_RELEASES_ORDERBY_DESC"
                     default="order"
-                    showon="useCustomRepoFile:0"
             >
                 <option value="none">COM_ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
                 <option value="alpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
@@ -99,7 +97,6 @@
                     label="COM_ARS_ITEMS_ORDERBY_LBL"
                     description="COM_ARS_ITEMS_ORDERBY_DESC"
                     default="order"
-                    showon="useCustomRepoFile:0"
             >
                 <option value="none">COM_ARS_BROWSE_REPOSITORY_ORDERBY_NO</option>
                 <option value="alpha">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ALPHA</option>
