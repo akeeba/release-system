@@ -61,6 +61,17 @@
               description="COM_ARS_CONFIG_FRONTEND_HEADER_DESC"
               addformpath="/administrator/components/com_ars/elements">
 
+        <field name="router_itemid_behaviour"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="0"
+               label="COM_ARS_CONFIG_ROUTER_ITEMID_BEHAVIOUR_LABEL"
+               description="COM_ARS_CONFIG_ROUTER_ITEMID_BEHAVIOUR_DESC"
+        >
+            <option value="0">JNo</option>
+            <option value="1">JYes</option>
+        </field>
+
         <field name="begenchangelog"
                type="radio"
                layout="joomla.form.field.radio.switcher"

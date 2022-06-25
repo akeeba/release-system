@@ -144,13 +144,45 @@ class Router extends RouterView
 		}
 
 		// Get the default and current Itemid
-		$activeMenuItem  = $this->menu->getActive();
-		$defaultMenuItem = $this->menu->getDefault();
-		$defaultItemid   = $defaultMenuItem ? $defaultMenuItem->id : 0;
-		$currentItemid   = $activeMenuItem ? $activeMenuItem->id : $defaultItemid;
+		$activeMenuItem   = $this->menu->getActive();
+		$defaultMenuItem  = $this->menu->getDefault();
+		$defaultItemid    = $defaultMenuItem ? $defaultMenuItem->id : 0;
+		$currentItemid    = $activeMenuItem ? $activeMenuItem->id : $defaultItemid;
+		$currentComponent = $activeMenuItem ? $activeMenuItem->component : null;
+		$queryItemId = $query['Itemid'] ?? null;
+		$queryItemId = ($queryItemId !== null) ? intval($queryItemId) : null;
+
+		/**
+		 * Joomla 4 always adds the current (or default) menu item's Itemid. We need to remove it when it's not the
+		 * right Item ID to use for the URL.
+		 *
+		 * The CORRECT way to do it is the $unsetItemIdCorrect method where we check if the item ID is the default OR
+		 * if it's the currently selected item **BUT** the currently selected item is not a com_ars component.
+		 *
+		 * However, we chose not to use this method because ARS is primarily made for our own use and there is a quirk
+		 * in our site. We have a top-level Download menu item which is the custom repository view. To make it possible
+		 * to list all software, even what is not included in the custom repository view, we have a menu item under it
+		 * which displays the normal releases.
+		 *
+		 * Because of this, we'd get two different URLs per software: /download/software.html if it's linked from the
+		 * custom repository page and /download/official/software.html if it's linked from the normal releases page. We
+		 * do not want that. So we use the "wrong" way to remove the Itemid in $unsetItemIdWrong where we DO NOT check
+		 * if the current menu item is a com_ars menu item.
+		 *
+		 * In case someone wants to use this software on their own site we have added a component option to control it,
+		 * “Use ItemID to build SEF URLs” (router_itemid_behaviour). Set it to “Yes” on your sites.
+		 */
+
+		$unsetItemIdCorrect = $queryItemId == $defaultItemid ||
+			($queryItemId == $currentItemid && $currentComponent !== 'com_ars');
+		$unsetItemIdWrong   = $queryItemId == $defaultItemid || $queryItemId == $currentItemid;
+
+		$unsetItemId = (ComponentHelper::getParams('com_ars')->get('router_itemid_behaviour', '0') == 0)
+			? $unsetItemIdWrong
+			: $unsetItemIdCorrect;
 
 		// Joomla 4 always adds the current (or default) menu item's Itemid. I don't want it, it makes for wonky URLs.
-		if (isset($query['Itemid']) && ($query['Itemid'] == $defaultItemid || $query['Itemid'] == $currentItemid))
+		if ($unsetItemId)
 		{
 			unset($query['Itemid']);
 		}
