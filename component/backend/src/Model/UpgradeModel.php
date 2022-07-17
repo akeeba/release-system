@@ -718,7 +718,7 @@ class UpgradeModel extends BaseModel
 		try
 		{
 			$json = $db->setQuery($query)->loadResult();
-			$list = json_decode($json, true);
+			$list = ($json === null) ? [] : json_decode($json, true);
 		}
 		catch (RuntimeException $e)
 		{

@@ -3,6 +3,7 @@ Akeeba Release System 7.0.8
 ================================================================================
 + Component option for the Router ItemID behaviour
 ~ Show ordering in custom repository menu items
+# [LOW] PHP 8.1 deprecated notice when checking if FOF is still installed
 
 Akeeba Release System 7.0.7
 ================================================================================
