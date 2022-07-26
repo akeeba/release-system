@@ -174,6 +174,9 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 		$app  = $this->app;
 		$user = $app->getIdentity() ?: new User();
 
+		/**
+		 * Get the latest releases (note: plural, releaseS!) per category. This is the raw data we'll work with.
+		 */
 		/** @var ReleasesModel $model */
 		$model = $this->mvcFactory->createModel('Releases', 'Site', ['ignore_request' => true]);
 		$model->setState('filter.published', 1);
@@ -192,6 +195,49 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 
 		$releases = $model->getItems() ?: [];
 
+		/**
+		 * We may have multiple latest releases per category due to the way the query works (anything else would be too
+		 * slow). We need to find out the singular latest release per category.
+		 *
+		 * We can do that by distributing the latest releases into an array per category ID. Then we will reduce each of
+		 * these arrays of releases to a singular latest release using version_compare() against their version numbers.
+		 */
+		$temp = [];
+
+		/** @var object $release */
+		foreach ($releases as $release)
+		{
+			$temp[$release->category_id] = $temp[$release->category_id] ?? [];
+			$temp[$release->category_id][] = $release;
+		}
+
+		$releases = array_map(
+			function (array $items) {
+				return array_reduce(
+					$items,
+					function (?object $carry, ?object $current) {
+						if (is_null($carry))
+						{
+							return $current;
+						}
+
+						if (version_compare($current->version, $carry->version, 'gt'))
+						{
+							return $current;
+						}
+
+						return $carry;
+					},
+					null
+				);
+			},
+			$temp
+		);
+
+		/**
+		 * At this point we have an array of all latest releases for each known category. We will now populate the
+		 * two arrays with the category titles and the category's latest release.
+		 */
 		/** @var object $release */
 		foreach ($releases as $release)
 		{
