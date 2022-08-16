@@ -3,6 +3,7 @@ Akeeba Release System 7.0.8
 ================================================================================
 + Component option for the Router ItemID behaviour
 ~ Show ordering in custom repository menu items
+# [HIGH] Invalid targetplatform attribute in updates if only one Joomla version is supported by a release
 # [MEDIUM] Latest release plugin may return the wrong release in some cases
 # [LOW] PHP 8.1 deprecated notice when checking if FOF is still installed
 

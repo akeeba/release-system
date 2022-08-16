@@ -292,7 +292,7 @@ class XmlView extends HtmlView
 			// Special case: just one minor version
 			if (count($minorVersions) == 1)
 			{
-				$retVersions[] = sprintf('%s\.%s', $major, array_shift($minorVersions));
+				$retVersions[] = sprintf('%s.%s', $major, array_shift($minorVersions));
 
 				continue;
 			}
