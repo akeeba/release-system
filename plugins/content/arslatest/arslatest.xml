@@ -7,8 +7,8 @@
 
 <extension version="2.5.0" type="plugin" group="content" method="upgrade">
     <name>PLG_CONTENT_ARSLATEST</name>
-    <version>7.0.7</version>
-    <creationDate>2022-05-27</creationDate>
+    <version>7.0.8</version>
+    <creationDate>2022-08-22</creationDate>
     <author>Nicholas K. Dionysopoulos</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>https://www.akeeba.com</authorUrl>
