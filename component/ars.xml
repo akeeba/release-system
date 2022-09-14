@@ -53,43 +53,74 @@
                 XML and be parsed by the installer
             -->
             <menu
-                    link="option=com_ars"
-            >
-                COM_ARS_TITLE_CONTROLPANEL
-            </menu>
-            <menu
                     link="option=com_ars&amp;view=categories"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=category.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_CATEGORY</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_CATEGORIES
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=releases"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=release.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_RELEASE</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_RELEASES
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=items"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=item.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_ITEM</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_ITEMS
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=logs"
             >
                 COM_ARS_TITLE_LOGS
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=updatestreams"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=updatestream.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_updatestream</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_UPDATESTREAMS
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=autodescriptions"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=autodescription.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_AUTODESCRIPTION</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_AUTODESCRIPTIONS
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=environments"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=environment.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_ENVIRONMENT</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_ENVIRONMENTS
             </menu>
         </submenu>

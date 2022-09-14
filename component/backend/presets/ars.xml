@@ -16,14 +16,6 @@
             icon="none fa-download"
     >
         <menuitem
-                title="COM_ARS_TITLE_CONTROLPANEL"
-                type="component"
-                element="com_ars"
-                link="index.php?option=com_ars"
-                permission="core.manage;com_ars"
-        />
-
-        <menuitem
                 title="COM_ARS_TITLE_CATEGORIES"
                 type="component"
                 element="com_ars"
@@ -63,7 +55,6 @@
 
         />
     </menuitem>
-
 
     <menuitem
             title="COM_ARS_MENUS_MAINTENANCE"
