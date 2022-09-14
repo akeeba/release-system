@@ -14,6 +14,7 @@ use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Akeeba\Component\ARS\Administrator\Table\UpdatestreamTable;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Categories\CategoryFactoryInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\Router\RouterView;
 use Joomla\CMS\Component\Router\RouterViewConfiguration;
@@ -22,9 +23,8 @@ use Joomla\CMS\Component\Router\Rules\NomenuRules;
 use Joomla\CMS\Component\Router\Rules\StandardRules;
 use Joomla\CMS\Menu\AbstractMenu;
 use Joomla\CMS\Menu\MenuItem;
-use Joomla\CMS\MVC\Factory\MVCFactory;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
-use Joomla\CMS\MVC\Model\DatabaseAwareTrait;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
@@ -52,10 +52,12 @@ class Router extends RouterView
 	 */
 	private static $itemToRelease;
 
-	public function __construct(SiteApplication $app = null, AbstractMenu $menu = null, DatabaseInterface $db, MVCFactory $factory)
+	public function __construct(?SiteApplication $app = null, ?AbstractMenu $menu = null, ?CategoryFactoryInterface $categoryFactory = null, ?DatabaseInterface $db = null)
 	{
-		$this->setDbo($db);
-		$this->setMVCFactory($factory);
+		if ($db instanceof DatabaseInterface)
+		{
+			$this->setDatabase($db);
+		}
 
 		$categories = new RouterViewConfiguration('categories');
 		$categories->addLayout('repository');
@@ -302,7 +304,7 @@ class Router extends RouterView
 
 	public function getReleasesId($segment, $query)
 	{
-		$db  = $this->getDbo();
+		$db  = $this->getDatabase();
 		$sql = $db->getQuery(true)
 		          ->select($db->quoteName('id'))
 		          ->from($db->quoteName('#__ars_categories'))
@@ -328,7 +330,7 @@ class Router extends RouterView
 	public function getItemsId($segment, $query)
 	{
 		$catId = $query['category_id'] ?? null;
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$sql   = $db->getQuery(true)
 		            ->select($db->quoteName('id'))
 		            ->from($db->quoteName('#__ars_releases'))
@@ -360,7 +362,7 @@ class Router extends RouterView
 	public function getItemId($segment, $query)
 	{
 		$releaseId = $query['release_id'] ?? null;
-		$db        = $this->getDbo();
+		$db        = $this->getDatabase();
 		$sql       = $db->getQuery(true)
 		                ->select($db->quoteName('id'))
 		                ->from($db->quoteName('#__ars_items'))
@@ -391,7 +393,7 @@ class Router extends RouterView
 
 	public function getUpdateId($segment, $query)
 	{
-		$db  = $this->getDbo();
+		$db  = $this->getDatabase();
 		$sql = $db->getQuery(true)
 		          ->select($db->quoteName('id'))
 		          ->from($db->quoteName('#__ars_items'))
@@ -635,7 +637,7 @@ class Router extends RouterView
 
 	private function getReleaseToCategoryMap(): array
 	{
-		$db  = $this->getDbo();
+		$db  = $this->getDatabase();
 		$sql = $db->getQuery(true)
 		          ->select([
 			          $db->quoteName('id'),
@@ -648,7 +650,7 @@ class Router extends RouterView
 
 	private function getItemToReleaseMap(): array
 	{
-		$db  = $this->getDbo();
+		$db  = $this->getDatabase();
 		$sql = $db->getQuery(true)
 		          ->select([
 			          $db->quoteName('id'),

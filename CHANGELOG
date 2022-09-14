@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.1.0
+================================================================================
+~ Refactored SEF URL Router
+
 Akeeba Release System 7.0.8
 ================================================================================
 + Component option for the Router ItemID behaviour
