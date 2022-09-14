@@ -157,7 +157,7 @@ class HtmlView extends BaseHtmlView
 			}
 		}
 
-		ToolbarHelper::back('COM_ARS_TITLE_CONTROLPANEL', 'index.php?option=com_ars');
+		ToolbarHelper::back('COM_ARS_DASHBOARD_SHORT', 'index.php?option=com_cpanel&view=cpanel&dashboard=com_ars.ars');
 	}
 
 
