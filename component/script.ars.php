@@ -10,6 +10,7 @@
 defined('_JEXEC') || die;
 
 use Akeeba\Component\Ars\Administrator\Model\UpgradeModel;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Adapter\PackageAdapter;
 
 /**
@@ -18,8 +19,14 @@ use Joomla\CMS\Installer\Adapter\PackageAdapter;
  * @see https://docs.joomla.org/Manifest_files#Script_file
  * @see UpgradeModel
  */
-class Pkg_ArsInstallerScript
+class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 {
+	public function __construct()
+	{
+		$this->minimumJoomla = '4.2.0';
+		$this->minimumPhp    = '7.4.0';
+	}
+
 	/**
 	 * Called after any type of installation / uninstallation action.
 	 *
@@ -37,6 +44,10 @@ class Pkg_ArsInstallerScript
 			return true;
 		}
 
+		// Install the dashboard module if necessary
+		$this->conditionalInstallDashboard('com_ars-ars', 'ars');
+
+		// Run the post-upgrade code
 		$model = $this->getUpgradeModel();
 
 		if (empty($model))
@@ -45,6 +56,30 @@ class Pkg_ArsInstallerScript
 		}
 
 		return $model->postflight($type, $parent);
+	}
+
+	private function conditionalInstallDashboard(string $dashboard, string $preset): void
+	{
+		$position = 'cpanel-' . $dashboard;
+
+		/** @var \Joomla\Database\DatabaseDriver $db */
+		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$query = $db->getQuery(true)
+		            ->select('COUNT(*)')
+		            ->from($db->quoteName('#__modules'))
+		            ->where([
+			            $db->quoteName('module') . ' = ' . $db->quote('mod_submenu'),
+			            $db->quoteName('client_id') . ' = ' . $db->quote(1),
+			            $db->quoteName('position') . ' = :position',
+		            ])
+		            ->bind(':position', $position);
+
+		$modules = $db->setQuery($query)->loadResult() ?: 0;
+
+		if ($modules == 0)
+		{
+			$this->addDashboardMenu($dashboard, $preset);
+		}
 	}
 
 	/**

@@ -47,6 +47,11 @@
                 XML and be parsed by the installer
             -->
             <menu
+                link="index.php?option=com_cpanel&amp;view=cpanel&amp;dashboard=com_ars.ars"
+            >
+                COM_ARS_DASHBOARD_TITLE
+            </menu>
+            <menu
                     link="option=com_ars"
                     view="controlpanel"
                     alt="Ars/ControlPanel"
@@ -97,12 +102,12 @@
             </menu>
         </submenu>
 
-
         <!-- Back-end files -->
         <files folder="backend">
             <folder>forms</folder>
             <folder>language</folder>
             <folder>layout</folder>
+            <folder>presets</folder>
             <folder>services</folder>
             <folder>sql</folder>
             <folder>src</folder>
@@ -118,6 +123,10 @@
             <language tag="en-GB">en-GB/com_ars.sys.ini</language>
         </languages>
     </administration>
+
+    <dashboards>
+        <dashboard title="COM_ARS_DASHBOARD_TITLE" icon="COM_ARS_DASHBOARD_ICON">com_ars.ars</dashboard>
+    </dashboards>
 
     <api>
         <files folder="api">
