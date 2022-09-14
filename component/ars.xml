@@ -40,8 +40,10 @@
 
     <administration>
         <menu
-                params="{&quot;dashboard&quot;: &quot;com_ars.ars&quot;}"
         >
+            <params>
+                <dashboard>com_ars.ars</dashboard>
+            </params>
             COM_ARS
         </menu>
 
@@ -52,50 +54,41 @@
             -->
             <menu
                     link="option=com_ars"
-                    view="controlpanel"
-                    alt="Ars/ControlPanel"
             >
                 COM_ARS_TITLE_CONTROLPANEL
             </menu>
             <menu
                     link="option=com_ars&amp;view=categories"
-                    alt="Ars/Categories"
             >
                 COM_ARS_TITLE_CATEGORIES
             </menu>
             <menu
                     link="option=com_ars&amp;view=releases"
-                    alt="Ars/Releases"
             >
                 COM_ARS_TITLE_RELEASES
             </menu>
             <menu
                     link="option=com_ars&amp;view=items"
-                    alt="Ars/Items"
             >
                 COM_ARS_TITLE_ITEMS
             </menu>
             <menu
                     link="option=com_ars&amp;view=logs"
-                    alt="Ars/Logs"
             >
                 COM_ARS_TITLE_LOGS
             </menu>
             <menu
                     link="option=com_ars&amp;view=updatestreams"
-                    alt="Ars/Updatestreams"
             >
                 COM_ARS_TITLE_UPDATESTREAMS
             </menu>
             <menu
                     link="option=com_ars&amp;view=autodescriptions"
-                    alt="Ars/Autodescriptions"
             >
                 COM_ARS_TITLE_AUTODESCRIPTIONS
             </menu>
             <menu
                     link="option=com_ars&amp;view=environments"
-                    alt="Ars/Environments"
             >
                 COM_ARS_TITLE_ENVIRONMENTS
             </menu>

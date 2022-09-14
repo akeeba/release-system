@@ -19,7 +19,7 @@
 
     <files>
         <folder>services</folder>
-        <folder module="mod_arsgraphs">src</folder>
+        <folder module="mod_arsgraph">src</folder>
         <folder>tmpl</folder>
 
         <filename>.htaccess</filename>

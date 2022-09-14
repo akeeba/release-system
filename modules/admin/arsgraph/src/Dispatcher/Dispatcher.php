@@ -71,7 +71,8 @@ class Dispatcher extends AbstractModuleDispatcher
 			// DO NOT REMOVE — This registers the component's Web Asset Manager stuff
 			$webAssetManager->getRegistry()->addExtensionRegistryFile('com_ars');
 			$webAssetManager
-				->usePreset('com_ars.backend');
+				->usePreset('com_ars.backend')
+				->useScript('com_ars.controlpanel');
 
 			// Add the graph information to the document
 			$monthlyDailyReport = $this->getMonthlyDailyReport();
