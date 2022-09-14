@@ -20,6 +20,7 @@
                 type="component"
                 element="com_ars"
                 link="index.php?option=com_ars"
+                permission="core.manage;com_ars"
         />
 
         <menuitem
@@ -27,15 +28,16 @@
                 type="component"
                 element="com_ars"
                 link="index.php?option=com_ars&amp;view=categories"
+                permission="core.manage;com_ars"
                 quicktask="index.php?option=com_ars&amp;task=category.add"
                 quicktask-title="COM_ARS_MENUS_ADD_CATEGORY"
         />
-
         <menuitem
                 title="COM_ARS_TITLE_RELEASES"
                 type="component"
                 element="com_ars"
                 link="index.php?option=com_ars&amp;view=releases"
+                permission="core.manage;com_ars"
                 quicktask="index.php?option=com_ars&amp;task=release.add"
                 quicktask-title="COM_ARS_MENUS_ADD_RELEASE"
         />
@@ -45,6 +47,7 @@
                 type="component"
                 element="com_ars"
                 link="index.php?option=com_ars&amp;view=items"
+                permission="core.manage;com_ars"
                 quicktask="index.php?option=com_ars&amp;task=item.add"
                 quicktask-title="COM_ARS_MENUS_ADD_ITEM"
         />
@@ -54,8 +57,10 @@
                 type="component"
                 element="com_ars"
                 link="index.php?option=com_ars&amp;view=dlidlabels"
+                permission="core.manage;com_ars"
                 quicktask="index.php?option=com_ars&amp;task=dlidlabel.add"
                 quicktask-title="COM_ARS_MENUS_ADD_DLIDLABELS"
+
         />
     </menuitem>
 
@@ -70,6 +75,7 @@
                 type="component"
                 element="com_ars"
                 link="index.php?option=com_ars&amp;view=updatestreams"
+                permission="core.manage;com_ars"
                 quicktask="index.php?option=com_ars&amp;task=updatestream.add"
                 quicktask-title="COM_ARS_MENUS_ADD_UPDATESTREAM"
         />
@@ -79,6 +85,7 @@
                 type="component"
                 element="com_ars"
                 link="index.php?option=com_ars&amp;view=autodescriptions"
+                permission="core.manage;com_ars"
                 quicktask="index.php?option=com_ars&amp;task=autodescription.add"
                 quicktask-title="COM_ARS_MENUS_ADD_AUTODESCRIPTION"
         />
@@ -88,6 +95,7 @@
                 type="component"
                 element="com_ars"
                 link="index.php?option=com_ars&amp;view=environments"
+                permission="core.manage;com_ars"
                 quicktask="index.php?option=com_ars&amp;task=environment.add"
                 quicktask-title="COM_ARS_MENUS_ADD_ENVIRONMENT"
         />
