@@ -25,6 +25,7 @@
 
         <!-- Modules -->
         <file type="module" client="site" id="mod_arsdownloads">mod_arsdownloads.zip</file>
+        <file type="module" client="administrator" id="mod_arsgraph">mod_arsgraph.zip</file>
 
         <!-- Plugins: content -->
         <file type="plugin" group="content" id="arsdlid">plg_content_arsdlid.zip</file>
