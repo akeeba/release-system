@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--~
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
+
+<extension type="module" client="administrator" method="upgrade" version="4.0.0">
+    <name>MOD_ARSGRAPH</name>
+    <author>Nicholas K. Dionysopoulos</author>
+    <creationDate>2022-08-22</creationDate>
+    <copyright>Copyright (c)2011-2021 Nicholas K. Dionysopoulos / Akeeba Ltd</copyright>
+    <license>GNU GPL v3 or later</license>
+    <authorEmail>nicholas@akeeba.com</authorEmail>
+    <authorUrl>www.akeeba.com</authorUrl>
+    <version>5.1.0</version>
+    <description>MOD_ARSGRAPH_DESCRIPTION</description>
+    <namespace path="src">Joomla\Module\Arsgraph</namespace>
+
+    <files>
+        <folder>services</folder>
+        <folder module="mod_arsgraph">src</folder>
+        <folder>tmpl</folder>
+
+        <filename>.htaccess</filename>
+        <filename>web.config</filename>
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/mod_arsgraph.ini</language>
+        <language tag="en-GB">en-GB/mod_arsgraph.sys.ini</language>
+    </languages>
+</extension>

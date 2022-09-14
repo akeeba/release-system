@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!--~
+  ~ @package   AkeebaReleaseSystem
+  ~ @copyright Copyright (c)2010-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @license   GNU General Public License version 3, or later
+  -->
+
+<menu
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="urn:joomla.org"
+        xsi:schemaLocation="urn:joomla.org menu.xsd"
+>
+    <menuitem
+            title="COM_ARS_MENUS_MAIN"
+            type="heading"
+            icon="none fa-download"
+    >
+        <menuitem
+                title="COM_ARS_TITLE_CATEGORIES"
+                type="component"
+                element="com_ars"
+                link="index.php?option=com_ars&amp;view=categories"
+                permission="core.manage;com_ars"
+                quicktask="index.php?option=com_ars&amp;task=category.add"
+                quicktask-title="COM_ARS_MENUS_ADD_CATEGORY"
+        />
+        <menuitem
+                title="COM_ARS_TITLE_RELEASES"
+                type="component"
+                element="com_ars"
+                link="index.php?option=com_ars&amp;view=releases"
+                permission="core.manage;com_ars"
+                quicktask="index.php?option=com_ars&amp;task=release.add"
+                quicktask-title="COM_ARS_MENUS_ADD_RELEASE"
+        />
+
+        <menuitem
+                title="COM_ARS_TITLE_ITEMS"
+                type="component"
+                element="com_ars"
+                link="index.php?option=com_ars&amp;view=items"
+                permission="core.manage;com_ars"
+                quicktask="index.php?option=com_ars&amp;task=item.add"
+                quicktask-title="COM_ARS_MENUS_ADD_ITEM"
+        />
+
+        <menuitem
+                title="COM_ARS_TITLE_DLIDLABELS"
+                type="component"
+                element="com_ars"
+                link="index.php?option=com_ars&amp;view=dlidlabels"
+                permission="core.manage;com_ars"
+                quicktask="index.php?option=com_ars&amp;task=dlidlabel.add"
+                quicktask-title="COM_ARS_MENUS_ADD_DLIDLABELS"
+
+        />
+    </menuitem>
+
+    <menuitem
+            title="COM_ARS_MENUS_MAINTENANCE"
+            type="heading"
+            icon="none fa-cog"
+    >
+        <menuitem
+                title="COM_ARS_TITLE_UPDATESTREAMS"
+                type="component"
+                element="com_ars"
+                link="index.php?option=com_ars&amp;view=updatestreams"
+                permission="core.manage;com_ars"
+                quicktask="index.php?option=com_ars&amp;task=updatestream.add"
+                quicktask-title="COM_ARS_MENUS_ADD_UPDATESTREAM"
+        />
+
+        <menuitem
+                title="COM_ARS_TITLE_AUTODESCRIPTIONS"
+                type="component"
+                element="com_ars"
+                link="index.php?option=com_ars&amp;view=autodescriptions"
+                permission="core.manage;com_ars"
+                quicktask="index.php?option=com_ars&amp;task=autodescription.add"
+                quicktask-title="COM_ARS_MENUS_ADD_AUTODESCRIPTION"
+        />
+
+        <menuitem
+                title="COM_ARS_TITLE_ENVIRONMENTS"
+                type="component"
+                element="com_ars"
+                link="index.php?option=com_ars&amp;view=environments"
+                permission="core.manage;com_ars"
+                quicktask="index.php?option=com_ars&amp;task=environment.add"
+                quicktask-title="COM_ARS_MENUS_ADD_ENVIRONMENT"
+        />
+    </menuitem>
+
+    <menuitem
+            title="COM_ARS_MENUS_REPORTING"
+            type="heading"
+            icon="none fa-list-alt"
+    >
+        <menuitem
+                title="COM_ARS_TITLE_LOGS"
+                type="component"
+                element="com_ars"
+                link="index.php?option=com_ars&amp;view=logs"
+        />
+    </menuitem>
+</menu>

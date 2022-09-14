@@ -39,7 +39,13 @@
     </media>
 
     <administration>
-        <menu>COM_ARS</menu>
+        <menu
+        >
+            <params>
+                <dashboard>com_ars.ars</dashboard>
+            </params>
+            COM_ARS
+        </menu>
 
         <submenu>
             <!--
@@ -47,62 +53,84 @@
                 XML and be parsed by the installer
             -->
             <menu
-                    link="option=com_ars"
-                    view="controlpanel"
-                    alt="Ars/ControlPanel"
-            >
-                COM_ARS_TITLE_CONTROLPANEL
-            </menu>
-            <menu
                     link="option=com_ars&amp;view=categories"
-                    alt="Ars/Categories"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=category.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_CATEGORY</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_CATEGORIES
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=releases"
-                    alt="Ars/Releases"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=release.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_RELEASE</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_RELEASES
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=items"
-                    alt="Ars/Items"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=item.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_ITEM</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_ITEMS
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=logs"
-                    alt="Ars/Logs"
             >
                 COM_ARS_TITLE_LOGS
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=updatestreams"
-                    alt="Ars/Updatestreams"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=updatestream.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_updatestream</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_UPDATESTREAMS
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=autodescriptions"
-                    alt="Ars/Autodescriptions"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=autodescription.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_AUTODESCRIPTION</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_AUTODESCRIPTIONS
             </menu>
+
             <menu
                     link="option=com_ars&amp;view=environments"
-                    alt="Ars/Environments"
             >
+                <params>
+                    <menu-quicktask>index.php?option=com_ars&amp;task=environment.add</menu-quicktask>
+                    <menu-quicktask-title>COM_ARS_MENUS_ADD_ENVIRONMENT</menu-quicktask-title>
+                    <menu-quicktask-permission>core.create;com_ars</menu-quicktask-permission>
+                </params>
                 COM_ARS_TITLE_ENVIRONMENTS
             </menu>
         </submenu>
-
 
         <!-- Back-end files -->
         <files folder="backend">
             <folder>forms</folder>
             <folder>language</folder>
             <folder>layout</folder>
+            <folder>presets</folder>
             <folder>services</folder>
             <folder>sql</folder>
             <folder>src</folder>
@@ -118,6 +146,10 @@
             <language tag="en-GB">en-GB/com_ars.sys.ini</language>
         </languages>
     </administration>
+
+    <dashboards>
+        <dashboard title="COM_ARS_DASHBOARD_TITLE" icon="none fa fa-cloud-download-alt">com_ars.ars</dashboard>
+    </dashboards>
 
     <api>
         <files folder="api">

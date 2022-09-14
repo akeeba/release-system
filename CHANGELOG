@@ -1,6 +1,9 @@
 <?php die(); ?>
 Akeeba Release System 7.1.0
 ================================================================================
++ Dashboard
+~ Minimum PHP version 7.4
+~ Minimum Joomla version 4.2
 ~ Refactored SEF URL Router
 
 Akeeba Release System 7.0.8

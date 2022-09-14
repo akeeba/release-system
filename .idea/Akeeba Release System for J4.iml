@@ -2,13 +2,13 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/component/backend/src" isTestSource="false" packagePrefix="Akeeba\Component\ARS\Administrator" />
-      <sourceFolder url="file://$MODULE_DIR$/component/frontend/src" isTestSource="false" packagePrefix="Akeeba\Component\ARS\Site" />
-      <sourceFolder url="file://$MODULE_DIR$/plugins/content/arsdlid/src" isTestSource="false" packagePrefix="Joomla\Plugin\Content\Arsdlid" />
-      <sourceFolder url="file://$MODULE_DIR$/plugins/content/arslatest/src" isTestSource="false" packagePrefix="Joomla\Plugin\Content\Arslatest" />
-      <sourceFolder url="file://$MODULE_DIR$/component/api/src" isTestSource="false" packagePrefix="Akeeba\Component\ARS\Api" />
-      <sourceFolder url="file://$MODULE_DIR$/plugins/system/arsjed/src" isTestSource="false" packagePrefix="Joomla\Plugin\System\Arsjed" />
-      <sourceFolder url="file://$MODULE_DIR$/modules/site/arsdownloads/src" isTestSource="false" packagePrefix="Joomla\Module\Arsdownload\Site" />
+      <sourceFolder url="file://$MODULE_DIR$/component/api/src" isTestSource="false" packagePrefix="Akeeba\Component\ARS\Api\" />
+      <sourceFolder url="file://$MODULE_DIR$/component/frontend/src" isTestSource="false" packagePrefix="Akeeba\Component\ARS\Site\" />
+      <sourceFolder url="file://$MODULE_DIR$/component/backend/src" isTestSource="false" packagePrefix="Akeeba\Component\ARS\Administrator\" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/site/arsdownloads/src" isTestSource="false" packagePrefix="Joomla\Module\Arsdownload\Site\" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/content/arsdlid/src" isTestSource="false" packagePrefix="Joomla\Plugin\Content\Arsdlid\" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins/content/arslatest/src" isTestSource="false" packagePrefix="Joomla\Plugin\Content\Arslatest\" />
+      <sourceFolder url="file://$MODULE_DIR$/modules/admin/arsgraph/src" isTestSource="false" packagePrefix="Joomla\Module\Arsgraph\Administrator\" />
       <excludeFolder url="file://$MODULE_DIR$/with-fof/component/backend/vendor/akeeba/s3" />
       <excludeFolder url="file://$MODULE_DIR$/with-fof/component/backend/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/with-fof" />
