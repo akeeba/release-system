@@ -5,24 +5,26 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Component\ARS\Administrator\Provider;
+namespace Akeeba\Component\ARS\Administrator\Service\Provider;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Service\RouterFactory;
+use Joomla\CMS\Categories\CategoryFactoryInterface;
 use Joomla\CMS\Component\Router\RouterFactoryInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
-class RouterFactory implements ServiceProviderInterface
+class RouterFactoryProvider implements ServiceProviderInterface
 {
 	/**
 	 * The module namespace
 	 *
+	 * @since   4.0.0
 	 * @var  string
 	 *
-	 * @since   4.0.0
 	 */
 	private $namespace;
 
@@ -52,11 +54,22 @@ class RouterFactory implements ServiceProviderInterface
 		$container->set(
 			RouterFactoryInterface::class,
 			function (Container $container) {
-				return new \Akeeba\Component\ARS\Administrator\Router\RouterFactory(
+				$categoryFactory = null;
+
+				if ($container->has(CategoryFactoryInterface::class))
+				{
+					$categoryFactory = $container->get(CategoryFactoryInterface::class);
+				}
+
+				$routerFactory = new RouterFactory(
 					$this->namespace,
-					$container->get(DatabaseInterface::class),
-					$container->get(MVCFactoryInterface::class)
+					$categoryFactory,
+					$container->get(DatabaseInterface::class)
 				);
+
+				$routerFactory->setMVCFactory($container->get(MVCFactoryInterface::class));
+
+				return $routerFactory;
 			}
 		);
 	}
