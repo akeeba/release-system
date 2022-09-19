@@ -70,16 +70,8 @@ class HtmlView extends BaseHtmlView
 
 		ToolbarHelper::title(Text::_('COM_ARS_TITLE_CATEGORIES_' . ($isNew ? 'ADD' : 'EDIT')), 'icon-ars');
 
-		$toolbarButtons = [];
-
-		// If not checked out, can save the item.
-		$toolbarButtons[] = ['apply', 'category.apply'];
-		$toolbarButtons[] = ['save', 'category.save'];
-
-		ToolbarHelper::saveGroup(
-			$toolbarButtons,
-			'btn-success'
-		);
+		ToolbarHelper::apply('category.apply');
+		ToolbarHelper::save('category.save');
 
 		ToolbarHelper::cancel('category.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 	}

@@ -70,16 +70,8 @@ class HtmlView extends BaseHtmlView
 
 		ToolbarHelper::title(Text::_('COM_ARS_TITLE_DLIDLABELS_' . ($isNew ? 'ADD' : 'EDIT')), 'icon-ars');
 
-		$toolbarButtons = [];
-
-		// If not checked out, can save the item.
-		$toolbarButtons[] = ['apply', 'dlidlabel.apply'];
-		$toolbarButtons[] = ['save', 'dlidlabel.save'];
-
-		ToolbarHelper::saveGroup(
-			$toolbarButtons,
-			'btn-success'
-		);
+		ToolbarHelper::apply('dlidlabel.apply');
+		ToolbarHelper::save('dlidlabel.save');
 
 		ToolbarHelper::cancel('dlidlabel.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 	}

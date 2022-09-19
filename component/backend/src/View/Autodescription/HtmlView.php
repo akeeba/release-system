@@ -71,16 +71,9 @@ class HtmlView extends BaseHtmlView
 
 		ToolbarHelper::title(Text::_('COM_ARS_TITLE_AUTODESCRIPTIONS_' . ($isNew ? 'ADD' : 'EDIT')), 'icon-ars');
 
-		$toolbarButtons = [];
-
 		// If not checked out, can save the item.
-		$toolbarButtons[] = ['apply', 'autodescription.apply'];
-		$toolbarButtons[] = ['save', 'autodescription.save'];
-
-		ToolbarHelper::saveGroup(
-			$toolbarButtons,
-			'btn-success'
-		);
+		ToolbarHelper::apply('autodescription.apply');
+		ToolbarHelper::save('autodescription.save');
 
 		ToolbarHelper::cancel('autodescription.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 	}
