@@ -20,6 +20,7 @@
                 name="category"
                 type="ArsCategories"
                 label="COM_ARS_AUTODESCRIPTION_FIELD_CATEGORY"
+                layout="joomla.form.field.list-fancy-select"
                 required="true"
         >
         </field>

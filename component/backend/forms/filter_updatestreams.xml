@@ -19,6 +19,7 @@
                 name="category_id"
                 type="ArsCategories"
                 label="COM_ARS_UPDATESTREAM_CATEGORY_TITLE"
+                layout="joomla.form.field.list-fancy-select"
                 onchange="this.form.submit();"
         >
             <option value="">COM_ARS_COMMON_CATEGORY_SELECT_LABEL</option>

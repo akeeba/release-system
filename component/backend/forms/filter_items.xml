@@ -19,6 +19,7 @@
                 name="category_id"
                 type="ArsCategories"
                 label="COM_ARS_ITEM_FIELD_CATEGORY"
+                layout="joomla.form.field.list-fancy-select"
                 onchange="this.form.submit();"
         >
             <option value="">COM_ARS_COMMON_CATEGORY_SELECT_LABEL</option>

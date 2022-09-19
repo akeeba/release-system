@@ -20,6 +20,7 @@
                 name="category_id"
                 type="ArsCategories"
                 label="COM_ARS_RELEASES_FIELD_CATEGORY"
+                layout="joomla.form.field.list-fancy-select"
                 required="true"
         >
         </field>
