@@ -39,8 +39,7 @@
     </media>
 
     <administration>
-        <menu
-        >
+        <menu>
             <params>
                 <dashboard>com_ars.ars</dashboard>
             </params>
