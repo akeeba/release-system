@@ -132,6 +132,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc` (
     `category`         bigint(20) unsigned NOT NULL,
     `packname`         varchar(255)                 DEFAULT NULL,
     `title`            varchar(255)        NOT NULL,
+    `access`           int(11)             NOT NULL DEFAULT '0',
     `description`      MEDIUMTEXT          NOT NULL,
     `environments`     varchar(100)                 DEFAULT NULL,
     `created`          datetime            NULL     DEFAULT NULL,
