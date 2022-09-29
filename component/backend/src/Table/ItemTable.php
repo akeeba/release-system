@@ -295,6 +295,9 @@ class ItemTable extends AbstractTable
 		// Apply title
 		$this->title = trim($this->title ?? '') ?: $auto->title;
 
+		// Apply access
+		$this->access = $this->access !== 1 || !$auto->access ? $this->access : $auto->access ;
+
 		// Apply description, if necessary
 		$stripDesc = trim(strip_tags($this->description));
 

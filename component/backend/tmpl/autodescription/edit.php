@@ -32,6 +32,7 @@ $user = Factory::getApplication()->getIdentity();
 					<?= $this->form->getField('category')->renderField(); ?>
 					<?= $this->form->getField('packname')->renderField(); ?>
 					<?= $this->form->getField('title')->renderField(); ?>
+					<?= $this->form->getField('access')->renderField(); ?>
 					<?= $this->form->getField('environments')->renderField(); ?>
 					<?= $this->form->getField('published')->renderField(); ?>
 				</div>
