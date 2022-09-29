@@ -47,14 +47,14 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 		}
 
 		// Install the dashboard modules if necessary
-		if (!$this->isModuleInDashboard('com_ars-ars', 'mod_submenu'))
+		if (!$this->isModuleInDashboard('com-ars-ars', 'mod_submenu'))
 		{
-			$this->addDashboardMenu('com_ars-ars', 'ars');
+			$this->addDashboardMenu('com-ars-ars', 'ars');
 		}
 
-		if (!$this->isModuleInDashboard('com_ars-ars', 'mod_arsgraph'))
+		if (!$this->isModuleInDashboard('com-ars-ars', 'mod_arsgraph'))
 		{
-			$this->addDashboardModule('com_ars-ars', 'mod_arsgraph');
+			$this->addDashboardModule('com-ars-ars', 'mod_arsgraph');
 		}
 
 		// Run the post-upgrade code
