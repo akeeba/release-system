@@ -6,7 +6,7 @@
   -->
 
 <extension type="package" method="upgrade">
-    <name>PKG_ARS</name>
+    <name>pkg_ars</name>
     <author>Nicholas K. Dionysopoulos</author>
     <creationDate>##DATE##</creationDate>
     <packagename>ars</packagename>
