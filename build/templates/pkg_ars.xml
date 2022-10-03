@@ -5,8 +5,8 @@
   ~ @license   GNU General Public License version 3, or later
   -->
 
-<extension version="3.3.0" type="package" method="upgrade">
-    <name>Akeeba Release System package</name>
+<extension type="package" method="upgrade">
+    <name>PKG_ARS</name>
     <author>Nicholas K. Dionysopoulos</author>
     <creationDate>##DATE##</creationDate>
     <packagename>ars</packagename>
@@ -16,32 +16,28 @@
     <packagerurl>https://www.akeeba.com</packagerurl>
     <copyright>Copyright (c)2010-2020 Nicholas K. Dionysopoulos</copyright>
     <license>GNU GPL v3 or later</license>
-    <description>Akeeba Release System installation package v.##VERSION##</description>
+    <description>PKG_ARS_XML_DESCRIPTION</description>
 
-    <!-- List of extensions to install -->
     <files>
-        <!-- Component -->
         <file type="component" id="com_ars">com_ars.zip</file>
 
-        <!-- Modules -->
         <file type="module" client="site" id="mod_arsdownloads">mod_arsdownloads.zip</file>
         <file type="module" client="administrator" id="mod_arsgraph">mod_arsgraph.zip</file>
 
-        <!-- Plugins: content -->
         <file type="plugin" group="content" id="arsdlid">plg_content_arsdlid.zip</file>
         <file type="plugin" group="content" id="arslatest">plg_content_arslatest.zip</file>
 
-        <!-- Plugins: editors-xtd -->
         <file type="plugin" group="editors-xtd" id="arslink">plg_editors-xtd_arslink.zip</file>
 
-        <!-- Plugins: webservices -->
         <file type="plugin" group="webservices" id="ars">plg_webservices_ars.zip</file>
     </files>
 
-    <!-- Installation script -->
+    <languages folder="language">
+        <language tag="en-GB">en-GB/pkg_ars.sys.ini</language>
+    </languages>
+
     <scriptfile>script.ars.php</scriptfile>
 
-    <!-- Update servers -->
     <updateservers>
         <server type="extension" priority="1" name="Akeeba Release System Updates">
             https://raw.githubusercontent.com/akeeba/release-system/master/update/pkg_ars_updates.xml
