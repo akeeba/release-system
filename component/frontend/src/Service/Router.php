@@ -208,7 +208,7 @@ class Router extends RouterView
 		{
 			case 'newdlidlabel':
 				$query['Itemid'] = $query['Itemid']
-					?? $this->getItemIdForView($query['view'])
+					?? $this->getItemIdForView($query['view'] ?? null)
 					?? $this->getItemIdForView('dlidlabels')
 					?? $this->getItemIdForView('dlidlabel')
 					?? $this->getItemIdForRepository()
@@ -220,7 +220,7 @@ class Router extends RouterView
 				$altView = ($query['view'] === 'dlidlabel') ? 'dlidlabels' : 'dlidlabel';
 
 				$query['Itemid'] = $query['Itemid']
-					?? $this->getItemIdForView($query['view'])
+					?? $this->getItemIdForView($query['view'] ?? null)
 					?? $this->getItemIdForView($altView)
 					?? $this->getItemIdForRepository()
 					?? $currentItemid ?? $defaultItemid;
@@ -228,29 +228,30 @@ class Router extends RouterView
 
 			case 'categories':
 				$query['Itemid'] = $query['Itemid']
-					?? $this->getItemIdForRepository($query['layout'])
+					?? $this->getItemIdForRepository($query['layout'] ?? null)
 					?? $currentItemid ?? $defaultItemid;
 				break;
 
 			case 'releases':
 				$query['Itemid'] = $query['Itemid']
-					?? $this->getItemIdForCategory($query['category_id'])
+					?? $this->getItemIdForCategory($query['category_id'] ?? null)
 					?? $this->getItemIdForRepository()
 					?? $currentItemid ?? $defaultItemid;
 				break;
 
 			case 'items':
-				$query['category_id'] = $query['category_id'] ?: $this->getCategoryForRelease($query['release_id']);
+				$query['category_id'] = ($query['category_id'] ?? 0) ?: $this->getCategoryForRelease($query['release_id'] ?? null) ?: 0;
+
 				$query['Itemid']      = $query['Itemid']
-					?? $this->getItemIdForRelease($query['release_id'])
+					?? $this->getItemIdForRelease($query['release_id'] ?? null)
 					?? $this->getItemIdForCategory($query['category_id'])
 					?? $this->getItemIdForRepository()
 					?? $currentItemid ?? $defaultItemid;
 				break;
 
 			case 'item':
-				$query['release_id']  = $query['release_id'] ?: $this->getReleaseForItem($query['item_id']);
-				$query['category_id'] = $query['category_id'] ?: $this->getCategoryForRelease($query['release_id']);
+				$query['release_id']  = ($query['release_id'] ?? 0) ?: $this->getReleaseForItem($query['item_id']);
+				$query['category_id'] = ($query['category_id'] ?? 0) ?: $this->getCategoryForRelease($query['release_id']);
 
 				if (($query['task'] ?? '') === 'download' && ($query['format'] ?? '') === 'raw')
 				{
@@ -258,9 +259,9 @@ class Router extends RouterView
 				}
 
 				$query['Itemid'] = $query['Itemid']
-					?? $this->getItemIdForItem($query['item_id'])
-					?? $this->getItemIdForRelease($query['release_id'])
-					?? $this->getItemIdForCategory($query['category_id'])
+					?? $this->getItemIdForItem($query['item_id'] ?? null)
+					?? $this->getItemIdForRelease($query['release_id'] ?? null)
+					?? $this->getItemIdForCategory($query['category_id'] ?? null)
 					?? $this->getItemIdForRepository()
 					?? $currentItemid ?? $defaultItemid;
 
@@ -268,7 +269,7 @@ class Router extends RouterView
 
 			default:
 				$query['Itemid'] = $query['Itemid']
-					?? $this->getItemIdForView($query['view'])
+					?? $this->getItemIdForView($query['view'] ?? null)
 					?? $this->getItemIdForRepository()
 					?? $currentItemid ?? $defaultItemid;
 				break;
