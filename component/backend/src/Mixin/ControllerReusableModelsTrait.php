@@ -13,7 +13,7 @@ use Joomla\CMS\MVC\View\ViewInterface;
 
 defined('_JEXEC') || die;
 
-trait ReusableModels
+trait ControllerReusableModelsTrait
 {
 	static $_models = [];
 

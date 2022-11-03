@@ -9,7 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Model\Mixin\CopyAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
@@ -25,7 +25,7 @@ use Joomla\Database\ParameterType;
 #[\AllowDynamicProperties]
 class ReleaseModel extends AdminModel
 {
-	use CopyAware;
+	use ModelCopyTrait;
 
 	/**
 	 * Batch copy/move command. If set to false, the batch copy/move command is not supported

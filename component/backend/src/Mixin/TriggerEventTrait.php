@@ -11,7 +11,7 @@ use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die;
 
-trait TriggerEvent
+trait TriggerEventTrait
 {
 	/**
 	 * Triggers an object-specific event. The event runs both locally –if a suitable method exists– and through the

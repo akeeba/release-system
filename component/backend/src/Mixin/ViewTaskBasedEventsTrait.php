@@ -9,9 +9,9 @@ namespace Akeeba\Component\ARS\Administrator\Mixin;
 
 defined('_JEXEC') || die;
 
-trait TaskBasedEvents
+trait ViewTaskBasedEventsTrait
 {
-	use TriggerEvent;
+	use TriggerEventTrait;
 
 	public function display($tpl = null)
 	{

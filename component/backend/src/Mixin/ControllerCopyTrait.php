@@ -5,16 +5,16 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Component\ARS\Administrator\Controller\Mixin;
+namespace Akeeba\Component\ARS\Administrator\Mixin;
 
 
-use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
+use function Akeeba\Component\ARS\Administrator\Controller\Mixin\count;
 
-trait CopyAware
+trait ControllerCopyTrait
 {
 	use ControllerEvents;
 

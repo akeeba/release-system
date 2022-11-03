@@ -119,6 +119,11 @@ class UpgradeModel extends BaseDatabaseModel
 		],
 		'folders' => [
 			JPATH_ADMINISTRATOR . '/components/com_ars/sql/xml',
+
+			JPATH_ADMINISTRATOR . '/components/com_ars/src/Controller/Mixin',
+			JPATH_ADMINISTRATOR . '/components/com_ars/src/Model/Mixin',
+			JPATH_ADMINISTRATOR . '/components/com_ars/src/Table/Mixin',
+			JPATH_SITE . '/components/com_ars/src/Controller/Mixin',
 		],
 	];
 

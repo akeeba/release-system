@@ -9,7 +9,7 @@ namespace Akeeba\Component\ARS\Site\View\Dlidlabels;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\LoadAnyTemplate;
+use Akeeba\Component\ARS\Administrator\Mixin\ViewLoadAnyTemplateTrait;
 use Akeeba\Component\ARS\Administrator\Model\DlidlabelsModel;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -21,7 +21,7 @@ use Joomla\Registry\Registry;
 
 class HtmlView extends BaseHtmlView
 {
-	use LoadAnyTemplate;
+	use ViewLoadAnyTemplateTrait;
 
 	/**
 	 * The active search filters

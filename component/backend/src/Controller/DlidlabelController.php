@@ -9,9 +9,9 @@ namespace Akeeba\Component\ARS\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Controller\Mixin\ReturnURLAware;
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
-use Akeeba\Component\ARS\Administrator\Mixin\ReusableModels;
+use Akeeba\Component\ARS\Administrator\Mixin\ControllerReturnURLTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\ControllerReusableModelsTrait;
 use Akeeba\Component\ARS\Administrator\Model\DlidlabelModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -20,8 +20,8 @@ use RuntimeException;
 class DlidlabelController extends FormController
 {
 	use ControllerEvents;
-	use ReturnURLAware;
-	use ReusableModels;
+	use ControllerReturnURLTrait;
+	use ControllerReusableModelsTrait;
 
 	protected $text_prefix = 'COM_ARS_DLIDLABEL';
 

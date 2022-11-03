@@ -9,10 +9,10 @@ namespace Akeeba\Component\ARS\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Controller\Mixin\CopyAware;
-use Akeeba\Component\ARS\Administrator\Controller\Mixin\ReturnURLAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ControllerCopyTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
-use Akeeba\Component\ARS\Administrator\Mixin\ReusableModels;
+use Akeeba\Component\ARS\Administrator\Mixin\ControllerReturnURLTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\ControllerReusableModelsTrait;
 use Akeeba\Component\ARS\Administrator\Model\DlidlabelModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
@@ -22,9 +22,9 @@ use Joomla\Utilities\ArrayHelper;
 class DlidlabelsController extends AdminController
 {
 	use ControllerEvents;
-	use CopyAware;
-	use ReturnURLAware;
-	use ReusableModels;
+	use ControllerCopyTrait;
+	use ControllerReturnURLTrait;
+	use ControllerReusableModelsTrait;
 
 	protected $text_prefix = 'COM_ARS_DLIDLABELS';
 

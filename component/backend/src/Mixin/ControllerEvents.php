@@ -14,7 +14,7 @@ use RuntimeException;
 
 trait ControllerEvents
 {
-	use TriggerEvent;
+	use TriggerEventTrait;
 
 	/**
 	 * Execute a task by triggering a method in the derived class.

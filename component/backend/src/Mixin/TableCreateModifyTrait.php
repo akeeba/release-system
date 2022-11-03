@@ -5,13 +5,13 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Component\ARS\Administrator\Table\Mixin;
+namespace Akeeba\Component\ARS\Administrator\Mixin;
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 
-trait CreateModifyAware
+trait TableCreateModifyTrait
 {
 	private $updateModified = true;
 

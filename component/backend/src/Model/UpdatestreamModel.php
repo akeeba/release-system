@@ -9,7 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Model\Mixin\CopyAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
@@ -17,12 +17,11 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\Utilities\ArrayHelper;
 
 #[\AllowDynamicProperties]
 class UpdatestreamModel extends AdminModel
 {
-	use CopyAware;
+	use ModelCopyTrait;
 
 	public function __construct($config = [], MVCFactoryInterface $factory = null, FormFactoryInterface $formFactory = null)
 	{

@@ -12,7 +12,7 @@ defined('_JEXEC') || die;
 use ReflectionMethod;
 use ReflectionObject;
 
-trait RegisterControllerTasks
+trait ControllerRegisterTasksTrait
 {
 	/**
 	 * Automatically register controller tasks.

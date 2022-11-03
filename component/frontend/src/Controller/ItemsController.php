@@ -10,10 +10,10 @@ namespace Akeeba\Component\ARS\Site\Controller;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
-use Akeeba\Component\ARS\Administrator\Mixin\RegisterControllerTasks;
-use Akeeba\Component\ARS\Site\Controller\Mixin\ARSViewParamsAware;
-use Akeeba\Component\ARS\Site\Controller\Mixin\CRIAccessAware;
-use Akeeba\Component\ARS\Site\Controller\Mixin\DisplayAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ControllerRegisterTasksTrait;
+use Akeeba\Component\ARS\Site\Mixin\ControllerARSViewParamsTrait;
+use Akeeba\Component\ARS\Site\Mixin\ControllerCRIAccessTrait;
+use Akeeba\Component\ARS\Site\Mixin\ControllerDisplayTrait;
 use Akeeba\Component\ARS\Site\Model\ItemsModel;
 use Akeeba\Component\ARS\Site\View\Items\HtmlView;
 use Joomla\CMS\Language\Multilanguage;
@@ -22,10 +22,10 @@ use Joomla\CMS\MVC\Controller\BaseController;
 class ItemsController extends BaseController
 {
 	use ControllerEvents;
-	use RegisterControllerTasks;
-	use DisplayAware;
-	use ARSViewParamsAware;
-	use CRIAccessAware;
+	use ControllerRegisterTasksTrait;
+	use ControllerDisplayTrait;
+	use ControllerARSViewParamsTrait;
+	use ControllerCRIAccessTrait;
 
 	protected $default_view = 'releases';
 

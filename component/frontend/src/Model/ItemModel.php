@@ -9,7 +9,7 @@ namespace Akeeba\Component\ARS\Site\Model;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
+use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
@@ -32,7 +32,7 @@ use RuntimeException;
 #[\AllowDynamicProperties]
 class ItemModel extends BaseDatabaseModel
 {
-	use AssertionAware;
+	use TableAssertionTrait;
 
 	private const CHUNK_SIZE = 1048576;
 

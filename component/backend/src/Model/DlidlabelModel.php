@@ -9,29 +9,24 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Model\Mixin\CopyAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Akeeba\Component\ARS\Administrator\Table\DlidlabelTable;
-use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Event\Model\BeforeBatchEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
-use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\Database\ParameterType;
 use Joomla\Utilities\ArrayHelper;
 
 #[\AllowDynamicProperties]
 class DlidlabelModel extends AdminModel
 {
-	use CopyAware;
+	use ModelCopyTrait;
 
 	/**
 	 * Batch copy/move command. If set to false, the batch copy/move command is not supported

@@ -7,9 +7,9 @@
 
 namespace Akeeba\Component\ARS\Administrator\Table;
 
-use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
-use Akeeba\Component\ARS\Administrator\Table\Mixin\ColumnAliasAware;
-use Akeeba\Component\ARS\Administrator\Table\Mixin\CreateModifyAware;
+use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\TableColumnAliasTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\TableCreateModifyTrait;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseDriver;
 
@@ -34,12 +34,12 @@ defined('_JEXEC') or die;
  */
 class AutodescriptionTable extends AbstractTable
 {
-	use CreateModifyAware
+	use TableCreateModifyTrait
 	{
-		CreateModifyAware::onBeforeStore as onBeforeStoreCreateModifyAware;
+		TableCreateModifyTrait::onBeforeStore as onBeforeStoreCreateModifyAware;
 	}
-	use AssertionAware;
-	use ColumnAliasAware;
+	use TableAssertionTrait;
+	use TableColumnAliasTrait;
 
 	/**
 	 * Indicates that columns fully support the NULL value in the database

@@ -9,8 +9,8 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
-use Akeeba\Component\ARS\Administrator\Table\Mixin\CreateModifyAware;
+use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\TableCreateModifyTrait;
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Date\Date;
@@ -39,8 +39,8 @@ use RuntimeException;
  */
 class DlidlabelTable extends AbstractTable
 {
-	use CreateModifyAware;
-	use AssertionAware;
+	use TableCreateModifyTrait;
+	use TableAssertionTrait;
 
 	/**
 	 * Indicates that columns fully support the NULL value in the database

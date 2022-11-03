@@ -9,7 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\View\Items;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\LoadAnyTemplate;
+use Akeeba\Component\ARS\Administrator\Mixin\ViewLoadAnyTemplateTrait;
 use Akeeba\Component\ARS\Administrator\Model\ReleasesModel;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Joomla\CMS\Factory;
@@ -25,7 +25,7 @@ use Joomla\Registry\Registry;
 
 class HtmlView extends BaseHtmlView
 {
-	use LoadAnyTemplate;
+	use ViewLoadAnyTemplateTrait;
 
 	/**
 	 * The search tools form

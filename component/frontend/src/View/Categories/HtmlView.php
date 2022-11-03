@@ -9,8 +9,8 @@ namespace Akeeba\Component\ARS\Site\View\Categories;
 
 defined('_JEXEC') || die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\LoadAnyTemplate;
-use Akeeba\Component\ARS\Administrator\Mixin\TaskBasedEvents;
+use Akeeba\Component\ARS\Administrator\Mixin\ViewLoadAnyTemplateTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\ViewTaskBasedEventsTrait;
 use Akeeba\Component\ARS\Site\Model\CategoriesModel;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
@@ -20,8 +20,8 @@ use Joomla\Registry\Registry;
 
 class HtmlView extends BaseHtmlView
 {
-	use TaskBasedEvents;
-	use LoadAnyTemplate;
+	use ViewTaskBasedEventsTrait;
+	use ViewLoadAnyTemplateTrait;
 
 	/** @var  array  The items to display */
 	public $items;

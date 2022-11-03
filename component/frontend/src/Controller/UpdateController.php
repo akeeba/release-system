@@ -10,28 +10,22 @@ namespace Akeeba\Component\ARS\Site\Controller;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
-use Akeeba\Component\ARS\Administrator\Mixin\RegisterControllerTasks;
-use Akeeba\Component\ARS\Administrator\Table\UpdatestreamTable;
-use Akeeba\Component\ARS\Site\Controller\Mixin\DisplayAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ControllerRegisterTasksTrait;
+use Akeeba\Component\ARS\Site\Mixin\ControllerDisplayTrait;
 use Akeeba\Component\ARS\Site\Model\UpdateModel;
 use Akeeba\Component\ARS\Site\View\Update\IniView;
 use Akeeba\Component\ARS\Site\View\Update\XmlView;
 use Joomla\CMS\Document\FactoryInterface;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Rule\UrlRule;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
 use RuntimeException;
-use SimpleXMLElement;
 
 class UpdateController extends BaseController
 {
 	use ControllerEvents;
-	use RegisterControllerTasks;
-	use DisplayAware;
+	use ControllerRegisterTasksTrait;
+	use ControllerDisplayTrait;
 
 	/**
 	 * Show all updates

@@ -10,7 +10,7 @@ namespace Akeeba\Component\ARS\Administrator\View\Controlpanel;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Helper\Cache;
-use Akeeba\Component\ARS\Administrator\Mixin\TaskBasedEvents;
+use Akeeba\Component\ARS\Administrator\Mixin\ViewTaskBasedEventsTrait;
 use Akeeba\Component\ARS\Administrator\Model\ControlpanelModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
@@ -19,7 +19,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 class HtmlView extends BaseHtmlView
 {
-	use TaskBasedEvents;
+	use ViewTaskBasedEventsTrait;
 
 	/** @var  int  Total number of downloads this month */
 	public $downloadsMonth = 0;

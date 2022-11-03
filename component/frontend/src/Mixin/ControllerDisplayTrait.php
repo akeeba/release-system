@@ -5,19 +5,19 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Component\ARS\Site\Controller\Mixin;
+namespace Akeeba\Component\ARS\Site\Mixin;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\ReusableModels;
-use Akeeba\Component\ARS\Administrator\Mixin\TriggerEvent;
+use Akeeba\Component\ARS\Administrator\Mixin\ControllerReusableModelsTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\TriggerEventTrait;
 use Exception;
 use Joomla\CMS\MVC\Controller\BaseController;
 
-trait DisplayAware
+trait ControllerDisplayTrait
 {
-	use TriggerEvent;
-	use ReusableModels;
+	use TriggerEventTrait;
+	use ControllerReusableModelsTrait;
 
 	/**
 	 * Default page caching parameters.

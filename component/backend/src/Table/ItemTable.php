@@ -9,9 +9,9 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\AssertionAware;
-use Akeeba\Component\ARS\Administrator\Table\Mixin\ColumnAliasAware;
-use Akeeba\Component\ARS\Administrator\Table\Mixin\CreateModifyAware;
+use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\TableColumnAliasTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\TableCreateModifyTrait;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
@@ -55,12 +55,12 @@ use Joomla\Database\DatabaseDriver;
  */
 class ItemTable extends AbstractTable
 {
-	use CreateModifyAware
+	use TableCreateModifyTrait
 	{
-		CreateModifyAware::onBeforeStore as onBeforeStoreCreateModifyAware;
+		TableCreateModifyTrait::onBeforeStore as onBeforeStoreCreateModifyAware;
 	}
-	use AssertionAware;
-	use ColumnAliasAware;
+	use TableAssertionTrait;
+	use TableColumnAliasTrait;
 
 	/**
 	 * Indicates that columns fully support the NULL value in the database

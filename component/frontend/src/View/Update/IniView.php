@@ -9,7 +9,7 @@ namespace Akeeba\Component\ARS\Site\View\Update;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\TaskBasedEvents;
+use Akeeba\Component\ARS\Administrator\Mixin\ViewTaskBasedEventsTrait;
 use Akeeba\Component\ARS\Site\Model\EnvironmentsModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView;
@@ -17,7 +17,7 @@ use Joomla\CMS\MVC\View\HtmlView;
 class IniView extends HtmlView
 {
 	use Common;
-	use TaskBasedEvents;
+	use ViewTaskBasedEventsTrait;
 
 	public $items = [];
 

@@ -9,7 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Dispatcher;
 
 defined('_JEXEC') || die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\TriggerEvent;
+use Akeeba\Component\ARS\Administrator\Mixin\TriggerEventTrait;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
@@ -17,7 +17,7 @@ use Throwable;
 
 class Dispatcher extends ComponentDispatcher
 {
-	use TriggerEvent;
+	use TriggerEventTrait;
 
 	protected $defaultController = 'controlpanel';
 

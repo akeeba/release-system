@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Component\ARS\Administrator\Model\Mixin;
+namespace Akeeba\Component\ARS\Administrator\Mixin;
 
 defined('_JEXEC') or die();
 
@@ -16,7 +16,7 @@ use Joomla\String\StringHelper;
 /**
  * Trait to modify batchCopy for relations involving parent tables OTHER than the Joomla core categories table.
  */
-trait CopyAware
+trait ModelCopyTrait
 {
 	/**
 	 * MVC table name this records belongs to (as the leaf node of an one-to-many relation).

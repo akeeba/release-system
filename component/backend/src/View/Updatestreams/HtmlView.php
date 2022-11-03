@@ -9,7 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\View\Updatestreams;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\LoadAnyTemplate;
+use Akeeba\Component\ARS\Administrator\Mixin\ViewLoadAnyTemplateTrait;
 use Akeeba\Component\ARS\Administrator\Model\UpdatestreamsModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -24,7 +24,7 @@ use Joomla\Registry\Registry;
 
 class HtmlView extends BaseHtmlView
 {
-	use LoadAnyTemplate;
+	use ViewLoadAnyTemplateTrait;
 
 	/**
 	 * The search tools form

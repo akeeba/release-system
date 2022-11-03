@@ -5,13 +5,12 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Akeeba\Component\ARS\Site\Controller\Mixin;
+namespace Akeeba\Component\ARS\Site\Mixin;
 
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Exception;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -20,7 +19,7 @@ use RuntimeException;
 /**
  * Category, Release and Item access control trait
  */
-trait CRIAccessAware
+trait ControllerCRIAccessTrait
 {
 	/**
 	 * Makes sure the category exists and the user has access to it

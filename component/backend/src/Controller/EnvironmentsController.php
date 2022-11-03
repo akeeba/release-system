@@ -9,14 +9,14 @@ namespace Akeeba\Component\ARS\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Controller\Mixin\CopyAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ControllerCopyTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
 use Joomla\CMS\MVC\Controller\AdminController;
 
 class EnvironmentsController extends AdminController
 {
 	use ControllerEvents;
-	use CopyAware;
+	use ControllerCopyTrait;
 
 	protected $text_prefix = 'COM_ARS_ENVIRONMENTS';
 

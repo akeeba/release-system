@@ -22,7 +22,7 @@ use Throwable;
  *
  * @since  9.0.0
  */
-trait LoadAnyTemplate
+trait ViewLoadAnyTemplateTrait
 {
 	/**
 	 * Load any view template of the current component.

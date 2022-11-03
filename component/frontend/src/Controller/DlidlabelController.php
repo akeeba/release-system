@@ -10,13 +10,13 @@ namespace Akeeba\Component\ARS\Site\Controller;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Controller\DlidlabelController as AdminDlidlabelController;
-use Akeeba\Component\ARS\Administrator\Controller\Mixin\ReturnURLAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ControllerReturnURLTrait;
 use Joomla\CMS\Router\Route;
 
 class DlidlabelController extends AdminDlidlabelController
 {
-	use ReturnURLAware {
-		ReturnURLAware::getRedirectToItemAppend as applyReturnURLOnItemAppend;
+	use ControllerReturnURLTrait {
+		ControllerReturnURLTrait::getRedirectToItemAppend as applyReturnURLOnItemAppend;
 	}
 
 	/**

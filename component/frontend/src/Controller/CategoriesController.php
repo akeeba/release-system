@@ -10,20 +10,19 @@ namespace Akeeba\Component\ARS\Site\Controller;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
-use Akeeba\Component\ARS\Administrator\Mixin\RegisterControllerTasks;
-use Akeeba\Component\ARS\Site\Controller\Mixin\ARSViewParamsAware;
-use Akeeba\Component\ARS\Site\Controller\Mixin\DisplayAware;
+use Akeeba\Component\ARS\Administrator\Mixin\ControllerRegisterTasksTrait;
+use Akeeba\Component\ARS\Site\Mixin\ControllerARSViewParamsTrait;
+use Akeeba\Component\ARS\Site\Mixin\ControllerDisplayTrait;
 use Akeeba\Component\ARS\Site\Model\CategoriesModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 class CategoriesController extends BaseController
 {
 	use ControllerEvents;
-	use RegisterControllerTasks;
-	use DisplayAware;
-	use ARSViewParamsAware;
+	use ControllerRegisterTasksTrait;
+	use ControllerDisplayTrait;
+	use ControllerARSViewParamsTrait;
 
 	protected $default_view = 'categories';
 
