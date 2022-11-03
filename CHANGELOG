@@ -8,6 +8,7 @@ Akeeba Release System 7.1.0
 ~ Minimum PHP version 7.4
 ~ Minimum Joomla version 4.2
 ~ Refactored SEF URL Router
+~ Warnings are now DETAILS elements
 # [LOW] SEF URL handler may throw PHP warnings depending on your menu structure
 
 Akeeba Release System 7.0.8

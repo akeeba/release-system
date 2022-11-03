@@ -14,12 +14,14 @@ use Joomla\CMS\Language\Text;
 ?>
 
 <?php if ($this->needsMenuItem): ?>
-	<div class="alert alert-info">
-		<h4>
+	<details class="alert alert-info">
+		<summary class="h3 fs-3 m-0 p-0 text-danger">
 			<?= Text::_('COM_ARS_CPANEL_MISSING_CATEGORIES_MENU_HEAD') ?>
-		</h4>
-		<?= Text::_('COM_ARS_CPANEL_MISSING_CATEGORIES_MENU') ?>
-	</div>
+		</summary>
+		<p>
+			<?= Text::_('COM_ARS_CPANEL_MISSING_CATEGORIES_MENU') ?>
+		</p>
+	</details>
 <?php endif ?>
 
 <div class="row">
