@@ -42,6 +42,7 @@ class ControlpanelController extends BaseController
 		// Make sure all of my extensions are assigned to my package.
 		/** @var UpgradeModel $upgradeModel */
 		$upgradeModel = $this->getModel('Upgrade', 'Administrator');
+		$upgradeModel->init();
 		$upgradeModel->adoptMyExtensions();
 
 		$this->setRedirect('index.php?option=com_cpanel&view=cpanel&dashboard=com_ars.ars');
