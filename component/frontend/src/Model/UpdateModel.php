@@ -12,11 +12,12 @@ defined('_JEXEC') or die;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\ParameterType;
 
+#[\AllowDynamicProperties]
 class UpdateModel extends BaseDatabaseModel
 {
 	public function getCategoryItems(string $category): ?array
 	{
-		$db = $this->getDbo();
+		$db = $this->getDatabase();
 
 		$query = $db->getQuery(true)
 			->select(array(
@@ -78,7 +79,7 @@ class UpdateModel extends BaseDatabaseModel
 
 	public function getItems(int $id): ?array
 	{
-		$db = $this->getDbo();
+		$db = $this->getDatabase();
 
 		$query = $db->getQuery(true)
 			->select(array(
@@ -138,7 +139,7 @@ class UpdateModel extends BaseDatabaseModel
 
 	public function getPublished(int $id): ?string
 	{
-		$db = $this->getDbo();
+		$db = $this->getDatabase();
 
 		$query = $db->getQuery(true)
 			->select($db->quoteName('published'))
@@ -154,7 +155,7 @@ class UpdateModel extends BaseDatabaseModel
 
 	public function getCategoryAliasForUpdateId($id): ?string
 	{
-		$db = $this->getDbo();
+		$db = $this->getDatabase();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('c.alias'))
 			->from($db->quoteName('#__ars_updatestreams', 'u'))

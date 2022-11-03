@@ -22,6 +22,7 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;
 
+#[\AllowDynamicProperties]
 class BleedingedgeModel extends BaseDatabaseModel
 {
 	/**
@@ -81,7 +82,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 		// We will now prune releases based on the existence of their files, their age and their count.
 		$known_folders = [];
 
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->quoteName('#__ars_releases'))
@@ -367,7 +368,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 		}
 
 		// Get the items
-		$db         = $this->getDbo();
+		$db         = $this->getDatabase();
 		$release_id = $release->id;
 		$query      = $db->getQuery(true)
 			->select('*')
@@ -644,7 +645,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 			);
 
 		// Get the items
-		$db         = $this->getDbo();
+		$db         = $this->getDatabase();
 		$release_id = $release->id;
 		$query      = $db->getQuery(true)
 			->select('*')

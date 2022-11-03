@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Model\AdminModel;
 
+#[\AllowDynamicProperties]
 class LogModel extends AdminModel
 {
 	public function getForm($data = [], $loadData = true)

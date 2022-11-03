@@ -11,6 +11,7 @@ defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Administrator\Model\EnvironmentsModel as AdminEnvironmentsModel;
 
+#[\AllowDynamicProperties]
 class EnvironmentsModel extends AdminEnvironmentsModel
 {
 

@@ -28,6 +28,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\ParameterType;
 use Joomla\Utilities\ArrayHelper;
 
+#[\AllowDynamicProperties]
 class DlidlabelModel extends AdminModel
 {
 	use CopyAware;

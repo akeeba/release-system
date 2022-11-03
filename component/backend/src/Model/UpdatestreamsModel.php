@@ -14,6 +14,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\ParameterType;
 
+#[\AllowDynamicProperties]
 class UpdatestreamsModel extends ListModel
 {
 	public function __construct($config = [], MVCFactoryInterface $factory = null)
@@ -61,7 +62,7 @@ class UpdatestreamsModel extends ListModel
 
 	protected function getListQuery()
 	{
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true)
 			->select([
 				$db->quoteName('a') . '.*',

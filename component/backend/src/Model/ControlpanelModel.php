@@ -16,6 +16,7 @@ use Joomla\CMS\Date\Date;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Uri\Uri;
 
+#[\AllowDynamicProperties]
 class ControlpanelModel extends BaseDatabaseModel
 {
 	/**
@@ -26,7 +27,7 @@ class ControlpanelModel extends BaseDatabaseModel
 	 */
 	public function needsCategoriesMenu(): bool
 	{
-		$db = $this->getDbo();
+		$db = $this->getDatabase();
 
 		$query = $db->getQuery(true)
 			->select('COUNT(id)')
@@ -72,7 +73,7 @@ class ControlpanelModel extends BaseDatabaseModel
 	 */
 	public function getNumDownloads(string $interval): int
 	{
-		$db = $this->getDbo();
+		$db = $this->getDatabase();
 
 		$interval = strtolower($interval);
 		$allTime  = false;
@@ -143,7 +144,7 @@ class ControlpanelModel extends BaseDatabaseModel
 	 */
 	public function getMonthlyStats(): array
 	{
-		$db = $this->getDbo();
+		$db = $this->getDatabase();
 
 		$now        = new Date();
 		$last_month = new Date();

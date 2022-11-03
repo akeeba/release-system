@@ -12,6 +12,7 @@ defined('_JEXEC') || die;
 use Akeeba\Component\ARS\Administrator\Model\ItemsModel as AdminItemsModel;
 use Joomla\CMS\Form\Form;
 
+#[\AllowDynamicProperties]
 class ItemsModel extends AdminItemsModel
 {
 	protected function loadForm($name, $source = null, $options = [], $clear = false, $xpath = null)

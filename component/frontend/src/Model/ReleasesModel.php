@@ -11,6 +11,7 @@ defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Administrator\Model\ReleasesModel as AdminReleasesModel;
 
+#[\AllowDynamicProperties]
 class ReleasesModel extends AdminReleasesModel
 {
 

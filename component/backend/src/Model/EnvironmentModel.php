@@ -19,6 +19,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\Database\ParameterType;
 
+#[\AllowDynamicProperties]
 class EnvironmentModel extends AdminModel
 {
 	use CopyAware;

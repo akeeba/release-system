@@ -11,6 +11,7 @@ defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Administrator\Model\CategoriesModel as AdminCategoriesModel;
 
+#[\AllowDynamicProperties]
 class CategoriesModel extends AdminCategoriesModel
 {
 

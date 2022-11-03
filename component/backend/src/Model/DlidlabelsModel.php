@@ -14,6 +14,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\ParameterType;
 
+#[\AllowDynamicProperties]
 class DlidlabelsModel extends ListModel
 {
 	public function __construct($config = [], MVCFactoryInterface $factory = null)
@@ -82,7 +83,7 @@ class DlidlabelsModel extends ListModel
 		$app    = Factory::getApplication();
 		$isSite = $app->isClient('site');
 
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true)
 			->select([
 				$db->quoteName('i') . '.*',

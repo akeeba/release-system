@@ -22,6 +22,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\Database\ParameterType;
 
+#[\AllowDynamicProperties]
 class ReleaseModel extends AdminModel
 {
 	use CopyAware;
@@ -201,7 +202,7 @@ class ReleaseModel extends AdminModel
 		$fltCategory  = $app->getUserState('com_ars.releases.filter.category_id');
 		$fltPublished = $app->getUserState('com_ars.releases.filter.published');
 
-		$db = $this->getDbo();
+		$db = $this->getDatabase();
 
 		if (is_numeric($fltCategory))
 		{
@@ -306,7 +307,7 @@ class ReleaseModel extends AdminModel
 		}
 
 		// Make sure there are no items under this releases
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true)
 			->select('COUNT(*)')
 			->from($db->quoteName('#__ars_items'))

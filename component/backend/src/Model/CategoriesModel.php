@@ -15,6 +15,7 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\ParameterType;
 use Joomla\Utilities\ArrayHelper;
 
+#[\AllowDynamicProperties]
 class CategoriesModel extends ListModel
 {
 	public function __construct($config = [], MVCFactoryInterface $factory = null)
@@ -82,7 +83,7 @@ class CategoriesModel extends ListModel
 
 	protected function getListQuery()
 	{
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true)
 			->select([
 				$db->quoteName('c') . '.*',

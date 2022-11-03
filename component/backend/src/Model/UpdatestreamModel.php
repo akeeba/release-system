@@ -19,6 +19,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\Utilities\ArrayHelper;
 
+#[\AllowDynamicProperties]
 class UpdatestreamModel extends AdminModel
 {
 	use CopyAware;

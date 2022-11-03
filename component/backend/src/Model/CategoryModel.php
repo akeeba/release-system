@@ -19,6 +19,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\Database\ParameterType;
 
+#[\AllowDynamicProperties]
 class CategoryModel extends AdminModel
 {
 	use CopyAware;
@@ -174,7 +175,7 @@ class CategoryModel extends AdminModel
 		}
 
 		// Make sure there are no releases under this category
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true)
 			->select('COUNT(*)')
 			->from($db->quoteName('#__ars_releases'))

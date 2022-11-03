@@ -22,6 +22,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 
+#[\AllowDynamicProperties]
 class ItemModel extends AdminModel
 {
 	use CopyAware;
@@ -191,7 +192,7 @@ class ItemModel extends AdminModel
 		$fltRelease   = $app->getUserState('com_ars.items.filter.release_id');
 		$fltPublished = $app->getUserState('com_ars.items.filter.published');
 
-		$db = $this->getDbo();
+		$db = $this->getDatabase();
 
 		if (is_numeric($fltRelease))
 		{

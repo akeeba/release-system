@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\ParameterType;
 
+#[\AllowDynamicProperties]
 class LogsModel extends ListModel
 {
 	protected static $catRelMap = [];
@@ -142,7 +143,7 @@ class LogsModel extends ListModel
 
 	protected function getListQuery()
 	{
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true)
 			->select([
 				$db->quoteName('l') . '.*',

@@ -29,6 +29,7 @@ use Joomla\CMS\User\UserFactoryInterface;
 use Joomla\Database\ParameterType;
 use RuntimeException;
 
+#[\AllowDynamicProperties]
 class ItemModel extends BaseDatabaseModel
 {
 	use AssertionAware;
@@ -439,7 +440,7 @@ class ItemModel extends BaseDatabaseModel
 		}
 
 		$isPrimary = empty($user_id) ? 1 : 0;
-		$db        = $this->getDbo();
+		$db        = $this->getDatabase();
 		$query     = $db->getQuery(true)
 			->select('*')
 			->from($db->quoteName('#__ars_dlidlabels'))
