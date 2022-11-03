@@ -29,9 +29,15 @@ class Dispatcher extends ComponentDispatcher
 	public function dispatch()
 	{
 		// Check the minimum supported PHP version
-		$minPHPVersion = '7.3.0';
+		$minPHPVersion = '7.4.0';
 		$softwareName  = 'Akeeba Release System';
-		$silentResults = $this->app->isClient('site');
+
+		if (version_compare(PHP_VERSION, $minPHPVersion, 'lt'))
+		{
+			$message = $this->app->isClient('site')
+				? 'Insufficient PHP version detected'
+				: sprintf('%s requires PHP %s or later', $softwareName, $minPHPVersion);
+		}
 
 		if (!@include_once JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/wrongphp.php')
 		{

@@ -113,6 +113,9 @@ class UpgradeModel extends BaseModel
 			JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/Items/default.blade.php',
 			JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/Categories/form.blade.php',
 			JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/Categories/default.blade.php',
+
+			JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/phpversion_warning.php',
+			JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/wrongphp.php',
 		],
 		'folders' => [
 			JPATH_ADMINISTRATOR . '/components/com_ars/sql/xml',

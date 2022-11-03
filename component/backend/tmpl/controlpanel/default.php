@@ -11,13 +11,6 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 
-// PHP version warning
-$softwareName          = 'Akeeba Release System';
-$class_priority_low    = 'alert alert-info';
-$class_priority_medium = 'alert alert-warning';
-$class_priority_high   = 'alert alert-danger';
-
-require JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/phpversion_warning.php';
 ?>
 
 <?php if ($this->needsMenuItem): ?>
