@@ -5,7 +5,7 @@ Akeeba Release System 7.1.0
 - PHP version warnings
 ~ Use fancy select for category selection
 ~ Save and Save & Close buttons are no longer grouped
-~ Minimum PHP version 7.4
+~ Minimum PHP version 8.0
 ~ Minimum Joomla version 4.2
 ~ Refactored SEF URL Router
 ~ Warnings are now DETAILS elements

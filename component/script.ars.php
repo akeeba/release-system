@@ -35,7 +35,7 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 	public function __construct()
 	{
 		$this->minimumJoomla = '4.2.0';
-		$this->minimumPhp    = '7.4.0';
+		$this->minimumPhp    = '8.0.0';
 	}
 
 	/**

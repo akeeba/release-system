@@ -1,0 +1,22 @@
+{
+	"name": "akeeba/ars",
+	"description": "Akeeba Release System",
+	"minimum-stability": "stable",
+	"license": "GPL-3.0-or-later",
+	"authors": [
+		{
+			"name": "Nicholas K. Dionysopoulos",
+			"homepage": "https://www.akeeba.com",
+			"role": "Lead Developer"
+		}
+	],
+	"require": {
+		"php": "^8.0.0",
+		"ext-json": "*"
+	},
+	"config": {
+		"platform": {
+			"php": "8.0.999"
+		}
+	}
+}
