@@ -12,7 +12,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
-use function Akeeba\Component\ARS\Administrator\Controller\Mixin\count;
 
 trait ControllerCopyTrait
 {
