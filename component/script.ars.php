@@ -49,6 +49,8 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 	 */
 	public function postflight(string $type, PackageAdapter $parent): bool
 	{
+		$this->setDboFromAdapter($parent);
+
 		// Do not run on uninstall.
 		if ($type === 'uninstall')
 		{
