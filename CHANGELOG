@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 6.0.4
+================================================================================
+# [HIGH] Cannot uninstall package when using PHP 8
+
 Akeeba Release System 6.0.3
 ================================================================================
 # [HIGH] Joomla 3 & 4 common package overrides Joomla 4 dedicated package in ARS Latest content plugin
