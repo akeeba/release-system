@@ -5,7 +5,7 @@
   ~ @license   GNU General Public License version 3, or later
   -->
 
-<extension version="2.5.0" type="plugin" group="content" method="upgrade">
+<extension type="plugin" group="content" method="upgrade">
     <name>PLG_CONTENT_ARSLATEST</name>
     <version>7.0.8</version>
     <creationDate>2022-08-22</creationDate>
