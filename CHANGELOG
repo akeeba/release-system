@@ -10,6 +10,7 @@ Akeeba Release System 7.1.0
 ~ Refactored SEF URL Router
 ~ Warnings are now DETAILS elements
 # [LOW] SEF URL handler may throw PHP warnings depending on your menu structure
+# [HIGH] Non-interactive downloads are not logged
 
 Akeeba Release System 7.0.8
 ================================================================================
