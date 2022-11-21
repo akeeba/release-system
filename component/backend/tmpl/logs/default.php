@@ -111,7 +111,7 @@ $userLayout = new FileLayout('akeeba.ars.common.user', JPATH_ADMINISTRATOR . '/c
 							?>
 							<tr class="row<?= $i++ % 2; ?>">
 								<td class="text-center">
-									<?= HTMLHelper::_('grid.id', $i, $item->id, !(empty($item->checked_out_time) || ($item->checked_out_time === $nullDate)), 'cid', 'cb', $item->item_title); ?>
+									<?= HTMLHelper::_('grid.id', $i, $item->id, !(empty($item->checked_out_time) || ($item->checked_out_time === $nullDate)), 'cid', 'cb', $item->item_title ?? ''); ?>
 								</td>
 
 								<?php if (!$hasItemFilter || !$hasReleaseFilter || !$hasCategoryFilter): ?>

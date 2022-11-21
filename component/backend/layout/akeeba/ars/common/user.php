@@ -50,7 +50,10 @@ $link = $showLink
 	? str_replace(['[USER_ID]', '[USERNAME]', '[NAME]', '[EMAIL]'], [$user_id, $username, $name, $email], $link)
 	: '';
 
-$gravatarUrl = sprintf('https://www.gravatar.com/avatar/%s?s=%s', md5(strtolower(trim($email))), $gravatarSize)
+$gravatarUrl =
+	empty($email)
+	? ''
+	: sprintf('https://www.gravatar.com/avatar/%s?s=%s', md5(strtolower(trim($email))), $gravatarSize)
 
 ?>
 <?php if ($showGravatar && !$showName && !$showUsername && !$showUserId && !$showEmail): ?>

@@ -95,6 +95,7 @@ class ItemController extends BaseController
 		catch (Exception $e)
 		{
 			$effectiveId = isset($item) ? ($item->id ?? 0) : 0;
+			$effectiveId = $effectiveId ?: $id;
 			$this->logFailedDownloadAttempt($effectiveId);
 
 			if (empty($this->redirect))
