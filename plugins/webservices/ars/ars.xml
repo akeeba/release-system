@@ -7,8 +7,8 @@
 
 <extension type="plugin" group="webservices" method="upgrade">
     <name>plg_webservices_ars</name>
-    <version>7.0.8</version>
-    <creationDate>2022-08-22</creationDate>
+    <version>7.1.0</version>
+    <creationDate>2022-11-22</creationDate>
 
     <author>Nicholas K. Dionysopoulos</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
