@@ -138,7 +138,7 @@ trait Common
 	 *
 	 * @return  array
 	 */
-	public function getParsedPlatforms(?object $item, $compact = true): array
+	public function getParsedPlatforms(?object $item, bool $compact = true, bool $liar = false): array
 	{
 		$parsedPlatforms = [
 			'platforms' => [],
@@ -209,6 +209,43 @@ trait Common
 			}
 
 			$parsedPlatforms['platforms'][] = [$platformName, $platformVersion];
+		}
+
+		$hasJoomla = array_reduce(
+			$parsedPlatforms['platforms'],
+			function (bool $carry, $item)
+			{
+				return $carry || $item[0] === 'joomla';
+			},
+			false
+		);
+
+		if ($hasJoomla && $liar)
+		{
+			$morePlatforms = [];
+			$majorVersions = [];
+
+			foreach ($parsedPlatforms['platforms'] as $item)
+			{
+				[$major, $minor] = explode('.', $item[1]);
+				$majorVersions[] = $major;
+				// Pretend that we support the next minor version of whatever is listed
+				$morePlatforms[] = ['joomla', sprintf('%d.%d', $major, $minor + 1)];
+			}
+
+			// Get the minimum major version.
+			asort($majorVersions);
+			$major = array_shift($majorVersions);
+
+			// Pretend that we support minor versions 0–9 of the minimum major version + 1.
+			for ($i = 0; $i <= 10; $i++)
+			{
+				$morePlatforms[] = ['joomla', sprintf('%d.%d', $major + 1, $i)];
+			}
+
+			// Merge the real and pretend platforms, only keeping the unique items
+			$parsedPlatforms['platforms'] = array_merge($parsedPlatforms['platforms'], $morePlatforms);
+			$parsedPlatforms['platforms'] = array_unique($parsedPlatforms['platforms'], SORT_REGULAR);
 		}
 
 		if (!$compact)

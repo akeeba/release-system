@@ -55,6 +55,17 @@
             <option value="0">JNo</option>
             <option value="1">JYes</option>
         </field>
+
+        <field name="liar_mode"
+               type="radio"
+               layout="joomla.form.field.radio.switcher"
+               default="1"
+               label="COM_ARS_CONFIG_LIAR_MODE_LABEL"
+               description="COM_ARS_CONFIG_LIAR_MODE_DESC"
+        >
+            <option value="0">JNo</option>
+            <option value="1">JYes</option>
+        </field>
     </fieldset>
 
     <fieldset name="frontend" label="COM_ARS_CONFIG_FRONTEND_HEADER_LABEL"
