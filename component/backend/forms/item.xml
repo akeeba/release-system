@@ -228,6 +228,7 @@
         <field
                 name="hits"
                 type="number"
+		default="0"
                 label="JGLOBAL_HITS"
                 class="readonly"
                 readonly="true"

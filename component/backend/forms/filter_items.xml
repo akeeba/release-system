@@ -93,6 +93,8 @@
             <option value="i.title DESC">JGLOBAL_TITLE_DESC</option>
             <option value="i.id ASC">JGRID_HEADING_ID_ASC</option>
             <option value="i.id DESC">JGRID_HEADING_ID_DESC</option>
+			<option value="i.hits ASC">JGLOBAL_HITS_ASC</option>
+            <option value="i.hits DESC">JGLOBAL_HITS_DESC</option>
             <option value="i.access ASC">JGRID_HEADING_ACCESS_ASC</option>
             <option value="i.access DESC">JGRID_HEADING_ACCESS_DESC</option>
             <option value="i.language ASC">JGRID_HEADING_LANGUAGE_ASC</option>
