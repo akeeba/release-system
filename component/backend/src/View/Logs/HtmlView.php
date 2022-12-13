@@ -95,7 +95,7 @@ class HtmlView extends BaseHtmlView
 
 		if ($user->authorise('core.delete', 'com_ars'))
 		{
-			$toolbar->delete('releases.delete')
+			$toolbar->delete('logs.delete')
 				->message('JGLOBAL_CONFIRM_DELETE')
 				->listCheck(true);
 		}
