@@ -182,7 +182,7 @@ $cParams = ComponentHelper::getParams('com_ars');
 								<?php endif; ?>
 
 								<td class="text-center">
-									<?= HTMLHelper::_('jgrid.published', $item->published, $i, 'categories.', $user->authorise('core.edit.state', 'com_ars'), 'cb'); ?>
+									<?= HTMLHelper::_('jgrid.published', $item->published, $i, 'releases.', $user->authorise('core.edit.state', 'com_ars'), 'cb'); ?>
 								</td>
 
 								<td class="w-1 d-none d-md-table-cell">
