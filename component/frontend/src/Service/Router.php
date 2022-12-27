@@ -176,7 +176,7 @@ class Router extends RouterView
 		 */
 
 		$unsetItemIdCorrect = $queryItemId == $defaultItemid ||
-			($queryItemId == $currentItemid && $currentComponent !== 'com_ars');
+			($queryItemId !== $currentItemid && $currentComponent == 'com_ars');
 		$unsetItemIdWrong   = $queryItemId == $defaultItemid || $queryItemId == $currentItemid;
 
 		$unsetItemId = (ComponentHelper::getParams('com_ars')->get('router_itemid_behaviour', '0') == 0)
