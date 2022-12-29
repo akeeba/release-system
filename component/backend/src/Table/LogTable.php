@@ -9,7 +9,6 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Event\DispatcherInterface;
@@ -53,7 +52,7 @@ class LogTable extends AbstractTable
 
 		if (empty($this->accessed_on) || ($this->accessed_on === $db->getNullDate()))
 		{
-			$this->accessed_on = (new Date())->toSql();
+			$this->accessed_on = (clone Factory::getDate())->toSql();
 		}
 
 		if (empty($this->referer) && isset($_SERVER['HTTP_REFERER']))

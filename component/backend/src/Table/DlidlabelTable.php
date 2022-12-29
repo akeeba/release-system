@@ -13,7 +13,6 @@ use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableCreateModifyTrait;
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\User\UserFactoryInterface;
@@ -106,7 +105,7 @@ class DlidlabelTable extends AbstractTable
 			$this->createNewDownloadID($db);
 		}
 
-		$this->title = $this->title ?: sprintf('Download ID %s' , (new Date())->format(Text::_('DATE_FORMAT_LC6') . ' T'));
+		$this->title = $this->title ?: sprintf('Download ID %s' , (clone Factory::getDate())->format(Text::_('DATE_FORMAT_LC6') . ' T'));
 	}
 
 	/**

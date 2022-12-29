@@ -15,7 +15,6 @@ use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Exception;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
@@ -152,7 +151,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 				array_filter($releases, function (ReleaseTable $release) use ($targetTimestamp) {
 					try
 					{
-						return (new Date($release->created))->getTimestamp() <= $targetTimestamp;
+						return (clone Factory::getDate($release->created))->getTimestamp() <= $targetTimestamp;
 					}
 					catch (Exception $e)
 					{
@@ -232,7 +231,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 						$notes         = $this->coloriseChangelog($changeLogData, $first_changelog);
 					}
 
-					$jNow = new Date();
+					$jNow = clone Factory::getDate();
 
 					$alias = ApplicationHelper::stringURLSafe($folder);
 
@@ -424,7 +423,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 				continue;
 			}
 
-			$jNow = new Date();
+			$jNow = clone Factory::getDate();
 			$data = [
 				'id'          => 0,
 				'release_id'  => $release->id,

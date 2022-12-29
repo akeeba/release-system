@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 use Akeeba\Component\ARS\Administrator\Helper\ComponentParams;
 use DateInterval;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Uri\Uri;
 
@@ -87,36 +87,36 @@ class ControlpanelModel extends BaseDatabaseModel
 				break;
 
 			case 'year':
-				$year_start = new Date(date('Y-01-01'));
-				$year_end   = new Date(date('Y-12-31'));
+				$year_start = clone Factory::getDate(date('Y-01-01'));
+				$year_end   = clone Factory::getDate(date('Y-12-31'));
 
 				$date = $db->q($year_start->toSql()) . " AND " . $db->q($year_end->toSql());
 				break;
 
 			case 'lastmonth':
-				$month_start = new Date(strtotime("first day of last month"));
-				$month_end   = new Date(strtotime("last day of last month"));
+				$month_start = clone Factory::getDate(strtotime("first day of last month"));
+				$month_end   = clone Factory::getDate(strtotime("last day of last month"));
 
 				$date = $db->q($month_start->toSql()) . " AND " . $db->q($month_end->toSql());
 				break;
 
 			case 'month':
-				$month_start = new Date(date('Y-m-01'));
-				$month_end   = new Date(date('Y-m-t'));
+				$month_start = clone Factory::getDate(date('Y-m-01'));
+				$month_end   = clone Factory::getDate(date('Y-m-t'));
 
 				$date = $db->q($month_start->toSql()) . "AND " . $db->q($month_end->toSql());
 				break;
 
 			case 'week':
-				$week_start = new Date(strtotime('Sunday last week'));
-				$week_end   = new Date(strtotime('Monday this week'));
+				$week_start = clone Factory::getDate(strtotime('Sunday last week'));
+				$week_end   = clone Factory::getDate(strtotime('Monday this week'));
 
 				$date = $db->q($week_start->toSql()) . " AND " . $db->q($week_end->toSql());
 				break;
 
 			case 'day':
-				$day_start = new Date(date('Y-m-d') . ' 00:00:00');
-				$day_end   = new Date(date('Y-m-d') . ' 23:59:59');
+				$day_start = clone Factory::getDate(date('Y-m-d') . ' 00:00:00');
+				$day_end   = clone Factory::getDate(date('Y-m-d') . ' 23:59:59');
 
 				$date = $db->q($day_start->toSql()) . " AND " . $db->q($day_end->toSql());
 				break;
@@ -146,8 +146,8 @@ class ControlpanelModel extends BaseDatabaseModel
 	{
 		$db = $this->getDatabase();
 
-		$now        = new Date();
-		$last_month = new Date();
+		$now        = clone Factory::getDate();
+		$last_month = clone Factory::getDate();
 		$last_month->sub(new DateInterval('P35D'));
 
 		$query = $db->getQuery(true)

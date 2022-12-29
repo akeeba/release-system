@@ -3,6 +3,7 @@ Akeeba Release System 7.1.1
 ================================================================================
 + Liar mode
 # [LOW] Cannot publish/unpublish releases and items using the checkmark icons in the backend
+# [LOW] Wrong grammatical case (nominative instead of genitive) in months in some languages e.g. Greek
 
 Akeeba Release System 7.1.0
 ================================================================================

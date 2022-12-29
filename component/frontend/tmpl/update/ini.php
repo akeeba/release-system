@@ -9,7 +9,7 @@ defined('_JEXEC') or die();
 
 /** @var \Akeeba\Component\ARS\Site\View\Update\IniView $this */
 
-use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 
@@ -27,7 +27,7 @@ if (count($this->items))
 	}, $parsedPlatforms['php']));
 
 	$moreURL = Route::_('index.php?option=com_ars&view=items&&release_id=' . $item->release_id . '&category_id=' . $item->category, false, Route::TLS_IGNORE, true);
-	$date    = new Date($item->created);
+	$date    = clone Factory::getDate($item->created);
 }
 
 @ob_end_clean();
