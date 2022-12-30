@@ -128,20 +128,22 @@ CREATE TABLE IF NOT EXISTS `#__ars_updatestreams` (
 ) ENGINE InnoDB DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `#__ars_autoitemdesc` (
-    `id`               bigint(20)          NOT NULL AUTO_INCREMENT,
-    `category`         bigint(20) unsigned NOT NULL,
-    `packname`         varchar(255)                 DEFAULT NULL,
-    `title`            varchar(255)        NOT NULL,
-    `access`           int(11)             NOT NULL DEFAULT '0',
-    `description`      MEDIUMTEXT          NOT NULL,
-    `environments`     varchar(100)                 DEFAULT NULL,
-    `created`          datetime            NULL     DEFAULT NULL,
-    `created_by`       int(11)             NOT NULL DEFAULT '0',
-    `modified`         datetime            NULL     DEFAULT NULL,
-    `modified_by`      int(11)             NOT NULL DEFAULT '0',
-    `checked_out`      int(11)             NOT NULL DEFAULT '0',
-    `checked_out_time` datetime            NULL     DEFAULT NULL,
-    `published`        int(11)             NOT NULL DEFAULT '1',
+    `id`                bigint(20)          NOT NULL AUTO_INCREMENT,
+    `category`          bigint(20) unsigned NOT NULL,
+    `packname`          varchar(255)                 DEFAULT NULL,
+    `title`             varchar(255)        NOT NULL,
+    `access`            int(11)             NOT NULL DEFAULT '0',
+    `show_unauth_links` tinyint             NOT NULL DEFAULT '0',
+    `redirect_unauth`   varchar(255)        NOT NULL DEFAULT '',
+    `description`       MEDIUMTEXT          NOT NULL,
+    `environments`      varchar(100)                 DEFAULT NULL,
+    `created`           datetime            NULL     DEFAULT NULL,
+    `created_by`        int(11)             NOT NULL DEFAULT '0',
+    `modified`          datetime            NULL     DEFAULT NULL,
+    `modified_by`       int(11)             NOT NULL DEFAULT '0',
+    `checked_out`       int(11)             NOT NULL DEFAULT '0',
+    `checked_out_time`  datetime            NULL     DEFAULT NULL,
+    `published`         int(11)             NOT NULL DEFAULT '1',
     PRIMARY KEY `id` (`id`)
 ) ENGINE InnoDB DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE = utf8mb4_unicode_ci;
 

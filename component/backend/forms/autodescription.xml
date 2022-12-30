@@ -52,6 +52,26 @@
         </field>
 
         <field
+                name="show_unauth_links"
+                type="list"
+                layout="joomla.form.field.radio.switcher"
+                label="COM_ARS_COMMON_SHOW_UNAUTH_LINKS"
+                default="0"
+                validate="options"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+                name="redirect_unauth"
+                type="url"
+                label="COM_ARS_COMMON_REDIRECT_UNAUTH"
+                validate="url"
+                showon="show_unauth_links:1"
+        />
+
+        <field
                 name="description"
                 type="editor"
                 label="COM_ARS_AUTODESCRIPTION_FIELD_DESCRIPTION"
