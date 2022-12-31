@@ -37,7 +37,7 @@ elseif (is_string($environments))
 
 <div class="ars-item-<?= $item->id ?> mb-3 pb-1 border-bottom border-secondary">
 	<h4>
-		<a href="<?= $downloadUrl ?>" download><?= $this->escape($item->title) ?></a>
+		<a href="<?= $downloadUrl ?>"<?= $directLink ? ' download' : '' ?>><?= $this->escape($item->title) ?></a>
 	</h4>
 	<?php if (!(empty($environments) || !$this->params->get('show_environments',1))): ?>
 	<p>
