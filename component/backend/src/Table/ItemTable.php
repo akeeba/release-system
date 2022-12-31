@@ -298,6 +298,10 @@ class ItemTable extends AbstractTable
 		// Apply access
 		$this->access = $this->access !== 1 || !$auto->access ? $this->access : $auto->access ;
 
+        // Apply unauthorized links
+		$this->show_unauth_links = $this->show_unauth_links == 1 || !$auto->show_unauth_links ? $this->show_unauth_links : $auto->show_unauth_links ;
+		$this->redirect_unauth   = $this->redirect_unauth ?: $auto->redirect_unauth ;
+
 		// Apply description, if necessary
 		$stripDesc = trim(strip_tags($this->description));
 
