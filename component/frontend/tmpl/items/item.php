@@ -16,8 +16,8 @@ use Akeeba\Component\ARS\Site\View\Items\HtmlView;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-[$downloadUrl, $directLink] = $this->getItemUrl($item);
-$directLink    = $this->directlink && $directLink;
+[$downloadUrl, $isDownloadUrl] = $this->getItemUrl($item);
+$directLink    = $this->directlink && $isDownloadUrl;
 $directLinkURL = $directLink ? $this->getDirectLink($item, $downloadUrl) : '';
 
 HTMLHelper::_('bootstrap.collapse', '.ars-collapse');
@@ -37,7 +37,7 @@ elseif (is_string($environments))
 
 <div class="ars-item-<?= $item->id ?> mb-3 pb-1 border-bottom border-secondary">
 	<h4>
-		<a href="<?= $downloadUrl ?>"<?= $directLink ? ' download' : '' ?>><?= $this->escape($item->title) ?></a>
+		<a href="<?= $downloadUrl ?>"<?= $isDownloadUrl ? ' download' : '' ?>><?= $this->escape($item->title) ?></a>
 	</h4>
 	<?php if (!(empty($environments) || !$this->params->get('show_environments',1))): ?>
 	<p>
@@ -53,7 +53,7 @@ elseif (is_string($environments))
 	<?php endif; ?>
 	<div class="my-2 d-flex">
 		<div class="flex-grow-1">
-			<a href="<?= $downloadUrl ?>" rel="nofollow" download class="text-success">
+			<a href="<?= $downloadUrl ?>" rel="nofollow"<?= $isDownloadUrl ? ' download' : '' ?> class="text-success">
 				<code><?= $this->escape(basename(($item->type == 'file') ? $item->filename : $item->url)) ?></code>
 			</a>
 			<?php if (!empty($directLinkURL)): ?>
@@ -64,7 +64,7 @@ elseif (is_string($environments))
 			<?php endif; ?>
 		</div>
 		<div>
-			<a href="<?= $downloadUrl ?>" class="btn btn-primary btn-sm " rel="nofollow" download>
+			<a href="<?= $downloadUrl ?>" class="btn btn-primary btn-sm " rel="nofollow"<?= $isDownloadUrl ? ' download' : '' ?>>
 				<span class="fa fa-file-download"></span>
 				<?= Text::_('COM_ARS_ITEM_LBL_DOWNLOAD') ?>
 			</a>
@@ -184,7 +184,7 @@ elseif (is_string($environments))
 			<?php endif; ?>
 
 			<div>
-				<a href="<?= $downloadUrl ?>" class="btn btn-primary" rel="nofollow" download>
+				<a href="<?= $downloadUrl ?>" class="btn btn-primary" rel="nofollow" <?= $isDownloadUrl ? ' download' : '' ?>>
 					<?= Text::_('COM_ARS_ITEM_LBL_DOWNLOAD') ?>
 				</a>
 				<?php if (!empty($directLinkURL)): ?>
