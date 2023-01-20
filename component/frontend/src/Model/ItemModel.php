@@ -446,6 +446,7 @@ class ItemModel extends BaseDatabaseModel
 			->from($db->quoteName('#__ars_dlidlabels'))
 			->where($db->quoteName('dlid') . ' = :dlid')
 			->where($db->quoteName('primary') . ' = :isPrimary')
+            ->where($db->quoteName('published') . ' = 1')
 			->bind(':isPrimary', $isPrimary, ParameterType::INTEGER)
 			->bind(':dlid', $downloadId, ParameterType::STRING);
 
