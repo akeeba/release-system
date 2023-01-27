@@ -37,10 +37,4 @@
     </languages>
 
     <scriptfile>script.ars.php</scriptfile>
-
-    <updateservers>
-        <server type="extension" priority="1" name="Akeeba Release System Updates">
-            https://raw.githubusercontent.com/akeeba/release-system/master/update/pkg_ars_updates.xml
-        </server>
-    </updateservers>
 </extension>
