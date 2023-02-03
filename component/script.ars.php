@@ -57,6 +57,9 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 			return true;
 		}
 
+		// Remove obsolete update site
+		$this->removeOldUpdateSites();
+
 		// Install the dashboard modules if necessary
 		if (!$this->isModuleInDashboard('com-ars-ars', 'mod_submenu'))
 		{
@@ -251,6 +254,22 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 		}
 
 		$this->dbo = Factory::getContainer()->get('DatabaseDriver');
+	}
+
+	private function removeOldUpdateSites()
+	{
+		$db    = $this->dbo;
+		$query = $db->getQuery(true)
+			->delete($db->qn('#__update_sites'))
+			->where($db->qn('location') . ' = ' . $db->q('https://raw.githubusercontent.com/akeeba/release-system/master/update/pkg_ars_updates.xml'));
+		try
+		{
+			$db->setQuery($query)->execute();
+		}
+		catch (\Exception $e)
+		{
+			// Do nothing on failure
+		}
 	}
 
 }
