@@ -10,25 +10,24 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 defined('_JEXEC') or die;
 
 use DirectoryIterator;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\Adapter\PackageAdapter;
 use Joomla\CMS\Installer\Installer;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\BaseModel;
-use Joomla\CMS\MVC\Model\DatabaseAwareTrait;
 use Joomla\CMS\Table\Extension;
 use Joomla\CMS\User\UserHelper;
-use Joomla\Database\DatabaseDriver;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\ParameterType;
 use RuntimeException;
 use SimpleXMLElement;
 use Throwable;
 
 #[\AllowDynamicProperties]
-class UpgradeModel extends BaseDatabaseModel
+class UpgradeModel extends BaseModel
 {
+	use DatabaseAwareTrait;
+
 	/**
 	 * Name of the package being replaced
 	 *

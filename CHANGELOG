@@ -5,6 +5,7 @@ Akeeba Release System 7.2.0
 + Add show unauthorized links options to automatic item description (gh-222)
 # [HIGH] Disabled Download IDs were still considered valid
 # [HIGH] Show Unauthorised Links results in downloading the HTML page of the unauthorized item redirection instead of redirecting (gh-220)
+# [MEDIUM] Plugins not enabled on clean installation
 # [LOW] Cannot publish/unpublish releases and items using the checkmark icons in the backend
 # [LOW] Wrong grammatical case (nominative instead of genitive) in months in some languages e.g. Greek
 
