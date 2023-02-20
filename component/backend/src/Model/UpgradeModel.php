@@ -17,6 +17,7 @@ use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\MVC\Model\BaseModel;
 use Joomla\CMS\Table\Extension;
 use Joomla\CMS\User\UserHelper;
+use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\ParameterType;
 use RuntimeException;
@@ -24,7 +25,7 @@ use SimpleXMLElement;
 use Throwable;
 
 #[\AllowDynamicProperties]
-class UpgradeModel extends BaseModel
+class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 {
 	use DatabaseAwareTrait;
 
