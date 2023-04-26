@@ -91,6 +91,12 @@
             </menu>
 
             <menu
+                    link="option=com_ars&amp;view=dlidlabels"
+            >
+                COM_ARS_TITLE_DLIDLABELS
+            </menu>
+
+            <menu
                     link="option=com_ars&amp;view=updatestreams"
             >
                 <params>
