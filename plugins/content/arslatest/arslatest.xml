@@ -12,7 +12,7 @@
     <author>Nicholas K. Dionysopoulos</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>https://www.akeeba.com</authorUrl>
-    <copyright>Copyright (c)2010-2021 Nicholas K. Dionysopoulos</copyright>
+    <copyright>Copyright (c)2010-2023 Nicholas K. Dionysopoulos</copyright>
     <license>GNU General Public License version 3, or later</license>
     <description>PLG_CONTENT_ARSLATEST_XML_DESCRIPTION</description>
     <namespace path="src">Joomla\Plugin\Content\Arslatest</namespace>
