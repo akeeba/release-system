@@ -141,7 +141,7 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 
 		if (function_exists('opcache_invalidate'))
 		{
-			opcache_invalidate($filePath = JPATH_ADMINISTRATOR . '/components/com_ars/src/Model/UpgradeModel.php');
+			opcache_invalidate($filePath = JPATH_ADMINISTRATOR . '/components/com_ars/src/Model/UpgradeModel.php', true);
 		}
 
 		// Can I please load the model?

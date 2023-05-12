@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.2.1
+================================================================================
+# [LOW] opcache_invalidate may not invalidate a file
+
 Akeeba Release System 7.2.0
 ================================================================================
 + Liar mode
