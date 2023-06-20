@@ -20,7 +20,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Router\Route;
+use Joomla\CMS\Router\SiteRouterAwareTrait;
 use Joomla\CMS\User\User;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Event\Event;
@@ -30,6 +30,7 @@ use Joomla\String\StringHelper;
 class Arslatest extends CMSPlugin implements SubscriberInterface
 {
 	use MVCFactoryAwareTrait;
+	use SiteRouterAwareTrait;
 
 	/**
 	 * @var SiteApplication
@@ -445,7 +446,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			return '';
 		}
 
-		return Route::_('index.php?option=com_ars&view=items&release_id=' . $release->id);
+		return $this->getSiteRouter()->build('index.php?option=com_ars&view=items&release_id=' . $release->id);
 	}
 
 	private function parseItemLink(string $content, string $pattern): string
@@ -479,7 +480,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			return '';
 		}
 
-		return Route::_('index.php?option=com_ars&view=item&task=download&format=raw&category_id=' . $release->category_id . '&release_id=' . $release->id . '&item_id=' . $item->id);
+		return $this->getSiteRouter()->build('index.php?option=com_ars&view=item&task=download&format=raw&category_id=' . $release->category_id . '&release_id=' . $release->id . '&item_id=' . $item->id);
 	}
 
 	private function parseStreamRelease(string $content, ?string $pattern): string
@@ -505,7 +506,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			return '';
 		}
 
-		$link = Route::_('index.php?option=com_ars&view=items&release_id=' . $this->streamInfo[$stream_id][$pattern]->release_id);
+		$link = $this->getSiteRouter()->build('index.php?option=com_ars&view=items&release_id=' . $this->streamInfo[$stream_id][$pattern]->release_id);
 
 		return $link;
 	}
@@ -520,7 +521,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			return '';
 		}
 
-		return Route::_('index.php?option=com_ars&view=item&task=download&format=raw&category_id=' . $this->streamInfo[$stream_id][$pattern]->category . '&release_id=' . $this->streamInfo[$stream_id][$pattern]->release_id . '&item_id=' . $this->streamInfo[$stream_id][$pattern]->item_id);
+		return $this->getSiteRouter()->build('index.php?option=com_ars&view=item&task=download&format=raw&category_id=' . $this->streamInfo[$stream_id][$pattern]->category . '&release_id=' . $this->streamInfo[$stream_id][$pattern]->release_id . '&item_id=' . $this->streamInfo[$stream_id][$pattern]->item_id);
 	}
 
 	private function getFilesForRelease(int $release_id)
@@ -570,7 +571,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			$url .= '&dlid=' . $dlid;
 		}
 
-		$link = Route::_($url, false);
+		$link = $this->getSiteRouter()->build($url);
 
 		return $link;
 	}

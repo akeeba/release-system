@@ -11,6 +11,7 @@ use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Extension\Service\Provider\MVCFactory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\SiteRouter;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
@@ -35,11 +36,15 @@ return new class implements ServiceProviderInterface {
 				$dispatcher = $container->get(DispatcherInterface::class);
 				$factory    = $container->get(MVCFactoryInterface::class);
 
-				return new Arslatest(
+				$plugin = new Arslatest(
 					$dispatcher,
 					(array) $plugin,
 					$factory
 				);
+
+				$plugin->setSiteRouter($container->get(SiteRouter::class));
+
+				return $plugin;
 			}
 		);
 	}
