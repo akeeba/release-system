@@ -17,6 +17,7 @@
     <copyright>Copyright (c)2010-2020 Nicholas K. Dionysopoulos</copyright>
     <license>GNU GPL v3 or later</license>
     <description>PKG_ARS_XML_DESCRIPTION</description>
+    <blockChildUninstall>true</blockChildUninstall>
 
     <files>
         <file type="component" id="com_ars">com_ars.zip</file>

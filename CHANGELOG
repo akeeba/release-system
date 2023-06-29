@@ -1,6 +1,7 @@
 <?php die(); ?>
 Akeeba Release System 7.2.1
 ================================================================================
+~ Block uninstallation of child extensions
 # [LOW] opcache_invalidate may not invalidate a file
 
 Akeeba Release System 7.2.0
