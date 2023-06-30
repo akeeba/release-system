@@ -1059,6 +1059,9 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 			return false;
 		}
 
+		// Extensions must be marked as not belonging to the package before they can be removed
+		$this->removeExtensionPackageLink($eid);
+
 		// Get an Extension table object and Installer object.
 		/** @noinspection PhpParamsInspection */
 		$row       = new Extension($this->getDatabase());
@@ -1184,5 +1187,16 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 	private function isSamePackage(): bool
 	{
 		return empty(self::OLD_PACKAGE_NAME) || (self::OLD_PACKAGE_NAME === self::PACKAGE_NAME);
+	}
+
+	private function removeExtensionPackageLink(int $eid): void
+	{
+		$db    = $this->getDatabase();
+		$query = $db->getQuery(true)
+			->update($db->quoteName('#__extensions'))
+			->set($db->quoteName('package_id') . ' = 0')
+			->where($db->quoteName('extension_id') . ' = :eid')
+			->bind(':eid', $eid, ParameterType::INTEGER);
+		$db->setQuery($query)->execute();
 	}
 }
