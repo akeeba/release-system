@@ -3,6 +3,7 @@ Akeeba Release System 7.2.1
 ================================================================================
 ~ Joomla 5 preparation: Use DatabaseInterface instead of DatabaseDriver
 ~ Block uninstallation of child extensions
+~ Change namespace prefixes of plugins
 # [LOW] opcache_invalidate may not invalidate a file
 
 Akeeba Release System 7.2.0

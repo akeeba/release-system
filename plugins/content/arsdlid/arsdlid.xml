@@ -15,7 +15,7 @@
     <copyright>Copyright (c)2010-2023 Nicholas K. Dionysopoulos</copyright>
     <license>GNU General Public License version 3, or later</license>
     <description>PLG_CONTENT_ARSDLID_DESCRIPTION</description>
-    <namespace path="src">Joomla\Plugin\Content\Arsdlid</namespace>
+    <namespace path="src">Akeeba\Plugin\Content\ARSDownloadID</namespace>
     <files>
         <folder plugin="arsdlid">services</folder>
         <folder>src</folder>

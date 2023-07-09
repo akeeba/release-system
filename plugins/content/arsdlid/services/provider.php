@@ -14,7 +14,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Content\Arsdlid\Extension\Arsdlid;
+use Akeeba\Plugin\Content\ARSDownloadID\Extension\Arsdlid;
 
 return new class implements ServiceProviderInterface {
 	/**

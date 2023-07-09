@@ -14,7 +14,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Content\Arslatest\Extension\Arslatest;
+use Akeeba\Plugin\Content\ARSLatest\Extension\Arslatest;
 
 return new class implements ServiceProviderInterface {
 	/**

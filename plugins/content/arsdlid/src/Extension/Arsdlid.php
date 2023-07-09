@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-namespace Joomla\Plugin\Content\Arsdlid\Extension;
+namespace Akeeba\Plugin\Content\ARSDownloadID\Extension;
 
 defined('_JEXEC') || die;
 
