@@ -34,11 +34,9 @@ class Arsdlid extends CMSPlugin implements SubscriberInterface
 	/** @var DlidlabelsModel */
 	private static $model;
 
-	public function __construct(&$subject, $config, MVCFactoryInterface $mvcFactory)
+	public function applyMVCFactory(MVCFactoryInterface $factory)
 	{
-		parent::__construct($subject, $config);
-
-		$this->setMVCFactory($mvcFactory);
+		$this->setMVCFactory($factory);
 
 		self::$model = $this->mvcFactory->createModel('Dlidlabels', 'site');
 	}

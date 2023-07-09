@@ -5,6 +5,8 @@
  * @license   GNU General Public License version 3, or later
  */
 
+namespace Akeeba\Plugin\EditorsExtended\ARSLink\Extension;
+
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplication;
@@ -13,17 +15,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
 
-class plgButtonArslink extends CMSPlugin
+class ARSLink extends CMSPlugin
 {
 	/** @var CMSApplication */
 	protected $app;
 
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $autoloadLanguage = true;
 
 	public function onDisplay(string $name): ?CMSObject
 	{
@@ -82,7 +79,7 @@ JS;
 			'editor' => $name,
 		]);
 
-		$props = [
+		return new CMSObject([
 			'modal'   => true,
 			'link'    => sprintf(
 				'index.php?option=com_ars&view=items&layout=modal&tmpl=component&%s=1',
@@ -98,8 +95,6 @@ JS;
 				'bodyHeight' => '70',
 				'modalWidth' => '80',
 			],
-		];
-
-		return new CMSObject($props);
+		]);
 	}
 }

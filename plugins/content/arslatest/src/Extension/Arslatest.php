@@ -18,7 +18,6 @@ use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
-use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\User\User;
@@ -53,27 +52,12 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 	private $filesPerRelease = [];
 
 	/**
-	 * Should this plugin be allowed to run? True if the ARS component is enabled.
-	 *
-	 * @var  bool
-	 */
-	private $enabled = true;
-
-	/**
 	 * Information about the latest available item in a stream, indexed by the update stream ID.
 	 *
 	 * @var   array
 	 * @since 6.0.1
 	 */
 	private $streamInfo = [];
-
-	public function __construct(&$subject, $config, MVCFactoryInterface $mvcFactory)
-	{
-		parent::__construct($subject, $config);
-
-		$this->setMVCFactory($mvcFactory);
-		$this->enabled = ComponentHelper::isEnabled('com_ars');
-	}
 
 	/**
 	 * Returns an array of events this subscriber will listen to.
@@ -95,7 +79,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 
 	public function onContentPrepare(Event $event)
 	{
-		if (!$this->enabled)
+		if (!$this->isEnabled())
 		{
 			return;
 		}
@@ -125,6 +109,15 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 		{
 			$row = $text;
 		}
+	}
+
+	private function isEnabled()
+	{
+		static $isEnabled = null;
+
+		$isEnabled = $isEnabled ?? ComponentHelper::isEnabled('com_ars');
+
+		return $isEnabled;
 	}
 
 	/**
@@ -207,7 +200,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 		/** @var object $release */
 		foreach ($releases as $release)
 		{
-			$temp[$release->category_id] = $temp[$release->category_id] ?? [];
+			$temp[$release->category_id]   = $temp[$release->category_id] ?? [];
 			$temp[$release->category_id][] = $release;
 		}
 
@@ -298,7 +291,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			});
 
 			// Joomla 4 items which ARE NOT available on Joomla 3
-			$found   = false;
+			$found      = false;
 			$altJ4Items = array_filter($items, function ($item) use (&$found, $j4Env, $j3Env) {
 				if ($found)
 				{

@@ -22,8 +22,12 @@ and packaging.
     <copyright>Copyright (C) 2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd. All rights reserved.</copyright>
     <license>GNU General Public License version 3 or later</license>
     <description>PLG_ARSLINK_XML_DESCRIPTION</description>
+
+    <namespace path="src">Akeeba\Plugin\EditorsExtended\ARSLink</namespace>
+
     <files>
-        <filename plugin="arslink">arslink.php</filename>
+        <folder>services</folder>
+        <folder plugin="arslink">src</folder>
         <filename>.htaccess</filename>
         <filename>web.config</filename>
     </files>

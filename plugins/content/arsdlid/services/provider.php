@@ -7,6 +7,7 @@
 
 defined('_JEXEC') or die;
 
+use Akeeba\Plugin\Content\ARSDownloadID\Extension\Arsdlid;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Extension\Service\Provider\MVCFactory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -14,7 +15,6 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Akeeba\Plugin\Content\ARSDownloadID\Extension\Arsdlid;
 
 return new class implements ServiceProviderInterface {
 	/**
@@ -31,15 +31,17 @@ return new class implements ServiceProviderInterface {
 		$container->set(
 			PluginInterface::class,
 			function (Container $container) {
-				$plugin     = PluginHelper::getPlugin('content', 'arsdlid');
-				$dispatcher = $container->get(DispatcherInterface::class);
-				$factory    = $container->get(MVCFactoryInterface::class);
-
-				return new Arsdlid(
+				$pluginParams = PluginHelper::getPlugin('content', 'arsdlid');
+				$dispatcher   = $container->get(DispatcherInterface::class);
+				$factory      = $container->get(MVCFactoryInterface::class);
+				$plugin       = new Arsdlid(
 					$dispatcher,
-					(array) $plugin,
-					$factory
+					(array) $pluginParams
 				);
+
+				$plugin->applyMVCFactory($factory);
+
+				return $plugin;
 			}
 		);
 	}

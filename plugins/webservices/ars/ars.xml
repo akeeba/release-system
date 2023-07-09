@@ -16,9 +16,14 @@
     <copyright>Copyright (c)2010-2023 Nicholas K. Dionysopoulos</copyright>
     <license>GNU General Public License version 3, or later</license>
     <description>PLG_WEBSERVICES_ARS_XML_DESCRIPTION</description>
+
+    <namspace path="src">Akeeba\Plugin\WebServices\ARS</namspace>
+
     <files>
-        <filename plugin="ars">ars.php</filename>
+        <folder>services</folder>
+        <folder plugin="ars">src</folder>
     </files>
+
     <languages folder="language">
         <language tag="en-GB">en-GB/plg_webservices_ars.ini</language>
         <language tag="en-GB">en-GB/plg_webservices_ars.sys.ini</language>

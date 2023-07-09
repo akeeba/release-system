@@ -1,9 +1,10 @@
 <?php die(); ?>
-Akeeba Release System 7.2.1
+Akeeba Release System 7.3.0
 ================================================================================
 ~ Joomla 5 preparation: Use DatabaseInterface instead of DatabaseDriver
 ~ Block uninstallation of child extensions
 ~ Change namespace prefixes of plugins
+~ Modernised all plugins
 # [LOW] opcache_invalidate may not invalidate a file
 
 Akeeba Release System 7.2.0
