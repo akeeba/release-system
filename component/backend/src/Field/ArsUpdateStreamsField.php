@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\Database\DatabaseDriver;
+use Joomla\Database\DatabaseInterface;
 
 class ArsUpdateStreamsField extends ListField
 {
@@ -20,7 +21,7 @@ class ArsUpdateStreamsField extends ListField
 	protected function getInput()
 	{
 		/** @var DatabaseDriver $db */
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true)
 			->select([
 				$db->qn('id'),

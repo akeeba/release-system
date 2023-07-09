@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\Database\DatabaseDriver;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 class ComponentParams
@@ -26,7 +27,7 @@ class ComponentParams
 	public static function save(Registry $params, string $option = 'com_ars'): void
 	{
 		/** @var DatabaseDriver $db */
-		$db   = JoomlaFactory::getContainer()->get('DatabaseDriver');
+		$db   = JoomlaFactory::getContainer()->get(DatabaseInterface::class);
 		$data = $params->toString('JSON');
 
 		$sql = $db->getQuery(true)

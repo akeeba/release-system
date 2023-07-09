@@ -13,6 +13,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseDriver;
+use Joomla\Database\DatabaseInterface;
 
 defined('_JEXEC') || die;
 
@@ -93,7 +94,7 @@ class AkeebaReleaseSystem
 		}
 
 		/** @var DatabaseDriver $db */
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true)
 			->select($db->quoteName('dlid'))
 			->from($db->quoteName('#__ars_dlidlabels'))

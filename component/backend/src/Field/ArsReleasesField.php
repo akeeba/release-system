@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\GroupedlistField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Database\DatabaseDriver;
+use Joomla\Database\DatabaseInterface;
 
 class ArsReleasesField extends GroupedlistField
 {
@@ -32,7 +33,7 @@ class ArsReleasesField extends GroupedlistField
 		}
 
 		/** @var DatabaseDriver $db */
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true)
 			->select([
 				$db->qn('r.id'),

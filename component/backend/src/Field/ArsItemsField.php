@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\GroupedlistField;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Database\DatabaseInterface;
 
 class ArsItemsField extends GroupedlistField
 {
@@ -42,7 +43,7 @@ class ArsItemsField extends GroupedlistField
 		}
 
 
-		$db    = Factory::getContainer()->get('DatabaseDriver');
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true)
 			->select([
 				$db->qn('i.id'),

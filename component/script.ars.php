@@ -172,11 +172,11 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 
 		if (method_exists($upgradeModel, 'setDatabase'))
 		{
-			$upgradeModel->setDatabase($this->dbo ?? Factory::getContainer()->get('DatabaseDriver'));
+			$upgradeModel->setDatabase($this->dbo ?? Factory::getContainer()->get(DatabaseInterface::class));
 		}
 		elseif (method_exists($upgradeModel, 'setDbo'))
 		{
-			$upgradeModel->setDbo($this->dbo ?? Factory::getContainer()->get('DatabaseDriver'));
+			$upgradeModel->setDbo($this->dbo ?? Factory::getContainer()->get(DatabaseInterface::class));
 		}
 
 		if (method_exists($upgradeModel, 'init'))
@@ -199,7 +199,7 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 	private function isModuleInDashboard(string $dashboard, string $module): bool
 	{
 		$position = 'cpanel-' . $dashboard;
-		$db       = Factory::getContainer()->get('DatabaseDriver');
+		$db       = Factory::getContainer()->get(DatabaseInterface::class);
 		$query    = $db->getQuery(true)
 		               ->select('COUNT(*)')
 		               ->from($db->quoteName('#__modules'))
@@ -253,7 +253,7 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 			}
 		}
 
-		$this->dbo = Factory::getContainer()->get('DatabaseDriver');
+		$this->dbo = Factory::getContainer()->get(DatabaseInterface::class);
 	}
 
 	private function removeOldUpdateSites()

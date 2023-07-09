@@ -21,6 +21,7 @@ use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\Button\DropdownButton;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 class HtmlView extends BaseHtmlView
@@ -112,7 +113,7 @@ class HtmlView extends BaseHtmlView
 
 		if (empty($catId) && !empty($relId))
 		{
-			$release = new ReleaseTable(Factory::getContainer()->get('DatabaseDriver'));
+			$release = new ReleaseTable(Factory::getContainer()->get(DatabaseInterface::class));
 
 			if ($release->load($relId))
 			{
