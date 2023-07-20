@@ -57,6 +57,22 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 			return true;
 		}
 
+		// Forcibly create the autoload_psr4.php file afresh.
+		if (class_exists(JNamespacePsr4Map::class))
+		{
+			try
+			{
+				$nsMap = new JNamespacePsr4Map();
+				$nsMap->create();
+				$nsMap->load();
+			}
+			catch (\Throwable $e)
+			{
+				// In case of failure, just try to delete the old autoload_psr4.php file
+				@unlink(JPATH_CACHE . '/autoload_psr4.php');
+			}
+		}
+
 		// Remove obsolete update site
 		$this->removeOldUpdateSites();
 
