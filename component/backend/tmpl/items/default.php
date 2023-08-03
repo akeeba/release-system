@@ -19,6 +19,11 @@ use Joomla\CMS\Uri\Uri;
 
 /** @var \Akeeba\Component\ARS\Administrator\View\Items\HtmlView $this */
 
+if (version_compare(JVERSION, '4.999.999', 'lt'))
+{
+	$this->loadAnyTemplate('common/joomla_eol');
+}
+
 HTMLHelper::_('behavior.multiselect');
 
 $user      = Factory::getApplication()->getIdentity();

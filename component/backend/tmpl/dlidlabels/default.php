@@ -16,6 +16,11 @@ use Joomla\CMS\Router\Route;
 
 /** @var \Akeeba\Component\ARS\Administrator\View\Dlidlabels\HtmlView $this */
 
+if (version_compare(JVERSION, '4.999.999', 'lt'))
+{
+	$this->loadAnyTemplate('common/joomla_eol');
+}
+
 HTMLHelper::_('behavior.multiselect');
 
 $user      = Factory::getApplication()->getIdentity();

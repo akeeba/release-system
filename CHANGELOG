@@ -1,6 +1,7 @@
 <?php die(); ?>
 Akeeba Release System 7.3.0
 ================================================================================
++ Notice about Joomla 4 End of Service
 ~ Joomla 5 preparation: Use DatabaseInterface instead of DatabaseDriver
 ~ Block uninstallation of child extensions
 ~ Change namespace prefixes of plugins

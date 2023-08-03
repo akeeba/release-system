@@ -11,6 +11,11 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 
+if (version_compare(JVERSION, '4.999.999', 'lt'))
+{
+	$this->loadAnyTemplate('common/joomla_eol');
+}
+
 ?>
 
 <?php if ($this->needsMenuItem): ?>
