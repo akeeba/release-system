@@ -16,6 +16,7 @@
       <sourceFolder url="file://$MODULE_DIR$/plugins/content/arsdlid/src" packagePrefix="Akeeba\Plugin\Content\ARSDownloadID\" isTestSource="false"/>
       <sourceFolder url="file://$MODULE_DIR$/plugins/content/arslatest/src" packagePrefix="Akeeba\Plugin\Content\ARSLatest\" isTestSource="false"/>
       <sourceFolder url="file://$MODULE_DIR$/plugins/editors-xtd/arslink/src" packagePrefix="Akeeba\Plugin\EditorsExtended\ARSLink\" isTestSource="false"/>
+      <sourceFolder url="file://$MODULE_DIR$/plugins/webservices/ars/src" packagePrefix="Akeeba\Plugin\WebServices\ARS\" isTestSource="false"/>
     </content>
     <orderEntry type="inheritedJdk"/>
     <orderEntry type="sourceFolder" forTests="false"/>

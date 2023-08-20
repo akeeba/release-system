@@ -17,7 +17,7 @@
     <license>GNU General Public License version 3, or later</license>
     <description>PLG_WEBSERVICES_ARS_XML_DESCRIPTION</description>
 
-    <namspace path="src">Akeeba\Plugin\WebServices\ARS</namspace>
+    <namespace path="src">Akeeba\Plugin\WebServices\ARS</namespace>
 
     <files>
         <folder>services</folder>
