@@ -15,6 +15,7 @@
 
 # Release files
 /release
+/pkg_*.xml
 
 # Temporary stuff
 /*.txt
