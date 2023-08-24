@@ -75,7 +75,7 @@ class Arsdlid extends CMSPlugin implements SubscriberInterface
 
 	public function onContentPrepare(Event $event)
 	{
-		[$context, $article, $params, $limitstart] = $event->getArguments();
+		[$context, $article, $params, $limitstart] = array_values($event->getArguments());
 
 		if (!ComponentHelper::isEnabled('com_ars'))
 		{

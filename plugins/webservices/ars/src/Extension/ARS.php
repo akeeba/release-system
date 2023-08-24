@@ -41,7 +41,7 @@ class ARS extends CMSPlugin implements SubscriberInterface
 	public function beforeAPIRoute(Event $event): void
 	{
 		/** @var ApiRouter $router */
-		[$router] = $event->getArguments();
+		[$router] = array_values($event->getArguments());
 
 		$router->createCRUDRoutes(
 			'v1/ars',
