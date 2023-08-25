@@ -7,12 +7,12 @@
 
 namespace Akeeba\Component\ARS\Administrator\Mixin;
 
-use Joomla\CMS\Factory;
-
 defined('_JEXEC') or die;
 
 trait TriggerEventTrait
 {
+	use RunPluginsTrait;
+
 	/**
 	 * Triggers an object-specific event. The event runs both locally –if a suitable method exists– and through the
 	 * Joomla! plugin system. A true/false return value is expected. The first false return cancels the event.
@@ -68,11 +68,11 @@ trait TriggerEventTrait
 		$prefix .= 'Com' . ucfirst($bareComponent);
 		$prefix .= ucfirst($className);
 
-		// The event name will be something like onComFoobarControllerItemsBeforeSomething
+		// The event name will be something like onComFoobarItemsControllerBeforeSomething
 		$event = $prefix . $event;
 
 		// Call the Joomla! plugins
-		$results = Factory::getApplication()->triggerEvent($event, $arguments);
+		$results = $this->triggerPluginEvent($event, $arguments);
 
 		return !in_array(false, $results, true);
 	}

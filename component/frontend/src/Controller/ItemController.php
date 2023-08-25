@@ -11,6 +11,7 @@ namespace Akeeba\Component\ARS\Site\Controller;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
+use Akeeba\Component\ARS\Administrator\Mixin\RunPluginsTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Table\LogTable;
 use Akeeba\Component\ARS\Site\Mixin\ControllerCRIAccessTrait;
@@ -30,6 +31,7 @@ class ItemController extends BaseController
 	use ControllerEvents;
 	use ControllerCRIAccessTrait;
 	use TableAssertionTrait;
+	use RunPluginsTrait;
 
 	public function __construct($config = [], MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null)
 	{
@@ -162,7 +164,7 @@ class ItemController extends BaseController
 		$extraMessage = $id ? ('Item : ' . $id) : '';
 
 		// Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
-		$this->app->triggerEvent('onAdminToolsThirdpartyException', [
+		$this->triggerPluginEvent('onAdminToolsThirdpartyException', [
 				'external',
 				Text::_('COM_ARS_BLOCKED_MESSAGE'),
 				[$extraMessage],

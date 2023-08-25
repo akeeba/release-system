@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Site\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Mixin\RunPluginsTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
@@ -33,6 +34,7 @@ use RuntimeException;
 class ItemModel extends BaseDatabaseModel
 {
 	use TableAssertionTrait;
+	use RunPluginsTrait;
 
 	private const CHUNK_SIZE = 1048576;
 
@@ -188,7 +190,7 @@ class ItemModel extends BaseDatabaseModel
 			'filesize'    => $filesize,
 		];
 
-		$retArray = $app->triggerEvent('onARSBeforeSendFile', [$object]) ?: [];
+		$retArray = $this->triggerPluginEvent('onARSBeforeSendFile', [$object], null, $app) ?: [];
 
 		foreach ($retArray as $ret)
 		{
@@ -350,7 +352,7 @@ class ItemModel extends BaseDatabaseModel
 			'range_end'   => $seek_end,
 		];
 
-		$ret = $app->triggerEvent('onARSAfterSendFile', [$object]) ?: [];
+		$ret = $this->triggerPluginEvent('onARSAfterSendFile', [$object], null, $app) ?: [];
 
 		foreach ($ret as $r)
 		{
@@ -528,7 +530,7 @@ class ItemModel extends BaseDatabaseModel
 
 		// Run the login user events
 		PluginHelper::importPlugin('user');
-		$app->triggerEvent('onLoginUser', [(array) $response, $options]);
+		$this->triggerPluginEvent('onLoginUser', [(array) $response, $options], null, $app);
 
 		// Set the user in the session, effectively logging in the user
 		$user = Factory::getContainer()->get(UserFactoryInterface::class)->loadUserByUsername($response->username);
@@ -569,7 +571,7 @@ class ItemModel extends BaseDatabaseModel
 			$options['clientid'] = $app->getClientId();
 		}
 
-		$ret = $app->triggerEvent('onUserLogout', [$parameters, $options]);
+		$ret = $this->triggerPluginEvent('onUserLogout', [$parameters, $options], null, $app);
 
 		$haveLoggedOut = !in_array(false, $ret, true);
 
@@ -580,7 +582,7 @@ class ItemModel extends BaseDatabaseModel
 
 	private function get_mime_type(string $filename): string
 	{
-		$type = @mime_content_type($filename);
+		$type = function_exists('mime_content_type') ? @mime_content_type($filename) : false;
 
 		if ($type === false)
 		{

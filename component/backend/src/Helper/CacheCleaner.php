@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Helper;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Mixin\RunPluginsTrait;
 use Exception;
 use InvalidArgumentException;
 use JConfig;
@@ -26,6 +27,8 @@ use UnexpectedValueException;
 
 class CacheCleaner
 {
+	use RunPluginsTrait;
+
 	/**
 	 * Clears the com_modules and com_plugins cache. You need to call this whenever you alter the publish state or
 	 * parameters of a module or plugin from your code.
@@ -239,7 +242,7 @@ class CacheCleaner
 		// Joomla 3 and 4 have triggerEvent
 		if (method_exists($app, 'triggerEvent'))
 		{
-			return $app->triggerEvent($event, $data);
+			return self::triggerPluginEventStatic($event, $data, null, $app);
 		}
 
 		// Joomla 5 (and possibly some 4.x versions) don't have triggerEvent. Go through the Events dispatcher.

@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Site\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Mixin\RunPluginsTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
@@ -24,6 +25,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 #[\AllowDynamicProperties]
 class BleedingedgeModel extends BaseDatabaseModel
 {
+	use RunPluginsTrait;
+
 	/**
 	 * The numeric ID of the BleedingEdge category we're operating on
 	 *
@@ -267,8 +270,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 					];
 
 					// -- Trigger the plugin event
-					$app       = Factory::getApplication();
-					$jResponse = $app->triggerEvent('onNewARSBleedingEdgeRelease', [
+					$jResponse = $this->triggerPluginEvent('onNewARSBleedingEdgeRelease', [
 						$infoData,
 						$data,
 					]);
@@ -450,8 +452,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 				'release'    => $release,
 			];
 			// -- Trigger the plugin event
-			$app       = Factory::getApplication();
-			$jResponse = $app->triggerEvent('onNewARSBleedingEdgeItem', [
+			$jResponse = $this->triggerPluginEvent('onNewARSBleedingEdgeItem', [
 				$infoData,
 				$data,
 			]);
