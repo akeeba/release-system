@@ -11,19 +11,15 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\RunPluginsTrait;
 use Exception;
-use InvalidArgumentException;
 use JConfig;
 use Joomla\Application\AbstractApplication;
 use Joomla\Application\ConfigurationAwareApplicationInterface;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Cache\Controller\CallbackController;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Factory as JoomlaFactory;
-use Joomla\Event\Event;
 use Joomla\Registry\Registry;
 use RuntimeException;
 use Throwable;
-use UnexpectedValueException;
 
 class CacheCleaner
 {
@@ -143,7 +139,7 @@ class CacheCleaner
 				}
 
 
-				self::runPlugins($cacheCleaningEvent, $options);
+				self::triggerPluginEventStatic($cacheCleaningEvent, $options);
 			}
 		}
 	}
@@ -215,68 +211,6 @@ class CacheCleaner
 		}
 
 		return $options;
-	}
-
-	/**
-	 * Execute plugins (system-level triggers) and fetch back an array with
-	 * their return values.
-	 *
-	 * @param   string  $event  The event (trigger) name, e.g. onBeforeScratchMyEar
-	 * @param   array   $data   A hash array of data sent to the plugins as part of the trigger
-	 *
-	 * @return  array  A simple array containing the results of the plugins triggered
-	 */
-	public static function runPlugins(string $event, array $data = []): array
-	{
-		// If there's no JEventDispatcher try getting JApplication
-		try
-		{
-			$app = JoomlaFactory::getApplication();
-		}
-		catch (Exception $e)
-		{
-			// If I can't get JApplication I cannot run the plugins.
-			return [];
-		}
-
-		// Joomla 3 and 4 have triggerEvent
-		if (method_exists($app, 'triggerEvent'))
-		{
-			return self::triggerPluginEventStatic($event, $data, null, $app);
-		}
-
-		// Joomla 5 (and possibly some 4.x versions) don't have triggerEvent. Go through the Events dispatcher.
-		if (method_exists($app, 'getDispatcher') && class_exists('Joomla\Event\Event'))
-		{
-			try
-			{
-				$dispatcher = $app->getDispatcher();
-			}
-			catch (UnexpectedValueException $exception)
-			{
-				return [];
-			}
-
-			if ($data instanceof Event)
-			{
-				$eventObject = $data;
-			}
-			elseif (is_array($data))
-			{
-				$eventObject = new Event($event, $data);
-			}
-			else
-			{
-				throw new InvalidArgumentException('The plugin data must either be an event or an array');
-			}
-
-			$result = $dispatcher->dispatch($event, $eventObject);
-
-			return !isset($result['result']) || is_null($result['result']) ? [] : $result['result'];
-		}
-
-		// No viable way to run the plugins :(
-		return [];
 	}
 
 	private static function getAppConfigParam(?object $app, string $key, $default = null)
