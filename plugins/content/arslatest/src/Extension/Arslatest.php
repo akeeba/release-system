@@ -21,24 +21,17 @@ use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\User\User;
+use Joomla\Database\DatabaseAwareInterface;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use Joomla\String\StringHelper;
 
-class Arslatest extends CMSPlugin implements SubscriberInterface
+class Arslatest extends CMSPlugin implements SubscriberInterface, DatabaseAwareInterface
 {
 	use MVCFactoryAwareTrait;
-
-	/**
-	 * @var SiteApplication
-	 */
-	protected $app;
-
-	/**
-	 * @var DatabaseDriver
-	 */
-	protected $db;
+	use DatabaseAwareTrait;
 
 	/** @var bool Is this category prepared? */
 	private $prepared = false;
@@ -163,7 +156,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 
 	private function initialise(): void
 	{
-		$app  = $this->app;
+		$app  = $this->getApplication();
 		$user = $app->getIdentity() ?: new User();
 
 		/**
@@ -322,7 +315,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 	{
 		$xmltitleMatches = '%' . trim($xmltitleMatches, '%') . '%';
 
-		$db    = $this->db;
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true)
 			->select($db->quoteName('id'))
 			->from($db->quoteName('#__ars_environments'))
@@ -522,7 +515,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface
 			return $this->filesPerRelease[$release_id];
 		}
 
-		$app  = $this->app;
+		$app  = $this->getApplication();
 		$user = $app->getIdentity() ?: new User();
 
 		/** @var ItemsModel $model */

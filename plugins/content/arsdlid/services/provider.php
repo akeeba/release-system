@@ -10,6 +10,7 @@ defined('_JEXEC') or die;
 use Akeeba\Plugin\Content\ARSDownloadID\Extension\Arsdlid;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Extension\Service\Provider\MVCFactory;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
@@ -40,6 +41,7 @@ return new class implements ServiceProviderInterface {
 				);
 
 				$plugin->applyMVCFactory($factory);
+				$plugin->setApplication(Factory::getApplication());
 
 				return $plugin;
 			}

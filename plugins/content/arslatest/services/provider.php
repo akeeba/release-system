@@ -10,8 +10,10 @@ defined('_JEXEC') or die;
 use Akeeba\Plugin\Content\ARSLatest\Extension\Arslatest;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Extension\Service\Provider\MVCFactory;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
@@ -40,6 +42,8 @@ return new class implements ServiceProviderInterface {
 				);
 
 				$plugin->setMVCFactory($factory);
+				$plugin->setDatabase($container->get(DatabaseInterface::class));
+				$plugin->setApplication(Factory::getApplication());
 
 				return $plugin;
 			}

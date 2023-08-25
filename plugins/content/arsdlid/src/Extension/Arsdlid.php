@@ -59,9 +59,9 @@ class Arsdlid extends CMSPlugin implements SubscriberInterface
 		];
 	}
 
-	private static function process(array $match): string
+	private function process(array $match): string
 	{
-		$user = Factory::getApplication()->getIdentity() ?: new User();
+		$user = $this->getApplication()->getIdentity() ?: new User();
 
 		if ($user->guest)
 		{
@@ -91,6 +91,6 @@ class Arsdlid extends CMSPlugin implements SubscriberInterface
 		// Search for this tag in the content
 		$regex = "#{[\s]*downloadid[\s]*}#s";
 
-		$article->text = preg_replace_callback($regex, ['self', 'process'], $article->text);
+		$article->text = preg_replace_callback($regex, [$this, 'process'], $article->text);
 	}
 }
