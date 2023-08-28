@@ -227,7 +227,7 @@ class ItemModel extends AdminModel
 
 		if (empty($data))
 		{
-			$data = $this->getItem();
+			$data = (object) $this->getItem()->getProperties();
 
 			// Get the primary key of the record being edited.
 			$pk = (int) $this->getState($this->getName() . '.id');

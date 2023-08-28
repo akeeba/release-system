@@ -6,6 +6,7 @@ Akeeba Release System 7.3.0
 ~ Joomla 5 preparation: Work around backwards incompatible changes in core plugin events
 ~ Joomla 5 preparation: Normalise plugin event calling
 ~ Joomla 5 preparation: Refactored plugins to use providers
+~ Joomla 5 preparation: Loading form data MUST NOT return a Table anymore
 ~ Block uninstallation of child extensions
 ~ Change namespace prefixes of plugins
 ~ Modernised all plugins

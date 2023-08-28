@@ -151,7 +151,7 @@ class AutodescriptionModel extends AdminModel
 
 		if (empty($data))
 		{
-			$data = $this->getItem();
+			$data = $this->getItem()->getProperties();
 
 			// Get the primary key of the record being edited.
 			$pk = (int) $this->getState($this->getName() . '.id');
@@ -159,15 +159,17 @@ class AutodescriptionModel extends AdminModel
 			// No primary key = new record. Override default values based on the filters set in the Auto Descriptions page.
 			if ($pk <= 0)
 			{
-				$data->title    = $app->getUserState('com_ars.autodescriptions.filter.search') ?: $data->title;
-				$data->category = $app->getUserState('com_ars.autodescriptions.filter.category_id') ?: $data->category;
+				$data->title    = $app->getUserState('com_ars.autodescriptions.filter.search') ?: $data['title'];
+				$data->category = $app->getUserState('com_ars.autodescriptions.filter.category_id') ?: $data['category'];
 			}
 			else
 			{
 				// Joomla stupidly converts the array of environments to a CMSObject its own form fields can't read...
-				$data->environments = ArrayHelper::fromObject($data->environments);
+				$data->environments = ArrayHelper::fromObject($data['environments']);
 			}
 		}
+
+		$data = (object) $data;
 
 		$this->preprocessData('com_ars.autodescription', $data);
 

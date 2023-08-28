@@ -203,7 +203,7 @@ class DlidlabelModel extends AdminModel
 
 		if (empty($data))
 		{
-			$data = $this->getItem();
+			$data = (object) $this->getItem()->getProperties();
 
 			$pk = (int) $this->getState($this->getName() . '.id');
 

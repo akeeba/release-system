@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Mixin\GetPropertiesAwareTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TriggerEventTrait;
 use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseDriver;
@@ -18,6 +19,7 @@ use Joomla\Event\DispatcherInterface;
 abstract class AbstractTable extends Table
 {
 	use TriggerEventTrait;
+	use GetPropertiesAwareTrait;
 
 	public function __construct($table, $key, DatabaseDriver $db, DispatcherInterface $dispatcher = null)
 	{
