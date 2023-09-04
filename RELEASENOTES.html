@@ -1,14 +1,36 @@
 <h3>What's new</h3>
 
 <p>
-	<strong>Liar mode</strong>.
-	Lie in the XML update file, telling Joomla that the package supports the next Joomla minor version, and the next entirety of the next major version. This is an unfortunate necessity for Joomla's pre-update checks to stop slandering your software to your clients, telling them it's not compatible with the upcoming Joomla version and/or that there is no upgrade path. The downside is that it will allow old versions of your software to appear as updates on old, unsupported sites where installing them might just as well break the site. I told the Joomla core maintainers four times in the year prior to Joomla 4's release that this would eventually happen. Oh well, call me names instead of listening to me and figure out how to fix your broken code when it's too late (or, as kids say these days, “f…k around and find out”).
-</p>
-
-<p>
-	<strong>Add show unauthorized links options to automatic item description</strong>. You can now set up this option in the Automatic Item Description so that new items get this option set if you so wish, without having to remember to do this manually.
-</p>
-
-<p>
 	<strong>Bug fixes and minor improvements</strong>. Please take a look at the CHANGELOG below.
+</p>
+
+<h3>Namespace changes</h3>
+
+<p>
+	We have changed the PHP namespaces of our plugins to match the (actually not documented anywhere) intention of Joomla's core maintainers about third party extensions. For example, Admin Tools' system plugin has changed its namespace from <code>Joomla\Plugin\System\AdminTools</code> to <code>Akeeba\Plugin\System\AdminTools</code>.
+</p>
+<p>
+	This has two implications:
+</p>
+<ol>
+	<li>
+		Joomla! caches the namespaces of core and third party extensions in the <code>autoload_psr4.php</code> file in its cache directory. By default, this file is located in <code>administrator/cache/autoload_psr4.php</code>. Joomla! is <em>supposed</em> to delete and create afresh this file whenever it is updating extensions or itself. However, under some circumstances (e.g. the file or its containing directory cannot be written to by PHP), this may not be possible. You may have to delete that file yourself.
+	</li>
+	<li>
+		Servers with PHP OPcache —or a similar code cache— enabled may have settings which prevent PHP from “seeing” the changes in the updated files of our extension, or Joomla!'s <code>autoload_psr4.php</code> file. Joomla! tries to reset code caches on extension and core updates. However, the server configuration may prevent this from taking effect. If this happens, you will need to ask your host to reset the OPcache.
+	</li>
+</ol>
+<p>
+	Despite us and Joomla! itself taking all reasonable precautions to prevent such a change from causing a problem, some server configurations are outside ours and Joomla!'s control, making it impossible to successfully mitigate problems. If your site stops responding with an error indicating that a class cannot be found follow the advice above, namely:
+</p>
+<ul>
+	<li>
+		Delete the <code>administrator/cache/autoload_psr4.php</code> file.
+	</li>
+	<li>
+		Ask your host to reset the OPcache, or similar code cache, on your site's server.
+	</li>
+</ul>
+<p>
+	Kindly note that this is a <strong>one-time</strong> change. The namespace of our extensions will not change in the future, unless of course Joomla! itself necessitates a change (nothing like that is, however, planned for any Joomla version released until 2027 at the earliest).
 </p>
