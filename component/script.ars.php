@@ -32,11 +32,11 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 	 */
 	protected $dbo;
 
-	public function __construct()
-	{
-		$this->minimumJoomla = '4.2.0';
-		$this->minimumPhp    = '8.0.0';
-	}
+	protected $allowDowngrades = true;
+
+	protected $minimumPhp = '8.0.0';
+
+	protected $minimumJoomla = '4.3.0';
 
 	/**
 	 * Called after any type of installation / uninstallation action.
@@ -367,7 +367,8 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 			return $extension;
 		}
 
-		function getExtensionsFromManifest(?SimpleXMLElement $xml): array{
+		function getExtensionsFromManifest(?SimpleXMLElement $xml): array
+		{
 			if (empty($xml))
 			{
 				return [];
@@ -387,13 +388,18 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 		{
 			static $hasOpCache = null;
 
-			if (is_null($hasOpCache)) {
+			if (is_null($hasOpCache))
+			{
 				$hasOpCache = ini_get('opcache.enable')
 				              && function_exists('opcache_invalidate')
-				              && (!ini_get('opcache.restrict_api') || stripos(realpath($_SERVER['SCRIPT_FILENAME']), ini_get('opcache.restrict_api')) === 0);
+				              && (!ini_get('opcache.restrict_api')
+				                  || stripos(
+					                     realpath($_SERVER['SCRIPT_FILENAME']), ini_get('opcache.restrict_api')
+				                     ) === 0);
 			}
 
-			if ($hasOpCache && (strtolower(substr($file, -4)) === '.php')) {
+			if ($hasOpCache && (strtolower(substr($file, -4)) === '.php'))
+			{
 				$ret = opcache_invalidate($file, true);
 
 				@clearstatcache($file);
@@ -414,7 +420,8 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 			/** @var DirectoryIterator $file */
 			foreach (new DirectoryIterator($path) as $file)
 			{
-				if ($file->isDot() || $file->isLink()) {
+				if ($file->isDot() || $file->isLink())
+				{
 					continue;
 				}
 
@@ -438,26 +445,44 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 
 		foreach ($extensionsFromPackage as $element)
 		{
-			if (strpos($element, 'plg_') !== 0)
+			$paths = [];
+
+			if (strpos($element, 'plg_') === 0)
+			{
+				[$dummy, $folder, $plugin] = explode('_', $element);
+
+				$paths = [
+					sprintf('%s/%s/%s/services', JPATH_PLUGINS, $folder, $plugin),
+					sprintf('%s/%s/%s/src', JPATH_PLUGINS, $folder, $plugin),
+				];
+			}
+			elseif (strpos($element, 'com_') === 0)
+			{
+				$paths = [
+					sprintf('%s/components/%s/services', JPATH_ADMINISTRATOR, $element),
+					sprintf('%s/components/%s/src', JPATH_ADMINISTRATOR, $element),
+					sprintf('%s/components/%s/src', JPATH_SITE, $element),
+					sprintf('%s/components/%s/src', JPATH_API, $element),
+				];
+			}
+			elseif (strpos($element, 'mod_') === 0)
+			{
+				$paths = [
+					sprintf('%s/modules/%s/services', JPATH_ADMINISTRATOR, $element),
+					sprintf('%s/modules/%s/src', JPATH_ADMINISTRATOR, $element),
+					sprintf('%s/modules/%s/services', JPATH_SITE, $element),
+					sprintf('%s/modules/%s/src', JPATH_SITE, $element),
+				];
+			}
+			else
 			{
 				continue;
 			}
 
-			[$dummy, $folder, $plugin] = explode('_', $element);
-
-			recursiveClearCache(
-				sprintf(
-					'%s/%s/%s/services',
-					JPATH_PLUGINS, $folder, $plugin
-				)
-			);
-
-			recursiveClearCache(
-				sprintf(
-					'%s/%s/%s/src',
-					JPATH_PLUGINS, $folder, $plugin
-				)
-			);
+			foreach ($paths as $path)
+			{
+				recursiveClearCache($path);
+			}
 		}
 
 		clearFileInOPCache(JPATH_CACHE . '/autoload_psr4.php');

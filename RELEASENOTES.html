@@ -1,36 +1,86 @@
 <h3>What's new</h3>
 
 <p>
+	<strong>Joomla! 5 support</strong>. We have addressed the backwards incompatible changes introduced in the week leading to the release of Joomla! 5.0-Beta1. Please note that Joomla! 5 is still in beta and should not be used on production sites.
+</p>
+
+<p>
 	<strong>Bug fixes and minor improvements</strong>. Please take a look at the CHANGELOG below.
 </p>
 
 <h3>Namespace changes</h3>
 
 <p>
-	We have changed the PHP namespaces of our plugins to match the (actually not documented anywhere) intention of Joomla's core maintainers about third party extensions. For example, Admin Tools' system plugin has changed its namespace from <code>Joomla\Plugin\System\AdminTools</code> to <code>Akeeba\Plugin\System\AdminTools</code>.
+	We have changed the PHP namespaces of our extensions to match the (as yet undocumented) intention of Joomla!'s core maintainers about third party extensions' PHP namespaces.
 </p>
 <p>
-	This has two implications:
+	The namespaces in all of our extensions now start with our company name, i.e. <code>Akeeba\</code>. In  the past this was indeed the case for our components, but our plugins and modules had the generic prefix <code>Joomla\</code> due to an unfortunate misunderstanding of how the new at the time (and still officially undocumented) Joomla 4 MVC was meant to work back in late 2020, when we started migrating our extensions.
+</p>
+<p>
+	This <strong>one-time change</strong> has some implications on whether Joomla! will be able to find and load the code with the updated namespace. If it cannot, it will display (usually briefly) an error message stating “class not found”, “missing class”, or something similar to that. This is the result of how Joomla! works, and your server's configuration. Here are the two key points which can cause problems:
 </p>
 <ol>
 	<li>
-		Joomla! caches the namespaces of core and third party extensions in the <code>autoload_psr4.php</code> file in its cache directory. By default, this file is located in <code>administrator/cache/autoload_psr4.php</code>. Joomla! is <em>supposed</em> to delete and create afresh this file whenever it is updating extensions or itself. However, under some circumstances (e.g. the file or its containing directory cannot be written to by PHP), this may not be possible. You may have to delete that file yourself.
+		Joomla! caches the namespaces of core and third party extensions in the <code>autoload_psr4.php</code> file in its cache directory, generally a welcome performance-enhancing behaviour. Whenever you install an extension update, or a core Joomla! update, Joomla! tries to delete and create this file afresh.
 	</li>
 	<li>
-		Servers with PHP OPcache —or a similar code cache— enabled may have settings which prevent PHP from “seeing” the changes in the updated files of our extension, or Joomla!'s <code>autoload_psr4.php</code> file. Joomla! tries to reset code caches on extension and core updates. However, the server configuration may prevent this from taking effect. If this happens, you will need to ask your host to reset the OPcache.
+		Servers with PHP OPcache enabled will not “see” that <code>.php</code> files have changed during the caching period set up in PHP's configuration. To work around that limitation, Joomla! asks PHP to clear the OPcache for each <code>.php</code> file it writes to disk during the course of an extension or core Joomla! update.
 	</li>
 </ol>
 <p>
-	Despite us and Joomla! itself taking all reasonable precautions to prevent such a change from causing a problem, some server configurations are outside ours and Joomla!'s control, making it impossible to successfully mitigate problems. If your site stops responding with an error indicating that a class cannot be found follow the advice above, namely:
+	While Joomla! generally works well, we observed a few issues which do get in the way:
 </p>
 <ul>
 	<li>
-		Delete the <code>administrator/cache/autoload_psr4.php</code> file.
+		If the <code>autoload_psr4.php</code> is unwriteable Joomla fails to renew this file silently. As a result, it misleads the user into believing that an extension is misbehaving when, in fact, it's a Joomla! failure to check if this file is writeable (therefore can be updated, therefore can be trusted) before using it.
 	</li>
 	<li>
-		Ask your host to reset the OPcache, or similar code cache, on your site's server.
+		The <code>autoload_psr4.php</code> may not be created afresh if an update fails, but has already written files on disk. This creates a discrepancy between the code available on your server and what Joomla! has cached about this code in that file, breaking your site.
+	</li>
+	<li>
+		The code which resets the OPcache is incomplete due to an esoteric quirk of PHP. PHP will only reset the OPcache for a file if it can detect that the file has changed. However, PHP caches the filesystem information of files it has already loaded which, in Joomla's case, includes the all-important <code>provider.php</code> file of every extension using the modern Joomla! 4 MVC. The undocumented workaround for this behaviour is to use PHP's <code>clearstatcache()</code> to tell it to check the disk again <em>before</em> calling the code to reset the OPcache for a file.
 	</li>
 </ul>
 <p>
-	Kindly note that this is a <strong>one-time</strong> change. The namespace of our extensions will not change in the future, unless of course Joomla! itself necessitates a change (nothing like that is, however, planned for any Joomla version released until 2027 at the earliest).
+	Our extensions include post-installation code designed to mitigate these issues to the extent humanly possible:
+</p>
+<ul>
+	<li>
+		We delete the <code>autoload_psr4.php</code> file and ask Joomla! to create it afresh. Then, we reset its PHP filesystem stats cache and the PHP OPcache on that file, just like what Joomla! does during a core Joomla! update.
+	</li>
+	<li>
+		We have included code which goes through all the <code>.php</code> files in our extensions and resets PHP's OPcache for them, exactly like what Joomla! does during a core Joomla! update. This is more comprehensive that Joomla's code currently used in its <code>Joomla\Filesystem\File::write()</code> method.
+	</li>
+</ul>
+<p>
+	Despite our best efforts, we understand that some far less common server configurations may make it impossible for the mitigations to work. Namely, we have identified the following cases, mitigations, and expected impact:
+</p>
+<ul>
+	<li>
+		If the <code>autoload_psr4.php</code> file and / or its containing folder is not writeable to PHP itself the file will be impossible to delete. As a result, Joomla! will keep using the old, out-of-date file, breaking your site. Note that most affected sites would already have issues installing or updating Joomla! and third party extensions. Mitigation: You will need to delete that file (<code>administrator/cache/autoload_psr4.php</code>) yourself. Expected impact: rare; less than 0.1% of sites.
+	</li>
+	<li>
+		Some servers may have disabled the PHP features necessary to reset the OPcache on specific <code>.php</code> files. Mitigation: You will have to either wait until the OPcache expires (usually between a few seconds to a few hours), or ask your host for help on resetting the OPcache. Expected impact: very rare; less than 0.01% of sites.
+	</li>
+	<li>
+		Some web hosts may be using a server cluster, i.e. multiple servers which handle requests in a round-robin, or availability basis. As a result, the OPcache will not be reset across all servers in the cluster, causing intermittent errors on your site. Affected sites will already have problems installing or updating Joomla! and third party extensions. It is furthermore extremely unlikely that someone is hosted on a server cluster without being acutely aware of the fact, and what is necessary. Mitigation: ask your host to reset OPcache across all servers in the cluster. Expected impact: infinitesimal; less than 0.001% of sites.
+	</li>
+</ul>
+<h4>TL;DR: What to do if something breaks</h4>
+<p>
+	Despite us taking all reasonable precautions to refrain from inadvertently breaking your sites, some rather rare server configurations might get in the way of a stark minority of our clients. If your site stops responding, at all or intermittently, with an error indicating “class not found” please do the following:
+</p>
+<ul>
+	<li>
+		Wait a minute, then reload the page. More often than not, that's all that's needed.
+	</li>
+	<li>
+		Delete the <code>administrator/cache/autoload_psr4.php</code> file, and reload the page.
+	</li>
+	<li>
+		Ask your host to reset the OPcache, or similar code cache, on your site's server(s).
+	</li>
+</ul>
+<p>
+	We would like to state that the likelihood of these issues occurring is vanishingly small. The vast majority of our clients will <em>NOT</em> experience any of that. We include this statement with our software because we believe in transparency, and are proponents of the “forewarned is forearmed” mantra.
 </p>

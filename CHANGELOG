@@ -10,7 +10,6 @@ Akeeba Release System 7.3.0
 ~ Block uninstallation of child extensions
 ~ Change namespace prefixes of plugins
 ~ Modernised all plugins
-~ Force Joomla to create its namespace map afresh at the end of installation, in case it failed to do that automatically
 # [LOW] opcache_invalidate may not invalidate a file
 
 Akeeba Release System 7.2.0
