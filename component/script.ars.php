@@ -313,135 +313,7 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 
 	private function invalidateFiles()
 	{
-		function getManifestXML($class): ?SimpleXMLElement
-		{
-			// Get the package element name
-			$myPackage = strtolower(str_replace('InstallerScript', '', $class));
-
-			// Get the package's manifest file
-			$filePath = JPATH_MANIFESTS . '/packages/' . $myPackage . '.xml';
-
-			if (!@file_exists($filePath) || !@is_readable($filePath))
-			{
-				return null;
-			}
-
-			$xmlContent = @file_get_contents($filePath);
-
-			if (empty($xmlContent))
-			{
-				return null;
-			}
-
-			return new SimpleXMLElement($xmlContent);
-		}
-
-		function xmlNodeToExtensionName(SimpleXMLElement $fileField): ?string
-		{
-			$type = (string) $fileField->attributes()->type;
-			$id   = (string) $fileField->attributes()->id;
-
-			switch ($type)
-			{
-				case 'component':
-				case 'file':
-				case 'library':
-					$extension = $id;
-					break;
-
-				case 'plugin':
-					$group     = (string) $fileField->attributes()->group ?? 'system';
-					$extension = 'plg_' . $group . '_' . $id;
-					break;
-
-				case 'module':
-					$client    = (string) $fileField->attributes()->client ?? 'site';
-					$extension = (($client != 'site') ? 'a' : '') . $id;
-					break;
-
-				default:
-					$extension = null;
-					break;
-			}
-
-			return $extension;
-		}
-
-		function getExtensionsFromManifest(?SimpleXMLElement $xml): array
-		{
-			if (empty($xml))
-			{
-				return [];
-			}
-
-			$extensions = [];
-
-			foreach ($xml->xpath('//files/file') as $fileField)
-			{
-				$extensions[] = xmlNodeToExtensionName($fileField);
-			}
-
-			return array_filter($extensions);
-		}
-
-		function clearFileInOPCache(string $file): bool
-		{
-			static $hasOpCache = null;
-
-			if (is_null($hasOpCache))
-			{
-				$hasOpCache = ini_get('opcache.enable')
-				              && function_exists('opcache_invalidate')
-				              && (!ini_get('opcache.restrict_api')
-				                  || stripos(
-					                     realpath($_SERVER['SCRIPT_FILENAME']), ini_get('opcache.restrict_api')
-				                     ) === 0);
-			}
-
-			if ($hasOpCache && (strtolower(substr($file, -4)) === '.php'))
-			{
-				$ret = opcache_invalidate($file, true);
-
-				@clearstatcache($file);
-
-				return $ret;
-			}
-
-			return false;
-		}
-
-		function recursiveClearCache(string $path): void
-		{
-			if (!@is_dir($path))
-			{
-				return;
-			}
-
-			/** @var DirectoryIterator $file */
-			foreach (new DirectoryIterator($path) as $file)
-			{
-				if ($file->isDot() || $file->isLink())
-				{
-					continue;
-				}
-
-				if ($file->isDir())
-				{
-					recursiveClearCache($file->getPathname());
-
-					continue;
-				}
-
-				if (!$file->isFile())
-				{
-					continue;
-				}
-
-				clearFileInOPCache($file->getPathname());
-			}
-		}
-
-		$extensionsFromPackage = getExtensionsFromManifest(getManifestXML(__CLASS__));
+		$extensionsFromPackage = $this->invF_getExtensionsFromManifest($this->invF_getManifestXML(__CLASS__));
 
 		foreach ($extensionsFromPackage as $element)
 		{
@@ -481,10 +353,138 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 
 			foreach ($paths as $path)
 			{
-				recursiveClearCache($path);
+				$this->invF_recursiveClearCache($path);
 			}
 		}
 
-		clearFileInOPCache(JPATH_CACHE . '/autoload_psr4.php');
+		$this->invF_clearFileInOPCache(JPATH_CACHE . '/autoload_psr4.php');
+	}
+
+	private function invF_getManifestXML($class): ?SimpleXMLElement
+	{
+		// Get the package element name
+		$myPackage = strtolower(str_replace('InstallerScript', '', $class));
+
+		// Get the package's manifest file
+		$filePath = JPATH_MANIFESTS . '/packages/' . $myPackage . '.xml';
+
+		if (!@file_exists($filePath) || !@is_readable($filePath))
+		{
+			return null;
+		}
+
+		$xmlContent = @file_get_contents($filePath);
+
+		if (empty($xmlContent))
+		{
+			return null;
+		}
+
+		return new SimpleXMLElement($xmlContent);
+	}
+
+	private function invF_xmlNodeToExtensionName(SimpleXMLElement $fileField): ?string
+	{
+		$type = (string) $fileField->attributes()->type;
+		$id   = (string) $fileField->attributes()->id;
+
+		switch ($type)
+		{
+			case 'component':
+			case 'file':
+			case 'library':
+				$extension = $id;
+				break;
+
+			case 'plugin':
+				$group     = (string) $fileField->attributes()->group ?? 'system';
+				$extension = 'plg_' . $group . '_' . $id;
+				break;
+
+			case 'module':
+				$client    = (string) $fileField->attributes()->client ?? 'site';
+				$extension = (($client != 'site') ? 'a' : '') . $id;
+				break;
+
+			default:
+				$extension = null;
+				break;
+		}
+
+		return $extension;
+	}
+
+	private function invF_getExtensionsFromManifest(?SimpleXMLElement $xml): array
+	{
+		if (empty($xml))
+		{
+			return [];
+		}
+
+		$extensions = [];
+
+		foreach ($xml->xpath('//files/file') as $fileField)
+		{
+			$extensions[] = $this->invF_xmlNodeToExtensionName($fileField);
+		}
+
+		return array_filter($extensions);
+	}
+
+	private function invF_clearFileInOPCache(string $file): bool
+	{
+		static $hasOpCache = null;
+
+		if (is_null($hasOpCache))
+		{
+			$hasOpCache = ini_get('opcache.enable')
+			              && function_exists('opcache_invalidate')
+			              && (!ini_get('opcache.restrict_api')
+			                  || stripos(
+				                     realpath($_SERVER['SCRIPT_FILENAME']), ini_get('opcache.restrict_api')
+			                     ) === 0);
+		}
+
+		if ($hasOpCache && (strtolower(substr($file, -4)) === '.php'))
+		{
+			$ret = opcache_invalidate($file, true);
+
+			@clearstatcache($file);
+
+			return $ret;
+		}
+
+		return false;
+	}
+
+	private function invF_recursiveClearCache(string $path): void
+	{
+		if (!@is_dir($path))
+		{
+			return;
+		}
+
+		/** @var DirectoryIterator $file */
+		foreach (new DirectoryIterator($path) as $file)
+		{
+			if ($file->isDot() || $file->isLink())
+			{
+				continue;
+			}
+
+			if ($file->isDir())
+			{
+				$this->invF_recursiveClearCache($file->getPathname());
+
+				continue;
+			}
+
+			if (!$file->isFile())
+			{
+				continue;
+			}
+
+			$this->invF_clearFileInOPCache($file->getPathname());
+		}
 	}
 }
