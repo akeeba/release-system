@@ -61,9 +61,20 @@ class EnvironmentTable extends AbstractTable
 		[$platform, $version] = explode('/', $this->xmltitle);
 		$this->assertNotEmpty($platform, 'COM_ARS_ENVIRONMENT_ERR_NEEDS_XMLTITLE_VALID');
 
+		$relaxed = strtolower($platform) === 'wordpress';
+
 		if (!empty($version))
 		{
-			$this->assert(preg_match('/^(\d+\.){0,}\d+$/', $version), 'COM_ARS_ENVIRONMENT_ERR_NEEDS_XMLTITLE_VALID');
+			if ($relaxed)
+			{
+				$this->assert(preg_match('/^(\d+\.){0,}\d+\+?$/', $version), 'COM_ARS_ENVIRONMENT_ERR_NEEDS_XMLTITLE_VALID');
+			}
+			else
+			{
+				$this->assert(preg_match('/^(\d+\.){0,}\d+$/', $version), 'COM_ARS_ENVIRONMENT_ERR_NEEDS_XMLTITLE_VALID');
+
+			}
+
 		}
 	}
 }
