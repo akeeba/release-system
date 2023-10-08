@@ -8,6 +8,9 @@
 namespace Akeeba\Component\ARS\Site\View\Update;
 
 use Akeeba\Component\ARS\Site\Model\ItemModel;
+use Akeeba\Component\Compatibility\Administrator\Extension\CompatibiltyComponent;
+use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
@@ -280,4 +283,182 @@ trait Common
 		return $parsedPlatforms;
 	}
 
+	protected function applyVersionCompatibilityUpdateStreamFilter(): void
+	{
+		if (!ComponentHelper::isEnabled('com_compatibility'))
+		{
+			return;
+		}
+
+		if (empty($this->category))
+		{
+			return;
+		}
+
+		try
+		{
+			/** @var SiteApplication $app */
+			$app = Factory::getApplication();
+			/** @var CompatibiltyComponent $compatComponent */
+			$compatComponent = $app->bootComponent('com_compatibility');
+
+			if (!class_exists(CompatibiltyComponent::class))
+			{
+				return;
+			}
+
+			if (!($compatComponent instanceof CompatibiltyComponent))
+			{
+				return;
+			}
+		}
+		catch (\Exception $e)
+		{
+			return;
+		}
+
+		$alias = $this->getModel()->getCategoryAliasForUpdateId($this->category);
+
+		/** @var CompatibilityModel $compatModel */
+		$compatModel = $compatComponent->getMVCFactory()->createModel('Compatibility');
+		$displayData = $compatModel->getDisplayData();
+
+		$displayData = array_filter($displayData, function ($extensionData) use ($alias) {
+			return $extensionData['slug'] == $alias;
+		});
+
+		if (empty($displayData))
+		{
+			return;
+		}
+
+		$extensionData         = array_pop($displayData);
+		$this->filteredItemIDs = [];
+
+		foreach ($extensionData['matrix'] as $jVersion => $perPHPVersion)
+		{
+			foreach ($perPHPVersion as $phpVersion => $versionInfo)
+			{
+				if (empty($versionInfo))
+				{
+					continue;
+				}
+
+				$id = $versionInfo['id'] ?? null;
+
+				if (empty($id))
+				{
+					continue;
+				}
+
+				$this->filteredItemIDs[] = $id;
+			}
+		}
+
+		$this->filteredItemIDs = array_unique($this->filteredItemIDs);
+	}
+
+	protected function platformVersionCompactor(array $versions): string
+	{
+		$byMajor     = [];
+		$retVersions = [];
+
+		foreach ($versions as $v)
+		{
+			$parts = explode('.', $v, 3);
+
+			// If the last version part is a star we can toss it – it's the default behavior in Joomla.
+			if ((count($parts) == 3) && ($parts[2] == '*'))
+			{
+				array_pop($parts);
+			}
+
+			// Three part version. This will be a separate entry. I can't compact oddball versions like that.
+			if (count($parts) == 3)
+			{
+				$retVersions[] = $v;
+
+				continue;
+			}
+
+			// Someone is stupid enough to only specify a major version. Let me fix that for you.
+			if (count($parts) == 1)
+			{
+				$parts[] = '*';
+			}
+
+			[$major, $minor] = $parts;
+
+			// Did someone specify ".*"?! OK, we will tell Joomla to install no matter the version. You're insane...
+			if (empty($major) && ($minor == '*'))
+			{
+				$byMajor = ['*' => '*'];
+
+				break;
+			}
+
+			$byMajor[$major] = $byMajor[$major] ?? [];
+
+			// Has someone already specified "all versions" for this major version?
+			if (in_array('*', $byMajor[$major]))
+			{
+				continue;
+			}
+
+			// Someone specified "all versions" for this major version. OK, then.
+			if ($minor == '*')
+			{
+				$byMajor[$major] = ['*'];
+
+				continue;
+			}
+
+			// Add a minor version to this major
+			$byMajor[$major][] = $minor;
+		}
+
+		// Special case: all major and minor versions (overrides everything else)
+		if (($byMajor['*'] ?? []) == ['*'])
+		{
+			return '.*';
+		}
+
+		// Add version RegEx by major version
+		foreach ($byMajor as $major => $minorVersions)
+		{
+			// Special case: no minor version (how the heck...?)
+			if (!count($minorVersions))
+			{
+				continue;
+			}
+
+			// Special case: all minor versions for this major version
+			if ($minorVersions == ['*'])
+			{
+				$retVersions[] = $major;
+
+				continue;
+			}
+
+			// Special case: just one minor version
+			if (count($minorVersions) == 1)
+			{
+				$retVersions[] = sprintf('%s.%s', $major, array_shift($minorVersions));
+
+				continue;
+			}
+
+			$retVersions[] = sprintf('%s\.(%s)', $major, implode('|', $minorVersions));
+		}
+
+		// Special case: only one version regEx supported
+		if (count($retVersions) == 1)
+		{
+			return array_pop($retVersions);
+		}
+
+		return '(' . implode('|', array_map(function ($regex) {
+				return sprintf('(%s)', $regex);
+			}, $retVersions)) . ')';
+	}
 }

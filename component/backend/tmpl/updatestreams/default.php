@@ -136,15 +136,18 @@ $i = 0;
 								</td>
 
 								<td class="d-none d-md-table-cell">
-									<a href="<?= Uri::root() . sprintf('index.php?option=com_ars&view=update&format=ini&id=%d', $item->id) ?>"
-									   target="_blank"
-									> INI </a> • <a
-											href="<?= Uri::root() . sprintf('index.php?option=com_ars&view=update&task=stream&format=xml&id=%d', $item->id) ?>"
-											target="_blank"
-									> XML </a> • <a
-											href="<?= Uri::root() . sprintf('index.php?option=com_ars&view=update&task=download&format=raw&id=%d', $item->id) ?>"
-											target="_blank"
-									> D/L </a>
+									<a href="<?= Uri::root() . sprintf('index.php?option=com_ars&view=update&format=json&id=%d', $item->id) ?>"
+									   target="_blank">JSON</a>
+									&bull;
+									<a href="<?= Uri::root() . sprintf('index.php?option=com_ars&view=update&task=stream&format=xml&id=%d', $item->id) ?>"
+											target="_blank">
+										XML
+									</a>
+									&bull;
+									<a href="<?= Uri::root() . sprintf('index.php?option=com_ars&view=update&task=download&format=raw&id=%d', $item->id) ?>"
+											target="_blank">
+										D/L
+									</a>
 								</td>
 
 								<td class="text-center">

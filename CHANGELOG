@@ -11,6 +11,7 @@ Akeeba Release System 7.3.0
 ~ Change namespace prefixes of plugins
 ~ Modernised all plugins
 ~ Allow WordPress environment to have a + sign, indicating “or later”
++ JSON update stream type
 # [LOW] opcache_invalidate may not invalidate a file
 
 Akeeba Release System 7.2.0

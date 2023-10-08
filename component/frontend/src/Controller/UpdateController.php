@@ -135,6 +135,11 @@ class UpdateController extends BaseController
 		$this->display(true, $registeredURLParams);
 	}
 
+	public function json(): void
+	{
+		$this->stream();
+	}
+
 	/**
 	 * Show an INI formatted update stream
 	 *
@@ -242,7 +247,7 @@ class UpdateController extends BaseController
 		$format = $this->input->getCmd('format', 'html');
 
 		// If we're told to render this view as HTML it's a routing error, so let's fall back to an XML update stream
-		if (!in_array($format, ['xml', 'ini', 'raw']))
+		if (!in_array($format, ['xml', 'ini', 'raw', 'json']))
 		{
 			$this->input->set('format', 'xml');
 			$format = 'xml';
@@ -265,13 +270,17 @@ class UpdateController extends BaseController
 					$task = 'ini';
 					break;
 
+				case 'json':
+					$task = 'json';
+					break;
+
 				case 'raw':
 					$task = 'download';
 					break;
 			}
 		}
 
-		// INI and RAW views require an `id` query parameter, otherwise they are invalid and I can fail the early.
+		// INI, JSON, and RAW views require an `id` query parameter, otherwise they are invalid and I can fail the early.
 		if (($format != 'xml') && empty($id))
 		{
 			throw new RuntimeException(Text::_('COM_ARS_COMMON_ERR_NOUPDATESOURCE'), 500);
@@ -282,6 +291,10 @@ class UpdateController extends BaseController
 		{
 			case 'ini':
 				$format = 'ini';
+				break;
+
+			case 'json':
+				$format = 'json';
 				break;
 
 			case 'download':
@@ -300,7 +313,7 @@ class UpdateController extends BaseController
 
 		// Set our modified variables back into the request...
 		$this->input->set('task', $task);
-		$this->input->set('format', 'xml');
+		$this->input->set('format', $format);
 		$this->input->set('layout', null);
 
 		// ...and to the Controller itself
@@ -321,7 +334,7 @@ class UpdateController extends BaseController
 	{
 		$format = $this->input->getCmd('format', 'html');
 
-		if (!in_array($format, ['xml', 'ini']))
+		if (!in_array($format, ['xml', 'ini', 'json']))
 		{
 			$this->app->close();
 		}
