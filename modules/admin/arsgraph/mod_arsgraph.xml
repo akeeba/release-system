@@ -8,12 +8,12 @@
 <extension type="module" client="administrator" method="upgrade">
     <name>MOD_ARSGRAPH</name>
     <author>Nicholas K. Dionysopoulos</author>
-    <creationDate>2023-02-08</creationDate>
+    <creationDate>2023-10-09</creationDate>
     <copyright>Copyright (c)2011-2021 Nicholas K. Dionysopoulos / Akeeba Ltd</copyright>
     <license>GNU GPL v3 or later</license>
     <authorEmail>nicholas@akeeba.com</authorEmail>
     <authorUrl>www.akeeba.com</authorUrl>
-    <version>7.2.0</version>
+    <version>7.3.0</version>
     <description>MOD_ARSGRAPH_DESCRIPTION</description>
     <namespace path="src">Joomla\Module\Arsgraph</namespace>
 

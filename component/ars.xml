@@ -7,13 +7,13 @@
 
 <extension type="component" method="upgrade">
     <name>com_ars</name>
-    <creationDate>2023-02-08</creationDate>
+    <creationDate>2023-10-09</creationDate>
     <author>Akeeba Ltd</author>
     <authorEmail>no-reply@akeeba.com</authorEmail>
     <authorUrl>https://www.akeeba.com</authorUrl>
     <copyright>Copyright (c)2010-2023 Nicholas K. Dionysopoulos / Akeeba Ltd</copyright>
     <license>GNU General Public License version 3 or later; see LICENSE.txt</license>
-    <version>7.2.0</version>
+    <version>7.3.0</version>
     <description>COM_ARS_XML_DESCRIPTION</description>
     <namespace path="src">Akeeba\Component\ARS</namespace>
 

@@ -7,8 +7,8 @@
 
 <extension type="plugin" group="content" method="upgrade">
     <name>PLG_CONTENT_ARSDLID</name>
-    <version>7.2.0</version>
-    <creationDate>2023-02-08</creationDate>
+    <version>7.3.0</version>
+    <creationDate>2023-10-09</creationDate>
     <author>Nicholas K. Dionysopoulos</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>https://www.akeeba.com</authorUrl>
