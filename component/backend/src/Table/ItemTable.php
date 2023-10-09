@@ -377,7 +377,7 @@ class ItemTable extends AbstractTable
 		}
 	}
 
-	protected function onAfterStore(&$result, &$updateNulls)
+	protected function onAfterStore(&$result, $updateNulls)
 	{
 		if (!is_array($this->environments))
 		{
