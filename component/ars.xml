@@ -13,7 +13,7 @@
     <authorUrl>https://www.akeeba.com</authorUrl>
     <copyright>Copyright (c)2010-2023 Nicholas K. Dionysopoulos / Akeeba Ltd</copyright>
     <license>GNU General Public License version 3 or later; see LICENSE.txt</license>
-    <version>7.3.0</version>
+    <version>7.3.1</version>
     <description>COM_ARS_XML_DESCRIPTION</description>
     <namespace path="src">Akeeba\Component\ARS</namespace>
 
