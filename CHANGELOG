@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.3.1
+================================================================================
++ Add Options button to all backend views, since we removed the legacy Control Panel page.
+
 Akeeba Release System 7.3.0
 ================================================================================
 + Notice about Joomla 4 End of Service

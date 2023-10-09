@@ -86,6 +86,8 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolbar();
 
+		ToolbarHelper::preferences('com_ars');
+
 		if ($this->getLayout() === 'modal')
 		{
 			$this->document->addScriptOptions(

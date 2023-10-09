@@ -83,6 +83,8 @@ class HtmlView extends BaseHtmlView
 
 		$this->addToolbar();
 
+		ToolbarHelper::preferences('com_ars');
+
 		parent::display($tpl);
 	}
 
