@@ -2,6 +2,7 @@
 Akeeba Release System 7.3.1
 ================================================================================
 + Add Options button to all backend views, since we removed the legacy Control Panel page.
+# [HIGH] BleedingEdge would delete the newest, instead of the oldest, releases when there were count limits.
 
 Akeeba Release System 7.3.0
 ================================================================================

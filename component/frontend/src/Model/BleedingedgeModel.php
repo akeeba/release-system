@@ -179,11 +179,11 @@ class BleedingedgeModel extends BaseDatabaseModel
 			// Add the excess releases in the collection of releases to remove
 			$toDelete = array_merge(
 				$toDelete,
-				array_slice($releases, $countLimit)
+				array_slice($releases, 0, count($releases) - $countLimit)
 			);
 
 			// Conversely, only keep as many releases as I was told to keep
-			$releases = array_slice($releases, 0, $countLimit);
+			$releases = array_slice($releases, count($releases) - $countLimit, $countLimit);
 		}
 
 		// Remove any leftover releases
