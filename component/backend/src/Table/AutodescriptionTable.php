@@ -22,6 +22,9 @@ defined('_JEXEC') or die;
  * @property int    $category          FK to #__ars_categories
  * @property string $packname          File / URL pattern match
  * @property string $title             Automatic title
+ * @property int    $access
+ * @property int    $show_unauth_links
+ * @property string $redirect_unauth
  * @property string $description       Automatic description
  * @property string $environments      Comma-separated list of #__ars_environments IDs
  * @property string $created           Created date and time
