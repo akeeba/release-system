@@ -3,6 +3,7 @@ Akeeba Release System 7.3.2
 ================================================================================
 # [HIGH] Can't edit Automatic Item Descriptions
 # [LOW] Missing translation string in Components menu
+# [LOW] PHP 8.3 deprecated notice in ComponentParameters service (no functional issue)
 
 Akeeba Release System 7.3.1
 ================================================================================

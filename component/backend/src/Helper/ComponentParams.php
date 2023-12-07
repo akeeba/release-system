@@ -54,10 +54,21 @@ class ComponentParams
 		// Reset ComponentHelper's cache
 		$refClass = new \ReflectionClass(ComponentHelper::class);
 		$refProp  = $refClass->getProperty('components');
+
 		$refProp->setAccessible(true);
+
 		$components                             = $refProp->getValue();
 		$components['com_akeebabackup']->params = $params;
-		$refProp->setValue($components);
+
+		if (version_compare(PHP_VERSION, '8.3.0', 'ge'))
+		{
+			$refClass->setStaticPropertyValue('components', $components);
+		}
+		else
+		{
+			$refProp->setValue($components);
+		}
+
 	}
 
 }
