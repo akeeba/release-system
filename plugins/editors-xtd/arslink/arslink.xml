@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--~
   ~ @package   AkeebaReleaseSystem
-  ~ @copyright Copyright (c)2010-2023 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @copyright Copyright (c)2010-2024 Nicholas K. Dionysopoulos / Akeeba Ltd
   ~ @license   GNU General Public License version 3, or later
   -->
 
@@ -19,7 +19,7 @@ and packaging.
     <author>Nicholas K. Dionysopoulos / Akeeba Ltd</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>www.akeeba.com</authorUrl>
-    <copyright>Copyright (C) 2010-2021 Nicholas K. Dionysopoulos / Akeeba Ltd. All rights reserved.</copyright>
+    <copyright>Copyright (c)2010-2024 Nicholas K. Dionysopoulos / Akeeba Ltd</copyright>
     <license>GNU General Public License version 3 or later</license>
     <description>PLG_ARSLINK_XML_DESCRIPTION</description>
 

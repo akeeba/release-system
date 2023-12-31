@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--~
   ~ @package   AkeebaReleaseSystem
-  ~ @copyright Copyright (c)2010-2023 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @copyright Copyright (c)2010-2024 Nicholas K. Dionysopoulos / Akeeba Ltd
   ~ @license   GNU General Public License version 3, or later
   -->
 
@@ -12,7 +12,7 @@
     <author>Nicholas K. Dionysopoulos</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>https://www.akeeba.com</authorUrl>
-    <copyright>Copyright (c) 2010-2021 Nicholas K. Dionysopoulos</copyright>
+    <copyright>Copyright (c)2010-2024 Nicholas K. Dionysopoulos / Akeeba Ltd</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL v3 or later</license>
     <description>MOD_ARSDOWNLOADS_DESC</description>
     <namespace path="src">Joomla\Module\Arsdownload</namespace>
