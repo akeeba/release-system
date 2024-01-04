@@ -106,12 +106,15 @@ else
 							<th scope="col" class="d-none d-md-table-cell">
 								<?= HTMLHelper::_('searchtools.sort', 'JFIELD_ACCESS_LABEL', 'i.access', $listDirn, $listOrder); ?>
 							</th>
+							<th scope="col" class="w-1 d-none d-md-table-cell">
+								<?= HTMLHelper::_('searchtools.sort', 'COM_ARS_ITEM_FIELD_HITS', 'i.hits', $listDirn, $listOrder); ?>
+							</th>
 							<?php if (Multilanguage::isEnabled()) : ?>
 								<th scope="col">
 									<?= HTMLHelper::_('searchtools.sort', 'JFIELD_LANGUAGE_LABEL', 'i.language', $listDirn, $listOrder); ?>
 								</th>
 							<?php endif; ?>
-							<th scope="col">
+							<th scope="col" class="text-center">
 								<?= Text::_('JPUBLISHED') ?>
 							</th>
 							<th scope="col" class="w-1 d-none d-md-table-cell">
@@ -229,6 +232,10 @@ else
 										<?= LayoutHelper::render('joomla.content.language', $item); ?>
 									</td>
 								<?php endif; ?>
+								
+								<td class="w-1 d-none d-md-table-cell">
+									<?= $item->hits ?>
+								</td>
 
 								<td class="text-center">
 									<?= HTMLHelper::_('jgrid.published', $item->published, $i, 'items.', $user->authorise('core.edit.state', 'com_ars'), 'cb'); ?>

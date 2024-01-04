@@ -29,6 +29,7 @@ class ItemsModel extends ListModel
 			$config['filter_fields'] = [
 				'search',
 				'id', 'i.id',
+				'hits', 'i.hits',
 				'release_id', 'i.release_id',
 				'category_id', 'c.id',
 				'title', 'i.title',
