@@ -12,8 +12,10 @@
         </message>
     </layout>
 
-    <fields name="params" addfieldprefix="Akeeba\Component\ARS\Administrator\Field">
-        <fieldset name="basic" label="COM_ARS_FIELDSET_BASIC">
+    <fields name="request">
+        <fieldset name="request"
+                  addfieldprefix="Akeeba\Component\ARS\Administrator\Field" >
+
             <field
                     name="release_id"
                     type="ArsReleases"
@@ -24,7 +26,11 @@
             >
                 <option value="">COM_ARS_COMMON_RELEASE_SELECT_LABEL</option>
             </field>
+        </fieldset>
+    </fields>
 
+    <fields name="params" addfieldprefix="Akeeba\Component\ARS\Administrator\Field">
+        <fieldset name="advanced" label="COM_ARS_FIELDSET_ADVANCED">
             <field
                     name="items_orderby"
                     type="list"
@@ -39,8 +45,7 @@
                 <option value="rcreated">COM_ARS_BROWSE_REPOSITORY_ORDERBY_RCREATED</option>
                 <option value="order">COM_ARS_BROWSE_REPOSITORY_ORDERBY_ORDER</option>
             </field>
-        </fieldset>
-        <fieldset name="advanced" label="COM_ARS_FIELDSET_ADVANCED">
+
             <field name="show_pagination" type="list" default="2" label="JGLOBAL_PAGINATION_LABEL"
             >
                 <option value="0">JHide</option>

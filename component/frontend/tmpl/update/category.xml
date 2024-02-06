@@ -11,10 +11,10 @@
             <![CDATA[COM_ARS_VIEW_UPDATE_CATEGORY_DESC]]>
         </message>
     </layout>
-    <fields name="params">
-        <fieldset name="basic" label="COM_ARS_FIELDSET_BASIC">
+    <fields name="request">
+        <fieldset name="request">
             <field name="category" type="list" default="components" label="COM_ARS_UPDATESTREAM_CATEGORY_TITLE"
-                   description="COM_ARS_UPDATESTREAM_CATEGORY_DESC">
+                   description="COM_ARS_UPDATESTREAM_CATEGORY_DESC" required="true">
                 <option value="components">COM_ARS_UPDATESTREAM_UPDATETYPE_COMPONENTS</option>
                 <option value="libraries">COM_ARS_UPDATESTREAM_UPDATETYPE_LIBRARIES</option>
                 <option value="modules">COM_ARS_UPDATESTREAM_UPDATETYPE_MODULES</option>
@@ -23,10 +23,7 @@
                 <option value="files">COM_ARS_UPDATESTREAM_UPDATETYPE_FILES</option>
                 <option value="templates">COM_ARS_UPDATESTREAM_UPDATETYPE_TEMPLATES</option>
             </field>
-        </fieldset>
-    </fields>
-    <fields name="request">
-        <fieldset name="request">
+
             <field name="format"
                    type="hidden"
                    default="xml"
