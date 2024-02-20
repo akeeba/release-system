@@ -470,6 +470,8 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
                             $uri->setVar('category', $params['category']);
                             unset($params['category']);
                             break;
+                        default:
+                            continue 3;
                     }
                     break;
             }
