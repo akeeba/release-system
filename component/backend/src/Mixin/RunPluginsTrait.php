@@ -1,7 +1,7 @@
 <?php
 /**
  * @package   AkeebaReleaseSystem
- * @copyright Copyright (c)2023 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @copyright Copyright (c)2010-2024 Nicholas K. Dionysopoulos / Akeeba Ltd
  * @license   GNU General Public License version 3, or later
  */
 
@@ -39,7 +39,7 @@ use Psr\Log\LogLevel;
  *
  * This trait builds on my work in the Joomla! core itself. The trait has both static and non-static methods.
  *
- * @copyright Copyright (C) 2023 Akeeba Ltd
+ * @copyright Copyright (C) 2010-2024 Akeeba Ltd
  * @license   GPL3
  * @since     2023.08.25
  */
