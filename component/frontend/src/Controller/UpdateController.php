@@ -103,10 +103,12 @@ class UpdateController extends BaseController
 
 		if ($id == 0)
 		{
-			// Do we have a menu item parameter?
+			// Since 7.3.3 we use a fake URL parameter `stream_id`
+			$id = $this->input->getInt('stream_id', $id);
+
+			// Legacy menu items may have a menu item parameter.
 			$params = $this->app->getParams('com_ars');
-			$id     = $params->get('streamid', 0);
-			$id     = $params->get('stream_id', $id);
+			$id     = $id ?: $params->get('streamid', $params->get('stream_id', $id));
 		}
 
 		// Define the Id for caching as if it were received as a safeuri param
