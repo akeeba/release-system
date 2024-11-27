@@ -1,0 +1,25 @@
+{
+	"presets": [
+		[
+			"@babel/preset-env",
+			{
+				"useBuiltIns": "entry",
+				"corejs": {
+					"version": "3.9",
+					"proposals": true
+				}
+			}
+		],
+		[
+			"minify",
+			{
+				"builtIns": false,
+				"removeConsole": false
+			}
+		]
+	],
+	"comments": false,
+	"ignore": [
+		"component/media/js/*.min.js"
+	]
+}
