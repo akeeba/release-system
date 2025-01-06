@@ -4,7 +4,7 @@ COPYRIGHT AND DISCLAIMER
 ================================================================================
 
 Akeeba Release System - A software release system for Joomla!
-Copyright (C) 2010-2017 Nicholas K. Dionysopoulos / Akeeba Ltd
+Copyright (C) 2010-2025 Nicholas K. Dionysopoulos / Akeeba Ltd
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

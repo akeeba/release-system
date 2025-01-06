@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--~
   ~ @package   AkeebaReleaseSystem
-  ~ @copyright Copyright (c)2010-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @copyright Copyright (c)2010-2025 Nicholas K. Dionysopoulos / Akeeba Ltd
   ~ @license   GNU General Public License version 3, or later
   -->
 
@@ -10,7 +10,7 @@
     <author>Nicholas K. Dionysopoulos</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>https://www.akeeba.com</authorUrl>
-    <copyright>Copyright (c)2010-2020 Nicholas K. Dionysopoulos</copyright>
+    <copyright>Copyright (c)2010-2025 Nicholas K. Dionysopoulos</copyright>
     <license>GNU General Public License version 3, or later</license>
     <creationDate>2021-10-26</creationDate>
     <version>6.0.3</version>

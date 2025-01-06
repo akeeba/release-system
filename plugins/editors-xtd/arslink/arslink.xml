@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--~
   ~ @package   AkeebaReleaseSystem
-  ~ @copyright Copyright (c)2010-2022 Nicholas K. Dionysopoulos / Akeeba Ltd
+  ~ @copyright Copyright (c)2010-2025 Nicholas K. Dionysopoulos / Akeeba Ltd
   ~ @license   GNU General Public License version 3, or later
   -->
 
@@ -9,7 +9,7 @@
     <name>PLG_EDITORS-XTD_ARSLINK</name>
     <author>Nicholas K. Dionysopoulos / Akeeba Ltd</author>
     <creationDate>2021-10-26</creationDate>
-    <copyright>Copyright (C) 2010-2017 Nicholas K. Dionysopoulos / Akeeba Ltd. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2010-2025 Nicholas K. Dionysopoulos / Akeeba Ltd. All rights reserved.</copyright>
     <license>GNU General Public License version 3 or later</license>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
     <authorUrl>www.akeeba.com</authorUrl>
