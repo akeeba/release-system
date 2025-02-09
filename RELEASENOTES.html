@@ -1,21 +1,5 @@
 <h3>What's new</h3>
 
 <p>
-	<strong>Joomla! 5.1 CSS changes</strong>. Joomla! 5.1 introduced dark mode CSS changes which created low contrast text situations. This is now addressed.
-</p>
-
-<p>
-	<strong>Use SHA-512 instead of SHA-256 when “Compact Update Streams” is enabled</strong>. SHA-512 is a stronger hashing algorithm, and a pre-requisite for eventually upgrading to TUF for updates.
-</p>
-
-<p>
-	<strong>Include the package length in update metadata</strong>. This is a non-standard field that Joomla! itself ignores. However, it is a pre-requisite for eventually upgrading to TUF for updates.
-</p>
-
-<p>
-	<strong>Vastly improved performance in the Logs page</strong>. The Logs page was using combined JOINs which are dead slow on MySQL. It now uses WHERE EXISTS clauses (requiring MySQL 5.7 or later) which vastly improve the performance.
-</p>
-
-<p>
 	<strong>Bug fixes and minor improvements</strong>. Please take a look at the CHANGELOG below.
 </p>
