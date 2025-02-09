@@ -114,7 +114,7 @@ $i = 0;
 									</small> <br /> <small>
 										<strong><?= Text::_('COM_ARS_UPDATESTREAM_CATEGORY_TITLE') ?></strong>:
 										<?php if ($canEdit): ?>
-											<a href="<?= Route::_('index.php?option=com_ars&task=cattegory.edit&id=' . (int) $item->category); ?>"
+											<a href="<?= Route::_('index.php?option=com_ars&task=category.edit&id=' . (int) $item->category); ?>"
 											   title="<?= Text::_('JACTION_EDIT'); ?><?= $this->escape($item->cat_title); ?>">
 												<?= $this->escape($item->cat_title); ?>
 											</a>
