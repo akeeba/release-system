@@ -63,6 +63,15 @@
         </field>
 
         <field
+                name="folder"
+                type="text"
+                label="COM_ARS_UPDATESTREAM_FIELD_FOLDER"
+                description="COM_ARS_UPDATESTREAM_FIELD_FOLDER_HELP"
+                default=""
+                showon="type:plugins"
+        />
+
+        <field
                 name="element"
                 type="text"
                 label="COM_ARS_UPDATESTREAM_FIELD_ELEMENT"
@@ -92,14 +101,6 @@
             <option value="0">COM_ARS_UPDATESTREAM_FIELD_CLIENTID_FRONTEND</option>
             <option value="1">COM_ARS_UPDATESTREAM_FIELD_CLIENTID_BACKEND</option>
         </field>
-
-        <field
-                name="folder"
-                type="text"
-                label="COM_ARS_UPDATESTREAM_FIELD_FOLDER"
-                default=""
-                showon="type:plugins"
-        />
 
         <field
                 name="published"

@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.4.2
+================================================================================
+~ Improve language strings for update streams [gh-240]
+
 Akeeba Release System 7.4.1
 ================================================================================
 # [HIGH] BleedingEdge releases were broken
