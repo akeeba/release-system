@@ -18,7 +18,7 @@ use Joomla\Utilities\ArrayHelper;
 #[\AllowDynamicProperties]
 class CategoriesModel extends ListModel
 {
-	public function __construct($config = [], MVCFactoryInterface $factory = null)
+	public function __construct($config = [], ?MVCFactoryInterface $factory = null)
 	{
 		if (empty($config['filter_fields']))
 		{

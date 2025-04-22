@@ -25,7 +25,7 @@ class ControlpanelController extends BaseController
 	use ControllerEvents;
 	use ControllerRegisterTasksTrait;
 
-	public function __construct($config = [], MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null)
+	public function __construct($config = [], ?MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null)
 	{
 		parent::__construct($config, $factory, $app, $input);
 

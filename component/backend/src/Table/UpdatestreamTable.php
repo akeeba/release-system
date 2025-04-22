@@ -44,7 +44,7 @@ class UpdatestreamTable extends AbstractTable
 	use TableAssertionTrait;
 	use TableColumnAliasTrait;
 
-	public function __construct(DatabaseDriver $db, DispatcherInterface $dispatcher = null)
+	public function __construct(DatabaseDriver $db, ?DispatcherInterface $dispatcher = null)
 	{
 		parent::__construct('#__ars_updatestreams', 'id', $db, $dispatcher);
 

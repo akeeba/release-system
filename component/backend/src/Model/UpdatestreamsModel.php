@@ -17,7 +17,7 @@ use Joomla\Database\ParameterType;
 #[\AllowDynamicProperties]
 class UpdatestreamsModel extends ListModel
 {
-	public function __construct($config = [], MVCFactoryInterface $factory = null)
+	public function __construct($config = [], ?MVCFactoryInterface $factory = null)
 	{
 		if (empty($config['filter_fields']))
 		{

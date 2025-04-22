@@ -27,7 +27,7 @@ use Joomla\Utilities\IpHelper;
  */
 class LogTable extends AbstractTable
 {
-	public function __construct(DatabaseDriver $db, DispatcherInterface $dispatcher = null)
+	public function __construct(DatabaseDriver $db, ?DispatcherInterface $dispatcher = null)
 	{
 		parent::__construct('#__ars_log', 'id', $db, $dispatcher);
 	}

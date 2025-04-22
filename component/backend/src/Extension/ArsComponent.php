@@ -177,13 +177,13 @@ class ArsComponent extends MVCComponent implements
 	}
 
 	/** @inheritdoc */
-	protected function getStateColumnForSection(string $section = null)
+	protected function getStateColumnForSection(?string $section = null)
 	{
 		return 'published';
 	}
 
 	/** @inheritdoc */
-	protected function getTableNameForSection(string $section = null)
+	protected function getTableNameForSection(?string $section = null)
 	{
 		return match (strtolower($section))
 		{

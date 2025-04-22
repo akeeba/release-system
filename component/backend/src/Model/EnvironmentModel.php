@@ -35,7 +35,7 @@ class EnvironmentModel extends AdminModel
 	 */
 	protected $batch_commands = [];
 
-	public function __construct($config = [], MVCFactoryInterface $factory = null, FormFactoryInterface $formFactory = null)
+	public function __construct($config = [], ?MVCFactoryInterface $factory = null, ?FormFactoryInterface $formFactory = null)
 	{
 		parent::__construct($config, $factory, $formFactory);
 
