@@ -12,6 +12,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\Database\DatabaseInterface;
 
 /** @var \Akeeba\Component\ARS\Administrator\View\Autodescriptions\HtmlView $this */
 
@@ -26,7 +27,7 @@ $user              = Factory::getApplication()->getIdentity();
 $userId            = $user->get('id');
 $listOrder         = $this->escape($this->state->get('list.ordering'));
 $listDirn          = $this->escape($this->state->get('list.direction'));
-$nullDate          = Factory::getDbo()->getNullDate();
+$nullDate          = Factory::getContainer()->get(DatabaseInterface::class)->getNullDate();
 $hasCategoryFilter = !empty($this->getModel()->getState('filter.category_id'));
 
 $i = 0;

@@ -19,6 +19,7 @@ use Joomla\Filesystem\Folder;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\Database\DatabaseDriver;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * ARS Items table
@@ -319,7 +320,7 @@ class ItemTable extends AbstractTable
 	 */
 	protected function getUpdateStream(): ?int
 	{
-		$db = $this->getDBO();
+		$db = $this->getDbo();
 
 		$subquery = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->select($db->quoteName('category_id'))

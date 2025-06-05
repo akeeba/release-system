@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\String\StringHelper;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Trait to modify batchCopy for relations involving parent tables OTHER than the Joomla core categories table.
@@ -125,7 +126,7 @@ trait ModelCopyTrait
 		}
 
 		$table = $this->getTable();
-		$db    = Factory::getDbo();
+		$db    = $this->getDatabase();
 		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->select('*')
 			->from($db->quoteName($table->getTableName()));

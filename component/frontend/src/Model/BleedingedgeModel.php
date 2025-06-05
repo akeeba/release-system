@@ -481,7 +481,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 
 		if (isset($table) && is_object($table) && method_exists($table, 'reorder'))
 		{
-			$db = $table->getDbo();
+			$db = $table->getDatabase();
 
 			$table->reorder($db->qn('release_id') . ' = ' . $db->q($release->id));
 		}
