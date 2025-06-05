@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Site\View\Dlidlabel;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Mixin\ViewToolbarTrait;
 use Akeeba\Component\ARS\Administrator\Model\CategoryModel;
 use Exception;
 use Joomla\CMS\Factory;
@@ -20,6 +21,8 @@ use Joomla\CMS\Toolbar\Toolbar;
 
 class HtmlView extends BaseHtmlView
 {
+	use ViewToolbarTrait;
+
 	/**
 	 * The Form object
 	 *
@@ -96,7 +99,7 @@ class HtmlView extends BaseHtmlView
 
 		$isNew = empty($this->item->id);
 
-		$bar = Toolbar::getInstance('toolbar');
+		$bar = $this->getToolbarCompat();
 		$bar->save('dlidlabel.save', 'JSAVE')
 			->buttonClass('btn btn-success me-2');
 

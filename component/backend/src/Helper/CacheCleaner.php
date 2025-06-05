@@ -251,6 +251,7 @@ class CacheCleaner
 		{
 			try
 			{
+				/** @noinspection PhpDeprecationInspection */
 				$jConfig = Factory::getConfig();
 
 				if (is_object($jConfig) && ($jConfig instanceof Registry))

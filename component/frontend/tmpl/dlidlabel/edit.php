@@ -23,7 +23,7 @@ $user = Factory::getApplication()->getIdentity();
 ?>
 
 <div class="card card-body mb-3">
-	<?= Toolbar::getInstance()->render(); ?>
+	<?= $this->getToolbarCompat()->render(); ?>
 </div>
 
 <form action="<?php echo Route::_('index.php?option=com_ars&view=dlidlabel&layout=edit&id=' . (int) $this->item->id); ?>"

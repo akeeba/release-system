@@ -205,7 +205,7 @@ class CategoryTable extends AbstractTable implements TaggableTableInterface
 	protected function _getAssetParentId(?Table $table = null, $id = null)
 	{
 		/** @var Asset $asset */
-		$asset = self::getInstance('Asset', 'JTable', ['dbo' => $this->getDbo()]);
+		$asset = new Asset($this->getDbo(), $this->getDispatcher());
 		$asset->loadByName('com_ars');
 		$assetId = $asset->id;
 

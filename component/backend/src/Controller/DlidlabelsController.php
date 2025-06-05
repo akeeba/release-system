@@ -69,14 +69,25 @@ class DlidlabelsController extends AdminController
 		$cid = ArrayHelper::toInteger($cid);
 
 		// Reset the items.
-		if ($model->reset($cid))
+		try
+		{
+			$result = $model->reset($cid);
+			$error  = $result ? '' : (method_exists($model, 'getError') ? $model->getError() : '');
+		}
+		catch (\Exception $e)
+		{
+			$result = false;
+			$error  = $e->getMessage();
+		}
+
+		if ($result)
 		{
 			$this->setMessage(Text::plural($this->text_prefix . '_N_ITEMS_RESET', \count($cid)));
 
 			return;
 		}
 
-		$this->setMessage($model->getError(), 'error');
+		$this->setMessage($error, 'error');
 	}
 
 }

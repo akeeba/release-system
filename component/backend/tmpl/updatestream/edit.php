@@ -11,6 +11,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\User\UserFactoryInterface;
 
 /** @var \Akeeba\Component\ARS\Administrator\View\Updatestream\HtmlView $this */
 
@@ -18,7 +19,7 @@ $wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('keepalive')
 	->useScript('form.validate');
 
-$user = Factory::getApplication()->getIdentity() ?: Factory::getUser();
+$user = Factory::getApplication()->getIdentity() ?: Factory::getContainer()->get(UserFactoryInterface::class)->loadUserById(0);
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_ars&view=updatestream&layout=edit&id=' . (int) $this->item->id); ?>"

@@ -42,7 +42,7 @@ $published = $this->state->get('filter.published');
 				<div id="batch-choose-action" class="control-group">
 					<select name="batch[category_id]" class="form-select" id="batch-category-id">
 						<option value=""><?php echo Text::_('JLIB_HTML_BATCH_NO_CATEGORY'); ?></option>
-						<?php echo HTMLHelper::_('select.options', $this->get('Categories'), 'value', 'text'); ?>
+						<?php echo HTMLHelper::_('select.options', $this->getModel()->getCategories(), 'value', 'text'); ?>
 					</select>
 				</div>
 				<div id="batch-copy-move" class="control-group radio">

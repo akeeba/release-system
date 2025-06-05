@@ -37,7 +37,7 @@ $published = $this->state->get('filter.published');
 				<div id="batch-choose-action" class="control-group">
 					<?=
 					HTMLHelper::_(
-						'select.groupedlist', $this->get('ReleasesOptions'), "batch[release_id]",
+						'select.groupedlist', $this->getModel()->getReleasesOptions(), "batch[release_id]",
 						[
 							'list.attr'          => [
 								'class' => 'form-select',

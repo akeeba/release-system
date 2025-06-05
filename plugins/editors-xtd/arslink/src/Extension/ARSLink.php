@@ -11,18 +11,55 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Editor\Button\Button;
+use Joomla\CMS\Event\Editor\EditorButtonsSetupEvent;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\SubscriberInterface;
 
-class ARSLink extends CMSPlugin
+class ARSLink extends CMSPlugin implements SubscriberInterface
 {
 	/** @var CMSApplication */
 	protected $app;
 
 	protected $autoloadLanguage = true;
 
-	public function onDisplay(string $name): ?CMSObject
+	public static function getSubscribedEvents(): array
+	{
+		return ['onEditorButtonsSetup' => 'onEditorButtonsSetup'];
+	}
+
+	/**
+	 * @param  EditorButtonsSetupEvent $event
+	 * @return void
+	 *
+	 * @since   5.0.0
+	 */
+	public function onEditorButtonsSetup(EditorButtonsSetupEvent $event): void
+	{
+		$subject  = $event->getButtonsRegistry();
+		$disabled = $event->getDisabledButtons();
+
+		if (\in_array($this->_name, $disabled)) {
+			return;
+		}
+
+		$this->loadLanguage();
+
+		$button = $this->onDisplay($event->getEditorId());
+
+		if ($button) {
+			$subject->add($button);
+		}
+	}
+
+	/**
+	 * @param   string  $name
+	 *
+	 * @return  CMSObject|Button|null
+	 */
+	public function onDisplay(string $name)
 	{
 		static $hasSetJS = false;
 
@@ -75,11 +112,13 @@ JS;
 				->addInlineScript($js);
 		}
 
-		$doc->addScriptOptions('xtd-arslink', [
-			'editor' => $name,
-		]);
+		$doc->addScriptOptions(
+			'xtd-arslink', [
+				'editor' => $name,
+			]
+		);
 
-		return new CMSObject([
+		$props = [
 			'modal'   => true,
 			'link'    => sprintf(
 				'index.php?option=com_ars&view=items&layout=modal&tmpl=component&%s=1',
@@ -89,12 +128,27 @@ JS;
 			'name'    => $this->_type . '_' . $this->_name,
 			'icon'    => 'download fa fa-file-download',
 			'iconSVG' => file_get_contents(JPATH_ROOT . '/media/com_ars/icons/logo_color.svg'),
-			'options' => [
-				'height'     => '400px',
-				'width'      => '800px',
-				'bodyHeight' => '70',
-				'modalWidth' => '80',
-			],
-		]);
+		];
+
+		$options = [
+			'height'     => '400px',
+			'width'      => '800px',
+			'bodyHeight' => '70',
+			'modalWidth' => '80',
+		];
+
+		if (version_compare(JVERSION, '5.0.0', 'lt'))
+		{
+			return new CMSObject(
+				array_merge(
+					$props,
+					[
+						'options' => $options,
+					],
+				)
+			);
+		}
+
+		return new Button($this->_name, $props, $options);
 	}
 }

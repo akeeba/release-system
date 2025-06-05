@@ -151,12 +151,21 @@ class DlidlabelModel extends AdminModel
 //				return false;
 			}
 
-			if (!$this->canEditState($table))
+			try
+			{
+				$result = $this->canEditState($table);
+				$error = $result ? '' : (method_exists($table, 'getError') ? $table->getError() : '');
+			}
+			catch (Exception $e)
+			{
+				$result = false;
+				$error  = $e->getMessage();
+			}
+
+			if (!$result)
 			{
 				// Prune items that you can't change.
 				unset($pks[$i]);
-
-				$error = $this->getError();
 
 				if ($error)
 				{
