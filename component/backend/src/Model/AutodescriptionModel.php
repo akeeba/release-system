@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
@@ -23,6 +24,7 @@ use Joomla\Utilities\ArrayHelper;
 class AutodescriptionModel extends AdminModel
 {
 	use ModelCopyTrait;
+	use LegacyObjectTrait;
 
 	public function __construct($config = [], ?MVCFactoryInterface $factory = null, ?FormFactoryInterface $formFactory = null)
 	{
@@ -151,7 +153,7 @@ class AutodescriptionModel extends AdminModel
 
 		if (empty($data))
 		{
-			$data = $this->getItem()->getProperties();
+			$data = $this->normalizePossibleCMSObject($this->getItem());
 
 			// Get the primary key of the record being edited.
 			$pk = (int) $this->getState($this->getName() . '.id');

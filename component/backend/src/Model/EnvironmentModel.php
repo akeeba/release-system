@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -19,6 +20,7 @@ use Joomla\CMS\MVC\Model\AdminModel;
 class EnvironmentModel extends AdminModel
 {
 	use ModelCopyTrait;
+	use LegacyObjectTrait;
 
 	/**
 	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
@@ -71,7 +73,7 @@ class EnvironmentModel extends AdminModel
 
 		if (empty($data))
 		{
-			$data = (object) $this->getItem()->getProperties();
+			$data = (object) $this->normalizePossibleCMSObject($this->getItem());
 
 			// Get the primary key of the record being edited.
 			$pk = (int) $this->getState($this->getName() . '.id');

@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
@@ -28,6 +29,7 @@ use Joomla\Database\ParameterType;
 class ReleaseModel extends AdminModel
 {
 	use ModelCopyTrait;
+	use LegacyObjectTrait;
 
 	/**
 	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
@@ -256,7 +258,7 @@ class ReleaseModel extends AdminModel
 
 		if (empty($data))
 		{
-			$data = (object) $this->getItem()->getProperties();
+			$data = (object) $this->normalizePossibleCMSObject($this->getItem());
 
 			// Get the primary key of the record being edited.
 			$pk = (int) $this->getState($this->getName() . '.id');
