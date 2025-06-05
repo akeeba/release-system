@@ -10,8 +10,8 @@ namespace Akeeba\Component\ARS\Administrator\Helper;
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
-use Joomla\CMS\Filesystem\File as JFile;
-use Joomla\CMS\Filesystem\Folder as JFolder;
+use Joomla\Filesystem\File as JFile;
+use Joomla\Filesystem\Folder as JFolder;
 use Joomla\CMS\Filter\InputFilter as JFilterInput;
 use Joomla\Registry\Registry as JRegistry;
 

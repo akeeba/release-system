@@ -15,7 +15,7 @@ use Akeeba\Component\ARS\Site\Mixin\ViewCustomFieldsTrait;
 use Akeeba\Component\ARS\Site\Model\CategoriesModel;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\Registry\Registry;
 
