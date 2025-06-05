@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Administrator\View\Logs;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\ViewLoadAnyTemplateTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\ViewToolbarTrait;
 use Akeeba\Component\ARS\Administrator\Model\LogsModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -24,6 +25,7 @@ use Joomla\Registry\Registry;
 class HtmlView extends BaseHtmlView
 {
 	use ViewLoadAnyTemplateTrait;
+	use ViewToolbarTrait;
 
 	/**
 	 * The search tools form
@@ -94,7 +96,7 @@ class HtmlView extends BaseHtmlView
 	private function addToolbar()
 	{
 		$user    = Factory::getApplication()->getIdentity();
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = $this->getToolbarCompat();
 
 		ToolbarHelper::title(sprintf(Text::_('COM_ARS_TITLE_LOGS')), 'icon-ars');
 

@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Administrator\View\Categories;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\ViewLoadAnyTemplateTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\ViewToolbarTrait;
 use Akeeba\Component\ARS\Administrator\Model\CategoriesModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -25,6 +26,7 @@ use Joomla\Registry\Registry;
 class HtmlView extends BaseHtmlView
 {
 	use ViewLoadAnyTemplateTrait;
+	use ViewToolbarTrait;
 
 	/**
 	 * The search tools form
@@ -94,7 +96,7 @@ class HtmlView extends BaseHtmlView
 		$user = Factory::getApplication()->getIdentity();
 
 		// Get the toolbar object instance
-		$toolbar = Toolbar::getInstance('toolbar');
+		$toolbar = $this->getToolbarCompat();
 
 		ToolbarHelper::title(sprintf(Text::_('COM_ARS_TITLE_CATEGORIES')), 'icon-ars');
 
