@@ -65,9 +65,15 @@ class HtmlView extends BaseHtmlView
 		$this->setLayout('edit');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors')))
+		if (method_exists($this->getModel(), 'getErrors'))
 		{
-			throw new GenericDataException(implode("\n", $errors), 500);
+			/** @noinspection PhpDeprecationInspection */
+			$errors = $this->getModel()->getErrors();
+
+			if (is_countable($errors) && count($errors))
+			{
+				throw new GenericDataException(implode("\n", $errors), 500);
+			}
 		}
 
 		$this->addToolbar();
