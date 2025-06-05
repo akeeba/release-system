@@ -23,7 +23,7 @@ $user      = $app->getIdentity();
 $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
-$nullDate  = Factory::getDbo()->getNullDate();
+$nullDate  = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class)->getNullDate();
 $Itemid    = $app->input->getInt('Itemid', null);
 $token     = $app->getFormToken();
 

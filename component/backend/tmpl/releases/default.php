@@ -30,7 +30,7 @@ $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 $saveOrder = $listOrder == 'r.ordering';
-$nullDate  = Factory::getDbo()->getNullDate();
+$nullDate  = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class)->getNullDate();
 
 if ($saveOrder && !empty($this->items))
 {
