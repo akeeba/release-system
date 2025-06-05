@@ -10,9 +10,9 @@ namespace Akeeba\Component\ARS\Administrator\Helper;
 // Protect from unauthorized access
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Filter\InputFilter as JFilterInput;
 use Joomla\Filesystem\File as JFile;
 use Joomla\Filesystem\Folder as JFolder;
-use Joomla\CMS\Filter\InputFilter as JFilterInput;
 use Joomla\Registry\Registry as JRegistry;
 
 /**
@@ -23,7 +23,7 @@ class Cache
 	/** @var  string  Absolute path to the cache directory */
 	private $cachePath = null;
 
-	/** @var  string  The configured cache domain  */
+	/** @var  string  The configured cache domain */
 	private $domain = null;
 
 	/** @var  int  Last cache update timestamp */
@@ -57,9 +57,27 @@ class Cache
 		// Load the registry
 		$this->hasCache = true;
 
-		if (JFolder::exists(dirname($this->cachePath)))
+		try
 		{
-			if (JFile::exists($this->cachePath))
+			$folderExists = JFolder::exists(dirname($this->cachePath));
+		}
+		catch (\Exception $e)
+		{
+			return false;
+		}
+
+		if ($folderExists)
+		{
+			try
+			{
+				$fileExists = JFile::exists($this->cachePath);
+			}
+			catch (\Exception $e)
+			{
+				$fileExists = false;
+			}
+
+			if ($fileExists)
 			{
 				$this->lastUpdate = @filemtime($this->cachePath);
 
@@ -87,7 +105,15 @@ class Cache
 		else
 		{
 			$this->lastUpdate = 0;
-			$result           = JFolder::create(dirname($this->cachePath));
+
+			try
+			{
+				$result = JFolder::create(dirname($this->cachePath));
+			}
+			catch (\Exception $e)
+			{
+				$result = false;
+			}
 
 			if (!$result)
 			{
@@ -146,6 +172,13 @@ class Cache
 
 		$serialized = $this->registry->toString('INI');
 
-		JFile::write($this->cachePath, $serialized);
+		try
+		{
+			JFile::write($this->cachePath, $serialized);
+		}
+		catch (\Exception $e)
+		{
+			// Swallow.
+		}
 	}
 }

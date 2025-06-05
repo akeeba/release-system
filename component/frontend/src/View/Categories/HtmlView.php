@@ -71,7 +71,14 @@ class HtmlView extends BaseHtmlView
 
 		$this->customHtmlFile = JPATH_THEMES . '/' . $app->getTemplate() . '/html/com_ars/categories/' . $customRepoFilename;
 
-		if (!$useCustomHtml || !File::exists($this->customHtmlFile))
+		try
+		{
+			if (!$useCustomHtml || !File::exists($this->customHtmlFile))
+			{
+				$this->customHtmlFile = null;
+			}
+		}
+		catch (\Exception $e)
 		{
 			$this->customHtmlFile = null;
 		}

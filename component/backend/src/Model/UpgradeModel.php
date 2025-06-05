@@ -493,7 +493,14 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 				continue;
 			}
 
-			File::delete($file);
+			try
+			{
+				File::delete($file);
+			}
+			catch (\Exception $e)
+			{
+				// Swallow.
+			}
 		}
 
 		// Remove folders
@@ -524,7 +531,14 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 
 		if ($baseName === $lowercaseBaseName)
 		{
-			return $hasMixedCase && Folder::delete($path);
+			try
+			{
+				return $hasMixedCase && Folder::delete($path);
+			}
+			catch (\Exception $e)
+			{
+				return false;
+			}
 		}
 
 		// We have a mixed case folder. Further investigation necessary.
@@ -534,7 +548,14 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 		// If the lowercase path does not exist we have a case-sensitive filesystem. Return early.
 		if (!$hasLowercase)
 		{
-			return $hasMixedCase && Folder::delete($path);
+			try
+			{
+				return $hasMixedCase && Folder::delete($path);
+			}
+			catch (\Exception $e)
+			{
+				return false;
+			}
 		}
 
 		// Both folders exist. Are they the same?
@@ -543,16 +564,37 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 		$lowercaseTestFile = $altPath . '/' . $testBasename;
 		$uppercaseTestFile = $path . '/' . $testBasename;
 
-		File::write($lowercaseTestFile, $data);
+		try
+		{
+			File::write($lowercaseTestFile, $data);
+		}
+		catch (\Exception $e)
+		{
+			// Swallow.
+		}
 
 		$readData = file_get_contents($uppercaseTestFile);
 
-		File::delete($lowercaseTestFile);
+		try
+		{
+			File::delete($lowercaseTestFile);
+		}
+		catch (\Exception $e)
+		{
+			// Swallow.
+		}
 
 		// The two folders are different. We have a case-sensitive filesystem. Proceed with deletion.
 		if ($readData !== $data)
 		{
-			return Folder::delete($path);
+			try
+			{
+				return Folder::delete($path);
+			}
+			catch (\Exception $e)
+			{
+				return false;
+			}
 		}
 
 		/**
@@ -566,8 +608,15 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 		$intermediateBasename = $lowercaseBaseName . '_' . UserHelper::genRandomPassword(8);
 		$intermediatePath     = dirname($path) . '/' . $intermediateBasename;
 
-		Folder::move($path, $intermediatePath);
-		Folder::move($intermediatePath, $altPath);
+		try
+		{
+			Folder::move($path, $intermediatePath);
+			Folder::move($intermediatePath, $altPath);
+		}
+		catch (\Exception $e)
+		{
+			return false;
+		}
 
 		return false;
 	}
@@ -803,7 +852,14 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 		$filePath = $this->getCachedManifestPath($oldPackage);
 		$contents = $xml->asXML();
 
-		File::write($filePath, $contents);
+		try
+		{
+			File::write($filePath, $contents);
+		}
+		catch (\Exception $e)
+		{
+			// Swallow.
+		}
 	}
 
 	/**

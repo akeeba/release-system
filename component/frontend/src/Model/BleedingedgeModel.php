@@ -120,7 +120,14 @@ class BleedingedgeModel extends BaseDatabaseModel
 
 			// Releases whose folder no longer exists will be automatically deleted
 			$folder = $this->folder . '/' . $folderName;
-			$exists = Folder::exists($folder);
+			try
+			{
+				$exists = Folder::exists($folder);
+			}
+			catch (Exception $e)
+			{
+				return true;
+			}
 
 			if (!$exists)
 			{
@@ -207,7 +214,16 @@ class BleedingedgeModel extends BaseDatabaseModel
 		{
 			$changelog = $this->folder . '/' . $first_release->alias . '/CHANGELOG';
 
-			if (File::exists($changelog))
+			try
+			{
+				$fileExists = File::exists($changelog);
+			}
+			catch (Exception $e)
+			{
+				$fileExists = false;
+			}
+
+			if ($fileExists)
 			{
 				$changeLogData   = @file_get_contents($changelog);
 				$first_changelog = explode("\n", str_replace("\r\n", "\n", $changeLogData));
@@ -215,7 +231,14 @@ class BleedingedgeModel extends BaseDatabaseModel
 		}
 
 		// Get a list of all folders
-		$allFolders = Folder::folders($this->folder);
+		try
+		{
+			$allFolders = Folder::folders($this->folder);
+		}
+		catch (Exception $e)
+		{
+			$allFolders = [];
+		}
 
 		if (!empty($allFolders))
 		{
@@ -228,7 +251,16 @@ class BleedingedgeModel extends BaseDatabaseModel
 					$changelog     = $this->folder . '/' . $folder . '/' . 'CHANGELOG';
 					$changeLogData = '';
 
-					if (File::exists($changelog))
+					try
+					{
+						$fileExists = File::exists($changelog);
+					}
+					catch (Exception $e)
+					{
+						$fileExists = false;
+					}
+
+					if ($fileExists)
 					{
 						$changeLogData = @file_get_contents($changelog);
 						$changeLogData = ($changeLogData === false) ? '' : $changeLogData;
@@ -353,7 +385,16 @@ class BleedingedgeModel extends BaseDatabaseModel
 			$hasChangelog   = false;
 			$this_changelog = '';
 
-			if (File::exists($changelog))
+			try
+			{
+				$fileExists = File::exists($changelog);
+			}
+			catch (Exception $e)
+			{
+				$fileExists = false;
+			}
+
+			if ($fileExists)
 			{
 				$hasChangelog   = true;
 				$this_changelog = @file_get_contents($changelog);
@@ -393,7 +434,14 @@ class BleedingedgeModel extends BaseDatabaseModel
 
 		$known_items = [];
 
-		$files = Folder::files($folder);
+		try
+		{
+			$files = Folder::files($folder);
+		}
+		catch (Exception $e)
+		{
+			$files = [];
+		}
 
 		foreach ($items as $item)
 		{
@@ -507,11 +555,27 @@ class BleedingedgeModel extends BaseDatabaseModel
 		$folder = $this->category->directory;
 
 		// If it is stored locally, make sure the folder exists
-		if (!Folder::exists($folder))
+		try
+		{
+			$folderExists = Folder::exists($folder);
+		}
+		catch (Exception $e)
+		{
+			$folderExists = false;
+		}
+
+		if (!$folderExists)
 		{
 			$folder = JPATH_ROOT . '/' . $folder;
 
-			if (!Folder::exists($folder))
+			try
+			{
+				if (!Folder::exists($folder))
+				{
+					return;
+				}
+			}
+			catch (Exception $e)
 			{
 				return;
 			}
@@ -621,9 +685,16 @@ class BleedingedgeModel extends BaseDatabaseModel
 		{
 			$folderCheck = $folder . '/' . $candidate;
 
-			if (Folder::exists($folderCheck))
+			try
 			{
-				return $candidate;
+				if (Folder::exists($folderCheck))
+				{
+					return $candidate;
+				}
+			}
+			catch (Exception $e)
+			{
+				continue;
 			}
 		}
 
@@ -691,7 +762,14 @@ class BleedingedgeModel extends BaseDatabaseModel
 				{
 					if (!@unlink($filePath))
 					{
-						File::delete($filePath);
+						try
+						{
+							File::delete($filePath);
+						}
+						catch (Exception $e)
+						{
+							// Swallow.
+						}
 					}
 				}
 			}
@@ -705,7 +783,14 @@ class BleedingedgeModel extends BaseDatabaseModel
 		{
 			if (!@unlink($folder))
 			{
-				Folder::delete($folder);
+				try
+				{
+					Folder::delete($folder);
+				}
+				catch (Exception $e)
+				{
+					// Swallow.
+				}
 			}
 		}
 

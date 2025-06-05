@@ -192,16 +192,30 @@ HTML;
 
 		// Load the template script
 		$filetofind      = $this->_createFileName('template', ['name' => $file]);
-		$this->_template = Path::find($this->_path['template'], $filetofind);
+		try
+		{
+			$this->_template = Path::find($this->_path['template'], $filetofind);
+		}
+		catch (Exception $e)
+		{
+			$this->_template = false;
+		}
 
 		// If alternate layout can't be found, fall back to default layout
 		if (($this->_template === false) && $fallbackToDefault)
 		{
 			$filetofind      = $this->_createFileName('', ['name' => 'default' . (isset($tpl) ? '_' . $tpl : $tpl)]);
-			$this->_template = Path::find($this->_path['template'], $filetofind);
+			try
+			{
+				$this->_template = Path::find($this->_path['template'], $filetofind);
+			}
+			catch (Exception $e)
+			{
+				$this->_template = false;
+			}
 		}
 
-		if ($this->_template != false)
+		if ($this->_template !== false)
 		{
 			// Unset so as not to introduce into template scope
 			unset($tpl, $file);

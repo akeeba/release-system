@@ -87,7 +87,14 @@ class ItemsModel extends ListModel
 		$directory .= in_array(substr($directory, -1), ['/', DIRECTORY_SEPARATOR]) ? '' : '/';
 
 		// Get all files under this directory and remove the directory prefix
-		$allFiles = Folder::files($directory, '.', true, true);
+		try
+		{
+			$allFiles = Folder::files($directory, '.', true, true);
+		}
+		catch (\Exception $e)
+		{
+			$allFiles = [];
+		}
 		$allFiles = array_map(function ($thisFolder) use ($directory) {
 			$dirLen = strlen($directory);
 

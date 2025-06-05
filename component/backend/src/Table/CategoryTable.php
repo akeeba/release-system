@@ -176,7 +176,16 @@ class CategoryTable extends AbstractTable implements TaggableTableInterface
 
 		$directory = JPATH_SITE . '/' . $this->directory;
 
-		$this->assert(Folder::exists($directory), 'COM_ARS_CATEGORY_ERR_DIRECTORY_NOT_EXISTS');
+		try
+		{
+			$folderExists = Folder::exists($directory);
+		}
+		catch (\Exception $e)
+		{
+			$folderExists = false;
+		}
+
+		$this->assert($folderExists, 'COM_ARS_CATEGORY_ERR_DIRECTORY_NOT_EXISTS');
 
 		// Automatically fix the type
 		if (!in_array($this->type, ['normal', 'bleedingedge']))

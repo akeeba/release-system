@@ -72,19 +72,46 @@ class ItemModel extends BaseDatabaseModel
 		{
 			$folder = $category->directory;
 
-			if (!Folder::exists($folder))
+			try
+			{
+				$folderExists = Folder::exists($folder);
+			}
+			catch (Exception $e)
+			{
+				$folderExists = false;
+			}
+
+			if (!$folderExists)
 			{
 				$folder = JPATH_ROOT . '/' . $folder;
 			}
 
-			if (!Folder::exists($folder))
+			try
+			{
+				$folderExists = Folder::exists($folder);
+			}
+			catch (Exception $e)
+			{
+				$folderExists = false;
+			}
+
+			if (!$folderExists)
 			{
 				throw new RuntimeException();
 			}
 
 			$filename = $folder . '/' . $item->filename;
 
-			if (!File::exists($filename))
+			try
+			{
+				$fileExists = File::exists($filename);
+			}
+			catch (Exception $e)
+			{
+				$fileExists = false;
+			}
+
+			if (!$fileExists)
 			{
 				throw new RuntimeException();
 			}
@@ -642,19 +669,46 @@ class ItemModel extends BaseDatabaseModel
 		{
 			$folder = $category->directory;
 
-			if (!Folder::exists($folder))
+			try
+			{
+				$folderExists = Folder::exists($folder);
+			}
+			catch (Exception $e)
+			{
+				$folderExists = false;
+			}
+
+			if (!$folderExists)
 			{
 				$folder = JPATH_ROOT . '/' . $folder;
 			}
 
-			if (!Folder::exists($folder))
+			try
+			{
+				$folderExists = Folder::exists($folder);
+			}
+			catch (Exception $e)
+			{
+				$folderExists = false;
+			}
+
+			if (!$folderExists)
 			{
 				throw new RuntimeException();
 			}
 
 			$filename = $folder . '/' . $item->filename;
 
-			if (!File::exists($filename))
+			try
+			{
+				$fileExists = File::exists($filename);
+			}
+			catch (Exception $e)
+			{
+				$fileExists = false;
+			}
+
+			if (!$fileExists)
 			{
 				throw new RuntimeException();
 			}

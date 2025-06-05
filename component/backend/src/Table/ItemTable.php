@@ -193,7 +193,14 @@ class ItemTable extends AbstractTable
 				{
 					$folder = JPATH_ROOT . '/' . $folder;
 
-					if (!Folder::exists($folder))
+					try
+					{
+						if (!Folder::exists($folder))
+						{
+							$folder = null;
+						}
+					}
+					catch (\Exception $e)
 					{
 						$folder = null;
 					}
@@ -229,7 +236,14 @@ class ItemTable extends AbstractTable
 
 			if (!empty($filename) && ($this->type == 'link'))
 			{
-				$dummy = @unlink($filename) || File::delete($filename);
+				try
+				{
+					$dummy = @unlink($filename) || File::delete($filename);
+				}
+				catch (\Exception $e)
+				{
+					// Swallow.
+				}
 			}
 		}
 
