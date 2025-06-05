@@ -57,10 +57,22 @@ trait ControllerCopyTrait
 		// Publish the items.
 		try
 		{
-			$copyMap       = $model->copy($cid) ?: [];
-			$errors        = $model->getErrors();
-			$copiedSuccess = count($copyMap);
-			$copiedFailed  = count($cid) - $copiedSuccess;
+			try
+			{
+				$copyMap = $model->copy($cid) ?: [];
+				/** @noinspection PhpDeprecationInspection */
+				$errors        = method_exists($model, 'getErrors') ? $model->getErrors() : [];
+				$copiedSuccess = count($copyMap);
+				$copiedFailed  = count($cid) - $copiedSuccess;
+			}
+			catch (\Exception $e)
+			{
+				$copyMap       = 0;
+				$copiedSuccess = 0;
+				$copiedFailed  = 0;
+				$errors        = [$e->getMessage()];
+			}
+
 			$app           = Factory::getApplication();
 
 			if (count($errors))

@@ -216,7 +216,9 @@ class CategoryModel extends AdminModel
 
 		if (!$result)
 		{
-			$this->setError(Text::_('COM_ARS_CATEGORIES_NODELETE_VERSION'));
+			throw new \RuntimeException(Text::_('COM_ARS_CATEGORIES_NODELETE_VERSION'));
+
+//			$this->setError(Text::_('COM_ARS_CATEGORIES_NODELETE_VERSION'));
 		}
 
 		return $result;

@@ -141,9 +141,14 @@ class DlidlabelModel extends AdminModel
 		{
 			if (!$table->load($pk))
 			{
-				$this->setError($table->getError());
+				/** @noinspection PhpDeprecationInspection */
+				$error = method_exists($table, 'getError') ? $table->getError() : '';
 
-				return false;
+				throw new \RuntimeException($error);
+
+//				$this->setError($table->getError());
+//
+//				return false;
 			}
 
 			if (!$this->canEditState($table))
@@ -173,9 +178,14 @@ class DlidlabelModel extends AdminModel
 				'dlid' => '',
 			]))
 			{
-				$this->setError($table->getError());
+				/** @noinspection PhpDeprecationInspection */
+				$error = method_exists($table, 'getError') ? $table->getError() : '';
 
-				return false;
+				throw new \RuntimeException($error);
+
+//				$this->setError($table->getError());
+//
+//				return false;
 			}
 		}
 

@@ -115,6 +115,12 @@ class ReleaseModel extends AdminModel
 		}
 		catch (\RuntimeException $e)
 		{
+			if (version_compare(JVERSION, '5.999.999', 'ge'))
+			{
+				throw new $e;
+			}
+
+			/** @noinspection PhpDeprecationInspection */
 			$this->setError($e->getMessage());
 
 			return false;
@@ -349,7 +355,8 @@ class ReleaseModel extends AdminModel
 
 		if (!$result)
 		{
-			$this->setError(Text::_('COM_ARS_RELEASES_NODELETE_VERSION'));
+			throw new \RuntimeException(Text::_('COM_ARS_RELEASES_NODELETE_VERSION'));
+//			$this->setError(Text::_('COM_ARS_RELEASES_NODELETE_VERSION'));
 		}
 
 		return $result;

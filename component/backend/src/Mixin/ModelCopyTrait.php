@@ -61,9 +61,11 @@ trait ModelCopyTrait
 
 		if (empty($categoryId))
 		{
-			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
 
-			return false;
+//			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND'));
+//
+//			return false;
 		}
 
 		// Check that the category exists
@@ -71,12 +73,18 @@ trait ModelCopyTrait
 
 		if (!$categoryTable->load($categoryId))
 		{
-			$this->setError(
-				$categoryTable->getError() ?:
-					Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND')
-			);
+			/** @noinspection PhpDeprecationInspection */
+			$error = method_exists($categoryTable, 'getError') ? $categoryTable->getError() : '';
+			$error = $error ?: Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND');
 
-			return false;
+			throw new \RuntimeException($error);
+
+//			$this->setError(
+//				$categoryTable->getError() ?:
+//					Text::_('JLIB_APPLICATION_ERROR_BATCH_MOVE_CATEGORY_NOT_FOUND')
+//			);
+//
+//			return false;
 		}
 
 		// Check that the user has create permission for the component
@@ -88,9 +96,11 @@ trait ModelCopyTrait
 		{
 			if (!$user->authorise('core.create', $extension))
 			{
-				$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+				throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 
-				return false;
+//				$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+//
+//				return false;
 			}
 
 			return true;
@@ -99,9 +109,11 @@ trait ModelCopyTrait
 		// The parent table has an asset. Let's check if the user is allowed to create items in it.
 		if (!$user->authorise('core.create', $categoryTable->getAssetName()))
 		{
-			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 
-			return false;
+//			$this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+//
+//			return false;
 		}
 
 		return true;

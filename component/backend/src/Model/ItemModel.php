@@ -78,6 +78,12 @@ class ItemModel extends AdminModel
 		}
 		catch (\RuntimeException $e)
 		{
+			if (version_compare(JVERSION, '5.999.999', 'ge'))
+			{
+				throw new $e;
+			}
+
+			/** @noinspection PhpDeprecationInspection */
 			$this->setError($e->getMessage());
 
 			return false;
