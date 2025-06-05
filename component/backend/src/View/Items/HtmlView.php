@@ -92,7 +92,7 @@ class HtmlView extends BaseHtmlView
 
 		if ($this->getLayout() === 'modal')
 		{
-			$this->document->addScriptOptions(
+			$this->getDocument()->addScriptOptions(
 				'ars.itemsProxyCallback',
 				Factory::getApplication()->input->getCmd('function', 'arsSelectItem')
 			)

@@ -93,7 +93,7 @@ class HtmlView extends BaseHtmlView
 		$this->needsMenuItem = $model->needsCategoriesMenu();
 
 		// Push chart data
-		$this->document
+		$this->getDocument()
 			->addScriptOptions('akeeba.ReleaseSystem.ControlPanel.downloadsReport', array_map(function ($date, $count) {
 				return [
 					'date'  => $date,
@@ -102,7 +102,7 @@ class HtmlView extends BaseHtmlView
 			}, array_keys($this->monthlyDailyReport), $this->monthlyDailyReport));
 
 		// Load JavaScript
-		$this->document->getWebAssetManager()
+		$this->getDocument()->getWebAssetManager()
 			->useScript('com_ars.controlpanel');
 
 	}

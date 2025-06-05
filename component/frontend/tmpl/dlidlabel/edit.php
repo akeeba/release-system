@@ -15,7 +15,7 @@ use Joomla\CMS\Toolbar\Toolbar;
 
 /** @var \Akeeba\Component\ARS\Site\View\Dlidlabel\HtmlView $this */
 
-$wa = $this->document->getWebAssetManager();
+$wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('keepalive')
 	->useScript('form.validate');
 

@@ -14,7 +14,7 @@ use Joomla\CMS\Router\Route;
 /** @var XmlView $this */
 
 /** @var \Joomla\CMS\Document\XmlDocument $document */
-$document = $this->document;
+$document = $this->getDocument();
 
 $xml = new SimpleXMLElement(<<< XML
 <?xml version="1.0" encoding="UTF-8"?>

@@ -46,7 +46,7 @@ class JsonView extends \Joomla\CMS\MVC\View\JsonView
 		$this->showChecksums = $params->get('show_checksums', 0) == 1;
 
 		/** @var JsonDocument $document */
-		$document = $this->document;
+		$document = $this->getDocument();
 		$document->setMimeEncoding('application/json');
 
 		// Extract unstable versions and only keep the very latest one

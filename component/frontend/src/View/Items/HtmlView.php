@@ -267,7 +267,7 @@ class HtmlView extends BaseHtmlView
 		$this->pagination->setAdditionalUrlParam('tmpl', 'component');
 		$this->pagination->setAdditionalUrlParam('Itemid', '');
 
-		$this->document
+		$this->getDocument()
 			->addScriptOptions('ars.itemsProxyCallback', $this->modalFunction);
 	}
 }

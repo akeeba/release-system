@@ -14,7 +14,7 @@ use Joomla\CMS\Router\Route;
 
 /** @var \Akeeba\Component\ARS\Administrator\View\Release\HtmlView $this */
 
-$wa = $this->document->getWebAssetManager();
+$wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('keepalive')
 	->useScript('form.validate');
 

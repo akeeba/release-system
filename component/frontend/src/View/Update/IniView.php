@@ -42,7 +42,7 @@ class IniView extends HtmlView
 		$this->setLayout('ini');
 
 		// Set the content type to text/plain
-		$this->document->setMimeEncoding('text/plain');
+		$this->getDocument()->setMimeEncoding('text/plain');
 	}
 
 }

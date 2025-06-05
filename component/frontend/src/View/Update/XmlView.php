@@ -46,7 +46,7 @@ class XmlView extends HtmlView
 			$this->doTask = 'all';
 		}
 
-		$this->document->setMimeEncoding('text/xml');
+		$this->getDocument()->setMimeEncoding('text/xml');
 
 		@ob_start();
 	}

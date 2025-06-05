@@ -102,7 +102,7 @@ class LatestController extends BaseController
 		// Get and render the view
 		$document       = $this->app->getDocument();
 		$view           = $this->getView('latest', 'html');
-		$view->document = $document;
+		$view->setDocument($document);
 
 		$view->setModel($catModel, true);
 		$view->setModel($relModel);

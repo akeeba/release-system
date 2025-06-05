@@ -86,7 +86,7 @@ trait ControllerReusableModelsTrait
 				$view->setModel($model, true);
 			}
 
-			$view->document = $document;
+			$view->setDocument($document);
 		}
 
 		return $view;

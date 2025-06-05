@@ -24,7 +24,7 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 JS;
 
-$this->document->getWebAssetManager()->addInlineScript($js, [], [], ['core']);
+$this->getDocument()->getWebAssetManager()->addInlineScript($js, [], [], ['core']);
 
 ?>
 <button class="btn btn-secondary" id="ars_batch_cancel" type="button"
