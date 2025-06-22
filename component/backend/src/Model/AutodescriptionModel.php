@@ -153,7 +153,7 @@ class AutodescriptionModel extends AdminModel
 
 		if (empty($data))
 		{
-			$data = $this->normalizePossibleCMSObject($this->getItem());
+			$data = (array) $this->normalizePossibleCMSObject($this->getItem());
 
 			// Get the primary key of the record being edited.
 			$pk = (int) $this->getState($this->getName() . '.id');
