@@ -17,6 +17,7 @@ use Joomla\CMS\Router\Route;
 /** @var \Akeeba\Component\ARS\Site\View\Dlidlabels\HtmlView $this */
 
 HTMLHelper::_('behavior.multiselect');
+HTMLHelper::_('bootstrap.tooltip', '.hasTooltip');
 
 $app       = Factory::getApplication();
 $user      = $app->getIdentity();
@@ -63,7 +64,7 @@ $i = 0;
 						</caption>
 						<thead>
 						<tr>
-							<td class="w-1 text-center">
+							<td class="text-center visually-hidden" aria-hidden="true">
 								<?= HTMLHelper::_('grid.checkall'); ?>
 							</td>
 							<th scope="col">
@@ -86,7 +87,7 @@ $i = 0;
 							$canEdit = !$item->primary;
 							?>
 							<tr class="row<?= $i++ % 2; ?>" data-draggable-group="0">
-								<td class="text-center">
+								<td class="text-center visually-hidden" aria-hidden="true">
 									<?= HTMLHelper::_('grid.id', $i, $item->id, false, 'cid', 'cb', $item->title); ?>
 								</td>
 
@@ -122,8 +123,36 @@ $i = 0;
 									</code>
 								</td>
 
-								<td class="text-center">
-									<?= HTMLHelper::_('jgrid.published', $item->published, $i, 'dlidlabels.', true, 'cb'); ?>
+								<td>
+									<?php if ($item->published): ?>
+										<a href="<?= Route::_(
+											sprintf(
+												"index.php?option=com_ars&view=dlidlabels&task=unpublish&cid[]=%s&%s=1",
+												$item->id,
+												$token
+											)
+										) ?>"
+										   class="btn btn-success btn-sm hasTooltip"
+										   title="<?= Text::_('JPUBLISHED') ?>"
+										>
+											<span class="fa fa-check fa-fw" aria-hidden="true"></span>
+											<span class="visually-hidden"><?= Text::_('JPUBLISHED') ?></span>
+										</a>
+									<?php else: ?>
+										<a href="<?= Route::_(
+											sprintf(
+												"index.php?option=com_ars&view=dlidlabels&task=publish&cid[]=%s&%s=1",
+												$item->id,
+												$token
+											)
+										) ?>"
+										   class="btn btn-danger btn-sm hasTooltip"
+										   title="<?= Text::_('JPUBLISHED') ?>"
+										>
+											<span class="fa fa-xmark fa-fw" aria-hidden="true"></span>
+											<span class="visually-hidden"><?= Text::_('JPUBLISHED') ?></span>
+										</a>
+									<?php endif; ?>
 								</td>
 
 								<td class="d-none d-md-table-cell" style="width: 6em">
