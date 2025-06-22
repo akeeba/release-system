@@ -91,7 +91,7 @@ class ReleasesModel extends ListModel
 
 		try
 		{
-			$folderExists = Folder::exists($directory);
+			$folderExists = @is_dir($directory);
 		}
 		catch (Exception $e)
 		{

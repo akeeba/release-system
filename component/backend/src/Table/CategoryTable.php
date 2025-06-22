@@ -178,7 +178,7 @@ class CategoryTable extends AbstractTable implements TaggableTableInterface
 
 		try
 		{
-			$folderExists = Folder::exists($directory);
+			$folderExists = @is_dir($directory);
 		}
 		catch (\Exception $e)
 		{

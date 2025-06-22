@@ -122,7 +122,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 			$folder = $this->folder . '/' . $folderName;
 			try
 			{
-				$exists = Folder::exists($folder);
+				$exists = @is_dir($folder);
 			}
 			catch (Exception $e)
 			{
@@ -216,7 +216,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 
 			try
 			{
-				$fileExists = File::exists($changelog);
+				$fileExists = @is_file($changelog);
 			}
 			catch (Exception $e)
 			{
@@ -253,7 +253,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 
 					try
 					{
-						$fileExists = File::exists($changelog);
+						$fileExists = @is_file($changelog);
 					}
 					catch (Exception $e)
 					{
@@ -387,7 +387,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 
 			try
 			{
-				$fileExists = File::exists($changelog);
+				$fileExists = @is_file($changelog);
 			}
 			catch (Exception $e)
 			{
@@ -557,7 +557,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 		// If it is stored locally, make sure the folder exists
 		try
 		{
-			$folderExists = Folder::exists($folder);
+			$folderExists = @is_dir($folder);
 		}
 		catch (Exception $e)
 		{
@@ -570,7 +570,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 
 			try
 			{
-				if (!Folder::exists($folder))
+				if (!@is_dir($folder))
 				{
 					return;
 				}
@@ -687,7 +687,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 
 			try
 			{
-				if (Folder::exists($folderCheck))
+				if (@is_dir($folderCheck))
 				{
 					return $candidate;
 				}

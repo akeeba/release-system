@@ -74,7 +74,7 @@ class ItemModel extends BaseDatabaseModel
 
 			try
 			{
-				$folderExists = Folder::exists($folder);
+				$folderExists = @is_dir($folder);
 			}
 			catch (Exception $e)
 			{
@@ -88,7 +88,7 @@ class ItemModel extends BaseDatabaseModel
 
 			try
 			{
-				$folderExists = Folder::exists($folder);
+				$folderExists = @is_dir($folder);
 			}
 			catch (Exception $e)
 			{
@@ -104,7 +104,7 @@ class ItemModel extends BaseDatabaseModel
 
 			try
 			{
-				$fileExists = File::exists($filename);
+				$fileExists = @is_file($filename);
 			}
 			catch (Exception $e)
 			{
@@ -671,7 +671,7 @@ class ItemModel extends BaseDatabaseModel
 
 			try
 			{
-				$folderExists = Folder::exists($folder);
+				$folderExists = @is_dir($folder);
 			}
 			catch (Exception $e)
 			{
@@ -685,7 +685,7 @@ class ItemModel extends BaseDatabaseModel
 
 			try
 			{
-				$folderExists = Folder::exists($folder);
+				$folderExists = @is_dir($folder);
 			}
 			catch (Exception $e)
 			{
@@ -701,7 +701,7 @@ class ItemModel extends BaseDatabaseModel
 
 			try
 			{
-				$fileExists = File::exists($filename);
+				$fileExists = @is_file($filename);
 			}
 			catch (Exception $e)
 			{

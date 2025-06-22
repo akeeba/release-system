@@ -73,7 +73,7 @@ class HtmlView extends BaseHtmlView
 
 		try
 		{
-			if (!$useCustomHtml || !File::exists($this->customHtmlFile))
+			if (!$useCustomHtml || !@is_file($this->customHtmlFile))
 			{
 				$this->customHtmlFile = null;
 			}

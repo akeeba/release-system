@@ -195,7 +195,7 @@ class ItemTable extends AbstractTable
 
 					try
 					{
-						if (!Folder::exists($folder))
+						if (!@is_dir($folder))
 						{
 							$folder = null;
 						}

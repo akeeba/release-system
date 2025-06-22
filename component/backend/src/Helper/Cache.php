@@ -59,7 +59,7 @@ class Cache
 
 		try
 		{
-			$folderExists = JFolder::exists(dirname($this->cachePath));
+			$folderExists = @is_dir(dirname($this->cachePath));
 		}
 		catch (\Exception $e)
 		{
@@ -70,7 +70,7 @@ class Cache
 		{
 			try
 			{
-				$fileExists = JFile::exists($this->cachePath);
+				$fileExists = @is_file($this->cachePath);
 			}
 			catch (\Exception $e)
 			{
