@@ -19,19 +19,13 @@ steps: [%%RELEASESTEPS%%]
 
 # File upload connections
 connections:
-  s3:
-    type: 's3'
-    access: '%%S3.ACCESS%%'
-    secret: '%%S3.SECRET%%'
-    bucket: '%%S3.BUCKET%%'
-    tls: true
-    signature: '%%S3.SIGNATURE%%'
-    region: '%%S3.REGION%%'
+  bunny:
+    type: 'bunny'
+    key: '%%BUNNY.ACCESS%%'
+    zone: '%%BUNNY.ZONE%%'
+    region: '%%BUNNY.REGION%%'
+    cdnhostanem: '%%BUNNY.CDNHOSTNAME%%'
     directory: 'downloads/ars'
-    cdnhostname: '%%S3.CDNHOSTNAME%%'
-    acl: 'public-read'
-    storage_class: 'STANDARD'
-    maximum_age: 600
   sftp:
     type: '%%PRO.METHOD%%'
     directory: '%%SFTP.DIR%%'
@@ -48,7 +42,7 @@ connections:
 files:
   -
     title: 'Akeeba Release System'
-    connection: s3
+    connection: bunny
     source: '%%RELEASEDIR%%/pkg_ars*.zip'
     access: 1
 
@@ -56,7 +50,7 @@ files:
 updates:
   -
     title: 'Akeeba Release System updates'
-    connection: s3
+    connection: bunny
     directory: 'updates'
     stream: 9
     base_name: 'ars'
