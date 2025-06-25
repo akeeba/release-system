@@ -24,7 +24,7 @@ connections:
     key: '%%BUNNY.ACCESS%%'
     zone: '%%BUNNY.ZONE%%'
     region: '%%BUNNY.REGION%%'
-    cdnhostanem: '%%BUNNY.CDNHOSTNAME%%'
+    cdnhostname: '%%BUNNY.CDNHOSTNAME%%'
     directory: 'downloads/ars'
   sftp:
     type: '%%PRO.METHOD%%'
