@@ -253,6 +253,12 @@ trait RunPluginsTrait
 		// Register a log file
 		static $hasLogFile = false;
 
+		// Only enable when debug mode is enabled
+		if (!defined('JDEBUG') || !JDEBUG)
+		{
+			return;
+		}
+
 		if (!$hasLogFile)
 		{
 			Log::addLogger([
