@@ -24,15 +24,13 @@ use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Cache\Controller\CallbackController;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\Filesystem\File;
-use Joomla\Filesystem\Folder;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\User\User;
 use Joomla\CMS\User\UserFactoryInterface;
 use Joomla\Database\ParameterType;
+use Joomla\Http\HttpFactory;
 use Joomla\Http\Response;
 use Laminas\Diactoros\StreamFactory;
 use RuntimeException;
@@ -426,7 +424,7 @@ class ItemModel extends BaseDatabaseModel
 		$responseData = $cacheController->get(
 			function (string $url) {
 				// We cannot serialise a PSR-7 Response object, hence the need for this conversion.
-				$response = HttpFactory::getHttp(['follow_location' => 1], ['curl', 'stream'])
+				$response = (new HttpFactory())->getHttp(['follow_location' => 1], ['curl', 'stream'])
 					->get($url);
 
 				return (object) [

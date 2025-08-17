@@ -3,6 +3,7 @@ Akeeba Release System 7.4.2
 ================================================================================
 + PostgreSQL support (experimental)
 ~ Improve language strings for update streams [gh-240]
+~ Preliminary support for Joomla 6
 
 Akeeba Release System 7.4.1
 ================================================================================
