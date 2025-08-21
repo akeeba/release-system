@@ -25,7 +25,7 @@ $userId    = $user->id;
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 $nullDate  = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class)->getNullDate();
-$Itemid    = $app->input->getInt('Itemid', null);
+$Itemid    = $app->getInput()->getInt('Itemid', null);
 $token     = $app->getFormToken();
 
 $i = 0;

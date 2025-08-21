@@ -112,7 +112,7 @@ class UpdateController extends BaseController
 		}
 
 		// Define the Id for caching as if it were received as a safeuri param
-		$this->app->input->set('id', $id);
+		$this->app->getInput()->set('id', $id);
 
 		/** @var UpdateModel $model */
 		$model           = $this->getModel();
@@ -161,7 +161,7 @@ class UpdateController extends BaseController
 		}
 
 		// Define the Id for caching as if it were received as a safeuri param
-		$this->app->input->set('id', $id);
+		$this->app->getInput()->set('id', $id);
 
 		/** @var UpdateModel $model */
 		$model = $this->getModel();
@@ -207,7 +207,7 @@ class UpdateController extends BaseController
 		}
 
 		// Define the Id for caching as if it were received as a safeuri param
-		$this->app->input->set('id', $id);
+		$this->app->getInput()->set('id', $id);
 
 		/** @var UpdateModel $model */
 		$model     = $this->getModel();

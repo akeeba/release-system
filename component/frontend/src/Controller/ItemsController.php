@@ -89,10 +89,10 @@ class ItemsController extends BaseController
 		$this->applyItemsOrderBy($params->get('orderby', 'order'), $model);
 
 		// Get pagination options from the request
-		$value = $this->app->input->get('limit', $this->app->get('list_limit', 0), 'uint');
+		$value = $this->app->getInput()->get('limit', $this->app->get('list_limit', 0), 'uint');
 		$model->setState('list.limit', $value);
 
-		$value = $this->app->input->get('limitstart', 0, 'uint');
+		$value = $this->app->getInput()->get('limitstart', 0, 'uint');
 		$model->setState('list.start', $value);
 
 		// Push data to the view
@@ -129,7 +129,7 @@ class ItemsController extends BaseController
 			'base_path' => JPATH_ADMINISTRATOR . '/components/com_ars',
 			'layout'    => 'modal',
 		]);
-		$view->modalFunction = $this->app->input->getCmd('function', 'arsSelectItem');
+		$view->modalFunction = $this->app->getInput()->getCmd('function', 'arsSelectItem');
 	}
 
 	public function getView($name = '', $type = '', $prefix = '', $config = [])

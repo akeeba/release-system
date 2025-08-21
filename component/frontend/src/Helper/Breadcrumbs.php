@@ -139,7 +139,7 @@ class Breadcrumbs
 
 		if (is_null($itemId))
 		{
-			$input  = Factory::getApplication()->input;
+			$input  = Factory::getapplication()->getInput();
 			$itemId = $input->getInt('Itemid', null);
 			$itemId = empty($itemId) ? '' : '&Itemid=' . $itemId;
 
@@ -205,7 +205,7 @@ class Breadcrumbs
 
 		if (is_null($itemId))
 		{
-			$input  = Factory::getApplication()->input;
+			$input  = Factory::getapplication()->getInput();
 			$itemId = $input->getInt('Itemid', null);
 			$itemId = empty($itemId) ? '' : '&Itemid=' . $itemId;
 

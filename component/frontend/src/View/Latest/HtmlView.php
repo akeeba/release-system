@@ -82,7 +82,7 @@ class HtmlView extends BaseHtmlView
 		$app           = Factory::getApplication();
 		$this->params  = $app->getParams('com_ars');
 		$this->cparams = ComponentHelper::getParams('com_ars');
-		$this->Itemid  = $app->input->getInt('Itemid', null);
+		$this->Itemid  = $app->getInput()->getInt('Itemid', null);
 	}
 
 	public function getReleaseUrl(object $release)

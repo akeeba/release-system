@@ -47,7 +47,7 @@ class LogTable extends AbstractTable
 		{
 			// Yeah, I know, the Model shouldn't access the input directly but this saves us a lot of code in the
 			// front-end models where we're logging downloads.
-			$this->item_id = $app->input->getInt('id', 0);
+			$this->item_id = $app->getInput()->getInt('id', 0);
 		}
 
 		if (empty($this->accessed_on) || ($this->accessed_on === $db->getNullDate()))
@@ -57,7 +57,7 @@ class LogTable extends AbstractTable
 
 		if (empty($this->referer) && isset($_SERVER['HTTP_REFERER']))
 		{
-			$this->referer = $app->input->server->getString('HTTP_REFERER', '');
+			$this->referer = $app->getInput()->server->getString('HTTP_REFERER', '');
 		}
 
 		$this->referer = $this->referer ?? '';

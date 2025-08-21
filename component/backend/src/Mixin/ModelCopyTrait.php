@@ -88,7 +88,7 @@ trait ModelCopyTrait
 		}
 
 		// Check that the user has create permission for the component
-		$extension = Factory::getApplication()->input->get('option', '');
+		$extension = Factory::getapplication()->getInput()->get('option', '');
 		$user      = Factory::getApplication()->getIdentity();
 
 		// If the parent table has no asset I will only check if I can create items in the component

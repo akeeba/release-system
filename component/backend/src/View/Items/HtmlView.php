@@ -100,7 +100,7 @@ class HtmlView extends BaseHtmlView
 		{
 			$this->getDocument()->addScriptOptions(
 				'ars.itemsProxyCallback',
-				Factory::getApplication()->input->getCmd('function', 'arsSelectItem')
+				Factory::getapplication()->getInput()->getCmd('function', 'arsSelectItem')
 			)
 				->getWebAssetManager()
 				->useScript('com_ars.item_select');

@@ -77,7 +77,7 @@ class HtmlView extends BaseHtmlView
 
 	protected function addToolbar(): void
 	{
-		Factory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getapplication()->getInput()->set('hidemainmenu', true);
 
 		$isNew = empty($this->item->contactus_category_id);
 

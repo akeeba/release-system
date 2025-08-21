@@ -275,7 +275,7 @@ class ItemModel extends BaseDatabaseModel
 			return false;
 		}
 
-		$dlid = $this->reformatDownloadID($app->input->getString('dlid', ''));
+		$dlid = $this->reformatDownloadID($app->getInput()->getString('dlid', ''));
 
 		if (empty($dlid))
 		{
@@ -544,7 +544,7 @@ class ItemModel extends BaseDatabaseModel
 		$seek_start  = 0;
 		$seek_end    = $filesize - 1;
 
-		$range = $app->input->server->get('HTTP_RANGE', null, 'raw');
+		$range = $app->getInput()->server->get('HTTP_RANGE', null, 'raw');
 
 		if (!is_null($range) || (trim($range) === ''))
 		{
@@ -810,7 +810,7 @@ class ItemModel extends BaseDatabaseModel
 		$seek_start  = 0;
 		$seek_end    = $filesize - 1;
 
-		$range = $app->input->server->get('HTTP_RANGE', null, 'raw');
+		$range = $app->getInput()->server->get('HTTP_RANGE', null, 'raw');
 
 		if (!is_null($range) || (trim($range) === ''))
 		{

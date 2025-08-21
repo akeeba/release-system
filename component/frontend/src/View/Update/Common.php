@@ -34,7 +34,7 @@ trait Common
 	{
 		// Set up the download ID request suffix
 		$this->dlidRequest = '';
-		$input             = Factory::getApplication()->input;
+		$input             = Factory::getapplication()->getInput();
 		$dlid              = trim($input->getCmd('dlid', ''));
 
 		if (!empty($dlid))

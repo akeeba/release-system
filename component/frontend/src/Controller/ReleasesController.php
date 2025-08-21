@@ -84,10 +84,10 @@ class ReleasesController extends BaseController
 		$this->applyReleaseOrderBy($params->get('rel_orderby', 'order'), $model);
 
 		// Get pagination options from the request
-		$value = $this->app->input->get('limit', $this->app->get('list_limit', 0), 'uint');
+		$value = $this->app->getInput()->get('limit', $this->app->get('list_limit', 0), 'uint');
 		$model->setState('list.limit', $value);
 
-		$value = $this->app->input->get('limitstart', 0, 'uint');
+		$value = $this->app->getInput()->get('limitstart', 0, 'uint');
 		$model->setState('list.start', $value);
 
 		// Run the BleedingEdge detection code

@@ -99,7 +99,7 @@ class HtmlView extends BaseHtmlView
 
 		// Pass page params
 		$this->params     = $app->getParams();
-		$this->Itemid     = $app->input->getInt('Itemid', 0);
+		$this->Itemid     = $app->getInput()->getInt('Itemid', 0);
 		$this->menu       = $app->getMenu()->getActive();
 	}
 

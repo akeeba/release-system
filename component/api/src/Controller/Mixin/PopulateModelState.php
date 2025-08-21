@@ -24,7 +24,7 @@ trait PopulateModelState
 		{
 			[$requestKey, $stateKey, $filterType] = $map;
 
-			$value = $this->app->input->get($requestKey, null, $filterType);
+			$value = $this->app->getInput()->get($requestKey, null, $filterType);
 
 			if (is_null($value))
 			{
