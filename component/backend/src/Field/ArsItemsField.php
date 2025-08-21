@@ -120,11 +120,6 @@ class ArsItemsField extends GroupedlistField
 			}
 		}
 
-		if (in_array('advancedSelect', explode(' ', trim($this->class))))
-		{
-			HTMLHelper::_('formbehavior.chosen');
-		}
-
 		return parent::getInput();
 	}
 
