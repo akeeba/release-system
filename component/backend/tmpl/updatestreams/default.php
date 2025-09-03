@@ -18,11 +18,6 @@ use Joomla\CMS\Uri\Uri;
 
 /** @var \Akeeba\Component\ARS\Administrator\View\Updatestreams\HtmlView $this */
 
-if (version_compare(JVERSION, '4.999.999', 'lt'))
-{
-	$this->loadAnyTemplate('common/joomla_eol');
-}
-
 /**
  * HTMLHelper's `behavior.multiselect` is deprecated in Joomla 6.
  *
