@@ -5,13 +5,13 @@
  */
 
 // Color theme
-@import 'sources/common/variables';
+@use 'sources/common/variables' as *;
 
 // Joomla toolbar – Title icon
-@import 'sources/backend/title_icon';
+@use 'sources/backend/title_icon' as *;
 
 // Items view
-@import "sources/backend/items";
+@use "sources/backend/items" as *;
 
 // Download Logs view
-@import "sources/backend/download_logs";
+@use "sources/backend/download_logs" as *;

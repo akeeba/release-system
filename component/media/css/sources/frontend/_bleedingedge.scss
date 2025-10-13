@@ -4,6 +4,9 @@
  * @license   GNU General Public License version 3, or later
  */
 
+@use '../common/variables' as *;
+@use 'sass:color';
+
 /**
  * Changelog colorisation in Bleeding Edge releases
  */
@@ -24,8 +27,9 @@
   }
 
   &[class$="minor"] {
-    color: darken($light-grey, 40%);
-    font-style: italic;
+    color: color.adjust($light-grey, $lightness: -40%);
+
+  font-style: italic;
   }
 
   &[class$="important"] {

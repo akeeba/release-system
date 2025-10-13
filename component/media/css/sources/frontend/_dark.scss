@@ -4,14 +4,20 @@
  * @license   GNU General Public License version 3, or later
  */
 
-[class|="ars-devrelease-changelog"] {
-  color: $light-grey;
+@use '../common/variables' as *;
+@use 'sass:color';
 
-  &[class$="removed"] {
-    color: lighten($red, 10%);
-  }
+@mixin ars_dark
+{
+  [class|="ars-devrelease-changelog"] {
+    color: $light-grey;
 
-  &[class$="minor"] {
-    color: darken($light-grey, 20%);
+    &[class$="removed"] {
+      color: color.adjust($red, $lightness: 10%);
+    }
+
+    &[class$="minor"] {
+      color: color.adjust($light-grey, $lightness: -20%);
+    }
   }
 }

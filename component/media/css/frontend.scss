@@ -4,12 +4,11 @@
  * @license   GNU General Public License version 3, or later
  */
 
-@import 'sources/common/variables';
-
-@import 'sources/frontend/bleedingedge';
-
-@import 'sources/frontend/releases';
+@use 'sources/common/variables' as *;
+@use 'sources/frontend/bleedingedge' as *;
+@use 'sources/frontend/releases' as *;
+@use 'sources/frontend/dark' as *;
 
 @media (prefers-color-scheme: dark) {
-  @import 'sources/frontend/dark';
+  @include ars_dark;
 }
