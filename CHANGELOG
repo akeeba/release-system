@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.4.3
+================================================================================
+# [HIGH] Cached download of link type items was broken in Joomla 6
+
 Akeeba Release System 7.4.2
 ================================================================================
 + PostgreSQL support (experimental)

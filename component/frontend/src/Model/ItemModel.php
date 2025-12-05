@@ -421,21 +421,19 @@ class ItemModel extends BaseDatabaseModel
 		);
 
 		// Get a cached object for the remote item from the cache.
-		$responseData = $cacheController->get(
-			function (string $url) {
-				// We cannot serialise a PSR-7 Response object, hence the need for this conversion.
-				$response = (new HttpFactory())->getHttp(['follow_location' => 1], ['curl', 'stream'])
-					->get($url);
+		$callable      = function (string $url) {
+			// We cannot serialise a PSR-7 Response object, hence the need for this conversion.
+			$response = (new HttpFactory())->getHttp(['follow_location' => 1], ['curl', 'stream'])
+				->get($url);
 
-				return (object) [
-					'body'       => $response->body ?? '',
-					'statusCode' => $response->getStatusCode() ?? 200,
-					'headers'    => $response->getHeaders() ?? [],
-				];
-			},
-			$item->url,
-			$cacheId
-		);
+			return (object) [
+				'body'       => (string) $response->getBody() ?? '',
+				'statusCode' => $response->getStatusCode() ?? 200,
+				'headers'    => $response->getHeaders() ?? [],
+			];
+		};
+		/** @noinspection PhpParamsInspection */
+		$responseData = $cacheController->get($callable, $item->url, $cacheId);
 
 		// If the download had failed, we throw an exception right away
 		if ($responseData->statusCode !== 200)
