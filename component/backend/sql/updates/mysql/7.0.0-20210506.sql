@@ -62,6 +62,12 @@ ALTER TABLE `#__ars_environments`
     ADD COLUMN
         `checked_out_time` datetime NULL DEFAULT NULL;
 
+/**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2026 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
 -- Missing columns, #__ars_dlidlabels
 
 ALTER TABLE `#__ars_dlidlabels`

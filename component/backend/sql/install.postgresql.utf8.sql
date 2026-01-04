@@ -235,6 +235,12 @@ VALUES (1, 'Joomla! 1.5', 'joomla/1.5'),
        (43, 'PHP 8.1', 'php/8.1')
 ON CONFLICT (id) DO NOTHING;
 
+/**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2026 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
 -- UCM Content types (for tags)
 DELETE
 FROM "#__content_types"

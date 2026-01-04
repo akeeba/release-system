@@ -131,6 +131,12 @@ ALTER TABLE `#__ars_environments`
 ALTER TABLE `#__ars_dlidlabels`
     DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE = utf8mb4_unicode_ci;
 
+/**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2026 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
 -- Drop the JED ID which is no longer used
 ALTER TABLE `#__ars_updatestreams`
     DROP COLUMN `jedid`;
