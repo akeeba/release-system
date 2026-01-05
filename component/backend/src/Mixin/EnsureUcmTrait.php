@@ -32,6 +32,20 @@ trait EnsureUcmTrait
 	 */
 	protected function ensureUcmRecord(): void
 	{
+		/**
+		 * Nerf this on Joomla 5.4 and later versions.
+		 *
+		 * UCM is deprecated since Joomla 5.4 and will be removed in 7.0. New records do not get a UCM record by
+		 * default. When a new or existing record is tagged, a UCM record is created automatically.
+		 *
+		 * This is a departure from earlier versions of Joomla which required the corresponding UCM record to be created
+		 * for EVERY new record, regardless of whether the record had tags or not.
+		 */
+		if (version_compare(JVERSION, '5.4.0', 'gt'))
+		{
+			return;
+		}
+
 		$ucm = new UCMContent($this, $this->typeAlias);
 
 		$genericHelper = new CMSHelper();

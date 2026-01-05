@@ -1,6 +1,7 @@
 <?php die(); ?>
 Akeeba Release System 7.4.3
 ================================================================================
+~ Ensuring UCM records is no longer necessary on Joomla 5.4 and later.
 # [HIGH] Cached download of link type items was broken in Joomla 6
 # [HIGH] BleedingedgeModel fatal error accessing the table's DB driver object
 
