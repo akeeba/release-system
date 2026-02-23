@@ -230,7 +230,7 @@ trait Common
 
 			foreach ($parsedPlatforms['platforms'] as $item)
 			{
-				[$major, $minor] = explode('.', $item[1]);
+				[$major, $minor] = array_pad(explode('.', $item[1]), 2, 0);
 				$majorVersions[] = $major;
 				// Pretend that we support the next minor version of whatever is listed
 				$morePlatforms[] = ['joomla', sprintf('%d.%d', $major, $minor + 1)];
