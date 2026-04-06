@@ -22,6 +22,7 @@ use Joomla\Filesystem\Folder;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Table\Table;
+use Joomla\Database\ParameterType;
 
 #[\AllowDynamicProperties]
 class BleedingedgeModel extends BaseDatabaseModel
@@ -103,7 +104,7 @@ class BleedingedgeModel extends BaseDatabaseModel
 		}, $db->setQuery($query)->loadAssocList('id') ?: []);
 
 		// Releases pointing to non-existent folders will be deleted
-		$toDelete = array_filter($releases, function (ReleaseTable $release) use (&$known_folders) {
+		$toDelete = array_filter($releases, function (ReleaseTable $release) use (&$known_folders, $db) {
 			// Already unpublished releases will be automatically deleted
 			if (!$release->published)
 			{
@@ -134,10 +135,28 @@ class BleedingedgeModel extends BaseDatabaseModel
 				return true;
 			}
 
-			// The folder exists. Add it to the known folders array and check the files of this BE release.
+			// The folder exists. Add it to the known folders array.
 			$known_folders[] = $folderName;
 
-			$this->checkFiles($release);
+			// Only run checkFiles() when the release folder has been modified since our last scan.
+			$releaseFolderMtime = @filemtime($folder) ?: 0;
+			$lastKnownMtime     = (int) ($release->folder_mtime ?? 0);
+
+			if ($releaseFolderMtime !== $lastKnownMtime)
+			{
+				$this->checkFiles($release);
+
+				// Record the observed mtime via a targeted UPDATE so that modified/modified_by are not touched.
+				$releaseId = $release->id;
+				$db->setQuery(
+					(method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+						->update($db->quoteName('#__ars_releases'))
+						->set($db->quoteName('folder_mtime') . ' = :mtime')
+						->where($db->quoteName('id') . ' = :relid')
+						->bind(':mtime', $releaseFolderMtime, ParameterType::INTEGER)
+						->bind(':relid', $releaseId, ParameterType::INTEGER)
+				)->execute();
+			}
 
 			return false;
 		});
@@ -200,6 +219,17 @@ class BleedingedgeModel extends BaseDatabaseModel
 			$this->recursiveDeleteRelease($release);
 		}
 
+		// Only scan for new folders when the category directory itself has changed since the last scan.
+		// filemtime() on a directory advances whenever a subfolder is added or removed.
+		$categoryFolderMtime = @filemtime($this->folder) ?: 0;
+		$lastKnownCatMtime   = (int) ($this->category->last_scan ?? 0);
+
+		if ($categoryFolderMtime <= $lastKnownCatMtime)
+		{
+			// Category directory unchanged — no new folders can exist; skip the expensive scan.
+			return;
+		}
+
 		// Sort releases in ascending order
 		usort($releases, function (ReleaseTable $a, ReleaseTable $b) {
 			return $a->getId() <=> $b->getId();
@@ -244,7 +274,16 @@ class BleedingedgeModel extends BaseDatabaseModel
 		{
 			foreach ($allFolders as $folder)
 			{
-				if (!in_array($folder, $known_folders))
+				if (in_array($folder, $known_folders))
+				{
+					continue;
+				}
+
+				// Process the new folder atomically: if an error occurs mid-way (e.g. PHP timeout),
+				// the transaction rolls back and we don't leave a published release with zero items.
+				$db->transactionStart();
+
+				try
 				{
 					// Create a new entry
 					$notes         = '';
@@ -320,20 +359,32 @@ class BleedingedgeModel extends BaseDatabaseModel
 						}
 					}
 
-					// -- Create the BE release
-					try
-					{
-						/** @var ReleaseTable $table */
-						$table = $this->getMVCFactory()->createTable('Release');
-						$table->save($data);
-						$this->checkFiles($table);
-					}
-					catch (Exception $e)
-					{
-					}
+					// -- Create the BE release and its items
+					/** @var ReleaseTable $table */
+					$table = $this->getMVCFactory()->createTable('Release');
+					$table->save($data);
+					$this->checkFiles($table);
+
+					$db->transactionCommit();
+				}
+				catch (Exception $e)
+				{
+					$db->transactionRollback();
 				}
 			}
 		}
+
+		// Record the category folder mtime we just successfully processed.
+		// Any subsequent request that sees the same mtime will skip the new-folder block entirely.
+		$catId = $this->category_id;
+		$db->setQuery(
+			(method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+				->update($db->quoteName('#__ars_categories'))
+				->set($db->quoteName('last_scan') . ' = :mtime')
+				->where($db->quoteName('id') . ' = :catid')
+				->bind(':mtime', $categoryFolderMtime, ParameterType::INTEGER)
+				->bind(':catid', $catId, ParameterType::INTEGER)
+		)->execute();
 	}
 
 	public function checkFiles(ReleaseTable $release): void
@@ -410,11 +461,16 @@ class BleedingedgeModel extends BaseDatabaseModel
 			}
 		}
 
-		// Get the items
+		// Get the items — only the columns needed for the file sync logic.
 		$db         = $this->getDatabase();
 		$release_id = $release->id;
 		$query      = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
-			->select('*')
+			->select([
+				$db->quoteName('id'),
+				$db->quoteName('release_id'),
+				$db->quoteName('filename'),
+				$db->quoteName('published'),
+			])
 			->from($db->quoteName('#__ars_items'))
 			->where($db->quoteName('release_id') . ' = :relid')
 			->bind(':relid', $release_id);

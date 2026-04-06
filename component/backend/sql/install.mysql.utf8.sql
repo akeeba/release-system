@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_categories` (
     `published`         int(11)                        NOT NULL DEFAULT '1',
     `is_supported`      TINYINT                        NOT NULL DEFAULT '1',
     `language`          char(7)                        NOT NULL DEFAULT '*',
+    `last_scan`         INT UNSIGNED                   NULL     DEFAULT NULL,
     PRIMARY KEY (`id`),
     KEY `#__ars_categories_published` (`published`)
 ) ENGINE InnoDB DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE = utf8mb4_unicode_ci;
@@ -55,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_releases` (
     `redirect_unauth`   VARCHAR(255)                        NOT NULL DEFAULT '',
     `published`         tinyint(1)                          NOT NULL DEFAULT '1',
     `language`          char(7)                             NOT NULL DEFAULT '*',
+    `folder_mtime`      INT UNSIGNED                        NULL     DEFAULT NULL,
     PRIMARY KEY `id` (`id`),
     KEY `#__ars_releases_category_id` (`category_id`),
     KEY `#__ars_releases_published` (`published`)

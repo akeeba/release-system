@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS "#__ars_categories"
     "published"         INTEGER      NOT NULL DEFAULT 1,
     "is_supported"      SMALLINT     NOT NULL DEFAULT 1,
     "language"          CHAR(7)      NOT NULL DEFAULT '*',
+    "last_scan"         INTEGER               DEFAULT NULL,
     PRIMARY KEY ("id")
 );
 
@@ -52,6 +53,7 @@ CREATE TABLE IF NOT EXISTS "#__ars_releases"
     "redirect_unauth"   VARCHAR(255) NOT NULL DEFAULT '',
     "published"         SMALLINT     NOT NULL DEFAULT 1,
     "language"          CHAR(7)      NOT NULL DEFAULT '*',
+    "folder_mtime"      INTEGER               DEFAULT NULL,
     PRIMARY KEY ("id")
 );
 
