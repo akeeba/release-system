@@ -13,6 +13,8 @@ use Akeeba\Component\ARS\Administrator\Mixin\RunPluginsTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
+use DateTime;
+use DateTimeZone;
 use Exception;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
@@ -56,6 +58,50 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		// Apply age and count limits
 		$this->removeReleasesByAge($category);
 		$this->removeReleasesByCount($category);
+
+		// Skip the expensive scan if the directory hasn't been touched since the category was last scanned.
+		$dirMTime = @filemtime($path) ?: 0;
+		$lastSeen = $category->modified ?: $category->created;
+
+		try
+		{
+			$lastSeenTs = empty($lastSeen) || $lastSeen === $this->getDatabase()->getNullDate()
+				? 0
+				: (new DateTime($lastSeen, new DateTimeZone('UTC')))->getTimestamp();
+		}
+		catch (Throwable)
+		{
+			$lastSeenTs = 0;
+		}
+
+		if ($dirMTime <= $lastSeenTs)
+		{
+			return;
+		}
+
+		// Record that we've now seen this version of the directory.
+		try
+		{
+			/** @var CategoryTable $categoryTable */
+			$categoryTable = $this->getMVCFactory()->createTable('Category');
+
+			if ($categoryTable->load($category->id))
+			{
+				// Prevent TableCreateModifyTrait from overwriting our explicit values.
+				$categoryTable->setUpdateCreated(false);
+				$categoryTable->setUpdateModified(false);
+				$categoryTable->save(
+					[
+						'modified'    => Date::getInstance($dirMTime, 'UTC')->toSql($this->getDatabase()),
+						'modified_by' => 0,
+					]
+				);
+			}
+		}
+		catch (Throwable)
+		{
+			// No-op: a failure here means we'll rescan next time, which is harmless.
+		}
 
 		// Get the ground truth from the filesystem and database
 		$directoryContents   = $this->scanDirectory($path);
@@ -109,12 +155,13 @@ final class BleedingedgeModel extends BaseDatabaseModel
 			// No-op
 		}
 
-		// Unpublish releases and their items
+		// Unpublish releases whose directories no longer exist on the filesystem
 		$this->unpublishReleasesAndItems(
-			array_filter(
-				$allVersionIDs,
-				fn($version) => in_array($version, $unpublishedReleases),
-				ARRAY_FILTER_USE_KEY
+			array_values(
+				array_intersect_key(
+					$allVersionIDs,
+					array_flip($removedVersions)
+				)
 			)
 		);
 
@@ -131,7 +178,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		{
 			$infoArray = $directoryContents[$version];
 
-			$this->updateRelease($allVersionIDs[$version], $infoArray);
+			$this->updateRelease($category, $version, $allVersionIDs[$version], $infoArray);
 		}
 
 		try
@@ -231,7 +278,8 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		}
 
 		/** @var DatabaseDriver $db */
-		$db = $this->getDatabase();
+		$db    = $this->getDatabase();
+		$catId = $category->id;
 		/** @var QueryInterface $query */
 		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
 
@@ -244,11 +292,16 @@ final class BleedingedgeModel extends BaseDatabaseModel
 			->from($db->quoteName('#__ars_releases'))
 			->where(
 				[
+					$db->quoteName('category_id') . ' = :catId',
 					$db->quoteName('published') . ' = 1',
 				]
-			);
+			)
+			->order($db->quoteName('created') . ' DESC')
+			->bind(':catId', $catId, ParameterType::INTEGER);
 
-		$results = $db->setQuery($query, $countLimit)->loadAssocList('id', 'version');
+		// Skip the $countLimit newest releases; everything older gets removed.
+		// (Note: Joomla's processLimit drops the OFFSET clause unless a LIMIT is also set.)
+		$results = $db->setQuery($query, $countLimit, PHP_INT_MAX)->loadAssocList('id', 'version');
 
 		if (empty($results))
 		{
@@ -412,6 +465,12 @@ final class BleedingedgeModel extends BaseDatabaseModel
 				continue;
 			}
 
+			// Skip CHANGELOG files; they are consumed to build the release notes, not distributed as items.
+			if ($this->isChangelogFilename($file->getFilename()))
+			{
+				continue;
+			}
+
 			$ret[$file->getFilename()] = [
 				'path'  => $file->getPathname(),
 				'size'  => $file->getSize(),
@@ -420,6 +479,189 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		}
 
 		return $ret;
+	}
+
+	/**
+	 * Is the given filename one of the recognised CHANGELOG variants?
+	 *
+	 * @param   string  $filename
+	 *
+	 * @return  bool
+	 * @since   7.5.0
+	 */
+	private function isChangelogFilename(string $filename): bool
+	{
+		return in_array(
+			$filename,
+			['CHANGELOG', 'CHANGELOG.txt', 'CHANGELOG.md', 'changelog', 'changelog.txt'],
+			true
+		);
+	}
+
+	/**
+	 * Extract the latest version's changelog and render it as HTML release notes.
+	 *
+	 * Reads a CHANGELOG file from the release's directory and returns an HTML <ul> listing the
+	 * entries of the FIRST (topmost) section — the convention in Akeeba projects where the newest
+	 * version appears first. Each entry line starts with one of the glyphs '+', '-', '~', '!', '#',
+	 * indicating addition, removal, change, miscellaneous, and bug fix respectively; each rendered
+	 * <li> gets a matching CSS class.
+	 *
+	 * Section headings are any line immediately followed by a line of '=' characters, e.g.:
+	 *     MyApp 1.2.3
+	 *     ================================
+	 *
+	 * Controlled by the `begenchangelog` component parameter; returns '' if disabled, if no
+	 * CHANGELOG file is found, or if the file contains no recognisable section.
+	 *
+	 * @param   CategoryTable  $category
+	 * @param   string         $version   The release's version (the subdirectory name).
+	 *
+	 * @return  string  HTML for the release notes, or an empty string.
+	 * @since   7.5.0
+	 */
+	private function extractChangelog(CategoryTable $category, string $version): string
+	{
+		$cParams = ComponentHelper::getParams($this->option);
+
+		if (!$cParams->get('begenchangelog', 1))
+		{
+			return '';
+		}
+
+		$basePath = $this->getDirectoryPath($category);
+
+		if (empty($basePath))
+		{
+			return '';
+		}
+
+		$releaseDir = $basePath . DIRECTORY_SEPARATOR . $version;
+		$file       = null;
+
+		foreach (['CHANGELOG', 'CHANGELOG.txt', 'CHANGELOG.md', 'changelog', 'changelog.txt'] as $candidate)
+		{
+			$path = $releaseDir . DIRECTORY_SEPARATOR . $candidate;
+
+			if (@is_file($path))
+			{
+				$file = $path;
+				break;
+			}
+		}
+
+		if ($file === null)
+		{
+			return '';
+		}
+
+		$content = @file_get_contents($file);
+
+		if ($content === false || $content === '')
+		{
+			return '';
+		}
+
+		$lines     = explode("\n", str_replace(["\r\n", "\r"], "\n", $content));
+		$lineCount = count($lines);
+		$inSection = false;
+		$collected = [];
+
+		for ($i = 0; $i < $lineCount; $i++)
+		{
+			$isHeading = ($i + 1 < $lineCount) && preg_match('/^=+\s*$/', $lines[$i + 1])
+				&& trim($lines[$i]) !== '';
+
+			if ($isHeading)
+			{
+				// If we're already collecting, this marks the next section — stop.
+				if ($inSection)
+				{
+					break;
+				}
+
+				// Otherwise, start collecting at the first recognised section (= the latest version).
+				$inSection = true;
+				$i++; // skip the '===' underline
+
+				continue;
+			}
+
+			if ($inSection)
+			{
+				$collected[] = $lines[$i];
+			}
+		}
+
+		// Trim leading/trailing blank lines
+		while (!empty($collected) && trim($collected[0]) === '')
+		{
+			array_shift($collected);
+		}
+
+		while (!empty($collected) && trim(end($collected)) === '')
+		{
+			array_pop($collected);
+		}
+
+		if (empty($collected))
+		{
+			return '';
+		}
+
+		// Glyph → [Font Awesome 6 icon class, Bootstrap 5 text-color utility]
+		$glyphMap = [
+			'+' => ['fa-solid fa-circle-plus', 'text-success'],
+			'-' => ['fa-solid fa-circle-minus', 'text-danger'],
+			'~' => ['fa-solid fa-pen-to-square', 'text-info'],
+			'!' => ['fa-solid fa-triangle-exclamation', 'text-warning'],
+			'#' => ['fa-solid fa-bug', 'text-secondary'],
+		];
+
+		// Severity tag for bug-fix entries → Bootstrap 5 text-color utility
+		$severityColorMap = [
+			'HIGH'   => 'text-danger',
+			'MEDIUM' => 'text-warning',
+			'LOW'    => 'text-info',
+		];
+
+		$html = '<ul class="ars-bleedingedge-changelog list-unstyled">';
+
+		foreach ($collected as $line)
+		{
+			$line = trim($line);
+
+			if ($line === '')
+			{
+				continue;
+			}
+
+			$icon  = 'fa-solid fa-circle-info';
+			$color = 'text-body';
+			$text  = $line;
+
+			if (preg_match('/^([+\-~!#])\s+(.*)$/', $line, $m))
+			{
+				[$icon, $color] = $glyphMap[$m[1]];
+				$text           = $m[2];
+
+				// Bug-fix severity overrides the default bug color.
+				if ($m[1] === '#' && preg_match('/^\[(HIGH|MEDIUM|LOW)]\s*(.*)$/', $text, $sev))
+				{
+					$color = $severityColorMap[$sev[1]];
+					$text  = $sev[2];
+				}
+			}
+
+			$html .= '<li class="mb-1 ' . $color . '">'
+				. '<span class="' . $icon . ' me-2" aria-hidden="true"></span>'
+				. htmlspecialchars($text, ENT_QUOTES, 'UTF-8')
+				. '</li>';
+		}
+
+		$html .= '</ul>';
+
+		return $html;
 	}
 
 	/**
@@ -626,6 +868,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		$db = $this->getDatabase();
 
 		$referenceDate = Date::getInstance($infoArray['modified'], 'UTC');
+		$notes         = $this->extractChangelog($category, $version);
 
 		try
 		{
@@ -636,7 +879,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 					'category_id'       => $category->id,
 					'version'           => $version,
 					'maturity'          => 'alpha',
-					'notes'             => '',
+					'notes'             => $notes,
 					'hits'              => 0,
 					'created'           => $referenceDate->toSql($db),
 					'created_by'        => 0,
@@ -664,7 +907,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		}
 
 		// Create the items.
-		foreach ($infoArray['items'] as $fileInfo)
+		foreach ($infoArray['items'] as $fname => $fileInfo)
 		{
 			try
 			{
@@ -678,7 +921,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 						'release_id'       => $releaseTable->id,
 						'description'      => '',
 						'type'             => 'file',
-						'filename'         => $fileInfo['path'],
+						'filename'         => $version . '/' . $fname,
 						'url'              => '',
 						'hits'             => '0',
 						'published'        => '1',
@@ -699,7 +942,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		}
 	}
 
-	private function updateRelease($releaseId, $infoArray)
+	private function updateRelease(CategoryTable $category, string $version, int $releaseId, array $infoArray): void
 	{
 		/** @var ReleaseTable $releaseTable */
 		$releaseTable = $this->getMVCFactory()->createTable('Release');
@@ -718,18 +961,25 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		$releaseTable->setUpdateCreated(false);
 		$releaseTable->setUpdateModified(false);
 
+		// Regenerate release notes from the CHANGELOG file, if present and enabled.
+		$notes    = $this->extractChangelog($category, $version);
+		$savePayload = [
+			'modified'         => Date::getInstance($infoArray['modified'], 'UTC')->toSql($db),
+			'modified_by'      => 0,
+			'checked_out'      => 0,
+			'checked_out_time' => null,
+			'ordering'         => 0,
+			'published'        => 1,
+		];
+
+		if ($notes !== '')
+		{
+			$savePayload['notes'] = $notes;
+		}
+
 		try
 		{
-			$success = $releaseTable->save(
-				[
-					'modified'         => Date::getInstance($infoArray['modified'], 'UTC')->toSql($db),
-					'modified_by'      => 0,
-					'checked_out'      => 0,
-					'checked_out_time' => null,
-					'ordering'         => 0,
-					'published'        => 1,
-				]
-			);
+			$success = $releaseTable->save($savePayload);
 		}
 		catch (Throwable)
 		{
@@ -762,22 +1012,31 @@ final class BleedingedgeModel extends BaseDatabaseModel
 
 		$fileInfoInDB = $this->ensureModifiedPopulated($db->setQuery($query)->loadAssocList('filename'));
 
-		// Find added, removed, and modified items
+		// Build a basename -> full-DB-filename map so we can look items up by basename.
+		$version    = $releaseTable->version;
+		$dbBasenameMap = [];
+
+		foreach (array_keys($fileInfoInDB) as $dbFilename)
+		{
+			$dbBasenameMap[basename($dbFilename)] = $dbFilename;
+		}
+
+		// Find new, removed, and existing items (by basename)
 		$knownFilesInfo = $infoArray['items'];
-		$filenamesInDB = array_map(basename(...), array_keys($fileInfoInDB));
-		$filenamesInFS = array_map(basename(...), array_keys($knownFilesInfo));
+		$filenamesInDB  = array_keys($dbBasenameMap);
+		$filenamesInFS  = array_keys($knownFilesInfo);
 
-		$addedFilenames       = array_diff($filenamesInDB, $filenamesInFS);
-		$modifiedFilenames    = array_intersect($filenamesInDB, $filenamesInFS);
-		$unpublishedFilenames = array_diff($filenamesInFS, $filenamesInDB);
+		$removedFilenames  = array_diff($filenamesInDB, $filenamesInFS);
+		$existingFilenames = array_intersect($filenamesInDB, $filenamesInFS);
+		$newFilenames      = array_diff($filenamesInFS, $filenamesInDB);
 
-		foreach ($unpublishedFilenames as $fname)
+		foreach ($removedFilenames as $fname)
 		{
 			/** @var ItemTable $itemTable */
-			$itemTable = $this->getMVCFactory()->createTable('Release');
-			$loaded = $itemTable->load([
-				'filename' => $fname,
-				'release_id' => $releaseId
+			$itemTable = $this->getMVCFactory()->createTable('Item');
+			$loaded    = $itemTable->load([
+				'filename'   => $dbBasenameMap[$fname],
+				'release_id' => $releaseId,
 			]);
 
 			if (!$loaded)
@@ -786,11 +1045,11 @@ final class BleedingedgeModel extends BaseDatabaseModel
 			}
 
 			$itemTable->save([
-				'published' => 0
+				'published' => 0,
 			]);
 		}
 
-		foreach ($addedFilenames as $fname)
+		foreach ($newFilenames as $fname)
 		{
 			$fileInfo = $infoArray['items'][$fname];
 			$itemDate = Date::getInstance($fileInfo['mtime'], 'UTC');
@@ -803,7 +1062,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 					'release_id'       => $releaseTable->id,
 					'description'      => '',
 					'type'             => 'file',
-					'filename'         => $fileInfo['path'],
+					'filename'         => $version . '/' . $fname,
 					'url'              => '',
 					'hits'             => '0',
 					'published'        => '1',
@@ -818,13 +1077,13 @@ final class BleedingedgeModel extends BaseDatabaseModel
 			);
 		}
 
-		foreach ($modifiedFilenames as $fname)
+		foreach ($existingFilenames as $fname)
 		{
 			/** @var ItemTable $itemTable */
 			$itemTable = $this->getMVCFactory()->createTable('Item');
-			$loaded = $itemTable->load([
-				'filename' => $fname,
-				'release_id' => $releaseId
+			$loaded    = $itemTable->load([
+				'filename'   => $dbBasenameMap[$fname],
+				'release_id' => $releaseId,
 			]);
 
 			if (!$loaded)
@@ -843,12 +1102,12 @@ final class BleedingedgeModel extends BaseDatabaseModel
 					'checked_out'      => 0,
 					'checked_out_time' => null,
 					'access'           => $releaseTable->access,
-					'md5' => null,
-					'sha1' => null,
-					'sha256' => null,
-					'sha384' => null,
-					'sha512' => null,
-					'filesize' => null,
+					'md5'              => null,
+					'sha1'             => null,
+					'sha256'           => null,
+					'sha384'           => null,
+					'sha512'           => null,
+					'filesize'         => null,
 				]
 			);
 		}

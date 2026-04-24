@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.5.0
+================================================================================
++ Rewritten Bleeding Edge releases
+
 Akeeba Release System 7.4.3
 ================================================================================
 ~ Ensuring UCM records is no longer necessary on Joomla 5.4 and later.
