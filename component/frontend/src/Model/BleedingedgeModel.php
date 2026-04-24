@@ -109,12 +109,13 @@ final class BleedingedgeModel extends BaseDatabaseModel
 			// No-op
 		}
 
-		// Unpublish releases and their items
+		// Unpublish releases whose directories no longer exist on the filesystem
 		$this->unpublishReleasesAndItems(
-			array_filter(
-				$allVersionIDs,
-				fn($version) => in_array($version, $unpublishedReleases),
-				ARRAY_FILTER_USE_KEY
+			array_values(
+				array_intersect_key(
+					$allVersionIDs,
+					array_flip($removedVersions)
+				)
 			)
 		);
 
@@ -231,7 +232,8 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		}
 
 		/** @var DatabaseDriver $db */
-		$db = $this->getDatabase();
+		$db    = $this->getDatabase();
+		$catId = $category->id;
 		/** @var QueryInterface $query */
 		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
 
@@ -244,11 +246,16 @@ final class BleedingedgeModel extends BaseDatabaseModel
 			->from($db->quoteName('#__ars_releases'))
 			->where(
 				[
+					$db->quoteName('category_id') . ' = :catId',
 					$db->quoteName('published') . ' = 1',
 				]
-			);
+			)
+			->order($db->quoteName('created') . ' DESC')
+			->bind(':catId', $catId, ParameterType::INTEGER);
 
-		$results = $db->setQuery($query, $countLimit)->loadAssocList('id', 'version');
+		// Skip the $countLimit newest releases; everything older gets removed.
+		// (Note: Joomla's processLimit drops the OFFSET clause unless a LIMIT is also set.)
+		$results = $db->setQuery($query, $countLimit, PHP_INT_MAX)->loadAssocList('id', 'version');
 
 		if (empty($results))
 		{
@@ -664,7 +671,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		}
 
 		// Create the items.
-		foreach ($infoArray['items'] as $fileInfo)
+		foreach ($infoArray['items'] as $fname => $fileInfo)
 		{
 			try
 			{
@@ -678,7 +685,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 						'release_id'       => $releaseTable->id,
 						'description'      => '',
 						'type'             => 'file',
-						'filename'         => $fileInfo['path'],
+						'filename'         => $version . '/' . $fname,
 						'url'              => '',
 						'hits'             => '0',
 						'published'        => '1',
@@ -762,22 +769,31 @@ final class BleedingedgeModel extends BaseDatabaseModel
 
 		$fileInfoInDB = $this->ensureModifiedPopulated($db->setQuery($query)->loadAssocList('filename'));
 
-		// Find added, removed, and modified items
+		// Build a basename -> full-DB-filename map so we can look items up by basename.
+		$version    = $releaseTable->version;
+		$dbBasenameMap = [];
+
+		foreach (array_keys($fileInfoInDB) as $dbFilename)
+		{
+			$dbBasenameMap[basename($dbFilename)] = $dbFilename;
+		}
+
+		// Find new, removed, and existing items (by basename)
 		$knownFilesInfo = $infoArray['items'];
-		$filenamesInDB = array_map(basename(...), array_keys($fileInfoInDB));
-		$filenamesInFS = array_map(basename(...), array_keys($knownFilesInfo));
+		$filenamesInDB  = array_keys($dbBasenameMap);
+		$filenamesInFS  = array_keys($knownFilesInfo);
 
-		$addedFilenames       = array_diff($filenamesInDB, $filenamesInFS);
-		$modifiedFilenames    = array_intersect($filenamesInDB, $filenamesInFS);
-		$unpublishedFilenames = array_diff($filenamesInFS, $filenamesInDB);
+		$removedFilenames  = array_diff($filenamesInDB, $filenamesInFS);
+		$existingFilenames = array_intersect($filenamesInDB, $filenamesInFS);
+		$newFilenames      = array_diff($filenamesInFS, $filenamesInDB);
 
-		foreach ($unpublishedFilenames as $fname)
+		foreach ($removedFilenames as $fname)
 		{
 			/** @var ItemTable $itemTable */
-			$itemTable = $this->getMVCFactory()->createTable('Release');
-			$loaded = $itemTable->load([
-				'filename' => $fname,
-				'release_id' => $releaseId
+			$itemTable = $this->getMVCFactory()->createTable('Item');
+			$loaded    = $itemTable->load([
+				'filename'   => $dbBasenameMap[$fname],
+				'release_id' => $releaseId,
 			]);
 
 			if (!$loaded)
@@ -786,11 +802,11 @@ final class BleedingedgeModel extends BaseDatabaseModel
 			}
 
 			$itemTable->save([
-				'published' => 0
+				'published' => 0,
 			]);
 		}
 
-		foreach ($addedFilenames as $fname)
+		foreach ($newFilenames as $fname)
 		{
 			$fileInfo = $infoArray['items'][$fname];
 			$itemDate = Date::getInstance($fileInfo['mtime'], 'UTC');
@@ -803,7 +819,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 					'release_id'       => $releaseTable->id,
 					'description'      => '',
 					'type'             => 'file',
-					'filename'         => $fileInfo['path'],
+					'filename'         => $version . '/' . $fname,
 					'url'              => '',
 					'hits'             => '0',
 					'published'        => '1',
@@ -818,13 +834,13 @@ final class BleedingedgeModel extends BaseDatabaseModel
 			);
 		}
 
-		foreach ($modifiedFilenames as $fname)
+		foreach ($existingFilenames as $fname)
 		{
 			/** @var ItemTable $itemTable */
 			$itemTable = $this->getMVCFactory()->createTable('Item');
-			$loaded = $itemTable->load([
-				'filename' => $fname,
-				'release_id' => $releaseId
+			$loaded    = $itemTable->load([
+				'filename'   => $dbBasenameMap[$fname],
+				'release_id' => $releaseId,
 			]);
 
 			if (!$loaded)
@@ -843,12 +859,12 @@ final class BleedingedgeModel extends BaseDatabaseModel
 					'checked_out'      => 0,
 					'checked_out_time' => null,
 					'access'           => $releaseTable->access,
-					'md5' => null,
-					'sha1' => null,
-					'sha256' => null,
-					'sha384' => null,
-					'sha512' => null,
-					'filesize' => null,
+					'md5'              => null,
+					'sha1'             => null,
+					'sha256'           => null,
+					'sha384'           => null,
+					'sha512'           => null,
+					'filesize'         => null,
 				]
 			);
 		}
