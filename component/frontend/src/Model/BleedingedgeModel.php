@@ -13,6 +13,8 @@ use Akeeba\Component\ARS\Administrator\Mixin\RunPluginsTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
+use DateTime;
+use DateTimeZone;
 use Exception;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
@@ -56,6 +58,50 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		// Apply age and count limits
 		$this->removeReleasesByAge($category);
 		$this->removeReleasesByCount($category);
+
+		// Skip the expensive scan if the directory hasn't been touched since the category was last scanned.
+		$dirMTime = @filemtime($path) ?: 0;
+		$lastSeen = $category->modified ?: $category->created;
+
+		try
+		{
+			$lastSeenTs = empty($lastSeen) || $lastSeen === $this->getDatabase()->getNullDate()
+				? 0
+				: (new DateTime($lastSeen, new DateTimeZone('UTC')))->getTimestamp();
+		}
+		catch (Throwable)
+		{
+			$lastSeenTs = 0;
+		}
+
+		if ($dirMTime <= $lastSeenTs)
+		{
+			return;
+		}
+
+		// Record that we've now seen this version of the directory.
+		try
+		{
+			/** @var CategoryTable $categoryTable */
+			$categoryTable = $this->getMVCFactory()->createTable('Category');
+
+			if ($categoryTable->load($category->id))
+			{
+				// Prevent TableCreateModifyTrait from overwriting our explicit values.
+				$categoryTable->setUpdateCreated(false);
+				$categoryTable->setUpdateModified(false);
+				$categoryTable->save(
+					[
+						'modified'    => Date::getInstance($dirMTime, 'UTC')->toSql($this->getDatabase()),
+						'modified_by' => 0,
+					]
+				);
+			}
+		}
+		catch (Throwable)
+		{
+			// No-op: a failure here means we'll rescan next time, which is harmless.
+		}
 
 		// Get the ground truth from the filesystem and database
 		$directoryContents   = $this->scanDirectory($path);
