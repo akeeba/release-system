@@ -13,688 +13,401 @@ use Akeeba\Component\ARS\Administrator\Mixin\RunPluginsTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
+use DateTime;
+use DateTimeZone;
 use Exception;
-use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
-use Joomla\Filesystem\File;
-use Joomla\Filesystem\Folder;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Table\Table;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\ParameterType;
+use Joomla\Database\QueryInterface;
+use Joomla\Filesystem\File;
+use Throwable;
 
 #[\AllowDynamicProperties]
-class BleedingedgeModel extends BaseDatabaseModel
+final class BleedingedgeModel extends BaseDatabaseModel
 {
 	use RunPluginsTrait;
 
 	/**
-	 * The numeric ID of the BleedingEdge category we're operating on
+	 * Scan a Bleeding Edge category.
 	 *
-	 * @var  int
-	 */
-	private $category_id;
-
-	/**
-	 * The BleedingEdge category we're operating on
-	 *
-	 * @var  CategoryTable
-	 */
-	private $category;
-
-	/**
-	 * The absolute path to the category's folder
-	 *
-	 * @var  string
-	 */
-	private $folder = null;
-
-	/**
-	 * Scan a bleeding edge category
+	 * Limitations:
+	 * - If a BE release is unpublished without its directory removed, it will fail trying to re-add it.
+	 * - If you modify the uploaded files in an already published BE release the new files will NOT be added.
+	 * - If you delete the directory of a BE release it gets unpublished, not deleted, to maintain association with
+	 *   `#__ars_log` table entries.
 	 *
 	 * @param   CategoryTable  $category  The category to scan
 	 *
 	 * @return  void
 	 * @throws  Exception
+	 * @since   1.0.0
 	 */
 	public function scanCategory(CategoryTable $category): void
 	{
-		$this->setCategory($category->id);
+		// Get the full path to the BE directory
+		$path = $this->getDirectoryPath($category);
 
-		// Can't proceed without a category
-		if (empty($this->category))
+		if (empty($path))
 		{
 			return;
 		}
 
-		// Can't proceed without a folder
-		if (empty($this->folder))
-		{
-			return;
-		}
+		// Apply age and count limits
+		$this->removeReleasesByAge($category);
+		$this->removeReleasesByCount($category);
 
-		// Can't proceed if it's not a BleedingEdge category
-		if ($this->category->type != 'bleedingedge')
-		{
-			return;
-		}
-
-		// Get the component parameters
-		$cParams = ComponentHelper::getParams($this->option);
-
-		// We will now prune releases based on the existence of their files, their age and their count.
-		$known_folders = [];
-
-		$db    = $this->getDatabase();
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
-			->select('*')
-			->from($db->quoteName('#__ars_releases'))
-			->where($db->quoteName('category_id') . ' = :catid')
-			->bind(':catid', $category->id);
-
-		/** @var ReleaseTable $release */
-		$release  = $this->getMVCFactory()->createTable('Release');
-		$releases = array_map(function ($data) use ($release) {
-			$ret = clone $release;
-			$ret->reset();
-			$ret->bind($data);
-
-			return $ret;
-		}, $db->setQuery($query)->loadAssocList('id') ?: []);
-
-		// Releases pointing to non-existent folders will be deleted
-		$toDelete = array_filter($releases, function (ReleaseTable $release) use (&$known_folders) {
-			// Already unpublished releases will be automatically deleted
-			if (!$release->published)
-			{
-				return true;
-			}
-
-			// Releases with an invalid folder name will be automatically deleted
-			$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
-
-			if (is_null($folderName))
-			{
-				return true;
-			}
-
-			// Releases whose folder no longer exists will be automatically deleted
-			$folder = $this->folder . '/' . $folderName;
-			try
-			{
-				$exists = @is_dir($folder);
-			}
-			catch (Exception $e)
-			{
-				return true;
-			}
-
-			if (!$exists)
-			{
-				return true;
-			}
-
-			// The folder exists. Add it to the known folders array and check the files of this BE release.
-			$known_folders[] = $folderName;
-
-			$this->checkFiles($release);
-
-			return false;
-		});
-
-		// Keep the releases which are not already marked for deletion. Avoids double entries in $toDelete.
-		if (count($toDelete))
-		{
-			$releases = array_udiff($releases, $toDelete, fn(Table $a, Table $b) => $a->getId() <=> $b->getId());
-		}
-
-		// Apply maximum age limits
-		$ageLimit = $cParams->get('bleedingedge_age', 0);
-
-		if ($ageLimit > 0)
-		{
-			// Releases older than this timestamp are to be deleted
-			$targetTimestamp = time() - (86400 * $ageLimit);
-
-			// Find which BleedingEdge releases I need to delete by age
-			$toDelete = array_merge(
-				$toDelete,
-				array_filter($releases, function (ReleaseTable $release) use ($targetTimestamp) {
-					try
-					{
-						return (clone Factory::getDate($release->created))->getTimestamp() <= $targetTimestamp;
-					}
-					catch (Exception $e)
-					{
-						// The release creation timestamp is invalid. Delete the sucker anyway.
-						return true;
-					}
-				})
-			);
-
-			// Keep the releases which are not already marked for deletion
-			if (count($toDelete))
-			{
-				$releases = array_udiff($releases, $toDelete, fn(Table $a, Table $b) => $a->getId() <=> $b->getId());
-			}
-		}
-
-		// Apply count limits
-		$countLimit = $cParams->get('bleedingedge_count', 0);
-
-		if (($countLimit > 0) && (count($releases) > $countLimit))
-		{
-			// Add the excess releases in the collection of releases to remove
-			$toDelete = array_merge(
-				$toDelete,
-				array_slice($releases, 0, count($releases) - $countLimit)
-			);
-
-			// Conversely, only keep as many releases as I was told to keep
-			$releases = array_slice($releases, count($releases) - $countLimit, $countLimit);
-		}
-
-		// Remove any leftover releases
-		foreach ($toDelete as $release)
-		{
-			$this->recursiveDeleteRelease($release);
-		}
-
-		// Sort releases in ascending order
-		usort($releases, function (ReleaseTable $a, ReleaseTable $b) {
-			return $a->getId() <=> $b->getId();
-		});
-
-		// Get the latest release, used to calculate the CHANGELOG
-		$first_release   = end($releases);
-		$first_changelog = [];
-
-		/** @var ReleaseTable $first_release */
-		if (is_object($first_release))
-		{
-			$changelog = $this->folder . '/' . $first_release->alias . '/CHANGELOG';
-
-			try
-			{
-				$fileExists = @is_file($changelog);
-			}
-			catch (Exception $e)
-			{
-				$fileExists = false;
-			}
-
-			if ($fileExists)
-			{
-				$changeLogData   = @file_get_contents($changelog);
-				$first_changelog = explode("\n", str_replace("\r\n", "\n", $changeLogData));
-			}
-		}
-
-		// Get a list of all folders
-		try
-		{
-			$allFolders = Folder::folders($this->folder);
-		}
-		catch (Exception $e)
-		{
-			$allFolders = [];
-		}
-
-		if (!empty($allFolders))
-		{
-			foreach ($allFolders as $folder)
-			{
-				if (!in_array($folder, $known_folders))
-				{
-					// Create a new entry
-					$notes         = '';
-					$changelog     = $this->folder . '/' . $folder . '/' . 'CHANGELOG';
-					$changeLogData = '';
-
-					try
-					{
-						$fileExists = @is_file($changelog);
-					}
-					catch (Exception $e)
-					{
-						$fileExists = false;
-					}
-
-					if ($fileExists)
-					{
-						$changeLogData = @file_get_contents($changelog);
-						$changeLogData = ($changeLogData === false) ? '' : $changeLogData;
-						$notes         = $this->coloriseChangelog($changeLogData, $first_changelog);
-					}
-
-					$jNow = clone Factory::getDate();
-
-					$alias = ApplicationHelper::stringURLSafe($folder);
-
-					$data = [
-						'id'          => 0,
-						'category_id' => $this->category_id,
-						'version'     => $folder,
-						'alias'       => $alias,
-						'maturity'    => 'alpha',
-						'description' => '',
-						'notes'       => $notes,
-						'access'      => $this->category->access,
-						'published'   => 1,
-						'created'     => $jNow->toSql(),
-					];
-
-					// Before saving the release, call the onNewARSBleedingEdgeRelease()
-					// event of ars plugins so that they have the chance to modify
-					// this information.
-
-					// -- Load plugins
-					PluginHelper::importPlugin('ars');
-
-					// -- Setup information data
-					$infoData = [
-						'folder'          => $folder,
-						'category_id'     => $this->category_id,
-						'category'        => $this->category,
-						'has_changelog'   => !empty($changeLogData),
-						'changelog_file'  => $changelog,
-						'changelog'       => $changeLogData,
-						'first_changelog' => $first_changelog,
-					];
-
-					// -- Trigger the plugin event
-					$jResponse = $this->triggerPluginEvent('onNewARSBleedingEdgeRelease', [
-						$infoData,
-						$data,
-					]);
-
-					// -- Merge response
-					if (is_array($jResponse))
-					{
-						foreach ($jResponse as $response)
-						{
-							if (is_array($response))
-							{
-								$data = array_merge($data, $response);
-							}
-						}
-					}
-
-					// -- Create the BE release
-					try
-					{
-						/** @var ReleaseTable $table */
-						$table = $this->getMVCFactory()->createTable('Release');
-						$table->save($data);
-						$this->checkFiles($table);
-					}
-					catch (Exception $e)
-					{
-					}
-				}
-			}
-		}
-	}
-
-	public function checkFiles(ReleaseTable $release): void
-	{
-		if (!$release->id)
-		{
-			return;
-		}
-
-		// Make sure we are given a release which exists
-		if (empty($release->category_id))
-		{
-			return;
-		}
-
-		// Set the category from the release if the model's category doesn't match
-		if (($this->category_id != $release->category_id) || empty($this->folder))
-		{
-			$this->setCategory($release->category_id);
-		}
-
-		// Make sure the category was indeed set
-		if (empty($this->category) || empty($this->category_id) || empty($this->folder))
-		{
-			return;
-		}
-
-		// Can't proceed if it's not a bleedingedge category
-		if ($this->category->type != 'bleedingedge')
-		{
-			return;
-		}
-
-		// Safe fallback
-		$folderName = $this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity);
-
-		if (is_null($folderName))
-		{
-			// Normally this shouldn't happen!
-			return;
-		}
-
-		$folder          = $this->folder . '/' . $folderName;
-
-		// Do we have a changelog?
-		if (empty($release->notes))
-		{
-			$changelog      = $folder . '/CHANGELOG';
-			$hasChangelog   = false;
-			$this_changelog = '';
-
-			try
-			{
-				$fileExists = @is_file($changelog);
-			}
-			catch (Exception $e)
-			{
-				$fileExists = false;
-			}
-
-			if ($fileExists)
-			{
-				$hasChangelog   = true;
-				$this_changelog = @file_get_contents($changelog);
-			}
-
-			if ($hasChangelog)
-			{
-				$first_changelog = [];
-				$notes           = $this->coloriseChangelog($this_changelog, $first_changelog);
-				$release->notes  = $notes;
-
-				$release->store();
-			}
-		}
-
-		// Get the items
-		$db         = $this->getDatabase();
-		$release_id = $release->id;
-		$query      = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
-			->select('*')
-			->from($db->quoteName('#__ars_items'))
-			->where($db->quoteName('release_id') . ' = :relid')
-			->bind(':relid', $release_id);
-
-		/** @var ItemTable $item */
-		$item = $this->getMVCFactory()->createTable('Item');
-
-		$items = array_map(function ($data) use ($item) {
-			$ret = clone $item;
-			$ret->reset();
-			$ret->bind($data);
-			$ret->setUpdateModified(false);
-			$ret->setUpdateCreated(false);
-
-			return $ret;
-		}, $db->setQuery($query)->loadAssocList() ?: []);
-
-		$known_items = [];
+		// Skip the expensive scan if the directory hasn't been touched since the category was last scanned.
+		$dirMTime = @filemtime($path) ?: 0;
+		$lastSeen = $category->modified ?: $category->created;
 
 		try
 		{
-			$files = Folder::files($folder);
+			$lastSeenTs = empty($lastSeen) || $lastSeen === $this->getDatabase()->getNullDate()
+				? 0
+				: (new DateTime($lastSeen, new DateTimeZone('UTC')))->getTimestamp();
 		}
-		catch (Exception $e)
+		catch (Throwable)
 		{
-			$files = [];
-		}
-
-		foreach ($items as $item)
-		{
-			$known_items[] = basename($item->filename);
-
-			if ($item->published && !in_array(basename($item->filename), $files))
-			{
-				$item->save([
-					'published' => 0,
-				]);
-			}
-
-			if (!$item->published && in_array(basename($item->filename), $files))
-			{
-				$item->save([
-					'published' => 1,
-				]);
-			}
+			$lastSeenTs = 0;
 		}
 
-		foreach ($files as $file)
+		if ($dirMTime <= $lastSeenTs)
 		{
-			if (basename($file) == 'CHANGELOG')
-			{
-				continue;
-			}
-
-			if (in_array($file, $known_items))
-			{
-				continue;
-			}
-
-			$jNow = clone Factory::getDate();
-			$data = [
-				'id'          => 0,
-				'release_id'  => $release->id,
-				'description' => '',
-				'type'        => 'file',
-				'filename'    => $folderName . '/' . $file,
-				'url'         => '',
-				'hits'        => '0',
-				'published'   => '1',
-				'created'     => $jNow->toSql(),
-				'access'      => $release->access,
-			];
-
-			// Before saving the item, call the onNewARSBleedingEdgeItem()
-			// event of ars plugins so that they have the chance to modify
-			// this information.
-			// -- Load plugins
-			PluginHelper::importPlugin('ars');
-			// -- Setup information data
-			$infoData = [
-				'folder'     => $folder,
-				'file'       => $file,
-				'release_id' => $release->id,
-				'release'    => $release,
-			];
-			// -- Trigger the plugin event
-			$jResponse = $this->triggerPluginEvent('onNewARSBleedingEdgeItem', [
-				$infoData,
-				$data,
-			]);
-			// -- Merge response
-			if (is_array($jResponse))
-			{
-				foreach ($jResponse as $response)
-				{
-					if (is_array($response))
-					{
-						$data = array_merge($data, $response);
-					}
-				}
-			}
-
-			if ($data['ignore'] ?? false)
-			{
-				continue;
-			}
-
-			/** @var ItemTable $item */
-			$table = $this->getMVCFactory()->createTable('Item');
-			$table->save($data);
+			return;
 		}
 
-		if (isset($table) && is_object($table) && method_exists($table, 'reorder'))
+		// Record that we've now seen this version of the directory.
+		try
 		{
-			$db = $this->getDatabase();
+			/** @var CategoryTable $categoryTable */
+			$categoryTable = $this->getMVCFactory()->createTable('Category');
 
-			$table->reorder($db->qn('release_id') . ' = ' . $db->q($release->id));
+			if ($categoryTable->load($category->id))
+			{
+				// Prevent TableCreateModifyTrait from overwriting our explicit values.
+				$categoryTable->setUpdateCreated(false);
+				$categoryTable->setUpdateModified(false);
+				$categoryTable->save(
+					[
+						'modified'    => Date::getInstance($dirMTime, 'UTC')->toSql($this->getDatabase()),
+						'modified_by' => 0,
+					]
+				);
+			}
+		}
+		catch (Throwable)
+		{
+			// No-op: a failure here means we'll rescan next time, which is harmless.
+		}
+
+		// Get the ground truth from the filesystem and database
+		$directoryContents   = $this->scanDirectory($path);
+		$publishedReleases   = $this->ensureModifiedPopulated($this->getPublishedReleases($category));
+		$unpublishedReleases = $this->ensureModifiedPopulated(
+			$this->getUnpublishedReleases($category, array_keys($directoryContents))
+		);
+
+		// Find the versions to add to and unpublish from the database
+		$versionsInFS    = array_keys($directoryContents);
+		$versionsInDB    = array_merge(array_keys($publishedReleases), array_keys($unpublishedReleases));
+		$newVersions     = array_diff($versionsInFS, $versionsInDB);
+		$removedVersions = array_diff($versionsInDB, $versionsInFS);
+
+		/**
+		 * Find out which versions need to be updated.
+		 *
+		 * This is trickier, as it may come from TWO sources:
+		 * 1. Version published in the DB, but its modified time is older than the filesystem modified time.
+		 * 2. This version is unpublished in the DB, but its directory exists.
+		 */
+		$updatedVersions = array_merge(
+			array_filter(
+				array_intersect($versionsInFS, $versionsInDB),
+				fn($key) => $directoryContents[$key]['modified'] > ($unpublishedReleases[$key]['modified'] ?? $publishedReleases[$key]['modified'])
+			),
+			array_intersect($versionsInFS, array_keys($unpublishedReleases))
+		);
+
+		// If there's no work to do we can buzz off.
+		if (empty($newVersions) && empty($removedVersions) && empty($updatedVersions))
+		{
+			return;
+		}
+
+		// Let's create a temporary array which maps version strings to known release IDs
+		$allVersionIDs = array_map(
+			fn($x) => $x['id'],
+			array_merge($publishedReleases, $unpublishedReleases)
+		);
+
+		// Wrap everything in a transaction
+		$db = $this->getDatabase();
+
+		try
+		{
+			$db->transactionStart();
+		}
+		catch (Throwable)
+		{
+			// No-op
+		}
+
+		// Unpublish releases whose directories no longer exist on the filesystem
+		$this->unpublishReleasesAndItems(
+			array_values(
+				array_intersect_key(
+					$allVersionIDs,
+					array_flip($removedVersions)
+				)
+			)
+		);
+
+		// Add new releases
+		foreach ($newVersions as $version)
+		{
+			$infoArray = $directoryContents[$version];
+
+			$this->addNewRelease($category, $version, $infoArray);
+		}
+
+		// Update releases
+		foreach ($updatedVersions as $version)
+		{
+			$infoArray = $directoryContents[$version];
+
+			$this->updateRelease($category, $version, $allVersionIDs[$version], $infoArray);
+		}
+
+		try
+		{
+			$db->transactionCommit();
+		}
+		catch (Throwable)
+		{
+			// No-op
 		}
 	}
 
 	/**
-	 * Sets the category we are operating on
-	 *int
+	 * Removes stale Bleeding Edge release by age.
 	 *
-	 * @param   int  $catId  A category table or a numeric category ID
+	 * IMPORTANT! The age of a BE release is calculated against the `created` date in the database.
+	 *
+	 * @param   CategoryTable  $category
+	 * @param   int            $ageLimit
 	 *
 	 * @return void
+	 * @throws \DateInvalidOperationException
 	 */
-	protected function setCategory(int $catId): void
+	private function removeReleasesByAge(CategoryTable $category): void
 	{
-		// Initialise
-		$this->folder      = null;
-		$this->category_id = (int) $catId;
-		$this->category    = $this->getMVCFactory()->createTable('Category');
-		$this->category->load($this->category_id);
+		$cParams  = ComponentHelper::getParams($this->option);
+		$ageLimit = $cParams->get('bleedingedge_age', 0);
 
-		// Store folder
-		$folder = $this->category->directory;
-
-		// If it is stored locally, make sure the folder exists
-		try
+		if ($ageLimit <= 0)
 		{
-			$folderExists = @is_dir($folder);
-		}
-		catch (Exception $e)
-		{
-			$folderExists = false;
+			return;
 		}
 
-		if (!$folderExists)
-		{
-			$folder = JPATH_ROOT . '/' . $folder;
+		/** @var DatabaseDriver $db */
+		$db               = $this->getDatabase();
+		$tz = new \DateTimeZone('UTC');
+		$targetDatePHP    = (new \DateTime('now', $tz))->sub(new \DateInterval(sprintf('P%dD', $ageLimit)));
+		$targetDateJoomla = new Date($targetDatePHP->format(DATE_ATOM), $tz);
+		$dateString       = $targetDateJoomla->toSql(false, $db);
+		/** @var QueryInterface $query */
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query->select(
+			[
+				$db->quoteName('id'),
+				$db->quoteName('version'),
+			]
+		)
+			->from($db->quoteName('#__ars_releases'))
+			->where(
+				[
+					$db->quoteName('published') . ' = 1',
+					$db->quoteName('created') . ' > :dateString',
+				]
+			)
+			->bind(':dateString', $dateString, ParameterType::STRING);
 
-			try
-			{
-				if (!@is_dir($folder))
-				{
-					return;
-				}
-			}
-			catch (Exception $e)
-			{
-				return;
-			}
+		$results = $db->setQuery($query)->loadAssocList('id', 'version');
+
+		if (empty($results))
+		{
+			return;
 		}
 
-		$this->folder = $folder;
+		// First, unpublish the releases and their contained items.
+		$db->transactionStart();
+		$this->unpublishReleasesAndItems(array_keys($results));
+		$db->transactionCommit();
+
+		// Then, delete the actual filesystem directories
+		$basePath = $this->getDirectoryPath($category);
+
+		foreach ($results as $version)
+		{
+			$this->recursiveRmdir($basePath . DIRECTORY_SEPARATOR . $version);
+		}
 	}
 
-	private function coloriseChangelog(&$this_changelog, array $first_changelog = []): string
+	/**
+	 * Remove BE releases exceeding the count limit along with their associated filesystem directories.
+	 *
+	 * This method retrieves published releases, unpublishes them, and removes their corresponding
+	 * directories from the filesystem if the number of published releases exceeds the specified limit.
+	 *
+	 * @param   CategoryTable  $category  The category table instance used to determine release directories.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	private function removeReleasesByCount(CategoryTable $category): void
 	{
-		$this_changelog = explode("\n", str_replace("\r\n", "\n", $this_changelog));
+		$cParams    = ComponentHelper::getParams($this->option);
+		$countLimit = $cParams->get('bleedingedge_count', 0);
 
-		if (empty($this_changelog))
+		if ($countLimit < 1)
 		{
-			return '';
+			return;
 		}
 
-		$notes = '';
+		/** @var DatabaseDriver $db */
+		$db    = $this->getDatabase();
+		$catId = $category->id;
+		/** @var QueryInterface $query */
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
 
-		$params = ComponentHelper::getParams('com_ars');
+		$query->select(
+			[
+				$db->quoteName('id'),
+				$db->quoteName('version'),
+			]
+		)
+			->from($db->quoteName('#__ars_releases'))
+			->where(
+				[
+					$db->quoteName('category_id') . ' = :catId',
+					$db->quoteName('published') . ' = 1',
+				]
+			)
+			->order($db->quoteName('created') . ' DESC')
+			->bind(':catId', $catId, ParameterType::INTEGER);
 
-		$generate_changelog = $params->get('begenchangelog', 1);
-		$colorise_changelog = $params->get('becolorisechangelog', 1);
+		// Skip the $countLimit newest releases; everything older gets removed.
+		// (Note: Joomla's processLimit drops the OFFSET clause unless a LIMIT is also set.)
+		$results = $db->setQuery($query, $countLimit, PHP_INT_MAX)->loadAssocList('id', 'version');
 
-		if ($generate_changelog)
+		if (empty($results))
 		{
-			$notes .= '<ul>';
+			return;
+		}
 
-			foreach ($this_changelog as $line)
+		// First, unpublish the releases and their contained items.
+		$db->transactionStart();
+		$this->unpublishReleasesAndItems(array_keys($results));
+		$db->transactionCommit();
+
+		// Then, delete the actual filesystem directories
+		$basePath = $this->getDirectoryPath($category);
+
+		foreach ($results as $version)
+		{
+			$this->recursiveRmdir($basePath . DIRECTORY_SEPARATOR . $version);
+		}
+	}
+
+	/**
+	 * Recursively deletes a directory and its contents.
+	 *
+	 * @param   string  $path  The absolute path to the directory to delete
+	 *
+	 * @return  bool  True on success, false on failure
+	 * @since   7.5.0
+	 */
+	private function recursiveRmdir(string $path): bool
+	{
+		if (!@is_dir($path))
+		{
+			return false;
+		}
+
+		try
+		{
+			$di = new \DirectoryIterator($path);
+
+			foreach ($di as $item)
 			{
-				if (in_array($line, $first_changelog))
+				if ($item->isDot())
 				{
 					continue;
 				}
 
-				if ($colorise_changelog)
+				if ($item->isDir())
 				{
-					$notes .= '<li>' . $this->colorise($line) . "</li>\n";
+					if (!$this->recursiveRmdir($item->getPathname()))
+					{
+						return false;
+					}
+
+					continue;
 				}
-				else
+
+				if (!@unlink($item->getPathname()))
 				{
-					$notes .= "<li>$line</li>\n";
+					try
+					{
+						File::delete($item->getPathname());
+					}
+					catch (Throwable $e)
+					{
+						return false;
+					}
 				}
 			}
 
-			$notes .= '</ul>';
+			return @rmdir($path);
 		}
-
-		return $notes;
-	}
-
-	private function colorise(string $line): string
-	{
-		$line      = trim($line);
-		$line_type = substr($line, 0, 1);
-
-		switch ($line_type)
+		catch (Throwable $e)
 		{
-			case '+':
-				$style = 'added';
-				$line  = trim(substr($line, 1));
-				break;
-
-			case '-':
-				$style = 'removed';
-				$line  = trim(substr($line, 1));
-				break;
-
-			case '#':
-				$style = 'bugfix';
-				$line  = trim(substr($line, 1));
-				break;
-
-			case '~':
-				$style = 'minor';
-				$line  = trim(substr($line, 1));
-				break;
-
-			case '!':
-				$style = 'important';
-				$line  = trim(substr($line, 1));
-				break;
-
-			default:
-				$style = 'default';
-				break;
+			return false;
 		}
-
-		return "<span class=\"ars-devrelease-changelog-$style\">$line</span>";
 	}
 
-	private function getReleaseFolder(string $folder, string $version, string $alias, string $maturity): ?string
+	/**
+	 * Gets the full filesystem path of the Bleeding Edge directory.
+	 *
+	 * @param   CategoryTable  $category  The Category table
+	 *
+	 * @return  string|null  Absolute filesystem path; NULL if it's not set or does not exist
+	 * @since   7.5.0
+	 */
+	private function getDirectoryPath(CategoryTable $category): ?string
 	{
-		$maturityLower = strtolower($maturity);
-		$maturityUpper = strtoupper($maturity);
+		$nominalDir = $category->directory;
 
-		$candidates = [
-			$alias,
-			$version,
-			$version . '_' . $maturityUpper,
-			$version . '_' . $maturityLower,
-			$alias . '_' . $maturityUpper,
-			$alias . '_' . $maturityLower,
+		if (!is_string($nominalDir) || empty(trim($nominalDir)))
+		{
+			return null;
+		}
+
+		$nominalDir = trim($nominalDir);
+
+		$dirs = [
+			JPATH_ROOT . DIRECTORY_SEPARATOR . $nominalDir,
+			$nominalDir,
 		];
 
-		foreach ($candidates as $candidate)
+		foreach ($dirs as $dir)
 		{
-			$folderCheck = $folder . '/' . $candidate;
-
-			try
+			if (@is_dir($dir))
 			{
-				if (@is_dir($folderCheck))
-				{
-					return $candidate;
-				}
-			}
-			catch (Exception $e)
-			{
-				continue;
+				return $dir;
 			}
 		}
 
@@ -702,99 +415,701 @@ class BleedingedgeModel extends BaseDatabaseModel
 	}
 
 	/**
-	 * Deletes a BleedingEdge release.
+	 * Scan a Bleeding Edge directory to get the releases and their contained files.
 	 *
-	 * This method deletes the releases' items, their files, the log entries pointing to them, the folder of the BE
-	 * release and the BE release itself.
+	 * @param   string  $path  The absolute filesystem path to scan
 	 *
-	 * @param   ReleaseTable  $release
+	 * @return  array  The releases, keyed by version (path name).
+	 * @since   7.5.0
 	 */
-	private function recursiveDeleteRelease(ReleaseTable $release)
+	private function scanDirectory(string $path): array
 	{
-		// Get the folder of the release
-		$folder = $this->folder . '/' . (
-				$this->getReleaseFolder($this->folder, $release->version, $release->alias, $release->maturity) ?? 'INVALID'
-			);
+		$ret = [];
+		$di  = new \DirectoryIterator($path);
 
-		// Get the items
-		$db         = $this->getDatabase();
-		$release_id = $release->id;
-		$query      = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
-			->select('*')
-			->from($db->quoteName('#__ars_items'))
-			->where($db->quoteName('release_id') . ' = :relid')
-			->bind(':relid', $release_id);
-
-		/** @var ItemTable $item */
-		$item = $this->getMVCFactory()->createTable('Item');
-
-		$items = array_map(function ($data) use ($item) {
-			$ret = clone $item;
-			$ret->reset();
-			$ret->bind($data);
-			$ret->setUpdateModified(false);
-			$ret->setUpdateCreated(false);
-
-			return $ret;
-		}, $db->setQuery($query)->loadAssocList() ?: []);
-
-		// Delete log entries
-		if (!empty($items))
+		/** @var \DirectoryIterator $dir */
+		foreach ($di as $dir)
 		{
-			$itemIds = array_map(function ($item) {
-				return $item->getId();
-			}, $items);
+			if ($dir->isDot() || !$dir->isDir())
+			{
+				continue;
+			}
 
-			$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
-				->delete($db->quoteName('#__ars_log'))
-				->whereIn($db->quoteName('item_id'), $itemIds);
+			$ret[$dir->getFilename()] = [
+				'modified' => $dir->getMTime(),
+				'items'    => $this->scanSubdirectory($dir->getPathname()),
+			];
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Scan a Bleeding Edge subdirectory to get the files in that BE release.
+	 *
+	 * @param   string  $path  The absolute filesystem path to scan
+	 *
+	 * @return  array  The files, keyed by filename.
+	 * @since   7.5.0
+	 */
+	private function scanSubdirectory(string $path): array
+	{
+		$ret = [];
+		$di  = new \DirectoryIterator($path);
+
+		/** @var \DirectoryIterator $file */
+		foreach ($di as $file)
+		{
+			if ($file->isDot() || !$file->isFile())
+			{
+				continue;
+			}
+
+			// Skip CHANGELOG files; they are consumed to build the release notes, not distributed as items.
+			if ($this->isChangelogFilename($file->getFilename()))
+			{
+				continue;
+			}
+
+			$ret[$file->getFilename()] = [
+				'path'  => $file->getPathname(),
+				'size'  => $file->getSize(),
+				'mtime' => $file->getMTime(),
+			];
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Is the given filename one of the recognised CHANGELOG variants?
+	 *
+	 * @param   string  $filename
+	 *
+	 * @return  bool
+	 * @since   7.5.0
+	 */
+	private function isChangelogFilename(string $filename): bool
+	{
+		return in_array(
+			$filename,
+			['CHANGELOG', 'CHANGELOG.txt', 'CHANGELOG.md', 'changelog', 'changelog.txt'],
+			true
+		);
+	}
+
+	/**
+	 * Extract the latest version's changelog and render it as HTML release notes.
+	 *
+	 * Reads a CHANGELOG file from the release's directory and returns an HTML <ul> listing the
+	 * entries of the FIRST (topmost) section — the convention in Akeeba projects where the newest
+	 * version appears first. Each entry line starts with one of the glyphs '+', '-', '~', '!', '#',
+	 * indicating addition, removal, change, miscellaneous, and bug fix respectively; each rendered
+	 * <li> gets a matching CSS class.
+	 *
+	 * Section headings are any line immediately followed by a line of '=' characters, e.g.:
+	 *     MyApp 1.2.3
+	 *     ================================
+	 *
+	 * Controlled by the `begenchangelog` component parameter; returns '' if disabled, if no
+	 * CHANGELOG file is found, or if the file contains no recognisable section.
+	 *
+	 * @param   CategoryTable  $category
+	 * @param   string         $version   The release's version (the subdirectory name).
+	 *
+	 * @return  string  HTML for the release notes, or an empty string.
+	 * @since   7.5.0
+	 */
+	private function extractChangelog(CategoryTable $category, string $version): string
+	{
+		$cParams = ComponentHelper::getParams($this->option);
+
+		if (!$cParams->get('begenchangelog', 1))
+		{
+			return '';
+		}
+
+		$basePath = $this->getDirectoryPath($category);
+
+		if (empty($basePath))
+		{
+			return '';
+		}
+
+		$releaseDir = $basePath . DIRECTORY_SEPARATOR . $version;
+		$file       = null;
+
+		foreach (['CHANGELOG', 'CHANGELOG.txt', 'CHANGELOG.md', 'changelog', 'changelog.txt'] as $candidate)
+		{
+			$path = $releaseDir . DIRECTORY_SEPARATOR . $candidate;
+
+			if (@is_file($path))
+			{
+				$file = $path;
+				break;
+			}
+		}
+
+		if ($file === null)
+		{
+			return '';
+		}
+
+		$content = @file_get_contents($file);
+
+		if ($content === false || $content === '')
+		{
+			return '';
+		}
+
+		$lines     = explode("\n", str_replace(["\r\n", "\r"], "\n", $content));
+		$lineCount = count($lines);
+		$inSection = false;
+		$collected = [];
+
+		for ($i = 0; $i < $lineCount; $i++)
+		{
+			$isHeading = ($i + 1 < $lineCount) && preg_match('/^=+\s*$/', $lines[$i + 1])
+				&& trim($lines[$i]) !== '';
+
+			if ($isHeading)
+			{
+				// If we're already collecting, this marks the next section — stop.
+				if ($inSection)
+				{
+					break;
+				}
+
+				// Otherwise, start collecting at the first recognised section (= the latest version).
+				$inSection = true;
+				$i++; // skip the '===' underline
+
+				continue;
+			}
+
+			if ($inSection)
+			{
+				$collected[] = $lines[$i];
+			}
+		}
+
+		// Trim leading/trailing blank lines
+		while (!empty($collected) && trim($collected[0]) === '')
+		{
+			array_shift($collected);
+		}
+
+		while (!empty($collected) && trim(end($collected)) === '')
+		{
+			array_pop($collected);
+		}
+
+		if (empty($collected))
+		{
+			return '';
+		}
+
+		// Glyph → [Font Awesome 6 icon class, Bootstrap 5 text-color utility]
+		$glyphMap = [
+			'+' => ['fa-solid fa-circle-plus', 'text-success'],
+			'-' => ['fa-solid fa-circle-minus', 'text-danger'],
+			'~' => ['fa-solid fa-pen-to-square', 'text-info'],
+			'!' => ['fa-solid fa-triangle-exclamation', 'text-warning'],
+			'#' => ['fa-solid fa-bug', 'text-secondary'],
+		];
+
+		// Severity tag for bug-fix entries → Bootstrap 5 text-color utility
+		$severityColorMap = [
+			'HIGH'   => 'text-danger',
+			'MEDIUM' => 'text-warning',
+			'LOW'    => 'text-info',
+		];
+
+		$html = '<ul class="ars-bleedingedge-changelog list-unstyled">';
+
+		foreach ($collected as $line)
+		{
+			$line = trim($line);
+
+			if ($line === '')
+			{
+				continue;
+			}
+
+			$icon  = 'fa-solid fa-circle-info';
+			$color = 'text-body';
+			$text  = $line;
+
+			if (preg_match('/^([+\-~!#])\s+(.*)$/', $line, $m))
+			{
+				[$icon, $color] = $glyphMap[$m[1]];
+				$text           = $m[2];
+
+				// Bug-fix severity overrides the default bug color.
+				if ($m[1] === '#' && preg_match('/^\[(HIGH|MEDIUM|LOW)]\s*(.*)$/', $text, $sev))
+				{
+					$color = $severityColorMap[$sev[1]];
+					$text  = $sev[2];
+				}
+			}
+
+			$html .= '<li class="mb-1 ' . $color . '">'
+				. '<span class="' . $icon . ' me-2" aria-hidden="true"></span>'
+				. htmlspecialchars($text, ENT_QUOTES, 'UTF-8')
+				. '</li>';
+		}
+
+		$html .= '</ul>';
+
+		return $html;
+	}
+
+	/**
+	 * Get the published BE releases in the database for this category
+	 *
+	 * @param   CategoryTable  $categoryTable  The BE category to scan
+	 *
+	 * @return  array
+	 * @since   7.5.0
+	 */
+	private function getPublishedReleases(CategoryTable $categoryTable): array
+	{
+		$catId = $categoryTable->id;
+		$db    = $this->getDatabase();
+		/** @var QueryInterface $query */
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query->select(
+			[
+				$db->quoteName('id'),
+				$db->quoteName('version'),
+				$db->quoteName('modified'),
+				$db->quoteName('created'),
+			]
+		)
+			->from($db->quoteName('#__ars_releases'))
+			->where(
+				[
+					$db->quoteName('category_id') . ' = :catId',
+					$db->quoteName('published') . ' = 1',
+				]
+			)
+			->bind(':catId', $catId, ParameterType::INTEGER);
+
+		return $db->setQuery($query)->loadAssocList('version');
+	}
+
+	/**
+	 * Get the unpublished BE releases in the database which have corresponding entries in the filesystem.
+	 *
+	 * The idea is that these will need to be republished.
+	 *
+	 * @param   CategoryTable  $categoryTable
+	 * @param   array          $versionsInFilesystem
+	 *
+	 * @return  array
+	 * @since   7.5.0
+	 */
+	private function getUnpublishedReleases(CategoryTable $categoryTable, array $versionsInFilesystem): array
+	{
+		if (empty($versionsInFilesystem))
+		{
+			return [];
+		}
+
+		$catId = $categoryTable->id;
+		$db    = $this->getDatabase();
+		/** @var QueryInterface $query */
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query->select(
+			[
+				$db->quoteName('id'),
+				$db->quoteName('version'),
+				$db->quoteName('modified'),
+				$db->quoteName('created'),
+			]
+		)
+			->from($db->quoteName('#__ars_releases'))
+			->where(
+				[
+					$db->quoteName('category_id') . ' = :catId',
+					$db->quoteName('published') . ' = 0',
+				]
+			)
+			->whereIn($db->quoteName('version'), $versionsInFilesystem, ParameterType::STRING)
+			->bind(':catId', $catId, ParameterType::INTEGER);
+
+		return $db->setQuery($query)->loadAssocList('version');
+	}
+
+	/**
+	 * Unpublishes releases and their included items.
+	 *
+	 * @param   array  $releaseIDs
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	private function unpublishReleasesAndItems(array $releaseIDs): void
+	{
+		if (empty($releaseIDs))
+		{
+			return;
+		}
+
+		$db = $this->getDatabase();
+
+		/** @var QueryInterface $query */
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query->update($db->quoteName('#__ars_releases'))
+			->set($db->quoteName('published') . ' = 0')
+			->whereIn($db->quoteName('id'), $releaseIDs, ParameterType::INTEGER);
+
+		try
+		{
 			$db->setQuery($query)->execute();
 		}
-
-		foreach ($items as $item)
+		catch (Throwable)
 		{
-			// Delete the file
-			if ($item->type == 'file')
-			{
-				$filePath = $folder . '/' . $item->filename;
-
-				if (is_file($filePath))
-				{
-					if (!@unlink($filePath))
-					{
-						try
-						{
-							File::delete($filePath);
-						}
-						catch (Exception $e)
-						{
-							// Swallow.
-						}
-					}
-				}
-			}
-
-			// Delete the item
-			$item->delete();
+			return;
 		}
 
-		// Delete the folder, recursively
-		if (@is_dir($folder))
+		/** @var QueryInterface $query */
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query->update($db->quoteName('#__ars_items'))
+			->set($db->quoteName('published') . ' = 0')
+			->whereIn($db->quoteName('release_id'), $releaseIDs, ParameterType::INTEGER);
+
+		try
 		{
-			if (!@unlink($folder))
-			{
+			$db->setQuery($query)->execute();
+		}
+		catch (Throwable)
+		{
+			return;
+		}
+	}
+
+	/**
+	 * Ensures that the 'modified' field is populated in the given entries and contains a UNIX timestamp.
+	 *
+	 * This method updates the 'modified' value for each entry in the provided list, using the following fallback
+	 * logic:
+	 * - 'modified' takes precedence if it exists and is valid.
+	 * - If 'modified' is missing or invalid, it falls back to the 'created' field.
+	 * - If both 'modified' and 'created' are invalid, a default timestamp is used.
+	 * - The 'created' field is removed from the resulting entries.
+	 *
+	 * @param   array  $entries  An array of associative arrays containing at least 'modified' and 'created' fields.
+	 *
+	 * @return  array  The modified array of entries, with the 'modified' field ensured to be populated and 'created'
+	 *                 removed.
+	 * @since   7.5.0
+	 */
+	private function ensureModifiedPopulated(array $entries): array
+	{
+		if (empty($entries))
+		{
+			return $entries;
+		}
+
+		$db = $this->getDatabase();
+
+		return array_map(
+			function ($entry) use (&$db) {
+				$modified = $entry['modified'];
+
+				if (empty($modified) || $modified == $db->getNullDate() || $modified == '0000-00-00 00:00:00')
+				{
+					$modified = $entry['created'] ?? '0000-00-00 00:00:00';
+				}
+
+				if (empty($modified) || $modified == $db->getNullDate() || $modified == '0000-00-00 00:00:00')
+				{
+					$modified = '2001-01-01 00:00:00';
+				}
+
 				try
 				{
-					Folder::delete($folder);
+					$entry['modified'] = (new \DateTime($modified, new \DateTimeZone('UTC')))->getTimestamp();
 				}
-				catch (Exception $e)
+				catch (\DateError)
 				{
-					// Swallow.
+					$entry['modified'] = 0;
 				}
+
+				if (array_key_exists('created', $entry))
+				{
+					unset($entry['created']);
+				}
+
+				return $entry;
+			},
+			$entries
+		);
+	}
+
+	/**
+	 * Adds a new software release to the system, including its associated items.
+	 *
+	 * @param   CategoryTable  $category   The category under which the new release will be created.
+	 * @param   string         $version    The version label for the new release.
+	 * @param   array          $infoArray  An associative array containing release metadata, including the items to be
+	 *                                     added. Expected structure:
+	 *                                     - items: An array of file information arrays, where each array includes at a
+	 *                                     minimum:
+	 *                                     - path: The file path of the item to be associated with the release.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	private function addNewRelease(CategoryTable $category, string $version, array $infoArray): void
+	{
+		/** @var DatabaseDriver $db */
+		$db = $this->getDatabase();
+
+		$referenceDate = Date::getInstance($infoArray['modified'], 'UTC');
+		$notes         = $this->extractChangelog($category, $version);
+
+		try
+		{
+			/** @var ReleaseTable $releaseTable */
+			$releaseTable = $this->getMVCFactory()->createTable('Release');
+			$success      = $releaseTable->save(
+				[
+					'category_id'       => $category->id,
+					'version'           => $version,
+					'maturity'          => 'alpha',
+					'notes'             => $notes,
+					'hits'              => 0,
+					'created'           => $referenceDate->toSql($db),
+					'created_by'        => 0,
+					'modified'          => $referenceDate->toSql($db),
+					'modified_by'       => 0,
+					'checked_out'       => 0,
+					'checked_out_time'  => null,
+					'ordering'          => 0,
+					'access'            => $category->access,
+					'show_unauth_links' => 0,
+					'published'         => 1,
+					'language'          => $category->language ?: '*',
+				]
+			);
+
+			if (!$success)
+			{
+				return;
 			}
 		}
+		catch (Throwable)
+		{
+			// We failed. We cannot create items.
+			return;
+		}
 
-		// Delete the release itself
-		$release->delete();
+		// Create the items.
+		foreach ($infoArray['items'] as $fname => $fileInfo)
+		{
+			try
+			{
+				$itemDate = Date::getInstance($fileInfo['mtime'], 'UTC');
+
+				/** @var ItemTable $itemTable */
+				$itemTable = $this->getMVCFactory()->createTable('Item');
+				$itemTable->save(
+					[
+						'id'               => 0,
+						'release_id'       => $releaseTable->id,
+						'description'      => '',
+						'type'             => 'file',
+						'filename'         => $version . '/' . $fname,
+						'url'              => '',
+						'hits'             => '0',
+						'published'        => '1',
+						'created'          => $itemDate->toSql(),
+						'created_by'       => 0,
+						'modified'         => $itemDate->toSql(),
+						'modified_by'      => 0,
+						'checked_out'      => 0,
+						'checked_out_time' => null,
+						'access'           => $releaseTable->access,
+					]
+				);
+			}
+			catch (Throwable)
+			{
+				// No-op
+			}
+		}
+	}
+
+	private function updateRelease(CategoryTable $category, string $version, int $releaseId, array $infoArray): void
+	{
+		/** @var ReleaseTable $releaseTable */
+		$releaseTable = $this->getMVCFactory()->createTable('Release');
+
+		// Make sure we can load the release
+		if (!$releaseTable->load($releaseId))
+		{
+			return;
+		}
+
+		// Update the release itself
+		/** @var DatabaseDriver $db */
+		$db = $this->getDatabase();
+
+		// Do not update the created and modified date/time stamps.
+		$releaseTable->setUpdateCreated(false);
+		$releaseTable->setUpdateModified(false);
+
+		// Regenerate release notes from the CHANGELOG file, if present and enabled.
+		$notes    = $this->extractChangelog($category, $version);
+		$savePayload = [
+			'modified'         => Date::getInstance($infoArray['modified'], 'UTC')->toSql($db),
+			'modified_by'      => 0,
+			'checked_out'      => 0,
+			'checked_out_time' => null,
+			'ordering'         => 0,
+			'published'        => 1,
+		];
+
+		if ($notes !== '')
+		{
+			$savePayload['notes'] = $notes;
+		}
+
+		try
+		{
+			$success = $releaseTable->save($savePayload);
+		}
+		catch (Throwable)
+		{
+			return;
+		}
+
+		if (!$success)
+		{
+			return;
+		}
+
+		// Get all the items in the release
+		/** @var QueryInterface $query */
+		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query->select(
+			[
+				$db->quoteName('id'),
+				$db->quoteName('filename'),
+				$db->quoteName('created'),
+				$db->quoteName('modified'),
+			]
+		)
+			->from($db->quoteName('#__ars_items'))
+			->where(
+				[
+					$db->quoteName('release_id') . ' = :release_di',
+				]
+			)
+			->bind(':release_di', $releaseId, ParameterType::INTEGER);
+
+		$fileInfoInDB = $this->ensureModifiedPopulated($db->setQuery($query)->loadAssocList('filename'));
+
+		// Build a basename -> full-DB-filename map so we can look items up by basename.
+		$version    = $releaseTable->version;
+		$dbBasenameMap = [];
+
+		foreach (array_keys($fileInfoInDB) as $dbFilename)
+		{
+			$dbBasenameMap[basename($dbFilename)] = $dbFilename;
+		}
+
+		// Find new, removed, and existing items (by basename)
+		$knownFilesInfo = $infoArray['items'];
+		$filenamesInDB  = array_keys($dbBasenameMap);
+		$filenamesInFS  = array_keys($knownFilesInfo);
+
+		$removedFilenames  = array_diff($filenamesInDB, $filenamesInFS);
+		$existingFilenames = array_intersect($filenamesInDB, $filenamesInFS);
+		$newFilenames      = array_diff($filenamesInFS, $filenamesInDB);
+
+		foreach ($removedFilenames as $fname)
+		{
+			/** @var ItemTable $itemTable */
+			$itemTable = $this->getMVCFactory()->createTable('Item');
+			$loaded    = $itemTable->load([
+				'filename'   => $dbBasenameMap[$fname],
+				'release_id' => $releaseId,
+			]);
+
+			if (!$loaded)
+			{
+				continue;
+			}
+
+			$itemTable->save([
+				'published' => 0,
+			]);
+		}
+
+		foreach ($newFilenames as $fname)
+		{
+			$fileInfo = $infoArray['items'][$fname];
+			$itemDate = Date::getInstance($fileInfo['mtime'], 'UTC');
+
+			/** @var ItemTable $itemTable */
+			$itemTable = $this->getMVCFactory()->createTable('Item');
+			$itemTable->save(
+				[
+					'id'               => 0,
+					'release_id'       => $releaseTable->id,
+					'description'      => '',
+					'type'             => 'file',
+					'filename'         => $version . '/' . $fname,
+					'url'              => '',
+					'hits'             => '0',
+					'published'        => '1',
+					'created'          => $itemDate->toSql(),
+					'created_by'       => 0,
+					'modified'         => $itemDate->toSql(),
+					'modified_by'      => 0,
+					'checked_out'      => 0,
+					'checked_out_time' => null,
+					'access'           => $releaseTable->access,
+				]
+			);
+		}
+
+		foreach ($existingFilenames as $fname)
+		{
+			/** @var ItemTable $itemTable */
+			$itemTable = $this->getMVCFactory()->createTable('Item');
+			$loaded    = $itemTable->load([
+				'filename'   => $dbBasenameMap[$fname],
+				'release_id' => $releaseId,
+			]);
+
+			if (!$loaded)
+			{
+				continue;
+			}
+
+			$fileInfo = $infoArray['items'][$fname];
+			$itemDate = Date::getInstance($fileInfo['mtime'], 'UTC');
+
+			$itemTable->save(
+				[
+					'published'        => '1',
+					'modified'         => $itemDate->toSql(),
+					'modified_by'      => 0,
+					'checked_out'      => 0,
+					'checked_out_time' => null,
+					'access'           => $releaseTable->access,
+					'md5'              => null,
+					'sha1'             => null,
+					'sha256'           => null,
+					'sha384'           => null,
+					'sha512'           => null,
+					'filesize'         => null,
+				]
+			);
+		}
 	}
 }
