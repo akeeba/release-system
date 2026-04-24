@@ -132,7 +132,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		{
 			$infoArray = $directoryContents[$version];
 
-			$this->updateRelease($allVersionIDs[$version], $infoArray);
+			$this->updateRelease($category, $version, $allVersionIDs[$version], $infoArray);
 		}
 
 		try
@@ -419,6 +419,12 @@ final class BleedingedgeModel extends BaseDatabaseModel
 				continue;
 			}
 
+			// Skip CHANGELOG files; they are consumed to build the release notes, not distributed as items.
+			if ($this->isChangelogFilename($file->getFilename()))
+			{
+				continue;
+			}
+
 			$ret[$file->getFilename()] = [
 				'path'  => $file->getPathname(),
 				'size'  => $file->getSize(),
@@ -427,6 +433,189 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		}
 
 		return $ret;
+	}
+
+	/**
+	 * Is the given filename one of the recognised CHANGELOG variants?
+	 *
+	 * @param   string  $filename
+	 *
+	 * @return  bool
+	 * @since   7.5.0
+	 */
+	private function isChangelogFilename(string $filename): bool
+	{
+		return in_array(
+			$filename,
+			['CHANGELOG', 'CHANGELOG.txt', 'CHANGELOG.md', 'changelog', 'changelog.txt'],
+			true
+		);
+	}
+
+	/**
+	 * Extract the latest version's changelog and render it as HTML release notes.
+	 *
+	 * Reads a CHANGELOG file from the release's directory and returns an HTML <ul> listing the
+	 * entries of the FIRST (topmost) section — the convention in Akeeba projects where the newest
+	 * version appears first. Each entry line starts with one of the glyphs '+', '-', '~', '!', '#',
+	 * indicating addition, removal, change, miscellaneous, and bug fix respectively; each rendered
+	 * <li> gets a matching CSS class.
+	 *
+	 * Section headings are any line immediately followed by a line of '=' characters, e.g.:
+	 *     MyApp 1.2.3
+	 *     ================================
+	 *
+	 * Controlled by the `begenchangelog` component parameter; returns '' if disabled, if no
+	 * CHANGELOG file is found, or if the file contains no recognisable section.
+	 *
+	 * @param   CategoryTable  $category
+	 * @param   string         $version   The release's version (the subdirectory name).
+	 *
+	 * @return  string  HTML for the release notes, or an empty string.
+	 * @since   7.5.0
+	 */
+	private function extractChangelog(CategoryTable $category, string $version): string
+	{
+		$cParams = ComponentHelper::getParams($this->option);
+
+		if (!$cParams->get('begenchangelog', 1))
+		{
+			return '';
+		}
+
+		$basePath = $this->getDirectoryPath($category);
+
+		if (empty($basePath))
+		{
+			return '';
+		}
+
+		$releaseDir = $basePath . DIRECTORY_SEPARATOR . $version;
+		$file       = null;
+
+		foreach (['CHANGELOG', 'CHANGELOG.txt', 'CHANGELOG.md', 'changelog', 'changelog.txt'] as $candidate)
+		{
+			$path = $releaseDir . DIRECTORY_SEPARATOR . $candidate;
+
+			if (@is_file($path))
+			{
+				$file = $path;
+				break;
+			}
+		}
+
+		if ($file === null)
+		{
+			return '';
+		}
+
+		$content = @file_get_contents($file);
+
+		if ($content === false || $content === '')
+		{
+			return '';
+		}
+
+		$lines     = explode("\n", str_replace(["\r\n", "\r"], "\n", $content));
+		$lineCount = count($lines);
+		$inSection = false;
+		$collected = [];
+
+		for ($i = 0; $i < $lineCount; $i++)
+		{
+			$isHeading = ($i + 1 < $lineCount) && preg_match('/^=+\s*$/', $lines[$i + 1])
+				&& trim($lines[$i]) !== '';
+
+			if ($isHeading)
+			{
+				// If we're already collecting, this marks the next section — stop.
+				if ($inSection)
+				{
+					break;
+				}
+
+				// Otherwise, start collecting at the first recognised section (= the latest version).
+				$inSection = true;
+				$i++; // skip the '===' underline
+
+				continue;
+			}
+
+			if ($inSection)
+			{
+				$collected[] = $lines[$i];
+			}
+		}
+
+		// Trim leading/trailing blank lines
+		while (!empty($collected) && trim($collected[0]) === '')
+		{
+			array_shift($collected);
+		}
+
+		while (!empty($collected) && trim(end($collected)) === '')
+		{
+			array_pop($collected);
+		}
+
+		if (empty($collected))
+		{
+			return '';
+		}
+
+		// Glyph → [Font Awesome 6 icon class, Bootstrap 5 text-color utility]
+		$glyphMap = [
+			'+' => ['fa-solid fa-circle-plus', 'text-success'],
+			'-' => ['fa-solid fa-circle-minus', 'text-danger'],
+			'~' => ['fa-solid fa-pen-to-square', 'text-info'],
+			'!' => ['fa-solid fa-triangle-exclamation', 'text-warning'],
+			'#' => ['fa-solid fa-bug', 'text-secondary'],
+		];
+
+		// Severity tag for bug-fix entries → Bootstrap 5 text-color utility
+		$severityColorMap = [
+			'HIGH'   => 'text-danger',
+			'MEDIUM' => 'text-warning',
+			'LOW'    => 'text-info',
+		];
+
+		$html = '<ul class="ars-bleedingedge-changelog list-unstyled">';
+
+		foreach ($collected as $line)
+		{
+			$line = trim($line);
+
+			if ($line === '')
+			{
+				continue;
+			}
+
+			$icon  = 'fa-solid fa-circle-info';
+			$color = 'text-body';
+			$text  = $line;
+
+			if (preg_match('/^([+\-~!#])\s+(.*)$/', $line, $m))
+			{
+				[$icon, $color] = $glyphMap[$m[1]];
+				$text           = $m[2];
+
+				// Bug-fix severity overrides the default bug color.
+				if ($m[1] === '#' && preg_match('/^\[(HIGH|MEDIUM|LOW)]\s*(.*)$/', $text, $sev))
+				{
+					$color = $severityColorMap[$sev[1]];
+					$text  = $sev[2];
+				}
+			}
+
+			$html .= '<li class="mb-1 ' . $color . '">'
+				. '<span class="' . $icon . ' me-2" aria-hidden="true"></span>'
+				. htmlspecialchars($text, ENT_QUOTES, 'UTF-8')
+				. '</li>';
+		}
+
+		$html .= '</ul>';
+
+		return $html;
 	}
 
 	/**
@@ -633,6 +822,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		$db = $this->getDatabase();
 
 		$referenceDate = Date::getInstance($infoArray['modified'], 'UTC');
+		$notes         = $this->extractChangelog($category, $version);
 
 		try
 		{
@@ -643,7 +833,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 					'category_id'       => $category->id,
 					'version'           => $version,
 					'maturity'          => 'alpha',
-					'notes'             => '',
+					'notes'             => $notes,
 					'hits'              => 0,
 					'created'           => $referenceDate->toSql($db),
 					'created_by'        => 0,
@@ -706,7 +896,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		}
 	}
 
-	private function updateRelease($releaseId, $infoArray)
+	private function updateRelease(CategoryTable $category, string $version, int $releaseId, array $infoArray): void
 	{
 		/** @var ReleaseTable $releaseTable */
 		$releaseTable = $this->getMVCFactory()->createTable('Release');
@@ -725,18 +915,25 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		$releaseTable->setUpdateCreated(false);
 		$releaseTable->setUpdateModified(false);
 
+		// Regenerate release notes from the CHANGELOG file, if present and enabled.
+		$notes    = $this->extractChangelog($category, $version);
+		$savePayload = [
+			'modified'         => Date::getInstance($infoArray['modified'], 'UTC')->toSql($db),
+			'modified_by'      => 0,
+			'checked_out'      => 0,
+			'checked_out_time' => null,
+			'ordering'         => 0,
+			'published'        => 1,
+		];
+
+		if ($notes !== '')
+		{
+			$savePayload['notes'] = $notes;
+		}
+
 		try
 		{
-			$success = $releaseTable->save(
-				[
-					'modified'         => Date::getInstance($infoArray['modified'], 'UTC')->toSql($db),
-					'modified_by'      => 0,
-					'checked_out'      => 0,
-					'checked_out_time' => null,
-					'ordering'         => 0,
-					'published'        => 1,
-				]
-			);
+			$success = $releaseTable->save($savePayload);
 		}
 		catch (Throwable)
 		{
