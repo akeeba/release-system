@@ -47,6 +47,12 @@ final class BleedingedgeModel extends BaseDatabaseModel
 	 */
 	public function scanCategory(CategoryTable $category): void
 	{
+		// Only Bleeding Edge categories are scanned. Normal categories must never trigger BE logic.
+		if (($category->type ?? 'normal') !== 'bleedingedge')
+		{
+			return;
+		}
+
 		// Get the full path to the BE directory
 		$path = $this->getDirectoryPath($category);
 
@@ -214,10 +220,11 @@ final class BleedingedgeModel extends BaseDatabaseModel
 
 		/** @var DatabaseDriver $db */
 		$db               = $this->getDatabase();
-		$tz = new \DateTimeZone('UTC');
+		$tz               = new \DateTimeZone('UTC');
 		$targetDatePHP    = (new \DateTime('now', $tz))->sub(new \DateInterval(sprintf('P%dD', $ageLimit)));
 		$targetDateJoomla = new Date($targetDatePHP->format(DATE_ATOM), $tz);
 		$dateString       = $targetDateJoomla->toSql(false, $db);
+		$catId            = $category->id;
 		/** @var QueryInterface $query */
 		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
 		$query->select(
@@ -229,10 +236,12 @@ final class BleedingedgeModel extends BaseDatabaseModel
 			->from($db->quoteName('#__ars_releases'))
 			->where(
 				[
+					$db->quoteName('category_id') . ' = :catId',
 					$db->quoteName('published') . ' = 1',
-					$db->quoteName('created') . ' > :dateString',
+					$db->quoteName('created') . ' < :dateString',
 				]
 			)
+			->bind(':catId', $catId, ParameterType::INTEGER)
 			->bind(':dateString', $dateString, ParameterType::STRING);
 
 		$results = $db->setQuery($query)->loadAssocList('id', 'version');
