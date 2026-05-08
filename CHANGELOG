@@ -2,6 +2,7 @@
 Akeeba Release System 7.5.0
 ================================================================================
 + Rewritten Bleeding Edge releases
++ Support Joomla major releases past 4.x in plg_content_arslatest
 
 Akeeba Release System 7.4.3
 ================================================================================

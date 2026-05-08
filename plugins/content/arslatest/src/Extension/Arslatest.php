@@ -14,7 +14,6 @@ use Akeeba\Component\ARS\Site\Model\DlidlabelsModel;
 use Akeeba\Component\ARS\Site\Model\ItemsModel;
 use Akeeba\Component\ARS\Site\Model\ReleasesModel;
 use Akeeba\Component\ARS\Site\Model\UpdateModel;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
@@ -23,7 +22,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\User\User;
 use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseAwareTrait;
-use Joomla\Database\DatabaseDriver;
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use Joomla\String\StringHelper;
@@ -43,6 +41,8 @@ class Arslatest extends CMSPlugin implements SubscriberInterface, DatabaseAwareI
 	private $categoryLatest = [];
 
 	private $filesPerRelease = [];
+
+	private static $environmentByJoomlaVersion;
 
 	/**
 	 * Information about the latest available item in a stream, indexed by the update stream ID.
@@ -237,14 +237,12 @@ class Arslatest extends CMSPlugin implements SubscriberInterface, DatabaseAwareI
 		$streamModel->setState('list.start', 0);
 		$streamModel->setState('list.limit', 0);
 
+		// Distribute latest items by Joomla major version
 		foreach ($streamModel->getItems() ?: [] as $stream)
 		{
-			static $j3Env, $j4Env;
-
-			if (!is_array($j3Env))
+			if (!isset(self::$environmentByJoomlaVersion))
 			{
-				$j3Env = $this->getEnvironments('joomla/3.');
-				$j4Env = $this->getEnvironments('joomla/4.');
+				self::$environmentByJoomlaVersion = $this->getAllJoomlaEnvironments();
 			}
 
 			/** @var UpdateModel $updateModel */
@@ -256,56 +254,21 @@ class Arslatest extends CMSPlugin implements SubscriberInterface, DatabaseAwareI
 				continue;
 			}
 
-			// Any Joomla 3 items
-			$found   = false;
-			$j3Items = array_filter($items, function ($item) use (&$found, $j3Env) {
-				if ($found)
-				{
-					return false;
-				}
+			// Distribute items by Joomla version
+			$this->streamInfo[$stream->id] = [];
 
-				$found = !empty(array_intersect($item->environments, $j3Env));
-
-				return $found;
-			});
-
-			// Any Joomla 4 items
-			$found   = false;
-			$j4Items = array_filter($items, function ($item) use (&$found, $j4Env) {
-				if ($found)
-				{
-					return false;
-				}
-
-				$found = !empty(array_intersect($item->environments, $j4Env));
-
-				return $found;
-			});
-
-			// Joomla 4 items which ARE NOT available on Joomla 3
-			$found      = false;
-			$altJ4Items = array_filter($items, function ($item) use (&$found, $j4Env, $j3Env) {
-				if ($found)
-				{
-					return false;
-				}
-
-				$found = !empty(array_intersect($item->environments, $j4Env)) && empty(array_intersect($item->environments, $j3Env));
-
-				return $found;
-			});
-
-			// Prefer the Joomla 4–specific items
-			if (!empty($altJ4Items))
+			foreach (self::$environmentByJoomlaVersion as $jVersion => $environments)
 			{
-				$j4Items = $altJ4Items;
+				$thisVersionItems = array_filter(
+					$items,
+					fn($item) => !empty(array_intersect($item->environments, $environments))
+				);
+
+				$this->streamInfo[$stream->id][strtoupper($jVersion)] =
+					empty($thisVersionItems) ? null : array_shift($thisVersionItems);
 			}
 
-			$this->streamInfo[$stream->id] = [
-				'ALL' => array_shift($items),
-				'J3'  => empty($j3Items) ? null : array_shift($j3Items),
-				'J4'  => empty($j4Items) ? null : array_shift($j4Items),
-			];
+			$this->streamInfo[$stream->id]['ALL'] = array_shift($items);
 		}
 
 		$this->prepared = true;
@@ -558,5 +521,33 @@ class Arslatest extends CMSPlugin implements SubscriberInterface, DatabaseAwareI
 		$link = Route::_($url, false);
 
 		return $link;
+	}
+
+	/**
+	 * Retrieves all Joomla environments categorized by major version.
+	 *
+	 * @return array An associative array where the keys are major version identifiers (e.g., 'j3', 'j4')
+	 *               and the values are arrays of environments for each version.
+	 */
+	private function getAllJoomlaEnvironments(): array
+	{
+		$ret          = [];
+		$majorVersion = 3;
+
+		while (true)
+		{
+			$environments = $this->getEnvironments(sprintf('joomla/%d.', $majorVersion));
+
+			if (empty($environments))
+			{
+				break;
+			}
+
+			$ret['j' . $majorVersion] = $environments;
+
+			$majorVersion++;
+		}
+
+		return $ret;
 	}
 }
