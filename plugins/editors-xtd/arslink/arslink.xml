@@ -34,6 +34,18 @@ and packaging.
     <languages folder="language">
         <language tag="en-GB">en-GB/plg_editors-xtd_arslink.ini</language>
         <language tag="en-GB">en-GB/plg_editors-xtd_arslink.sys.ini</language>
+        <language tag="de-DE">de-DE/plg_editors-xtd_arslink.ini</language>
+        <language tag="de-DE">de-DE/plg_editors-xtd_arslink.sys.ini</language>
+        <language tag="el-GR">el-GR/plg_editors-xtd_arslink.ini</language>
+        <language tag="el-GR">el-GR/plg_editors-xtd_arslink.sys.ini</language>
+        <language tag="es-ES">es-ES/plg_editors-xtd_arslink.ini</language>
+        <language tag="es-ES">es-ES/plg_editors-xtd_arslink.sys.ini</language>
+        <language tag="fr-FR">fr-FR/plg_editors-xtd_arslink.ini</language>
+        <language tag="fr-FR">fr-FR/plg_editors-xtd_arslink.sys.ini</language>
+        <language tag="it-IT">it-IT/plg_editors-xtd_arslink.ini</language>
+        <language tag="it-IT">it-IT/plg_editors-xtd_arslink.sys.ini</language>
+        <language tag="pt-PT">pt-PT/plg_editors-xtd_arslink.ini</language>
+        <language tag="pt-PT">pt-PT/plg_editors-xtd_arslink.sys.ini</language>
     </languages>
 
 </extension>

@@ -29,5 +29,17 @@
     <languages folder="language">
         <language tag="en-GB">en-GB/mod_arsgraph.ini</language>
         <language tag="en-GB">en-GB/mod_arsgraph.sys.ini</language>
+        <language tag="de-DE">de-DE/mod_arsgraph.ini</language>
+        <language tag="de-DE">de-DE/mod_arsgraph.sys.ini</language>
+        <language tag="el-GR">el-GR/mod_arsgraph.ini</language>
+        <language tag="el-GR">el-GR/mod_arsgraph.sys.ini</language>
+        <language tag="es-ES">es-ES/mod_arsgraph.ini</language>
+        <language tag="es-ES">es-ES/mod_arsgraph.sys.ini</language>
+        <language tag="fr-FR">fr-FR/mod_arsgraph.ini</language>
+        <language tag="fr-FR">fr-FR/mod_arsgraph.sys.ini</language>
+        <language tag="it-IT">it-IT/mod_arsgraph.ini</language>
+        <language tag="it-IT">it-IT/mod_arsgraph.sys.ini</language>
+        <language tag="pt-PT">pt-PT/mod_arsgraph.ini</language>
+        <language tag="pt-PT">pt-PT/mod_arsgraph.sys.ini</language>
     </languages>
 </extension>

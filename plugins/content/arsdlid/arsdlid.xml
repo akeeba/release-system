@@ -26,5 +26,17 @@
     <languages folder="language">
         <language tag="en-GB">en-GB/plg_content_arsdlid.ini</language>
         <language tag="en-GB">en-GB/plg_content_arsdlid.sys.ini</language>
+        <language tag="de-DE">de-DE/plg_content_arsdlid.ini</language>
+        <language tag="de-DE">de-DE/plg_content_arsdlid.sys.ini</language>
+        <language tag="el-GR">el-GR/plg_content_arsdlid.ini</language>
+        <language tag="el-GR">el-GR/plg_content_arsdlid.sys.ini</language>
+        <language tag="es-ES">es-ES/plg_content_arsdlid.ini</language>
+        <language tag="es-ES">es-ES/plg_content_arsdlid.sys.ini</language>
+        <language tag="fr-FR">fr-FR/plg_content_arsdlid.ini</language>
+        <language tag="fr-FR">fr-FR/plg_content_arsdlid.sys.ini</language>
+        <language tag="it-IT">it-IT/plg_content_arsdlid.ini</language>
+        <language tag="it-IT">it-IT/plg_content_arsdlid.sys.ini</language>
+        <language tag="pt-PT">pt-PT/plg_content_arsdlid.ini</language>
+        <language tag="pt-PT">pt-PT/plg_content_arsdlid.sys.ini</language>
     </languages>
 </extension>

@@ -35,6 +35,12 @@
 
     <languages folder="language">
         <language tag="en-GB">en-GB/pkg_ars.sys.ini</language>
+        <language tag="de-DE">de-DE/pkg_ars.sys.ini</language>
+        <language tag="el-GR">el-GR/pkg_ars.sys.ini</language>
+        <language tag="es-ES">es-ES/pkg_ars.sys.ini</language>
+        <language tag="fr-FR">fr-FR/pkg_ars.sys.ini</language>
+        <language tag="it-IT">it-IT/pkg_ars.sys.ini</language>
+        <language tag="pt-PT">pt-PT/pkg_ars.sys.ini</language>
     </languages>
 
     <scriptfile>script.ars.php</scriptfile>
