@@ -41,23 +41,11 @@
 			depends="new-release,setup-properties,compile-javascript,compile-css,component-packages">
 	</target>
 
-	<target name="compile-javascript" description="Transpile and minify JavaScript files">
-		<exec executable="${dirs.root}/../buildfiles/node_modules/.bin/babel"
-			  dir="${dirs.root}" checkreturn="true">
-			<env key="NODE_PATH" value="${dirs.root}/../buildfiles/node_modules" />
-
-			<arg value="component/media/js" />
-
-			<arg value="--config-file" />
-			<arg value="${dirs.root}/.babelrc.json" />
-
-			<arg value="--out-dir" />
-			<arg value="component/media/js" />
-
-			<arg value="--out-file-extension" />
-			<arg value=".min.js" />
-
-			<arg value="--source-maps" />
+	<target name="compile-javascript" description="Minify JavaScript files">
+		<exec executable="node"
+		      dir="${dirs.root}/../buildfiles" checkreturn="true" passthru="true">
+			<arg value="build-js.mjs" />
+			<arg value="${dirs.component}/media/js" />
 		</exec>
 	</target>
 
