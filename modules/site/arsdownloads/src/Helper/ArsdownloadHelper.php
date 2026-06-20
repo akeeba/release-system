@@ -10,30 +10,38 @@ namespace Joomla\Module\Arsdownload\Site\Helper;
 defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Site\Model\UpdateModel;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
 class ArsdownloadHelper
 {
-	public static function getItems(Registry $params): array
+	/**
+	 * Get the latest item for each of the configured update streams.
+	 *
+	 * @param   Registry         $params  The module parameters.
+	 * @param   SiteApplication  $app     The site application.
+	 *
+	 * @return  object[]
+	 *
+	 * @since   7.4.4
+	 */
+	public function getItems(Registry $params, SiteApplication $app): array
 	{
 		if (!ComponentHelper::isEnabled('com_ars'))
 		{
 			return [];
 		}
 
-		$streams = self::parseStreams($params->get('streams', ''));
+		$streams = $this->parseStreams($params->get('streams', ''));
 
 		if (empty($streams))
 		{
 			return [];
 		}
 
-		$app = Factory::getApplication();
 		$app->bootComponent('com_ars');
-
 		$app->getLanguage()->load('com_ars', JPATH_ADMINISTRATOR);
 
 		$items = [];
@@ -54,7 +62,16 @@ class ArsdownloadHelper
 		return $items;
 	}
 
-	private static function parseStreams($streams): array
+	/**
+	 * Normalise the streams module parameter into an array of integer stream IDs.
+	 *
+	 * @param   mixed  $streams  The raw streams parameter (array, JSON, or comma-separated string).
+	 *
+	 * @return  int[]
+	 *
+	 * @since   7.4.4
+	 */
+	private function parseStreams($streams): array
 	{
 		$test = $streams;
 

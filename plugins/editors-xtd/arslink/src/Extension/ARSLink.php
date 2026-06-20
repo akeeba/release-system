@@ -9,7 +9,6 @@ namespace Akeeba\Plugin\EditorsExtended\ARSLink\Extension;
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Editor\Button\Button;
 use Joomla\CMS\Event\Editor\EditorButtonsSetupEvent;
@@ -20,9 +19,6 @@ use Joomla\Event\SubscriberInterface;
 
 class ARSLink extends CMSPlugin implements SubscriberInterface
 {
-	/** @var CMSApplication */
-	protected $app;
-
 	protected $autoloadLanguage = true;
 
 	public static function getSubscribedEvents(): array
@@ -68,7 +64,7 @@ class ARSLink extends CMSPlugin implements SubscriberInterface
 			return null;
 		}
 
-		$doc = $this->app->getDocument();
+		$doc = $this->getApplication()->getDocument();
 
 		if (!$hasSetJS)
 		{
@@ -122,7 +118,7 @@ JS;
 			'modal'   => true,
 			'link'    => sprintf(
 				'index.php?option=com_ars&view=items&layout=modal&tmpl=component&%s=1',
-				$this->app->getFormToken()
+				$this->getApplication()->getFormToken()
 			),
 			'text'    => Text::_('PLG_ARSITEM_BUTTON_ITEM'),
 			'name'    => $this->_type . '_' . $this->_name,
