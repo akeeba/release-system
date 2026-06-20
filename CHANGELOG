@@ -3,6 +3,8 @@ Akeeba Release System 7.5.0
 ================================================================================
 + Rewritten Bleeding Edge releases
 + Support Joomla major releases past 4.x in plg_content_arslatest
+~ Joomla 7.0 readiness: use injected application in plg_editors-xtd_arslink instead of the removed CMSPlugin $app property
+~ Modernise mod_arsdownloads to the module dispatcher / DI service provider pattern
 
 Akeeba Release System 7.4.3
 ================================================================================

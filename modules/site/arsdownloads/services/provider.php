@@ -1,0 +1,38 @@
+<?php
+/**
+ * @package   AkeebaReleaseSystem
+ * @copyright Copyright (c)2010-2026 Nicholas K. Dionysopoulos / Akeeba Ltd
+ * @license   GNU General Public License version 3, or later
+ */
+
+defined('_JEXEC') or die;
+
+use Joomla\CMS\Extension\Service\Provider\HelperFactory;
+use Joomla\CMS\Extension\Service\Provider\Module;
+use Joomla\CMS\Extension\Service\Provider\ModuleDispatcherFactory;
+use Joomla\DI\Container;
+use Joomla\DI\ServiceProviderInterface;
+
+/**
+ * The ARS Downloads module service provider.
+ *
+ * @since  7.4.4
+ */
+return new class implements ServiceProviderInterface {
+	/**
+	 * Registers the service provider with a DI container.
+	 *
+	 * @param   Container  $container  The DI container.
+	 *
+	 * @return  void
+	 *
+	 * @since   7.4.4
+	 */
+	public function register(Container $container)
+	{
+		$container->registerServiceProvider(new ModuleDispatcherFactory('\\Joomla\\Module\\Arsdownload'));
+		$container->registerServiceProvider(new HelperFactory('\\Joomla\\Module\\Arsdownload\\Site\\Helper'));
+
+		$container->registerServiceProvider(new Module());
+	}
+};

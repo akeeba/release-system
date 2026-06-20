@@ -17,10 +17,10 @@
     <description>MOD_ARSDOWNLOADS_DESC</description>
     <namespace path="src">Joomla\Module\Arsdownload</namespace>
     <files>
-        <folder>src</folder>
+        <folder>services</folder>
+        <folder module="mod_arsdownloads">src</folder>
         <folder>tmpl</folder>
 
-        <filename module="mod_arsdownloads">mod_arsdownloads.php</filename>
         <filename>.htaccess</filename>
         <filename>web.config</filename>
     </files>
