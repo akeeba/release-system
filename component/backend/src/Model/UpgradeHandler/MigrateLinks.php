@@ -13,6 +13,8 @@
 
 namespace Akeeba\Component\ARS\Administrator\Model\UpgradeHandler;
 
+defined('_JEXEC') || die;
+
 use Akeeba\Component\ARS\Administrator\Model\UpgradeModel;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseAwareInterface;

@@ -13,6 +13,8 @@
 
 namespace Akeeba\Component\ARS\Administrator\CustomCategory;
 
+defined('_JEXEC') || die;
+
 use Akeeba\Component\ARS\Administrator\Extension\ArsComponent;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Joomla\CMS\Categories\CategoryNode;

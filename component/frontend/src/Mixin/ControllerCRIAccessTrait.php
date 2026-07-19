@@ -7,6 +7,8 @@
 
 namespace Akeeba\Component\ARS\Site\Mixin;
 
+defined('_JEXEC') || die;
+
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;

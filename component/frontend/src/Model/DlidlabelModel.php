@@ -7,6 +7,7 @@
 
 namespace Akeeba\Component\ARS\Site\Model;
 
+defined('_JEXEC') || die;
 
 #[\AllowDynamicProperties]
 class DlidlabelModel extends \Akeeba\Component\ARS\Administrator\Model\DlidlabelModel

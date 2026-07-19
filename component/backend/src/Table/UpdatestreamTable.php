@@ -7,6 +7,7 @@
 
 namespace Akeeba\Component\ARS\Administrator\Table;
 
+defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableColumnAliasTrait;

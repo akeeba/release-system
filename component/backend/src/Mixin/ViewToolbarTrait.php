@@ -7,6 +7,8 @@
 
 namespace Akeeba\Component\ARS\Administrator\Mixin;
 
+defined('_JEXEC') || die;
+
 use Joomla\CMS\Toolbar\Toolbar;
 
 /**

@@ -7,6 +7,7 @@
 
 namespace Akeeba\Component\ARS\Site\Model;
 
+defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Administrator\Table\DlidlabelTable;
 use Joomla\CMS\Factory;
