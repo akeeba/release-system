@@ -34,7 +34,7 @@ class CategoryController extends FormController
 
 	protected function allowEdit($data = [], $key = 'id')
 	{
-		$categoryId = (int) isset($data[$key]) ? $data[$key] : 0;
+		$categoryId = isset($data[$key]) ? (int) $data[$key] : 0;
 
 		if (!$categoryId)
 		{

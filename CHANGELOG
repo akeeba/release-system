@@ -7,6 +7,9 @@ Akeeba Release System 7.5.0
 ~ Modernise mod_arsdownloads to the module dispatcher / DI service provider pattern
 ~ Hardening: quote ORDER BY identifiers and whitelist the sort direction in list models
 ~ Hardening: bind the tag filter IN() list in the Categories and Releases models
+~ Hardening: require core.manage on the JSON:API read endpoints so unprivileged token holders cannot enumerate access-restricted downloads
+~ Hardening: enforce per-category create/edit permissions on the JSON:API write endpoints
+~ Hardening: gate the control panel housekeeping task behind core.manage
 
 Akeeba Release System 7.4.3
 ================================================================================

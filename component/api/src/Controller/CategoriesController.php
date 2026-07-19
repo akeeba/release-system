@@ -9,12 +9,14 @@ namespace Akeeba\Component\ARS\Api\Controller;
 
 defined('_JEXEC') || die;
 
+use Akeeba\Component\ARS\Api\Controller\Mixin\AssertApiAccess;
 use Akeeba\Component\ARS\Api\Controller\Mixin\PopulateModelState;
 use Joomla\CMS\MVC\Controller\ApiController;
 
 class CategoriesController extends ApiController
 {
 	use PopulateModelState;
+	use AssertApiAccess;
 
 	/**
 	 * The content type of the item.
@@ -34,6 +36,8 @@ class CategoriesController extends ApiController
 
 	public function displayList()
 	{
+		$this->assertCanManage();
+
 		$stateMapper = [
 			['search', 'filter.search', 'string'],
 			['published', 'filter.published', 'int'],
@@ -46,5 +50,48 @@ class CategoriesController extends ApiController
 		$this->populateModelState($stateMapper);
 
 		return parent::displayList();
+	}
+
+	public function displayItem($id = null)
+	{
+		$this->assertCanManage();
+
+		return parent::displayItem($id);
+	}
+
+	public function delete($id = null)
+	{
+		$this->assertCanManage();
+
+		return parent::delete($id);
+	}
+
+	protected function allowAdd($data = [])
+	{
+		$user = $this->app->getIdentity();
+
+		if (!$user->authorise('core.manage', 'com_ars')) {
+			return false;
+		}
+
+		// Categories have no parent category, so creation is gated at the component level.
+		return $user->authorise('core.create', 'com_ars');
+	}
+
+	protected function allowEdit($data = [], $key = 'id')
+	{
+		$user = $this->app->getIdentity();
+
+		if (!$user->authorise('core.manage', 'com_ars')) {
+			return false;
+		}
+
+		$recordId = (int) ($data[$key] ?? 0);
+
+		if (!$recordId) {
+			return false;
+		}
+
+		return $user->authorise('core.edit', 'com_ars.category.' . $recordId);
 	}
 }

@@ -50,7 +50,7 @@ class DlidlabelController extends FormController
 			return true;
 		}
 
-		$id = (int) isset($data[$key]) ? $data[$key] : 0;
+		$id = isset($data[$key]) ? (int) $data[$key] : 0;
 
 		if (!$id)
 		{

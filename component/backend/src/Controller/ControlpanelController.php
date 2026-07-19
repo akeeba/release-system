@@ -14,7 +14,9 @@ use Akeeba\Component\ARS\Administrator\Mixin\ControllerRegisterTasksTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerReusableModelsTrait;
 use Akeeba\Component\ARS\Administrator\Model\ControlpanelModel;
 use Akeeba\Component\ARS\Administrator\Model\UpgradeModel;
+use Joomla\CMS\Access\Exception\NotAllowed;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Input\Input;
@@ -34,6 +36,12 @@ class ControlpanelController extends BaseController
 
 	public function main()
 	{
+		// This task performs housekeeping writes (magic variables, extension adoption), so gate it behind core.manage.
+		if (!$this->app->getIdentity()->authorise('core.manage', 'com_ars'))
+		{
+			throw new NotAllowed(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+		}
+
 		/** @var ControlpanelModel $model */
 		$model = $this->getModel();
 

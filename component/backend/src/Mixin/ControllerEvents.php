@@ -19,7 +19,9 @@ trait ControllerEvents
 	/**
 	 * Execute a task by triggering a method in the derived class.
 	 *
-	 * Overridden to apply a custom ACL check and trigger before/after methods.
+	 * Overridden to fire onBeforeExecute/onBefore<Task> and onAfter<Task>/onAfterExecute events around the task.
+	 * Note: this method does NOT perform any authorisation check — authorisation is enforced by the core task
+	 * implementations, each controller's allow*() methods, and the event handlers.
 	 *
 	 * @param   string  $task  The task to perform. If no matching task is found, the '__default' task is executed, if
 	 *                         defined.

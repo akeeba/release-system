@@ -73,7 +73,7 @@ class ReleaseController extends FormController
 
 	protected function allowEdit($data = [], $key = 'id')
 	{
-		$recordId   = (int) $data[$key] ?? 0;
+		$recordId   = (int) ($data[$key] ?? 0);
 		$categoryId = 0;
 
 		if ($recordId)

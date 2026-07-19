@@ -73,7 +73,8 @@ class ItemController extends FormController
 
 	protected function allowEdit($data = [], $key = 'id')
 	{
-		$recordId = (int) $data[$key] ?? 0;
+		$recordId   = (int) ($data[$key] ?? 0);
+		$categoryId = null;
 
 		if ($recordId)
 		{
