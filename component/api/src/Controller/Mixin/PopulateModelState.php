@@ -38,7 +38,7 @@ trait PopulateModelState
 					break;
 
 				case 'int':
-					if (!$value !== '')
+					if ($value !== '')
 					{
 						$this->modelState->set($stateKey, $value);
 					}

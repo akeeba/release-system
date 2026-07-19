@@ -381,8 +381,8 @@ class ItemsModel extends ListModel
 
 		// List ordering clause
 		$orderCol  = $this->state->get('list.ordering', 'i.ordering');
-		$orderDirn = $this->state->get('list.direction', 'ASC');
-		$ordering  = $db->escape($orderCol) . ' ' . $db->escape($orderDirn);
+		$orderDirn = strtoupper($this->state->get('list.direction', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+		$ordering  = $db->quoteName($orderCol) . ' ' . $orderDirn;
 
 		$query->order($ordering);
 

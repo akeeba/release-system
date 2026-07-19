@@ -220,7 +220,7 @@ class CategoriesModel extends ListModel
 				$subQuery = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 					->select('DISTINCT ' . $db->quoteName('content_item_id'))
 					->from($db->quoteName('#__contentitem_tag_map'))
-					->where($db->quoteName('tag_id') . 'IN(' .  implode(',', $tag) . ')')
+					->whereIn($db->quoteName('tag_id'), $tag, ParameterType::INTEGER)
 					->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_ars.category'));
 
 				$query->join(
@@ -245,8 +245,8 @@ class CategoriesModel extends ListModel
 
 		// List ordering clause
 		$orderCol  = $this->state->get('list.ordering', 'ordering');
-		$orderDirn = $this->state->get('list.direction', 'ASC');
-		$ordering  = $db->escape($orderCol) . ' ' . $db->escape($orderDirn);
+		$orderDirn = strtoupper($this->state->get('list.direction', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+		$ordering  = $db->quoteName($orderCol) . ' ' . $orderDirn;
 
 		$query->order($ordering);
 

@@ -222,8 +222,8 @@ class DlidlabelsModel extends ListModel
 
 		// List ordering clause
 		$orderCol  = $this->state->get('list.ordering', 'i.id');
-		$orderDirn = $this->state->get('list.direction', 'ASC');
-		$ordering  = $db->escape($orderCol) . ' ' . $db->escape($orderDirn);
+		$orderDirn = strtoupper($this->state->get('list.direction', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+		$ordering  = $db->quoteName($orderCol) . ' ' . $orderDirn;
 
 		$query->order($ordering);
 
