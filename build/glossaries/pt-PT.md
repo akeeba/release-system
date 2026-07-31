@@ -27,3 +27,10 @@ As entradas marcadas como **não traduzir** são nomes próprios, nomes de produ
 | Repository | Repositório | Contexto: o repositório de transferências completo gerido pelo ARS. |
 | Maturity | Maturidade | Contexto: nível de maturidade de uma versão (Alpha, Beta, RC, Stable). |
 | Webservices | Webservices | Não traduzir — termo técnico referente à API REST/JSON:API do ARS. |
+| Security severity | Gravidade de segurança | Campo por versão que indica a gravidade da falha de segurança corrigida por essa versão (`COM_ARS_RELEASES_FIELD_SECURITY`). "Gravidade" é o termo padrão em português para a gravidade de uma CVE/vulnerabilidade. |
+| Security release | Versão de segurança | Uma versão assinalada como correcção de uma falha de segurança (usado na descrição do campo e na etiqueta "Segurança: %s"). |
+| Critical (severity) | Crítica | Nível de gravidade de segurança mais elevado. Concorda em género com "gravidade" (f.). |
+| High (severity) | Alta | Nível de gravidade de segurança. Concorda em género com "gravidade" (f.). |
+| Medium (severity) | Média | Nível de gravidade de segurança. Concorda em género com "gravidade" (f.). |
+| Low (severity) | Baixa | Nível de gravidade de segurança. Concorda em género com "gravidade" (f.). |
+| None (severity) | Nenhuma | Nível de gravidade de segurança que indica que a versão não tem correcção de segurança associada. Concorda em género com "gravidade" (f.). |

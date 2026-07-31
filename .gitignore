@@ -11,6 +11,7 @@
 
 # Temporary stuff
 /*.txt
+/.plans
 
 # Composer
 /vendor

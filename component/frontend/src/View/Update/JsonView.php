@@ -131,6 +131,8 @@ class JsonView extends \Joomla\CMS\MVC\View\JsonView
 							$byPlatform[$pType][] = $pVersion;
 						}
 
+						$securityLevel = (int) ($item->security ?? 0);
+
 						$item = (object) [
 							'name'           => $item->name,
 							'version'        => $item->version,
@@ -157,6 +159,12 @@ class JsonView extends \Joomla\CMS\MVC\View\JsonView
 							],
 							'length'         => $item->length ?? null,
 						];
+
+						// Only advertise a security severity when there actually is one. See tmpl/update/stream.php for why.
+						if ($securityLevel > 0)
+						{
+							$item->security = $securityLevel;
+						}
 
 						if ($minify)
 						{

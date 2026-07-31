@@ -25,6 +25,7 @@ class UpdateModel extends BaseDatabaseModel
 				$db->quoteName('i.id', 'item_id'),
 				$db->quoteName('r.version'),
 				$db->quoteName('r.maturity'),
+				$db->quoteName('r.security'),
 			))
 			->from($db->quoteName('#__ars_items', 'i'))
 			->join('INNER',
@@ -94,6 +95,7 @@ class UpdateModel extends BaseDatabaseModel
 				$db->quoteName('i.sha512'),
 				$db->quoteName('r.version'),
 				$db->quoteName('r.maturity'),
+				$db->quoteName('r.security'),
 				$db->quoteName('c.title', 'cat_title'),
 				$db->quoteName('i.release_id'),
 				$db->quoteName('i.filename'),

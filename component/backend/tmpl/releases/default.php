@@ -181,6 +181,7 @@ $cParams = ComponentHelper::getParams('com_ars');
 
 								<td class="d-none d-md-table-cell">
 									<?= Text::_('COM_ARS_RELEASES_MATURITY_' . $item->maturity) ?>
+									<?= HTMLHelper::_('ars.securityBadge', $item->security ?? 0) ?>
 								</td>
 
 								<td>

@@ -29,6 +29,13 @@ This glossary defines the canonical Italian (Italy) translations for Akeeba Rele
 | Beta | Beta | Maturity level. Keep in Italian as-is; the English/Greek term is standard across languages. |
 | Alpha | Alpha | Maturity level. Keep in Italian as-is; the English/Greek term is standard across languages. |
 | Webservices | Webservices | Technical term for the REST API plugin group — do not translate. |
+| Security severity | Gravità di sicurezza | Per-release field indicating how severe the security issue fixed by this release is (`COM_ARS_RELEASES_FIELD_SECURITY`). "Gravità" is the standard Italian term for CVE/vulnerability severity. |
+| Security release | Versione di sicurezza | A release flagged as fixing a security issue (used in the field description). |
+| Critical (severity) | Critica | Highest security severity level. Agrees in gender with "gravità" (f.). |
+| High (severity) | Alta | Security severity level. |
+| Medium (severity) | Media | Security severity level. |
+| Low (severity) | Bassa | Security severity level. |
+| None (severity) | Nessuna | Security severity level meaning the release has no associated security fix. Agrees in gender with "gravità" (f.). |
 
 ---
 

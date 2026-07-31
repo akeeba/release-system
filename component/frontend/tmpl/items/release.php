@@ -52,6 +52,7 @@ switch ($item->maturity)
 		<span class="badge <?= $maturityClass ?>">
             <?= Text::_('COM_ARS_RELEASES_MATURITY_' . $item->maturity) ?>
         </span>
+		<?= HTMLHelper::_('ars.securityBadge', $item->security ?? 0) ?>
 	</h3>
 
 	<?= $this->renderCustomFields($item, 'com_ars.release', 1) ?>

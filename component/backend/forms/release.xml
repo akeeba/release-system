@@ -61,6 +61,21 @@
         </field>
 
         <field
+                name="security"
+                type="list"
+                label="COM_ARS_RELEASES_FIELD_SECURITY"
+                description="COM_ARS_RELEASES_FIELD_SECURITY_DESC"
+                default="0"
+                validate="options"
+        >
+            <option value="0">COM_ARS_RELEASES_SECURITY_0</option>
+            <option value="1">COM_ARS_RELEASES_SECURITY_1</option>
+            <option value="2">COM_ARS_RELEASES_SECURITY_2</option>
+            <option value="3">COM_ARS_RELEASES_SECURITY_3</option>
+            <option value="4">COM_ARS_RELEASES_SECURITY_4</option>
+        </field>
+
+        <field
                 name="notes"
                 type="editor"
                 label="COM_ARS_RELEASE_NOTES_LABEL"

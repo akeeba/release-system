@@ -39,6 +39,7 @@ $customFieldSets = array_diff(array_keys($this->form->getFieldsets()), $knownFie
 					<?= $this->form->getField('alias')->renderField(); ?>
 					<?= $this->form->getField('tags')->renderField(); ?>
 					<?= $this->form->getField('maturity')->renderField(); ?>
+					<?= $this->form->getField('security')->renderField(); ?>
 					<?= $this->form->getField('published')->renderField(); ?>
 					<?= $this->form->getField('access')->renderField(); ?>
 					<?= $this->form->getField('show_unauth_links')->renderField(); ?>

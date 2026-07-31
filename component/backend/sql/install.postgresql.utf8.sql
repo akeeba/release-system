@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS "#__ars_releases"
     "version"           VARCHAR(255) NOT NULL,
     "alias"             VARCHAR(255) NOT NULL,
     "maturity"          VARCHAR(20)  NOT NULL DEFAULT 'beta' CHECK ("maturity" IN ('alpha', 'beta', 'rc', 'stable')),
+    "security"          SMALLINT     NOT NULL DEFAULT 0,
     "notes"             TEXT         NULL,
     "hits"              BIGINT       NOT NULL DEFAULT 0,
     "created"           TIMESTAMP    NULL     DEFAULT NULL,

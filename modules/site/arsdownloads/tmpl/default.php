@@ -7,6 +7,7 @@
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
@@ -62,6 +63,7 @@ $postText = $params->get('posttext', '');
 							<?= Text::_('COM_ARS_RELEASES_MATURITY_' . $item->maturity) ?>
 						</span>
 					<?php endif ?>
+					<?= HTMLHelper::_('ars.securityBadge', $item->security ?? 0) ?>
 				</th>
 				<td>
 					<a class="btn btn-primary btn-sm"

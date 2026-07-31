@@ -29,6 +29,7 @@ use Joomla\Event\Event;
  * @property string $version           Release title a.k.a. version
  * @property string $alias             Release alias for URL generation
  * @property string $maturity          Release maturity: 'alpha','beta','rc','stable'
+ * @property int    $security          Security severity: 0 none, 1 low, 2 medium, 3 high, 4 critical
  * @property string $notes             Release notes, displayed in frontend
  * @property string $hits              Hits (times displayed)
  * @property string $created           Created date and time
@@ -268,6 +269,9 @@ class ReleaseTable extends AbstractTable implements TaggableTableInterface
 		{
 			$this->maturity = 'beta';
 		}
+
+		// Clamp the security severity to [0, 4]
+		$this->security = max(0, min((int) ($this->security ?? 0), 4));
 
 		/**
 		 * Filter the notes using a safe HTML filter.

@@ -90,6 +90,20 @@ foreach ($this->items as $item)
 
 		$tags->addChild('tag', $item->maturity);
 
+		/**
+		 * Joomla 6.2 and later flag security releases from this element.
+		 *
+		 * Severity 0 means "not a security release". We must omit the element entirely instead of emitting a
+		 * zero value: Joomla currently tests it with a loose !empty() but a future, stricter null check would
+		 * make <security>0</security> render a bogus "Security release level: None" badge.
+		 */
+		$securityLevel = (int) ($item->security ?? 0);
+
+		if ($securityLevel > 0)
+		{
+			$update->addChild('security', $securityLevel);
+		}
+
 		if (!$minifyXML)
 		{
 			$update->addChild('maintainer', $app->get('sitename'));

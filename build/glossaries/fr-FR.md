@@ -33,3 +33,10 @@ Translators must follow these translations consistently throughout all `fr-FR` l
 | Latest releases | Dernières versions | Frontend / module heading |
 | Download now | Télécharger maintenant | Call-to-action button label on item view |
 | Compatibility | Compatibilité | Field label listing environments an item supports |
+| Security severity | Gravité de sécurité | Per-release field indicating how severe the security issue fixed by this release is (`COM_ARS_RELEASES_FIELD_SECURITY`). "Gravité" is the standard French term for CVE/vulnerability severity. Feminine noun |
+| Security release | Version de sécurité | A release flagged as fixing a security issue (used in the field description and the badge label « Sécurité : %s ») |
+| Critical (severity) | Critique | Highest security severity level. Agrees with "gravité" |
+| High (severity) | Élevée | Security severity level. Feminine to agree with "gravité" |
+| Medium (severity) | Moyenne | Security severity level. Feminine to agree with "gravité" |
+| Low (severity) | Faible | Security severity level. Agrees with "gravité" |
+| None (severity) | Aucune | Security severity level meaning the release has no associated security fix. Feminine to agree with "gravité" |

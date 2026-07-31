@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_releases` (
     `version`           VARCHAR(255)                        NOT NULL,
     `alias`             VARCHAR(255)                        NOT NULL,
     `maturity`          ENUM ('alpha','beta','rc','stable') NOT NULL DEFAULT 'beta',
+    `security`          TINYINT                             NOT NULL DEFAULT 0,
     `notes`             TEXT                                NULL,
     `hits`              BIGINT(20) UNSIGNED                 NOT NULL DEFAULT 0,
     `created`           datetime                            NULL     DEFAULT NULL,

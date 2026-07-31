@@ -39,3 +39,10 @@ This glossary defines the preferred German translations for ARS-specific termino
 | Developer Releases | Entwickler-Versionen | Used for the BleedingEdge category type label (`COM_ARS_CATEGORY_TYPE_BLEEDINGEDGE`). |
 | Minimum maturity | Mindestreifegrad | Filter label for the minimum release maturity to display. |
 | Compatibility | Kompatibilität | Label for the Environments field on an Item (`COM_ARS_ITEM_FIELD_ENVIRONMENTS`). |
+| Security severity | Sicherheits-Schweregrad | Per-release field indicating how severe the security issue fixed by this release is (`COM_ARS_RELEASES_FIELD_SECURITY`). Hyphenated compound, matching the convention for other technical compounds (Update-Stream, Download-ID). |
+| Security release | Sicherheitsversion | A release flagged as fixing a security issue (used in the field description and the badge label "Sicherheit: %s"). |
+| Critical (severity) | Kritisch | Highest security severity level. |
+| High (severity) | Hoch | Security severity level. |
+| Medium (severity) | Mittel | Security severity level. |
+| Low (severity) | Niedrig | Security severity level. |
+| None (severity) | Ohne | Security severity level meaning the release has no associated security fix. |

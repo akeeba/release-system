@@ -34,3 +34,10 @@ This glossary defines the preferred Greek (el-GR) translations for ARS-specific 
 | Download now | Λήψη τώρα | Call-to-action button label on the front end. |
 | More information | Περισσότερες πληροφορίες | Link label for release notes / external URL. |
 | Version | Έκδοση | Column/field label for the release version number. (Same word as Release — context makes meaning clear.) |
+| Security severity | Σοβαρότητα ασφαλείας | Per-release field indicating how severe the security issue fixed by this release is (`COM_ARS_RELEASES_FIELD_SECURITY`). «Σοβαρότητα» is feminine, matching the standard Greek CVE/vulnerability-severity term. |
+| Security release | Έκδοση ασφαλείας | A release flagged as fixing a security issue (used in the field description and the badge label «Ασφάλεια: %s»). |
+| Critical (severity) | Κρίσιμη | Highest security severity level. Feminine to agree with «σοβαρότητα». |
+| High (severity) | Υψηλή | Security severity level. Feminine to agree with «σοβαρότητα». |
+| Medium (severity) | Μεσαία | Security severity level. Feminine to agree with «σοβαρότητα». |
+| Low (severity) | Χαμηλή | Security severity level. Feminine to agree with «σοβαρότητα». |
+| None (severity) | Καμία | Security severity level meaning the release has no associated security fix. Feminine to agree with «σοβαρότητα». |

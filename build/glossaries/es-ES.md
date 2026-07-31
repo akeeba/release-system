@@ -42,3 +42,10 @@ This glossary establishes consistent Spanish (Spain) translations for Akeeba Rel
 | Download now | Descargar ahora | Call-to-action button label on item entries. |
 | Compatibility | Compatibilidad | Label for the environments field on an item. |
 | Dashboard | Panel principal | Short label for the admin dashboard menu entry. |
+| Security severity | Gravedad de seguridad | Per-release field indicating how severe the security issue fixed by this release is (`COM_ARS_RELEASES_FIELD_SECURITY`). "Gravedad" is the standard Spanish term for CVE/vulnerability severity. Feminine noun. |
+| Security release | Versión de seguridad | A release flagged as fixing a security issue (used in the field description and the badge label "Seguridad: %s"). |
+| Critical (severity) | Crítica | Highest security severity level. Feminine to agree with "gravedad". |
+| High (severity) | Alta | Security severity level. Feminine to agree with "gravedad". |
+| Medium (severity) | Media | Security severity level. Feminine to agree with "gravedad". |
+| Low (severity) | Baja | Security severity level. Feminine to agree with "gravedad". |
+| None (severity) | Ninguna | Security severity level meaning the release has no associated security fix. Feminine to agree with "gravedad". |

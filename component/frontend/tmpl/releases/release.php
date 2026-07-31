@@ -55,6 +55,7 @@ HTMLHelper::_('bootstrap.collapse', '.ars-collapse');
 		<span class="badge <?= $maturityClass ?> fs-5">
 			<?= Text::_('COM_ARS_RELEASES_MATURITY_' . $item->maturity) ?>
 		</span>
+		<?= HTMLHelper::_('ars.securityBadge', $item->security ?? 0, 'fs-5') ?>
 	</h4>
 	<?= $this->renderCustomFields($item, 'com_ars.release', 1) ?>
 	<?php if (!empty($environments)): ?>
@@ -94,6 +95,16 @@ HTMLHelper::_('bootstrap.collapse', '.ars-collapse');
 
 					</td>
 				</tr>
+				<?php if (!empty($item->security)): ?>
+					<tr>
+						<td>
+							<?= Text::_('COM_ARS_RELEASES_FIELD_SECURITY') ?>
+						</td>
+						<td>
+							<?= Text::_('COM_ARS_RELEASES_SECURITY_' . (int) $item->security) ?>
+						</td>
+					</tr>
+				<?php endif; ?>
 				<tr>
 					<td>
 						<?= Text::_('COM_ARS_RELEASE_LBL_RELEASEDON') ?>

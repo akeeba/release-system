@@ -62,6 +62,7 @@ $environments = ($this->params->get('show_environments', 1) == 1) ? $this->getMo
 		</span> <span class="badge <?= $maturityClass ?>">
             <?= Text::_('COM_ARS_RELEASES_MATURITY_' . $release->maturity) ?>
         </span>
+		<?= HTMLHelper::_('ars.securityBadge', $release->security ?? 0) ?>
 	</h4>
 
 	<div class="ars-latest-category">
