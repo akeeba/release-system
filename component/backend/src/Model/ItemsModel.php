@@ -305,7 +305,20 @@ class ItemsModel extends ListModel
 		}
 		elseif (is_array($releaseId))
 		{
-			$query->whereIn($db->quoteName('i.release_id'), $releaseId);
+			/**
+			 * An empty array means "no release matches", not "do not filter by release".
+			 *
+			 * Passing it to whereIn() would result in an `IN ()` expression which is a syntax error, taking down the
+			 * page with a database exception instead of returning no results.
+			 */
+			if (empty($releaseId))
+			{
+				$query->where('0 = 1');
+			}
+			else
+			{
+				$query->whereIn($db->quoteName('i.release_id'), $releaseId);
+			}
 		}
 
 		// Published filter

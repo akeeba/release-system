@@ -12,6 +12,7 @@ Akeeba Release System 7.5.0
 ~ Hardening: enforce per-category create/edit permissions on the JSON:API write endpoints
 ~ Hardening: gate the control panel housekeeping task behind core.manage
 ~ Hardening: reject guests and enforce record ownership on the frontend Download ID edit view
+# [MEDIUM] The Latest view returns an error page when no release is visible to the current user
 
 Akeeba Release System 7.4.3
 ================================================================================

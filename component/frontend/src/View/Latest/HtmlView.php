@@ -63,11 +63,17 @@ class HtmlView extends BaseHtmlView
 			$this->releases[$release->category_id] = $release;
 		}
 
-		$itemsModel = $this->getModel('Items');
-		$itemsModel->setState('filter.release_id', array_map(function ($release) {
-			return $release->id;
-		}, $releases));
-		$items = $itemsModel->getItems();
+		$items = [];
+
+		// Only query for items if there is at least one visible release; an empty filter matches nothing anyway.
+		if (!empty($releases))
+		{
+			$itemsModel = $this->getModel('Items');
+			$itemsModel->setState('filter.release_id', array_map(function ($release) {
+				return $release->id;
+			}, $releases));
+			$items = $itemsModel->getItems();
+		}
 
 		$this->items = [];
 
