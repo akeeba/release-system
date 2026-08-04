@@ -11,7 +11,11 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Controller\DlidlabelController as AdminDlidlabelController;
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerReturnURLTrait;
+use Akeeba\Component\ARS\Administrator\Model\DlidlabelModel;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use RuntimeException;
+use Throwable;
 
 class DlidlabelController extends AdminDlidlabelController
 {
@@ -73,8 +77,66 @@ class DlidlabelController extends AdminDlidlabelController
 
 	protected function onBeforeExecute(&$task)
 	{
+		$this->assertCanAccessRequestedRecord();
+
 		$returnUrl                  = $this->getReturnUrl();
 		$this->getView()->returnURL = $returnUrl ?: base64_encode(Route::_('index.php?option=com_ars&view=dlidlabels'));
+	}
+
+	/**
+	 * Make sure the current user is allowed to access the record they asked for.
+	 *
+	 * Guests are always rejected: Download IDs belong to user records, therefore a guest can neither own nor create
+	 * one.
+	 *
+	 * Logged in users can only ever touch their own records. This has to be enforced here, before the task runs, and
+	 * not just in allowEdit(). The default task of a FormController is display, which renders the record loaded from
+	 * the request without going through any of the allow*() methods.
+	 *
+	 * @return  void
+	 * @throws  RuntimeException  When access is denied
+	 * @since   7.5.0
+	 */
+	private function assertCanAccessRequestedRecord(): void
+	{
+		$user = $this->app->getIdentity();
+
+		if ($user->guest)
+		{
+			throw new RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+		}
+
+		$id = $this->input->getInt('id', 0);
+
+		// No record requested: this is a new record, which is always allowed.
+		if ($id <= 0)
+		{
+			return;
+		}
+
+		// Component administrators are allowed to manage everyone's Download IDs, same as in allowEdit().
+		if ($user->authorise('core.admin', $this->option))
+		{
+			return;
+		}
+
+		/** @var DlidlabelModel $model */
+		$model = $this->getModel();
+
+		try
+		{
+			$record = $model->getItem($id);
+		}
+		catch (Throwable $e)
+		{
+			$record = null;
+		}
+
+		// A missing record is treated the same as someone else's record: denied, without disclosing which is which.
+		if (!is_object($record) || empty($record->id ?? null) || ($record->user_id != $user->id))
+		{
+			throw new RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+		}
 	}
 
 	protected function onAfterExecute($task)

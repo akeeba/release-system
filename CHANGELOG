@@ -11,6 +11,7 @@ Akeeba Release System 7.5.0
 ~ Hardening: require core.manage on the JSON:API read endpoints so unprivileged token holders cannot enumerate access-restricted downloads
 ~ Hardening: enforce per-category create/edit permissions on the JSON:API write endpoints
 ~ Hardening: gate the control panel housekeeping task behind core.manage
+~ Hardening: reject guests and enforce record ownership on the frontend Download ID edit view
 
 Akeeba Release System 7.4.3
 ================================================================================
