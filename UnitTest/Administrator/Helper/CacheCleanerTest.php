@@ -25,7 +25,7 @@ use ReflectionMethod;
  *  1. $app instanceof AbstractApplication          -> $app->get($key, $default)
  *  2. $app instanceof ConfigurationAwareApplicationInterface -> $app->get($key, $default)
  *  3. $app has a duck-typed get() method            -> $app->get($key, $default)
- *  4. Factory::getConfig() yields a Registry         -> (see SUSPECTED BUG below)
+ *  4. Factory::getConfig() yields a Registry         -> $jConfig->get($key, $default)
  *  5. A last-resort `new JConfig()` loaded into a fresh Registry
  *
  * Branch 5 is reachable in this suite specifically because the Joomla stubs define JConfig unconditionally (see
@@ -101,34 +101,16 @@ class CacheCleanerTest extends TestCase
 	}
 
 	/**
-	 * SUSPECTED BUG, pinned rather than silently treated as correct — see CacheCleaner::getAppConfigParam():
-	 *
-	 *     if (method_exists(Factory::class, 'getConfig'))
-	 *     {
-	 *         try
-	 *         {
-	 *             $jConfig = Factory::getConfig();
-	 *             if (is_object($jConfig) && ($jConfig instanceof Registry))
-	 *             {
-	 *                 $jConfig->get($key, $default);   // <-- return value is never used
-	 *             }
-	 *         }
-	 *         catch (Throwable $e) { }
-	 *     }
-	 *
-	 * The value read from Factory::getConfig() is computed and then discarded — there is no `return` in that
-	 * branch. Priming Factory::$config with a Registry that DOES contain the requested key therefore has NO effect
-	 * on the outcome: execution always falls through past it to the `JConfig` last-resort branch (or, if that also
-	 * fails, to the plain $default). Confirmed empirically below: even with the key present in Factory's config,
-	 * the method still returns the fallback default, not the value that was primed.
+	 * Regression test for CacheCleaner::getAppConfigParam(): when there is no usable $app object, the method must
+	 * fall back to Factory::getConfig() and return the value it holds for the requested key, rather than
+	 * discarding it and falling through to the JConfig last-resort branch or the plain default.
 	 */
-	public function testSuspectedBugFactoryGetConfigValueIsDiscardedAndNeverInfluencesTheResult(): void
+	public function testFactoryGetConfigValueIsReturnedWhenPresent(): void
 	{
 		Factory::$config = new Registry(['cache_path' => '/factory/config/path']);
 
 		$result = $this->call(null, 'cache_path', 'DEFAULT');
 
-		$this->assertNotSame('/factory/config/path', $result, 'The primed Factory::getConfig() value should have won here but the discarded return means it never can.');
-		$this->assertSame('DEFAULT', $result);
+		$this->assertSame('/factory/config/path', $result);
 	}
 }

@@ -28,6 +28,7 @@ Akeeba Release System 7.5.0
 # [LOW] Two items in the same release could be saved with the same alias
 # [LOW] Update streams with "liar mode" enabled never advertised minor version 10 of a Joomla major version
 # [LOW] A corrupt stored file hash produced an empty, invalid Content-Digest header on downloads
+# [LOW] The cache cleaner ignored the Joomla application configuration when it could not reach the application object
 
 Akeeba Release System 7.4.3
 ================================================================================

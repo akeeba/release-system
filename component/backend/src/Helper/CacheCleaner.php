@@ -256,7 +256,7 @@ class CacheCleaner
 
 				if (is_object($jConfig) && ($jConfig instanceof Registry))
 				{
-					$jConfig->get($key, $default);
+					return $jConfig->get($key, $default);
 				}
 			}
 			catch (Throwable $e)
