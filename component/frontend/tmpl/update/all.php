@@ -38,9 +38,11 @@ foreach (['components', 'libraries', 'modules', 'packages', 'plugins', 'files', 
 	$node->addAttribute('name', ucfirst($category));
 	$node->addAttribute('description', Text::_('COM_ARS_UPDATESTREAM_UPDATETYPE_' . $category));
 	$node->addAttribute('category', $category);
+	// $xhtml MUST be false: SimpleXMLElement::addAttribute() escapes the ampersands itself. Asking
+	// Route::_() to do it as well is what produced `&amp;amp;` in this attribute.
 	$node->addAttribute('ref', Route::_(
 		sprintf("index.php?option=com_ars&view=update&format=xml&task=category&id=%s%s", $category, $this->dlidRequest),
-		true, \Joomla\CMS\Router\Route::TLS_IGNORE, true
+		false, \Joomla\CMS\Router\Route::TLS_IGNORE, true
 	));
 }
 

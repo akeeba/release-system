@@ -46,9 +46,11 @@ foreach($this->items as $item)
 	$node->addAttribute('element', $item->element);
 	$node->addAttribute('type', $streamTypeMap[$item->type]);
 	$node->addAttribute('version', $item->version);
+	// $xhtml MUST be false: SimpleXMLElement::addAttribute() escapes the ampersands itself. Asking
+	// Route::_() to do it as well is what produced `&amp;amp;` in this attribute.
 	$node->addAttribute('detailsurl', Route::_(
 		sprintf("index.php?option=com_ars&view=update&format=xml&task=stream&id=%s%s", $item->id, $this->dlidRequest),
-		true, Route::TLS_IGNORE, true
+		false, Route::TLS_IGNORE, true
 	));
 }
 

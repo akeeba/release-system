@@ -253,6 +253,86 @@ class UpdateStreamTest extends AbstractE2ETestCase
 	}
 
 	/**
+	 * The pointer URLs the `all` and `category` tasks emit are not double-escaped, and they resolve.
+	 *
+	 * REGRESSION GUARD. Both layouts built the attribute with `Route::_($url, $xhtml = true, …)` and
+	 * then handed the result to `SimpleXMLElement::addAttribute()`, which escapes ampersands itself —
+	 * so `&` became `&amp;amp;` on the wire and `&amp;` after XML parsing, and a client following the
+	 * link asked for a query parameter literally named `amp;view`. (`stream.php` is NOT affected and
+	 * is deliberately left alone: it builds its URLs with `addChild()`, which — unlike
+	 * `addAttribute()` — does not escape ampersands, so the pre-escaping there is load-bearing.)
+	 *
+	 * A string search of the raw body cannot see this: `&amp;` is both the correct wire form and the
+	 * broken parsed form. The check therefore runs on the value SimpleXML hands back, which is what a
+	 * real client would act on, and then actually follows it.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	public function testAllAndCategoryPointerUrlsAreNotDoubleEscaped(): void
+	{
+		$cases = [
+			'all'      => [
+				'url'       => $this->siteUrl(['view' => 'update', 'task' => 'all', 'format' => 'xml']),
+				'element'   => 'category',
+				'attribute' => 'ref',
+			],
+			// task=category takes an update stream TYPE, not a category id or alias. All fixture streams are 'components'.
+			'category' => [
+				'url'       => $this->siteUrl(['view' => 'update', 'task' => 'category', 'format' => 'xml', 'id' => 'components']),
+				'element'   => 'extension',
+				'attribute' => 'detailsurl',
+			],
+		];
+
+		foreach ($cases as $task => $case)
+		{
+			$response = $this->guest()->get($case['url']);
+
+			$this->assertStatus(200, $response, sprintf('The update stream task "%s" did not render.', $task));
+
+			$xml      = new SimpleXMLElement($response->body);
+			$pointers = $xml->{$case['element']};
+
+			$this->assertGreaterThan(
+				0,
+				count($pointers),
+				sprintf('The update stream task "%s" carries no <%s> elements, so nothing was checked.', $task, $case['element'])
+			);
+
+			foreach ($pointers as $pointer)
+			{
+				$pointerUrl = (string) $pointer[$case['attribute']];
+
+				$this->assertStringNotContainsString(
+					'&amp;',
+					$pointerUrl,
+					sprintf(
+						'The %s attribute of a <%s> element is double-escaped: after XML parsing it still reads '
+						. '"&amp;" where it should read a bare "&".',
+						$case['attribute'],
+						$case['element']
+					)
+				);
+			}
+
+			// Following the first pointer must land on a real update document, not an error page.
+			$followed = $this->guest()->get((string) $pointers[0][$case['attribute']]);
+
+			$this->assertStatus(
+				200,
+				$followed,
+				sprintf('Following the %s URL from task "%s" did not return an update document.', $case['attribute'], $task)
+			);
+			$this->assertStringStartsWith(
+				'<?xml',
+				trim($followed->body),
+				sprintf('Following the %s URL from task "%s" did not return XML.', $case['attribute'], $task)
+			);
+		}
+	}
+
+	/**
 	 * A secondary Download ID keeps its `userId:downloadId` shape all the way into the download URL.
 	 *
 	 * REGRESSION GUARD for the second half of the same bug. `commonSetup()` read the parameter with
