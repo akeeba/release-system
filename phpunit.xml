@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.4/phpunit.xsd"
+         bootstrap="UnitTest/bootstrap.php"
+         processIsolation="false"
+         beStrictAboutChangesToGlobalState="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         colors="true"
+         defaultTestSuite="unit"
+>
+    <testsuites>
+        <testsuite name="unit">
+            <directory>UnitTest</directory>
+        </testsuite>
+    </testsuites>
+
+    <source>
+        <include>
+            <directory suffix=".php">component</directory>
+            <directory suffix=".php">modules</directory>
+            <directory suffix=".php">plugins</directory>
+        </include>
+
+        <exclude>
+            <!-- Templates and forms are rendered, not unit tested. -->
+            <directory>component/api/tmpl</directory>
+            <directory>component/backend/tmpl</directory>
+            <directory>component/frontend/tmpl</directory>
+            <directory>component/backend/layout</directory>
+            <directory>component/frontend/layouts</directory>
+            <directory>component/media</directory>
+        </exclude>
+    </source>
+</phpunit>

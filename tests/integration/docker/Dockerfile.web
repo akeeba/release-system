@@ -1,0 +1,23 @@
+# Apache 2.4 front-end. PHP runs as FastCGI in the separate php-fpm container;
+# Apache proxies *.php requests to it over fcgi://php:9000.
+#
+# AllowOverride All matters here: ARS's installed modules and plugins (e.g.
+# modules/site/arsdownloads, plugins/content/arsdlid) ship .htaccess files that
+# deny direct web access to their own folders. Without AllowOverride those would
+# be silently inert and any test asserting a 403 there would pass for the wrong
+# reason.
+
+ARG APACHE_VERSION=2.4
+FROM httpd:${APACHE_VERSION}
+
+RUN sed -i \
+        -e 's|^#\(LoadModule proxy_module .*\)|\1|' \
+        -e 's|^#\(LoadModule proxy_fcgi_module .*\)|\1|' \
+        -e 's|^#\(LoadModule rewrite_module .*\)|\1|' \
+        -e 's|^#\(LoadModule deflate_module .*\)|\1|' \
+        -e 's|^#\(LoadModule expires_module .*\)|\1|' \
+        -e 's|^#\(LoadModule headers_module .*\)|\1|' \
+        /usr/local/apache2/conf/httpd.conf \
+ && echo 'IncludeOptional conf/extra/e2e-vhost.conf' >> /usr/local/apache2/conf/httpd.conf
+
+COPY config/e2e-vhost.conf /usr/local/apache2/conf/extra/e2e-vhost.conf

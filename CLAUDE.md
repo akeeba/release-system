@@ -7,7 +7,11 @@ Akeeba Release System (ARS) — a Joomla package extension for managing software
 - **Categories are NOT `com_categories`.** ARS has its own `#__ars_categories` table. `ARSPseudoCategory` implements Joomla's `CategoryInterface` purely to bridge custom fields and tags — don't reach for the Joomla category API.
 - **Joomla version-specific branches are deliberate**, e.g. `createQuery()` on 5.1+, UCM handling on 5.4+. Don't "simplify" them away.
 - **Every schema change needs both dialects.** `component/backend/sql/` ships parallel MySQL and PostgreSQL files; changing one and not the other ships a broken install.
-- No automated tests exist (no PHPUnit, no Jest). `api.http` holds manual REST API requests.
+- **Two test suites, both PHPUnit 11, neither wired into `composer.json`** — they use whatever
+  `phpunit` is on your `PATH`. `phpunit` runs the unit suite in `UnitTest/`; it needs nothing but PHP.
+  `tests/integration/docker/run.sh` stands up a throwaway Dockerised Joomla site and runs the
+  end-to-end suite against it over real HTTP. Read `tests/README.md` before adding to either. There
+  is no Jest; `api.http` still holds the manual REST API requests.
 
 ## Conventions
 

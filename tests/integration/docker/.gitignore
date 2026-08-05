@@ -1,0 +1,9 @@
+# Local environment overrides. The committed template is env.dist.
+.env
+.env.*
+
+# The throwaway Joomla site (bind-mounted web root) is regenerated on every run.
+www/
+
+# Package staging
+*.zip

@@ -19,3 +19,11 @@
 # phpStorm HTTP Client private config file
 http-client.private.env.json
 .idea/laravel-idea.xml
+
+# Tests
+.phpunit.result.cache
+# Written by tests/integration/docker/run.sh to match what it actually provisioned.
+# config.dist.php carries the same defaults and is committed.
+/tests/integration/config.php
+# Local overrides of the Docker stack settings. The committed template is env.dist.
+/tests/integration/docker/.env
