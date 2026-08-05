@@ -9,7 +9,6 @@ namespace Akeeba\Component\ARS\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\ControllerCopyTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerReturnURLTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerReusableModelsTrait;
@@ -22,7 +21,6 @@ use Joomla\Utilities\ArrayHelper;
 class DlidlabelsController extends AdminController
 {
 	use ControllerEvents;
-	use ControllerCopyTrait;
 	use ControllerReturnURLTrait;
 	use ControllerReusableModelsTrait;
 

@@ -79,6 +79,12 @@ class HtmlView extends BaseHtmlView
 		ToolbarHelper::apply('category.apply');
 		ToolbarHelper::save('category.save');
 
+		// Save as Copy is how one duplicates a record.
+		if (!$isNew && Factory::getApplication()->getIdentity()->authorise('core.create', 'com_ars'))
+		{
+			ToolbarHelper::save2copy('category.save2copy');
+		}
+
 		ToolbarHelper::cancel('category.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 	}
 }

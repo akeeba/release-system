@@ -115,7 +115,7 @@ class HtmlView extends BaseHtmlView
 			ToolbarHelper::addNew('updatestream.add');
 		}
 
-		if ($canDelete || $canEditState || $canCreate)
+		if ($canDelete || $canEditState)
 		{
 			/** @var DropdownButton $dropdown */
 			$dropdown = $toolbar->dropdownButton('status-group')
@@ -146,14 +146,6 @@ class HtmlView extends BaseHtmlView
 			{
 				$childBar->delete('updatestreams.delete')
 					->message('JGLOBAL_CONFIRM_DELETE')
-					->listCheck(true);
-			}
-
-			if ($canCreate)
-			{
-				$childBar->standardButton('copy', 'COM_ARS_COMMON_COPY_LABEL')
-					->icon('fa fa-copy')
-					->task('updatestreams.copy')
 					->listCheck(true);
 			}
 		}

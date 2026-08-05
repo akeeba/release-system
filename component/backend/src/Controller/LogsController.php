@@ -9,7 +9,6 @@ namespace Akeeba\Component\ARS\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\ControllerCopyTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\MVC\Controller\AdminController;
@@ -19,7 +18,6 @@ use Joomla\Input\Input;
 class LogsController extends AdminController
 {
 	use ControllerEvents;
-	use ControllerCopyTrait;
 
 	protected $text_prefix = 'COM_ARS_LOGS';
 

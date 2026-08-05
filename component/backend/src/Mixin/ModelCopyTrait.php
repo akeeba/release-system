@@ -32,11 +32,6 @@ trait ModelCopyTrait
 	 */
 	protected $_parent_table = '_core_categories';
 
-	public function copy($pks)
-	{
-		return $this->batchCopy(0, $pks, []);
-	}
-
 	/**
 	 * Method to check the validity of the parent table ID for batch copy and move
 	 *

@@ -81,6 +81,12 @@ class HtmlView extends BaseHtmlView
 		ToolbarHelper::apply('autodescription.apply');
 		ToolbarHelper::save('autodescription.save');
 
+		// Save as Copy is how one duplicates a record.
+		if (!$isNew && Factory::getApplication()->getIdentity()->authorise('core.create', 'com_ars'))
+		{
+			ToolbarHelper::save2copy('autodescription.save2copy');
+		}
+
 		ToolbarHelper::cancel('autodescription.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 	}
 }

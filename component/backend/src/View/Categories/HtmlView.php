@@ -150,14 +150,6 @@ class HtmlView extends BaseHtmlView
 					->listCheck(true);
 			}
 
-			if ($canCreate)
-			{
-				$childBar->standardButton('copy', 'COM_ARS_COMMON_COPY_LABEL')
-					->icon('fa fa-copy')
-					->task('categories.copy')
-					->listCheck(true);
-			}
-
 			if ($canCreate && $canEdit && $canEditState)
 			{
 				$childBar->popupButton('batch')

@@ -32,32 +32,6 @@ class UpdatestreamModel extends AdminModel
 		$this->_parent_table = 'Category';
 	}
 
-	public function copy($pks)
-	{
-		$table = $this->getTable();
-		$ret   = [];
-
-		foreach ($pks as $pk)
-		{
-			$table->reset();
-
-			if (!$table->load($pk))
-			{
-				continue;
-			}
-
-			$table->id = 0;
-
-			if ($table->store())
-			{
-				$ret[$pk] = $table->getId();
-			}
-		}
-
-		return $ret;
-	}
-
-
 	/**
 	 * Get the add/edit form.
 	 *

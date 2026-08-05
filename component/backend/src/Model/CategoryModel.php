@@ -13,6 +13,7 @@ use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Exception;
+use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Helper\TagsHelper;
@@ -69,6 +70,24 @@ class CategoryModel extends AdminModel
 		return $item;
 	}
 
+	/** @inheritDoc */
+	public function save($data)
+	{
+		/**
+		 * Save as Copy has to produce a unique slug, otherwise the table check fails and the user is bounced back to
+		 * the edit form with an error they cannot resolve without editing both the title and the slug by hand.
+		 */
+		if (Factory::getApplication()->getInput()->getCmd('task', '') === 'save2copy')
+		{
+			$title = $data['title'] ?? '';
+			$alias = $data['alias'] ?? '';
+			$alias = $alias ?: ApplicationHelper::stringURLSafe(strtolower($title));
+
+			[$data['title'], $data['alias']] = $this->generateNewTitle(0, $alias, $title);
+		}
+
+		return parent::save($data);
+	}
 
 	/**
 	 * @inheritDoc
