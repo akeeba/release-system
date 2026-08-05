@@ -14,6 +14,7 @@ Akeeba Release System 7.5.0
 ~ Hardening: gate the control panel housekeeping task behind core.manage
 ~ Hardening: reject guests and enforce record ownership on the frontend Download ID edit view
 # [HIGH] Fatal error the first time the control panel is opened, on any site which does not have Akeeba Backup installed
+# [HIGH] Resumable and partial downloads served corrupt data: an error page fragment was appended to the response body
 # [MEDIUM] The Latest view returns an error page when no release is visible to the current user
 
 Akeeba Release System 7.4.3

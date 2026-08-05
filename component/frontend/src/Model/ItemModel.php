@@ -898,7 +898,11 @@ class ItemModel extends BaseDatabaseModel
 				{
 					$chunkSize = $totalLength - $read;
 
-					if ($chunkSize < 0)
+					// Zero, not just negative: when the requested range ends exactly on a chunk
+					// boundary there is nothing left to send, and fread() with a zero length throws
+					// a ValueError on PHP 8. Letting the loop condition end the read is what we want
+					// in both cases.
+					if ($chunkSize <= 0)
 					{
 						continue;
 					}

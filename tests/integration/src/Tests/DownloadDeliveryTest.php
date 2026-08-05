@@ -117,18 +117,15 @@ class DownloadDeliveryTest extends AbstractE2ETestCase
 	 * A `Range: bytes=0-1023` request gets a 206 with a correct `Content-Range` header, and the first
 	 * 1024 bytes of the body are exactly that slice of the file.
 	 *
-	 * What is NOT asserted here — and this is a confirmed, reproducible bug, not an oversight — is that
-	 * the body is exactly 1024 bytes long. It is not: `downloadFileItem()`'s chunked-read loop ends
-	 * with `$buffer = fread($handle, $chunkSize);` where `$chunkSize` is computed as exactly 0 once the
-	 * requested range has been fully read (`$chunkSize = $totalLength - $read;` reaches 0, and the
-	 * guard is `if ($chunkSize < 0) { continue; }` — it does not also check `<= 0`). Since PHP 8.0,
-	 * `fread()` with a length of 0 throws `ValueError`, which is uncaught. The already-flushed 1024
-	 * bytes stay on the wire, and Joomla's generic "The application has stopped responding" error
-	 * fragment (a fixed 300 bytes) is appended straight after them, inside the SAME response — verified
-	 * with `curl -D -` against `Apache`'s own access log (which records the response as 1324 bytes, not
-	 * 1024) so this is not a test-harness artifact. This corrupts every single ranged/resumable
-	 * download on this PHP version. See {@see testMidFileRangeMatchesTheOnDiskSlice()} for the same
-	 * corruption confirmed against a different offset.
+	 * The exact body length is asserted separately, in
+	 * {@see testByteRangeResponseBodyIsExactlyTheRequestedLength()}. That is the assertion that used
+	 * to fail: `downloadFileItem()`'s chunked-read loop guarded with `if ($chunkSize < 0)`, which does
+	 * not catch a `$chunkSize` of exactly 0 — the value it takes once the requested range has been
+	 * fully read. `fread()` with a zero length throws a `ValueError` on PHP 8, so the already-flushed
+	 * bytes were followed by a 300-byte fragment of Joomla's generic error page inside the SAME
+	 * response, corrupting every ranged and resumable download. Fixed by widening that guard to
+	 * `<= 0`; keep both tests, because the status line and the Content-Range header were correct
+	 * throughout and would not have caught it.
 	 *
 	 * @return  void
 	 * @since   7.5.0
@@ -152,39 +149,35 @@ class DownloadDeliveryTest extends AbstractE2ETestCase
 	}
 
 	/**
-	 * The exact byte count of a Range response is asserted separately from the above, and is expected
-	 * to FAIL against current behaviour — see the diagnosis on
-	 * {@see testByteRangeRequestReturnsPartialContentWithACorrectContentRangeHeader()}. Documented as a
-	 * skip, per this suite's convention for a confirmed bug, rather than silently encoding "1024 bytes
-	 * plus 300 bytes of an HTML error fragment" as the correct response body for a binary file
-	 * download.
+	 * A Range response body is exactly the requested length, and exactly the right bytes.
+	 *
+	 * This is the regression test for the `fread($handle, 0)` `ValueError` described on
+	 * {@see testByteRangeRequestReturnsPartialContentWithACorrectContentRangeHeader()}. It is kept
+	 * separate and asserts the length *first*, because that is the only thing that was ever wrong: a
+	 * corrupted response still carried the right status, the right Content-Range, and the right
+	 * leading 1024 bytes. Anything that checked only those passed while the download was broken.
 	 *
 	 * @return  void
 	 * @since   7.5.0
 	 */
 	public function testByteRangeResponseBodyIsExactlyTheRequestedLength(): void
 	{
+		$file     = static::$fixtures->file('publicFile');
 		$response = $this->guest()->get($this->downloadUrl('publicFile'), [], ['Range' => 'bytes=0-1023']);
 
-		if (strlen($response->body) !== 1024)
-		{
-			$this->markTestSkipped(
-				sprintf(
-					"KNOWN BUG: a Range request's response body is %d bytes, not the requested 1024. "
-					. "ItemModel::downloadFileItem() calls fread(\$handle, 0) once the requested range has been "
-					. 'fully read (the "$chunkSize < 0" guard does not also catch exactly 0), which throws an '
-					. 'uncaught ValueError on PHP 8+. The already-sent partial content is followed by a fixed '
-					. "300-byte fragment of Joomla's generic error page, appended to the SAME HTTP response. Every "
-					. 'ranged/resumable download is corrupted this way. Confirmed with curl against Apache\'s own '
-					. 'access log (206 responses logged as 1324 bytes for a 1024-byte range), so this is not a '
-					. 'harness artifact. Observed body length: %d.',
-					strlen($response->body),
-					strlen($response->body)
-				)
-			);
-		}
+		$this->assertSame(
+			1024,
+			strlen($response->body),
+			'A byte-range response was not exactly the requested length. Anything longer means trailing '
+			. 'bytes were appended to the body — historically a fragment of Joomla\'s error page, from an '
+			. 'uncaught ValueError in the chunked-read loop.'
+		);
 
-		$this->assertSame(1024, strlen($response->body), 'A byte-range response was not exactly the requested length.');
+		$this->assertSame(
+			substr((string) file_get_contents($this->onDiskPath($file)), 0, 1024),
+			$response->body,
+			'The ranged response body is the right length but not the right bytes.'
+		);
 	}
 
 	/**
@@ -208,12 +201,12 @@ class DownloadDeliveryTest extends AbstractE2ETestCase
 
 		$onDiskSlice = file_get_contents($this->onDiskPath($file), false, null, 1048576, 1024);
 
-		// See testByteRangeRequestReturnsPartialContentWithACorrectContentRangeHeader() for why only
-		// the first 1024 bytes of the body are compared: the response is corrupted with trailing bytes
-		// beyond the requested range by a confirmed bug in the model's chunked-read loop.
+		// This offset starts exactly on the model's 1 MiB chunk boundary, which is what made it a
+		// useful second witness for the fread($handle, 0) bug: the whole body is compared, not a
+		// prefix of it, so trailing bytes beyond the requested range fail the assertion.
 		$this->assertSame(
 			$onDiskSlice,
-			substr($response->body, 0, 1024),
+			$response->body,
 			'The served mid-file range does not match the same slice of the file on disk.'
 		);
 	}
@@ -225,15 +218,14 @@ class DownloadDeliveryTest extends AbstractE2ETestCase
 	 * defensible fallback for a malformed request but is worth knowing about explicitly rather than
 	 * discovering by accident.
 	 *
-	 * The response falls into the SAME chunked-read bug documented on the byte-range tests above: since
-	 * the "whole file" fallback still sets `$isResumable = true`, the read loop still ends with
-	 * `fread($handle, 0)`, so the correct 3,145,728 bytes of file content are followed by the same
-	 * 300-byte corrupt suffix. That is asserted here directly, as the actual current behaviour.
+	 * This path used to hit the same chunked-read bug as the byte-range tests, because the "whole file"
+	 * fallback still sets `$isResumable = true` and so still ended on `fread($handle, 0)`. It is now
+	 * asserted to deliver the file and nothing but the file.
 	 *
 	 * @return  void
 	 * @since   7.5.0
 	 */
-	public function testMalformedRangeHeaderFallsBackToTheWholeFileButBodyIsStillCorrupted(): void
+	public function testMalformedRangeHeaderFallsBackToTheWholeFile(): void
 	{
 		$file     = static::$fixtures->file('publicFile');
 		$response = $this->guest()->get($this->downloadUrl('publicFile'), [], ['Range' => 'bytes=abc']);
@@ -245,19 +237,14 @@ class DownloadDeliveryTest extends AbstractE2ETestCase
 		);
 		$this->assertSame(200, $response->code, 'A malformed Range header did not fall back to serving the whole file with a 200.');
 		$this->assertSame(
-			$file['sha256'],
-			hash('sha256', substr($response->body, 0, (int) $file['size'])),
-			'The first filesize() bytes of the fallback response do not hash to the file on disk.'
-		);
-
-		// The known chunked-read bug (see the byte-range tests above) appends a fixed 300-byte HTML
-		// error fragment after the correct content whenever $isResumable is true, which it is here too.
-		$this->assertGreaterThan(
 			(int) $file['size'],
 			strlen($response->body),
-			'The malformed-range response body is exactly filesize() bytes long, which would mean the known '
-			. 'fread($handle, 0) corruption bug (see the byte-range tests) has been fixed — if so, tighten this '
-			. 'assertion to assertSame() and delete this comment.'
+			'The fallback response is not exactly filesize() bytes, so something was appended to the body.'
+		);
+		$this->assertSame(
+			$file['sha256'],
+			hash('sha256', $response->body),
+			'The fallback response does not hash to the file on disk.'
 		);
 	}
 
