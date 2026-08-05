@@ -152,7 +152,7 @@ class CategoryTable extends AbstractTable implements TaggableTableInterface
 		$this->assertNotEmpty($this->alias, 'COM_ARS_CATEGORY_ERR_NEEDS_SLUG');
 
 		// Check alias for uniqueness
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->select($db->quoteName('alias'))
 			->from($db->quoteName('#__ars_categories'));
@@ -214,7 +214,7 @@ class CategoryTable extends AbstractTable implements TaggableTableInterface
 	protected function _getAssetParentId(?Table $table = null, $id = null)
 	{
 		/** @var Asset $asset */
-		$asset = new Asset($this->getDbo(), $this->getDispatcher());
+		$asset = new Asset($this->getDatabase(), $this->getDispatcher());
 		$asset->loadByName('com_ars');
 		$assetId = $asset->id;
 

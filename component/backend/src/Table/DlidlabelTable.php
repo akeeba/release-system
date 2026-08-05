@@ -78,7 +78,7 @@ class DlidlabelTable extends AbstractTable
 		$this->assert($this->user_id == $user->id, '');
 
 		// Decide if this is a primary or secondary Download ID, overriding the user's selection if necessary.
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->select('COUNT(*)')
 			->from($db->qn('#__ars_dlidlabels'))

@@ -7,6 +7,7 @@ Akeeba Release System 7.5.0
 ~ Replaced the Copy toolbar button with a Save as Copy button in the edit pages of Categories, Update Streams, Automatic Item Descriptions, and Environments
 ~ Added the Save as Copy button to the Releases edit page, auto-incrementing a colliding version and alias
 ~ Joomla 7.0 readiness: use injected application in plg_editors-xtd_arslink instead of the removed CMSPlugin $app property
+~ Joomla 7.0 readiness: replace the deprecated Table::getDbo() with getDatabase() throughout the Table classes
 ~ Modernise mod_arsdownloads to the module dispatcher / DI service provider pattern
 ~ Hardening: quote ORDER BY identifiers and whitelist the sort direction in list models
 ~ Hardening: bind the tag filter IN() list in the Categories and Releases models

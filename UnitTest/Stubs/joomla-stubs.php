@@ -940,9 +940,9 @@ namespace Joomla\CMS\Table {
 			}
 
 			/**
-			 * Real Joomla's `Table::getDbo()` is a deprecated alias for `getDatabase()`. Several ARS Table classes
-			 * still call it directly (that is production code, out of scope for this stub file to "fix"), so the
-			 * alias has to exist here too or those classes could not be loaded into a running state at all.
+			 * Real Joomla's `Table::getDbo()` is a deprecated alias for `getDatabase()`. No ARS code calls it any
+			 * more — the Table classes were converted to `getDatabase()` — but the alias is kept here for parity
+			 * with the real class, so a stray call in third party code under test behaves the way Joomla would.
 			 *
 			 * @deprecated Mirrors a deprecated real-Joomla method; kept only so calling code still works.
 			 */

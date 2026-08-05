@@ -35,7 +35,7 @@ class LogTable extends AbstractTable
 	protected function onBeforeCheck()
 	{
 		$app = Factory::getApplication();
-		$db  = $this->getDbo();
+		$db  = $this->getDatabase();
 
 		if (empty($this->user_id))
 		{

@@ -62,7 +62,7 @@ trait EnsureUcmTrait
 			return;
 		}
 
-		$ucmContentTable = new CoreContent($this->getDbo());
+		$ucmContentTable = new CoreContent($this->getDatabase());
 		$ucmContentTable->save($ucmData['common']);
 	}
 }

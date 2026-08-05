@@ -105,7 +105,7 @@ class ItemTable extends AbstractTable
 		}
 
 		// Get the title and aliases of other items in the same release
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->select([
 				$db->qn('title'),
@@ -177,11 +177,11 @@ class ItemTable extends AbstractTable
 			if (($this->type == 'file') && !empty($this->filename))
 			{
 				$folder  = null;
-				$release = new ReleaseTable($this->getDbo());
+				$release = new ReleaseTable($this->getDatabase());
 
 				if ($release->load($this->release_id))
 				{
-					$category = new CategoryTable($this->getDbo());
+					$category = new CategoryTable($this->getDatabase());
 
 					if ($category->load($release->category_id))
 					{
@@ -261,7 +261,7 @@ class ItemTable extends AbstractTable
 	protected function applyAutoDescriptions(): void
 	{
 		// Get the applicable automatic description records matching the release's category
-		$db = $this->getDbo();
+		$db = $this->getDatabase();
 
 		$subQuery = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->select($db->quoteName('category_id'))
@@ -301,7 +301,7 @@ class ItemTable extends AbstractTable
 			return;
 		}
 
-		$auto = new AutodescriptionTable($this->getDbo());
+		$auto = new AutodescriptionTable($this->getDatabase());
 		$auto->bind(array_shift($autoItems));
 
 		// Apply environments
@@ -334,7 +334,7 @@ class ItemTable extends AbstractTable
 	 */
 	protected function getUpdateStream(): ?int
 	{
-		$db = $this->getDbo();
+		$db = $this->getDatabase();
 
 		$subquery = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->select($db->quoteName('category_id'))

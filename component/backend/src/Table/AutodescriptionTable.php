@@ -69,7 +69,7 @@ class AutodescriptionTable extends AbstractTable
 		$this->assertNotEmpty($this->title, 'COM_ARS_AUTODESCRIPTION_ERR_NEEDS_TITLE');
 		$this->assertNotEmpty($this->description, 'COM_ARS_AUTODESCRIPTION_ERR_NEEDS_DESCRIPTION');
 
-		$category = new CategoryTable($this->getDbo());
+		$category = new CategoryTable($this->getDatabase());
 		$this->assert($category->load($this->category) !== false, 'COM_ARS_AUTODESCRIPTION_ERR_NEEDS_CATEGORY_VALID');
 	}
 

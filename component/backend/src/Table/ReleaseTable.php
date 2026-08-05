@@ -238,7 +238,7 @@ class ReleaseTable extends AbstractTable implements TaggableTableInterface
 		$this->assertNotEmpty($this->alias, 'COM_ARS_CATEGORY_ERR_NEEDS_SLUG');
 
 		// Check alias for uniqueness
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->select(
 				[
