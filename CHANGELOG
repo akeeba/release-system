@@ -24,6 +24,7 @@ Akeeba Release System 7.5.0
 # [MEDIUM] Asking for the update stream as JSON with task=stream&format=json returned XML instead
 # [MEDIUM] The Latest view returns an error page when no release is visible to the current user
 # [MEDIUM] The Categories view returns an error page when the URL has no layout parameter
+# [MEDIUM] Filtering the backend Categories or Releases list by two or more tags returned an error page, which kept recurring on that list for the rest of the session
 
 Akeeba Release System 7.4.3
 ================================================================================

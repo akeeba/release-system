@@ -267,9 +267,16 @@ namespace Joomla\Database {
 		}
 	}
 
+	if (!interface_exists(QueryInterface::class, false))
+	{
+		interface QueryInterface
+		{
+		}
+	}
+
 	if (!class_exists(DatabaseQuery::class, false))
 	{
-		abstract class DatabaseQuery
+		abstract class DatabaseQuery implements QueryInterface
 		{
 		}
 	}

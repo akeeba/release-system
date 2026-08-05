@@ -9,6 +9,8 @@ namespace Akeeba\ARS\UnitTest\Stubs;
 
 defined('_JEXEC') or die;
 
+use Joomla\Database\QueryInterface;
+
 /**
  * A fluent, no-op stand-in for Joomla\Database\DatabaseQuery.
  *
@@ -22,7 +24,7 @@ defined('_JEXEC') or die;
  * through `quoteName()` and the direction is whitelisted. Both are observable here, and neither
  * needs a real database to observe.
  */
-class RecordingQuery
+class RecordingQuery implements QueryInterface
 {
 	/** @var string[] Every expression passed to order() */
 	public $orderCalls = [];
@@ -38,6 +40,9 @@ class RecordingQuery
 
 	/** @var array<int,array{0:string,1:mixed,2:mixed}> Column, values and data type passed to whereIn() */
 	public $whereInCalls = [];
+
+	/** @var int Counter behind the `:preparedArrayN` names bindArray() generates */
+	public $preparedIndex = 0;
 
 	/** @var string[] Every table passed to from() */
 	public $fromCalls = [];
@@ -135,6 +140,26 @@ class RecordingQuery
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Generates and binds a placeholder per value, matching Joomla's DatabaseQuery::bindArray(),
+	 * including its `:preparedArrayN` naming — code which inlines the returned names into SQL of its
+	 * own reads them back, so they have to look like the real thing.
+	 */
+	public function bindArray(array $values, $dataType = null)
+	{
+		$names = [];
+
+		foreach ($values as $value)
+		{
+			$name    = ':preparedArray' . (++$this->preparedIndex);
+			$names[] = $name;
+
+			$this->bind($name, $value, $dataType);
+		}
+
+		return $names;
 	}
 
 	/**

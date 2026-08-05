@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Mixin\ModelTagFilterTrait;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
@@ -18,6 +19,8 @@ use Joomla\Utilities\ArrayHelper;
 #[\AllowDynamicProperties]
 class CategoriesModel extends ListModel
 {
+	use ModelTagFilterTrait;
+
 	public function __construct($config = [], ?MVCFactoryInterface $factory = null)
 	{
 		if (empty($config['filter_fields']))
@@ -203,45 +206,7 @@ class CategoriesModel extends ListModel
 		}
 
 		// FILTER: Tags
-		$tag = $this->getState('filter.tag');
-
-		if (!empty($tag))
-		{
-			// Run simplified query when filtering by one tag.
-			if (\is_array($tag) && \count($tag) === 1)
-			{
-				$tag = $tag[0];
-			}
-
-			if (\is_array($tag))
-			{
-				$tag = ArrayHelper::toInteger($tag);
-
-				$subQuery = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
-					->select('DISTINCT ' . $db->quoteName('content_item_id'))
-					->from($db->quoteName('#__contentitem_tag_map'))
-					->whereIn($db->quoteName('tag_id'), $tag, ParameterType::INTEGER)
-					->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_ars.category'));
-
-				$query->join(
-					'INNER',
-					'(' . $subQuery . ') AS ' . $db->quoteName('tagmap'),
-					$db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('c.id')
-				);
-			}
-			else
-			{
-				$tag = (int) $tag;
-				$query->join(
-					'INNER',
-					$db->quoteName('#__contentitem_tag_map', 'tagmap'),
-					$db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('c.id')
-				)
-					->where($db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com_ars.category'))
-					->where($db->quoteName('tag_id') . '= :tag')
-					->bind(':tag', $tag, ParameterType::INTEGER);
-			}
-		}
+		$this->applyTagFilter($query, $this->getState('filter.tag'), 'com_ars.category', 'c.id');
 
 		// List ordering clause
 		$orderCol  = $this->state->get('list.ordering', 'ordering');

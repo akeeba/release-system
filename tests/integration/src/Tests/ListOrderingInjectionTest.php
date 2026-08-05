@@ -140,36 +140,115 @@ class ListOrderingInjectionTest extends AbstractE2ETestCase
 	}
 
 	/**
-	 * The tag filter accepts an array; commit 139d02c2 bound it via whereIn() with
-	 * ParameterType::INTEGER. A non-numeric element in that array must not misbehave.
+	 * The tag filter accepts an array of tag IDs. Neither a malformed element nor a perfectly valid
+	 * multi-element list may break the Categories or Releases list view.
 	 *
-	 * Empirically (confirmed by hand against the live site while writing this test) a non-numeric
-	 * element currently makes both the Categories and Releases list controllers return an HTTP 500 —
-	 * "No data supplied for parameters in prepared statement" — rather than silently ignoring the
-	 * bad element or filtering it out. No table is dropped and no row count changes, so this is a
-	 * robustness bug in the filter, not the SQL injection commit 139d02c2 was hardening against; but
-	 * it is also not "hostile input does not misbehave", so it does not belong asserted as a pass.
+	 * Both used to. The multi-tag branch built a DISTINCT subquery, bound its IN() list with
+	 * whereIn(…, ParameterType::INTEGER) on the *subquery*, and then inlined that subquery into the
+	 * outer query's JOIN by casting it to a string. Bound parameters do not survive that cast —
+	 * DatabaseQuery::getBounded() only ever returns the query object's own bindings — so the
+	 * `:preparedArray…` placeholders reached the driver unbound and every request died with "No data
+	 * supplied for parameters in prepared statement". Filtering by two tags at once, entirely from the
+	 * component's own filter bar, was enough; nothing hostile was needed.
 	 *
-	 * There is a second, worse-than-it-looks part: the bad value is stored via
-	 * `getUserStateFromRequest()` into that user's session state for the view, so it keeps crashing
-	 * every subsequent request to the SAME list view in the SAME session — including ones that never
-	 * mention the tag filter at all — until a request explicitly supplies a fresh, valid `filter[tag]`
-	 * value. A fresh actor (a brand new session) is unaffected, which is how this was isolated from
-	 * the ordering payloads above: none of those crash or leave any state behind on their own.
+	 * A malformed element reached the same branch by a different route: `filter[tag][]` with two
+	 * elements, one of them non-numeric. That made the failure worse than a one-off 500, because the
+	 * value is stored via `getUserStateFromRequest()` into that user's session state for the view, so
+	 * it kept crashing every subsequent request to the SAME list view in the SAME session — including
+	 * ones that never mentioned the tag filter at all — until a valid `filter[tag]` overwrote it.
+	 *
+	 * So this asserts three things, on both views: valid multi-tag filtering answers 200 and returns
+	 * exactly the tagged records, once each; a malformed element is discarded rather than pushed into
+	 * the query; and neither leaves the session poisoned for the request that follows.
 	 *
 	 * @since 7.5.0
 	 */
-	public function testTagFilterWithANonNumericElement(): void
+	public function testTagFilterHandlesMalformedAndMultipleValues(): void
 	{
-		self::markTestSkipped(
-			'Both CategoriesModel and ReleasesModel return HTTP 500 ("No data supplied for parameters in '
-			. 'prepared statement") for filter[tag][]=<non-numeric>, and the bad value is then persisted into '
-			. "that session's list.filter.tag user state, breaking every subsequent request to the same list "
-			. 'view in that session (including ones with no tag filter at all) until a valid tag filter '
-			. 'overwrites it. No table is dropped and no row count changes — this is not the SQL injection '
-			. '139d02c2 hardened against — but it is a real crash-on-malformed-input regression worth fixing '
-			. "in CategoriesModel/ReleasesModel's tag filter handling. Flagging for review rather than "
-			. 'asserting a 500 as expected behaviour.'
+		[$tagA, $tagB] = $this->createTemporaryTags();
+
+		$categoryOnlyA = static::$fixtures->categoryId('public');
+		$categoryOnlyB = static::$fixtures->categoryId('secret');
+		$categoryBoth  = static::$fixtures->categoryId('restricted');
+		$releaseOnlyA  = static::$fixtures->releaseId('publicStable');
+		$releaseBoth   = static::$fixtures->releaseId('publicBeta');
+
+		$beforeCategories = (int) $this->db()->value('SELECT COUNT(*) FROM `#__ars_categories`');
+		$beforeReleases   = (int) $this->db()->value('SELECT COUNT(*) FROM `#__ars_releases`');
+
+		try
+		{
+			$this->tagContentItem('com_ars.category', $categoryOnlyA, $tagA);
+			$this->tagContentItem('com_ars.category', $categoryOnlyB, $tagB);
+			$this->tagContentItem('com_ars.category', $categoryBoth, $tagA);
+			$this->tagContentItem('com_ars.category', $categoryBoth, $tagB);
+			$this->tagContentItem('com_ars.release', $releaseOnlyA, $tagA);
+			$this->tagContentItem('com_ars.release', $releaseBoth, $tagA);
+			$this->tagContentItem('com_ars.release', $releaseBoth, $tagB);
+
+			// One tag, two tags, and two tags one of which matches nothing: all valid, all must work.
+			$this->assertTagFilterSelects('categories', [$tagA], [$categoryOnlyA, $categoryBoth]);
+			$this->assertTagFilterSelects('categories', [$tagB], [$categoryOnlyB, $categoryBoth]);
+			$this->assertTagFilterSelects(
+				'categories',
+				[$tagA, $tagB],
+				[$categoryOnlyA, $categoryOnlyB, $categoryBoth]
+			);
+			$this->assertTagFilterSelects('categories', [$tagA, $tagB, 999999], [$categoryOnlyA, $categoryOnlyB, $categoryBoth]);
+
+			$this->assertTagFilterSelects('releases', [$tagA], [$releaseOnlyA, $releaseBoth]);
+			$this->assertTagFilterSelects('releases', [$tagA, $tagB], [$releaseOnlyA, $releaseBoth]);
+
+			// A malformed element is dropped; the rest of the filter still applies.
+			$this->assertTagFilterSelects('categories', ['DROP TABLE x', $tagB], [$categoryOnlyB, $categoryBoth]);
+			$this->assertTagFilterSelects('releases', ['DROP TABLE x', $tagB], [$releaseBoth]);
+
+			// A filter with nothing usable left in it is not applied at all, rather than failing.
+			foreach (['categories', 'releases'] as $view)
+			{
+				foreach ([['DROP TABLE x'], ['DROP TABLE x', 'nonsense'], ['-1', '0']] as $payload)
+				{
+					$manager  = $this->loggedInBackend('manager');
+					$response = $manager->get(
+						$this->adminUrl(['view' => $view]),
+						['filter' => ['tag' => $payload]]
+					);
+
+					$this->assertNotABrokenListResponse(
+						$response,
+						sprintf('filter[tag]=%s broke the %s list.', json_encode($payload), $view)
+					);
+
+					// The same session, one request later, with no tag filter mentioned at all. This is the
+					// half that used to keep failing after the crash, because the bad value was persisted.
+					$followUp = $manager->get($this->adminUrl(['view' => $view]));
+
+					$this->assertNotABrokenListResponse(
+						$followUp,
+						sprintf(
+							'After filter[tag]=%s, the next request to the %s list in the same session broke; the bad '
+							. 'value was persisted into the session state.',
+							json_encode($payload),
+							$view
+						)
+					);
+				}
+			}
+		}
+		finally
+		{
+			$this->removeTemporaryTags();
+		}
+
+		$this->assertSame(
+			$beforeCategories,
+			(int) $this->db()->value('SELECT COUNT(*) FROM `#__ars_categories`'),
+			'The categories row count changed after hostile tag filter payloads.'
+		);
+		$this->assertSame(
+			$beforeReleases,
+			(int) $this->db()->value('SELECT COUNT(*) FROM `#__ars_releases`'),
+			'The releases row count changed after hostile tag filter payloads.'
 		);
 	}
 
@@ -245,6 +324,154 @@ class ListOrderingInjectionTest extends AbstractE2ETestCase
 	// -----------------------------------------------------------------------
 	// Helpers.
 	// -----------------------------------------------------------------------
+
+	/**
+	 * IDs of the tags created by createTemporaryTags(), so they can be removed again.
+	 *
+	 * @var   int[]
+	 * @since 7.5.0
+	 */
+	private array $temporaryTagIds = [];
+
+	/**
+	 * Create two published tags to filter by.
+	 *
+	 * The fixtures deliberately ship none — ARS categories and releases are taggable, but nothing in
+	 * the rest of the suite needs a tag — so this test makes its own and removes them again.
+	 *
+	 * @return  int[]  The two tag IDs.
+	 * @since   7.5.0
+	 */
+	private function createTemporaryTags(): array
+	{
+		$db  = $this->db();
+		$now = gmdate('Y-m-d H:i:s');
+
+		foreach (['e2e-tag-alpha', 'e2e-tag-beta'] as $alias)
+		{
+			$this->temporaryTagIds[] = $db->insert(
+				'#__tags',
+				[
+					'parent_id'      => 1,
+					'lft'            => 0,
+					'rgt'            => 0,
+					'level'          => 1,
+					'path'           => $alias,
+					'title'          => $alias,
+					'alias'          => $alias,
+					'note'           => '',
+					'description'    => '',
+					'published'      => 1,
+					'access'         => 1,
+					'params'         => '{}',
+					'metadesc'       => '',
+					'metakey'        => '',
+					'metadata'       => '{}',
+					'created_user_id' => 0,
+					'created_time'   => $now,
+					'modified_user_id' => 0,
+					'modified_time'  => $now,
+					'images'         => '',
+					'urls'           => '',
+					'hits'           => 0,
+					'language'       => '*',
+					'version'        => 1,
+				]
+			);
+		}
+
+		return $this->temporaryTagIds;
+	}
+
+	/**
+	 * Tag one content item with one of the temporary tags.
+	 *
+	 * @param   string  $typeAlias  The UCM type alias, e.g. `com_ars.category`.
+	 * @param   int     $itemId     The tagged record's ID.
+	 * @param   int     $tagId      The tag's ID.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	private function tagContentItem(string $typeAlias, int $itemId, int $tagId): void
+	{
+		$this->db()->insert(
+			'#__contentitem_tag_map',
+			[
+				'type_alias'      => $typeAlias,
+				'core_content_id' => 0,
+				'content_item_id' => $itemId,
+				'tag_id'          => $tagId,
+				'tag_date'        => gmdate('Y-m-d H:i:s'),
+				// The map's unique key is (type_id, content_item_id, tag_id), so the two aliases need
+				// distinct type IDs or a category and a release sharing an ID would collide. ARS filters
+				// on type_alias alone, so any distinct pair will do.
+				'type_id'         => $typeAlias === 'com_ars.category' ? 1 : 2,
+			]
+		);
+	}
+
+	/**
+	 * Remove the temporary tags and every mapping made to them.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	private function removeTemporaryTags(): void
+	{
+		if (empty($this->temporaryTagIds))
+		{
+			return;
+		}
+
+		$idList = implode(',', array_map('intval', $this->temporaryTagIds));
+
+		$this->db()->query(sprintf('DELETE FROM `#__contentitem_tag_map` WHERE `tag_id` IN (%s)', $idList));
+		$this->db()->query(sprintf('DELETE FROM `#__tags` WHERE `id` IN (%s)', $idList));
+
+		$this->temporaryTagIds = [];
+	}
+
+	/**
+	 * Assert that a back-end list view, filtered by the given tags, shows exactly the given records.
+	 *
+	 * Reads the row IDs off each row's edit link, which is also how it catches a record returned
+	 * twice: a tag filter joining a tag map without collapsing the duplicates would list a record
+	 * carrying two of the filtered tags once per tag. (The `cid[]` checkbox would be the obvious
+	 * marker, but `grid.id` omits its value for a checked-out record, so a stale checkout in the
+	 * fixtures would silently drop rows from the comparison.)
+	 *
+	 * @param   string             $view      `categories` or `releases`.
+	 * @param   array              $tags      The `filter[tag]` payload, valid IDs or not.
+	 * @param   int[]              $expected  The record IDs the list must show, in any order.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	private function assertTagFilterSelects(string $view, array $tags, array $expected): void
+	{
+		$manager  = $this->loggedInBackend('manager');
+		$response = $manager->get($this->adminUrl(['view' => $view]), ['filter' => ['tag' => $tags]]);
+		$context  = sprintf('%s list, filter[tag]=%s', $view, json_encode($tags));
+
+		$this->assertNotABrokenListResponse($response, $context . ' broke the list.');
+
+		$editTask = $view === 'categories' ? 'category\.edit' : 'release\.edit';
+
+		preg_match_all('/task=' . $editTask . '&(?:amp;)?id=(\d+)/', $response->body, $matches);
+
+		$actual = array_map('intval', $matches[1]);
+
+		sort($actual);
+		$expectedSorted = array_map('intval', $expected);
+		sort($expectedSorted);
+
+		$this->assertSame(
+			$expectedSorted,
+			$actual,
+			sprintf('%s did not list exactly the tagged records. %s', $context, $response->summary())
+		);
+	}
 
 	/**
 	 * Assert that a back-end list response is neither an application error page nor a page whose body

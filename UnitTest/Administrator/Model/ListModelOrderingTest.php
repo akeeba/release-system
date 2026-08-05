@@ -196,14 +196,20 @@ class ListModelOrderingTest extends TestCase
 	}
 
 	/**
-	 * The tag filter's `IN()` list is bound via whereIn() with ParameterType::INTEGER (commit 139d02c2), replacing
-	 * unbound string concatenation. The sub-query that carries it is never passed to setQuery() — it is embedded by
-	 * string concatenation into the outer query's JOIN clause — so it is only observable via
-	 * {@see RecordingDatabase::$createdQueries}, which records every query OBJECT created regardless of whether it
-	 * was ever executed.
+	 * The tag filter's `IN()` list is bound as integers (commit 139d02c2), replacing unbound string concatenation —
+	 * and it is bound against the OUTER query, not against the sub-query that carries the `IN()` clause.
+	 *
+	 * That distinction is the whole test. The sub-query is never passed to setQuery(): it is embedded into the outer
+	 * query's JOIN clause by string concatenation, and bound parameters do not survive that. DatabaseQuery::
+	 * getBounded() only ever returns a query object's own bindings, so placeholders bound on the sub-query reach the
+	 * driver unbound and the entire list view dies with "No data supplied for parameters in prepared statement" —
+	 * for any filter of two or more tags, valid IDs included.
+	 *
+	 * Both query objects are observable via {@see RecordingDatabase::$createdQueries}, which records every query
+	 * OBJECT created regardless of whether it was ever executed.
 	 */
 	#[DataProvider('tagFilterModelProvider')]
-	public function testTagFilterBindsIdsAsIntegersViaWhereIn(string $modelClass): void
+	public function testMultipleTagFilterBindsIdsAsIntegersOnTheOuterQuery(string $modelClass): void
 	{
 		$db = new RecordingDatabase();
 
@@ -221,19 +227,91 @@ class ListModelOrderingTest extends TestCase
 			$ref->setAccessible(true);
 		}
 
-		$ref->invoke($model);
+		$query = $ref->invoke($model);
 
 		// createdQueries[0] is the outer query; createdQueries[1] is the tag sub-query.
 		$this->assertCount(2, $db->createdQueries);
+		$this->assertSame($query, $db->createdQueries[0]);
 
 		$subQuery = $db->createdQueries[1];
 
-		$this->assertCount(1, $subQuery->whereInCalls);
-		[$column, $values, $dataType] = $subQuery->whereInCalls[0];
+		$this->assertSame(
+			[],
+			$subQuery->bindValues,
+			'The sub-query must carry no bindings of its own; they would be lost when it is cast to a string.'
+		);
 
-		$this->assertSame('`tag_id`', $column);
-		$this->assertSame([3, 5], $values, 'Tag IDs must be cast to integers.');
-		$this->assertSame(\Joomla\Database\ParameterType::INTEGER, $dataType);
+		$tagBindings = array_filter(
+			$query->bindValues,
+			fn(string $name): bool => str_starts_with($name, ':preparedArray'),
+			ARRAY_FILTER_USE_KEY
+		);
+
+		$this->assertSame([3, 5], array_values($tagBindings), 'Tag IDs must be bound, as integers.');
+
+		foreach (array_keys($tagBindings) as $name)
+		{
+			$this->assertSame(\Joomla\Database\ParameterType::INTEGER, $query->bindTypes[$name]);
+
+			// The names the outer query generated must be the ones inlined into the sub-query's IN() clause.
+			$this->assertStringContainsString(
+				$name,
+				implode(' ', $subQuery->whereCalls),
+				sprintf('The sub-query does not use the placeholder %s bound on the outer query.', $name)
+			);
+		}
+	}
+
+	/**
+	 * A tag ID which is not a positive integer is dropped rather than pushed into the query, and a filter with
+	 * nothing usable left in it is not applied at all.
+	 *
+	 * Malformed values arrive routinely, because `filter.tag` is populated from `getUserStateFromRequest()`: whatever
+	 * lands in it stays in the session, so a value the query cannot survive would break the list view on every later
+	 * request in that session, including ones which never mention the tag filter.
+	 */
+	#[DataProvider('tagFilterModelProvider')]
+	public function testTagFilterDiscardsValuesThatAreNotTagIds(string $modelClass): void
+	{
+		$ref = new ReflectionMethod($modelClass, 'getListQuery');
+
+		if (version_compare(PHP_VERSION, '8.1.0', 'lt'))
+		{
+			$ref->setAccessible(true);
+		}
+
+		// One usable ID among the junk: the junk is dropped, the ID is used — and one ID takes the single-tag path.
+		$db    = new RecordingDatabase();
+		$model = new $modelClass([], null);
+		$model->setDatabase($db);
+		$model->setState('list.ordering', 'id');
+		$model->setState('list.direction', 'ASC');
+		$model->setState('filter.dlid', '');
+		$model->setState('filter.tag', ['DROP TABLE x', '7']);
+
+		$query = $ref->invoke($model);
+
+		$this->assertCount(1, $db->createdQueries, 'A single surviving tag ID must not build a sub-query.');
+		$this->assertSame(7, $query->bindValues[':tagId']);
+
+		// Nothing usable at all: no join, no bindings, no filter.
+		$db    = new RecordingDatabase();
+		$model = new $modelClass([], null);
+		$model->setDatabase($db);
+		$model->setState('list.ordering', 'id');
+		$model->setState('list.direction', 'ASC');
+		$model->setState('filter.dlid', '');
+		$model->setState('filter.tag', ['DROP TABLE x', 'nonsense', '0', '-1']);
+
+		$query = $ref->invoke($model);
+
+		$this->assertCount(1, $db->createdQueries, 'An unusable tag filter must not build a sub-query.');
+		$this->assertArrayNotHasKey(':tagId', $query->bindValues);
+		$this->assertStringNotContainsString(
+			'contentitem_tag_map',
+			json_encode($query->joinCalls),
+			'An unusable tag filter must not join the tag map at all.'
+		);
 	}
 
 	/**
@@ -261,8 +339,8 @@ class ListModelOrderingTest extends TestCase
 
 		$query = $ref->invoke($model);
 
-		$this->assertArrayHasKey(':tag', $query->bindValues);
-		$this->assertSame(7, $query->bindValues[':tag']);
-		$this->assertSame(\Joomla\Database\ParameterType::INTEGER, $query->bindTypes[':tag']);
+		$this->assertArrayHasKey(':tagId', $query->bindValues);
+		$this->assertSame(7, $query->bindValues[':tagId']);
+		$this->assertSame(\Joomla\Database\ParameterType::INTEGER, $query->bindTypes[':tagId']);
 	}
 }
