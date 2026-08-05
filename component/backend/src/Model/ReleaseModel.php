@@ -14,6 +14,7 @@ use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Exception;
+use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Event\Model\BeforeBatchEvent;
 use Joomla\CMS\Factory;
@@ -24,6 +25,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\Database\ParameterType;
+use Joomla\String\StringHelper;
 
 #[\AllowDynamicProperties]
 class ReleaseModel extends AdminModel
@@ -71,6 +73,52 @@ class ReleaseModel extends AdminModel
 		}
 
 		return $item;
+	}
+
+	/** @inheritDoc */
+	public function save($data)
+	{
+		/**
+		 * Save as Copy has to produce a version/alias pair that is unique within the target category, otherwise the
+		 * table check fails and the user is bounced back to the edit form with an error they cannot resolve without
+		 * editing both the version and the alias by hand.
+		 */
+		if (Factory::getApplication()->getInput()->getCmd('task', '') === 'save2copy')
+		{
+			$categoryId = (int) ($data['category_id'] ?? 0);
+			$version    = $data['version'] ?? '';
+			$alias      = $data['alias'] ?? '';
+			$alias      = $alias ?: ApplicationHelper::stringURLSafe(strtolower($version));
+
+			[$version, $alias] = $this->generateNewTitle($categoryId, $alias, $version);
+
+			// generateNewTitle() only looks at the alias; a colliding version under a different alias slips through.
+			$db = $this->getDatabase();
+
+			for ($i = 0; $i < 100; $i++)
+			{
+				$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+					->select($db->quoteName('version'))
+					->from($db->quoteName('#__ars_releases'))
+					->where($db->quoteName('category_id') . ' = :catid')
+					->where($db->quoteName('version') . ' = :version')
+					->bind(':catid', $categoryId, ParameterType::INTEGER)
+					->bind(':version', $version);
+
+				if (!$db->setQuery($query)->loadResult())
+				{
+					break;
+				}
+
+				$version = StringHelper::increment($version);
+				[$version, $alias] = $this->generateNewTitle($categoryId, $alias, $version);
+			}
+
+			$data['version'] = $version;
+			$data['alias']   = $alias;
+		}
+
+		return parent::save($data);
 	}
 
 	/**

@@ -5,6 +5,7 @@ Akeeba Release System 7.5.0
 + Support Joomla major releases past 4.x in plg_content_arslatest
 + Support for the Joomla 6.2 security flag in update streams (gh-250)
 ~ Replaced the Copy toolbar button with a Save as Copy button in the edit pages of Categories, Update Streams, Automatic Item Descriptions, and Environments
+~ Added the Save as Copy button to the Releases edit page, auto-incrementing a colliding version and alias
 ~ Joomla 7.0 readiness: use injected application in plg_editors-xtd_arslink instead of the removed CMSPlugin $app property
 ~ Modernise mod_arsdownloads to the module dispatcher / DI service provider pattern
 ~ Hardening: quote ORDER BY identifiers and whitelist the sort direction in list models

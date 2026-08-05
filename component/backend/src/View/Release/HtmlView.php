@@ -72,12 +72,23 @@ class HtmlView extends BaseHtmlView
 	{
 		Factory::getapplication()->getInput()->set('hidemainmenu', true);
 
-		$isNew = empty($this->item->contactus_category_id);
+		$isNew = empty($this->item->id);
 
 		ToolbarHelper::title(Text::_('COM_ARS_TITLE_RELEASES_' . ($isNew ? 'ADD' : 'EDIT')), 'icon-ars');
 
 		ToolbarHelper::apply('release.apply');
 		ToolbarHelper::save('release.save');
+
+		// Save as Copy is how one duplicates a record.
+		if (
+			!$isNew && (
+				Factory::getApplication()->getIdentity()->authorise('core.create', 'com_ars')
+				|| Factory::getApplication()->getIdentity()->authorise('core.create', 'com_ars.category.' . (int) $this->item->category_id)
+			)
+		)
+		{
+			ToolbarHelper::save2copy('release.save2copy');
+		}
 
 		ToolbarHelper::cancel('release.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 	}
