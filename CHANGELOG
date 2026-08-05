@@ -13,6 +13,7 @@ Akeeba Release System 7.5.0
 ~ Hardening: enforce per-category create/edit permissions on the JSON:API write endpoints
 ~ Hardening: gate the control panel housekeeping task behind core.manage
 ~ Hardening: reject guests and enforce record ownership on the frontend Download ID edit view
+~ Hardening: reject return URLs containing control characters
 # [HIGH] Fatal error the first time the control panel is opened, on any site which does not have Akeeba Backup installed
 # [HIGH] Resumable and partial downloads served corrupt data: an error page fragment was appended to the response body
 # [HIGH] Update streams returned an error page whenever a Download ID was included in the request

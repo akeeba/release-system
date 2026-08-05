@@ -25,8 +25,9 @@ use ReflectionMethod;
  *  - When BOTH `return` and `returnurl` are supplied, `returnurl` wins (it is read second, using the `return`
  *    value only as ITS default).
  *  - Because {@see Uri::isInternal()}'s fallback rule is "internal unless it has a URL scheme or starts with `//`",
- *    a decoded payload containing a NUL byte or a newline — as long as it doesn't happen to look like an absolute
- *    URL — is treated as INTERNAL and returned as-is. Nothing in this call chain strips control characters.
+ *    getReturnUrl() additionally screens the decoded payload for control characters (`\x00`-`\x1F`, `\x7F`) before
+ *    ever calling {@see Uri::isInternal()}. A decoded payload containing a NUL byte or a CR/LF is rejected outright,
+ *    since it would otherwise be a header-injection primitive once handed to setRedirect().
  */
 #[CoversClass(ControllerReturnURLTrait::class)]
 #[Group('Mixin')]
@@ -155,49 +156,48 @@ class ControllerReturnURLTraitTest extends TestCase
 
 	/**
 	 * base64_decode() is called WITHOUT strict mode, so malformed input decodes leniently into binary garbage
-	 * rather than yielding false. That garbage has no URL scheme and does not start with `//`, so
-	 * Uri::isInternal()'s fallback rule treats it as "internal" and it is returned unchanged. Pinning this exact,
-	 * slightly alarming chain of defaults rather than assuming malformed input is rejected.
+	 * rather than yielding false. For this particular garbage string, the decoded bytes happen to include a
+	 * control character (0x1E), so the control-character guard in getReturnUrl() rejects it before
+	 * Uri::isInternal() is ever consulted.
 	 */
-	public function testMalformedBase64DecodesToGarbageThatIsStillTreatedAsInternal(): void
+	public function testMalformedBase64DecodesToGarbageThatIsRejected(): void
 	{
 		$controller = $this->controllerWithInput([
 			'return' => 'not valid base64!!!',
 		]);
 
-		$result = $controller->callGetReturnUrl();
+		$decoded = base64_decode('not valid base64!!!');
+		$this->assertMatchesRegularExpression('/[\x00-\x1F\x7F]/', $decoded, 'Precondition: the decoded garbage must contain a control character for this test to be meaningful.');
 
-		$this->assertNotNull($result, 'Garbage without a URL scheme or a leading // is treated as internal by Uri::isInternal().');
-		$this->assertSame(base64_decode('not valid base64!!!'), $result);
+		$this->assertNull($controller->callGetReturnUrl());
 	}
 
 	/**
-	 * SUSPECTED WEAKNESS, pinned rather than assumed fixed: a NUL byte survives the whole chain (base64 decode,
-	 * Uri::isInternal()) and is handed back as the "internal" return URL. Uri::isInternal() only screens for a URL
-	 * scheme or a leading "//"; it does not screen for control characters.
+	 * A NUL byte in the decoded payload is rejected by the control-character guard before Uri::isInternal() is
+	 * ever consulted, since a NUL byte in a redirect target is a header-injection primitive.
 	 */
-	public function testNulByteInDecodedPayloadIsNotRejected(): void
+	public function testNulByteInDecodedPayloadIsRejected(): void
 	{
 		$payload    = "index.php?a=1\0evil";
 		$controller = $this->controllerWithInput([
 			'return' => base64_encode($payload),
 		]);
 
-		$this->assertSame($payload, $controller->callGetReturnUrl());
+		$this->assertNull($controller->callGetReturnUrl());
 	}
 
 	/**
-	 * SUSPECTED WEAKNESS, pinned rather than assumed fixed: same as the NUL byte case, but with an embedded
-	 * newline — the kind of payload that becomes a header-injection primitive if ever written into an HTTP header
-	 * without further sanitisation downstream.
+	 * An embedded newline (CR/LF) in the decoded payload is rejected by the control-character guard — this is the
+	 * classic header-injection primitive if ever written into an HTTP header without further sanitisation
+	 * downstream, so getReturnUrl() must reject it outright.
 	 */
-	public function testNewlineInDecodedPayloadIsNotRejected(): void
+	public function testNewlineInDecodedPayloadIsRejected(): void
 	{
 		$payload    = "index.php?a=1\nSet-Cookie: x=y";
 		$controller = $this->controllerWithInput([
 			'return' => base64_encode($payload),
 		]);
 
-		$this->assertSame($payload, $controller->callGetReturnUrl());
+		$this->assertNull($controller->callGetReturnUrl());
 	}
 }

@@ -78,6 +78,12 @@ trait ControllerReturnURLTrait
 
 		$returnUrl = \base64_decode($returnEncoded);
 
+		// Control characters (especially CR/LF) in a redirect target are a header-injection primitive; reject them outright.
+		if ($returnUrl === '' || preg_match('/[\x00-\x1F\x7F]/', $returnUrl))
+		{
+			return null;
+		}
+
 		if (!Uri::isInternal($returnUrl))
 		{
 			return null;
