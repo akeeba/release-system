@@ -64,15 +64,23 @@ class ComponentParams
 			$components = $refProp->getValue();
 		}
 
-		$components['com_akeebabackup']->params = $params;
+		// The cache is keyed by the option we were actually asked to save. It used to say
+		// 'com_akeebabackup' here — a copy-paste from that product — which on any site without Akeeba
+		// Backup installed made this an assignment to null, i.e. a fatal error. It only bit on the
+		// first request that changed a parameter, because the database write above has already
+		// happened by then and a reload finds nothing left to save.
+		if (isset($components[$option]) && is_object($components[$option]))
+		{
+			$components[$option]->params = $params;
 
-		if (version_compare(PHP_VERSION, '8.3.0', 'ge'))
-		{
-			$refClass->setStaticPropertyValue('components', $components);
-		}
-		else
-		{
-			$refProp->setValue($components);
+			if (version_compare(PHP_VERSION, '8.3.0', 'ge'))
+			{
+				$refClass->setStaticPropertyValue('components', $components);
+			}
+			else
+			{
+				$refProp->setValue($components);
+			}
 		}
 
 	}
