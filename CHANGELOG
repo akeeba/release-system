@@ -26,6 +26,7 @@ Akeeba Release System 7.5.0
 # [MEDIUM] The Categories view returns an error page when the URL has no layout parameter
 # [MEDIUM] Filtering the backend Categories or Releases list by two or more tags returned an error page, which kept recurring on that list for the rest of the session
 # [LOW] Two items in the same release could be saved with the same alias
+# [LOW] Update streams with "liar mode" enabled never advertised minor version 10 of a Joomla major version
 
 Akeeba Release System 7.4.3
 ================================================================================

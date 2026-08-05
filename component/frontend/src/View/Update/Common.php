@@ -265,7 +265,30 @@ trait Common
 
 			// Merge the real and pretend platforms, only keeping the unique items
 			$parsedPlatforms['platforms'] = array_merge($parsedPlatforms['platforms'], $morePlatforms);
-			$parsedPlatforms['platforms'] = array_unique($parsedPlatforms['platforms'], SORT_REGULAR);
+
+			/**
+			 * array_unique() with SORT_REGULAR compares the two-element [$name, $version] arrays with loose `==`,
+			 * which for numeric-looking version strings falls back to a numeric comparison. That makes '5.1' and
+			 * '5.10' compare as equal (both cast to float 5.1) and silently drops minor version 10. Deduplicate
+			 * explicitly by string key instead, keeping the first occurrence of each unique platform/version pair.
+			 */
+			$seen        = [];
+			$uniquePlats = [];
+
+			foreach ($parsedPlatforms['platforms'] as $platformItem)
+			{
+				$key = $platformItem[0] . '/' . $platformItem[1];
+
+				if (isset($seen[$key]))
+				{
+					continue;
+				}
+
+				$seen[$key]    = true;
+				$uniquePlats[] = $platformItem;
+			}
+
+			$parsedPlatforms['platforms'] = $uniquePlats;
 		}
 
 		if (!$compact)
