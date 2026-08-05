@@ -375,24 +375,14 @@ class ItemTableTest extends TestCase
 	}
 
 	/**
-	 * SUSPECTED BUG, pinned rather than silently treated as correct — see ItemTable::onBeforeCheck():
+	 * Regression test for the array_keys()/array_values() mix-up in ItemTable::onBeforeCheck().
 	 *
-	 *     $info    = $db->setQuery($query)->loadAssocList('title', 'alias') ?: [];
-	 *     $titles  = array_keys($info);
-	 *     $aliases = array_keys($info);
-	 *
-	 * `$info` is keyed by TITLE and valued by ALIAS. `$titles = array_keys($info)` correctly yields the other
-	 * items' titles. But `$aliases` is assigned the SAME `array_keys($info)` — i.e. it also ends up holding the
-	 * other items' TITLES, not their aliases (that would need `array_values($info)`). The result: the alias
-	 * uniqueness check `assertNotInArray($this->alias, $aliases, ...)` actually compares the new alias against
-	 * other items' TITLES, so two items in the same release CAN end up with the identical alias without the
-	 * uniqueness assertion ever noticing — confirmed empirically below: setting the new item's alias to collide
-	 * exactly with an existing item's alias does NOT throw.
-	 *
-	 * This looks like `array_values($info)` was intended. Flagging for a maintainer decision rather than "fixing"
-	 * it inside a test.
+	 * `$info` returned by `loadAssocList('title', 'alias')` is keyed by TITLE and valued by ALIAS. The alias
+	 * uniqueness check must compare the new item's alias against the OTHER items' aliases (`array_values($info)`),
+	 * not their titles (`array_keys($info)`). This test ensures that an item whose alias collides with another
+	 * item's alias within the same release is rejected.
 	 */
-	public function testSuspectedBugAliasCollisionWithAnotherItemsAliasIsNotDetected(): void
+	public function testDuplicateAliasWithinTheSameReleaseIsRejected(): void
 	{
 		$db          = new ScriptedRecordingDatabase();
 		$db->byTable = [
@@ -405,10 +395,8 @@ class ItemTableTest extends TestCase
 		$item->title = 'A Brand New Title';
 		$item->alias = 'my-new-alias'; // Deliberately collides with the OTHER item's ALIAS, not its title.
 
-		// This SHOULD throw (duplicate alias within the same release) but does not, because of the bug described
-		// above. Pinning the current (buggy) behaviour.
-		$this->invokeProtected($item, 'onBeforeCheck');
+		$this->expectException(RuntimeException::class);
 
-		$this->assertSame('my-new-alias', $item->alias);
+		$this->invokeProtected($item, 'onBeforeCheck');
 	}
 }

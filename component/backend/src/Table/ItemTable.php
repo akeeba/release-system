@@ -122,7 +122,7 @@ class ItemTable extends AbstractTable
 
 		$info    = $db->setQuery($query)->loadAssocList('title', 'alias') ?: [];
 		$titles  = array_keys($info);
-		$aliases = array_keys($info);
+		$aliases = array_values($info);
 		unset($info);
 
 		// Let's get automatic item title/description records
