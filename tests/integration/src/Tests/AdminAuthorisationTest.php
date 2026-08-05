@@ -90,13 +90,16 @@ class AdminAuthorisationTest extends AbstractE2ETestCase
 	 * (per the same ACL matrix). This is the control: it proves the refusal above is the per-category
 	 * create check actually working, not the save2copy task being broken for everyone.
 	 *
-	 * Empirically (see this class's development notes — confirmed by hand against the live site),
-	 * ReleaseTable::onBeforeCheck() rejects a colliding alias/version outright and neither
-	 * FormController::save() nor ReleaseModel auto-increments one for a copy — that auto-generation
-	 * exists only for CategoryModel (see 08e4a68b's own commit message). So unlike the category/
-	 * update-stream/environment/autodescription "Save as Copy" buttons the same commit added, a real
-	 * copy of a release needs a genuinely different version/alias, which is exactly what a user
-	 * reviewing the pre-filled edit form before saving would supply.
+	 * `ReleaseModel::save()` (commit `639703cd`) now mirrors `CategoryModel`: on `save2copy` it derives
+	 * a version/alias pair unique in the target category before delegating to `parent::save()`,
+	 * incrementing the version with `StringHelper::increment()` and re-running
+	 * `ModelCopyTrait::generateNewTitle()` in a bounded loop until neither collides, so
+	 * `ReleaseTable::onBeforeCheck()` never sees the pair it used to reject. That auto-increment is
+	 * exactly what this test's inputs are engineered to avoid: `version` and `alias` are both suffixed
+	 * with `uniqid()`, so they never collide with the original release and the auto-increment path is
+	 * never exercised. This test therefore still exercises only the per-category `core.create` check —
+	 * the control for the refusal above — and stays silent on the auto-increment behaviour, which
+	 * belongs to a test of its own.
 	 *
 	 * @since 7.5.0
 	 */

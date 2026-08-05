@@ -59,11 +59,19 @@ class DownloadDeliveryTest extends AbstractE2ETestCase
 	 * that something did.
 	 *
 	 * Not asserted: `Content-Length`. Confirmed empirically (`curl -D -`, both HTTP/1.0 and HTTP/1.1)
-	 * that the response never carries one — Apache switches to `Transfer-Encoding: chunked` instead,
-	 * because `downloadFileItem()` calls `flush()` repeatedly while streaming. The
-	 * `header('Content-Length: ...')` call in the model has no observable effect. That is a
-	 * documented finding, not a bug encoded as correct: the body-length and sha256 checks below are
-	 * the assertions that actually matter, and they do not depend on that header existing.
+	 * that the response never carries one — Apache switches to `Transfer-Encoding: chunked` instead.
+	 * The original diagnosis blamed `downloadFileItem()`'s repeated `flush()` calls, but that does not
+	 * hold up: a throwaway probe script placed in the site root that set `Content-Length` and echoed
+	 * 100 KB in one go, with no `flush()` at all, was also served chunked, and so was a five-byte
+	 * `header('Content-Length: 5'); echo 'HELLO';` script — while a *static* file from the same server
+	 * came back with a correct `Content-Length`. `zlib.output_compression` is off and
+	 * `output_buffering` is 0, ruling out compression too. The real cause is the test container's
+	 * front end: this stack serves PHP through `mod_proxy_fcgi` to a separate PHP-FPM container, and
+	 * every PHP response through that path is chunked regardless of what the script does. `ItemModel`
+	 * sets the header correctly, before any output; the test environment's web server drops it
+	 * unconditionally. That is an artefact of this Dockerised site, not an ARS defect — the
+	 * body-length and sha256 checks below are the assertions that actually matter, and they do not
+	 * depend on that header existing.
 	 *
 	 * @return  void
 	 * @since   7.5.0
