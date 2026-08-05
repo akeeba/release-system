@@ -79,9 +79,9 @@ class HtmlView extends BaseHtmlView
 	{
 		Factory::getapplication()->getInput()->set('hidemainmenu', true);
 
-		$isNew = empty($this->item->contactus_category_id);
+		$isNew = empty($this->item->id);
 
-		ToolbarHelper::title(Text::_('COM_ARS_TITLE_RELEASES_' . ($isNew ? 'ADD' : 'EDIT')), 'icon-ars');
+		ToolbarHelper::title(Text::_('COM_ARS_TITLE_ITEMS_' . ($isNew ? 'ADD' : 'EDIT')), 'icon-ars');
 
 		ToolbarHelper::apply('item.apply');
 		ToolbarHelper::save('item.save');
