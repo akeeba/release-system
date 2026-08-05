@@ -15,6 +15,8 @@ Akeeba Release System 7.5.0
 ~ Hardening: reject guests and enforce record ownership on the frontend Download ID edit view
 # [HIGH] Fatal error the first time the control panel is opened, on any site which does not have Akeeba Backup installed
 # [HIGH] Resumable and partial downloads served corrupt data: an error page fragment was appended to the response body
+# [HIGH] Update streams returned an error page whenever a Download ID was included in the request
+# [MEDIUM] Secondary Download IDs lost their user ID prefix when included in an update stream request
 # [MEDIUM] The Latest view returns an error page when no release is visible to the current user
 
 Akeeba Release System 7.4.3

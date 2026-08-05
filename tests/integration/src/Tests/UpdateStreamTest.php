@@ -163,46 +163,188 @@ class UpdateStreamTest extends AbstractE2ETestCase
 	}
 
 	/**
-	 * A `&dlid=` query parameter is threaded into the `downloadurl`.
+	 * A `&dlid=` query parameter is threaded into the `downloadurl` of every `<update>` element.
 	 *
-	 * KNOWN BUG, confirmed live: adding ANY `dlid` parameter to ANY update-stream task (`all`,
-	 * `category` or `stream`) makes the whole request 500, regardless of format. The crash is in
-	 * `Akeeba\Component\ARS\Site\View\Update\Common::commonSetup()`:
-	 * `$itemModel = $this->getModel('item'); $dlid = $itemModel->reformatDownloadID($dlid);` — called
-	 * unconditionally whenever `dlid` is non-empty. `getModel('item')` does not resolve an Item model
-	 * from within the Update view (it is a different MVC namespace), so `$itemModel` is falsy and the
-	 * following method call is a fatal "call to a member function on null/false". The `&dlid=` feature
-	 * this test was written to exercise is completely broken. Skipped, with this diagnosis.
+	 * REGRESSION GUARD. This used to be a hard 500 on every update-stream request that carried a
+	 * `dlid`, whatever the task (`all`, `category` or `stream`) and whatever the format:
+	 * `Update\Common::commonSetup()` did `$this->getModel('item')->reformatDownloadID($dlid)`, but the
+	 * Update controller never pushes an Item model into its views, so `getModel('item')` returned NULL
+	 * (with an "Undefined array key" warning from Joomla's `AbstractView::getModel()`) and the method
+	 * call on it was fatal. `commonSetup()` now creates the Item model through the component's MVC
+	 * factory instead. All three tasks are exercised here because all three route through the same
+	 * `commonSetup()`.
 	 *
 	 * @return  void
 	 * @since   7.5.0
 	 */
 	public function testDlidIsThreadedIntoTheDownloadUrl(): void
 	{
-		$response = $this->guest()->get($this->streamUrl('main', ['dlid' => static::$fixtures->dlid('subscriber')]));
+		$dlid     = static::$fixtures->dlid('subscriber');
+		$response = $this->guest()->get($this->streamUrl('main', ['dlid' => $dlid]));
 
-		if ($response->code !== 200)
-		{
-			$this->markTestSkipped(
-				sprintf(
-					'KNOWN BUG: adding &dlid= to an update-stream request (task=stream, format=xml) returns HTTP %d '
-					. "instead of 200. See this test's docblock for the diagnosis "
-					. '(Update\\Common::commonSetup() calling a method on the result of a failed getModel(\'item\')).',
-					$response->code
-				)
-			);
-		}
+		$this->assertStatus(200, $response, 'The update stream task "stream" did not render with a dlid.');
 
 		$xml = new SimpleXMLElement($response->body);
+
+		$this->assertGreaterThan(0, count($xml->update), 'The main stream carries no <update> elements, so nothing was checked.');
 
 		foreach ($xml->update as $update)
 		{
 			$this->assertStringContainsString(
-				'dlid=' . static::$fixtures->dlid('subscriber'),
+				'dlid=' . $dlid,
 				(string) $update->downloads->downloadurl,
-				'The download URL does not carry the requested dlid.'
+				'A download URL does not carry the requested dlid.'
 			);
 		}
+	}
+
+	/**
+	 * The `all` and `category` tasks survive a `dlid` too, and thread it into the URLs they point at.
+	 *
+	 * These two emit an `<extensionset>` of `<category ref="…">` / `<extension detailsurl="…">`
+	 * pointers rather than `<update>` elements, so the Download ID shows up in those attributes. They
+	 * are covered separately because they crashed for exactly the same reason: all three tasks call
+	 * `Update\Common::commonSetup()`.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	public function testDlidIsThreadedIntoTheAllAndCategoryTasks(): void
+	{
+		$dlid = static::$fixtures->dlid('subscriber');
+
+		$urls = [
+			'all'      => $this->siteUrl(['view' => 'update', 'task' => 'all', 'format' => 'xml', 'dlid' => $dlid]),
+			// task=category takes an update stream TYPE, not a category id or alias. All fixture streams are 'components'.
+			'category' => $this->siteUrl([
+				'view'   => 'update',
+				'task'   => 'category',
+				'format' => 'xml',
+				'id'     => 'components',
+				'dlid'   => $dlid,
+			]),
+		];
+
+		foreach ($urls as $task => $url)
+		{
+			$response = $this->guest()->get($url);
+
+			$this->assertStatus(200, $response, sprintf('The update stream task "%s" did not render with a dlid.', $task));
+
+			$xml      = new SimpleXMLElement($response->body);
+			$pointers = $task === 'all' ? $xml->category : $xml->extension;
+			$attribute = $task === 'all' ? 'ref' : 'detailsurl';
+
+			$this->assertGreaterThan(
+				0,
+				count($pointers),
+				sprintf('The update stream task "%s" carries no pointer elements, so nothing was checked.', $task)
+			);
+
+			foreach ($pointers as $pointer)
+			{
+				$this->assertStringContainsString(
+					'dlid=' . $dlid,
+					(string) $pointer[$attribute],
+					sprintf('A %s URL from task "%s" does not carry the requested dlid.', $attribute, $task)
+				);
+			}
+		}
+	}
+
+	/**
+	 * A secondary Download ID keeps its `userId:downloadId` shape all the way into the download URL.
+	 *
+	 * REGRESSION GUARD for the second half of the same bug. `commonSetup()` read the parameter with
+	 * `getCmd()`, whose filter strips the colon — the only thing that tells a secondary Download ID
+	 * apart from a primary one. `669:b0bb…` silently became `669b0bb…`, which `reformatDownloadID()`
+	 * then truncated to its first 32 characters, so the stream advertised a download URL carrying a
+	 * Download ID that belongs to nobody. Every other place ARS reads `dlid` uses `STRING`
+	 * ({@see \Akeeba\Component\ARS\Site\Controller\UpdateController} registers it as such for page
+	 * caching, and `ItemModel` reads it with `getString()`), so `commonSetup()` now does too.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	public function testSecondaryDownloadIdKeepsItsUserIdPrefix(): void
+	{
+		$dlid     = sprintf('%u:%s', static::$fixtures->userId('subscriber'), static::$fixtures->dlid('subscriberSecondary'));
+		$response = $this->guest()->get($this->streamUrl('main', ['dlid' => $dlid]));
+
+		$this->assertStatus(200, $response, 'The update stream did not render with a userId-prefixed dlid.');
+
+		$xml = new SimpleXMLElement($response->body);
+
+		$this->assertGreaterThan(0, count($xml->update), 'The main stream carries no <update> elements.');
+
+		foreach ($xml->update as $update)
+		{
+			$this->assertStringContainsString(
+				'dlid=' . $dlid,
+				(string) $update->downloads->downloadurl,
+				'A download URL dropped the userId prefix of the secondary Download ID.'
+			);
+		}
+	}
+
+	/**
+	 * A malformed Download ID is dropped rather than propagated into the download URLs.
+	 *
+	 * `reformatDownloadID()` returns an empty string for anything shorter than 32 characters, and
+	 * `commonSetup()` must then emit no `dlid` at all — not `dlid=`, and certainly not the garbage it
+	 * was handed.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	public function testMalformedDlidIsDroppedFromTheDownloadUrl(): void
+	{
+		$response = $this->guest()->get($this->streamUrl('main', ['dlid' => 'not-a-download-id']));
+
+		$this->assertStatus(200, $response, 'The update stream did not render with a malformed dlid.');
+		$this->assertStringNotContainsString(
+			'dlid',
+			$response->body,
+			'The update stream propagated a malformed Download ID into its output instead of dropping it.'
+		);
+	}
+
+	/**
+	 * The download URL a dlid-carrying stream advertises actually works.
+	 *
+	 * The `restrictedStream` points at the `restricted` category, which a guest cannot download from.
+	 * Following the advertised URL as a guest must therefore succeed *because of* the threaded
+	 * Download ID — and the same URL with the `dlid` stripped off must be refused. That pair is what
+	 * proves the feature end to end rather than merely proving a string got interpolated.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	public function testTheAdvertisedDlidDownloadUrlActuallyDownloads(): void
+	{
+		$dlid     = static::$fixtures->dlid('subscriber');
+		$response = $this->guest()->get($this->streamUrl('restrictedStream', ['dlid' => $dlid]));
+
+		$this->assertStatus(200, $response, 'The restricted update stream did not render with a dlid.');
+
+		$xml = new SimpleXMLElement($response->body);
+
+		$this->assertGreaterThan(0, count($xml->update), 'The restricted update stream carries no <update> elements.');
+
+		$downloadUrl = (string) $xml->update[0]->downloads->downloadurl;
+
+		$this->assertStringContainsString('dlid=' . $dlid, $downloadUrl, 'The advertised download URL carries no dlid.');
+
+		$withDlid    = $this->guest()->get($downloadUrl);
+		$withoutDlid = $this->guest()->get(str_replace('&dlid=' . $dlid, '', $downloadUrl));
+
+		$this->assertStatus(200, $withDlid, 'The download URL the stream advertised for a valid Download ID was refused.');
+		$this->assertNotEmpty($withDlid->body, 'The download URL the stream advertised returned an empty body.');
+		$this->assertStatus(
+			403,
+			$withoutDlid,
+			'The same restricted download succeeded without the Download ID, so the previous assertion proves nothing.'
+		);
 	}
 
 	/**
