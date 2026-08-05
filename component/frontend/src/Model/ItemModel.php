@@ -983,24 +983,23 @@ class ItemModel extends BaseDatabaseModel
 	 */
 	private function getContentDigestHeaderValue(ItemTable $item): ?string
 	{
-		if (!empty($item->sha512))
-		{
-			return 'sha-512=:' . base64_encode(hex2bin($item->sha512)) . ':';
-		}
+		$algorithms = [
+			'sha-512' => ['sha512', 128],
+			'sha-256' => ['sha256', 64],
+			'sha'     => ['sha1', 40],
+			'md5'     => ['md5', 32],
+		];
 
-		if (!empty($item->sha256))
+		foreach ($algorithms as $label => [$property, $length])
 		{
-			return 'sha-256=:' . base64_encode(hex2bin($item->sha256)) . ':';
-		}
+			$hash = trim($item->{$property} ?? '');
 
-		if (!empty($item->sha1))
-		{
-			return 'sha=:' . base64_encode(hex2bin($item->sha1)) . ':';
-		}
+			if ($hash === '' || strlen($hash) !== $length || !ctype_xdigit($hash))
+			{
+				continue;
+			}
 
-		if (!empty($item->md5))
-		{
-			return 'md5=:' . base64_encode(hex2bin($item->md5)) . ':';
+			return $label . '=:' . base64_encode(hex2bin($hash)) . ':';
 		}
 
 		return null;

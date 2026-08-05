@@ -170,24 +170,42 @@ class ItemModelDownloadIdTest extends TestCase
 	}
 
 	/**
-	 * SUSPECTED BUG, reported per the task brief rather than silently pinned as fine. `hex2bin()` is
-	 * called directly on the stored hash with no validation. An odd-length stored value raises
-	 * "hex2bin(): Hexadecimal input string must have an even length"; a same-length value containing
-	 * non-hex characters raises "hex2bin(): Input string must be hexadecimal string". Both are PHP
-	 * E_WARNINGs, not exceptions, so production code does not crash outright — but `hex2bin()` then
-	 * returns `false`, and `base64_encode(false)` silently becomes `base64_encode('')`, so a corrupted
-	 * `sha512` column produces a syntactically valid but WRONG `Content-Digest: sha-512=::` header
-	 * instead of either the correct digest or a clean fallback to `sha256`/`sha1`/`md5`. A stored hash
-	 * column is normally written by ARS itself from a real hash, so this needs external corruption
-	 * (a bad migration, manual DB edit, etc.) to trigger — but nothing in `getContentDigestHeaderValue()`
-	 * guards against it.
+	 * Regression test: a malformed stored hash (odd length, or non-hex characters) must not be passed
+	 * to `hex2bin()` at all. Previously it was, which raised a PHP E_WARNING and made `hex2bin()`
+	 * return `false`; `base64_encode(false)` then silently became `base64_encode('')`, so a corrupted
+	 * `sha512` column produced a syntactically valid but WRONG `Content-Digest: sha-512=::` header
+	 * instead of either the correct digest or a clean fallback to `sha256`/`sha1`/`md5`.
 	 *
-	 * This test installs its own error handler to turn the PHP warning into a catchable exception, so
-	 * the "throws" behaviour described in the task brief is asserted directly rather than merely
-	 * observed as a wrong return value.
+	 * This test installs its own error handler to turn any PHP warning into a catchable exception, so
+	 * a regression that reintroduces the unvalidated `hex2bin()` call fails loudly instead of merely
+	 * producing a wrong return value.
 	 */
 	#[DataProvider('provideMalformedSha512')]
-	public function testAMalformedStoredHashWarns(string $malformedSha512): void
+	public function testAMalformedStoredHashIsSkippedWithoutWarningAndFallsBackToSha256(string $malformedSha512): void
+	{
+		$item = $this->itemWithDigests([
+			'sha512' => $malformedSha512,
+			'sha256' => hash('sha256', 'x'),
+		]);
+
+		set_error_handler(static function (int $errno, string $errstr): bool {
+			throw new ErrorException($errstr, 0, $errno);
+		}, E_WARNING);
+
+		try
+		{
+			$expected = 'sha-256=:' . base64_encode(hex2bin(hash('sha256', 'x'))) . ':';
+
+			self::assertSame($expected, $this->invokePrivate('getContentDigestHeaderValue', [$item]));
+		}
+		finally
+		{
+			restore_error_handler();
+		}
+	}
+
+	#[DataProvider('provideMalformedSha512')]
+	public function testAMalformedStoredHashWithNoOtherDigestReturnsNullWithoutWarning(string $malformedSha512): void
 	{
 		$item = $this->itemWithDigests(['sha512' => $malformedSha512]);
 
@@ -197,10 +215,7 @@ class ItemModelDownloadIdTest extends TestCase
 
 		try
 		{
-			$this->expectException(ErrorException::class);
-			$this->expectExceptionMessage('hex2bin()');
-
-			$this->invokePrivate('getContentDigestHeaderValue', [$item]);
+			self::assertNull($this->invokePrivate('getContentDigestHeaderValue', [$item]));
 		}
 		finally
 		{
