@@ -83,45 +83,22 @@ class UpdateStreamTest extends AbstractE2ETestCase
 	/**
 	 * The JSON output carries the equivalent `security` value.
 	 *
-	 * Confirmed empirically: this requires `task=json`, NOT `task=stream&format=json`. The controller's
-	 * `onBeforeExecute()` switch only honours `format=json` when `task` is literally `json`; for
-	 * `task=stream` the `default:` branch forces `format` back to `xml` regardless of what the request
-	 * asked for, so a `format=json` query parameter on the `stream` task is silently ignored and XML
-	 * comes back instead. This is itself worth knowing, separately from the bug documented below.
-	 *
-	 * KNOWN BUG, confirmed live: `task=json` always returns HTTP 500. The response body is the literal
-	 * string "Array" (an eight-character prefix, PHP's implicit array-to-string conversion) followed by
-	 * Joomla's generic error page. `Akeeba\Component\ARS\Site\View\Update\JsonView::onBeforeJson()`
-	 * echoes its own `json_encode(...)` output directly inside the task hook, while the CORE
-	 * `\Joomla\CMS\MVC\View\JsonView::display()` (called immediately afterwards by
-	 * `ViewTaskBasedEventsTrait::display()`) ALSO runs and does its own
-	 * `$this->getDocument()->setBuffer(json_encode($this->_output))` — the two write paths collide. The
-	 * JSON update stream is therefore completely unusable on this build. Skipped, with this diagnosis,
-	 * rather than asserting a 500 as correct.
+	 * This one used to be skipped: `task=json` returned HTTP 500 for three compounding reasons, all of
+	 * which are fixed and each of which is pinned by one of the tests below.
 	 *
 	 * @return  void
 	 * @since   7.5.0
 	 */
 	public function testJsonOutputCarriesTheEquivalentSecurityValue(): void
 	{
-		$response = $this->guest()->get($this->siteUrl([
-			'view' => 'update',
-			'task' => 'json',
-			'id'   => static::$fixtures->updateStreamId('main'),
-		]));
+		$response = $this->guest()->get($this->jsonStreamUrl('main'));
 
-		if ($response->code !== 200)
-		{
-			$this->markTestSkipped(
-				sprintf(
-					'KNOWN BUG: the JSON update stream (task=json) returns HTTP %d instead of 200. Body: %s. See '
-					. 'this test\'s docblock for the diagnosis (JsonView::onBeforeJson() echoing directly while the '
-					. 'core JsonView::display() ALSO runs and collides with it).',
-					$response->code,
-					substr($response->body, 0, 200)
-				)
-			);
-		}
+		$this->assertStatus(200, $response, 'The JSON update stream did not render.');
+		$this->assertStringStartsWith(
+			'application/json',
+			$response->getHeader('content-type') ?? '',
+			'The JSON update stream is not served as application/json.'
+		);
 
 		$items = $response->json();
 		$this->assertIsArray($items, 'The JSON update stream did not return a JSON array.');
@@ -129,6 +106,133 @@ class UpdateStreamTest extends AbstractE2ETestCase
 		$withSecurity = array_filter($items, fn(array $item) => array_key_exists('security', $item));
 		$this->assertCount(1, $withSecurity, 'The JSON update stream should carry exactly one item with a security field.');
 		$this->assertSame(3, (int) array_values($withSecurity)[0]['security'], 'The JSON security value is not 3.');
+	}
+
+	/**
+	 * `task=stream&format=json` returns JSON, not XML.
+	 *
+	 * The `json` task is the `stream` task rendered as JSON — `UpdateController::json()` literally calls
+	 * `stream()`. Asking for the stream in JSON must therefore give you JSON. It used to give you XML:
+	 * the `default:` arm of `onBeforeExecute()`'s task/format reconciliation forced `format` back to
+	 * `xml` for every task it did not recognise as JSON-capable, silently discarding what the request
+	 * asked for.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	public function testStreamTaskHonoursTheJsonFormat(): void
+	{
+		$viaStreamTask = $this->guest()->get($this->siteUrl([
+			'view'   => 'update',
+			'task'   => 'stream',
+			'format' => 'json',
+			'id'     => static::$fixtures->updateStreamId('main'),
+		]));
+
+		$this->assertStatus(200, $viaStreamTask, 'task=stream&format=json did not render.');
+		$this->assertIsArray(
+			$viaStreamTask->json(),
+			'task=stream&format=json did not return JSON. It most likely returned the XML stream instead: '
+			. substr($viaStreamTask->body, 0, 120)
+		);
+
+		$viaJsonTask = $this->guest()->get($this->jsonStreamUrl('main'));
+
+		$this->assertSame(
+			$viaJsonTask->json(),
+			$viaStreamTask->json(),
+			'task=stream&format=json and task=json do not produce the same update stream.'
+		);
+	}
+
+	/**
+	 * Every update-stream task renders identically whether or not `format` is in the URL.
+	 *
+	 * `UpdateController::onBeforeExecute()` replaces the application's document object when the URL does
+	 * not already carry the right `format`. `SiteApplication::dispatch()` has by then taken a reference
+	 * to the OLD document, and writes the component's output into it — into the STATIC, shared
+	 * `Document::$_buffer`, in HtmlDocument's nested `[$type][$name][$title]` shape rather than the plain
+	 * string an Xml/Json/Raw document hands straight back from `render()`.
+	 *
+	 * The result was the literal string "Array" (plus an "Array to string conversion" warning) appended
+	 * to every response, and — for JSON, where core's `JsonView::display()` had already put a *string*
+	 * where HtmlDocument expected an array — an outright HTTP 500 with the update stream replaced by an
+	 * unrenderable error page.
+	 *
+	 * The bodies must be byte-identical, not merely both 200. Trailing garbage is precisely what this
+	 * catches.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	public function testTasksRenderIdenticallyWithAndWithoutAnExplicitFormat(): void
+	{
+		$streamId = static::$fixtures->updateStreamId('main');
+		$cases    = [
+			'all'    => [['view' => 'update', 'task' => 'all'], 'xml'],
+			'stream' => [['view' => 'update', 'task' => 'stream', 'id' => $streamId], 'xml'],
+			'ini'    => [['view' => 'update', 'task' => 'ini', 'id' => $streamId], 'ini'],
+			'json'   => [['view' => 'update', 'task' => 'json', 'id' => $streamId], 'json'],
+		];
+
+		foreach ($cases as $task => [$query, $format])
+		{
+			$without = $this->guest()->get($this->siteUrl($query));
+			$with    = $this->guest()->get($this->siteUrl(array_merge($query, ['format' => $format])));
+
+			$this->assertStatus(200, $without, sprintf('task=%s without an explicit format did not render.', $task));
+			$this->assertStatus(200, $with, sprintf('task=%s with format=%s did not render.', $task, $format));
+
+			$this->assertSame(
+				$with->body,
+				$without->body,
+				sprintf(
+					'task=%s renders differently without an explicit format. The tail of the format-less response is: %s',
+					$task,
+					var_export(substr($without->body, -80), true)
+				)
+			);
+		}
+	}
+
+	/**
+	 * The URLs the JSON stream advertises are usable as-is.
+	 *
+	 * JSON has no use for HTML entities. An `&amp;`-escaped URL, followed verbatim by a client — which is
+	 * the whole point of publishing it — asks for a parameter literally named `amp;view`. This is the
+	 * same defect the XML `ref`/`detailsurl` attributes had; the JSON view inherited it through
+	 * `Common::getDownloadUrl()`, which must keep escaping for the XML path's sake.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	public function testJsonStreamUrlsAreNotHtmlEscaped(): void
+	{
+		$items = $this->guest()->get($this->jsonStreamUrl('main'))->json();
+
+		$this->assertNotEmpty($items, 'The JSON update stream is empty.');
+
+		foreach ($items as $item)
+		{
+			foreach (['download', 'infoUrl'] as $key)
+			{
+				$this->assertStringNotContainsString(
+					'&amp;',
+					$item[$key] ?? '',
+					sprintf('The JSON stream\'s %s for version %s is HTML-escaped.', $key, $item['version'] ?? '?')
+				);
+			}
+		}
+
+		// The advertised download URL must actually deliver the file.
+		$download = $this->guest()->get($items[0]['download']);
+
+		$this->assertStatus(
+			200,
+			$download,
+			'The download URL advertised by the JSON update stream does not deliver the file.'
+		);
+		$this->assertNotEmpty($download->body, 'The download URL advertised by the JSON update stream delivered nothing.');
 	}
 
 	/**
@@ -508,6 +612,27 @@ class UpdateStreamTest extends AbstractE2ETestCase
 				'task'   => 'stream',
 				'format' => 'xml',
 				'id'     => static::$fixtures->updateStreamId($streamKey),
+			],
+			$extra
+		));
+	}
+
+	/**
+	 * Build a JSON update-stream URL for a fixture stream.
+	 *
+	 * @param   string  $streamKey  An update-stream name from the fixture manifest.
+	 * @param   array   $extra      Extra query parameters.
+	 *
+	 * @return  string
+	 * @since   7.5.0
+	 */
+	private function jsonStreamUrl(string $streamKey, array $extra = []): string
+	{
+		return $this->siteUrl(array_merge(
+			[
+				'view' => 'update',
+				'task' => 'json',
+				'id'   => static::$fixtures->updateStreamId($streamKey),
 			],
 			$extra
 		));

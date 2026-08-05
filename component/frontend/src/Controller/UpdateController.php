@@ -304,11 +304,23 @@ class UpdateController extends BaseController
 				break;
 
 			default:
-				$format = 'xml';
-
 				if (!in_array($task, ['all', 'category', 'stream', 'jed']))
 				{
 					$task = 'all';
+				}
+
+				/**
+				 * The `json` task is nothing but the `stream` task rendered as JSON — `json()` literally calls
+				 * `stream()`. Therefore `task=stream&format=json` means the JSON update stream, and asking for it
+				 * must not silently hand back XML. Every other task is XML-only.
+				 */
+				if (($task === 'stream') && ($format === 'json'))
+				{
+					$task = 'json';
+				}
+				else
+				{
+					$format = 'xml';
 				}
 				break;
 		}
@@ -329,6 +341,8 @@ class UpdateController extends BaseController
 			$newDocument = Factory::getContainer()->get(FactoryInterface::class)->createDocument($actualViewType, []);
 
 			$this->app->loadDocument($newDocument);
+
+			$this->repairStaleDocumentBuffer();
 		}
 	}
 
@@ -340,5 +354,43 @@ class UpdateController extends BaseController
 		{
 			$this->app->close();
 		}
+	}
+
+	/**
+	 * Undo the damage caused by swapping the application's document object mid-request.
+	 *
+	 * `SiteApplication::dispatch()` takes a reference to the document BEFORE it renders the component, then stashes
+	 * the component's output in it with `$document->setBuffer($contents, ['type' => 'component'])`. We have just
+	 * replaced the application's document with one of a different type, so that call goes to the OLD object — an
+	 * HtmlDocument whenever the request carried no `format` in the URL, which is exactly the case this method exists
+	 * for.
+	 *
+	 * `Document::$_buffer` is static, i.e. every Document object in the request shares it, but the two document
+	 * flavours disagree about its shape: HtmlDocument nests it as `$_buffer[$type][$name][$title]`, while Xml, Json
+	 * and Raw documents keep the body in it verbatim and hand it straight back from `render()`. The result was a
+	 * response body of the literal string "Array", preceded by an "Array to string conversion" warning, tacked onto
+	 * the end of the update stream.
+	 *
+	 * Flatten the buffer back to a plain string once the CMS is done writing to it and before it is rendered.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	private function repairStaleDocumentBuffer(): void
+	{
+		$this->app->getDispatcher()->addListener(
+			'onAfterDispatch',
+			function () {
+				$document = $this->app->getDocument();
+				$buffer   = $document->getBuffer();
+
+				if (!is_array($buffer))
+				{
+					return;
+				}
+
+				$document->setBuffer($buffer['component'][''][''] ?? '');
+			}
+		);
 	}
 }
