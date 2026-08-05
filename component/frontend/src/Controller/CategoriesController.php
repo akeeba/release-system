@@ -39,8 +39,8 @@ class CategoriesController extends BaseController
 
 		$params = $this->app->getParams();
 
-		// Apply one of the allowed layouts
-		if (!in_array($this->input->get('layout', 'repository'), ['normal', 'bleedingedge', 'repository']))
+		// Apply one of the allowed layouts. Note: an empty default; there is no `default` layout.
+		if (!in_array($this->input->getCmd('layout', ''), ['normal', 'bleedingedge', 'repository']))
 		{
 			$this->input->set('layout', 'repository');
 		}

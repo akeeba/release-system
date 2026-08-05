@@ -23,6 +23,7 @@ Akeeba Release System 7.5.0
 # [MEDIUM] HTML-escaped ampersands made the download and information URLs of the JSON update stream unusable
 # [MEDIUM] Asking for the update stream as JSON with task=stream&format=json returned XML instead
 # [MEDIUM] The Latest view returns an error page when no release is visible to the current user
+# [MEDIUM] The Categories view returns an error page when the URL has no layout parameter
 
 Akeeba Release System 7.4.3
 ================================================================================

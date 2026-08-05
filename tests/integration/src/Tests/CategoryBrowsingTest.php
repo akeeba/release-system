@@ -191,11 +191,11 @@ class CategoryBrowsingTest extends AbstractE2ETestCase
 	}
 
 	/**
-	 * KNOWN BUG, already confirmed: `index.php?option=com_ars&view=categories` with NO `layout` query
-	 * parameter returns HTTP 500 ("Layout default not found"), while an explicit, INVALID layout (e.g.
-	 * `layout=bogus`) is correctly normalised to `repository` and returns 200.
+	 * REGRESSION TEST for a confirmed, now fixed bug: `index.php?option=com_ars&view=categories` with NO
+	 * `layout` query parameter used to return HTTP 500 ("Layout default not found"), while an explicit,
+	 * INVALID layout (e.g. `layout=bogus`) was correctly normalised to `repository` and returned 200.
 	 *
-	 * `CategoriesController::onBeforeDisplay()`'s whitelist guard is:
+	 * `CategoriesController::onBeforeDisplay()`'s whitelist guard used to be:
 	 *
 	 *     if (!in_array($this->input->get('layout', 'repository'), ['normal', 'bleedingedge', 'repository']))
 	 *     {
@@ -203,14 +203,15 @@ class CategoryBrowsingTest extends AbstractE2ETestCase
 	 *     }
 	 *
 	 * `$this->input->get('layout', 'repository')` returns the DEFAULT `'repository'` whenever `layout`
-	 * is absent, which already satisfies the whitelist — so the `in_array()` check passes and
-	 * `$this->input->set('layout', ...)` is never reached. The request's `layout` input stays unset,
-	 * and the view falls through to a `default` layout that does not exist in
-	 * `component/frontend/tmpl/categories/` (only `normal`, `bleedingedge` and `repository` do).
+	 * is absent, which already satisfies the whitelist — so the `in_array()` check passed and
+	 * `$this->input->set('layout', ...)` was never reached. The request's `layout` input stayed unset,
+	 * and the view fell through to a `default` layout that does not exist in
+	 * `component/frontend/tmpl/categories/` (only `normal`, `bleedingedge` and `repository` do). The
+	 * guard now reads the input with an EMPTY default, which fails the whitelist and normalises.
 	 *
-	 * This test asserts the CORRECT behaviour — 200, identical to an explicit `layout=repository` — and
-	 * is marked skipped so the suite stays green while the finding stays visible, per this suite's
-	 * convention for a confirmed, not-yet-fixed bug.
+	 * The bleeding edge category is the discriminator between the layouts: `repository` renders both the
+	 * normal and the bleeding edge sections, whereas `normal` renders only the former. Asserting on it
+	 * proves the fallback landed on `repository` specifically, not merely on some layout that exists.
 	 *
 	 * @return  void
 	 * @since   7.5.0
@@ -219,23 +220,9 @@ class CategoryBrowsingTest extends AbstractE2ETestCase
 	{
 		$response = $this->guest()->get($this->siteUrl(['view' => 'categories']));
 
-		if ($response->code !== 200)
-		{
-			$this->markTestSkipped(
-				sprintf(
-					'KNOWN BUG: index.php?option=com_ars&view=categories with no layout= parameter returns HTTP %d '
-					. "instead of 200. See this test's docblock for the diagnosis "
-					. "(CategoriesController::onBeforeDisplay()'s whitelist guard reads the layout input with a "
-					. 'default of "repository", which already satisfies the whitelist, so the fallback '
-					. '$this->input->set(\'layout\', ...) call that would normally run is skipped, and the view '
-					. 'falls through to a nonexistent "default" layout).',
-					$response->code
-				)
-			);
-		}
-
 		$this->assertStatus(200, $response, 'The category list with no layout parameter did not render.');
 		$this->assertBodyContains('E2E Public Downloads', $response, 'The category list with no layout parameter did not show the public category.');
+		$this->assertBodyContains('E2E Bleeding Edge', $response, 'The category list with no layout parameter did not fall back to the repository layout; the bleeding edge section is missing.');
 	}
 
 	/**
