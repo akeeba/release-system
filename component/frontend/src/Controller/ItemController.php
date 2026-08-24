@@ -101,15 +101,15 @@ class ItemController extends BaseController
 		}
 		catch (Exception $e)
 		{
-			$effectiveId = isset($item) ? ($item->id ?? 0) : 0;
-			$effectiveId = $effectiveId ?: $id;
+			$item        ??= null;
+			$effectiveId = ($item?->id ?? 0) ?: $id;
 			$this->logFailedDownloadAttempt($effectiveId);
 
 			if (empty($this->redirect))
 			{
 				$noAccessURL = ComponentHelper::getParams('com_ars')->get('no_access_url', '');
 
-				if ($effectiveId && $item->redirect_unauth && $item->show_unauth_links)
+				if ($effectiveId && $item?->redirect_unauth && $item?->show_unauth_links)
 				{
 					$noAccessURL = $item->redirect_unauth;
 				}

@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.5.1
+================================================================================
+# [LOW] PHP Warning on inaccessible item [gh-251]
+
 Akeeba Release System 7.5.0
 ================================================================================
 ! SECURITY: Download ID disclosure
