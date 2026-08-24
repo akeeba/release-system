@@ -5,6 +5,5 @@
     <file url="file://$PROJECT_DIR$/component/backend/sql/install.postgresql.utf8.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/component/backend/sql/uninstall.postgresql.utf8.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/component/backend/sql/updates/mysql/7.4.2-20250804-0000.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/component/backend/sql/updates/postgresql/7.4.2-20250804-0000.sql" dialect="GenericSQL" />
   </component>
 </project>

@@ -1,6 +1,7 @@
 <?php die(); ?>
 Akeeba Release System 7.5.0
 ================================================================================
+! SECURITY: Download ID disclosure
 + Rewritten Bleeding Edge releases
 + Support Joomla major releases past 4.x in plg_content_arslatest
 + Support for the Joomla 6.2 security flag in update streams (gh-250)
