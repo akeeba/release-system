@@ -18,7 +18,9 @@ use DateTimeZone;
 use Exception;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
@@ -508,41 +510,45 @@ final class BleedingedgeModel extends BaseDatabaseModel
 	}
 
 	/**
-	 * Extract the latest version's changelog and render it as HTML release notes.
+	 * Get the raw lines of the latest version's changelog section.
 	 *
-	 * Reads a CHANGELOG file from the release's directory and returns an HTML <ul> listing the
-	 * entries of the FIRST (topmost) section — the convention in Akeeba projects where the newest
-	 * version appears first. Each entry line starts with one of the glyphs '+', '-', '~', '!', '#',
-	 * indicating addition, removal, change, miscellaneous, and bug fix respectively; each rendered
-	 * <li> gets a matching CSS class.
+	 * Reads a CHANGELOG file from the release's directory and returns an array of raw, glyph-prefixed
+	 * lines (e.g. "+ Some new feature") representing the latest release's entries. This is the shape
+	 * passed to `ars` plugins as `changelog` in the `onNewARSBleedingEdgeRelease` event, and is also
+	 * fed to {@see renderChangelogHtml()} to build the release notes HTML.
 	 *
-	 * Section headings are any line immediately followed by a line of '=' characters, e.g.:
-	 *     MyApp 1.2.3
-	 *     ================================
+	 * Two CHANGELOG conventions are supported:
+	 * - A per-version file containing only that release's entries, with no heading. The whole file is
+	 *   used as-is.
+	 * - Akeeba's rolling, multi-section format, where the newest version appears first and each
+	 *   section is introduced by a heading line immediately followed by a line of '=' characters, e.g.:
+	 *       MyApp 1.2.3
+	 *       ================================
+	 *   Only the FIRST (topmost) section is used in this case.
 	 *
-	 * Controlled by the `begenchangelog` component parameter; returns '' if disabled, if no
-	 * CHANGELOG file is found, or if the file contains no recognisable section.
+	 * Controlled by the `begenchangelog` component parameter; returns an empty array if disabled,
+	 * if no CHANGELOG file is found, or if the file is empty.
 	 *
 	 * @param   CategoryTable  $category
 	 * @param   string         $version   The release's version (the subdirectory name).
 	 *
-	 * @return  string  HTML for the release notes, or an empty string.
+	 * @return  string[]  The raw changelog lines of the latest section, or an empty array.
 	 * @since   7.5.0
 	 */
-	private function extractChangelog(CategoryTable $category, string $version): string
+	private function getLatestChangelogLines(CategoryTable $category, string $version): array
 	{
 		$cParams = ComponentHelper::getParams($this->option);
 
 		if (!$cParams->get('begenchangelog', 1))
 		{
-			return '';
+			return [];
 		}
 
 		$basePath = $this->getDirectoryPath($category);
 
 		if (empty($basePath))
 		{
-			return '';
+			return [];
 		}
 
 		$releaseDir = $basePath . DIRECTORY_SEPARATOR . $version;
@@ -561,44 +567,67 @@ final class BleedingedgeModel extends BaseDatabaseModel
 
 		if ($file === null)
 		{
-			return '';
+			return [];
 		}
 
 		$content = @file_get_contents($file);
 
 		if ($content === false || $content === '')
 		{
-			return '';
+			return [];
 		}
 
 		$lines     = explode("\n", str_replace(["\r\n", "\r"], "\n", $content));
 		$lineCount = count($lines);
-		$inSection = false;
-		$collected = [];
 
-		for ($i = 0; $i < $lineCount; $i++)
+		// Does this file use Akeeba's rolling, multi-section format (newest version topmost, each section
+		// introduced by a heading line followed by a line of '=' characters)? Most third-party packages instead
+		// bundle a per-version CHANGELOG containing only that release's entries, with no heading at all — in that
+		// case the whole file IS the latest section.
+		$hasHeading = false;
+
+		for ($i = 0; $i < $lineCount - 1; $i++)
 		{
-			$isHeading = ($i + 1 < $lineCount) && preg_match('/^=+\s*$/', $lines[$i + 1])
-				&& trim($lines[$i]) !== '';
-
-			if ($isHeading)
+			if (trim($lines[$i]) !== '' && preg_match('/^=+\s*$/', $lines[$i + 1]))
 			{
-				// If we're already collecting, this marks the next section — stop.
-				if ($inSection)
+				$hasHeading = true;
+				break;
+			}
+		}
+
+		if (!$hasHeading)
+		{
+			$collected = $lines;
+		}
+		else
+		{
+			$inSection = false;
+			$collected = [];
+
+			for ($i = 0; $i < $lineCount; $i++)
+			{
+				$isHeading = ($i + 1 < $lineCount) && preg_match('/^=+\s*$/', $lines[$i + 1])
+					&& trim($lines[$i]) !== '';
+
+				if ($isHeading)
 				{
-					break;
+					// If we're already collecting, this marks the next section — stop.
+					if ($inSection)
+					{
+						break;
+					}
+
+					// Otherwise, start collecting at the first recognised section (= the latest version).
+					$inSection = true;
+					$i++; // skip the '===' underline
+
+					continue;
 				}
 
-				// Otherwise, start collecting at the first recognised section (= the latest version).
-				$inSection = true;
-				$i++; // skip the '===' underline
-
-				continue;
-			}
-
-			if ($inSection)
-			{
-				$collected[] = $lines[$i];
+				if ($inSection)
+				{
+					$collected[] = $lines[$i];
+				}
 			}
 		}
 
@@ -613,6 +642,20 @@ final class BleedingedgeModel extends BaseDatabaseModel
 			array_pop($collected);
 		}
 
+		return $collected;
+	}
+
+	/**
+	 * Render a set of raw changelog lines (as returned by {@see getLatestChangelogLines()}) as HTML
+	 * release notes.
+	 *
+	 * @param   string[]  $collected  Raw, glyph-prefixed changelog lines.
+	 *
+	 * @return  string  HTML for the release notes, or an empty string if $collected is empty.
+	 * @since   7.5.0
+	 */
+	private function renderChangelogHtml(array $collected): string
+	{
 		if (empty($collected))
 		{
 			return '';
@@ -649,7 +692,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 			$color = 'text-body';
 			$text  = $line;
 
-			if (preg_match('/^([+\-~!#])\s+(.*)$/', $line, $m))
+			if (preg_match('/^([+\-~!#])\s*(.*)$/', $line, $m))
 			{
 				[$icon, $color] = $glyphMap[$m[1]];
 				$text           = $m[2];
@@ -876,33 +919,63 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		/** @var DatabaseDriver $db */
 		$db = $this->getDatabase();
 
-		$referenceDate = Date::getInstance($infoArray['modified'], 'UTC');
-		$notes         = $this->extractChangelog($category, $version);
+		$referenceDate  = Date::getInstance($infoArray['modified'], 'UTC');
+		$changelogLines = $this->getLatestChangelogLines($category, $version);
+		$notes          = $this->renderChangelogHtml($changelogLines);
+
+		$data = [
+			'category_id'       => $category->id,
+			'version'           => $version,
+			'maturity'          => 'alpha',
+			'notes'             => $notes,
+			'hits'              => 0,
+			'created'           => $referenceDate->toSql($db),
+			'created_by'        => 0,
+			'modified'          => $referenceDate->toSql($db),
+			'modified_by'       => 0,
+			'checked_out'       => 0,
+			'checked_out_time'  => null,
+			'ordering'          => 0,
+			'access'            => $category->access,
+			'show_unauth_links' => 0,
+			'published'         => 1,
+			'language'          => $category->language ?: '*',
+		];
+
+		// Let plugins have a chance to modify the release data (e.g. set the creating user) before it's saved.
+		PluginHelper::importPlugin('ars');
+
+		$infoData = [
+			'category_id' => $category->id,
+			'category'    => $category,
+			'version'     => $version,
+			'items'       => $infoArray['items'],
+			'notes'       => $notes,
+			'changelog'   => $changelogLines,
+		];
+
+		$pluginResults = $this->triggerPluginEvent(
+			'onNewARSBleedingEdgeRelease',
+			[$infoData, $data],
+			null,
+			Factory::getApplication()
+		) ?: [];
+
+		foreach ($pluginResults as $pluginResult)
+		{
+			if (empty($pluginResult) || !is_array($pluginResult))
+			{
+				continue;
+			}
+
+			$data = array_merge($data, $pluginResult);
+		}
 
 		try
 		{
 			/** @var ReleaseTable $releaseTable */
 			$releaseTable = $this->getMVCFactory()->createTable('Release');
-			$success      = $releaseTable->save(
-				[
-					'category_id'       => $category->id,
-					'version'           => $version,
-					'maturity'          => 'alpha',
-					'notes'             => $notes,
-					'hits'              => 0,
-					'created'           => $referenceDate->toSql($db),
-					'created_by'        => 0,
-					'modified'          => $referenceDate->toSql($db),
-					'modified_by'       => 0,
-					'checked_out'       => 0,
-					'checked_out_time'  => null,
-					'ordering'          => 0,
-					'access'            => $category->access,
-					'show_unauth_links' => 0,
-					'published'         => 1,
-					'language'          => $category->language ?: '*',
-				]
-			);
+			$success      = $releaseTable->save($data);
 
 			if (!$success)
 			{
@@ -918,36 +991,86 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		// Create the items.
 		foreach ($infoArray['items'] as $fname => $fileInfo)
 		{
-			try
-			{
-				$itemDate = Date::getInstance($fileInfo['mtime'], 'UTC');
+			$this->saveNewItem($releaseTable, $version, $fname, $fileInfo);
+		}
+	}
 
-				/** @var ItemTable $itemTable */
-				$itemTable = $this->getMVCFactory()->createTable('Item');
-				$itemTable->save(
-					[
-						'id'               => 0,
-						'release_id'       => $releaseTable->id,
-						'description'      => '',
-						'type'             => 'file',
-						'filename'         => $version . '/' . $fname,
-						'url'              => '',
-						'hits'             => '0',
-						'published'        => '1',
-						'created'          => $itemDate->toSql(),
-						'created_by'       => 0,
-						'modified'         => $itemDate->toSql(),
-						'modified_by'      => 0,
-						'checked_out'      => 0,
-						'checked_out_time' => null,
-						'access'           => $releaseTable->access,
-					]
-				);
-			}
-			catch (Throwable)
+	/**
+	 * Builds and saves a new BE item, giving `ars` plugins a chance to modify (or veto, via an 'ignore' key in
+	 * their response) the item's data before it's saved.
+	 *
+	 * @param   ReleaseTable  $releaseTable  The release the new item belongs to.
+	 * @param   string        $version       The release's version (the subdirectory name).
+	 * @param   string        $fname         The item's filename, relative to the release's directory.
+	 * @param   array         $fileInfo      The file information, as returned by scanSubdirectory(); must contain
+	 *                                       an 'mtime' key.
+	 *
+	 * @return  void
+	 * @since   7.5.0
+	 */
+	private function saveNewItem(ReleaseTable $releaseTable, string $version, string $fname, array $fileInfo): void
+	{
+		try
+		{
+			$itemDate = Date::getInstance($fileInfo['mtime'], 'UTC');
+
+			$data = [
+				'id'               => 0,
+				'release_id'       => $releaseTable->id,
+				'description'      => '',
+				'type'             => 'file',
+				'filename'         => $version . '/' . $fname,
+				'url'              => '',
+				'hits'             => '0',
+				'published'        => '1',
+				'created'          => $itemDate->toSql(),
+				'created_by'       => 0,
+				'modified'         => $itemDate->toSql(),
+				'modified_by'      => 0,
+				'checked_out'      => 0,
+				'checked_out_time' => null,
+				'access'           => $releaseTable->access,
+			];
+
+			// Let plugins have a chance to modify the item data (or veto it entirely) before it's saved.
+			PluginHelper::importPlugin('ars');
+
+			$infoData = [
+				'version'    => $version,
+				'file'       => $fname,
+				'release_id' => $releaseTable->id,
+				'release'    => $releaseTable,
+			];
+
+			$pluginResults = $this->triggerPluginEvent(
+				'onNewARSBleedingEdgeItem',
+				[$infoData, $data],
+				null,
+				Factory::getApplication()
+			) ?: [];
+
+			foreach ($pluginResults as $pluginResult)
 			{
-				// No-op
+				if (empty($pluginResult) || !is_array($pluginResult))
+				{
+					continue;
+				}
+
+				$data = array_merge($data, $pluginResult);
 			}
+
+			if ($data['ignore'] ?? false)
+			{
+				return;
+			}
+
+			/** @var ItemTable $itemTable */
+			$itemTable = $this->getMVCFactory()->createTable('Item');
+			$itemTable->save($data);
+		}
+		catch (Throwable)
+		{
+			// No-op
 		}
 	}
 
@@ -971,7 +1094,8 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		$releaseTable->setUpdateModified(false);
 
 		// Regenerate release notes from the CHANGELOG file, if present and enabled.
-		$notes    = $this->extractChangelog($category, $version);
+		$changelogLines = $this->getLatestChangelogLines($category, $version);
+		$notes          = $this->renderChangelogHtml($changelogLines);
 		$savePayload = [
 			'modified'         => Date::getInstance($infoArray['modified'], 'UTC')->toSql($db),
 			'modified_by'      => 0,
@@ -984,6 +1108,36 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		if ($notes !== '')
 		{
 			$savePayload['notes'] = $notes;
+		}
+
+		// Let plugins have a chance to modify the release data (e.g. set the modifying user) before it's saved.
+		PluginHelper::importPlugin('ars');
+
+		$infoData = [
+			'category_id' => $category->id,
+			'category'    => $category,
+			'version'     => $version,
+			'release_id'  => $releaseId,
+			'items'       => $infoArray['items'],
+			'notes'       => $notes,
+			'changelog'   => $changelogLines,
+		];
+
+		$pluginResults = $this->triggerPluginEvent(
+			'onUpdateARSBleedingEdgeRelease',
+			[$infoData, $savePayload],
+			null,
+			Factory::getApplication()
+		) ?: [];
+
+		foreach ($pluginResults as $pluginResult)
+		{
+			if (empty($pluginResult) || !is_array($pluginResult))
+			{
+				continue;
+			}
+
+			$savePayload = array_merge($savePayload, $pluginResult);
 		}
 
 		try
@@ -1060,30 +1214,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 
 		foreach ($newFilenames as $fname)
 		{
-			$fileInfo = $infoArray['items'][$fname];
-			$itemDate = Date::getInstance($fileInfo['mtime'], 'UTC');
-
-			/** @var ItemTable $itemTable */
-			$itemTable = $this->getMVCFactory()->createTable('Item');
-			$itemTable->save(
-				[
-					'id'               => 0,
-					'release_id'       => $releaseTable->id,
-					'description'      => '',
-					'type'             => 'file',
-					'filename'         => $version . '/' . $fname,
-					'url'              => '',
-					'hits'             => '0',
-					'published'        => '1',
-					'created'          => $itemDate->toSql(),
-					'created_by'       => 0,
-					'modified'         => $itemDate->toSql(),
-					'modified_by'      => 0,
-					'checked_out'      => 0,
-					'checked_out_time' => null,
-					'access'           => $releaseTable->access,
-				]
-			);
+			$this->saveNewItem($releaseTable, $version, $fname, $infoArray['items'][$fname]);
 		}
 
 		foreach ($existingFilenames as $fname)
