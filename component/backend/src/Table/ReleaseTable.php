@@ -48,7 +48,10 @@ use Joomla\Event\Event;
 class ReleaseTable extends AbstractTable implements TaggableTableInterface
 {
 	use TaggableTableTrait;
-	use TableCreateModifyTrait;
+	use TableCreateModifyTrait
+	{
+		TableCreateModifyTrait::onBeforeStore as onBeforeStoreCreateModifyAware;
+	}
 	use TableAssertionTrait;
 	use TableColumnAliasTrait;
 	use EnsureUcmTrait;
@@ -201,8 +204,10 @@ class ReleaseTable extends AbstractTable implements TaggableTableInterface
 	 * @return  void
 	 * @see     self::voodooOnBeforeStore()
 	 */
-	protected function onBeforeStore()
+	protected function onBeforeStore(&$updateNulls = false)
 	{
+		$this->onBeforeStoreCreateModifyAware($updateNulls);
+
 		$this->_voodoo_category_id = 'VOODOO:' . (string) ($this->category_id ?? '');
 		$this->_voodoo_hash        = spl_object_hash($this);
 
