@@ -22,5 +22,43 @@
 		"platform": {
 			"php": "8.1.999"
 		}
+	},
+	"extra": {
+		"akcompat": {
+			"limit_type": "joomla",
+			"limit": ">=5.4.0 <6.3",
+			"locations": [
+				{
+					"file": "component/script.ars.php",
+					"type": "variable",
+					"marker": "$minimumPhp",
+					"value": "PHP_MIN"
+				},
+				{
+					"file": "component/script.ars.php",
+					"type": "variable",
+					"marker": "$maximumPhp",
+					"value": "PHP_MAX"
+				},
+				{
+					"file": "component/script.ars.php",
+					"type": "variable",
+					"marker": "$minimumJoomla",
+					"value": "LIMIT_MIN"
+				},
+				{
+					"file": "component/script.ars.php",
+					"type": "variable",
+					"marker": "$maximumJoomla",
+					"value": "LIMIT_MAX"
+				},
+				{
+					"file": "component/backend/src/Dispatcher/Dispatcher.php",
+					"type": "variable",
+					"marker": "$minPHPVersion",
+					"value": "PHP_MIN"
+				}
+			]
+		}
 	}
 }

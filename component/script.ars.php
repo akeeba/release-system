@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Adapter\PackageAdapter;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -34,9 +35,68 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 
 	protected $allowDowngrades = true;
 
-	protected $minimumPhp = '8.0.0';
+	protected $minimumPhp = '8.1.0';
 
-	protected $minimumJoomla = '4.3.0';
+	protected $maximumPhp = '8.7';
+
+	protected $minimumJoomla = '5.4.0';
+
+	protected $maximumJoomla = '6.3';
+
+	/**
+	 * Called before any type of installation / uninstallation action.
+	 *
+	 * Joomla only enforces the minimum PHP and Joomla version for us. The maximum versions are enforced here.
+	 *
+	 * @param   string          $type    Which action is happening (install|uninstall|discover_install|update)
+	 * @param   PackageAdapter  $parent  The object responsible for running this script
+	 *
+	 * @return  bool
+	 * @since   7.5.0
+	 */
+	public function preflight($type, $parent)
+	{
+		if (!parent::preflight($type, $parent))
+		{
+			return false;
+		}
+
+		// Check for the maximum PHP version before continuing
+		$maxPhp = !empty($this->maximumPhp) ? trim($this->maximumPhp) : null;
+
+		if (!empty($maxPhp) && version_compare(PHP_VERSION, $maxPhp, 'ge'))
+		{
+			Log::add(
+				sprintf(
+					'This extension supports PHP versions lower than %s. Your server has a newer PHP version (%s) which has not been tested with it. The installation cannot proceed.',
+					$maxPhp, PHP_VERSION
+				),
+				Log::WARNING,
+				'jerror'
+			);
+
+			return false;
+		}
+
+		// Check for the maximum Joomla version before continuing
+		$maxJoomla = !empty($this->maximumJoomla) ? trim($this->maximumJoomla) : null;
+
+		if (!empty($maxJoomla) && version_compare(JVERSION, $maxJoomla, 'ge'))
+		{
+			Log::add(
+				sprintf(
+					'This extension supports Joomla! versions lower than %s. Your site has a newer Joomla! version (%s) which has not been tested with it. The installation cannot proceed.',
+					$maxJoomla, JVERSION
+				),
+				Log::WARNING,
+				'jerror'
+			);
+
+			return false;
+		}
+
+		return true;
+	}
 
 	/**
 	 * Called after any type of installation / uninstallation action.
