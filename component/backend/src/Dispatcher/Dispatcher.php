@@ -103,12 +103,8 @@ class Dispatcher extends ComponentDispatcher
 
 		// Finally, load our 'common' preset
 		$document->getWebAssetManager()
-			->usePreset('com_ars.backend');
-
-		if (version_compare(JVERSION, '4.99999.99999', 'gt')) {
-			$document->getWebAssetManager()
-				->useStyle('com_ars.j5');
-		}
+			->usePreset('com_ars.backend')
+			->useStyle('com_ars.j5');
 	}
 
 	protected function applyViewAndController(): void
