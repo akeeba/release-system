@@ -210,7 +210,7 @@ fi
 # outright, so there is nothing a test could observe.
 MIN_JOOMLA_VERSION="$(sed -nE "s/.*\\\$minimumJoomla[[:space:]]*=[[:space:]]*'([0-9.]+)'.*/\1/p" \
 	"${REPO_ROOT}/component/script.ars.php" | head -1)"
-: "${MIN_JOOMLA_VERSION:=4.3.0}"
+: "${MIN_JOOMLA_VERSION:=5.4.0}"
 
 # True (0) when $1 is strictly lower than $2, comparing dotted numeric versions.
 version_lt() {
