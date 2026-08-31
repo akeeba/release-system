@@ -75,12 +75,8 @@ class Dispatcher extends AbstractModuleDispatcher
 			$webAssetManager->getRegistry()->addExtensionRegistryFile('com_ars');
 			$webAssetManager
 				->usePreset('com_ars.backend')
-				->useScript('com_ars.controlpanel');
-
-			if (version_compare(JVERSION, '4.99999.99999', 'gt')) {
-				$document->getWebAssetManager()
-					->useStyle('com_ars.j5');
-			}
+				->useScript('com_ars.controlpanel')
+				->useStyle('com_ars.j5');
 
 			// Add the graph information to the document
 			$monthlyDailyReport = $this->getMonthlyDailyReport();
