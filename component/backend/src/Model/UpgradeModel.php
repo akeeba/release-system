@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use DirectoryIterator;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Adapter\PackageAdapter;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\MVC\Model\BaseModel;
@@ -274,7 +275,10 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 			}
 			catch (Throwable $e)
 			{
-				// Well, this failed. Let's move on to the next one.
+				if (defined('JDEBUG') && JDEBUG)
+				{
+					Factory::getApplication()->enqueueMessage($e->getMessage());
+				}
 			}
 		}
 
@@ -477,7 +481,7 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 	{
 		// We will definitely remove REMOVE_FROM_ALL_VERSIONS in all versions
 		$removeSource = self::REMOVE_FROM_ALL_VERSIONS;
-		$isPro        = $isPro ?? $this->isPro();
+		$isPro        = $this->isPro();
 
 		if (!$isPro)
 		{
@@ -506,11 +510,6 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 		// Remove folders
 		foreach ($removeSource['folders'] as $folder)
 		{
-			if (!is_dir($folder))
-			{
-				continue;
-			}
-
 			$this->deleteFolder($folder);
 		}
 	}
@@ -888,14 +887,7 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 		$filePath = $this->getCachedManifestPath($oldPackage);
 		$contents = $xml->asXML();
 
-		try
-		{
-			File::write($filePath, $contents);
-		}
-		catch (\Exception $e)
-		{
-			// Swallow.
-		}
+		@file_put_contents($filePath, $contents);
 	}
 
 	/**
@@ -977,12 +969,12 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 				break;
 
 			case 'plugin':
-				$group     = (string) $fileField->attributes()->group ?? 'system';
+				$group     = (string) ($fileField->attributes()->group ?? '') ?: 'system';
 				$extension = 'plg_' . $group . '_' . $id;
 				break;
 
 			case 'module':
-				$client    = (string) $fileField->attributes()->client ?? 'site';
+				$client    = (string) ($fileField->attributes()->client ?? '') ?: 'site';
 				$extension = (($client != 'site') ? 'a' : '') . $id;
 				break;
 

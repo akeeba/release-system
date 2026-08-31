@@ -6,6 +6,7 @@ Akeeba Release System 7.5.1
 + Documented the whole JSON:API in assets/http/api.http
 ~ Hardening: authorise JSON:API deletions against the record's own category, not just the component
 ~ Hardening: the JSON:API only shows a user other people's Download IDs if they may manage the component
+~ Errors thrown by custom upgrade handlers are now reported when Joomla's Debug Site setting is on
 # [LOW] PHP Warning on inaccessible item [gh-251]
 # [LOW] Upgrading left obsolete folders behind on Windows, macOS, and other case-insensitive filesystems
 
