@@ -269,14 +269,7 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 			return null;
 		}
 
-		if (method_exists($upgradeModel, 'setDatabase'))
-		{
-			$upgradeModel->setDatabase($this->dbo ?? Factory::getContainer()->get(DatabaseInterface::class));
-		}
-		elseif (method_exists($upgradeModel, 'setDbo'))
-		{
-			$upgradeModel->setDbo($this->dbo ?? Factory::getContainer()->get(DatabaseInterface::class));
-		}
+		$upgradeModel->setDatabase($this->dbo ?? Factory::getContainer()->get(DatabaseInterface::class));
 
 		if (method_exists($upgradeModel, 'init'))
 		{
