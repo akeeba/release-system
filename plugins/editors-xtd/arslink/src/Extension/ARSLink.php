@@ -13,7 +13,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Editor\Button\Button;
 use Joomla\CMS\Event\Editor\EditorButtonsSetupEvent;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Event\SubscriberInterface;
 
@@ -53,7 +52,7 @@ class ARSLink extends CMSPlugin implements SubscriberInterface
 	/**
 	 * @param   string  $name
 	 *
-	 * @return  CMSObject|Button|null
+	 * @return  Button
 	 */
 	public function onDisplay(string $name)
 	{
@@ -132,18 +131,6 @@ JS;
 			'bodyHeight' => '70',
 			'modalWidth' => '80',
 		];
-
-		if (version_compare(JVERSION, '5.0.0', 'lt'))
-		{
-			return new CMSObject(
-				array_merge(
-					$props,
-					[
-						'options' => $options,
-					],
-				)
-			);
-		}
 
 		return new Button($this->_name, $props, $options);
 	}
