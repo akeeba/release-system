@@ -9,6 +9,7 @@ namespace Akeeba\Plugin\Content\ARSLatest\Extension;
 
 defined('_JEXEC') || die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Model\UpdatestreamsModel;
 use Akeeba\Component\ARS\Site\Model\DlidlabelsModel;
 use Akeeba\Component\ARS\Site\Model\ItemsModel;
@@ -279,7 +280,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface, DatabaseAwareI
 		$xmltitleMatches = '%' . trim($xmltitleMatches, '%') . '%';
 
 		$db    = $this->getDatabase();
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select($db->quoteName('id'))
 			->from($db->quoteName('#__ars_environments'))
 			->where($db->quoteName('xmltitle') . ' LIKE :search')

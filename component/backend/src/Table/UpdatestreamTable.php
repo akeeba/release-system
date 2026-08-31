@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 
 defined('_JEXEC') || die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableColumnAliasTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableCreateModifyTrait;
@@ -64,7 +65,7 @@ class UpdatestreamTable extends AbstractTable
 
 		// Check alias for uniqueness
 		$db    = $this->getDBO();
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select($db->qn('alias'))
 			->from($db->qn('#__ars_updatestreams'));
 

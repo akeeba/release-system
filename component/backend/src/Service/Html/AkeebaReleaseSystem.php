@@ -7,6 +7,7 @@
 
 namespace Akeeba\Component\ARS\Administrator\Service\Html;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -141,7 +142,7 @@ class AkeebaReleaseSystem
 
 		/** @var DatabaseDriver $db */
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select($db->quoteName('dlid'))
 			->from($db->quoteName('#__ars_dlidlabels'))
 			->where($db->quoteName('user_id') . ' = :user_id')

@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Site\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\ParameterType;
 
@@ -19,7 +20,7 @@ class UpdateModel extends BaseDatabaseModel
 	{
 		$db = $this->getDatabase();
 
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select(array(
 				$db->quoteName('u') . '.*',
 				$db->quoteName('i.id', 'item_id'),
@@ -82,7 +83,7 @@ class UpdateModel extends BaseDatabaseModel
 	{
 		$db = $this->getDatabase();
 
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select(array(
 				$db->quoteName('u') . '.*',
 				$db->quoteName('i.id', 'item_id'),
@@ -144,7 +145,7 @@ class UpdateModel extends BaseDatabaseModel
 	{
 		$db = $this->getDatabase();
 
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select($db->quoteName('published'))
 			->from($db->quoteName('#__ars_updatestreams'))
 			->where($db->quoteName('id') . ' = :id')
@@ -159,7 +160,7 @@ class UpdateModel extends BaseDatabaseModel
 	public function getCategoryAliasForUpdateId($id): ?string
 	{
 		$db = $this->getDatabase();
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select($db->quoteName('c.alias'))
 			->from($db->quoteName('#__ars_updatestreams', 'u'))
 			->join('LEFT', $db->quoteName('#__ars_categories', 'c'),

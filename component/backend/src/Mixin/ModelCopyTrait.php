@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Mixin;
 
 defined('_JEXEC') or die();
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\String\StringHelper;
@@ -134,7 +135,7 @@ trait ModelCopyTrait
 
 		$table = $this->getTable();
 		$db    = $this->getDatabase();
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select('*')
 			->from($db->quoteName($table->getTableName()));
 

@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
 use Joomla\CMS\Factory;
@@ -109,7 +110,7 @@ class LogsModel extends ListModel
 
 		$db = $this->getDatabase();
 		/** @var QueryInterface $query */
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query = DbQuery::create($db);
 		$query
 			->select(
 				[
@@ -174,7 +175,7 @@ class LogsModel extends ListModel
 
 		$db = $this->getDatabase();
 		/** @var QueryInterface $query */
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query = DbQuery::create($db);
 		$query
 			->select(
 				[
@@ -266,7 +267,7 @@ class LogsModel extends ListModel
 		 */
 
 		$db    = $this->getDatabase();
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select('*')
 			->from($db->qn('#__ars_log'));
 

@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Field;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\GroupedlistField;
@@ -44,7 +45,7 @@ class ArsItemsField extends GroupedlistField
 
 
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select([
 				$db->qn('i.id'),
 				$db->qn('i.title'),

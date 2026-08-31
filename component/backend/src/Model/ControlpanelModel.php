@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Helper\ComponentParams;
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use DateInterval;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -29,7 +30,7 @@ class ControlpanelModel extends BaseDatabaseModel
 	{
 		$db = $this->getDatabase();
 
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select('COUNT(id)')
 			->from('#__menu')
 			->where($db->qn('link') . ' = ' . $db->q('index.php?option=com_ars&view=categories&layout=repository'))
@@ -122,7 +123,7 @@ class ControlpanelModel extends BaseDatabaseModel
 				break;
 		}
 
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select('COUNT(*)')
 			->from($db->qn('#__ars_log') . ' AS ' . $db->qn('l'))
 			->where($db->qn('l') . '.' . $db->qn('authorized') . ' = ' . $db->q(1));
@@ -150,7 +151,7 @@ class ControlpanelModel extends BaseDatabaseModel
 		$last_month = clone Factory::getDate();
 		$last_month->sub(new DateInterval('P35D'));
 
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select([
 				'DATE(' . $db->qn('accessed_on') . ') AS ' . $db->qn('day'),
 				'COUNT(*) AS ' . $db->qn('dl'),

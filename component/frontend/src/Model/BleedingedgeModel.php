@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Site\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Mixin\RunPluginsTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
@@ -226,7 +227,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		$dateString       = $targetDateJoomla->toSql(false, $db);
 		$catId            = $category->id;
 		/** @var QueryInterface $query */
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query = DbQuery::create($db);
 		$query->select(
 			[
 				$db->quoteName('id'),
@@ -290,7 +291,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		$db    = $this->getDatabase();
 		$catId = $category->id;
 		/** @var QueryInterface $query */
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query = DbQuery::create($db);
 
 		$query->select(
 			[
@@ -686,7 +687,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		$catId = $categoryTable->id;
 		$db    = $this->getDatabase();
 		/** @var QueryInterface $query */
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query = DbQuery::create($db);
 		$query->select(
 			[
 				$db->quoteName('id'),
@@ -728,7 +729,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		$catId = $categoryTable->id;
 		$db    = $this->getDatabase();
 		/** @var QueryInterface $query */
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query = DbQuery::create($db);
 		$query->select(
 			[
 				$db->quoteName('id'),
@@ -768,7 +769,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		$db = $this->getDatabase();
 
 		/** @var QueryInterface $query */
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query = DbQuery::create($db);
 		$query->update($db->quoteName('#__ars_releases'))
 			->set($db->quoteName('published') . ' = 0')
 			->whereIn($db->quoteName('id'), $releaseIDs, ParameterType::INTEGER);
@@ -783,7 +784,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		}
 
 		/** @var QueryInterface $query */
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query = DbQuery::create($db);
 		$query->update($db->quoteName('#__ars_items'))
 			->set($db->quoteName('published') . ' = 0')
 			->whereIn($db->quoteName('release_id'), $releaseIDs, ParameterType::INTEGER);
@@ -1002,7 +1003,7 @@ final class BleedingedgeModel extends BaseDatabaseModel
 
 		// Get all the items in the release
 		/** @var QueryInterface $query */
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true));
+		$query = DbQuery::create($db);
 		$query->select(
 			[
 				$db->quoteName('id'),

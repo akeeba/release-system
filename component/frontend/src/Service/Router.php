@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Site\Service;
 
 defined('_JEXEC') || die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
@@ -311,7 +312,7 @@ class Router extends RouterView
 	public function getReleasesId($segment, $query)
 	{
 		$db  = $this->getDatabase();
-		$sql = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$sql = DbQuery::create($db)
 		          ->select($db->quoteName('id'))
 		          ->from($db->quoteName('#__ars_categories'))
 		          ->where($db->quoteName('alias') . ' = :alias')
@@ -337,7 +338,7 @@ class Router extends RouterView
 	{
 		$catId = $query['category_id'] ?? null;
 		$db    = $this->getDatabase();
-		$sql   = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$sql   = DbQuery::create($db)
 		            ->select($db->quoteName('id'))
 		            ->from($db->quoteName('#__ars_releases'))
 		            ->where($db->quoteName('alias') . ' = :alias')
@@ -369,7 +370,7 @@ class Router extends RouterView
 	{
 		$releaseId = $query['release_id'] ?? null;
 		$db        = $this->getDatabase();
-		$sql       = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$sql       = DbQuery::create($db)
 		                ->select($db->quoteName('id'))
 		                ->from($db->quoteName('#__ars_items'))
 		                ->where($db->quoteName('alias') . ' = :alias')
@@ -400,7 +401,7 @@ class Router extends RouterView
 	public function getUpdateId($segment, $query)
 	{
 		$db  = $this->getDatabase();
-		$sql = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$sql = DbQuery::create($db)
 		          ->select($db->quoteName('id'))
 		          ->from($db->quoteName('#__ars_items'))
 		          ->where($db->quoteName('alias') . ' = :alias')
@@ -644,7 +645,7 @@ class Router extends RouterView
 	private function getReleaseToCategoryMap(): array
 	{
 		$db  = $this->getDatabase();
-		$sql = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$sql = DbQuery::create($db)
 		          ->select([
 			          $db->quoteName('id'),
 			          $db->quoteName('category_id'),
@@ -657,7 +658,7 @@ class Router extends RouterView
 	private function getItemToReleaseMap(): array
 	{
 		$db  = $this->getDatabase();
-		$sql = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$sql = DbQuery::create($db)
 		          ->select([
 			          $db->quoteName('id'),
 			          $db->quoteName('release_id'),

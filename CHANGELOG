@@ -11,6 +11,7 @@ Akeeba Release System 7.5.1
 ~ Removed dead Joomla 4 compatibility code, unreachable since the minimum supported version became Joomla 5.4
 ~ Joomla 7.0 readiness: dropped the unreachable CMSObject fallback from plg_editors-xtd_arslink
 ~ Joomla 7.0 readiness: dropped the unreachable Toolbar::getInstance() fallback from the backend views
+~ Build every query through Helper\DbQuery::create(), so the createQuery() compatibility branch lives in one place instead of seventy
 # [LOW] PHP Warning on inaccessible item [gh-251]
 # [LOW] Upgrading left obsolete folders behind on Windows, macOS, and other case-insensitive filesystems
 

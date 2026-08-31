@@ -15,6 +15,7 @@ namespace Akeeba\Component\ARS\Administrator\Model\UpgradeHandler;
 
 defined('_JEXEC') || die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Model\UpgradeModel;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseAwareInterface;
@@ -64,7 +65,7 @@ class MigrateLinks implements DatabaseAwareInterface
 		$db = $this->getDatabase();
 
 		// get affected menu items
-		$query     = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query     = DbQuery::create($db)
 			->select($db->qn(['m.id', 'm.link', 'm.params']))
 			->from($db->qn('#__menu') . ' AS m')
 			->join(
@@ -159,7 +160,7 @@ class MigrateLinks implements DatabaseAwareInterface
 			}
 
 			// write updated data back to menu table
-			$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+			$query = DbQuery::create($db)
 				->update($db->qn('#__menu'))
 				->set($db->qn('link') . ' = ' . $db->q($uri->toString()))
 				->set($db->qn('params') . ' = ' . $db->q(json_encode($params)))

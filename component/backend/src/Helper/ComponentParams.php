@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Helper;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\Database\DatabaseDriver;
@@ -30,7 +31,7 @@ class ComponentParams
 		$db   = JoomlaFactory::getContainer()->get(DatabaseInterface::class);
 		$data = $params->toString('JSON');
 
-		$sql = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$sql = DbQuery::create($db)
 			->update($db->qn('#__extensions'))
 			->set($db->qn('params') . ' = ' . $db->q($data))
 			->where($db->qn('element') . ' = :option')

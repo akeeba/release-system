@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableColumnAliasTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableCreateModifyTrait;
@@ -222,7 +223,7 @@ class ReleaseTable extends AbstractTable implements TaggableTableInterface
 
 		// Check alias for uniqueness
 		$db    = $this->getDatabase();
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select(
 				[
 					$db->quoteName('alias'),

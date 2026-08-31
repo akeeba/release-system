@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Site\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Mixin\RunPluginsTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
@@ -224,7 +225,7 @@ class ItemModel extends BaseDatabaseModel
 
 		$isPrimary = empty($user_id) ? 1 : 0;
 		$db        = $this->getDatabase();
-		$query     = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query     = DbQuery::create($db)
 			->select('*')
 			->from($db->quoteName('#__ars_dlidlabels'))
 			->where($db->quoteName('dlid') . ' = :dlid')

@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
@@ -97,7 +98,7 @@ class ReleaseModel extends AdminModel
 
 			for ($i = 0; $i < 100; $i++)
 			{
-				$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+				$query = DbQuery::create($db)
 					->select($db->quoteName('version'))
 					->from($db->quoteName('#__ars_releases'))
 					->where($db->quoteName('category_id') . ' = :catid')
@@ -386,7 +387,7 @@ class ReleaseModel extends AdminModel
 
 		// Make sure there are no items under this releases
 		$db    = $this->getDatabase();
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select('COUNT(*)')
 			->from($db->quoteName('#__ars_items'))
 			->where($db->quoteName('release_id') . ' = :release_id')

@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Site\Model;
 
 defined('_JEXEC') || die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Table\DlidlabelTable;
 use Joomla\CMS\Factory;
 
@@ -25,7 +26,7 @@ class DlidlabelsModel extends \Akeeba\Component\ARS\Administrator\Model\Dlidlabe
 		}
 
 		$db = $this->getDatabase();
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select('*')
 			->from($db->quoteName('#__ars_dlidlabels'))
 			->where($db->quoteName('user_id') . ' = :user_id')

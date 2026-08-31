@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableCreateModifyTrait;
 use Exception;
@@ -79,7 +80,7 @@ class DlidlabelTable extends AbstractTable
 
 		// Decide if this is a primary or secondary Download ID, overriding the user's selection if necessary.
 		$db    = $this->getDatabase();
-		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$query = DbQuery::create($db)
 			->select('COUNT(*)')
 			->from($db->qn('#__ars_dlidlabels'))
 			->where($db->qn('user_id') . ' = ' . $db->q($this->user_id))
@@ -127,7 +128,7 @@ class DlidlabelTable extends AbstractTable
 			$this->dlid = hash('md5', random_bytes(64));
 
 			// Do I have another primary?
-			$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+			$query = DbQuery::create($db)
 				->select('COUNT(*)')
 				->from($db->qn('#__ars_dlidlabels'))
 				->where($db->qn('dlid') . ' = ' . $db->q($this->dlid))

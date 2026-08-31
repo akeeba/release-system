@@ -292,6 +292,8 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 	{
 		$position = 'cpanel-' . $dashboard;
 		$db       = Factory::getContainer()->get(DatabaseInterface::class);
+		// Deliberately inline, not Helper\DbQuery: this script runs during installation, when the
+		// component's PSR-4 autoloader may not be registered yet. Keep in sync with that helper.
 		$query    = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 		               ->select('COUNT(*)')
 		               ->from($db->quoteName('#__modules'))
@@ -351,6 +353,7 @@ class Pkg_ArsInstallerScript extends \Joomla\CMS\Installer\InstallerScript
 	private function removeOldUpdateSites()
 	{
 		$db    = $this->dbo;
+		// Deliberately inline — see the note above.
 		$query = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
 			->delete($db->qn('#__update_sites'))
 			->where($db->qn('location') . ' = ' . $db->q('https://raw.githubusercontent.com/akeeba/release-system/master/update/pkg_ars_updates.xml'));

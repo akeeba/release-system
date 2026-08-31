@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Mixin;
 
 defined('_JEXEC') or die();
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
@@ -89,7 +90,7 @@ trait ModelTagFilterTrait
 		 */
 		$placeholders = $query->bindArray($tagIds, ParameterType::INTEGER);
 
-		$subQuery = (method_exists($db, 'createQuery') ? $db->createQuery() : $db->getQuery(true))
+		$subQuery = DbQuery::create($db)
 			->select('DISTINCT ' . $db->quoteName('content_item_id'))
 			->from($db->quoteName('#__contentitem_tag_map'))
 			->where($db->quoteName('tag_id') . ' IN (' . implode(',', $placeholders) . ')')
