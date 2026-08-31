@@ -9,7 +9,6 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\EnsureUcmTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableColumnAliasTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableCreateModifyTrait;
@@ -54,7 +53,6 @@ class ReleaseTable extends AbstractTable implements TaggableTableInterface
 	}
 	use TableAssertionTrait;
 	use TableColumnAliasTrait;
-	use EnsureUcmTrait;
 
 	/**
 	 * Used internally by Joomla! to manage tags.
@@ -176,26 +174,6 @@ class ReleaseTable extends AbstractTable implements TaggableTableInterface
 		$voodooValue = empty($voodooValue) ? null : intval($voodooValue);
 
 		$subject->category_id = $voodooValue;
-	}
-
-	/**
-	 * Runs after loading a record from the database
-	 *
-	 * @param   bool   $result  Did the record load?
-	 * @param   mixed  $keys    The keys used to load the record.
-	 * @param   bool   $reset   Was I asked to reset the object before loading the record?
-	 *
-	 * @return  void
-	 *
-	 * @since   7.4.0
-	 */
-	protected function onAfterLoad(bool &$result, $keys, bool $reset): void
-	{
-		// Make sure existing records have a UCM record
-		if (!$result || !empty($this->id))
-		{
-			$this->ensureUcmRecord();
-		}
 	}
 
 	/**

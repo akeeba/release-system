@@ -9,7 +9,6 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 
 defined('_JEXEC') or die;
 
-use Akeeba\Component\ARS\Administrator\Mixin\EnsureUcmTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableCreateModifyTrait;
 use Joomla\CMS\Access\Rules;
@@ -52,7 +51,6 @@ class CategoryTable extends AbstractTable implements TaggableTableInterface
 	use TaggableTableTrait;
 	use TableCreateModifyTrait;
 	use TableAssertionTrait;
-	use EnsureUcmTrait;
 
 	/**
 	 * Indicates that columns fully support the NULL value in the database
@@ -99,26 +97,6 @@ class CategoryTable extends AbstractTable implements TaggableTableInterface
 	public function getTypeAlias(): string
 	{
 		return $this->typeAlias;
-	}
-
-	/**
-	 * Runs after loading a record from the database
-	 *
-	 * @param   bool   $result  Did the record load?
-	 * @param   mixed  $keys    The keys used to load the record.
-	 * @param   bool   $reset   Was I asked to reset the object before loading the record?
-	 *
-	 * @return  void
-	 *
-	 * @since   7.4.0
-	 */
-	protected function onAfterLoad(bool &$result, $keys, bool $reset): void
-	{
-		// Make sure existing records have a UCM record
-		if (!$result || !empty($this->id))
-		{
-			$this->ensureUcmRecord();
-		}
 	}
 
 	public function bind($src, $ignore = [])
