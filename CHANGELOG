@@ -10,6 +10,7 @@ Akeeba Release System 7.5.1
 ~ Removed the redundant UCM record back-fill; Joomla 5.4 and later create UCM records on demand when a record is tagged
 ~ Removed dead Joomla 4 compatibility code, unreachable since the minimum supported version became Joomla 5.4
 ~ Joomla 7.0 readiness: dropped the unreachable CMSObject fallback from plg_editors-xtd_arslink
+~ Joomla 7.0 readiness: dropped the unreachable Toolbar::getInstance() fallback from the backend views
 # [LOW] PHP Warning on inaccessible item [gh-251]
 # [LOW] Upgrading left obsolete folders behind on Windows, macOS, and other case-insensitive filesystems
 

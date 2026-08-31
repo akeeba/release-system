@@ -12,27 +12,17 @@ defined('_JEXEC') || die;
 use Joomla\CMS\Toolbar\Toolbar;
 
 /**
- * Trait for handling toolbar compatibility between Joomla 4.x and 5.x
+ * Trait for retrieving the view's toolbar.
  */
 trait ViewToolbarTrait
 {
     /**
-     * Get the toolbar in a way that's compatible with both Joomla 4.x and 5.x
+     * Get the toolbar attached to this view's document.
      *
      * @return  Toolbar
      */
     protected function getToolbarCompat(): Toolbar
     {
-        $document = $this->getDocument();
-
-        // Joomla 5 and later
-        if (method_exists($document, 'getToolbar'))
-        {
-            return $document->getToolbar();
-        }
-
-        // Joomla 4.x
-        /** @noinspection PhpDeprecationInspection */
-        return Toolbar::getInstance('toolbar');
+        return $this->getDocument()->getToolbar();
     }
 }
