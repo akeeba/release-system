@@ -13,7 +13,12 @@ use Akeeba\Component\ARS\Api\Controller\Mixin\AssertApiAccess;
 use Akeeba\Component\ARS\Api\Controller\Mixin\PopulateModelState;
 use Joomla\CMS\MVC\Controller\ApiController;
 
-class ReleasesController extends ApiController
+/**
+ * JSON:API controller for the Update Streams.
+ *
+ * @since  7.5.1
+ */
+class UpdatestreamsController extends ApiController
 {
 	use PopulateModelState;
 	use AssertApiAccess;
@@ -22,17 +27,17 @@ class ReleasesController extends ApiController
 	 * The content type of the item.
 	 *
 	 * @var    string
-	 * @since  7.0.0
+	 * @since  7.5.1
 	 */
-	protected $contentType = 'releases';
+	protected $contentType = 'updatestreams';
 
 	/**
 	 * The default view for the display method.
 	 *
 	 * @var    string
-	 * @since  7.0.0
+	 * @since  7.5.1
 	 */
-	protected $default_view = 'releases';
+	protected $default_view = 'updatestreams';
 
 	public function displayList()
 	{
@@ -40,16 +45,17 @@ class ReleasesController extends ApiController
 
 		$stateMapper = [
 			['search', 'filter.search', 'string'],
+			['id', 'filter.id', 'int'],
 			['category_id', 'filter.category_id', 'int'],
+			['name', 'filter.name', 'string'],
+			['alias', 'filter.alias', 'string'],
+			['type', 'filter.type', 'string'],
+			['element', 'filter.element', 'string'],
+			['folder', 'filter.folder', 'string'],
+			['packname', 'filter.packname', 'string'],
+			['client_id', 'filter.client_id', 'int'],
+			['created_by', 'filter.created_by', 'int'],
 			['published', 'filter.published', 'int'],
-			['maturity', 'filter.maturity', 'string'],
-			['minMaturity', 'filter.minMaturity', 'string'],
-			['show_unauth_links', 'filter.show_unauth_links', 'int'],
-			// Yes, access is here twice. INT if I am passing a single access level, ARRAY if I'm passing multiple
-			['access', 'filter.access', 'int'],
-			['access', 'filter.access', 'array'],
-			['language', 'filter.language', 'string'],
-			['latest', 'filter.latest', 'int'],
 		];
 
 		$this->populateListModelState($stateMapper);
@@ -70,9 +76,7 @@ class ReleasesController extends ApiController
 			$id = $this->input->get('id', 0, 'int');
 		}
 
-		$release = $id ? $this->getModel('Release')->getItem((int) $id) : null;
-
-		$this->assertCanDelete($release ? (int) ($release->category_id ?? 0) : 0);
+		$this->assertCanDelete($this->getCategoryId((int) $id));
 
 		return parent::delete($id);
 	}
@@ -89,8 +93,8 @@ class ReleasesController extends ApiController
 			$data = $this->getRequestData();
 		}
 
-		// A release always belongs to a category. Check the category permissions.
-		$categoryId = (int) ($data['category_id'] ?? 0);
+		// An update stream always belongs to a category. Check the category permissions.
+		$categoryId = (int) ($data['category'] ?? $data['category_id'] ?? $data['catid'] ?? 0);
 
 		if (!$categoryId) {
 			return false;
@@ -113,13 +117,31 @@ class ReleasesController extends ApiController
 			return false;
 		}
 
-		$release    = $this->getModel('Release')->getItem($recordId);
-		$categoryId = $release ? (int) ($release->category_id ?? 0) : 0;
+		$categoryId = $this->getCategoryId($recordId);
 
 		if (!$categoryId) {
 			return false;
 		}
 
 		return $user->authorise('core.edit', 'com_ars.category.' . $categoryId);
+	}
+
+	/**
+	 * Get the ID of the category an update stream belongs to.
+	 *
+	 * @param   int  $recordId  The update stream ID.
+	 *
+	 * @return  int  The category ID, 0 if it cannot be determined.
+	 * @since   7.5.1
+	 */
+	private function getCategoryId(int $recordId): int
+	{
+		if (!$recordId) {
+			return 0;
+		}
+
+		$record = $this->getModel('Updatestream')->getItem($recordId);
+
+		return $record ? (int) ($record->category ?? 0) : 0;
 	}
 }

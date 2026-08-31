@@ -11,7 +11,22 @@ Akeeba Release System (ARS) — a Joomla package extension for managing software
   `phpunit` is on your `PATH`. `phpunit` runs the unit suite in `UnitTest/`; it needs nothing but PHP.
   `tests/integration/docker/run.sh` stands up a throwaway Dockerised Joomla site and runs the
   end-to-end suite against it over real HTTP. Read `tests/README.md` before adding to either. There
-  is no Jest; `api.http` still holds the manual REST API requests.
+  is no Jest. `assets/http/api.http` is the documented JSON:API request collection (PHPStorm HTTP Client);
+  its `http-client.env.json` / `http-client.private.env.json` live next to it.
+
+## JSON:API
+
+The `plg_webservices_ars` plugin registers CRUD routes under `v1/ars/` for `categories`, `releases`, `items`,
+`autodescriptions`, `dlidlabels`, `environments` and `updatestreams`. Each one needs three things: a
+`component/api/src/Controller/<Plural>Controller.php`, a `component/api/src/View/<Plural>/JsonapiView.php`, and a
+route registration in the plugin. There are no API-side models — the Administrator ones are reused, which is why
+every controller has to re-apply authorisation itself (see `Controller/Mixin/AssertApiAccess.php`); the back-end
+models deliberately do not filter by view level or ownership.
+
+List filters are request parameters mapped onto model state by `Controller/Mixin/PopulateModelState.php`. Adding a
+filter means adding it to the mapper *and* to the Administrator list model. Sorting (`list_ordering`,
+`list_direction`) is validated by Joomla against the model's `filter_fields`, so a new sortable column has to be
+declared there too. Document anything you add in `assets/http/api.http`.
 
 ## Conventions
 

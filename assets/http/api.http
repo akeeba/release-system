@@ -1,0 +1,630 @@
+# =====================================================================================================================
+# Akeeba Release System — JSON:API request collection
+# =====================================================================================================================
+#
+# This file documents every JSON:API endpoint ARS exposes. It is a PHPStorm / IntelliJ IDEA HTTP Client file: open it
+# in the IDE and click the ▶ gutter icon next to a request to run it.
+#
+# ---------------------------------------------------------------------------------------------------------------------
+# SETUP
+# ---------------------------------------------------------------------------------------------------------------------
+#
+# 1. On the target site enable the "Web Services - Akeeba Release System" plugin. Without it none of the `v1/ars/…`
+#    routes exist and every request below returns a 404.
+# 2. Enable the "API Authentication - Joomla Token" plugin and the "User - Joomla API Token" plugin, then generate a
+#    token for the user you want to act as (User Profile → Joomla API Token).
+# 3. Copy `http-client.private.env.json-dist` to `http-client.private.env.json` (it is git-ignored) and put the token
+#    in it. Set the site URL in `http-client.env.json`. Both files live next to this one.
+# 4. Pick the `dev` environment in the HTTP Client's environment selector before running anything.
+#
+# ---------------------------------------------------------------------------------------------------------------------
+# AUTHENTICATION AND AUTHORISATION
+# ---------------------------------------------------------------------------------------------------------------------
+#
+# Every request must be authenticated. The token identifies a Joomla user and that user's permissions are enforced —
+# an API token is NOT a bypass. Being a Super User is not assumed anywhere.
+#
+#   * Reading anything other than your own Download IDs requires `core.manage` on `com_ars`, i.e. the same privilege
+#     that lets you open the component in the back-end. Without it you get 403, not a filtered list.
+#   * Creating a release, item, update stream or automatic item description requires `core.create` on the ARS category
+#     it belongs to (`com_ars.category.<id>`). Editing requires `core.edit` on that category, deleting `core.delete`.
+#   * Categories are their own asset: creating one requires `core.create` on `com_ars`, editing and deleting require
+#     the privilege on `com_ars.category.<id>`.
+#   * Environments are component-wide, so their write operations are authorised against `com_ars` itself.
+#   * Download ID labels are special, see the Download ID labels section below.
+#
+# ---------------------------------------------------------------------------------------------------------------------
+# CONVENTIONS USED BY EVERY LIST ENDPOINT
+# ---------------------------------------------------------------------------------------------------------------------
+#
+#   Pagination      `page[limit]=50&page[offset]=100`. The default page size is 20.
+#   Sorting         `list_ordering=<column>&list_direction=asc|desc`. A column the model does not know is ignored
+#                   rather than rejected. The valid columns are listed with each endpoint.
+#   Search          `search=<needle>` is the same free-text box as the back-end. On most endpoints `search=id:123`
+#                   switches it to an exact ID lookup.
+#   Empty filters   A filter you do not send is not applied. Sending an empty string is the same as not sending it.
+#
+# Responses are JSON:API documents: the records are under `data`, each with `id`, `type` and `attributes`.
+#
+# =====================================================================================================================
+
+
+# =====================================================================================================================
+# CATEGORIES — /v1/ars/categories
+# =====================================================================================================================
+#
+# Filters: search, published, show_unauth_links, supported, access, language
+# Sort by: id, title, type, created, access, show_unauth_links, published, is_supported, language, ordering
+
+### Categories: raw list
+GET {{host}}/api/index.php/v1/ars/categories
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Categories: search by title, only published, newest first
+GET {{host}}/api/index.php/v1/ars/categories?search=Data+Compliance&published=1&list_ordering=id&list_direction=desc
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Categories: second page of 50, only the ones flagged as supported
+GET {{host}}/api/index.php/v1/ars/categories?supported=1&page[limit]=50&page[offset]=50
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Categories: fetch one
+GET {{host}}/api/index.php/v1/ars/categories/1
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+
+# =====================================================================================================================
+# RELEASES — /v1/ars/releases
+# =====================================================================================================================
+#
+# Filters: search, category_id, published, maturity, minMaturity, show_unauth_links, access (single value or repeated
+#          as access[]=…), language, latest
+# Sort by: r.id, r.version, r.category_id, maturity, r.created, r.access, show_unauth_links, published, r.language,
+#          r.ordering (the unprefixed forms — id, version, category_id, created, access, language, ordering — work too)
+
+### Releases: raw list
+GET {{host}}/api/index.php/v1/ars/releases
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Releases: one category, stable or better, most recent first
+GET {{host}}/api/index.php/v1/ars/releases?category_id=1&minMaturity=stable&list_ordering=id&list_direction=desc
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Releases: find an exact version number
+GET {{host}}/api/index.php/v1/ars/releases?category_id=1&search=version%3A1.0.0
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Releases: only the latest release of each category
+GET {{host}}/api/index.php/v1/ars/releases?latest=1
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Releases: fetch one
+GET {{host}}/api/index.php/v1/ars/releases/81
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Releases: create one
+POST {{host}}/api/index.php/v1/ars/releases
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: application/json
+
+{
+  "category_id": 1,
+  "version": "3.0.0",
+  "alias": "3-0-0",
+  "maturity": "stable",
+  "notes": "<p>Release notes go here.</p>",
+  "access": 1,
+  "published": 1,
+  "language": "*"
+}
+
+### Releases: update one
+# PATCH merges: any column you leave out keeps its current value.
+PATCH {{host}}/api/index.php/v1/ars/releases/81
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: application/json
+
+{
+  "maturity": "stable",
+  "notes": "Once upon a time, in a galaxy far, far away someone created a random UUID4: {{$uuid}}",
+  "published": 1
+}
+
+### Releases: delete one
+DELETE {{host}}/api/index.php/v1/ars/releases/81
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+
+# =====================================================================================================================
+# ITEMS (files and links) — /v1/ars/items
+# =====================================================================================================================
+#
+# Filters: search, category_id, release_id, published, show_unauth_links, access, language
+# Sort by: i.id, i.release_id, i.title, i.created, i.access, i.show_unauth_links, i.published, i.language, i.ordering,
+#          c.id (the unprefixed forms work too, but prefer the prefixed ones: the query joins three tables)
+#
+# The `environments` attribute is the raw stored value on list responses and a decoded array on single-item responses.
+#
+# DELETE accepts two extra query parameters: `delete_file=1` also removes the file from the repository directory, and
+# `delete_empty_directory=1` additionally removes the directory if that left it empty.
+
+### Items: raw list
+GET {{host}}/api/index.php/v1/ars/items
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Items: everything in one release
+GET {{host}}/api/index.php/v1/ars/items?release_id=81
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Items: find the item serving a specific URL
+GET {{host}}/api/index.php/v1/ars/items?release_id=81&search=link:https://d16g1oj796wk12.cloudfront.net/downloads/test_package/2.0.0/pkg_test-core.zip
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Items: fetch one
+GET {{host}}/api/index.php/v1/ars/items/161
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Items: delete one, together with its file and the directory it left empty
+DELETE {{host}}/api/index.php/v1/ars/items/161?delete_file=1&delete_empty_directory=1
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+
+# =====================================================================================================================
+# AUTOMATIC ITEM DESCRIPTIONS — /v1/ars/autodescriptions
+# =====================================================================================================================
+#
+# These are the templates ARS applies to a newly created item whose filename matches `packname`: they supply the item's
+# title, description, access level and — the interesting part — its list of environments.
+#
+# Filters: search (title, description, packname; `id:N` for an exact ID), id, category_id, title, packname,
+#          environment_id, created_by, show_unauth_links, access (single value or repeated as access[]=…), published
+# Sort by: a.id, a.title, a.category, a.packname, a.access, a.created, a.created_by, a.modified, a.published,
+#          cat_title, cat_alias, cat_type
+#
+# NOTE ON `category`: the column is called `category`, not `category_id` — but the LIST FILTER is `category_id`, to
+# match the other endpoints. When you POST or PATCH, send `category`.
+#
+# NOTE ON `environments`: on list responses this is a decoded array of environment IDs. On single-item responses it is
+# whatever the table object holds, which is an array of ID strings. Treat both as "cast each element to int".
+
+### Autodescriptions: raw list
+GET {{host}}/api/index.php/v1/ars/autodescriptions
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Autodescriptions: everything defined for one category
+GET {{host}}/api/index.php/v1/ars/autodescriptions?category_id=1&published=1&list_ordering=a.packname&list_direction=asc
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Autodescriptions: the ones matching a particular package name pattern
+GET {{host}}/api/index.php/v1/ars/autodescriptions?packname=pkg_ars
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Autodescriptions: every record which still lists environment #7
+# Use this before you retire or renumber an environment.
+GET {{host}}/api/index.php/v1/ars/autodescriptions?environment_id=7
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Autodescriptions: fetch one
+GET {{host}}/api/index.php/v1/ars/autodescriptions/1
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Autodescriptions: create one
+POST {{host}}/api/index.php/v1/ars/autodescriptions
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: application/json
+
+{
+  "category": 1,
+  "packname": "pkg_ars-*-core.zip",
+  "title": "Akeeba Release System (core)",
+  "description": "<p>The free of charge version.</p>",
+  "environments": ["3", "7"],
+  "access": 1,
+  "published": 1
+}
+
+### Autodescriptions: replace the environments of one record
+# This is the write half of use case 1: point the automatic description at the environments you actually support.
+PATCH {{host}}/api/index.php/v1/ars/autodescriptions/1
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: application/json
+
+{
+  "environments": ["3", "7", "11"]
+}
+
+### Autodescriptions: delete one
+DELETE {{host}}/api/index.php/v1/ars/autodescriptions/1
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+
+# =====================================================================================================================
+# ENVIRONMENTS — /v1/ars/environments
+# =====================================================================================================================
+#
+# An environment is a `platform/version` pair, e.g. `php/8.3` or `joomla/5.2`. `title` is the human readable label
+# shown in the back-end; `xmltitle` is the machine readable value which ends up in the update XML.
+#
+# Filters: search (title and xmltitle; `id:N` for an exact ID), id, title, xmltitle, platform, created_by
+# Sort by: id, title, xmltitle, created, created_by, modified, modified_by
+#
+# `platform` is anchored: `platform=php` matches `php/8.3` but not `myphp/1.0`. `xmltitle` is a partial match, so
+# `xmltitle=8.3` finds `php/8.3` regardless of platform.
+
+### Environments: raw list
+GET {{host}}/api/index.php/v1/ars/environments
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Environments: every PHP version, sorted by XML title
+GET {{host}}/api/index.php/v1/ars/environments?platform=php&list_ordering=xmltitle&list_direction=asc&page[limit]=100
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Environments: does an environment for this exact version already exist?
+GET {{host}}/api/index.php/v1/ars/environments?xmltitle=php/8.5
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Environments: fetch one
+GET {{host}}/api/index.php/v1/ars/environments/7
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Environments: create one
+# The XML title must be `platform/version`. The version part must be numeric and dot separated; only the `wordpress`
+# platform additionally accepts a trailing `+`.
+POST {{host}}/api/index.php/v1/ars/environments
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: application/json
+
+{
+  "title": "PHP 8.5",
+  "xmltitle": "php/8.5"
+}
+
+### Environments: rename one
+PATCH {{host}}/api/index.php/v1/ars/environments/7
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: application/json
+
+{
+  "title": "PHP 8.5 (current)"
+}
+
+### Environments: delete one
+DELETE {{host}}/api/index.php/v1/ars/environments/7
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+
+# =====================================================================================================================
+# UPDATE STREAMS — /v1/ars/updatestreams
+# =====================================================================================================================
+#
+# An update stream is what Joomla's extension updater talks to. Its URLs are predictable and built from the stream's
+# numeric id (the alias is only a URL-safe label; it does not appear in these URLs):
+#
+#   XML update source   {{host}}/index.php?option=com_ars&view=update&task=stream&format=xml&id=<id>
+#   JSON update source  {{host}}/index.php?option=com_ars&view=update&task=stream&format=json&id=<id>
+#   Download redirect   {{host}}/index.php?option=com_ars&view=update&task=download&format=raw&id=<id>
+#   Whole category      {{host}}/index.php?option=com_ars&view=update&task=category&format=xml&id=<category id>
+#
+# Append `&dlid=<download id>` to fetch them as a subscriber would. So once you know the stream's id you can fetch the
+# exact XML Joomla is being served.
+#
+# Filters: search (name, alias, element; `id:N` for an exact ID), id, category_id, name, alias (exact), type, element
+#          (exact), folder (exact), packname, client_id, created_by, published
+# Sort by: a.id, a.name, a.alias, a.type, a.element, a.category, a.packname, a.client_id, a.folder, a.created,
+#          a.created_by, a.modified, a.published, cat_title, cat_alias, cat_type
+#
+# NOTE ON `category`: as with the automatic item descriptions, the LIST FILTER is `category_id` but the column you
+# POST or PATCH is `category`.
+
+### Update streams: raw list
+GET {{host}}/api/index.php/v1/ars/updatestreams
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Update streams: everything defined for one category
+GET {{host}}/api/index.php/v1/ars/updatestreams?category_id=1&published=1
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Update streams: the stream serving a specific Joomla extension
+GET {{host}}/api/index.php/v1/ars/updatestreams?type=packages&element=pkg_ars
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Update streams: look one up by its alias
+GET {{host}}/api/index.php/v1/ars/updatestreams?alias=akeeba-release-system
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Update streams: every back-end plugin stream
+GET {{host}}/api/index.php/v1/ars/updatestreams?type=plugins&folder=system&client_id=0
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Update streams: fetch one
+GET {{host}}/api/index.php/v1/ars/updatestreams/3
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Update streams: fetch the XML that stream actually serves
+# Not a JSON:API endpoint — this is the public update source URL, requested exactly the way Joomla requests it.
+GET {{host}}/index.php?option=com_ars&view=update&task=stream&format=xml&id=3
+Accept: application/xml
+User-Agent: Joomla/5.0
+
+### Update streams: create one
+POST {{host}}/api/index.php/v1/ars/updatestreams
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: application/json
+
+{
+  "name": "Akeeba Release System",
+  "alias": "akeeba-release-system",
+  "type": "packages",
+  "element": "pkg_ars",
+  "category": 1,
+  "packname": "pkg_ars-*.zip",
+  "client_id": 0,
+  "folder": "",
+  "published": 1
+}
+
+### Update streams: update one
+PATCH {{host}}/api/index.php/v1/ars/updatestreams/3
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: application/json
+
+{
+  "published": 1,
+  "packname": "pkg_ars-*.zip"
+}
+
+### Update streams: delete one
+DELETE {{host}}/api/index.php/v1/ars/updatestreams/3
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+
+# =====================================================================================================================
+# DOWNLOAD ID LABELS — /v1/ars/dlidlabels
+# =====================================================================================================================
+#
+# A Download ID is a bearer credential: whoever knows the string can download everything its owner is subscribed to.
+# The endpoint is therefore authorised differently from the rest:
+#
+#   * Any authenticated user may list and read THEIR OWN records. The `user_id` filter is silently forced to their own
+#     ID, so there is no way to page into somebody else's.
+#   * Seeing other people's records requires `core.manage` on `com_ars`, i.e. back-end access to the component.
+#   * Creating a record for another user, and editing anybody else's record, requires `core.admin` on `com_ars`.
+#   * Nobody — not even the owner — may edit the primary ("main") Download ID through the API. Its title is fixed and
+#     it can never be unpublished.
+#   * Deleting your own record is always allowed; deleting somebody else's needs `core.delete` on `com_ars`.
+#
+# Filters: search (user name and username; `id:N` for an exact ID), id, user_id, dlid (partial, and it understands the
+#          `<user_id>:<dlid>` form), title, username (exact), name (partial), email (exact), primary, published
+# Sort by: i.id, i.title, i.user_id, i.dlid, i.primary, i.created, i.published, u.name, u.username, u.email
+#
+# The `name`, `username` and `email` attributes come from a join against `#__users` and are only present on LIST
+# responses. Fetching a single record returns the Download ID label columns alone.
+
+### Download ID labels: raw list
+GET {{host}}/api/index.php/v1/ars/dlidlabels
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Download ID labels: everything belonging to one user, published and unpublished
+GET {{host}}/api/index.php/v1/ars/dlidlabels?user_id=70&list_ordering=i.primary&list_direction=desc
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Download ID labels: only the disabled ones of that user
+# This is what tells you why their update is failing: an unpublished Download ID is refused.
+GET {{host}}/api/index.php/v1/ars/dlidlabels?user_id=70&published=0
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Download ID labels: who owns this Download ID?
+# The response carries user_id, name, username and email — the whole of use case 2 in one request.
+GET {{host}}/api/index.php/v1/ars/dlidlabels?dlid=0123456789abcdef0123456789abcdef
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Download ID labels: the same, for a Download ID in `<user_id>:<dlid>` form
+GET {{host}}/api/index.php/v1/ars/dlidlabels?dlid=70%3A0123456789abcdef0123456789abcdef
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Download ID labels: find a user's records by their email address
+GET {{host}}/api/index.php/v1/ars/dlidlabels?email=someone%40example.com
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Download ID labels: find a user's records by username
+GET {{host}}/api/index.php/v1/ars/dlidlabels?username=someone
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Download ID labels: only the primary Download IDs
+GET {{host}}/api/index.php/v1/ars/dlidlabels?primary=1
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Download ID labels: fetch one
+GET {{host}}/api/index.php/v1/ars/dlidlabels/12
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+### Download ID labels: create an additional Download ID
+# Omit `dlid` and ARS generates a unique one for you. Omit `user_id` and it belongs to the token's own user;
+# supplying somebody else's user_id requires core.admin.
+POST {{host}}/api/index.php/v1/ars/dlidlabels
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: application/json
+
+{
+  "user_id": 70,
+  "title": "CI server",
+  "published": 1
+}
+
+### Download ID labels: disable one
+PATCH {{host}}/api/index.php/v1/ars/dlidlabels/12
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: application/json
+
+{
+  "published": 0
+}
+
+### Download ID labels: rotate one
+# Sending an empty `dlid` makes ARS generate a fresh, non-colliding Download ID. Do NOT send null — nulls are ignored.
+PATCH {{host}}/api/index.php/v1/ars/dlidlabels/12
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+Content-Type: application/json
+
+{
+  "dlid": ""
+}
+
+### Download ID labels: delete one
+DELETE {{host}}/api/index.php/v1/ars/dlidlabels/12
+Accept: application/vnd.api+json
+X-Joomla-Token: {{token}}
+User-Agent: AkeebaReleaseMaker/2.0
+
+
+# =====================================================================================================================
+# RECIPES
+# =====================================================================================================================
+#
+# ---------------------------------------------------------------------------------------------------------------------
+# 1. Which PHP and Joomla versions will the next release in category N be marked as supporting?
+# ---------------------------------------------------------------------------------------------------------------------
+#
+#   a. GET /v1/ars/autodescriptions?category_id=N&published=1
+#      Every automatic item description that will be applied to the files of the next release.
+#   b. Collect the `environments` arrays from those records and take their union.
+#   c. GET /v1/ars/environments?page[limit]=100
+#      Read the whole environment vocabulary once and index it by id; `xmltitle` gives you `php/8.3`, `joomla/5.2`.
+#   d. Compare that against the `require` / `extra` compatibility declarations in your composer.json.
+#   e. For anything missing: POST /v1/ars/environments to create it, then
+#      PATCH /v1/ars/autodescriptions/<id> with the corrected `environments` array.
+#
+#   Before deleting an environment that turned out to be obsolete, check nothing still points at it:
+#   GET /v1/ars/autodescriptions?environment_id=<id>
+#
+# ---------------------------------------------------------------------------------------------------------------------
+# 2. A subscriber's update is failing. Who are they and what Download IDs do they have?
+# ---------------------------------------------------------------------------------------------------------------------
+#
+#   From a Download ID string:
+#     GET /v1/ars/dlidlabels?dlid=<the string>      → user_id, name, username, email
+#   From a user:
+#     GET /v1/ars/dlidlabels?user_id=<id>           → all their records, published and unpublished
+#     GET /v1/ars/dlidlabels?email=<address>        → the same, if all you have is an email address
+#
+#   An unpublished record, or a Download ID which matches no record at all, is the usual answer.
+#
+# ---------------------------------------------------------------------------------------------------------------------
+# 3. The update XML looks wrong. Which stream produced it?
+# ---------------------------------------------------------------------------------------------------------------------
+#
+#   a. GET /v1/ars/categories?search=<software name>          → the category id
+#   b. GET /v1/ars/updatestreams?category_id=<id>             → the stream, its alias, type, element and packname
+#   c. GET /index.php?option=com_ars&view=update&task=stream&format=xml&id=<stream id>
+#      The XML Joomla is actually being served. Add `&dlid=<download id>` to see a subscriber's view of it.
+#   d. GET /v1/ars/releases?category_id=<id>&published=1      → the releases that should be in it
+#      GET /v1/ars/items?release_id=<id>                      → the files, and whether their names match `packname`
+#
+#   A file which does not match the stream's `packname` pattern is silently absent from the XML; that is by far the
+#   most common cause of a discrepancy.

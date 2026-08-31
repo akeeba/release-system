@@ -13,7 +13,15 @@ use Akeeba\Component\ARS\Api\Controller\Mixin\AssertApiAccess;
 use Akeeba\Component\ARS\Api\Controller\Mixin\PopulateModelState;
 use Joomla\CMS\MVC\Controller\ApiController;
 
-class CategoriesController extends ApiController
+/**
+ * JSON:API controller for the Environments.
+ *
+ * Environments do not belong to a category — they are a flat, component-wide vocabulary — so, unlike releases,
+ * items, update streams and automatic item descriptions, they are authorised at the component level only.
+ *
+ * @since  7.5.1
+ */
+class EnvironmentsController extends ApiController
 {
 	use PopulateModelState;
 	use AssertApiAccess;
@@ -22,17 +30,17 @@ class CategoriesController extends ApiController
 	 * The content type of the item.
 	 *
 	 * @var    string
-	 * @since  7.0.0
+	 * @since  7.5.1
 	 */
-	protected $contentType = 'categories';
+	protected $contentType = 'environments';
 
 	/**
 	 * The default view for the display method.
 	 *
 	 * @var    string
-	 * @since  7.0.0
+	 * @since  7.5.1
 	 */
-	protected $default_view = 'categories';
+	protected $default_view = 'environments';
 
 	public function displayList()
 	{
@@ -40,11 +48,11 @@ class CategoriesController extends ApiController
 
 		$stateMapper = [
 			['search', 'filter.search', 'string'],
-			['published', 'filter.published', 'int'],
-			['show_unauth_links', 'filter.show_unauth_links', 'int'],
-			['supported', 'filter.supported', 'int'],
-			['access', 'filter.access', 'int'],
-			['language', 'filter.language', 'string'],
+			['id', 'filter.id', 'int'],
+			['title', 'filter.title', 'string'],
+			['xmltitle', 'filter.xmltitle', 'string'],
+			['platform', 'filter.platform', 'string'],
+			['created_by', 'filter.created_by', 'int'],
 		];
 
 		$this->populateListModelState($stateMapper);
@@ -61,12 +69,7 @@ class CategoriesController extends ApiController
 
 	public function delete($id = null)
 	{
-		if ($id === null) {
-			$id = $this->input->get('id', 0, 'int');
-		}
-
-		// A category is its own asset, so its own permissions decide whether it may be deleted.
-		$this->assertCanDelete((int) $id);
+		$this->assertCanDelete();
 
 		return parent::delete($id);
 	}
@@ -79,7 +82,6 @@ class CategoriesController extends ApiController
 			return false;
 		}
 
-		// Categories have no parent category, so creation is gated at the component level.
 		return $user->authorise('core.create', 'com_ars');
 	}
 
@@ -91,12 +93,10 @@ class CategoriesController extends ApiController
 			return false;
 		}
 
-		$recordId = (int) ($data[$key] ?? 0);
-
-		if (!$recordId) {
+		if (!((int) ($data[$key] ?? 0))) {
 			return false;
 		}
 
-		return $user->authorise('core.edit', 'com_ars.category.' . $recordId);
+		return $user->authorise('core.edit', 'com_ars');
 	}
 }

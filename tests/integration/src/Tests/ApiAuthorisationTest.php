@@ -107,12 +107,18 @@ class ApiAuthorisationTest extends AbstractE2ETestCase
 		$fixtures = SiteProvisioner::getInstance();
 
 		return [
-			'categories list'  => ['v1/ars/categories'],
-			'releases list'    => ['v1/ars/releases'],
-			'items list'       => ['v1/ars/items'],
-			'single category'  => ['v1/ars/categories/' . $fixtures->categoryId('restricted')],
-			'single release'   => ['v1/ars/releases/' . $fixtures->releaseId('restrictedStable')],
-			'single item'      => ['v1/ars/items/' . $fixtures->itemId('restrictedFile')],
+			'categories list'        => ['v1/ars/categories'],
+			'releases list'          => ['v1/ars/releases'],
+			'items list'             => ['v1/ars/items'],
+			'autodescriptions list'  => ['v1/ars/autodescriptions'],
+			'environments list'      => ['v1/ars/environments'],
+			'updatestreams list'     => ['v1/ars/updatestreams'],
+			'single category'        => ['v1/ars/categories/' . $fixtures->categoryId('restricted')],
+			'single release'         => ['v1/ars/releases/' . $fixtures->releaseId('restrictedStable')],
+			'single item'            => ['v1/ars/items/' . $fixtures->itemId('restrictedFile')],
+			'single autodescription' => ['v1/ars/autodescriptions/' . $fixtures->autoDescriptionId('public')],
+			'single environment'     => ['v1/ars/environments/' . $fixtures->environmentId('php84')],
+			'single updatestream'    => ['v1/ars/updatestreams/' . $fixtures->updateStreamId('restrictedStream')],
 		];
 	}
 

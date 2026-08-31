@@ -31,6 +31,13 @@ class DlidlabelsModel extends ListModel
 				'primary', 'i.primary',
 				'created', 'i.created',
 				'published', 'i.published',
+				'created_by', 'i.created_by',
+				'modified', 'i.modified',
+				'modified_by', 'i.modified_by',
+				// Columns from the joined #__users table. Back-end (and API) only.
+				'name', 'u.name',
+				'username', 'u.username',
+				'email', 'u.email',
 			];
 		}
 
@@ -70,6 +77,13 @@ class DlidlabelsModel extends ListModel
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.dlid');
 		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.id');
+		$id .= ':' . $this->getState('filter.user_id');
+		$id .= ':' . $this->getState('filter.primary');
+		$id .= ':' . $this->getState('filter.title');
+		$id .= ':' . $this->getState('filter.username');
+		$id .= ':' . $this->getState('filter.name');
+		$id .= ':' . $this->getState('filter.email');
 
 		// Special considerations for frontend
 		if ($app->isClient('site'))
@@ -127,9 +141,17 @@ class DlidlabelsModel extends ListModel
 		// In the backend we can search for any Download ID which can include a user ID part
 		else
 		{
-			if (strpos($dlid, ':') != false)
+			/**
+			 * An explicitly set user filter always wins. The API forces it to the calling user's own ID for
+			 * anyone without the core.manage privilege, so letting the user ID embedded in the `dlid` filter
+			 * override it would hand out other people's Download IDs.
+			 */
+			$userId = $this->getState('filter.user_id');
+
+			if (strpos((string) $dlid, ':') != false)
 			{
-				[$userId, $dlid] = explode(':', $dlid);
+				[$dlidUserId, $dlid] = explode(':', $dlid);
+				$userId = is_numeric($userId) ? $userId : $dlidUserId;
 			}
 		}
 
@@ -218,6 +240,72 @@ class DlidlabelsModel extends ListModel
 		{
 			$query->where($db->quoteName('i.published') . ' = :published')
 				->bind(':published', $published, ParameterType::INTEGER);
+		}
+
+		// The remaining filters are back-end / API only; the frontend deliberately only has a search box.
+		if (!$isSite)
+		{
+			// Record ID filter
+			$recordId = $this->getState('filter.id');
+
+			if (is_numeric($recordId))
+			{
+				$recordId = (int) $recordId;
+
+				$query->where($db->quoteName('i.id') . ' = :recordId')
+					->bind(':recordId', $recordId, ParameterType::INTEGER);
+			}
+
+			// Primary (main) Download ID filter
+			$primary = $this->getState('filter.primary');
+
+			if (is_numeric($primary))
+			{
+				$primary = (int) $primary;
+
+				$query->where($db->quoteName('i.primary') . ' = :primary')
+					->bind(':primary', $primary, ParameterType::INTEGER);
+			}
+
+			// Label title filter (partial match)
+			$title = $this->getState('filter.title');
+
+			if (!empty($title))
+			{
+				$title = '%' . $title . '%';
+
+				$query->where($db->quoteName('i.title') . ' LIKE :title')
+					->bind(':title', $title, ParameterType::STRING);
+			}
+
+			// Username filter (exact match)
+			$username = $this->getState('filter.username');
+
+			if (!empty($username))
+			{
+				$query->where($db->quoteName('u.username') . ' = :username')
+					->bind(':username', $username, ParameterType::STRING);
+			}
+
+			// User's full name filter (partial match)
+			$name = $this->getState('filter.name');
+
+			if (!empty($name))
+			{
+				$name = '%' . $name . '%';
+
+				$query->where($db->quoteName('u.name') . ' LIKE :name')
+					->bind(':name', $name, ParameterType::STRING);
+			}
+
+			// Email address filter (exact match)
+			$email = $this->getState('filter.email');
+
+			if (!empty($email))
+			{
+				$query->where($db->quoteName('u.email') . ' = :email')
+					->bind(':email', $email, ParameterType::STRING);
+			}
 		}
 
 		// List ordering clause

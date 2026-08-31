@@ -12,6 +12,31 @@ defined('_JEXEC') or die;
 trait PopulateModelState
 {
 	/**
+	 * Populates the model state of a list view from the request.
+	 *
+	 * This is populateModelState() plus the sort order, which every list endpoint supports in the same way.
+	 * Joomla's ApiController::displayList() discards a `list.ordering` which the model does not declare in its
+	 * filter_fields, and forces an unrecognised `list.direction` to `asc`, so both are safe to take verbatim.
+	 *
+	 * @param   array  $stateMapper  Array of arrays. Each internal array is [$requestKey, $stateKey, $filterType]
+	 *
+	 * @return  void
+	 * @since   7.5.1
+	 */
+	protected function populateListModelState(array $stateMapper): void
+	{
+		$this->populateModelState(
+			array_merge(
+				$stateMapper,
+				[
+					['list_ordering', 'list.ordering', 'string'],
+					['list_direction', 'list.direction', 'string'],
+				]
+			)
+		);
+	}
+
+	/**
 	 * Populates the model state from the request.
 	 *
 	 * @param   array  $stateMapper  Array of arrays. Each internal array is [$requestKey, $stateKey, $filterType]

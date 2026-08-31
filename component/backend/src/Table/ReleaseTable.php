@@ -225,7 +225,7 @@ class ReleaseTable extends AbstractTable implements TaggableTableInterface
 		unset ($this->_voodoo_category_id);
 		unset ($this->_voodoo_hash);
 
-		$this->getDispatcher()->removeListener('onTableAfterStore', [$this, 'voodooOnBeforeStore']);
+		$this->getDispatcher()->removeListener('onTableBeforeStore', [$this, 'voodooOnBeforeStore']);
 	}
 
 	protected function onBeforeCheck()

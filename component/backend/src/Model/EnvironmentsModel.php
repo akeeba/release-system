@@ -21,12 +21,16 @@ class EnvironmentsModel extends ListModel
 	{
 		if (empty($config['filter_fields']))
 		{
+			// Note: misleadingly named, the filter_fields must also include the sort by fields.
 			$config['filter_fields'] = [
 				'search',
 				'id', 'a.id',
 				'title', 'a.title',
 				'xmltitle', 'a.xmltitle',
 				'created', 'a.created',
+				'created_by', 'a.created_by',
+				'modified', 'a.modified',
+				'modified_by', 'a.modified_by',
 			];
 		}
 
@@ -83,6 +87,11 @@ class EnvironmentsModel extends ListModel
 	{
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.id');
+		$id .= ':' . $this->getState('filter.title');
+		$id .= ':' . $this->getState('filter.xmltitle');
+		$id .= ':' . $this->getState('filter.platform');
+		$id .= ':' . $this->getState('filter.created_by');
 
 		return parent::getStoreId($id);
 	}
@@ -119,6 +128,66 @@ class EnvironmentsModel extends ListModel
 					->bind(':search1', $search)
 					->bind(':search2', $search);
 			}
+		}
+
+		// Record ID filter
+		$recordId = $this->getState('filter.id');
+
+		if (is_numeric($recordId))
+		{
+			$recordId = (int) $recordId;
+
+			$query->where($db->quoteName('a.id') . ' = :recordId')
+				->bind(':recordId', $recordId, ParameterType::INTEGER);
+		}
+
+		// Title filter (partial match)
+		$title = $this->getState('filter.title');
+
+		if (!empty($title))
+		{
+			$title = '%' . $title . '%';
+
+			$query->where($db->quoteName('a.title') . ' LIKE :title')
+				->bind(':title', $title, ParameterType::STRING);
+		}
+
+		// XML title filter (partial match), e.g. `php/8.3` or just `8.3`.
+		$xmlTitle = $this->getState('filter.xmltitle');
+
+		if (!empty($xmlTitle))
+		{
+			$xmlTitle = '%' . $xmlTitle . '%';
+
+			$query->where($db->quoteName('a.xmltitle') . ' LIKE :xmltitle')
+				->bind(':xmltitle', $xmlTitle, ParameterType::STRING);
+		}
+
+		/**
+		 * Platform filter: the part of the XML title before the slash, e.g. `php`, `joomla`, `wordpress`.
+		 *
+		 * This is an anchored match, so filtering by `php` returns the PHP version environments without
+		 * also returning anything which merely happens to have `php` somewhere in its version part.
+		 */
+		$platform = $this->getState('filter.platform');
+
+		if (!empty($platform))
+		{
+			$platform = $platform . '/%';
+
+			$query->where($db->quoteName('a.xmltitle') . ' LIKE :platform')
+				->bind(':platform', $platform, ParameterType::STRING);
+		}
+
+		// Created by (user ID) filter
+		$createdBy = $this->getState('filter.created_by');
+
+		if (is_numeric($createdBy))
+		{
+			$createdBy = (int) $createdBy;
+
+			$query->where($db->quoteName('a.created_by') . ' = :createdBy')
+				->bind(':createdBy', $createdBy, ParameterType::INTEGER);
 		}
 
 		// List ordering clause

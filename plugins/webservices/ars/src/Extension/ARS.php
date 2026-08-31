@@ -66,6 +66,30 @@ class ARS extends CMSPlugin implements SubscriberInterface
 			'items',
 			['component' => 'com_ars']
 		);
+
+		$router->createCRUDRoutes(
+			'v1/ars/autodescriptions',
+			'autodescriptions',
+			['component' => 'com_ars']
+		);
+
+		$router->createCRUDRoutes(
+			'v1/ars/dlidlabels',
+			'dlidlabels',
+			['component' => 'com_ars']
+		);
+
+		$router->createCRUDRoutes(
+			'v1/ars/environments',
+			'environments',
+			['component' => 'com_ars']
+		);
+
+		$router->createCRUDRoutes(
+			'v1/ars/updatestreams',
+			'updatestreams',
+			['component' => 'com_ars']
+		);
 	}
 
 	/**

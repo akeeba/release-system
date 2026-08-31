@@ -48,7 +48,7 @@ class ItemsController extends ApiController
 			['language', 'filter.language', 'string'],
 		];
 
-		$this->populateModelState($stateMapper);
+		$this->populateListModelState($stateMapper);
 
 		return parent::displayList();
 	}
@@ -62,11 +62,15 @@ class ItemsController extends ApiController
 
 	public function delete($id = null)
 	{
-		$this->assertCanManage();
-
 		if ($id === null) {
 			$id = $this->input->get('id', 0, 'int');
 		}
+
+		$item       = $id ? $this->getModel('Item')->getItem((int) $id) : null;
+		$releaseId  = $item ? (int) ($item->release_id ?? 0) : 0;
+		$categoryId = $releaseId ? $this->getModel('Items')->getCategoryFromRelease($releaseId) : null;
+
+		$this->assertCanDelete((int) ($categoryId ?? 0));
 
 		$fileToDelete = null;
 		if ($this->input->getInt('delete_file') === 1) {
