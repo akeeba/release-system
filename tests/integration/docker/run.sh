@@ -21,7 +21,8 @@
 #
 # Usage:  ./run.sh [options] [-- <extra PHPUnit args>]
 #   -j, --joomla=VERSION   Override JOOMLA_VERSION (e.g. 6, 6.1, 6.1.2)
-#       --matrix           Run once per version in JOOMLA_MATRIX, then exit
+#   -p, --php=VERSION      Override PHP_VERSION (e.g. 8.1, 8.3, 8.5)
+#       --matrix           Run every Joomla/PHP pair in JOOMLA_MATRIX, then exit
 #   -f, --filter=NAME      Passed through to PHPUnit as --filter
 #       --skip-build       Do not run `phing git`; use the newest package in release/
 #       --down             Tear everything down and exit
@@ -75,6 +76,7 @@ command -v docker >/dev/null 2>&1 || die "Docker is not installed or not on PATH
 # Argument parsing
 # ---------------------------------------------------------------------------
 JOOMLA_OVERRIDE=""
+PHP_OVERRIDE=""
 SKIP_BUILD=0
 ONLY_DOWN=0
 RUN_TESTS=1
@@ -86,6 +88,8 @@ while [ $# -gt 0 ]; do
 	case "$1" in
 		-j|--joomla)     JOOMLA_OVERRIDE="$2"; shift 2;;
 		--joomla=*)      JOOMLA_OVERRIDE="${1#*=}"; shift;;
+		-p|--php)        PHP_OVERRIDE="$2"; shift 2;;
+		--php=*)         PHP_OVERRIDE="${1#*=}"; shift;;
 		--matrix)        RUN_MATRIX=1; shift;;
 		-f|--filter)     PHPUNIT_ARGS+=("--filter" "$2"); shift 2;;
 		--filter=*)      PHPUNIT_ARGS+=("--filter" "${1#*=}"); shift;;
@@ -119,9 +123,10 @@ set -a; . ./.env; set +a
 export PUID; PUID="$(id -u)"
 export PGID; PGID="$(id -g)"
 [ -n "${JOOMLA_OVERRIDE}" ] && export JOOMLA_VERSION="${JOOMLA_OVERRIDE}"
+[ -n "${PHP_OVERRIDE}" ] && export PHP_VERSION="${PHP_OVERRIDE}"
 
 : "${JOOMLA_VERSION:?JOOMLA_VERSION is not set}"
-: "${JOOMLA_MATRIX:=5.4 6.0 6.1}"
+: "${JOOMLA_MATRIX:=5.4:8.1,8.5 6.0:8.3,8.5 6.1:8.3,8.5}"
 : "${DB_PREFIX:=e2e_}"
 : "${DB_NAME:=arse2e}"
 : "${DB_ROOT_PASSWORD:=root}"
@@ -145,24 +150,34 @@ if [ "${RUN_MATRIX}" -eq 1 ]; then
 	MATRIX_STATUS=0
 	FAILED_VERSIONS=""
 	FIRST=1
-	for v in ${JOOMLA_MATRIX}; do
-		echo
-		log "──────── matrix: Joomla ${v} ────────"
-		# Build ARS once, on the first iteration only; the package does not change
-		# between Joomla versions and `phing git` is not cheap.
-		EXTRA=()
-		[ "${FIRST}" -eq 0 ] && EXTRA+=("--skip-build")
-		[ "${SKIP_BUILD}" -eq 1 ] && EXTRA+=("--skip-build")
-		if [ "${#PHPUNIT_ARGS[@]}" -gt 0 ]; then
-			"${SCRIPT_PATH}" --joomla="${v}" ${EXTRA[@]+"${EXTRA[@]}"} -- "${PHPUNIT_ARGS[@]}" || {
-				MATRIX_STATUS=1; FAILED_VERSIONS="${FAILED_VERSIONS} ${v}"
-			}
-		else
-			"${SCRIPT_PATH}" --joomla="${v}" ${EXTRA[@]+"${EXTRA[@]}"} || {
-				MATRIX_STATUS=1; FAILED_VERSIONS="${FAILED_VERSIONS} ${v}"
-			}
-		fi
-		FIRST=0
+	# Each JOOMLA_MATRIX entry is either a bare Joomla version, which runs on the .env PHP_VERSION,
+	# or VERSION:PHP[,PHP...] naming the PHP versions to pair it with. See env.dist for the policy
+	# that decides which pairs are worth the wall-clock.
+	for entry in ${JOOMLA_MATRIX}; do
+		jver="${entry%%:*}"
+		phps="${entry#*:}"
+		[ "${phps}" = "${entry}" ] && phps="${PHP_VERSION}"
+
+		for pver in ${phps//,/ }; do
+			echo
+			log "──────── matrix: Joomla ${jver} on PHP ${pver} ────────"
+			# Build ARS once, on the first iteration only; the package does not change
+			# between Joomla or PHP versions and `phing git` is not cheap.
+			EXTRA=()
+			if [ "${FIRST}" -eq 0 ] || [ "${SKIP_BUILD}" -eq 1 ]; then
+				EXTRA+=("--skip-build")
+			fi
+			if [ "${#PHPUNIT_ARGS[@]}" -gt 0 ]; then
+				"${SCRIPT_PATH}" --joomla="${jver}" --php="${pver}" ${EXTRA[@]+"${EXTRA[@]}"} -- "${PHPUNIT_ARGS[@]}" || {
+					MATRIX_STATUS=1; FAILED_VERSIONS="${FAILED_VERSIONS} ${jver}/php${pver}"
+				}
+			else
+				"${SCRIPT_PATH}" --joomla="${jver}" --php="${pver}" ${EXTRA[@]+"${EXTRA[@]}"} || {
+					MATRIX_STATUS=1; FAILED_VERSIONS="${FAILED_VERSIONS} ${jver}/php${pver}"
+				}
+			fi
+			FIRST=0
+		done
 	done
 	echo
 	if [ "${MATRIX_STATUS}" -eq 0 ]; then
@@ -216,6 +231,56 @@ MIN_JOOMLA_VERSION="$(sed -nE "s/.*\\\$minimumJoomla[[:space:]]*=[[:space:]]*'([
 version_lt() {
 	[ "$1" = "$2" ] && return 1
 	[ "$(printf '%s\n%s\n' "$1" "$2" | sort -V | head -1)" = "$1" ]
+}
+
+# Pad a version to three components. Without this, version_lt "8.1" "8.1.0" is TRUE under sort -V,
+# so a perfectly valid `--php=8.1` would be rejected against a floor written as "8.1.0".
+normalize_version() {
+	local IFS=.
+	# shellcheck disable=SC2086
+	set -- $1
+	printf '%s.%s.%s' "${1:-0}" "${2:-0}" "${3:-0}"
+}
+
+# The PHP range ARS declares, scraped from the installer script for the same reason as the Joomla
+# floor above: one source of truth. The maximum is EXCLUSIVE, matching preflight().
+MIN_PHP_VERSION="$(sed -nE "s/.*\\\$minimumPhp[[:space:]]*=[[:space:]]*'([0-9.]+)'.*/\1/p" \
+	"${REPO_ROOT}/component/script.ars.php" | head -1)"
+MAX_PHP_VERSION="$(sed -nE "s/.*\\\$maximumPhp[[:space:]]*=[[:space:]]*'([0-9.]+)'.*/\1/p" \
+	"${REPO_ROOT}/component/script.ars.php" | head -1)"
+: "${MIN_PHP_VERSION:=8.1.0}"
+: "${MAX_PHP_VERSION:=8.7}"
+
+# Reject a PHP version outside what ARS itself claims to support, before we spend minutes on it.
+assert_php_in_ars_range() {
+	local p n
+	p="$1"
+	n="$(normalize_version "${p}")"
+
+	if version_lt "${n}" "$(normalize_version "${MIN_PHP_VERSION}")"; then
+		die "PHP ${p} is below the minimum ARS supports (${MIN_PHP_VERSION}, from component/script.ars.php)."
+	fi
+
+	if ! version_lt "${n}" "$(normalize_version "${MAX_PHP_VERSION}")"; then
+		die "PHP ${p} is at or above the exclusive maximum ARS supports (${MAX_PHP_VERSION}, from component/script.ars.php)."
+	fi
+}
+
+# Joomla enforces its own PHP floor and refuses to install below it, so a pair like 6.1 on PHP 8.1
+# would fail for a reason that has nothing to do with ARS. Read that floor out of the package we
+# just extracted rather than hard-coding a table that would rot.
+assert_php_supported_by_joomla() {
+	local minPhp
+	minPhp="$(sed -nE "s/.*define\\('JOOMLA_MINIMUM_PHP',[[:space:]]*'([0-9.]+)'\\).*/\1/p" \
+		"${WWW_DIR}/index.php" 2>/dev/null | head -1)"
+
+	[ -z "${minPhp}" ] && return 0
+
+	if version_lt "$(normalize_version "${PHP_VERSION}")" "$(normalize_version "${minPhp}")"; then
+		die "Joomla ${JOOMLA_RESOLVED} requires PHP ${minPhp} or later, but this run asked for PHP ${PHP_VERSION}."
+	fi
+
+	ok "PHP ${PHP_VERSION} satisfies Joomla ${JOOMLA_RESOLVED} (needs ${minPhp}+)"
 }
 
 # Reject a requested version that provably resolves below the minimum, before we
@@ -595,12 +660,14 @@ dump_php_errors() {
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
-log "ARS end-to-end harness — Joomla ${JOOMLA_VERSION}"
+log "ARS end-to-end harness — Joomla ${JOOMLA_VERSION} on PHP ${PHP_VERSION}"
 precheck_requested_version "${JOOMLA_VERSION}"
+assert_php_in_ars_range "${PHP_VERSION}"
 scrub
 acquire_joomla
 assert_supported_version "${JOOMLA_RESOLVED}"
 extract_joomla
+assert_php_supported_by_joomla
 bring_up_stack
 install_joomla
 configure_site
