@@ -70,16 +70,33 @@ trait TableCreateModifyTrait
 			}
 
 			// Set modified to created date if not set
-			if ($this->updateModified && $this->hasField('modified') && $this->hasField('created') && !(int) $this->modified)
+			if ($this->updateModified && $this->hasField('modified') && $this->hasField('created')
+				&& !(int) $this->modified && $this->stampModifiedOnCreate())
 			{
 				$this->modified = $this->created;
 			}
 
 			// Set modified_by to created_by user if not set
-			if ($this->updateModified && $this->hasField('modified_by') && $this->hasField('created_by') && empty($this->modified_by))
+			if ($this->updateModified && $this->hasField('modified_by') && $this->hasField('created_by')
+				&& empty($this->modified_by) && $this->stampModifiedOnCreate())
 			{
 				$this->modified_by = $this->created_by;
 			}
 		}
+	}
+
+	/**
+	 * Should a brand-new row's `modified` (and `modified_by`) default to its `created` value?
+	 *
+	 * True everywhere by default, matching Joomla's own convention. Override this in a specific Table
+	 * class when `modified` is relied on elsewhere to mean "touched since creation" rather than "row
+	 * creation timestamp" — see `CategoryTable::stampModifiedOnCreate()`.
+	 *
+	 * @return  bool
+	 * @since   7.6.0
+	 */
+	protected function stampModifiedOnCreate(): bool
+	{
+		return true;
 	}
 }

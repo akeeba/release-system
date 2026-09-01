@@ -67,8 +67,12 @@ final class BleedingedgeModel extends BaseDatabaseModel
 		$this->removeReleasesByCount($category);
 
 		// Skip the expensive scan if the directory hasn't been touched since the category was last scanned.
+		// `modified` doubles as "last scanned" here (see below); a NULL `modified` means this category
+		// has never been scanned yet, so it must NOT fall back to `created` — that would make a
+		// brand-new category look already-scanned and could permanently skip its first scan if the
+		// release directory was uploaded before the category was created (the normal workflow order).
 		$dirMTime = @filemtime($path) ?: 0;
-		$lastSeen = $category->modified ?: $category->created;
+		$lastSeen = $category->modified;
 
 		try
 		{

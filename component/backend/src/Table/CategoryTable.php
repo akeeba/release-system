@@ -117,6 +117,28 @@ class CategoryTable extends AbstractTable implements TaggableTableInterface
 		return 'com_ars.category.' . $this->id;
 	}
 
+	/**
+	 * A brand-new category must NOT have `modified` stamped to its `created` value.
+	 *
+	 * `BleedingedgeModel::scanCategory()` overloads this category's `modified` column as "last time
+	 * this category's directory was scanned", to skip its expensive filesystem scan when nothing on
+	 * disk has changed since. The normal workflow is to upload a Bleeding Edge release folder to the
+	 * repository first, then create the category pointing at it afterwards — so the folder's mtime is
+	 * routinely older than the category's own creation time. If `modified` defaulted to `created` (as
+	 * every other Table in this component does), a brand-new category would look "already scanned" the
+	 * instant it was saved, and because the only code that ever advances `modified` lives inside the
+	 * branch that comparison skips, the category would never be scanned again — see GitHub issue #254.
+	 * Leaving `modified` NULL until an actual scan (or edit) happens lets `scanCategory()` tell "never
+	 * scanned" apart from "scanned at time T".
+	 *
+	 * @return  bool
+	 * @since   7.6.0
+	 */
+	protected function stampModifiedOnCreate(): bool
+	{
+		return false;
+	}
+
 	protected function onBeforeCheck()
 	{
 		$this->assertNotEmpty($this->title, 'COM_ARS_CATEGORY_ERR_NEEDS_TITLE');
