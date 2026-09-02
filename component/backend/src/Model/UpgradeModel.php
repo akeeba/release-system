@@ -119,6 +119,7 @@ class UpgradeModel extends BaseModel implements DatabaseAwareInterface
 
 			JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/phpversion_warning.php',
 			JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/wrongphp.php',
+			JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/errorhandler.php',
 		],
 		'folders' => [
 			JPATH_ADMINISTRATOR . '/components/com_ars/sql/xml',

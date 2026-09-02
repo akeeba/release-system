@@ -28,40 +28,27 @@ class Dispatcher extends ComponentDispatcher
 
 	public function dispatch()
 	{
-		try
+		// Check the minimum supported PHP version
+		$minPHPVersion = '8.1.0';
+		$softwareName  = 'Akeeba Release System';
+
+		if (version_compare(PHP_VERSION, $minPHPVersion, 'lt'))
 		{
-			// Check the minimum supported PHP version
-			$minPHPVersion = '8.1.0';
-			$softwareName  = 'Akeeba Release System';
-
-			if (version_compare(PHP_VERSION, $minPHPVersion, 'lt'))
-			{
-				throw new \RuntimeException(
-					sprintf(
-						'%s requires PHP %s or later.',
-						$softwareName,
-						$minPHPVersion
-					)
-				);
-			}
-
-			$this->triggerEvent('onBeforeDispatch');
-
-			parent::dispatch();
-
-			// This will only execute if there is no redirection set by the Controller
-			$this->triggerEvent('onAfterDispatch');
+			throw new \RuntimeException(
+				sprintf(
+					'%s requires PHP %s or later.',
+					$softwareName,
+					$minPHPVersion
+				)
+			);
 		}
-		catch (Throwable $e)
-		{
-			$title = 'Akeeba Release System';
-			$isPro = false;
 
-			if (!(include_once JPATH_ADMINISTRATOR . '/components/com_ars/tmpl/common/errorhandler.php'))
-			{
-				throw $e;
-			}
-		}
+		$this->triggerEvent('onBeforeDispatch');
+
+		parent::dispatch();
+
+		// This will only execute if there is no redirection set by the Controller
+		$this->triggerEvent('onAfterDispatch');
 	}
 
 	protected function onBeforeDispatch()

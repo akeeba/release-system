@@ -1,6 +1,7 @@
 <?php die(); ?>
 Akeeba Release System 7.5.1
 ================================================================================
+- Removed legacy error handler
 + JSON API routes for Automatic Item Descriptions, Download ID labels, Environments, and Update Streams
 + JSON API: many more list filters, and sorting with list_ordering / list_direction, on every endpoint
 + Documented the whole JSON:API in assets/http/api.http

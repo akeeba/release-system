@@ -4,51 +4,7 @@
   ~ @license   GNU General Public License version 3, or later
   -->
 
-<h3>Security release</h3>
-
 <p>
-	This version fixes a Download ID disclosure vulnerability. This could potentially allow a registered (not Guest) user to view the Download ID of a different user.
-</p>
-
-<p>
-	For more information, please consult <a href="https://github.com/akeeba/release-system/security/advisories/GHSA-phr2-33wm-xffw">our security advisory</a>.
-</p>
-
-<h3>What's new</h3>
-
-
-<p>
-	<strong>Rewritten Bleeding Edge releases</strong>. The Bleeding Edge model has been rewritten from the ground up. The scan of a Bleeding Edge category is now skipped entirely when its directory has not changed since the last scan, which removes the bulk of the per-request filesystem and database work on busy sites. Release notes are now generated automatically from a <code>CHANGELOG</code> file placed in the release's directory, rendered as Bootstrap 5 and Font Awesome 6 markup; the <code>CHANGELOG</code> file itself is consumed for that purpose, and is no longer listed as a downloadable item. This is controlled by the new “Generate changelog for BleedingEdge releases” option in the component's Options page, and replaces the old “Colorise Changelog” option, which has been removed.
-</p>
-
-<p>
-	<strong>Security severity flag in update streams</strong>. Joomla! 6.2 reads a <code>&lt;security&gt;</code> element from the update XML and highlights flagged updates in Extensions, Update as well as in the extension update quick icon. Releases now have a Security severity field which is output in the Joomla! update stream, and is also shown in the backend release list, the frontend release, items and latest views, mod_arsdownloads, the ARS JSON update stream, and the JSON:API releases resource. The badge markup lives in the <code>akeeba.ars.common.securitybadge</code> layout, so you can override it from your site or administrator template.
-</p>
-
-<p>
-	<strong>The Latest Release content plugin understands Joomla! versions past 4.x</strong>. <code>plg_content_arslatest</code> used to match environments against hardcoded Joomla! 3 and Joomla! 4 prefixes. It now distributes the latest items by Joomla! major version, so releases targeting Joomla! 5, 6, and later are matched correctly.
-</p>
-
-<p>
-	<strong>Save as Copy replaces the Copy button</strong>. The Copy toolbar button duplicated the selected records straight from the list view, with no opportunity to review the result before it was written. It has been replaced by a Save as Copy button in the edit pages of Categories, Releases, Update Streams, Automatic Item Descriptions, and Environments. You now land on the edit form, adjust whatever needs adjusting, and save. Joomla's own batch copy and move is a different feature, and is unaffected. Note that this is also the change which addresses the security issue described above.
-</p>
-
-<p>
-	<strong>Update streams work again in several previously broken cases</strong>. Update streams returned an error page whenever a Download ID was included in the request. Asking for an update stream as JSON returned XML instead. The literal text <code>Array</code> was appended to the output when the URL had no format parameter. The URLs in the update stream indices, and in the JSON update stream, had double-escaped or HTML-escaped ampersands which made them unusable. All of these are fixed.
-</p>
-
-<p>
-	<strong>Resumable and partial downloads no longer serve corrupt data</strong>. Every HTTP Range request — the kind made by download managers, and by browsers resuming an interrupted download — appended a fragment of Joomla's error page to the file bytes, corrupting the download. This is fixed, and covered by tests.
-</p>
-
-<p>
-	<strong>Joomla! 7.0 readiness</strong>. We have addressed the Joomla! APIs which are removed in Joomla! 7.0, while keeping compatibility with Joomla! 4.4 and later. <code>mod_arsdownloads</code> has been modernised to the module dispatcher and DI service provider pattern, matching <code>mod_arsgraph</code>.
-</p>
-
-<p>
-	<strong>Hardening</strong>. We have gone over the component with a fine-toothed comb, tightening a number of things which were not exploitable, but were closer to the line than we are comfortable with. This includes authorisation on the JSON:API read and write endpoints, the control panel housekeeping task, and the frontend Download ID edit view, as well as defence-in-depth against SQL injection in the list models. Please see the CHANGELOG below for the full list.
-</p>
-
-<p>
-	<strong>Bug fixes and minor improvements</strong>. Please take a look at the CHANGELOG below.
+	<strong>Removed legacy error handler</strong>.
+	We removed our legacy custom error handler. If you are met with an Exception or PHP error when using our software, please go to your site's administrator, System, Global Configuration, and set Debug Mode to Yes and Error Reporting to Developer. Then, reproduce the error. You will get the same level of information as our now-removed error handler. It is enough to help us help you.
 </p>
