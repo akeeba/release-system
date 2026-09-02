@@ -17,6 +17,24 @@ If you decide to use this software please keep the following in mind:
 * This project does NOT follow semantic versioning.
 * We provide VERY irregular downloads.
 
+## Build instructions
+
+Check out this repository and Akeeba Build Tools — Public Packager using the following directory names:
+
+- `ars` This repository.
+- `buildfiles` [Akeeba Build Tools — Public Packager](https://github.com/akeeba/buildfiles-public)
+- `build.properties` A file created as per the instructions in `buildfiles/README.md`
+
+Then:
+
+```bash
+cd ars
+composer install
+phing git
+```
+
+The generated package is under `ars/release`.
+
 ## JSON:API
 
 ARS exposes a Joomla JSON:API for its categories, releases, items, automatic item descriptions, Download ID labels,
@@ -32,12 +50,3 @@ requires `core.admin`.
 `assets/http/api.http` documents every endpoint — the available filters, the sortable columns, and a worked example of
 each request. It is a PHPStorm / IntelliJ IDEA HTTP Client file, so you can run the requests straight from the IDE; copy
 `assets/http/http-client.private.env.json-dist` to `http-client.private.env.json` and put your API token in it first.
-
-## Prerequisites
-
-Necessary folder structure for building packages
-
-* **ars** This repository
-* **buildfiles** [Akeeba Build Tools](https://github.com/akeeba/buildfiles)
-
-From `ars/build` run `phing git -Dversion=5.999.999.b1` to build an installable package with the fake version number `5.999.999.b1`.
