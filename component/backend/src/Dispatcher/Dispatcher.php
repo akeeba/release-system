@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Dispatcher;
 
 defined('_JEXEC') || die;
 
+use Akeeba\Component\ARS\Administrator\Helper\VersionLimits;
 use Akeeba\Component\ARS\Administrator\Mixin\TriggerEventTrait;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
@@ -28,20 +29,8 @@ class Dispatcher extends ComponentDispatcher
 
 	public function dispatch()
 	{
-		// Check the minimum supported PHP version
-		$minPHPVersion = '8.1.0';
-		$softwareName  = 'Akeeba Release System';
-
-		if (version_compare(PHP_VERSION, $minPHPVersion, 'lt'))
-		{
-			throw new \RuntimeException(
-				sprintf(
-					'%s requires PHP %s or later.',
-					$softwareName,
-					$minPHPVersion
-				)
-			);
-		}
+		// Check the supported PHP and Joomla version limits
+		VersionLimits::throwIfVersionsIncompatible();
 
 		$this->triggerEvent('onBeforeDispatch');
 

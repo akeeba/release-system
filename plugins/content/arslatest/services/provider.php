@@ -7,6 +7,7 @@
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\VersionLimits;
 use Akeeba\Plugin\Content\ARSLatest\Extension\Arslatest;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Extension\Service\Provider\MVCFactory;
@@ -28,6 +29,12 @@ return new class implements ServiceProviderInterface {
 	 */
 	public function register(Container $container)
 	{
+		// Only register the plugin in compatible environments
+		if (!class_exists(VersionLimits::class) || !VersionLimits::isCompatible())
+		{
+			return;
+		}
+
 		$container->registerServiceProvider(new MVCFactory('Akeeba\\Component\\ARS'));
 
 		$container->set(

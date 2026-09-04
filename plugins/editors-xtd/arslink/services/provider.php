@@ -7,6 +7,7 @@
 
 defined('_JEXEC') || die;
 
+use Akeeba\Component\ARS\Administrator\Helper\VersionLimits;
 use Akeeba\Plugin\EditorsExtended\ARSLink\Extension\ARSLink;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
@@ -18,6 +19,12 @@ use Joomla\Event\DispatcherInterface;
 return new class () implements ServiceProviderInterface {
 	public function register(Container $container): void
 	{
+		// Only register the plugin in compatible environments
+		if (!class_exists(VersionLimits::class) || !VersionLimits::isCompatible())
+		{
+			return;
+		}
+
 		$container->set(
 			PluginInterface::class,
 			function (Container $container) {

@@ -7,6 +7,7 @@
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\VersionLimits;
 use Joomla\CMS\Extension\Service\Provider\HelperFactory;
 use Joomla\CMS\Extension\Service\Provider\Module;
 use Joomla\CMS\Extension\Service\Provider\ModuleDispatcherFactory;
@@ -30,6 +31,12 @@ return new class implements ServiceProviderInterface {
 	 */
 	public function register(Container $container)
 	{
+		// Only register the module in compatible environments
+		if (!class_exists(VersionLimits::class) || !VersionLimits::isCompatible())
+		{
+			return;
+		}
+
 		$container->registerServiceProvider(new ModuleDispatcherFactory('\\Joomla\\Module\\Arsdownload'));
 		$container->registerServiceProvider(new HelperFactory('\\Joomla\\Module\\Arsdownload\\Site\\Helper'));
 

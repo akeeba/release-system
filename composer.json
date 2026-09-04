@@ -53,10 +53,28 @@
 					"value": "LIMIT_MAX"
 				},
 				{
-					"file": "component/backend/src/Dispatcher/Dispatcher.php",
+					"file": "component/backend/src/Helper/VersionLimits.php",
 					"type": "variable",
 					"marker": "$minPHPVersion",
 					"value": "PHP_MIN"
+				},
+				{
+					"file": "component/backend/src/Helper/VersionLimits.php",
+					"type": "variable",
+					"marker": "$maxPHPVersion",
+					"value": "PHP_MAX"
+				},
+				{
+					"file": "component/backend/src/Helper/VersionLimits.php",
+					"type": "variable",
+					"marker": "$minJoomlaVersion",
+					"value": "LIMIT_MIN"
+				},
+				{
+					"file": "component/backend/src/Helper/VersionLimits.php",
+					"type": "variable",
+					"marker": "$maxJoomlaVersion",
+					"value": "LIMIT_MAX"
 				}
 			]
 		}
