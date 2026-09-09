@@ -3,19 +3,16 @@
 
 A download manager component for Joomla!, designed for the distribution of Akeeba software.
 
+> [!IMPORTANT]
+> Developing and maintaining world-class software is neither easy nor free. The development of this software is subsidised by sales of our commercial offerings. If you like this software and would like to see it maintained in the future, please consider [purchasing a subscription](https://www.akeeba.com/subscribe.html) to one of our commercial offerings. _Thank you!_
+
 ## Internal Project
 
 This software is designed to primarily fit the needs of our business site, akeeba.com.
 
-If you decide to use this software please keep the following in mind:
+If you decide to use this software please keep in mind that making it work with our specific use case takes priority over anyone else's. As such, feature requests may be rejected if we think implementing them would be detrimental to our own use case. Also keep in mind that there's a small but not insignifficant chance of some feature going away when we consider it to no longer fit our use case.
 
-* We do not provide any support for this software whatsoever.
-* We do not take feature requests for this software.
-* There is absolutely no guarantee that any feature implemented today will be available in the future, including the
-  next minor release.
-* There is absolutely no guarantee that the component will continue to work the same or even exist.
-* This project does NOT follow semantic versioning.
-* We provide VERY irregular downloads.
+Kindly note that we do not provide any support or documentation for this software, be it free or paid. We're all developers here – you and us both. We can figure it out by looking at the source code.
 
 ## Build instructions
 
