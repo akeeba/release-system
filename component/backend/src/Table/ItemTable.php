@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Administrator\Table;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
+use Akeeba\Component\ARS\Administrator\Helper\PathSecurity;
 use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableColumnAliasTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableCreateModifyTrait;
@@ -208,7 +209,7 @@ class ItemTable extends AbstractTable
 
 					if (!empty($folder))
 					{
-						$filename = $folder . '/' . $this->filename;
+						$filename = PathSecurity::resolveContained($folder, $this->filename);
 					}
 				}
 			}

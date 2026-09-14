@@ -11,6 +11,7 @@ defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Api\Controller\Mixin\AssertApiAccess;
 use Akeeba\Component\ARS\Api\Controller\Mixin\PopulateModelState;
+use Akeeba\Component\ARS\Administrator\Helper\PathSecurity;
 use Joomla\CMS\MVC\Controller\ApiController;
 
 class ItemsController extends ApiController
@@ -171,10 +172,12 @@ class ItemsController extends ApiController
 			return '';
 		}
 
-		if (!is_file($folder . '/' . $item->filename)) {
+		$resolved = PathSecurity::resolveContained($folder, $item->filename);
+
+		if ($resolved === null || !is_file($resolved)) {
 			return '';
 		}
 
-		return $folder . '/' . $item->filename;
+		return $resolved;
 	}
 }

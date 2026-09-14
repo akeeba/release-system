@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Site\Model;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
+use Akeeba\Component\ARS\Administrator\Helper\PathSecurity;
 use Akeeba\Component\ARS\Administrator\Mixin\RunPluginsTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\TableAssertionTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
@@ -99,11 +100,11 @@ class ItemModel extends BaseDatabaseModel
 				throw new RuntimeException();
 			}
 
-			$filename = $folder . '/' . $item->filename;
+			$filename = PathSecurity::resolveContained($folder, $item->filename);
 
 			try
 			{
-				$fileExists = @is_file($filename);
+				$fileExists = $filename !== null && @is_file($filename);
 			}
 			catch (Exception $e)
 			{
@@ -694,11 +695,11 @@ class ItemModel extends BaseDatabaseModel
 				throw new RuntimeException();
 			}
 
-			$filename = $folder . '/' . $item->filename;
+			$filename = PathSecurity::resolveContained($folder, $item->filename);
 
 			try
 			{
-				$fileExists = @is_file($filename);
+				$fileExists = $filename !== null && @is_file($filename);
 			}
 			catch (Exception $e)
 			{
