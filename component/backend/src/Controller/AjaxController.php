@@ -33,26 +33,35 @@ class AjaxController extends BaseController
 			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 
-		// Make sure the user has the create, edit or edit.own ACL privilege
-		$user = Factory::getApplication()->getIdentity();
-
-		if (
-			!$user->authorise('core.create', 'com_ars') &&
-			!$user->authorise('core.edit', 'com_ars') &&
-			!$user->authorise('core.edit.own', 'com_ars')
-		)
-		{
-			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
-		}
-
 		// Get the information from the request
 		$item_id    = $this->input->getInt('item_id', 0);
 		$release_id = $this->input->getInt('release_id', 0);
 		$selected   = $this->input->getString('selected', '');
 
-		// Return the HTML list of files
 		/** @var ItemsModel $model */
-		$model   = $this->getModel('Items', 'Administrator');
+		$model = $this->getModel('Items', 'Administrator');
+
+		// This is always category-scoped: a release always belongs to a category, so the check must be too.
+		$categoryId = $release_id ? $model->getCategoryFromRelease($release_id) : null;
+
+		if (empty($categoryId))
+		{
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+		}
+
+		// Make sure the user has the create, edit or edit.own ACL privilege on that category
+		$user = Factory::getApplication()->getIdentity();
+
+		if (
+			!$user->authorise('core.create', 'com_ars.category.' . $categoryId) &&
+			!$user->authorise('core.edit', 'com_ars.category.' . $categoryId) &&
+			!$user->authorise('core.edit.own', 'com_ars.category.' . $categoryId)
+		)
+		{
+			throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
+		}
+
+		// Return the HTML list of files
 		$options = $model->getFilesOptions($release_id, $item_id);
 
 		@ob_end_clean();
