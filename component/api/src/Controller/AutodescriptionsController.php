@@ -126,6 +126,17 @@ class AutodescriptionsController extends ApiController
 		return $user->authorise('core.edit', 'com_ars.category.' . $categoryId);
 	}
 
+	protected function save($recordKey = null)
+	{
+		if ($recordKey) {
+			$this->assertCanEditIntoCategory(
+				$this->resolveSubmittedFieldValue($this->getRequestData(), ['category', 'category_id', 'catid'])
+			);
+		}
+
+		return parent::save($recordKey);
+	}
+
 	/**
 	 * Get the ID of the category an automatic item description belongs to.
 	 *

@@ -146,6 +146,19 @@ class ItemsController extends ApiController
 		return $user->authorise('core.edit', 'com_ars.category.' . $categoryId);
 	}
 
+	protected function save($recordKey = null)
+	{
+		if ($recordKey) {
+			$releaseId = $this->resolveSubmittedFieldValue($this->getRequestData(), ['release_id']);
+
+			$this->assertCanEditIntoCategory(
+				$releaseId === null ? null : (int) $this->getModel('Items')->getCategoryFromRelease($releaseId)
+			);
+		}
+
+		return parent::save($recordKey);
+	}
+
 	private function getFileNameToDelete(int $id): string
 	{
 		if (!$id) {

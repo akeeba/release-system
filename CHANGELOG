@@ -3,6 +3,7 @@ Akeeba Release System 7.5.1
 ================================================================================
 ~ Hardening: Bleeding Edge age/count cleanup no longer follows a crafted release version outside its directory
 ~ Hardening: item filename is now confined to its category directory on download, delete, and hashing
+~ Hardening: batch move/copy and JSON:API PATCH now authorise the record's source and target category
 ! PHP and Joomla minimum and maximum version compatibility is now enforced
 - Removed legacy error handler
 + JSON API routes for Automatic Item Descriptions, Download ID labels, Environments, and Update Streams

@@ -9,6 +9,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 
 defined('_JEXEC') or die;
 
+use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
@@ -74,6 +75,8 @@ class ItemModel extends AdminModel
 
 		try
 		{
+			$this->assertSourceCategoryAccessForBatch($commands, $pks);
+
 			return parent::batch($commands, $pks, $contexts);
 		}
 		catch (\RuntimeException $e)
@@ -91,6 +94,56 @@ class ItemModel extends AdminModel
 		finally
 		{
 			$dispatcher->removeListener('onBeforeBatch', [$this, 'onBeforeBatch']);
+		}
+	}
+
+	/**
+	 * Authorises the CURRENT category of every batched item before Joomla's batchMove()/batchCopy()
+	 * overwrite `release_id` (and, for copy, zero out the primary key) on the table object passed to
+	 * onBeforeBatch(). By the time that event fires there is no way to recover which release/category an
+	 * item is actually being taken FROM, so this must run first, against the unmutated database rows —
+	 * otherwise a user with rights on the target category alone could move or duplicate an item out of a
+	 * source category they have no access to.
+	 *
+	 * @param   array  $commands  The raw batch commands, as passed to batch().
+	 * @param   array  $pks       The primary keys being batched.
+	 *
+	 * @return  void
+	 * @throws  \RuntimeException  If the user may not edit the source category of any of the $pks.
+	 * @since   7.5.1
+	 */
+	private function assertSourceCategoryAccessForBatch(array $commands, array $pks): void
+	{
+		if (empty($commands[$this->batch_copymove]) || empty($pks))
+		{
+			return;
+		}
+
+		$user = Factory::getApplication()->getIdentity();
+		$db   = $this->getDatabase();
+
+		$query = DbQuery::create($db)
+			->select([
+				$db->quoteName('i.id'),
+				$db->quoteName('r.category_id'),
+			])
+			->from($db->quoteName('#__ars_items', 'i'))
+			->innerJoin(
+				$db->quoteName('#__ars_releases', 'r'),
+				$db->quoteName('r.id') . ' = ' . $db->quoteName('i.release_id')
+			)
+			->whereIn($db->quoteName('i.id'), array_map('intval', $pks));
+
+		$categoriesById = $db->setQuery($query)->loadAssocList('id', 'category_id');
+
+		foreach ($pks as $pk)
+		{
+			$categoryId = (int) ($categoriesById[$pk] ?? 0);
+
+			if ($categoryId && !$user->authorise('core.edit', 'com_ars.category.' . $categoryId))
+			{
+				throw new \RuntimeException(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+			}
 		}
 	}
 

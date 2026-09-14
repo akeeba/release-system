@@ -86,6 +86,57 @@ trait AssertApiAccess
 	}
 
 	/**
+	 * Re-authorise `core.edit` against a resolved target category, if the request specified one.
+	 *
+	 * Joomla's `ApiController::edit()` calls `allowEdit([$key => $recordId], $key)` — only the primary
+	 * key, never the submitted body — so `allowEdit()` can only ever check the record's EXISTING
+	 * category. If the submitted body reparents the record into a different category, that target is
+	 * never authorised anywhere else in the stock save flow. Call this from a `save()` override with the
+	 * category the request is actually asking to move the record into, resolved from the submitted data.
+	 *
+	 * @param   int|null  $categoryId  The resolved target category ID; NULL if the request did not touch
+	 *                                 the field(s) that determine it, meaning there is nothing to re-check.
+	 *
+	 * @return  void
+	 * @throws  NotAllowed  When the request would reparent the record into a category the user may not edit.
+	 * @since   7.5.1
+	 */
+	protected function assertCanEditIntoCategory(?int $categoryId): void
+	{
+		if ($categoryId === null)
+		{
+			return;
+		}
+
+		if (!$categoryId || !$this->app->getIdentity()->authorise('core.edit', 'com_ars.category.' . $categoryId))
+		{
+			throw new NotAllowed('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED', 403);
+		}
+	}
+
+	/**
+	 * Reads the first present of the given field names out of the submitted request body.
+	 *
+	 * @param   array     $submittedData  The submitted request body (see getRequestData()).
+	 * @param   string[]  $fieldNames     Field names to try, in order.
+	 *
+	 * @return  int|null  The field's value; NULL if none of the field names were present at all.
+	 * @since   7.5.1
+	 */
+	protected function resolveSubmittedFieldValue(array $submittedData, array $fieldNames): ?int
+	{
+		foreach ($fieldNames as $fieldName)
+		{
+			if (array_key_exists($fieldName, $submittedData))
+			{
+				return (int) $submittedData[$fieldName];
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Read the record data submitted with a write (POST/PATCH) request.
 	 *
 	 * This mirrors the way Joomla's core ApiController::save() reads the submitted data, so that authorisation checks

@@ -122,4 +122,15 @@ class ReleasesController extends ApiController
 
 		return $user->authorise('core.edit', 'com_ars.category.' . $categoryId);
 	}
+
+	protected function save($recordKey = null)
+	{
+		if ($recordKey) {
+			$this->assertCanEditIntoCategory(
+				$this->resolveSubmittedFieldValue($this->getRequestData(), ['category_id'])
+			);
+		}
+
+		return parent::save($recordKey);
+	}
 }
