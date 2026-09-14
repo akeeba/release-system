@@ -266,7 +266,12 @@ final class BleedingedgeModel extends BaseDatabaseModel
 
 		foreach ($results as $version)
 		{
-			$this->recursiveRmdir($basePath . DIRECTORY_SEPARATOR . $version);
+			$releasePath = $this->resolveReleaseDirectory($basePath, $version);
+
+			if ($releasePath !== null)
+			{
+				$this->recursiveRmdir($releasePath);
+			}
 		}
 	}
 
@@ -332,8 +337,51 @@ final class BleedingedgeModel extends BaseDatabaseModel
 
 		foreach ($results as $version)
 		{
-			$this->recursiveRmdir($basePath . DIRECTORY_SEPARATOR . $version);
+			$releasePath = $this->resolveReleaseDirectory($basePath, $version);
+
+			if ($releasePath !== null)
+			{
+				$this->recursiveRmdir($releasePath);
+			}
 		}
+	}
+
+	/**
+	 * Resolves a release's `version` (a DB-sourced, free-text value) to the filesystem path of its
+	 * directory directly under `$basePath`, refusing to resolve outside of it.
+	 *
+	 * `version` has no path-traversal filtering at write time (see `ReleaseTable::onBeforeCheck()`), so a
+	 * value such as `../../../../somewhere` must never be concatenated onto `$basePath` and handed to a
+	 * recursive delete — it would escape the release directory entirely.
+	 *
+	 * @param   string|null  $basePath  The Bleeding Edge category's directory.
+	 * @param   string       $version   The release's `version` column value.
+	 *
+	 * @return  string|null  The resolved, contained path; NULL if `$basePath` is unset or `$version`
+	 *                       does not resolve to a direct child of it.
+	 * @since   7.5.1
+	 */
+	private function resolveReleaseDirectory(?string $basePath, string $version): ?string
+	{
+		if (empty($basePath) || $version === '' || $version !== basename($version) || $version === '.' || $version === '..')
+		{
+			return null;
+		}
+
+		$realBasePath = realpath($basePath);
+		$realPath     = realpath($basePath . DIRECTORY_SEPARATOR . $version);
+
+		if ($realBasePath === false || $realPath === false)
+		{
+			return null;
+		}
+
+		if ($realPath !== $realBasePath && !str_starts_with($realPath, $realBasePath . DIRECTORY_SEPARATOR))
+		{
+			return null;
+		}
+
+		return $realPath;
 	}
 
 	/**
