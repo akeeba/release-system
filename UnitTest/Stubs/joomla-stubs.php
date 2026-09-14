@@ -1016,6 +1016,64 @@ namespace Joomla\CMS\Table {
 	}
 }
 
+namespace Joomla\CMS\Helper {
+	/**
+	 * Real Joomla's tag lookup/assignment helper. `CategoryTable`/`ReleaseTable` reference it only via
+	 * `TaggableTableTrait`'s property type-hint, and the one place a test needs to construct it
+	 * (`common/tags.php`) is a view template outside the unit suite's remit, so this carries no
+	 * behaviour at all.
+	 */
+	if (!class_exists(TagsHelper::class, false))
+	{
+		class TagsHelper
+		{
+			public function getItemTags($type, $id, $getTagData = true)
+			{
+				return [];
+			}
+		}
+	}
+}
+
+namespace Joomla\CMS\Tag {
+	use Joomla\CMS\Helper\TagsHelper;
+
+	/**
+	 * `CategoryTable` and `ReleaseTable` implement this so Joomla core's tag-assignment machinery can
+	 * recognise them; ARS's own logic never calls any of it, so the trait is copied verbatim (it is
+	 * this small in real Joomla too) and the interface is a bare marker.
+	 */
+	if (!interface_exists(TaggableTableInterface::class, false))
+	{
+		interface TaggableTableInterface extends \Joomla\CMS\Table\TableInterface
+		{
+		}
+	}
+
+	if (!trait_exists(TaggableTableTrait::class, false))
+	{
+		trait TaggableTableTrait
+		{
+			public $tagsHelper;
+
+			public function getTagsHelper(): ?TagsHelper
+			{
+				return $this->tagsHelper;
+			}
+
+			public function setTagsHelper(TagsHelper $tagsHelper): void
+			{
+				$this->tagsHelper = $tagsHelper;
+			}
+
+			public function clearTagsHelper(): void
+			{
+				$this->tagsHelper = null;
+			}
+		}
+	}
+}
+
 namespace Joomla\CMS\MVC\Factory {
 	if (!interface_exists(MVCFactoryInterface::class, false))
 	{
@@ -1190,6 +1248,19 @@ namespace Joomla\CMS\MVC\View {
 	if (!class_exists(JsonView::class, false))
 	{
 		class JsonView extends HtmlView
+		{
+		}
+	}
+}
+
+namespace Joomla\CMS\Access\Exception {
+	/**
+	 * The real class is a bare `\RuntimeException` subclass with no behaviour of its own, so this stub
+	 * is a straight copy rather than a simplification.
+	 */
+	if (!class_exists(NotAllowed::class, false))
+	{
+		class NotAllowed extends \RuntimeException
 		{
 		}
 	}
