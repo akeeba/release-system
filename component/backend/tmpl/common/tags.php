@@ -32,7 +32,7 @@ if (empty($tags))
 <div class="ars-category-tags d-flex gap-1 mt-1">
 	<?php foreach ($tags as $tag): ?>
 	<div class="badge bg-dark small px-1">
-		<?= $tag->title ?>
+		<?= $this->escape($tag->title) ?>
 	</div>
 	<?php endforeach;?>
 </div>
