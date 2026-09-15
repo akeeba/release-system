@@ -243,4 +243,27 @@ class CategoryModel extends AdminModel
 
 		return $result;
 	}
+
+	/**
+	 * Is the user allowed to change this category's publish state?
+	 *
+	 * Without this override, bulk publish/unpublish/archive/trash falls back to stock
+	 * `AdminModel::canEditState()`, which only checks `core.edit.state` at the component root
+	 * (`com_ars`) — unlike {@see canDelete()}, which already checks the category's own asset. A group
+	 * denied `core.edit.state` on this specific category but granted it at component level could
+	 * otherwise still bulk-change its state.
+	 *
+	 * @param   CategoryTable|object  $record
+	 *
+	 * @return  bool
+	 * @throws  Exception
+	 * @since   7.5.1
+	 */
+	protected function canEditState($record)
+	{
+		$user = Factory::getApplication()->getIdentity();
+
+		return $user->authorise('core.edit.state', 'com_ars.category.' . (int) $record->id)
+			|| $user->authorise('core.edit.state', 'com_ars');
+	}
 }

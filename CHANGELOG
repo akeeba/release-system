@@ -7,6 +7,7 @@ Akeeba Release System 7.5.1
 ~ Hardening: escape tag titles in the backend Categories and Releases lists
 ~ Hardening: Update Stream/Autodescription controllers and the release file browser now enforce category ACL
 ~ Hardening: the frontend item picker only lists items from published, access-authorised releases/categories
+~ Hardening: bulk publish/unpublish/archive/trash on Categories now checks the category's own ACL
 ! PHP and Joomla minimum and maximum version compatibility is now enforced
 - Removed legacy error handler
 + JSON API routes for Automatic Item Descriptions, Download ID labels, Environments, and Update Streams
