@@ -2,6 +2,13 @@
 
 Akeeba Release System (ARS) — a Joomla package extension for managing software releases and downloads.
 
+## Security
+
+Before any security audit, security review, or `audit-*` skill run — and before reporting any
+finding from one — you MUST read `.claude/security-audit-triage.md` — the actors that are out
+of scope, finding classes already ruled invalid, controls already in place, and how to
+classify hardening versus vulnerabilities.
+
 ## Gotchas
 
 - **Categories are NOT `com_categories`.** ARS has its own `#__ars_categories` table. `ARSPseudoCategory` implements Joomla's `CategoryInterface` purely to bridge custom fields and tags — don't reach for the Joomla category API.
