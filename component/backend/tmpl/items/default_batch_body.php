@@ -45,8 +45,6 @@ $published = $this->state->get('filter.published');
 							'id'                 => 'batch-release-id',
 							'list.select'        => null,
 							'group.items'        => null,
-							'option.key.toHtml'  => false,
-							'option.text.toHtml' => false,
 						]
 					);
 					?>

@@ -214,7 +214,7 @@ class DlidlabelsModel extends ListModel
 				{
 					// Search for any record matching either the title OR the dlid
 					$query->extendWhere('AND', [
-						$db->quoteName('title') . 'LIKE :search',
+						$db->quoteName('title') . ' LIKE :search',
 						$db->quoteName('dlid') . ' LIKE :dlid',
 					], 'OR')
 						->bind(':search', $search, ParameterType::STRING)

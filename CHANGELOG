@@ -11,6 +11,10 @@ Akeeba Release System 7.5.1
 ~ Hardening: the extension update feed is now fetched over HTTPS
 ~ Hardening: escape release version in the {arslatest} content plugin and mod_arsdownloads
 ~ Hardening: strip quote/control characters from the Content-Disposition download filename
+~ Hardening: restore option escaping in the Items batch-move/copy release dropdown
+~ Hardening: escape the name/username/email/link fields in the shared user info layout
+- Removed a dead, unreachable legacy debug error-page template
+~ Fixed a SQL syntax error in the frontend Download ID search query
 ! PHP and Joomla minimum and maximum version compatibility is now enforced
 - Removed legacy error handler
 + JSON API routes for Automatic Item Descriptions, Download ID labels, Environments, and Update Streams
