@@ -378,4 +378,46 @@ class ItemModelDownloadIdTest extends TestCase
 
 		$this->model->preDownloadCheck($item, $category);
 	}
+
+	// ---------------------------------------------------------------------------------------------
+	// sanitiseContentDispositionFilename() — L2 regression: attribute breakout in Content-Disposition
+	// ---------------------------------------------------------------------------------------------
+
+	public function testALegitimateFilenameIsReturnedUnchanged(): void
+	{
+		self::assertSame(
+			'Awesome-Package-1.2.3.zip',
+			$this->invokePrivate('sanitiseContentDispositionFilename', ['Awesome-Package-1.2.3.zip'])
+		);
+	}
+
+	/**
+	 * The regression case itself: a `"` in the filename must not survive, since it would otherwise break
+	 * out of the quoted `Content-Disposition: attachment; filename="..."` attribute and let the rest of
+	 * the value be interpreted as a second header parameter (e.g. a bogus `filename*=`).
+	 */
+	public function testAQuoteCharacterIsStripped(): void
+	{
+		self::assertSame(
+			'evil; filename*=UTF-8too.zip',
+			$this->invokePrivate('sanitiseContentDispositionFilename', ['evil"; filename*=UTF-8too.zip'])
+		);
+	}
+
+	public static function provideControlCharacterPayloads(): array
+	{
+		return [
+			'NUL byte'            => ["package\0.zip", 'package.zip'],
+			'carriage return'     => ["package\r.zip", 'package.zip'],
+			'line feed'           => ["package\n.zip", 'package.zip'],
+			'DEL (0x7F)'          => ["package\x7F.zip", 'package.zip'],
+			'multiple characters' => ["\"evil\"\x00name\".zip", 'evilname.zip'],
+		];
+	}
+
+	#[DataProvider('provideControlCharacterPayloads')]
+	public function testControlCharactersAndQuotesAreStripped(string $payload, string $expected): void
+	{
+		self::assertSame($expected, $this->invokePrivate('sanitiseContentDispositionFilename', [$payload]));
+	}
 }

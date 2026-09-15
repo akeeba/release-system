@@ -514,7 +514,7 @@ class ItemModel extends BaseDatabaseModel
 			'Cache-Control'             => 'no-store, max-age=0, must-revalidate, no-transform',
 			'Content-Type'              => $mime_type,
 			'Accept-Ranges'             => 'bytes',
-			'Content-Disposition'       => "attachment; filename=\"$header_file\"",
+			'Content-Disposition'       => 'attachment; filename="' . $this->sanitiseContentDispositionFilename($header_file) . '"',
 			'Content-Transfer-Encoding' => 'binary',
 		];
 
@@ -780,7 +780,7 @@ class ItemModel extends BaseDatabaseModel
 			'Cache-Control'             => 'no-store, max-age=0, must-revalidate, no-transform',
 			'Content-Type'              => $mime_type,
 			'Accept-Ranges'             => 'bytes',
-			'Content-Disposition'       => "attachment; filename=\"$header_file\"",
+			'Content-Disposition'       => 'attachment; filename="' . $this->sanitiseContentDispositionFilename($header_file) . '"',
 			'Content-Transfer-Encoding' => 'binary',
 		];
 
@@ -952,6 +952,26 @@ class ItemModel extends BaseDatabaseModel
 		$this->logoutUser();
 
 		$app->close();
+	}
+
+	/**
+	 * Makes a filename safe to embed in a quoted `Content-Disposition: attachment; filename="..."` value.
+	 *
+	 * `$header_file` derives from `basename()` of an attacker-influenced but trusted-at-write-time DB
+	 * column (`filename`/`url`, set by an account with category-scoped create/edit rights) or from a
+	 * plugin's `onARSBeforeSendFile` response, neither of which strips a literal `"` character. A `"` in
+	 * the value breaks out of the quoted attribute, letting it inject a bogus parameter such as a second
+	 * `filename*=`. `header()` itself already rejects embedded CR/LF, so this only needs to handle the
+	 * quote character and, defensively, other ASCII control characters.
+	 *
+	 * @param   string  $filename  The candidate `Content-Disposition` filename.
+	 *
+	 * @return  string  The same filename with `"` and control characters removed.
+	 * @since   7.5.1
+	 */
+	private function sanitiseContentDispositionFilename(string $filename): string
+	{
+		return preg_replace('/["\x00-\x1F\x7F]/', '', $filename);
 	}
 
 	/**
