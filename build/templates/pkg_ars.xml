@@ -47,7 +47,7 @@
 
     <updateservers>
         <server type="extension" priority="1" name="Akeeba Release System Updates">
-            http://cdn.akeeba.com/updates/ars.xml
+            https://cdn.akeeba.com/updates/ars.xml
         </server>
     </updateservers>
 </extension>

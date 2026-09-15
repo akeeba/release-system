@@ -377,7 +377,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface, DatabaseAwareI
 			return '';
 		}
 
-		return $release->version ?? '';
+		return htmlspecialchars($release->version ?? '', ENT_QUOTES, 'UTF-8');
 	}
 
 	/**
@@ -441,7 +441,7 @@ class Arslatest extends CMSPlugin implements SubscriberInterface, DatabaseAwareI
 			return '';
 		}
 
-		return $this->streamInfo[$stream_id][$pattern]->version;
+		return htmlspecialchars($this->streamInfo[$stream_id][$pattern]->version ?? '', ENT_QUOTES, 'UTF-8');
 	}
 
 	private function parseStreamReleaseLink(string $content, ?string $pattern): string

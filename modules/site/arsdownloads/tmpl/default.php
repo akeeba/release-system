@@ -57,7 +57,7 @@ $postText = $params->get('posttext', '');
 					<span>
 						<?php echo htmlentities($item->name) ?>
 					</span>
-					<?php echo $item->version ?>
+					<?php echo htmlentities($item->version) ?>
 					<?php if ($item->maturity != 'stable'): ?>
 						<span class="badge <?= $maturityClass ?>">
 							<?= Text::_('COM_ARS_RELEASES_MATURITY_' . $item->maturity) ?>
