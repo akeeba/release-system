@@ -63,7 +63,8 @@ trait ControllerReusableModelsTrait
 
 		if (empty($config))
 		{
-			$viewLayout = $this->input->get('layout', 'default', 'string');
+			// Like the cmd filter, but keeps the colon of the template:layout notation.
+			$viewLayout = preg_replace('/[^A-Z0-9_\.:-]/i', '', $this->input->get('layout', 'default', 'string'));
 			$config     = ['base_path' => $this->basePath, 'layout' => $viewLayout];
 		}
 
