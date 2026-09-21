@@ -7,6 +7,7 @@
 <access component="com_ars">
 	<section name="component">
 		<action name="core.admin" title="JACTION_ADMIN" />
+		<action name="core.options" title="JACTION_OPTIONS" />
 		<action name="core.manage" title="JACTION_MANAGE" />
 		<action name="core.create" title="JACTION_CREATE" />
 		<action name="core.delete" title="JACTION_DELETE" />
