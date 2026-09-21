@@ -30,3 +30,9 @@ http-client.private.env.json
 /tests/integration/config.php
 # Local overrides of the Docker stack settings. The committed template is env.dist.
 /tests/integration/docker/.env
+
+### Release credentials
+# release.yaml / release.json are written here with all placeholders substituted
+# at release time and deleted afterwards. An aborted release leaves them behind.
+/release.yaml
+/release.json
