@@ -64,7 +64,7 @@ class CacheCleaner
 	 *
 	 * @param   array        $clearGroups   Which cache groups to clear. Usually this is com_yourcomponent to clear
 	 *                                      your component's cache.
-	 * @param   array        $cacheClients  Which cache clients to clear. 0 is the back-end, 1 is the front-end. If you
+	 * @param   array        $cacheClients  Which cache clients to clear. 0 is the site, 1 is the administrator. If you
 	 *                                      do not specify anything, both cache clients will be cleared.
 	 * @param   string|null  $event         An event to run upon trying to clear the cache. Empty string to disable. If
 	 *                                      NULL and the group is "com_content" I will trigger onContentCleanCache.
@@ -156,20 +156,12 @@ class CacheCleaner
 	 */
 	public static function clearCacheGroup(string $group, int $client_id, object $app): array
 	{
-		// Get the default cache folder. Start by using the JPATH_CACHE constant.
+		/**
+		 * The cache base is the same whichever client is asked for. Since Joomla 4.0 every application — site,
+		 * administrator, API and CLI — defines JPATH_CACHE as administrator/cache, and the cache_path in
+		 * configuration.php, when set, is shared by all of them. Only Joomla 3's site used its own cache/ folder.
+		 */
 		$cacheBaseDefault = JPATH_CACHE;
-		$appClientId      = 0;
-
-		if (method_exists($app, 'getClientId'))
-		{
-			$appClientId = $app->getClientId();
-		}
-
-		// -- If we are asked to clean cache on the other side of the application we need to find a new cache base
-		if ($client_id != $appClientId)
-		{
-			$cacheBaseDefault = (($client_id) ? JPATH_SITE : JPATH_ADMINISTRATOR) . '/cache';
-		}
 
 		// Get the cache controller's options
 		$options = [

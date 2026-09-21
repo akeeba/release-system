@@ -2,6 +2,7 @@
 Akeeba Release System 7.5.1
 ================================================================================
 ~ Declare the core.options permission so it can be granted per user group
+~ Cache cleaning now targets the single cache folder that every Joomla 4+ application shares
 ~ Hardening: Bleeding Edge age/count cleanup no longer follows a crafted release version outside its directory
 ~ Hardening: item filename is now confined to its category directory on download, delete, and hashing
 ~ Hardening: batch move/copy and JSON:API PATCH now authorise the record's source and target category
