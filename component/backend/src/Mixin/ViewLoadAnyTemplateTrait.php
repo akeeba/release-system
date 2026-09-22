@@ -57,6 +57,10 @@ trait ViewLoadAnyTemplateTrait
 		// Make sure I have a valid view
 		$view = $view ?: $this->getName();
 
+		// A view name can only be a valid PHP/Joomla identifier: letters, digits, underscore. Anything else is
+		// stripped so it cannot inject path traversal ('../') into the template search path built below.
+		$view = preg_replace('/[^A-Z0-9_]/i', '', $view) ?: $this->getName();
+
 		// Start with no subtemplate
 		$tpl = null;
 
