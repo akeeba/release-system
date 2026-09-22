@@ -114,10 +114,11 @@ class CacheCleaner
 
 				$options = self::clearCacheGroup($group, $client_id, $app);
 
-				// Do not call any events if I failed to clean the cache using the core Joomla API
+				// Do not call any events if I failed to clean the cache using the core Joomla API.
+				// Carry on with the next client and group: one failure must not leave the rest of the cache stale.
 				if (!($options['result'] ?? false))
 				{
-					return;
+					continue;
 				}
 
 				/**

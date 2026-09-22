@@ -1,6 +1,7 @@
 <?php die(); ?>
 Akeeba Release System 7.5.1
 ================================================================================
+# When cleaning one cache failed, the remaining caches were not cleaned either
 ~ Declare the core.options permission so it can be granted per user group
 ~ Cache cleaning now targets the single cache folder that every Joomla 4+ application shares
 ~ Hardening: Bleeding Edge age/count cleanup no longer follows a crafted release version outside its directory

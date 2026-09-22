@@ -203,4 +203,75 @@ class CacheCleanerTest extends TestCase
 
 		$this->assertSame($expected, $created[0]['cachebase']);
 	}
+
+	/**
+	 * Failing to clean one cache must not stop the rest being cleaned: every later client and group would
+	 * otherwise be left serving stale data.
+	 *
+	 * Regression: clearCacheGroups() used to RETURN on the first failure instead of continuing.
+	 */
+	public function testClearCacheGroupsCarriesOnAfterAFailure(): void
+	{
+		$factory = new class {
+			public int $calls = 0;
+
+			public int $cleaned = 0;
+
+			public function createCacheController($type, $options)
+			{
+				// The first call fails, as a broken cache handler would.
+				if ($this->calls++ === 0)
+				{
+					throw new \RuntimeException('Simulated cache failure');
+				}
+
+				$owner = $this;
+
+				return new class($owner) {
+					public object $cache;
+
+					public function __construct(object $owner)
+					{
+						$this->cache = new class($owner) {
+							public function __construct(private object $owner)
+							{
+							}
+
+							public function clean(): void
+							{
+								$this->owner->cleaned++;
+							}
+						};
+					}
+				};
+			}
+		};
+
+		Factory::$container = new class($factory) {
+			public function __construct(private object $factory)
+			{
+			}
+
+			public function get($id)
+			{
+				return $id === 'cache.controller.factory' ? $this->factory : null;
+			}
+		};
+
+		Factory::$application = new class extends AbstractApplication {
+			public function __construct()
+			{
+			}
+
+			public function get($key, $default = null)
+			{
+				return $default;
+			}
+		};
+
+		CacheCleaner::clearCacheGroups(['_system', 'com_ars'], [0, 1]);
+
+		$this->assertSame(4, $factory->calls, 'Every client of every group must be attempted.');
+		$this->assertSame(3, $factory->cleaned, 'Everything after the failure must still be cleaned.');
+	}
 }
