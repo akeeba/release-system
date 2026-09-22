@@ -20,7 +20,7 @@ services:
       - "--sql-mode="
     ports:
       # Published so the host-side PHPUnit process can seed and inspect fixtures.
-      - "${DB_PORT:-33308}:3306"
+      - "127.0.0.1:${DB_PORT:-33308}:3306"
     volumes:
       - dbdata:/var/lib/mysql
     healthcheck:
@@ -52,7 +52,7 @@ services:
       args:
         APACHE_VERSION: "${APACHE_VERSION:-2.4}"
     ports:
-      - "${HTTP_PORT:-8100}:80"
+      - "127.0.0.1:${HTTP_PORT:-8100}:80"
     volumes:
       - ./www:/var/www/html
     depends_on:
@@ -75,7 +75,7 @@ services:
       MP_MAX_MESSAGES: "0"
     ports:
       # The REST API, published for the host-side test runner.
-      - "${MAILPIT_HTTP_PORT:-8135}:8025"
+      - "127.0.0.1:${MAILPIT_HTTP_PORT:-8135}:8025"
     healthcheck:
       test: ["CMD", "/mailpit", "readyz"]
       interval: 5s
