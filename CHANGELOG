@@ -1,7 +1,12 @@
 <?php die(); ?>
 Akeeba Release System 7.5.1
 ================================================================================
-# When cleaning one cache failed, the remaining caches were not cleaned either
+! PHP and Joomla minimum and maximum version compatibility is now enforced
++ JSON API routes for Automatic Item Descriptions, Download ID labels, Environments, and Update Streams
++ JSON API: many more list filters, and sorting with list_ordering / list_direction, on every endpoint
++ Documented the whole JSON:API in assets/http/api.http
+- Removed legacy error handler
+- Removed a dead, unreachable legacy debug error-page template
 ~ Declare the core.options permission so it can be granted per user group
 ~ Cache cleaning now targets the single cache folder that every Joomla 4+ application shares
 ~ Hardening: Bleeding Edge age/count cleanup no longer follows a crafted release version outside its directory
@@ -16,15 +21,9 @@ Akeeba Release System 7.5.1
 ~ Hardening: strip quote/control characters from the Content-Disposition download filename
 ~ Hardening: restore option escaping in the Items batch-move/copy release dropdown
 ~ Hardening: escape the name/username/email/link fields in the shared user info layout
-- Removed a dead, unreachable legacy debug error-page template
-~ Fixed a SQL syntax error in the frontend Download ID search query
-! PHP and Joomla minimum and maximum version compatibility is now enforced
-- Removed legacy error handler
-+ JSON API routes for Automatic Item Descriptions, Download ID labels, Environments, and Update Streams
-+ JSON API: many more list filters, and sorting with list_ordering / list_direction, on every endpoint
-+ Documented the whole JSON:API in assets/http/api.http
 ~ Hardening: authorise JSON:API deletions against the record's own category, not just the component
 ~ Hardening: the JSON:API only shows a user other people's Download IDs if they may manage the component
+~ Fixed a SQL syntax error in the frontend Download ID search query
 ~ Errors thrown by custom upgrade handlers are now reported when Joomla's Debug Site setting is on
 ~ Removed the redundant UCM record back-fill; Joomla 5.4 and later create UCM records on demand when a record is tagged
 ~ Removed dead Joomla 4 compatibility code, unreachable since the minimum supported version became Joomla 5.4
@@ -32,6 +31,7 @@ Akeeba Release System 7.5.1
 ~ Joomla 7.0 readiness: dropped the unreachable Toolbar::getInstance() fallback from the backend views
 ~ Common database query helper to facilitate transition into strict createQuery in future Joomla versions
 # [MEDIUM] The layout URL parameter could make a page include a PHP file from outside the templates folder
+# [LOW] When cleaning one cache failed, the remaining caches were not cleaned either
 # [LOW] PHP Warning on inaccessible item [gh-251]
 # [LOW] Upgrading left obsolete folders behind on Windows, macOS, and other case-insensitive filesystems
 

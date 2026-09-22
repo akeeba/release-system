@@ -5,6 +5,14 @@
   -->
 
 <p>
+	<strong>Security hardening</strong>. This version concludes our full audit of the code, addressing the remaining issues, and hardening the extension's security posture.
+</p>
+
+<p>
 	<strong>Removed legacy error handler</strong>.
 	We removed our legacy custom error handler. If you are met with an Exception or PHP error when using our software, please go to your site's administrator, System, Global Configuration, and set Debug Mode to Yes and Error Reporting to Developer. Then, reproduce the error. You will get the same level of information as our now-removed error handler. It is enough to help us help you.
+</p>
+
+<p>
+	<strong>Enforced version compatibility checks</strong>. The package now checks your Joomla and PHP version when you try to install it. If it detects an incompatible Joomla and/or PHP version it will refuse to install / uninstall / update and tell you. The extension itself will warn you about the incompatibility and refuse to run. This is an additional protection against accidentally breaking your site by installing an incompatible version of our software or your site, or updating / downgrading Joomla or PHP outside the supported range after installing the extension.
 </p>
