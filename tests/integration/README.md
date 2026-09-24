@@ -56,7 +56,7 @@ tests/integration/docker/run.sh --matrix
 
 Runs the suite once per version in `JOOMLA_MATRIX` — by default 5.4, 6.0 and 6.1. **This is not
 optional thoroughness.** ARS carries deliberate Joomla-version branches — `createQuery()` from 5.1,
-UCM handling from 5.4 — and the repository `CLAUDE.md` is explicit that they must not be simplified
+UCM handling from 5.4 — and the repository `AGENTS.md` is explicit that they must not be simplified
 away. A green single-version run says nothing about the branch it did not take.
 
 ARS's installer script declares a Joomla 4.3.0 floor, and `run.sh` reads that floor out of

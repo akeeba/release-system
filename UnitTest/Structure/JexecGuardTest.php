@@ -20,7 +20,7 @@ use SplFileInfo;
  * Structural regression test for commit 25527ca1 ("Hardening: add missing _JEXEC guard to 10
  * extension source files"), which found ten `component/`, `plugins/` and `modules/` source files that
  * could be requested directly because they were missing the `defined('_JEXEC') or die;` guard the
- * repository's CLAUDE.md mandates ("in every PHP file — no exceptions").
+ * repository's AGENTS.md mandates ("in every PHP file — no exceptions").
  *
  * This walks every `*.php` file under those three directories and asserts each one carries some form
  * of the guard. It accepts any of the four spellings actually in use across the codebase (`or`/`||`,

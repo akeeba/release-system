@@ -39,7 +39,7 @@ whether it fits our use case.
   template).
 - Keep pull requests focused on a single change; unrelated changes should be
   split into separate pull requests.
-- Follow the coding conventions and gotchas documented in `CLAUDE.md` at the
+- Follow the coding conventions and gotchas documented in `AGENTS.md` at the
   root of the repository.
 - Make sure any relevant tests pass before submitting.
 

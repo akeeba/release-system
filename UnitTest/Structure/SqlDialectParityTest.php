@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Structural regression test for the repository CLAUDE.md's stated gotcha: "Every schema change needs
+ * Structural regression test for the repository AGENTS.md's stated gotcha: "Every schema change needs
  * both dialects. `component/backend/sql/` ships parallel MySQL and PostgreSQL files; changing one and
  * not the other ships a broken install."
  *

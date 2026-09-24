@@ -49,7 +49,7 @@ if (is_file($repositoryRoot . '/vendor/autoload.php'))
  * PSR-4 autoloader for the ARS namespaces.
  *
  * Note that the namespaces deliberately do not mirror the directory names — `backend/src` maps to
- * `…\Administrator\` and `frontend/src` to `…\Site\`. See the repository CLAUDE.md.
+ * `…\Administrator\` and `frontend/src` to `…\Site\`. See the repository AGENTS.md.
  */
 spl_autoload_register(
 	static function (string $class): void {

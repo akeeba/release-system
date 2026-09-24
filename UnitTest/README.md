@@ -38,7 +38,7 @@ Mirrors the source tree, with the namespace roots ARS actually uses rather than 
 `Structure/` is worth knowing about: `JexecGuardTest` asserts every PHP file under `component/`,
 `plugins/` and `modules/` carries its `defined('_JEXEC')` guard (the regression for commit
 `25527ca1`, which fixed ten files that had lost it), and `SqlDialectParityTest` asserts every MySQL
-schema-update file from 7.4.2 onwards has a PostgreSQL counterpart — the `CLAUDE.md` gotcha that
+schema-update file from 7.4.2 onwards has a PostgreSQL counterpart — the `AGENTS.md` gotcha that
 changing one dialect and not the other ships a broken install. Both are cheap and catch a class of
 mistake no amount of behavioural testing will.
 

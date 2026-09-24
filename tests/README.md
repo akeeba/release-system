@@ -83,7 +83,7 @@ refused and one that merely cannot tell.
 
 The suite must pass on **every version in the matrix**, not just one. ARS carries deliberate
 Joomla-version branches (`createQuery()` on 5.1+, UCM handling on 5.4+; see the repository
-`CLAUDE.md`), and a single-version run cannot see the branch it did not take.
+`AGENTS.md`), and a single-version run cannot see the branch it did not take.
 
 ---
 

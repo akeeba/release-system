@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
  *
  * **It deliberately does NOT declare `createQuery()`.** ARS probes for that method
  * (`method_exists($db, 'createQuery') ? … : getQuery(true)`) because it only exists from Joomla 5.1
- * onwards, and the repository CLAUDE.md is explicit that those version branches are deliberate and
+ * onwards, and the repository AGENTS.md is explicit that those version branches are deliberate and
  * must not be simplified away. This class therefore exercises the older branch; use
  * {@see ModernRecordingDatabase} to exercise the newer one. A test that cares about the query a
  * model builds should run against both, because that is the only way to find out that the two
