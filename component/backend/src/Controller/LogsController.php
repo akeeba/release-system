@@ -10,9 +10,12 @@ namespace Akeeba\Component\ARS\Administrator\Controller;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\ControllerEvents;
+use Joomla\CMS\Access\Exception\NotAllowed;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Input\Input;
 
 class LogsController extends AdminController
@@ -43,6 +46,37 @@ class LogsController extends AdminController
 	public function getModel($name = 'Log', $prefix = 'Administrator', $config = ['ignore_request' => true])
 	{
 		return parent::getModel($name, $prefix, $config);
+	}
+
+	/**
+	 * Clear the cached, unfiltered download log row count.
+	 *
+	 * @return  void
+	 *
+	 * @throws  NotAllowed  When the user lacks the core.manage privilege on the component.
+	 */
+	public function clearLogs(): void
+	{
+		$this->checkToken();
+
+		// Housekeeping task, restricted to users who can manage the component.
+		if (!$this->app->getIdentity()->authorise('core.manage', 'com_ars'))
+		{
+			throw new NotAllowed(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+		}
+
+		$this->getModel('Logs')->cleanCachedTotal();
+
+		$this->setMessage(Text::_('COM_ARS_LOGS_CACHE_CLEARED'));
+		$this->setRedirect($this->getRedirectUrlToList());
+	}
+
+	protected function postDeleteHook(BaseDatabaseModel $model, $id = null)
+	{
+		parent::postDeleteHook($model, $id);
+
+		// The unfiltered list count is cached; make a deletion visible on the very next page load.
+		$this->getModel('Logs')->cleanCachedTotal();
 	}
 
 }

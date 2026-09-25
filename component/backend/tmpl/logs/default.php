@@ -110,7 +110,7 @@ $userLayout = new FileLayout('akeeba.ars.common.user', JPATH_ADMINISTRATOR . '/c
 
 							<?php if (!$hasItemFilter || !$hasReleaseFilter || !$hasCategoryFilter): ?>
 								<th scope="col">
-									<?= HTMLHelper::_('searchtools.sort', 'COM_ARS_ITEM_FIELD_TITLE', 'i.title', $listDirn, $listOrder); ?>
+									<?= Text::_('COM_ARS_ITEM_FIELD_TITLE') ?>
 								</th>
 							<?php endif; ?>
 
@@ -119,7 +119,7 @@ $userLayout = new FileLayout('akeeba.ars.common.user', JPATH_ADMINISTRATOR . '/c
 							</th>
 
 							<th scope="col">
-								<?= HTMLHelper::_('searchtools.sort', 'COM_ARS_LOGS_FIELD_ACCESSED', 'l.accessed', $listDirn, $listOrder); ?>
+								<?= HTMLHelper::_('searchtools.sort', 'COM_ARS_LOGS_FIELD_ACCESSED', 'accessed_on', $listDirn, $listOrder); ?>
 							</th>
 
 							<th scope="col">
@@ -127,7 +127,7 @@ $userLayout = new FileLayout('akeeba.ars.common.user', JPATH_ADMINISTRATOR . '/c
 							</th>
 
 							<th scope="col" class="w-1 d-none d-md-table-cell">
-								<?= HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'i.id', $listDirn, $listOrder); ?>
+								<?= HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'id', $listDirn, $listOrder); ?>
 							</th>
 						</tr>
 						</thead>

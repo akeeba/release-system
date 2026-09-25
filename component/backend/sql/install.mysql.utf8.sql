@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `#__ars_log` (
     PRIMARY KEY `id` (`id`),
     KEY `#__ars_log_accessed` (`accessed_on`),
     KEY `#__ars_log_authorized` (`authorized`),
+    KEY `#__ars_log_ip` (`ip`),
     KEY `#__ars_log_itemid` (`item_id`),
     KEY `#__ars_log_userid` (`user_id`)
 ) ENGINE InnoDB DEFAULT CHARSET = utf8mb4 DEFAULT COLLATE = utf8mb4_unicode_ci;

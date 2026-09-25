@@ -1201,6 +1201,19 @@ namespace Joomla\CMS\MVC\Model {
 			{
 				return [];
 			}
+
+			/**
+			 * Stand-in for Joomla\CMS\MVC\Model\ListModel::getTotal(): hand the list query to the
+			 * (stubbed) database and load its single result. That is all a test of a model's getTotal()
+			 * override needs — it can see whether the real count query fired by counting setQuery()
+			 * calls and scripting loadResult().
+			 */
+			public function getTotal()
+			{
+				$this->getDatabase()->setQuery($this->getListQuery());
+
+				return (int) $this->getDatabase()->loadResult();
+			}
 		}
 	}
 

@@ -12,6 +12,8 @@ defined('_JEXEC') or die;
 use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Table\ItemTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
+use Joomla\CMS\Cache\CacheControllerFactoryInterface;
+use Joomla\CMS\Cache\Controller\CallbackController;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
@@ -22,6 +24,20 @@ use Joomla\Database\QueryInterface;
 #[\AllowDynamicProperties]
 class LogsModel extends ListModel
 {
+	/**
+	 * Cache group of the cached, unfiltered download log row count.
+	 */
+	public const COUNT_CACHE_GROUP = 'com_ars';
+
+	/**
+	 * Cache ID of the cached, unfiltered download log row count.
+	 */
+	public const COUNT_CACHE_ID = 'ars_logs_total';
+
+	/**
+	 * How long the unfiltered download log row count remains cached, in seconds.
+	 */
+	private const COUNT_CACHE_TTL = 300;
 	protected static $catRelMap = [];
 
 	protected static $relItemMap = [];
@@ -202,6 +218,76 @@ class LogsModel extends ListModel
 			$item->user_username = $meta?->user_username;
 			$item->user_email    = $meta?->user_email;
 		}
+	}
+
+	public function getTotal()
+	{
+		/**
+		 * The unfiltered COUNT(*) behind the pagination is a full index scan over an append-only table
+		 * with millions of rows, paid in full on every page view. New rows stream in with every download,
+		 * so an exact total cached for a few minutes is indistinguishable from recounting live. Once any
+		 * filter is active the count query runs over the same indexed columns as the list query, stays
+		 * cheap, and is left uncached and exact.
+		 */
+		if ($this->hasActiveLogFilters())
+		{
+			return parent::getTotal();
+		}
+
+		return (int) $this->getCountCacheController()->get(
+			fn() => (int) parent::getTotal(),
+			[],
+			self::COUNT_CACHE_ID
+		);
+	}
+
+	/**
+	 * Remove the cached, unfiltered row count; called after deleting log records.
+	 *
+	 * @return  void
+	 */
+	public function cleanCachedTotal(): void
+	{
+		$this->getCountCacheController()->remove(self::COUNT_CACHE_ID, self::COUNT_CACHE_GROUP);
+	}
+
+	/**
+	 * The cache controller for the unfiltered row count.
+	 *
+	 * @return  CallbackController
+	 */
+	protected function getCountCacheController(): CallbackController
+	{
+		return Factory::getContainer()
+			->get(CacheControllerFactoryInterface::class)
+			->createCacheController('callback', [
+				'defaultgroup' => self::COUNT_CACHE_GROUP,
+				'lifetime'     => self::COUNT_CACHE_TTL,
+				// The administrator application usually runs with the site-wide cache disabled, which
+				// would silently degrade every get() into a plain callback execution. This cache must
+				// work regardless of the global switch.
+				'caching'      => true,
+			]);
+	}
+
+	/**
+	 * Do any of the filters that end up in the list query's WHERE clause have a value?
+	 *
+	 * @return  bool
+	 */
+	private function hasActiveLogFilters(): bool
+	{
+		foreach (['filter.search', 'filter.user_id', 'filter.referer', 'filter.authorized'] as $state)
+		{
+			$value = $this->getState($state);
+
+			if ($value !== null && $value !== '' && $value !== false)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected function populateState($ordering = 'id', $direction = 'desc')

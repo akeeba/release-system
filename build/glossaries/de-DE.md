@@ -46,3 +46,4 @@ This glossary defines the preferred German translations for ARS-specific termino
 | Medium (severity) | Mittel | Security severity level. |
 | Low (severity) | Niedrig | Security severity level. |
 | None (severity) | Ohne | Security severity level meaning the release has no associated security fix. |
+| Clear Cache | Cache leeren | Toolbar button that discards a cached value (e.g. the download log row count). "Cache" itself is kept untranslated as the widely used loanword. |

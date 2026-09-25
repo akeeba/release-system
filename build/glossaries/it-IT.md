@@ -47,3 +47,7 @@ This glossary defines the canonical Italian (Italy) translations for Akeeba Rele
 4. **"File"**: Invariable in Italian (same form singular and plural). Accepted by the Accademia della Crusca in technical contexts.
 5. **"Download"**: The verb "scaricare" and noun "scaricamento" are formal alternatives, but "download" (invariable loanword) is overwhelmingly preferred in Italian software UI. Keep "download" in compound terms like "ID di download" and "Registro dei download".
 6. **BleedingEdge / Bleeding Edge**: Always render exactly as in this glossary (no translation, no italics, no quotes) when used as a category-type label. When used in prose to explain what it is, a parenthetical explanation is welcome: "BleedingEdge (versioni di sviluppo)".
+
+| English | Italian (Italy) | Notes |
+|---|---|---|
+| Clear Cache | Svuota cache | Pulsante della barra degli strumenti che elimina un valore memorizzato nella cache (es. il conteggio delle righe del registro dei download). |

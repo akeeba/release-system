@@ -113,6 +113,12 @@ class HtmlView extends BaseHtmlView
 				->listCheck(true);
 		}
 
+		if ($user->authorise('core.manage', 'com_ars'))
+		{
+			$toolbar->standardButton('clear', 'COM_ARS_LOGS_TOOLBAR_CLEAR_CACHE', 'logs.clearLogs')
+				->icon('fa fa-sync-alt');
+		}
+
 		ToolbarHelper::back('COM_ARS_DASHBOARD_SHORT', 'index.php?option=com_cpanel&view=cpanel&dashboard=com_ars.ars');
 	}
 }

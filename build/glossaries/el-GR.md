@@ -41,3 +41,4 @@ This glossary defines the preferred Greek (el-GR) translations for ARS-specific 
 | Medium (severity) | Μεσαία | Security severity level. Feminine to agree with «σοβαρότητα». |
 | Low (severity) | Χαμηλή | Security severity level. Feminine to agree with «σοβαρότητα». |
 | None (severity) | Καμία | Security severity level meaning the release has no associated security fix. Feminine to agree with «σοβαρότητα». |
+| Clear Cache | Εκκαθάριση προσωρινής μνήμης | Toolbar button that discards a cached value (e.g. the download log row count). In prose, a cached value is «αποθηκευμένο» (stored). |

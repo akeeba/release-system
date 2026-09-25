@@ -40,3 +40,4 @@ Translators must follow these translations consistently throughout all `fr-FR` l
 | Medium (severity) | Moyenne | Security severity level. Feminine to agree with "gravité" |
 | Low (severity) | Faible | Security severity level. Agrees with "gravité" |
 | None (severity) | Aucune | Security severity level meaning the release has no associated security fix. Feminine to agree with "gravité" |
+| Clear Cache | Vider le cache | Bouton de barre d'outils qui vide une valeur mise en cache (ex. le nombre d'entrées du journal des téléchargements). |

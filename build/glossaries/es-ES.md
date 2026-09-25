@@ -49,3 +49,4 @@ This glossary establishes consistent Spanish (Spain) translations for Akeeba Rel
 | Medium (severity) | Media | Security severity level. Feminine to agree with "gravedad". |
 | Low (severity) | Baja | Security severity level. Feminine to agree with "gravedad". |
 | None (severity) | Ninguna | Security severity level meaning the release has no associated security fix. Feminine to agree with "gravedad". |
+| Clear Cache | Vaciar caché | Toolbar button that discards a cached value (e.g. the download log row count). |

@@ -49,12 +49,14 @@
                 label="JGLOBAL_SORT_BY"
                 statuses="*,0,1"
                 onchange="this.form.submit();"
-                default="l.id desc"
+                default="id desc"
                 validate="options"
         >
             <option value="">JGLOBAL_SORT_BY</option>
             <option value="id ASC">JGRID_HEADING_ID_ASC</option>
             <option value="id DESC">JGRID_HEADING_ID_DESC</option>
+            <option value="accessed_on ASC">COM_ARS_LOGS_HEADING_ACCESSED_ASC</option>
+            <option value="accessed_on DESC">COM_ARS_LOGS_HEADING_ACCESSED_DESC</option>
         </field>
 
         <field

@@ -34,3 +34,4 @@ As entradas marcadas como **não traduzir** são nomes próprios, nomes de produ
 | Medium (severity) | Média | Nível de gravidade de segurança. Concorda em género com "gravidade" (f.). |
 | Low (severity) | Baixa | Nível de gravidade de segurança. Concorda em género com "gravidade" (f.). |
 | None (severity) | Nenhuma | Nível de gravidade de segurança que indica que a versão não tem correcção de segurança associada. Concorda em género com "gravidade" (f.). |
+| Clear Cache | Limpar cache | Botão da barra de ferramentas que elimina um valor em cache (ex. a contagem de linhas do registo de transferências). |

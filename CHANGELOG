@@ -5,6 +5,7 @@ Akeeba Release System 7.5.1
 + JSON API routes for Automatic Item Descriptions, Download ID labels, Environments, and Update Streams
 + JSON API: many more list filters, and sorting with list_ordering / list_direction, on every endpoint
 + Documented the whole JSON:API in assets/http/api.http
++ Clear Cache button in Download Logs refreshes the cached row count on demand
 - Removed legacy error handler
 - Removed a dead, unreachable legacy debug error-page template
 ~ Declare the core.options permission so it can be granted per user group
@@ -30,10 +31,13 @@ Akeeba Release System 7.5.1
 ~ Joomla 7.0 readiness: dropped the unreachable CMSObject fallback from plg_editors-xtd_arslink
 ~ Joomla 7.0 readiness: dropped the unreachable Toolbar::getInstance() fallback from the backend views
 ~ Common database query helper to facilitate transition into strict createQuery in future Joomla versions
+~ Download Logs page no longer recounts millions of log rows on every page load
+~ Download Logs: filtering by IP address no longer scans the entire download log table
 # [MEDIUM] The layout URL parameter could make a page include a PHP file from outside the templates folder
 # [LOW] When cleaning one cache failed, the remaining caches were not cleaned either
 # [LOW] PHP Warning on inaccessible item [gh-251]
 # [LOW] Upgrading left obsolete folders behind on Windows, macOS, and other case-insensitive filesystems
+# [LOW] The Item and Accessed On column sorts in Download Logs did not work
 
 Akeeba Release System 7.5.0
 ================================================================================

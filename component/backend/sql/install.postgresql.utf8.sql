@@ -111,6 +111,7 @@ CREATE TABLE IF NOT EXISTS "#__ars_log"
 
 CREATE INDEX IF NOT EXISTS "#__ars_log_accessed" ON "#__ars_log" ("accessed_on");
 CREATE INDEX IF NOT EXISTS "#__ars_log_authorized" ON "#__ars_log" ("authorized");
+CREATE INDEX IF NOT EXISTS "#__ars_log_ip" ON "#__ars_log" ("ip");
 CREATE INDEX IF NOT EXISTS "#__ars_log_itemid" ON "#__ars_log" ("item_id");
 CREATE INDEX IF NOT EXISTS "#__ars_log_userid" ON "#__ars_log" ("user_id");
 
