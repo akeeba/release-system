@@ -59,10 +59,10 @@ $gravatarUrl =
 <?php if ($showGravatar && !$showName && !$showUsername && !$showUserId && !$showEmail): ?>
 	<img src="<?= $gravatarUrl ?>" alt="" class="img-fluid rounded rounded-3">
 <?php else: ?>
-	<div class="d-flex">
+	<div class="d-flex gap-2">
 		<?php if ($showGravatar): ?>
-			<div class="pe-2 pb-1">
-				<img src="<?= $gravatarUrl ?>" alt="" class="img-fluid rounded rounded-3">
+			<div class="">
+				<img src="<?= $gravatarUrl ?>" alt="" class="rounded rounded-3">
 			</div>
 		<?php endif; ?>
 
