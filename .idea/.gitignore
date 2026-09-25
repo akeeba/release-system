@@ -9,3 +9,14 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 
+# We do not use Laravel
+/laravel-idea.*
+# Deployment configuration: live hostnames, accounts and path mappings
+/sshConfigs.xml
+/webServers.xml
+/deployment.xml
+/dataSources.xml
+/aws.xml
+# Per-user, high-churn settings not meant to be shared
+/dictionaries/
+/runConfigurations/
