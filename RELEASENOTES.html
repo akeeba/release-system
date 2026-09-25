@@ -1,9 +1,3 @@
-<!--~
-  ~ @package   AkeebaReleaseSystem
-  ~ @copyright Copyright (c)2026 Nicholas K. Dionysopoulos / Akeeba Ltd
-  ~ @license   GNU General Public License version 3, or later
-  -->
-
 <p>
 	<strong>Security hardening</strong>. This version concludes our full audit of the code, addressing the remaining issues, and hardening the extension's security posture.
 </p>
@@ -15,4 +9,12 @@
 
 <p>
 	<strong>Enforced version compatibility checks</strong>. The package now checks your Joomla and PHP version when you try to install it. If it detects an incompatible Joomla and/or PHP version it will refuse to install / uninstall / update and tell you. The extension itself will warn you about the incompatibility and refuse to run. This is an additional protection against accidentally breaking your site by installing an incompatible version of our software or your site, or updating / downgrading Joomla or PHP outside the supported range after installing the extension.
+</p>
+
+<p>
+	<strong>Expanded JSON:API</strong>. We added JSON:API routes for Automatic Item Descriptions, Download ID labels, Environments, and Update Streams, bringing every ARS resource under the API. Every endpoint now supports many more list filters, and sorting with <code>list_ordering</code> / <code>list_direction</code>. The whole API is documented as a ready-to-use request collection in <code>assets/http/api.http</code>, for developers building integrations against your release system.
+</p>
+
+<p>
+	<strong>Faster Download Logs</strong>. The Download Logs page no longer recounts millions of log rows on every page load, and filtering by IP address no longer scans the entire table, so the page stays responsive on sites with large logs. A new Clear Cache toolbar button lets you refresh the cached row count on demand.
 </p>
