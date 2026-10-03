@@ -13,7 +13,7 @@ classify hardening versus vulnerabilities.
 
 - **Categories are NOT `com_categories`.** ARS has its own `#__ars_categories` table. `ARSPseudoCategory` implements Joomla's `CategoryInterface` purely to bridge custom fields and tags — don't reach for the Joomla category API.
 - **Joomla version-specific branches are deliberate.** Don't "simplify" them away. The `createQuery()`
-  branch (5.1+) now lives in exactly one place, `Administrator\Helper\DbQuery::create()`; build every
+  branch (5.1+) lives in exactly one place, `Administrator\Helper\DbQuery::create()`; build every
   query through it rather than calling `createQuery()`/`getQuery(true)` directly. The two copies in
   `component/script.ars.php` are intentional — that file runs before the autoloader exists.
 - **Every schema change needs both dialects.** `component/backend/sql/` ships parallel MySQL and PostgreSQL files; changing one and not the other ships a broken install.

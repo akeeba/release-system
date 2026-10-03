@@ -26,8 +26,6 @@ and `Toolbar::getInstance()` are still present in 6.1.2) and misses real ones.
 
 ## Version limits are enforced at runtime by `Helper\VersionLimits`
 
-Implemented 2026-09-04, mirroring commit `d3044879` in `akeebabackup` (also rolled out in
-`admintools`, `ats`, `onthos`, `docimport`, `paddle`, `social-magick`).
 `Akeeba\Component\ARS\Administrator\Helper\VersionLimits`
 (`component/backend/src/Helper/VersionLimits.php`) declares min/max PHP (`8.1.0`–`<8.7`) and min/max
 Joomla (`5.4.0`–`<6.3`) and is wired in two places:
@@ -50,6 +48,6 @@ within the tested PHP/Joomla range, so it is enforced, not just documented.
 not `Dispatcher.php` — keep them in sync when bumping ranges (and verify the new range as above).
 `component/script.ars.php`'s own `$minimumPhp`/`$maximumPhp`/`$minimumJoomla`/`$maximumJoomla`
 properties are separate (install-time, runs pre-autoloader per `AGENTS.md`) and still need updating
-too. Unlike `akeebabackup`, ARS ships no in-repo `documentation/` guide, so there is no docs section
-explaining the CLI/console/JSON-API symptoms of enforcement. Recompute the e2e `JOOMLA_MATRIX` pairs
+too. ARS ships no in-repo `documentation/` guide, so no docs section explains the
+CLI/console/JSON-API symptoms of enforcement. Recompute the e2e `JOOMLA_MATRIX` pairs
 (see `AGENTS.md`) whenever a floor moves.
