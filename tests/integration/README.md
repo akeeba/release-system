@@ -27,7 +27,18 @@ tests/integration/docker/run.sh
 
 That one command scrubs, brings the stack up, installs Joomla, points its mailer at Mailpit, builds
 and installs ARS, creates the release repository directory, provisions the fixtures, runs the suite,
-and tears the stack down.
+and tears the stack down — containers, network and the database volume — however it ends: the suite
+finishing, a failed step, or Ctrl-C. Only `--keep-containers` and `--no-tests` leave it up. After a
+passing run `docker/www/` is deleted too; after a failure it is left for inspection, and the next run
+clears it.
+
+The `php` and `web` images are not built here. They are the `akeeba-e2e/*` images every Akeeba E2E
+stack shares, defined in the sibling `buildfiles` repository under `docker/e2e/` (see its
+`README.md`); `run.sh` calls `../buildfiles/docker/e2e/images.sh ensure` for each before bringing the
+stack up, so `../buildfiles` must be checked out next to this repository. ARS's own `php.ini`
+(`docker/config/php.ini`) is bind-mounted into the php container, and Apache uses the shared image's
+default vhost. A PHP extension the suite needs goes into that shared image, never into a
+project-local Dockerfile.
 
 To iterate, keep the stack up and re-run PHPUnit directly — provisioning is the slow part, the tests
 themselves take seconds:
@@ -94,6 +105,7 @@ prefers a matching package there over downloading one.
 |---|---|
 | `docker/run.sh` | The one-shot orchestrator described above |
 | `docker/docker-compose.yml` | `db`, `php`, `web` (Apache), `mailpit` |
+| `docker/config/php.ini` | ARS's PHP settings, bind-mounted into the shared `akeeba-e2e/php` image |
 | `assets/e2e-provision.php` | Runs **inside** the container: builds the ACL matrix, categories, releases, items, update streams, Download IDs and the release files, then writes a JSON manifest |
 | `assets/e2e-probe.php` | Runs inside the site: reports who a session belongs to and what it may do |
 | `src/SiteProvisioner.php` | Host-side façade over the provisioner; hands fixtures to tests by name |

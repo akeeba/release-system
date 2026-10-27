@@ -3,14 +3,26 @@
 # All versions are configurable through the .env file (see env.dist):
 #   JOOMLA_VERSION, PHP_VERSION, APACHE_VERSION, MYSQL_VERSION, MAILPIT_VERSION.
 #
+# The php and web images are the ones shared by every Akeeba E2E stack. They are built by
+# ../buildfiles/docker/e2e/images.sh — which run.sh calls before bringing the stack up — never by
+# this file, hence `pull_policy: never` and no `build:`. Everything specific to ARS is bind-mounted
+# into them: php.ini. The Apache vhost is the shared image's default.
+#
+# Every service, the volume and the network carry the org.akeeba.e2e label, which is what the
+# scheduled ../buildfiles/docker/e2e/maintain.sh prunes by.
+#
 # Do not run this by hand. Use ./run.sh, which scrubs, provisions and tests in
 # one shot. This file only describes the services.
 
 name: ars-e2e
 
+x-e2e-labels: &e2e-labels
+  org.akeeba.e2e: "1"
+
 services:
   db:
     image: "mysql:${MYSQL_VERSION:-8.4}"
+    labels: *e2e-labels
     environment:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:-root}"
       MYSQL_DATABASE: "${DB_NAME:-arse2e}"
@@ -30,15 +42,12 @@ services:
       retries: 40
 
   php:
-    build:
-      context: .
-      dockerfile: Dockerfile.php
-      args:
-        PHP_VERSION: "${PHP_VERSION:-8.4}"
-        PUID: "${PUID:-1000}"
-        PGID: "${PGID:-1000}"
+    image: "akeeba-e2e/php:${PHP_VERSION:-8.4}"
+    pull_policy: never
+    labels: *e2e-labels
     volumes:
       - ./www:/var/www/html
+      - ./config/php.ini:/usr/local/etc/php/conf.d/zz-e2e.ini:ro
     depends_on:
       db:
         condition: service_healthy
@@ -46,11 +55,9 @@ services:
         condition: service_started
 
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile.web
-      args:
-        APACHE_VERSION: "${APACHE_VERSION:-2.4}"
+    image: "akeeba-e2e/web:${APACHE_VERSION:-2.4}"
+    pull_policy: never
+    labels: *e2e-labels
     ports:
       - "127.0.0.1:${HTTP_PORT:-8100}:80"
     volumes:
@@ -69,6 +76,7 @@ services:
   # real send.
   mailpit:
     image: "axllent/mailpit:${MAILPIT_VERSION:-v1.21}"
+    labels: *e2e-labels
     environment:
       MP_SMTP_AUTH_ACCEPT_ANY: "1"
       MP_SMTP_AUTH_ALLOW_INSECURE: "1"
@@ -84,3 +92,8 @@ services:
 
 volumes:
   dbdata:
+    labels: *e2e-labels
+
+networks:
+  default:
+    labels: *e2e-labels

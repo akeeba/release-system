@@ -11,7 +11,7 @@
 # What it does, in order:
 #   1. Scrub any existing containers, volumes and the previous web root.
 #   2. Acquire the requested Joomla version (from ../inbox/ or by downloading).
-#   3. Build and bring up the Dockerized stack.
+#   3. Bring up the Dockerized stack on the shared akeeba-e2e/* images.
 #   4. Install Joomla using its installation/joomla.php CLI helper.
 #   5. Point Joomla's mailer at Mailpit and normalise the site configuration.
 #   6. Build ARS with `phing git` and install pkg_ars.
@@ -46,6 +46,8 @@ REPO_ROOT="$(cd "${INTEGRATION_DIR}/../.." && pwd)"
 RELEASE_DIR="${REPO_ROOT}/release"
 INBOX_DIR="${INTEGRATION_DIR}/inbox"
 WWW_DIR="${SCRIPT_DIR}/www"
+# Builds the PHP and Apache images every Akeeba E2E stack shares; see bring_up_stack().
+E2E_IMAGES="${REPO_ROOT}/../buildfiles/docker/e2e/images.sh"
 
 cd "${SCRIPT_DIR}"
 
@@ -120,8 +122,6 @@ elif ! grep -qE '^JOOMLA_VERSION=' .env; then
 fi
 
 set -a; . ./.env; set +a
-export PUID; PUID="$(id -u)"
-export PGID; PGID="$(id -g)"
 [ -n "${JOOMLA_OVERRIDE}" ] && export JOOMLA_VERSION="${JOOMLA_OVERRIDE}"
 [ -n "${PHP_OVERRIDE}" ] && export PHP_VERSION="${PHP_OVERRIDE}"
 
@@ -137,6 +137,8 @@ export PGID; PGID="$(id -g)"
 : "${MAIL_FROM:=releases@example.test}"
 : "${MAIL_FROM_NAME:=ARS Releases}"
 : "${ARS_REPOSITORY:=arsrepo}"
+: "${PHP_VERSION:=8.4}"
+: "${APACHE_VERSION:=2.4}"
 
 # In-container CLI helpers ---------------------------------------------------
 php_cli()   { DC exec -T php php "$@"; }
@@ -191,22 +193,28 @@ fi
 # ---------------------------------------------------------------------------
 # Teardown
 # ---------------------------------------------------------------------------
-scrub() {
-	log "Scrubbing existing containers, volumes and web root"
-	DC down --volumes --remove-orphans >/dev/null 2>&1 || true
-	# The web root may contain files owned by the container user; remove via a
-	# throwaway container to avoid host permission surprises.
+# The web root may contain files owned by the container user; remove via a
+# throwaway container to avoid host permission surprises.
+remove_www() {
 	if [ -d "${WWW_DIR}" ]; then
 		rm -rf "${WWW_DIR}" 2>/dev/null || \
 			docker run --rm -v "${SCRIPT_DIR}:/work" alpine:3 rm -rf /work/www || true
 	fi
+}
+
+scrub() {
+	log "Scrubbing existing containers, volumes and web root"
+	DC down --volumes --remove-orphans >/dev/null 2>&1 || true
+	remove_www
 	mkdir -p "${WWW_DIR}"
 	ok "Clean slate"
 }
 
+STACK_DOWN=0
 teardown() {
 	log "Bringing the Docker stack down"
 	DC down --volumes --remove-orphans >/dev/null 2>&1 || true
+	STACK_DOWN=1
 	ok "Stack down"
 }
 
@@ -215,6 +223,46 @@ if [ "${ONLY_DOWN}" -eq 1 ]; then
 	ok "Everything torn down."
 	exit 0
 fi
+
+# However the script ends from here on — the suite finishing, a failed command under `set -e`, die(),
+# Ctrl-C or a kill — it never leaves containers or volumes behind. Only --keep-containers and
+# --no-tests keep the stack up, on purpose.
+#
+# After a successful run the web root goes too: nothing needs it any more. After a failure it stays
+# for inspection (PHP error log, generated files, …), and the next run's scrub() clears it.
+FINISHED=0
+finish() {
+	FINISHED=1
+	exit "$1"
+}
+
+on_exit() {
+	local status=$?
+
+	trap - EXIT INT TERM
+
+	# Bash 3.2, which is what macOS runs this with, hands an EXIT trap $? = 0 after a fatal shell
+	# error such as a failed ${VAR:?} check, and then exits with the trap's own status: the failure
+	# would be reported as success. A run which did not end through finish() has failed.
+	[ "${status}" -ne 0 ] || [ "${FINISHED}" -eq 1 ] || status=1
+
+	if [ "${KEEP_CONTAINERS}" -eq 1 ] || [ "${RUN_TESTS}" -eq 0 ]; then
+		exit "${status}"
+	fi
+
+	[ "${STACK_DOWN}" -eq 1 ] || teardown
+
+	if [ "${status}" -eq 0 ]; then
+		remove_www
+	else
+		warn "Left the web root in place for inspection: ${WWW_DIR}"
+	fi
+
+	exit "${status}"
+}
+trap on_exit EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 # ---------------------------------------------------------------------------
 # Version helpers
@@ -399,9 +447,18 @@ extract_joomla() {
 # ---------------------------------------------------------------------------
 # Provisioning steps
 # ---------------------------------------------------------------------------
+# The images come from buildfiles, shared with every other Akeeba E2E stack. `ensure` builds one only
+# when it is missing or its Dockerfile has changed, so this is instant on every run but the first.
+ensure_images() {
+	[ -x "${E2E_IMAGES}" ] || die "${E2E_IMAGES} not found. Check out akeeba/buildfiles next to this repository."
+
+	"${E2E_IMAGES}" ensure php "${PHP_VERSION}"
+	"${E2E_IMAGES}" ensure web "${APACHE_VERSION}"
+}
+
 bring_up_stack() {
-	log "Building and starting the stack (PHP ${PHP_VERSION}, Apache ${APACHE_VERSION}, MySQL ${MYSQL_VERSION}, Mailpit ${MAILPIT_VERSION})"
-	DC build >/dev/null
+	log "Starting the stack (PHP ${PHP_VERSION}, Apache ${APACHE_VERSION}, MySQL ${MYSQL_VERSION}, Mailpit ${MAILPIT_VERSION})"
+	ensure_images
 	DC up -d
 
 	log "Waiting for MySQL"
@@ -695,4 +752,4 @@ else
 	ok "Done. Re-run with --keep-containers to leave the site up for troubleshooting."
 fi
 
-exit "${TEST_STATUS}"
+finish "${TEST_STATUS}"

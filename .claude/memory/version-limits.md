@@ -8,7 +8,8 @@ against:
 
 - `tests/integration/inbox/Joomla_*-Stable-Full_Package.zip` — full packages for the floor and ceiling
   of the matrix (e.g. 5.4.7, 6.0.4, 6.1.2).
-- `tests/integration/docker/www/` — an extracted Joomla site (whatever the last e2e run used).
+- `tests/integration/docker/www/` — an extracted Joomla site, left behind by the last e2e run only if it
+  failed or used `--keep-containers` / `--no-tests` (a passing run deletes it).
 
 Method: collect every `use Joomla\...;` from `component/ plugins/ modules/`, map each namespace to its
 file (`Joomla\CMS\X` → `libraries/src/X.php`; `Joomla\<Pkg>\Y` →
