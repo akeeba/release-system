@@ -17,7 +17,8 @@ that would be serving them.
   site over its published ports.
 * **Phing** on your `PATH`, to build the package (`phing git`). Skip with `--skip-build` if
   `release/` already holds one.
-* `unzip`, `curl`, `gunzip` and `jq`, used to resolve, fetch and extract Joomla.
+* `unzip`, plus `getcms` from the sibling `../buildfiles` checkout (run `composer install` there),
+  used to resolve, download and extract Joomla.
 
 ## Quick start
 

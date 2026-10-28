@@ -368,32 +368,6 @@ assert_supported_version() {
 # Joomla acquisition: prefer inbox/, otherwise resolve + download.
 # ---------------------------------------------------------------------------
 
-# The list of published Joomla versions and their download URLs, served
-# (gzip-compressed) by our own Panopticon checksums service.
-#   Docs: https://getpanopticon.com/checksums/index.html
-SOURCES_URL="https://getpanopticon.com/checksums/sources.json.gz"
-
-resolve_joomla() {
-	local want="$1"
-	command -v jq     >/dev/null 2>&1 || die "jq is required to resolve the Joomla version."
-	command -v gunzip >/dev/null 2>&1 || die "gunzip is required to resolve the Joomla version."
-
-	local gz; gz="$(mktemp)"
-	curl -fsSL "${SOURCES_URL}" -o "${gz}" || { rm -f "${gz}"; die "Could not download ${SOURCES_URL}"; }
-
-	local result
-	result="$(gunzip -c "${gz}" | jq -r --arg want "${want}" '
-		[ .[]
-		  | select(.cms == "joomla")
-		  | select(.version | test("^[0-9]+\\.[0-9]+\\.[0-9]+$"))
-		  | select(.version == $want or (.version | startswith($want + "."))) ]
-		| sort_by(.version | split(".") | map(tonumber))
-		| if length == 0 then empty else (last | "\(.version)\t\(.url)") end
-	')"
-	rm -f "${gz}"
-	printf '%s' "${result}"
-}
-
 find_inbox_package() {
 	local prefix="$1" best="" bestver="" f ver
 	shopt -s nullglob
@@ -424,17 +398,14 @@ acquire_joomla() {
 		ok "Using inbox package $(basename "${JOOMLA_ZIP}")"
 		return 0
 	fi
-	local resolved; resolved="$(resolve_joomla "${JOOMLA_VERSION}")"
-	[ -n "${resolved}" ] || die "Could not resolve a stable Joomla version for '${JOOMLA_VERSION}'."
-	local url
-	JOOMLA_RESOLVED="${resolved%%$'\t'*}"
-	url="${resolved#*$'\t'}"
-	local fname="Joomla_${JOOMLA_RESOLVED}-Stable-Full_Package.zip"
-	JOOMLA_ZIP="${INBOX_DIR}/${fname}"
-	log "Downloading Joomla ${JOOMLA_RESOLVED}"
-	curl -fL --progress-bar -o "${JOOMLA_ZIP}" "${url}" \
-		|| { rm -f "${JOOMLA_ZIP}"; die "Download failed: ${url}"; }
-	ok "Downloaded ${fname} to inbox/"
+	local getcms="${REPO_ROOT}/../buildfiles/getcms/getcms.php"
+	[ -f "${getcms}" ] || die "${getcms} not found. Check out akeeba/buildfiles next to this repository and run composer install there."
+	php "${getcms}" download "${JOOMLA_VERSION}" "${INBOX_DIR}" --no-unzip \
+		|| die "Could not download a stable Joomla version for '${JOOMLA_VERSION}'."
+	JOOMLA_ZIP="$(find_inbox_package "${JOOMLA_VERSION}")" \
+		|| die "getcms did not place a matching Joomla package in ${INBOX_DIR}."
+	JOOMLA_RESOLVED="$(basename "${JOOMLA_ZIP}" | sed -E 's/^Joomla_([0-9]+\.[0-9]+\.[0-9]+).*/\1/')"
+	ok "Downloaded $(basename "${JOOMLA_ZIP}") to inbox/"
 }
 
 extract_joomla() {
