@@ -51,4 +51,4 @@ not `Dispatcher.php` — keep them in sync when bumping ranges (and verify the n
 properties are separate (install-time, runs pre-autoloader per `AGENTS.md`) and still need updating
 too. ARS ships no in-repo `documentation/` guide, so no docs section explains the
 CLI/console/JSON-API symptoms of enforcement. Recompute the e2e `JOOMLA_MATRIX` pairs
-(see `AGENTS.md`) whenever a floor moves.
+(committed in the sibling `buildfiles` repository; see `AGENTS.md`) whenever a floor moves.

@@ -66,22 +66,33 @@ build keeps your working copy clean.
 tests/integration/docker/run.sh --matrix
 ```
 
-Runs the suite once per version in `JOOMLA_MATRIX` — by default 5.4, 6.0 and 6.1. **This is not
-optional thoroughness.** ARS carries deliberate Joomla-version branches — `createQuery()` from 5.1,
-UCM handling from 5.4 — and the repository `AGENTS.md` is explicit that they must not be simplified
-away. A green single-version run says nothing about the branch it did not take.
+The Joomla/PHP environments are **committed, not configured**. `JOOMLA_MATRIX` lives in
+`docker/e2e/matrix` of the sibling `buildfiles` repository, shared by every Joomla project, and is
+currently:
 
-ARS's installer script declares a Joomla 4.3.0 floor, and `run.sh` reads that floor out of
-`component/script.ars.php` and refuses anything lower, so the two cannot drift apart. The default
-matrix starts at 5.4 because that is what is realistically supported; `-j 4.4` still works if you
-want it, but Joomla 4.4 does not support PHP 8.4, so set `PHP_VERSION=8.3` for such a run.
+| Joomla | PHP | |
+|---|---|---|
+| 5.4 | 8.1 | The oldest Joomla and PHP this project supports |
+| 6 | 8.5 | The latest stable Joomla 6 (`6` resolves to it) on the newest PHP |
+
+They are deliberately not in `env.dist` or `.env`: `.env` is git-ignored and copied once, so anything in
+it goes stale and differs between machines. `run.sh` sources the committed files after `.env`, so a
+stale `.env` cannot shadow them. For a one-off, use `run.sh --joomla=6.0 --php=8.3`; to change what
+everybody tests, edit the committed file and let `audit-e2e-matrix` check the result.
+
+**This is not optional thoroughness.** ARS carries deliberate Joomla-version branches — `createQuery()`
+from 5.1, UCM handling from 5.4 — and the repository `AGENTS.md` is explicit that they must not be
+simplified away. A green single-version run says nothing about the branch it did not take.
+
+`run.sh` reads the Joomla and PHP floors out of `component/script.ars.php` (currently Joomla 5.4.0 and
+PHP 8.1.0) and refuses anything lower, so the two cannot drift apart. Joomla 4.4 is no longer supported.
 
 ## `run.sh` options
 
 | Option | Effect |
 |---|---|
 | `-j`, `--joomla=V` | Override `JOOMLA_VERSION` for this run (`6`, `6.1`, `6.1.2`) |
-| `--matrix` | Run once per version in `JOOMLA_MATRIX` |
+| `--matrix` | Run once per Joomla/PHP pair in the committed `JOOMLA_MATRIX` |
 | `-f`, `--filter=NAME` | Passed through to PHPUnit |
 | `--skip-build` | Don't run `phing git`; install the newest package in `release/` |
 | `--no-tests` | Provision the site but don't run the suite (leaves it up) |

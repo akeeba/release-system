@@ -17,18 +17,15 @@ classify hardening versus vulnerabilities.
   query through it rather than calling `createQuery()`/`getQuery(true)` directly. The two copies in
   `component/script.ars.php` are intentional — that file runs before the autoloader exists.
 - **Every schema change needs both dialects.** `component/backend/sql/` ships parallel MySQL and PostgreSQL files; changing one and not the other ships a broken install.
-- **The e2e matrix pairs Joomla with PHP deliberately.** `JOOMLA_MATRIX` in
-  `tests/integration/docker/env.dist` is a list of `JOOMLA:PHP[,PHP...]` pairs, not a cross product.
-  The rule: for each supported Joomla version, run the **lowest** and the **highest** PHP that both
-  ARS *and* that Joomla version permit, plus any **PHP major-version boundary** that falls inside
-  that window. The edges are where incompatibilities live — a version in the middle of a range
-  almost never breaks something the edges do not, and each pair costs a full site provision.
-  Today: ARS allows `>=8.1 <8.7`; Joomla 5.4 requires PHP 8.1+, Joomla 6.x requires 8.3+; the newest
-  published `php:*-fpm` image is 8.5. Hence `5.4:8.1,8.5 6.0:8.3,8.5 6.1:8.3,8.5`. As an
-  illustration of the major-boundary clause: were Joomla 4.4 still supported, it would need
-  7.4, 8.0 and 8.2 — the two edges *and* 8.0, because a PHP major jump breaks more than a minor one.
-  Recompute the pairs whenever a floor moves or a new PHP is released; `run.sh` enforces both floors
-  and refuses an impossible pair rather than failing obscurely.
+- **The e2e matrix is committed, not configured, and pairs Joomla with PHP deliberately.**
+  `JOOMLA_MATRIX` is a list of `JOOMLA:PHP[,PHP...]` pairs, not a cross product. It lives in
+  `docker/e2e/matrix` of the sibling `buildfiles` repository (shared by every Joomla project) and run.sh
+  sources it after the git-ignored `.env`; never put `JOOMLA_VERSION`, `PHP_VERSION` or `JOOMLA_MATRIX`
+  in `env.dist` or `.env`, where they go stale and differ between machines. Today it is
+  `5.4:8.1 6:8.5`: the oldest and the newest Joomla ARS supports, each on the PHP at the matching end
+  (ARS allows `>=8.1 <8.7`; Joomla 5.4 requires PHP 8.1+, Joomla 6.x requires 8.3+; the newest
+  published `php:*-fpm` image is 8.5). Recompute the pairs whenever a floor moves or a new PHP is
+  released; `run.sh` enforces both floors and refuses an impossible pair rather than failing obscurely.
 - **Two test suites, both PHPUnit 11, neither wired into `composer.json`** — they use whatever
   `phpunit` is on your `PATH`. `phpunit` runs the unit suite in `UnitTest/`; it needs nothing but PHP.
   `tests/integration/docker/run.sh` stands up a throwaway Dockerised Joomla site and runs the
