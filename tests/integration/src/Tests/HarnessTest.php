@@ -324,6 +324,46 @@ class HarnessTest extends AbstractE2ETestCase
 	}
 
 	/**
+	 * The automatic item description fixture can be updated over the API, like a real site's records.
+	 *
+	 * ARS validates the whole merged record on every PATCH, so a record whose access is not a real view level (0, say)
+	 * refuses every update with "Invalid field: Access" — however correct the update itself is. The environment
+	 * synchronisation in akeeba/buildfiles, which is tested against this lab, updates exactly this kind of record.
+	 *
+	 * @return  void
+	 * @since   7.5.2
+	 */
+	public function testAutoDescriptionFixtureAcceptsAnApiUpdate(): void
+	{
+		$id           = static::$fixtures->autoDescriptionId('public');
+		$environments = array_map(
+			'strval',
+			[
+				static::$fixtures->environmentId('joomla54'),
+				static::$fixtures->environmentId('joomla61'),
+				static::$fixtures->environmentId('php84'),
+			]
+		);
+
+		$response = (new Surfer(static::$config->getSiteUrl()))->request(
+			'PATCH',
+			$this->apiUrl('v1/ars/autodescriptions/' . $id),
+			json_encode(['environments' => $environments]),
+			[
+				'Accept'         => 'application/vnd.api+json',
+				'Content-Type'   => 'application/json',
+				'X-Joomla-Token' => static::$fixtures->apiToken('manager'),
+			]
+		);
+
+		$this->assertStatus(
+			200,
+			$response,
+			'The "public" automatic item description cannot be updated over the API. Its access level must be a real view level.'
+		);
+	}
+
+	/**
 	 * Exactly one release carries a non-zero security severity.
 	 *
 	 * The Joomla 6.2 `<security>` element must be emitted above zero and omitted entirely at zero.

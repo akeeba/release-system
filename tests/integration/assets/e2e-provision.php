@@ -1040,7 +1040,8 @@ $autoDescriptionTable = storeTable(
 		'category'          => $categories['public'],
 		'packname'          => 'com_e2e-*',
 		'title'             => 'E2E Auto-Description Title',
-		'access'            => 0,
+		// A real view level: ARS validates the whole merged record on every API update, and refuses one with access 0
+		'access'            => 1,
 		'show_unauth_links' => 0,
 		'redirect_unauth'   => '',
 		'description'       => '<p>E2E auto-generated description.</p>',
