@@ -38,10 +38,10 @@
 	</fileset>
 
 	<target name="git" description="Makes only packages, not the documentation"
-			depends="new-release,setup-properties,compile-javascript,compile-css,component-packages">
+			depends="new-release,setup-properties,compile-js,compile-css,component-packages">
 	</target>
 
-	<target name="compile-javascript" description="Minify JavaScript files">
+	<target name="compile-js" description="Minify JavaScript files">
 		<exec executable="node"
 		      dir="${dirs.root}/../buildfiles" checkreturn="true" passthru="true">
 			<arg value="build-js.mjs" />
