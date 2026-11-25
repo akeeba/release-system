@@ -1221,9 +1221,20 @@ namespace Joomla\CMS\MVC\Model {
 	{
 		class AdminModel extends BaseDatabaseModel
 		{
+			/** @var string Joomla derives it from the model's namespace; every ARS model is com_ars. */
+			protected $option = 'com_ars';
+
 			public function getTable($name = '', $prefix = '', $options = [])
 			{
 				return null;
+			}
+
+			/**
+			 * Same as Joomla's: core.delete on the component, whatever the record.
+			 */
+			protected function canDelete($record)
+			{
+				return \Joomla\CMS\Factory::getApplication()->getIdentity()->authorise('core.delete', $this->option);
 			}
 		}
 	}

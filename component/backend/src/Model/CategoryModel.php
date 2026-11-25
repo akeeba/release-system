@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\ModelCategoryDeleteTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Exception;
@@ -28,6 +29,7 @@ class CategoryModel extends AdminModel
 {
 	use ModelCopyTrait;
 	use LegacyObjectTrait;
+	use ModelCategoryDeleteTrait;
 
 	/**
 	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
@@ -207,12 +209,7 @@ class CategoryModel extends AdminModel
 		}
 
 		// Make sure the user is allowed to delete this category, per Joomla's assets rules.
-		$user = Factory::getApplication()->getIdentity();
-
-		if (
-			!$user->authorise('core.delete', 'com_ars.category.' . (int) $record->id) &&
-			!$user->authorise('core.delete', 'com_ars')
-		)
+		if (!$this->canDeleteInCategory((int) $record->id))
 		{
 			return false;
 		}

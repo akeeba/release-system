@@ -19,8 +19,7 @@ use ReflectionMethod;
 
 /**
  * Regression coverage for the M5 fix: `CategoryModel` had a `canDelete()` override that correctly
- * checks the category's own asset (`com_ars.category.<id>`) before falling back to the component root,
- * but no equivalent `canEditState()` override — bulk publish/unpublish/archive/trash fell back to stock
+ * checks the category's own asset (`com_ars.category.<id>`), but no equivalent `canEditState()` override — bulk publish/unpublish/archive/trash fell back to stock
  * `AdminModel::canEditState()`, which only checks `core.edit.state` at the component root. A group denied
  * `core.edit.state` on a specific category but granted it at component level could still bulk-change that
  * category's state. See `security.md`.
@@ -83,7 +82,7 @@ class CategoryModelTest extends TestCase
 
 	/**
 	 * The regression case itself: a user with NO grant on this specific category, and none at the
-	 * component root either, must be rejected — matching `canDelete()`'s existing pattern, and unlike
+	 * component root either, must be rejected — unlike
 	 * stock `AdminModel::canEditState()`, which never consulted the category asset at all.
 	 */
 	public function testRejectedWhenTheUserHasNeitherCategoryNorComponentEditState(): void

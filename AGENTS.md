@@ -16,6 +16,9 @@ classify hardening versus vulnerabilities.
   branch (5.1+) lives in exactly one place, `Administrator\Helper\DbQuery::create()`; build every
   query through it rather than calling `createQuery()`/`getQuery(true)` directly. The two copies in
   `component/script.ars.php` are intentional — that file runs before the autoloader exists.
+- **Delete permission is checked on the record's category asset only.** An explicit Deny on a category must win over
+  an Allow on the component, in the back-end and the API alike, so never write `category || component`. Back-end
+  models use `Administrator\Mixin\ModelCategoryDeleteTrait`; the API uses `canDeleteIn()` in `AssertApiAccess`.
 - **Every schema change needs both dialects.** `component/backend/sql/` ships parallel MySQL and PostgreSQL files; changing one and not the other ships a broken install.
 - **The e2e matrix is committed, not configured, and pairs Joomla with PHP deliberately.**
   `JOOMLA_MATRIX` is a list of `JOOMLA:PHP[,PHP...]` pairs, not a cross product. It lives in

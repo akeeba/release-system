@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\ModelCategoryDeleteTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
@@ -33,6 +34,7 @@ class ReleaseModel extends AdminModel
 {
 	use ModelCopyTrait;
 	use LegacyObjectTrait;
+	use ModelCategoryDeleteTrait;
 
 	/**
 	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
@@ -420,12 +422,7 @@ class ReleaseModel extends AdminModel
 		}
 
 		// Make sure the user is allowed to delete this release, per Joomla's assets rules for its parent category.
-		$user = Factory::getApplication()->getIdentity();
-
-		if (
-			!$user->authorise('core.delete', 'com_ars.category.' . (int) $record->category_id) &&
-			!$user->authorise('core.delete', 'com_ars')
-		)
+		if (!$this->canDeleteInCategory((int) $record->category_id))
 		{
 			return false;
 		}

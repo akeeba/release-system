@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\ModelCategoryDeleteTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
@@ -24,6 +25,7 @@ class UpdatestreamModel extends AdminModel
 {
 	use ModelCopyTrait;
 	use LegacyObjectTrait;
+	use ModelCategoryDeleteTrait;
 
 	public function __construct($config = [], ?MVCFactoryInterface $factory = null, ?FormFactoryInterface $formFactory = null)
 	{
@@ -113,6 +115,27 @@ class UpdatestreamModel extends AdminModel
 		$this->preprocessData('com_ars.updatestream', $data);
 
 		return $data;
+	}
+
+	/**
+	 * Is the user allowed to delete the record?
+	 *
+	 * The record belongs to an ARS category, so check that category's asset: an explicit Deny on the category wins
+	 * over an Allow on the component, which Joomla's AdminModel::canDelete() would have checked alone.
+	 *
+	 * @param   object  $record
+	 *
+	 * @return  bool
+	 * @since   7.5.3
+	 */
+	protected function canDelete($record): bool
+	{
+		if (empty($record->id))
+		{
+			return false;
+		}
+
+		return $this->canDeleteInCategory((int) ($record->category ?? 0));
 	}
 
 	protected function prepareTable($table)
