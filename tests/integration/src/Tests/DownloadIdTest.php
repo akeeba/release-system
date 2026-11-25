@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\ARS\IntegrationTest\AbstractE2ETestCase;
 use Akeeba\ARS\IntegrationTest\Engine\Response;
+use Akeeba\ARS\IntegrationTest\Engine\Surfer;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -283,6 +284,116 @@ class DownloadIdTest extends AbstractE2ETestCase
 			static::$fixtures->file('secretFile')['sentinel'],
 			$response,
 			'The request was refused, but the secret file contents came back anyway.'
+		);
+	}
+
+	/**
+	 * A refused `update.download` is refused properly: HTTP 403, not a crash in the denial logger, no file
+	 * bytes, and a log entry for the denial (gh-255).
+	 *
+	 * @return  void
+	 * @since   7.5.2
+	 */
+	public function testDeniedUpdateStreamDownloadIsRefusedWith403AndLogged(): void
+	{
+		$itemId    = static::$fixtures->itemId('restrictedFile');
+		$lastLogId = (int) ($this->db()->row('SELECT MAX(`id`) AS `id` FROM `#__ars_log`')['id'] ?? 0);
+		$response  = $this->downloadRestrictedStreamWithDlid($this->guest(), static::$fixtures->dlid('client'));
+
+		$this->assertStatus(403, $response, 'A refused update stream download did not answer with HTTP 403.');
+		$this->assertBodyNotContains(
+			static::$fixtures->file('restrictedFile')['sentinel'],
+			$response,
+			'The request was refused, but the file contents came back anyway.'
+		);
+
+		$logRow = $this->db()->row(
+			'SELECT `user_id`, `authorized` FROM `#__ars_log` WHERE `item_id` = ? AND `id` > ? ORDER BY `id` DESC LIMIT 1',
+			[$itemId, $lastLogId]
+		);
+
+		$this->assertIsArray($logRow, 'No download log entry was written for the refused update stream download.');
+		$this->assertSame(0, (int) $logRow['authorized'], 'The refused download was not logged as a denial.');
+		$this->assertSame(
+			static::$fixtures->userId('client'),
+			(int) $logRow['user_id'],
+			'The denial was not attributed to the owner of the Download ID.'
+		);
+	}
+
+	/**
+	 * A Download ID authenticates one request only. After a refused `update.download` the session cookie
+	 * from that response must not be logged in as the Download ID's owner (gh-255).
+	 *
+	 * @return  void
+	 * @since   7.5.2
+	 */
+	public function testDeniedUpdateStreamDownloadLeavesNoLoggedInSession(): void
+	{
+		$surfer = $this->guest();
+
+		$this->downloadRestrictedStreamWithDlid($surfer, static::$fixtures->dlid('client'));
+
+		$this->assertSessionIsGuest($surfer);
+	}
+
+	/**
+	 * The allowed counterpart: `update.download` serves the file to an entitled Download ID, and does not
+	 * leave a logged-in session behind either.
+	 *
+	 * @return  void
+	 * @since   7.5.2
+	 */
+	public function testAllowedUpdateStreamDownloadServesTheFileAndLeavesNoLoggedInSession(): void
+	{
+		$surfer   = $this->guest();
+		$response = $this->downloadRestrictedStreamWithDlid($surfer, static::$fixtures->dlid('subscriber'));
+
+		$this->assertStatus(200, $response, 'An entitled Download ID could not download through the update stream.');
+		$this->assertBodyContains(
+			static::$fixtures->file('restrictedFile')['sentinel'],
+			$response,
+			'The download was reported as successful but the file contents are missing.'
+		);
+		$this->assertSessionIsGuest($surfer);
+	}
+
+	/**
+	 * Download the latest file of the restricted update stream, with a `dlid` query parameter.
+	 *
+	 * @param   Surfer  $surfer  The browser session making the request.
+	 * @param   string  $dlid    The Download ID to send.
+	 *
+	 * @return  Response
+	 * @since   7.5.2
+	 */
+	private function downloadRestrictedStreamWithDlid(Surfer $surfer, string $dlid): Response
+	{
+		return $surfer->get($this->siteUrl([
+			'view'   => 'update',
+			'task'   => 'download',
+			'format' => 'raw',
+			'id'     => static::$fixtures->updateStreamId('restrictedStream'),
+			'dlid'   => $dlid,
+		]));
+	}
+
+	/**
+	 * Assert that a surfer's cookies, sent without any Download ID, belong to a guest.
+	 *
+	 * @param   Surfer  $surfer  The browser session to check.
+	 *
+	 * @return  void
+	 * @since   7.5.2
+	 */
+	private function assertSessionIsGuest(Surfer $surfer): void
+	{
+		$identity = $this->session->probeIdentity($surfer);
+
+		$this->assertIsArray($identity, 'The identity probe did not answer.');
+		$this->assertTrue(
+			$identity['guest'],
+			sprintf('The session was left logged in as "%s".', $identity['username'])
 		);
 	}
 

@@ -57,127 +57,154 @@ class ItemController extends BaseController
 		// Log in a user if I have to
 		$model->loginUser();
 
+		/**
+		 * The login above is only meant to last for this request, but it is stored in the session. Whatever happens next,
+		 * including an Error which the `catch (Exception)` below does not see, we must not leave that session logged in.
+		 * Note that `finally` does not run after exit(); anything which ends the request must log the user out first.
+		 */
 		try
 		{
-			$cParams = ComponentHelper::getParams('com_ars');
-			$item    = $this->accessControlItem($id, false);
-
-			$this->assertNotEmpty($item, 'Item not found or access denied');
-
-			$release = $this->accessControlRelease($item->release_id, false);
-
-			$this->assertNotEmpty($release, 'Release not found or access denied');
-
-			$category = $this->accessControlCategory($release->category_id, false);
-
-			$this->assertNotEmpty($category, 'Category not found or access denied');
-
-			// Make sure this is a valid download item (link or pointing to an existing file)
-			$model->preDownloadCheck($item, $category);
-
-			// Hit the item
-			if ($cParams->get('hitcounting', 0))
+			try
 			{
-				$item->hit($item->getId());
-			}
+				$cParams = ComponentHelper::getParams('com_ars');
+				$item    = $this->accessControlItem($id, false);
 
-			// Log the download
-			if ($cParams->get('log', 1))
-			{
-				/** @var LogTable $log */
-				$log = $model->getTable('Log');
+				$this->assertNotEmpty($item, 'Item not found or access denied');
 
-				$log->save([
-						'item_id'    => $id,
-						'authorized' => 1,
-					]
-				);
-			}
+				$release = $this->accessControlRelease($item->release_id, false);
 
-			// Download the item
-			$model->doDownload($item, $category);
+				$this->assertNotEmpty($release, 'Release not found or access denied');
 
-			$this->app->close();
-		}
-		catch (Exception $e)
-		{
-			$item        ??= null;
-			$effectiveId = ($item?->id ?? 0) ?: $id;
-			$this->logFailedDownloadAttempt($effectiveId);
+				$category = $this->accessControlCategory($release->category_id, false);
 
-			if (empty($this->redirect))
-			{
-				$noAccessURL = ComponentHelper::getParams('com_ars')->get('no_access_url', '');
+				$this->assertNotEmpty($category, 'Category not found or access denied');
 
-				if ($effectiveId && $item?->redirect_unauth && $item?->show_unauth_links)
+				// Make sure this is a valid download item (link or pointing to an existing file)
+				$model->preDownloadCheck($item, $category);
+
+				// Hit the item
+				if ($cParams->get('hitcounting', 0))
 				{
-					$noAccessURL = $item->redirect_unauth;
+					$item->hit($item->getId());
 				}
 
-				// Do I need to route the redirection URL?
-				if ((substr($noAccessURL, 0, 7) !== 'http://') && (substr($noAccessURL, 0, 7) !== 'https://'))
+				// Log the download
+				if ($cParams->get('log', 1))
 				{
-					$noAccessURL = Route::_($noAccessURL);
+					/** @var LogTable $log */
+					$log = $model->getTable('Log');
+
+					$log->save([
+							'item_id'    => $id,
+							'authorized' => 1,
+						]
+					);
 				}
 
-				if (!empty($noAccessURL))
-				{
-					$this->setRedirect($noAccessURL);
-				}
+				// Download the item
+				$model->doDownload($item, $category);
+
+				$this->app->close();
 			}
-
-			if (!empty($this->redirect))
+			catch (Exception $e)
 			{
+				$item        ??= null;
+				$effectiveId = ($item?->id ?? 0) ?: $id;
+
+				// The log entry records the current user, so write it before logging them out.
+				$this->logFailedDownloadAttempt($effectiveId, $model);
+
+				// The ban handler may end the request, so log the user out before calling it.
 				$model->logoutUser();
 
-				$this->setRedirect($noAccessURL);
+				$this->reportUnauthorisedDownload($effectiveId);
 
-				return;
+				if (empty($this->redirect))
+				{
+					$noAccessURL = ComponentHelper::getParams('com_ars')->get('no_access_url', '');
+
+					if ($effectiveId && $item?->redirect_unauth && $item?->show_unauth_links)
+					{
+						$noAccessURL = $item->redirect_unauth;
+					}
+
+					// Do I need to route the redirection URL?
+					if ((substr($noAccessURL, 0, 7) !== 'http://') && (substr($noAccessURL, 0, 7) !== 'https://'))
+					{
+						$noAccessURL = Route::_($noAccessURL);
+					}
+
+					if (!empty($noAccessURL))
+					{
+						$this->setRedirect($noAccessURL);
+					}
+				}
+
+				if (!empty($this->redirect))
+				{
+					$this->setRedirect($noAccessURL);
+
+					return;
+				}
+
+				throw new RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403, $e);
 			}
-
+		}
+		finally
+		{
 			$model->logoutUser();
-
-			throw new RuntimeException(Text::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403, $e);
 		}
 	}
 
 	/**
 	 * Log a failed download attempt for the given item ID
 	 *
-	 * @param   int  $id
+	 * @param   int        $id     The ID of the item whose download failed
+	 * @param   ItemModel  $model  The item model
 	 *
 	 * @throws Exception
 	 */
-	private function logFailedDownloadAttempt(int $id): void
+	private function logFailedDownloadAttempt(int $id, ItemModel $model): void
 	{
-		$model   = $this->getModel();
-		$cParams = ComponentHelper::getParams('com_ars');
-
-		if ($cParams->get('log', 1))
+		if (!ComponentHelper::getParams('com_ars')->get('log', 1))
 		{
-			$log = $model->getTable('Log');
-			$log->save(
-				[
-					'item_id'    => $id,
-					'authorized' => 0,
-				]
-			);
+			return;
 		}
 
-		if ($cParams->get('banUnauth', 0))
-		{
-			$extraMessage = $id ? ('Item : ' . $id) : '';
+		$log = $model->getTable('Log');
+		$log->save(
+			[
+				'item_id'    => $id,
+				'authorized' => 0,
+			]
+		);
+	}
 
-			// Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
-			$this->triggerPluginEvent(
-				'onAdminToolsThirdpartyException', [
-					'external',
-					Text::_('COM_ARS_BLOCKED_MESSAGE'),
-					[$extraMessage],
-					true,
-				]
-			);
+	/**
+	 * Report an unauthorised download attempt, if the component is configured to ban the people making them
+	 *
+	 * @param   int  $id  The ID of the item whose download failed
+	 *
+	 * @throws Exception
+	 */
+	private function reportUnauthorisedDownload(int $id): void
+	{
+		if (!ComponentHelper::getParams('com_ars')->get('banUnauth', 0))
+		{
+			return;
 		}
+
+		$extraMessage = $id ? ('Item : ' . $id) : '';
+
+		// Let's fire the system plugin event. If Admin Tools is installed, it will handle this and ban the user
+		$this->triggerPluginEvent(
+			'onAdminToolsThirdpartyException', [
+				'external',
+				Text::_('COM_ARS_BLOCKED_MESSAGE'),
+				[$extraMessage],
+				true,
+			]
+		);
 	}
 
 }

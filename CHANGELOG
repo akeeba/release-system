@@ -1,4 +1,8 @@
 <?php die(); ?>
+Akeeba Release System 7.5.2
+================================================================================
+# [MEDIUM] Refused update.download gave HTTP 500 and left you logged in as the Download ID's owner [gh-255]
+
 Akeeba Release System 7.5.1
 ================================================================================
 ! PHP and Joomla minimum and maximum version compatibility is now enforced

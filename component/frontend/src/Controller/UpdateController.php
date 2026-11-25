@@ -231,7 +231,8 @@ class UpdateController extends BaseController
 
 		$this->input->set('item_id', $downloadItem->item_id ?? 0);
 		/** @var ItemController $downloadController */
-		$downloadController = $this->factory->createController('item', 'site', [], $this->app, $this->input);
+		// Without `name` Joomla derives it from the namespaced class name, and getModel() without arguments returns false.
+		$downloadController = $this->factory->createController('item', 'site', ['name' => 'item'], $this->app, $this->input);
 
 		// Is this a JED Install From Web request?
 		$installAt  = $this->input->getBase64('installat');
