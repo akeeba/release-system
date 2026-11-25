@@ -161,6 +161,37 @@ class SiteProvisioner
 	}
 
 	/**
+	 * The Joomla version actually installed on the test site (JVERSION, as recorded by the provisioner).
+	 *
+	 * @return  string
+	 * @since   7.5.3
+	 */
+	public function joomlaVersion(): string
+	{
+		return (string) ($this->getManifest()['joomla'] ?? '0.0.0');
+	}
+
+	/**
+	 * Does the installed Joomla check the "Access Web Services" (core.api) permission on API requests?
+	 *
+	 * Joomla 5.4.11 on the 5.x line and 6.2.1 on the 6.x line introduced it. Joomla 6.0.x and 6.1.x do not have it.
+	 *
+	 * @return  bool
+	 * @since   7.5.3
+	 */
+	public function hasWebServicesPermission(): bool
+	{
+		$version = $this->joomlaVersion();
+
+		if (version_compare($version, '6.0.0', 'lt'))
+		{
+			return version_compare($version, '5.4.11', 'ge');
+		}
+
+		return version_compare($version, '6.2.1', 'ge');
+	}
+
+	/**
 	 * The numeric id of a provisioned user, by role.
 	 *
 	 * @param   string  $role  One of the keys in the manifest's `users` map, e.g. 'manager'.

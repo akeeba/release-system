@@ -685,6 +685,10 @@ $groups = [
 	'subscribers' => ensureGroup('ARS Subscribers', $registeredId),
 	// Ordinary registered users holding NO ARS view level. The negative control.
 	'clients'     => ensureGroup('ARS Clients', $registeredId),
+	// Exactly the managers' privileges, minus "Access Web Services" (core.api) on com_ars: what an ARS
+	// manager looks like on a FRESH Joomla 5.4.11+ / 6.2.1+ install, where only Super Users hold core.api.
+	// Joomla itself must refuse this account's API requests on those versions (gh-256).
+	'noApiManagers' => ensureGroup('ARS Managers Without Web Services', $registeredId),
 ];
 
 // ---------------------------------------------------------------------------
@@ -799,11 +803,24 @@ $categories = [
 setAssetRules(
 	'com_ars',
 	[
-		'core.manage'     => [$groups['managers'] => 1, $groups['catManagers'] => 1],
-		'core.create'     => [$groups['managers'] => 1],
-		'core.edit'       => [$groups['managers'] => 1],
-		'core.edit.state' => [$groups['managers'] => 1],
-		'core.delete'     => [$groups['managers'] => 1],
+		'core.manage'     => [$groups['managers'] => 1, $groups['catManagers'] => 1, $groups['noApiManagers'] => 1],
+		/**
+		 * "Access Web Services". Joomla 5.4.11+ / 6.2.1+ refuse every non-public API route to a user who
+		 * lacks it on the routed component, before any ARS code runs (gh-256). Everybody who uses the ARS
+		 * API in this suite holds it, so that the other API tests keep exercising ARS's OWN authorisation
+		 * rather than Joomla's — except noApiManagers, which exists to prove Joomla's check. Joomla
+		 * versions without core.api ignore this rule.
+		 */
+		'core.api'        => [
+			$groups['managers']    => 1,
+			$groups['catManagers'] => 1,
+			$groups['subscribers'] => 1,
+			$groups['clients']     => 1,
+		],
+		'core.create'     => [$groups['managers'] => 1, $groups['noApiManagers'] => 1],
+		'core.edit'       => [$groups['managers'] => 1, $groups['noApiManagers'] => 1],
+		'core.edit.state' => [$groups['managers'] => 1, $groups['noApiManagers'] => 1],
+		'core.delete'     => [$groups['managers'] => 1, $groups['noApiManagers'] => 1],
 	]
 );
 
@@ -833,6 +850,7 @@ setAssetRules(
 // ---------------------------------------------------------------------------
 grantRootAction('core.login.admin', $groups['managers']);
 grantRootAction('core.login.admin', $groups['catManagers']);
+grantRootAction('core.login.admin', $groups['noApiManagers']);
 
 /**
  * core.login.api, granted to managers, catManagers, subscribers AND clients.
@@ -851,6 +869,7 @@ grantRootAction('core.login.api', $groups['managers']);
 grantRootAction('core.login.api', $groups['catManagers']);
 grantRootAction('core.login.api', $groups['subscribers']);
 grantRootAction('core.login.api', $groups['clients']);
+grantRootAction('core.login.api', $groups['noApiManagers']);
 
 // ---------------------------------------------------------------------------
 // 7. Component parameters.
@@ -888,6 +907,7 @@ $users = [
 	// A second, unrelated "clients" member, needed for the Download-ID-ownership assertions: proving
 	// that client's Download ID cannot be used to authenticate as other, or vice versa.
 	'other'      => ensureUser('arsother', 'ARS E2E Other', 'arsother@example.test', $password, [$registeredId, $groups['clients']]),
+	'noApiManager' => ensureUser('arsnoapimanager', 'ARS E2E Manager Without Web Services', 'arsnoapimanager@example.test', $password, [$registeredId, $groups['noApiManagers']]),
 ];
 
 $adminUserId = (int) $db->setQuery(
@@ -1248,6 +1268,7 @@ enablePlugin(
 			$groups['catManagers'],
 			$groups['subscribers'],
 			$groups['clients'],
+			$groups['noApiManagers'],
 		],
 		'saveTokenInProfile' => 1,
 	]
@@ -1260,6 +1281,8 @@ $apiTokens = [
 	'catManager' => issueApiToken($users['catManager']),
 	'subscriber' => issueApiToken($users['subscriber']),
 	'client'     => issueApiToken($users['client']),
+	// Holds every ARS privilege except core.api (gh-256).
+	'noApiManager' => issueApiToken($users['noApiManager']),
 	'superuser'  => issueApiToken($adminUserId),
 ];
 
@@ -1284,6 +1307,7 @@ $manifest = [
 		'subscriber' => 'arssubscriber',
 		'client'     => 'arsclient',
 		'other'      => 'arsother',
+		'noApiManager' => 'arsnoapimanager',
 	],
 	'apiTokens'        => $apiTokens,
 	'categories'       => $categories,

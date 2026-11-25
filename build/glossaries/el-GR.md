@@ -11,6 +11,7 @@ This glossary defines the preferred Greek (el-GR) translations for ARS-specific 
 | Release | Έκδοση | Context: a versioned software release (e.g. version 7.4.0). Plural: Εκδόσεις. Do NOT use «κυκλοφορία»; that reads as a generic "launch/publication" rather than a discrete versioned artefact. |
 | Item | Αρχείο | Context: a downloadable file or link inside a release. Plural: Αρχεία. Use «Αρχείο» (file) rather than the generic «στοιχείο» because ARS items are always download artefacts. |
 | Download ID | Κωδικός λήψης | Context: an authentication token used to authorise file downloads. Plural: Κωδικοί λήψης. |
+| Access Web Services | Πρόσβαση στα Webservices | Joomla permission (core.api) gating the JSON API on Joomla 5.4.11+ / 6.2.1+. Keep "Webservices" untranslated. |
 | Update Stream | Ροή ενημερώσεων | Context: an XML or INI feed consumed by the Joomla updater. Plural: Ροές ενημερώσεων. |
 | Update stream | Ροή ενημερώσεων | Same as above (sentence-case variant). |
 | Environment | Περιβάλλον | Context: a supported software environment such as «PHP 8.1» or «Joomla 5». Plural: Περιβάλλοντα. |

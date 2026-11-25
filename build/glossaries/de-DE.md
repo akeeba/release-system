@@ -19,6 +19,7 @@ This glossary defines the preferred German translations for ARS-specific termino
 | Release | Version | *die Version* — a versioned software release. Prefer "Version" over "Veröffentlichung" in the ARS context because German-speaking Joomla communities consistently use "Version" for numbered software releases. |
 | Item | Datei / Download-Datei | *die Datei* — a downloadable file or link inside a release. Use "Datei" in short labels (e.g., table headers); use "Download-Datei" in longer descriptive text. |
 | Download ID | Download-ID | *die Download-ID* — authentication token for downloading files. Hyphenated compound; keep "ID" in uppercase. |
+| Access Web Services | Zugriff auf Webservices | Joomla permission (core.api) gating the JSON API on Joomla 5.4.11+ / 6.2.1+. |
 | Update Stream | Update-Stream | *der Update-Stream* — XML/INI feed consumed by the Joomla updater. Hyphenated compound; both words are treated as technical terms. |
 | Update stream | Update-Stream | Lowercase variant used in prose — same translation rule applies. |
 | Environment | Umgebung | *die Umgebung* — software environment descriptor (e.g., PHP 8.1, Joomla 4). |

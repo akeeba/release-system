@@ -20,6 +20,7 @@ This glossary establishes consistent Spanish (Spain) translations for Akeeba Rel
 | Release | Versión | Context: a versioned software release (e.g. "version 7.4.0"). Prefer "versión" over "lanzamiento" in this domain. Feminine noun. |
 | Item | Elemento | Context: a downloadable file or link inside a release. Masculine noun. |
 | Download ID | ID de descarga | Context: an authentication token used to authorise file downloads. Keep "ID" in uppercase. |
+| Access Web Services | Acceso a Webservices | Joomla permission (core.api) gating the JSON API on Joomla 5.4.11+ / 6.2.1+. Keep "Webservices" untranslated. |
 | Update Stream | Flujo de actualización | Context: an XML or INI feed consumed by the Joomla updater. Masculine noun. |
 | Update stream | Flujo de actualización | Lowercase variant — same translation. |
 | Environment | Entorno | Context: a software environment tag such as "PHP 8.1" or "Joomla 4". Masculine noun. |

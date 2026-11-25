@@ -12,6 +12,7 @@ Translators must follow these translations consistently throughout all `fr-FR` l
 | Release | Version | Context: a versioned software release (e.g. 7.4.0). Avoid « sortie » or « publication » in this domain |
 | Item | Élément | Context: a downloadable file or link within a release |
 | Download ID | Identifiant de téléchargement | Authentication token used to authorise file downloads; abbreviation « ID de téléchargement » acceptable in space-constrained UI labels |
+| Access Web Services | Accès aux services web | Joomla permission (core.api) gating the JSON API on Joomla 5.4.11+ / 6.2.1+. |
 | Update Stream | Flux de mise à jour | Context: an XML/INI feed consumed by the Joomla updater |
 | Update stream | Flux de mise à jour | Lower-case variant — same translation |
 | Environment | Environnement | Context: a software compatibility environment (e.g. PHP 8.1, Joomla 4) |

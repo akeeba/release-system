@@ -13,6 +13,7 @@ As entradas marcadas como **não traduzir** são nomes próprios, nomes de produ
 | Release | Versão | Contexto: uma versão numerada de software lançada publicamente. Evitar "lançamento" para não confundir com o acto de publicar. |
 | Item | Ficheiro | Contexto: um ficheiro transferível ou ligação dentro de uma versão. Alternativa: "item" (neutro e amplamente aceite). |
 | Download ID | ID de Transferência | Contexto: token de autenticação necessário para transferir ficheiros protegidos. Também aceitável: "ID de Download" se o público-alvo estiver familiarizado com o termo inglês. |
+| Access Web Services | Acesso aos Webservices | Permissão do Joomla (core.api) que controla a API JSON no Joomla 5.4.11+ / 6.2.1+. Não traduzir "Webservices". |
 | Update Stream | Canal de Actualizações | Contexto: feed XML/INI utilizado pelo actualizador do Joomla para detectar novas versões. Alternativa: "Fluxo de Actualizações". |
 | Update stream | Canal de actualizações | Variante em minúsculas — aplicar a mesma tradução. |
 | Environment | Ambiente | Contexto: ambiente de software como PHP 8.1, Joomla 4, etc. |

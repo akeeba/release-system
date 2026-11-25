@@ -42,6 +42,10 @@ route registration in the plugin. There are no API-side models — the Administr
 every controller has to re-apply authorisation itself (see `Controller/Mixin/AssertApiAccess.php`); the back-end
 models deliberately do not filter by view level or ownership.
 
+Joomla 5.4.11+ / 6.2.1+ also require the "Access Web Services" permission (`core.api`, declared in `access.xml`) on
+`com_ars` for every route; Joomla's `ApiDispatcher` checks it before any ARS code runs. It does not replace the
+controllers' `core.manage` checks, which decide who may see the unfiltered back-end data.
+
 List filters are request parameters mapped onto model state by `Controller/Mixin/PopulateModelState.php`. Adding a
 filter means adding it to the mapper *and* to the Administrator list model. Sorting (`list_ordering`,
 `list_direction`) is validated by Joomla against the model's `filter_fields`, so a new sortable column has to be

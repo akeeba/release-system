@@ -512,7 +512,8 @@ class HarnessTest extends AbstractE2ETestCase
 			$authenticated,
 			'A manager token did not get through. Check that plg_api-authentication_token and '
 			. 'plg_webservices_ars are enabled, that plg_user_token lists the manager group in '
-			. 'allowedUserGroups, and that core.login.api is granted on the root asset.'
+			. 'allowedUserGroups, that core.login.api is granted on the root asset and, on Joomla 5.4.11+ / '
+			. '6.2.1+, that core.api ("Access Web Services") is granted on com_ars.'
 		);
 	}
 

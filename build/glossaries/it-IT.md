@@ -15,6 +15,7 @@ This glossary defines the canonical Italian (Italy) translations for Akeeba Rele
 | Release | Versione | Context: a versioned software release (e.g. v7.4.0). Prefer "versione" over "rilascio" for software releases. Plural: Versioni. |
 | Item | File | Context: a downloadable file or link bundled inside a release. The source distinguishes "file" and "link" item types; use "File" as the generic label and "collegamento" for link-type items if distinction is needed. Plural: File. |
 | Download ID | ID di download | Context: an authentication token used when downloading files. Keep "ID" as an acronym (uppercase). |
+| Access Web Services | Accesso ai Webservices | Joomla permission (core.api) gating the JSON API on Joomla 5.4.11+ / 6.2.1+. Keep "Webservices" untranslated. |
 | Update Stream | Flusso di aggiornamento | Context: an XML or INI feed consumed by the Joomla updater. Plural: Flussi di aggiornamento. |
 | Update stream | Flusso di aggiornamento | Lower-case variant used in body text — same translation. |
 | Environment | Ambiente | Context: a software environment descriptor such as "PHP 8.1" or "Joomla 4". Plural: Ambienti. |

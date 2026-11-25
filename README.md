@@ -44,6 +44,13 @@ requires `core.manage` on `com_ars`; creating, editing and deleting a record add
 any authenticated user can see their own, seeing anybody else's requires `core.manage`, and writing to somebody else's
 requires `core.admin`.
 
+On Joomla 5.4.11 or a later 5.x version, and on Joomla 6.2.1 or later, every API user who is not a Super User also
+needs the "Access Web Services" permission on ARS (Components, Akeeba Release System, Options, Permissions). This
+includes subscribers who only read and manage their own Download ID labels. Joomla checks it before ARS's own permissions,
+and refuses the request with a 403 when it is missing. On a fresh install of those Joomla versions only Super Users have
+it. When you update an existing site, Joomla gives it once to every group that already had "Access Administration
+Interface", so Download ID label users who do not have that still need it granted explicitly.
+
 `assets/http/api.http` documents every endpoint — the available filters, the sortable columns, and a worked example of
 each request. It is a PHPStorm / IntelliJ IDEA HTTP Client file, so you can run the requests straight from the IDE; copy
 `assets/http/http-client.private.env.json-dist` to `http-client.private.env.json` and put your API token in it first.

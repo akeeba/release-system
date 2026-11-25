@@ -24,6 +24,10 @@
 # Every request must be authenticated. The token identifies a Joomla user and that user's permissions are enforced —
 # an API token is NOT a bypass. Being a Super User is not assumed anywhere.
 #
+#   * Joomla 5.4.11+ (5.x) and 6.2.1+ first require "Access Web Services" (`core.api`) on `com_ars` for EVERY request,
+#     including reading your own Download IDs. Joomla checks it before ARS does and answers 403 when it is missing. A
+#     fresh install grants it to Super Users only; updating Joomla copies existing `core.manage` grants to it once.
+#     Earlier Joomla versions have no such permission.
 #   * Reading anything other than your own Download IDs requires `core.manage` on `com_ars`, i.e. the same privilege
 #     that lets you open the component in the back-end. Without it you get 403, not a filtered list.
 #   * Creating a release, item, update stream or automatic item description requires `core.create` on the ARS category
@@ -468,7 +472,8 @@ User-Agent: AkeebaReleaseMaker/2.0
 # The endpoint is therefore authorised differently from the rest:
 #
 #   * Any authenticated user may list and read THEIR OWN records. The `user_id` filter is silently forced to their own
-#     ID, so there is no way to page into somebody else's.
+#     ID, so there is no way to page into somebody else's. On Joomla 5.4.11+ (5.x) and 6.2.1+ the user's group also
+#     needs "Access Web Services" on `com_ars` (see AUTHENTICATION AND AUTHORISATION above).
 #   * Seeing other people's records requires `core.manage` on `com_ars`, i.e. back-end access to the component.
 #   * Creating a record for another user, and editing anybody else's record, requires `core.admin` on `com_ars`.
 #   * Nobody — not even the owner — may edit the primary ("main") Download ID through the API. Its title is fixed and
