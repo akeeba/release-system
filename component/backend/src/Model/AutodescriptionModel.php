@@ -10,7 +10,7 @@ namespace Akeeba\Component\ARS\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
-use Akeeba\Component\ARS\Administrator\Mixin\ModelCategoryDeleteTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\ModelCategoryPermissionTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
@@ -26,7 +26,7 @@ class AutodescriptionModel extends AdminModel
 {
 	use ModelCopyTrait;
 	use LegacyObjectTrait;
-	use ModelCategoryDeleteTrait;
+	use ModelCategoryPermissionTrait;
 
 	public function __construct($config = [], ?MVCFactoryInterface $factory = null, ?FormFactoryInterface $formFactory = null)
 	{
@@ -128,6 +128,22 @@ class AutodescriptionModel extends AdminModel
 		}
 
 		return $this->canDeleteInCategory((int) ($record->category ?? 0));
+	}
+
+	/**
+	 * Is the user allowed to publish, unpublish, archive or trash the record?
+	 *
+	 * The record belongs to an ARS category, so check that category's asset: an explicit Deny on the category wins
+	 * over an Allow on the component, which Joomla's AdminModel::canEditState() would have checked alone.
+	 *
+	 * @param   object  $record
+	 *
+	 * @return  bool
+	 * @since   7.5.3
+	 */
+	protected function canEditState($record)
+	{
+		return $this->canEditStateInCategory((int) ($record->category ?? 0));
 	}
 
 	/**

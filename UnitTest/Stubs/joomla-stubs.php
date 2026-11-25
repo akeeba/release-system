@@ -1236,6 +1236,14 @@ namespace Joomla\CMS\MVC\Model {
 			{
 				return \Joomla\CMS\Factory::getApplication()->getIdentity()->authorise('core.delete', $this->option);
 			}
+
+			/**
+			 * Same as Joomla's: core.edit.state on the component, whatever the record.
+			 */
+			protected function canEditState($record)
+			{
+				return \Joomla\CMS\Factory::getApplication()->getIdentity()->authorise('core.edit.state', $this->option);
+			}
 		}
 	}
 }

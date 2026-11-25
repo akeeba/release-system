@@ -73,11 +73,16 @@ class CategoryModelTest extends TestCase
 		$this->assertTrue($this->invoke((object) ['id' => 5]));
 	}
 
-	public function testAllowedWhenTheUserHasComponentWideEditStateEvenWithoutCategoryGrant(): void
+	/**
+	 * An Allow on the component reaches the category through Joomla's asset inheritance, but an explicit Deny on the
+	 * category always wins over it (gh-256). The User stub doesn't model inheritance, so the Deny is the category key
+	 * set to false.
+	 */
+	public function testRejectedWhenDeniedOnTheCategoryDespiteComponentWideEditState(): void
 	{
-		$this->stubIdentity(['com_ars|core.edit.state' => true]);
+		$this->stubIdentity(['com_ars|core.edit.state' => true, 'com_ars.category.5|core.edit.state' => false]);
 
-		$this->assertTrue($this->invoke((object) ['id' => 5]));
+		$this->assertFalse($this->invoke((object) ['id' => 5]));
 	}
 
 	/**

@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
-use Akeeba\Component\ARS\Administrator\Mixin\ModelCategoryDeleteTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\ModelCategoryPermissionTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Akeeba\Component\ARS\Administrator\Table\ReleaseTable;
@@ -34,7 +34,7 @@ class ReleaseModel extends AdminModel
 {
 	use ModelCopyTrait;
 	use LegacyObjectTrait;
-	use ModelCategoryDeleteTrait;
+	use ModelCategoryPermissionTrait;
 
 	/**
 	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
@@ -457,7 +457,8 @@ class ReleaseModel extends AdminModel
 	 * Is the user allowed to change the item state?
 	 *
 	 * Since a release belongs to a category which belongs to the component we check whether the user has the
-	 * core.edit.state privilege in the category itself.
+	 * core.edit.state privilege in the category itself. An explicit Deny on the category wins over an Allow on the
+	 * component.
 	 *
 	 * @param   ReleaseTable|object  $record
 	 *
@@ -466,17 +467,6 @@ class ReleaseModel extends AdminModel
 	 */
 	protected function canEditState($record)
 	{
-		// Make sure the user is allowed to delete this release, per Joomla's assets rules for its parent category.
-		$user = Factory::getApplication()->getIdentity();
-
-		if (
-			!$user->authorise('core.edit.state', 'com_ars.category.' . (int) $record->category_id) &&
-			!$user->authorise('core.edit.state', 'com_ars')
-		)
-		{
-			return false;
-		}
-
-		return true;
+		return $this->canEditStateInCategory((int) ($record->category_id ?? 0));
 	}
 }

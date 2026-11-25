@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 use Akeeba\Component\ARS\Administrator\Helper\DbQuery;
 use Akeeba\Component\ARS\Administrator\Mixin\LegacyObjectTrait;
-use Akeeba\Component\ARS\Administrator\Mixin\ModelCategoryDeleteTrait;
+use Akeeba\Component\ARS\Administrator\Mixin\ModelCategoryPermissionTrait;
 use Akeeba\Component\ARS\Administrator\Mixin\ModelCopyTrait;
 use Akeeba\Component\ARS\Administrator\Table\CategoryTable;
 use Exception;
@@ -29,7 +29,7 @@ class CategoryModel extends AdminModel
 {
 	use ModelCopyTrait;
 	use LegacyObjectTrait;
-	use ModelCategoryDeleteTrait;
+	use ModelCategoryPermissionTrait;
 
 	/**
 	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
@@ -246,9 +246,8 @@ class CategoryModel extends AdminModel
 	 *
 	 * Without this override, bulk publish/unpublish/archive/trash falls back to stock
 	 * `AdminModel::canEditState()`, which only checks `core.edit.state` at the component root
-	 * (`com_ars`) — unlike {@see canDelete()}, which already checks the category's own asset. A group
-	 * denied `core.edit.state` on this specific category but granted it at component level could
-	 * otherwise still bulk-change its state.
+	 * (`com_ars`). It checks the category's own asset instead, which inherits from the component, so
+	 * an explicit Deny on the category always wins over an Allow on the component.
 	 *
 	 * @param   CategoryTable|object  $record
 	 *
@@ -258,9 +257,6 @@ class CategoryModel extends AdminModel
 	 */
 	protected function canEditState($record)
 	{
-		$user = Factory::getApplication()->getIdentity();
-
-		return $user->authorise('core.edit.state', 'com_ars.category.' . (int) $record->id)
-			|| $user->authorise('core.edit.state', 'com_ars');
+		return $this->canEditStateInCategory((int) ($record->id ?? 0));
 	}
 }
