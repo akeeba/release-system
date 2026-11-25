@@ -1,20 +1,7 @@
 <p>
-	<strong>Security hardening</strong>. This version concludes our full audit of the code, addressing the remaining issues, and hardening the extension's security posture.
+	<strong>Security fix: you could stay logged in after using a Download ID</strong>. A Download ID is only meant to log you in for the duration of a single download. If that download failed or was interrupted under certain conditions, the browser or download client which made the request could stay logged into the site as the owner of the Download ID. Exploiting this requires already knowing a valid Download ID. We consider this a medium priority issue and recommend that you update. A session which was left logged in before you updated is not ended by the update; it remains until it expires, according to your site's Session Lifetime setting.
 </p>
 
 <p>
-	<strong>Removed legacy error handler</strong>.
-	We removed our legacy custom error handler. If you are met with an Exception or PHP error when using our software, please go to your site's administrator, System, Global Configuration, and set Debug Mode to Yes and Error Reporting to Developer. Then, reproduce the error. You will get the same level of information as our now-removed error handler. It is enough to help us help you.
-</p>
-
-<p>
-	<strong>Enforced version compatibility checks</strong>. The package now checks your Joomla and PHP version when you try to install it. If it detects an incompatible Joomla and/or PHP version it will refuse to install / uninstall / update and tell you. The extension itself will warn you about the incompatibility and refuse to run. This is an additional protection against accidentally breaking your site by installing an incompatible version of our software or your site, or updating / downgrading Joomla or PHP outside the supported range after installing the extension.
-</p>
-
-<p>
-	<strong>Expanded JSON:API</strong>. We added JSON:API routes for Automatic Item Descriptions, Download ID labels, Environments, and Update Streams, bringing every ARS resource under the API. Every endpoint now supports many more list filters, and sorting with <code>list_ordering</code> / <code>list_direction</code>. The whole API is documented as a ready-to-use request collection in <code>assets/http/api.http</code>, for developers building integrations against your release system.
-</p>
-
-<p>
-	<strong>Faster Download Logs</strong>. The Download Logs page no longer recounts millions of log rows on every page load, and filtering by IP address no longer scans the entire table, so the page stays responsive on sites with large logs. A new Clear Cache toolbar button lets you refresh the cached row count on demand.
+	<strong>Refused downloads through update streams</strong>. When download logging was enabled, refusing a download through an update stream's download link resulted in an HTTP 500 error. It now returns the expected HTTP 403 error, or redirects you if you have configured a redirection. The attempt is recorded in the download logs, and reported to Admin Tools if you have enabled banning for unauthorised download attempts.
 </p>
