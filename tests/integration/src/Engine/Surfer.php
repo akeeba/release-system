@@ -191,6 +191,25 @@ class Surfer
 	}
 
 	/**
+	 * Start a GET request and hang up as soon as the response body starts arriving.
+	 *
+	 * The cookies set by the response headers are kept. The response carries the status code and headers, a
+	 * transport error (the one we caused), and no body.
+	 *
+	 * @param   string  $url  Absolute URL, or one relative to the site root.
+	 *
+	 * @return  Response
+	 * @since   7.5.2
+	 */
+	public function getAndDisconnect(string $url): Response
+	{
+		$request                  = $this->makeRequest('GET', $url);
+		$request->disconnectEarly = true;
+
+		return $this->lastResponse = $request->getResponse();
+	}
+
+	/**
 	 * Perform a POST request with a form body.
 	 *
 	 * @param   string        $url      Absolute URL, or one relative to the site root.

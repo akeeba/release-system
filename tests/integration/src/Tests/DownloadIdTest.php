@@ -359,6 +359,68 @@ class DownloadIdTest extends AbstractE2ETestCase
 	}
 
 	/**
+	 * Hanging up in the middle of a download must not leave the session cookie logged in as the Download
+	 * ID's owner. PHP normally stops the script when the client goes away, which would skip the logout.
+	 *
+	 * @return  void
+	 * @since   7.5.2
+	 */
+	public function testInterruptedDownloadLeavesNoLoggedInSession(): void
+	{
+		$path = static::$config->getSiteRoot() . '/' . static::$fixtures->file('publicFile')['relative'];
+
+		clearstatcache();
+		$originalSize = filesize($path);
+
+		// The file must be far bigger than every buffer between PHP and us, so we hang up while it is being sent.
+		$this->resizeFile($path, 256 * 1048576);
+
+		try
+		{
+			$surfer   = $this->guest();
+			$response = $surfer->getAndDisconnect($this->siteUrl([
+				'view'    => 'item',
+				'task'    => 'download',
+				'format'  => 'raw',
+				'item_id' => static::$fixtures->itemId('publicFile'),
+				'dlid'    => static::$fixtures->dlid('client'),
+			]));
+
+			$this->assertStatus(200, $response, 'The download did not start, so there was nothing to interrupt.');
+			$this->assertNotNull($response->error, 'The download completed; it was not interrupted.');
+
+			// Give the server a moment to notice that we are gone and finish the request.
+			sleep(3);
+
+			$this->assertSessionIsGuest($surfer);
+		}
+		finally
+		{
+			$this->resizeFile($path, $originalSize);
+		}
+	}
+
+	/**
+	 * Grow or shrink a file in place, keeping the content which fits in the new size.
+	 *
+	 * @param   string  $path  The file to resize.
+	 * @param   int     $size  The new size in bytes.
+	 *
+	 * @return  void
+	 * @since   7.5.2
+	 */
+	private function resizeFile(string $path, int $size): void
+	{
+		$handle = fopen($path, 'r+');
+
+		$this->assertNotFalse($handle, sprintf('Could not open %s.', $path));
+		$this->assertTrue(ftruncate($handle, $size), sprintf('Could not resize %s.', $path));
+
+		fclose($handle);
+		clearstatcache();
+	}
+
+	/**
 	 * Download the latest file of the restricted update stream, with a `dlid` query parameter.
 	 *
 	 * @param   Surfer  $surfer  The browser session making the request.

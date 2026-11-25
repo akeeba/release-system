@@ -27,6 +27,14 @@ use RuntimeException;
 final class Request
 {
 	/**
+	 * Hang up as soon as the first piece of the response body arrives, like an interrupted download?
+	 *
+	 * @var   bool
+	 * @since 7.5.2
+	 */
+	public bool $disconnectEarly = false;
+
+	/**
 	 * HTTP verb.
 	 *
 	 * @var   string
@@ -258,6 +266,12 @@ final class Request
 					curl_setopt($curl, CURLOPT_POSTFIELDS, $this->encodeBody($this->data));
 				}
 				break;
+		}
+
+		if ($this->disconnectEarly)
+		{
+			// Accepting fewer bytes than offered makes cURL drop the connection on the first piece of the body.
+			curl_setopt($curl, CURLOPT_WRITEFUNCTION, fn($curlHandle, string $data): int => 0);
 		}
 
 		$body = curl_exec($curl);

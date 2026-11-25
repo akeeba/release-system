@@ -301,6 +301,12 @@ class ItemModel extends BaseDatabaseModel
 		// Mark the user login so we can log him out later on
 		$this->haveLoggedInAUser = true;
 
+		/**
+		 * By default PHP stops the script when the client disconnects. That would skip the logout, leaving the client's
+		 * session cookie logged in. Keep running; the download code checks connection_aborted() and stops by itself.
+		 */
+		ignore_user_abort(true);
+
 		// Get a fake login response
 		$options            = ['remember' => false];
 		$response           = new AuthenticationResponse();
@@ -360,6 +366,27 @@ class ItemModel extends BaseDatabaseModel
 		$this->haveLoggedInAUser = !$haveLoggedOut;
 
 		return $haveLoggedOut;
+	}
+
+	/**
+	 * If the client has disconnected, log out the user logged in with loginUser() and stop.
+	 *
+	 * Interrupted downloads end here, before the post-processing plugins which only run for completed ones.
+	 *
+	 * @return  void
+	 * @throws  Exception
+	 * @since   7.5.2
+	 */
+	private function closeIfDisconnected(): void
+	{
+		if (!connection_aborted())
+		{
+			return;
+		}
+
+		$this->logoutUser();
+
+		Factory::getApplication()->close();
 	}
 
 	/**
@@ -619,6 +646,8 @@ class ItemModel extends BaseDatabaseModel
 
 		@ob_flush();
 		flush();
+
+		$this->closeIfDisconnected();
 
 		// Call any plugins to post-process the file download
 		$object = [
@@ -921,10 +950,14 @@ class ItemModel extends BaseDatabaseModel
 
 				@ob_flush();
 				flush();
+
+				$this->closeIfDisconnected();
 			}
 
 			@fclose($handle);
 		}
+
+		$this->closeIfDisconnected();
 
 		// Call any plugins to post-process the file download
 		$object = [
