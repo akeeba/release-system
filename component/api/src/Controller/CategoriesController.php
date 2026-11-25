@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Api\Controller;
 defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Api\Controller\Mixin\AssertApiAccess;
+use Akeeba\Component\ARS\Api\Controller\Mixin\DeleteRecords;
 use Akeeba\Component\ARS\Api\Controller\Mixin\PopulateModelState;
 use Joomla\CMS\MVC\Controller\ApiController;
 
@@ -17,6 +18,7 @@ class CategoriesController extends ApiController
 {
 	use PopulateModelState;
 	use AssertApiAccess;
+	use DeleteRecords;
 
 	/**
 	 * The content type of the item.
@@ -59,16 +61,17 @@ class CategoriesController extends ApiController
 		return parent::displayItem($id);
 	}
 
-	public function delete($id = null)
+	protected function allowDelete($data = [], $key = 'id'): bool
 	{
-		if ($id === null) {
-			$id = $this->input->get('id', 0, 'int');
+		$recordId = (int) ($data[$key] ?? 0);
+		$record   = $recordId ? $this->getModel('Category')->getItem($recordId) : null;
+
+		if (empty($record->id)) {
+			return false;
 		}
 
 		// A category is its own asset, so its own permissions decide whether it may be deleted.
-		$this->assertCanDelete((int) $id);
-
-		return parent::delete($id);
+		return $this->canDeleteIn($recordId);
 	}
 
 	protected function allowAdd($data = [])

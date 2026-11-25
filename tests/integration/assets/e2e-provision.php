@@ -829,6 +829,9 @@ setAssetRules(
 	[
 		'core.create' => [$groups['catManagers'] => 1],
 		'core.edit'   => [$groups['catManagers'] => 1],
+		// core.delete granted on this category ONLY, never on the component: the API must honour a
+		// category-scoped delete grant, exactly as the back-end models' canDelete() do (gh-256).
+		'core.delete' => [$groups['catManagers'] => 1],
 	]
 );
 

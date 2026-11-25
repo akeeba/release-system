@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Api\Controller;
 defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Api\Controller\Mixin\AssertApiAccess;
+use Akeeba\Component\ARS\Api\Controller\Mixin\DeleteRecords;
 use Akeeba\Component\ARS\Api\Controller\Mixin\PopulateModelState;
 use Akeeba\Component\ARS\Administrator\Helper\PathSecurity;
 use Joomla\CMS\MVC\Controller\ApiController;
@@ -18,6 +19,7 @@ class ItemsController extends ApiController
 {
 	use PopulateModelState;
 	use AssertApiAccess;
+	use DeleteRecords;
 
 	/**
 	 * The content type of the item.
@@ -67,18 +69,13 @@ class ItemsController extends ApiController
 			$id = $this->input->get('id', 0, 'int');
 		}
 
-		$item       = $id ? $this->getModel('Item')->getItem((int) $id) : null;
-		$releaseId  = $item ? (int) ($item->release_id ?? 0) : 0;
-		$categoryId = $releaseId ? $this->getModel('Items')->getCategoryFromRelease($releaseId) : null;
-
-		$this->assertCanDelete((int) ($categoryId ?? 0));
-
+		// Authorisation is done by deleteRecord(), which runs allowDelete(). Nothing is unlinked unless it succeeds.
 		$fileToDelete = null;
 		if ($this->input->getInt('delete_file') === 1) {
 			$fileToDelete = $this->getFileNameToDelete((int) $id);
 		}
 
-		parent::delete($id);
+		$this->deleteRecord($id);
 
 		if (!$fileToDelete) {
 			return;
@@ -96,6 +93,21 @@ class ItemsController extends ApiController
 		}
 
 		rmdir(dirname($fileToDelete));
+	}
+
+	protected function allowDelete($data = [], $key = 'id'): bool
+	{
+		$recordId = (int) ($data[$key] ?? 0);
+		$item     = $recordId ? $this->getModel('Item')->getItem($recordId) : null;
+
+		if (empty($item->id)) {
+			return false;
+		}
+
+		$releaseId  = (int) ($item->release_id ?? 0);
+		$categoryId = $releaseId ? $this->getModel('Items')->getCategoryFromRelease($releaseId) : null;
+
+		return $this->canDeleteIn((int) ($categoryId ?? 0));
 	}
 
 	protected function allowAdd($data = [])

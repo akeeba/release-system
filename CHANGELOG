@@ -2,6 +2,7 @@
 Akeeba Release System 7.5.3
 ================================================================================
 ~ Joomla 5.4.11+/6.2.1+: grant "Access Web Services" on ARS to API users who are not Super Users [gh-256]
+# [LOW] JSON API refused deleting your own Download ID label, or with category-only delete permission [gh-256]
 
 Akeeba Release System 7.5.2
 ================================================================================

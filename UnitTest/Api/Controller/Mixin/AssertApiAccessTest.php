@@ -102,6 +102,11 @@ class AssertApiAccessTest extends TestCase
 			{
 				return $this->getRequestData();
 			}
+
+			public function callCanDeleteIn(?int $categoryId): bool
+			{
+				return $this->canDeleteIn($categoryId);
+			}
 		};
 	}
 
@@ -145,6 +150,55 @@ class AssertApiAccessTest extends TestCase
 		$this->expectException(NotAllowed::class);
 
 		$controller->callAssertCanEditIntoCategory(5);
+	}
+
+	// -----------------------------------------------------------------------------------------------------------
+	// canDeleteIn() (gh-256)
+	// -----------------------------------------------------------------------------------------------------------
+
+	public function testDeleteNeedsCoreManage(): void
+	{
+		$controller = $this->controllerWithPermissions(['com_ars|core.delete' => true, 'com_ars.category.5|core.delete' => true]);
+
+		$this->assertFalse($controller->callCanDeleteIn(5));
+		$this->assertFalse($controller->callCanDeleteIn(null));
+	}
+
+	public function testCategoryScopedDeleteIsEnoughInThatCategoryOnly(): void
+	{
+		$controller = $this->controllerWithPermissions(['com_ars|core.manage' => true, 'com_ars.category.5|core.delete' => true]);
+
+		$this->assertTrue($controller->callCanDeleteIn(5), 'core.delete on the category must be enough, as in the back-end.');
+		$this->assertFalse($controller->callCanDeleteIn(6), 'core.delete on one category must not reach another.');
+		$this->assertFalse($controller->callCanDeleteIn(null), 'core.delete on a category must not reach component-wide records.');
+	}
+
+	public function testComponentLevelRecordsAreCheckedAgainstTheComponent(): void
+	{
+		$controller = $this->controllerWithPermissions(['com_ars|core.manage' => true, 'com_ars|core.delete' => true]);
+
+		$this->assertTrue($controller->callCanDeleteIn(null));
+		$this->assertTrue($controller->callCanDeleteIn(0));
+	}
+
+	/**
+	 * A record in a category is checked against the category asset alone. Joomla's ACL makes that asset inherit the
+	 * component's grant; an explicit Deny on the category (which this stub models as the category not granting) must
+	 * win over the component's Allow.
+	 */
+	public function testCategoryRecordIsCheckedAgainstTheCategoryAssetOnly(): void
+	{
+		$controller = $this->controllerWithPermissions(['com_ars|core.manage' => true, 'com_ars|core.delete' => true]);
+
+		$this->assertFalse($controller->callCanDeleteIn(5));
+	}
+
+	public function testNoDeletePrivilegeAnywhereIsRefused(): void
+	{
+		$controller = $this->controllerWithPermissions(['com_ars|core.manage' => true]);
+
+		$this->assertFalse($controller->callCanDeleteIn(5));
+		$this->assertFalse($controller->callCanDeleteIn(null));
 	}
 
 	// -----------------------------------------------------------------------------------------------------------

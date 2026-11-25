@@ -478,7 +478,8 @@ User-Agent: AkeebaReleaseMaker/2.0
 #   * Creating a record for another user, and editing anybody else's record, requires `core.admin` on `com_ars`.
 #   * Nobody — not even the owner — may edit the primary ("main") Download ID through the API. Its title is fixed and
 #     it can never be unpublished.
-#   * Deleting your own record is always allowed; deleting somebody else's needs `core.delete` on `com_ars`.
+#   * Deleting your own record, the primary one included, is always allowed; deleting somebody else's needs
+#     `core.manage` and `core.delete` on `com_ars`.
 #
 # Filters: search (user name and username; `id:N` for an exact ID), id, user_id, dlid (partial, and it understands the
 #          `<user_id>:<dlid>` form), title, username (exact), name (partial), email (exact), primary, published

@@ -255,6 +255,47 @@ class ApiDlidlabelAuthorisationTest extends AbstractE2ETestCase
 	}
 
 	/**
+	 * A subscriber may delete their own Download ID label, but not somebody else's (gh-256).
+	 *
+	 * The back-end DlidlabelModel::canDelete() always lets the owner delete their own record. The API used to call
+	 * Joomla's ApiController::delete(), which also demands core.delete on the whole component, so the owner was
+	 * refused.
+	 *
+	 * @since 7.5.3
+	 */
+	public function testSubscriberCanDeleteOnlyTheirOwnRecords(): void
+	{
+		$subscriberToken = static::$fixtures->apiToken('subscriber');
+		$otherLabelId    = static::$fixtures->dlidLabelId('otherPrimary');
+		$ownLabelId      = static::$fixtures->dlidLabelId('subscriberRevoked');
+
+		try
+		{
+			$response = $this->api('DELETE', 'v1/ars/dlidlabels/' . $otherLabelId, $subscriberToken);
+
+			$this->assertStatus(403, $response, "A subscriber token was able to delete another user's Download ID label.");
+			$this->assertSame(
+				1,
+				(int) $this->db()->value('SELECT COUNT(*) FROM `#__ars_dlidlabels` WHERE id = ?', [$otherLabelId]),
+				"The other user's Download ID label is gone despite the 403."
+			);
+
+			$response = $this->api('DELETE', 'v1/ars/dlidlabels/' . $ownLabelId, $subscriberToken);
+
+			$this->assertStatus(204, $response, 'A subscriber token could not delete its own Download ID label.');
+			$this->assertSame(
+				0,
+				(int) $this->db()->value('SELECT COUNT(*) FROM `#__ars_dlidlabels` WHERE id = ?', [$ownLabelId]),
+				'The Download ID label survived its owner\'s DELETE.'
+			);
+		}
+		finally
+		{
+			$this->resetFixtures();
+		}
+	}
+
+	/**
 	 * One small helper for a raw JSON:API request: a fresh Surfer, no cookies, the vnd.api+json Accept header,
 	 * and the token (if any) on X-Joomla-Token.
 	 *

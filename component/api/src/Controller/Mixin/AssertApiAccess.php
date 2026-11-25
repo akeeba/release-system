@@ -62,27 +62,30 @@ trait AssertApiAccess
 	}
 
 	/**
-	 * Ensure the current user may delete a record.
+	 * May the current user delete a record which lives in the given category?
 	 *
-	 * Joomla's ApiController::delete() only checks core.delete at the component level. Records which live in a
-	 * category are additionally subject to that category's permissions, exactly as they are in the back-end.
+	 * Checks core.delete on the record's category asset, which inherits it from the component unless the category
+	 * says otherwise: a grant on the category alone is enough, and an explicit Deny on the category is honoured.
+	 * Records which are not in a category are checked against the component. Like every other ARS API operation, it
+	 * also requires core.manage.
 	 *
 	 * @param   int|null  $categoryId  The ID of the category the record belongs to, NULL for component-level records.
 	 *
-	 * @return  void
-	 * @throws  NotAllowed  When the user may not delete the record.
-	 * @since   7.5.1
+	 * @return  bool
+	 * @since   7.5.3
 	 */
-	protected function assertCanDelete(?int $categoryId = null): void
+	protected function canDeleteIn(?int $categoryId = null): bool
 	{
-		$this->assertCanManage();
+		$user = $this->app->getIdentity();
+
+		if (!$user->authorise('core.manage', 'com_ars'))
+		{
+			return false;
+		}
 
 		$asset = empty($categoryId) ? 'com_ars' : ('com_ars.category.' . $categoryId);
 
-		if (!$this->app->getIdentity()->authorise('core.delete', $asset))
-		{
-			throw new NotAllowed('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED', 403);
-		}
+		return (bool) $user->authorise('core.delete', $asset);
 	}
 
 	/**

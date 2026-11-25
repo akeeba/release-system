@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Api\Controller;
 defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Api\Controller\Mixin\AssertApiAccess;
+use Akeeba\Component\ARS\Api\Controller\Mixin\DeleteRecords;
 use Akeeba\Component\ARS\Api\Controller\Mixin\PopulateModelState;
 use Joomla\CMS\Access\Exception\NotAllowed;
 use Joomla\CMS\MVC\Controller\ApiController;
@@ -27,7 +28,9 @@ use Joomla\CMS\MVC\Controller\ApiController;
  * application, so the restriction has to be imposed here — see forceOwnershipFilter().
  *
  * Writes follow the back-end DlidlabelController: core.admin may touch anybody's records, everyone else only
- * their own, and never the primary (main) Download ID.
+ * their own, and never edit the primary (main) Download ID. Deleting follows DlidlabelModel::canDelete() and the
+ * frontend Download IDs view: an owner may delete any of their own records, the primary one included; deleting
+ * somebody else's requires core.manage and core.delete.
  *
  * @since  7.5.1
  */
@@ -35,6 +38,7 @@ class DlidlabelsController extends ApiController
 {
 	use PopulateModelState;
 	use AssertApiAccess;
+	use DeleteRecords;
 
 	/**
 	 * The content type of the item.
@@ -88,25 +92,26 @@ class DlidlabelsController extends ApiController
 		return parent::displayItem($id);
 	}
 
-	public function delete($id = null)
+	protected function allowDelete($data = [], $key = 'id'): bool
 	{
-		$this->assertNotGuest();
+		$user = $this->app->getIdentity();
 
-		if ($id === null) {
-			$id = $this->input->get('id', 0, 'int');
+		if (!$user->id || $user->guest) {
+			return false;
 		}
 
-		$user   = $this->app->getIdentity();
-		$record = $this->getRecord((int) $id);
+		$record = $this->getRecord((int) ($data[$key] ?? 0));
+
+		if (!$record) {
+			return false;
+		}
 
 		// Deleting one's own Download ID is always allowed, exactly as it is in DlidlabelModel::canDelete().
-		if ($record && $record->user_id == $user->id) {
-			return parent::delete($id);
+		if ($record->user_id == $user->id) {
+			return true;
 		}
 
-		$this->assertCanDelete();
-
-		return parent::delete($id);
+		return $this->canDeleteIn();
 	}
 
 	protected function allowAdd($data = [])

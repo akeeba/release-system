@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Api\Controller;
 defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Api\Controller\Mixin\AssertApiAccess;
+use Akeeba\Component\ARS\Api\Controller\Mixin\DeleteRecords;
 use Akeeba\Component\ARS\Api\Controller\Mixin\PopulateModelState;
 use Joomla\CMS\MVC\Controller\ApiController;
 
@@ -17,6 +18,7 @@ class ReleasesController extends ApiController
 {
 	use PopulateModelState;
 	use AssertApiAccess;
+	use DeleteRecords;
 
 	/**
 	 * The content type of the item.
@@ -64,17 +66,16 @@ class ReleasesController extends ApiController
 		return parent::displayItem($id);
 	}
 
-	public function delete($id = null)
+	protected function allowDelete($data = [], $key = 'id'): bool
 	{
-		if ($id === null) {
-			$id = $this->input->get('id', 0, 'int');
+		$recordId = (int) ($data[$key] ?? 0);
+		$release  = $recordId ? $this->getModel('Release')->getItem($recordId) : null;
+
+		if (empty($release->id)) {
+			return false;
 		}
 
-		$release = $id ? $this->getModel('Release')->getItem((int) $id) : null;
-
-		$this->assertCanDelete($release ? (int) ($release->category_id ?? 0) : 0);
-
-		return parent::delete($id);
+		return $this->canDeleteIn((int) ($release->category_id ?? 0));
 	}
 
 	protected function allowAdd($data = [])

@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Api\Controller;
 defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Api\Controller\Mixin\AssertApiAccess;
+use Akeeba\Component\ARS\Api\Controller\Mixin\DeleteRecords;
 use Akeeba\Component\ARS\Api\Controller\Mixin\PopulateModelState;
 use Joomla\CMS\MVC\Controller\ApiController;
 
@@ -25,6 +26,7 @@ class EnvironmentsController extends ApiController
 {
 	use PopulateModelState;
 	use AssertApiAccess;
+	use DeleteRecords;
 
 	/**
 	 * The content type of the item.
@@ -67,11 +69,17 @@ class EnvironmentsController extends ApiController
 		return parent::displayItem($id);
 	}
 
-	public function delete($id = null)
+	protected function allowDelete($data = [], $key = 'id'): bool
 	{
-		$this->assertCanDelete();
+		$recordId    = (int) ($data[$key] ?? 0);
+		$environment = $recordId ? $this->getModel('Environment')->getItem($recordId) : null;
 
-		return parent::delete($id);
+		if (empty($environment->id)) {
+			return false;
+		}
+
+		// Environments are component-wide.
+		return $this->canDeleteIn();
 	}
 
 	protected function allowAdd($data = [])

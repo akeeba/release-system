@@ -10,6 +10,7 @@ namespace Akeeba\Component\ARS\Api\Controller;
 defined('_JEXEC') || die;
 
 use Akeeba\Component\ARS\Api\Controller\Mixin\AssertApiAccess;
+use Akeeba\Component\ARS\Api\Controller\Mixin\DeleteRecords;
 use Akeeba\Component\ARS\Api\Controller\Mixin\PopulateModelState;
 use Joomla\CMS\MVC\Controller\ApiController;
 
@@ -22,6 +23,7 @@ class UpdatestreamsController extends ApiController
 {
 	use PopulateModelState;
 	use AssertApiAccess;
+	use DeleteRecords;
 
 	/**
 	 * The content type of the item.
@@ -70,15 +72,16 @@ class UpdatestreamsController extends ApiController
 		return parent::displayItem($id);
 	}
 
-	public function delete($id = null)
+	protected function allowDelete($data = [], $key = 'id'): bool
 	{
-		if ($id === null) {
-			$id = $this->input->get('id', 0, 'int');
+		$recordId = (int) ($data[$key] ?? 0);
+		$record   = $recordId ? $this->getModel('Updatestream')->getItem($recordId) : null;
+
+		if (empty($record->id)) {
+			return false;
 		}
 
-		$this->assertCanDelete($this->getCategoryId((int) $id));
-
-		return parent::delete($id);
+		return $this->canDeleteIn((int) ($record->category ?? 0));
 	}
 
 	protected function allowAdd($data = [])

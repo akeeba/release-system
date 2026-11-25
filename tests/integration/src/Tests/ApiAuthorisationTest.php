@@ -302,6 +302,78 @@ class ApiAuthorisationTest extends AbstractE2ETestCase
 	}
 
 	/**
+	 * core.delete granted on a category, and not on the component, is enough to delete its releases and items over
+	 * the API, as it is in the back-end. It is not enough in a category where it was not granted (gh-256).
+	 *
+	 * @since 7.5.3
+	 */
+	public function testCategoryScopedDeleteIsHonoured(): void
+	{
+		$catManagerToken = static::$fixtures->apiToken('catManager');
+
+		// An item in a release of the public category, where catManager holds core.delete.
+		$releaseId = $this->createThrowawayRelease('catdelete');
+		$createItem = $this->api(
+			'POST',
+			'v1/ars/items',
+			static::$fixtures->apiToken('manager'),
+			[
+				'release_id' => $releaseId,
+				'type'       => 'link',
+				'url'        => 'https://www.example.com/e2e-write-test.zip',
+				'title'      => self::MARKER . ' catdelete item',
+			]
+		);
+		$this->assertStatus(200, $createItem, 'A manager token could not create the throwaway item.');
+		$itemId = (int) ($createItem->json()['data']['id'] ?? 0);
+		$this->assertGreaterThan(0, $itemId, 'The throwaway item was not created.');
+
+		$response = $this->api('DELETE', 'v1/ars/items/' . $itemId, $catManagerToken);
+
+		$this->assertStatus(204, $response, 'core.delete on the category did not let catManager delete its item.');
+		$this->assertSame(
+			0,
+			(int) $this->db()->value('SELECT COUNT(*) FROM `#__ars_items` WHERE id = ?', [$itemId]),
+			'The item row survived the catManager DELETE.'
+		);
+
+		$response = $this->api('DELETE', 'v1/ars/releases/' . $releaseId, $catManagerToken);
+
+		$this->assertStatus(204, $response, 'core.delete on the category did not let catManager delete its release.');
+		$this->assertSame(
+			0,
+			(int) $this->db()->value('SELECT COUNT(*) FROM `#__ars_releases` WHERE id = ?', [$releaseId]),
+			'The release row survived the catManager DELETE.'
+		);
+
+		// A release in the restricted category, where catManager does NOT hold core.delete.
+		$restricted = $this->api(
+			'POST',
+			'v1/ars/releases',
+			static::$fixtures->apiToken('manager'),
+			[
+				'category_id' => static::$fixtures->categoryId('restricted'),
+				'version'     => self::MARKER . ' catdelete-restricted ' . uniqid(),
+				'alias'       => 'e2e-write-test-catdelete-restricted-' . uniqid(),
+				'maturity'    => 'stable',
+				'published'   => 1,
+			]
+		);
+		$this->assertStatus(200, $restricted, 'Could not create the throwaway restricted release.');
+		$restrictedId = (int) ($restricted->json()['data']['id'] ?? 0);
+		$this->assertGreaterThan(0, $restrictedId, 'The throwaway restricted release was not created.');
+
+		$response = $this->api('DELETE', 'v1/ars/releases/' . $restrictedId, $catManagerToken);
+
+		$this->assertStatus(403, $response, 'catManager deleted a release in a category where it holds no core.delete.');
+		$this->assertSame(
+			1,
+			(int) $this->db()->value('SELECT COUNT(*) FROM `#__ars_releases` WHERE id = ?', [$restrictedId]),
+			'The restricted release row is gone despite the 403.'
+		);
+	}
+
+	/**
 	 * ItemsController::delete() honours delete_file=1 and delete_empty_directory=1 by unlinking the
 	 * release file from disk. An unprivileged token must not be able to trigger that: the row and the
 	 * file must both survive.

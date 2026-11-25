@@ -44,7 +44,10 @@ models deliberately do not filter by view level or ownership.
 
 Joomla 5.4.11+ / 6.2.1+ also require the "Access Web Services" permission (`core.api`, declared in `access.xml`) on
 `com_ars` for every route; Joomla's `ApiDispatcher` checks it before any ARS code runs. It does not replace the
-controllers' `core.manage` checks, which decide who may see the unfiltered back-end data.
+controllers' `core.manage` checks, which decide who may see the unfiltered back-end data. Deletes go through
+`Controller/Mixin/DeleteRecords.php`, never `ApiController::delete()`, which demands component-wide `core.delete` on
+every Joomla version and so refuses category-scoped and own-record deletes; each controller authorises them in its own
+`allowDelete($data, $key)`.
 
 List filters are request parameters mapped onto model state by `Controller/Mixin/PopulateModelState.php`. Adding a
 filter means adding it to the mapper *and* to the Administrator list model. Sorting (`list_ordering`,
