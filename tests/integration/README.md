@@ -120,8 +120,8 @@ first run; edit that for local overrides.
 git-ignored, and `config.dist.php` carries the same defaults, so a fresh clone can run PHPUnit
 without configuring anything.
 
-Drop a Joomla full package into `inbox/` to pin an exact build and provision offline; `run.sh`
-prefers a matching package there over downloading one.
+A partial Joomla version means the latest stable release matching it, looked up before the run; `inbox/` only
+caches downloads. To provision offline, ask for an exact version (`--joomla=X.Y.Z`) whose package is in `inbox/`.
 
 ## How it fits together
 

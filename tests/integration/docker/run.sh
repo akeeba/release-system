@@ -401,47 +401,19 @@ assert_supported_version() {
 }
 
 # ---------------------------------------------------------------------------
-# Joomla acquisition: prefer inbox/, otherwise resolve + download.
+# Joomla acquisition, with buildfiles' docker/e2e/joomla/acquire.sh: the wanted release is looked up first; inbox/
+# only saves downloading it again.
 # ---------------------------------------------------------------------------
-
-find_inbox_package() {
-	local prefix="$1" best="" bestver="" f ver
-	shopt -s nullglob
-	for f in "${INBOX_DIR}"/Joomla_"${prefix}"*Full_Package.zip; do
-		[ -f "${f}" ] || continue
-		ver="$(basename "${f}" | sed -E 's/^Joomla_([0-9]+\.[0-9]+\.[0-9]+).*/\1/')"
-		# Guard against "5.4" matching "5.4.3" but also "5.40.0": require the
-		# requested string to be the whole version or a dot-delimited prefix.
-		case "${ver}" in
-			"${prefix}"|"${prefix}".*) ;;
-			*) continue;;
-		esac
-		if [ -z "${bestver}" ] || [ "$(printf '%s\n%s\n' "${bestver}" "${ver}" | sort -V | tail -1)" = "${ver}" ]; then
-			best="${f}"; bestver="${ver}"
-		fi
-	done
-	shopt -u nullglob
-	[ -n "${best}" ] && { echo "${best}"; return 0; }
-	return 1
-}
 
 JOOMLA_ZIP=""
 JOOMLA_RESOLVED=""
 acquire_joomla() {
 	log "Acquiring Joomla ${JOOMLA_VERSION}"
-	if JOOMLA_ZIP="$(find_inbox_package "${JOOMLA_VERSION}")"; then
-		JOOMLA_RESOLVED="$(basename "${JOOMLA_ZIP}" | sed -E 's/^Joomla_([0-9]+\.[0-9]+\.[0-9]+).*/\1/')"
-		ok "Using inbox package $(basename "${JOOMLA_ZIP}")"
-		return 0
-	fi
-	local getcms="${REPO_ROOT}/../buildfiles/getcms/getcms.php"
-	[ -f "${getcms}" ] || die "${getcms} not found. Check out akeeba/buildfiles next to this repository and run composer install there."
-	php "${getcms}" download "${JOOMLA_VERSION}" "${INBOX_DIR}" --no-unzip \
-		|| die "Could not download a stable Joomla version for '${JOOMLA_VERSION}'."
-	JOOMLA_ZIP="$(find_inbox_package "${JOOMLA_VERSION}")" \
-		|| die "getcms did not place a matching Joomla package in ${INBOX_DIR}."
-	JOOMLA_RESOLVED="$(basename "${JOOMLA_ZIP}" | sed -E 's/^Joomla_([0-9]+\.[0-9]+\.[0-9]+).*/\1/')"
-	ok "Downloaded $(basename "${JOOMLA_ZIP}") to inbox/"
+	local library="${REPO_ROOT}/../buildfiles/docker/e2e/joomla/acquire.sh"
+	[ -f "${library}" ] || die "${library} not found. Update the akeeba/buildfiles checkout next to this repository."
+	# shellcheck source=/dev/null
+	. "${library}"
+	joomla_acquire "${JOOMLA_VERSION}" "${INBOX_DIR}"
 }
 
 extract_joomla() {
