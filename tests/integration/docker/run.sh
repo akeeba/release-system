@@ -201,7 +201,9 @@ if [ "${RUN_MATRIX}" -eq 1 ]; then
 			log "──────── matrix: Joomla ${jver} on PHP ${pver} ────────"
 			# Build ARS once, on the first iteration only; the package does not change
 			# between Joomla or PHP versions and `phing git` is not cheap.
-			EXTRA=()
+			# We already are where the suite runs: with a remote host, e2e_remote sent the whole matrix there and never
+			# returned here. Without this each child would choose a host again, ignoring this run's --host.
+			EXTRA=("--host=local")
 			if [ "${FIRST}" -eq 0 ] || [ "${SKIP_BUILD}" -eq 1 ]; then
 				EXTRA+=("--skip-build")
 			fi
