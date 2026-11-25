@@ -30,6 +30,8 @@
 #       --keep-containers  Leave the stack running after the tests finish
 #                          (default: the stack is brought down). Provisioning is
 #                          the slow part, so this is how you iterate on a test.
+#       --host=HOST        Run everything on HOST over SSH, or "local" (default: see README.md "Remote host")
+#       --slot=N           With --down or a repeat run on a remote host: which kept slot
 #   -h, --help             Show this help
 #
 set -euo pipefail
@@ -59,6 +61,25 @@ log()  { printf "${C_B}==>${C_0} %s\n" "$*"; }
 ok()   { printf "${C_G}  ok${C_0} %s\n" "$*"; }
 warn() { printf "${C_Y}  !!${C_0} %s\n" "$*"; }
 die()  { printf "${C_R}ERROR:${C_0} %s\n" "$*" >&2; exit 1; }
+
+# ---------------------------------------------------------------------------
+# Local or remote host. In remote mode everything below runs on that host instead, and e2e_remote exits with its status;
+# see "Remote E2E hosts" in ../buildfiles/README.md. This comes before anything which needs Docker or sets a trap.
+# ---------------------------------------------------------------------------
+E2E_REMOTE_SH="${REPO_ROOT}/../buildfiles/docker/e2e/remote.sh"
+# A nested linked worktree has no ../buildfiles of its own: use the one next to the main repository.
+[ -f "${E2E_REMOTE_SH}" ] || E2E_REMOTE_SH="$(dirname "$(git -C "${REPO_ROOT}" rev-parse --path-format=absolute --git-common-dir)")/../buildfiles/docker/e2e/remote.sh"
+[ -f "${E2E_REMOTE_SH}" ] || die "buildfiles not found. Check out akeeba/buildfiles next to this repository."
+. "${E2E_REMOTE_SH}"
+
+E2E_HARNESS_DIR="${SCRIPT_DIR}"
+E2E_CONFIG_FILE="${SCRIPT_DIR}/.env"
+E2E_PORTS=(HTTP_PORT DB_PORT MAILPIT_HTTP_PORT)
+# Only a failed (or kept) run leaves the web root, and with it the PHP error log.
+E2E_RESULTS=(tests/integration/docker/www/php-errors.log)
+E2E_VERSION_FLAGS=("--joomla|-j=" "--php|-p=" "--matrix")
+
+e2e_remote "${BASH_SOURCE[0]}" "$@"
 
 # ---------------------------------------------------------------------------
 # docker compose wrapper (supports both `docker compose` and `docker-compose`)
@@ -99,7 +120,9 @@ while [ $# -gt 0 ]; do
 		--down)          ONLY_DOWN=1; shift;;
 		--no-tests)      RUN_TESTS=0; shift;;
 		--keep-containers) KEEP_CONTAINERS=1; shift;;
-		-h|--help)       sed -n "2,32p" "${SCRIPT_PATH}" | sed 's/^# \{0,1\}//'; exit 0;;
+		--host|--slot)   shift 2;;   # read by e2e_remote above
+		--host=*|--slot=*) shift;;
+		-h|--help)       sed -n '2,/^#   -h, --help/p' "${SCRIPT_PATH}" | sed 's/^# \{0,1\}//'; exit 0;;
 		--)              shift; while [ $# -gt 0 ]; do PHPUNIT_ARGS+=("$1"); shift; done;;
 		*)               die "Unknown option: $1 (use --help)";;
 	esac
@@ -132,6 +155,8 @@ set -a
 . "${E2E_MATRIX}"
 if [ -f ./matrix.env ]; then . ./matrix.env; fi
 set +a
+# On a remote E2E host: this run's own ports, whatever .env says.
+e2e_apply_overrides
 [ -n "${JOOMLA_OVERRIDE}" ] && export JOOMLA_VERSION="${JOOMLA_OVERRIDE}"
 [ -n "${PHP_OVERRIDE}" ] && export PHP_VERSION="${PHP_OVERRIDE}"
 
@@ -157,6 +182,9 @@ mysql_cli() { DC exec -T db mysql -uroot -p"${DB_ROOT_PASSWORD}" "$@"; }
 # Done before anything else touches Docker.
 # ---------------------------------------------------------------------------
 if [ "${RUN_MATRIX}" -eq 1 ]; then
+	# Where to run has been decided: each child below runs here too. Without this, a child of --host=local would resolve
+	# the host again, without that flag.
+	export E2E_DOCKER_HOST=local
 	MATRIX_STATUS=0
 	FAILED_VERSIONS=""
 	FIRST=1

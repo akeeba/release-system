@@ -87,6 +87,17 @@ simplified away. A green single-version run says nothing about the branch it did
 `run.sh` reads the Joomla and PHP floors out of `component/script.ars.php` (currently Joomla 5.4.0 and
 PHP 8.1.0) and refuses anything lower, so the two cannot drift apart. Joomla 4.4 is no longer supported.
 
+## Remote host
+
+The whole suite can run on another machine over SSH instead: `tests/integration/docker/run.sh --host=HOST`,
+`E2E_DOCKER_HOST` (environment or `docker/.env`), or `e2e.docker.host` in your `build.properties`. `--host=local` forces
+this machine. Every run on the host gets its own slot (staging tree, Compose project and ports), so any number can run at
+once, also from Git worktrees. After a failed run the PHP error log comes back into
+`tests/integration/remote-results/`. The ports named above apply to local runs only; a kept remote stack prints its
+ports and the `ssh -L` command to reach it. `phpunit` on this machine cannot use a remote stack: `config.php` is written
+on the host, so re-run the tests with `run.sh` (or keep the stack local while iterating). Details and host requirements:
+"Remote E2E hosts" in the sibling `buildfiles` repository's README.
+
 ## `run.sh` options
 
 | Option | Effect |
@@ -98,6 +109,7 @@ PHP 8.1.0) and refuses anything lower, so the two cannot drift apart. Joomla 4.4
 | `--no-tests` | Provision the site but don't run the suite (leaves it up) |
 | `--keep-containers` | Leave the stack running afterwards |
 | `--down` | Tear everything down and exit |
+| `--host=HOST`, `--slot=N` | Run on a remote host; see "Remote host" |
 
 ## Configuration
 
